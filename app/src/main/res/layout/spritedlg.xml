@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/HelpDialog"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+ 		 <LinearLayout
+      		android:orientation="vertical"
+      		android:layout_width="fill_parent"
+      		android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+				 android:layout_gravity="center_vertical"
+  		>
+
+			 <TextView
+				 android:id="@+id/Message"
+				 android:layout_width="fill_parent"
+				 android:layout_height="wrap_content"
+				 android:gravity="center"
+				 android:text="HelpDialogMessages"
+				 android:textColor="#ffffffff"
+				 android:textSize="30sp" />
+  		</LinearLayout>
+ 		 <LinearLayout
+      		android:orientation="horizontal"
+      		android:layout_width="fill_parent"
+      		android:layout_height="wrap_content"
+             	android:id="@+id/BottomButtons"
+             	android:layout_alignParentBottom="true"
+  		>
+    		<Button
+        		android:id="@+id/Close"                        
+        		android:layout_height="wrap_content"
+        		android:layout_width="fill_parent"
+        		android:text="@string/Close"
+        		android:layout_gravity="center"
+    		/>
+    		<Button
+        		android:id="@+id/Cancel"                        
+        		android:layout_height="wrap_content"
+        		android:layout_width="fill_parent"
+        		android:text="@string/Cancel"
+        		android:layout_gravity="center"
+                    android:visibility="gone"
+    		/>
+  		</LinearLayout>
+</LinearLayout>

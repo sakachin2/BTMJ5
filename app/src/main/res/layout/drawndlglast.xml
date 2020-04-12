@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <!--  key to scroll & bottom buttons== android:layout_weight="1" -->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:background="#ffccff99"
+            android:layout_weight="1"
+    > <!--above buttons-->
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+        >
+            <include layout="@layout/drawn_results"
+                    android:id="@+id/drawnresult"
+            />
+        </LinearLayout> <!--result-->
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater2"
+        />
+        <ScrollView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            >
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                                 android:id="@+id/llPointStick"
+                >
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <include layout="@layout/compdlgpoint_stick"
+                            android:id="@+id/compdlgpoint"
+                    />
+                </LinearLayout>
+
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                            android:id="@+id/llMangan"
+                >
+                    <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+                    />
+                    <include layout="@layout/drawn_mangan"
+                    />
+                </LinearLayout>
+
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                >
+                    <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/drawn_pending_tile"
+                        />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                            android:id="@+id/llReachers"
+                >
+                    <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/compdlgreachers"
+                        />
+                    </LinearLayout>  <!--reachers-->
+                </LinearLayout>  <!--reachers-->
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+                />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                            android:id="@+id/llError"
+                >
+                    <include layout="@layout/compdlgerr"
+                    />
+                </LinearLayout>  <!--error-->
+
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+                />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                >
+                    <include layout="@layout/drawn_nextgame_last"
+                    />
+                </LinearLayout>
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+
+                <include layout="@layout/rule_related"
+                />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                     android:gravity="center_vertical"
+                    android:background="#ffffffff"
+                            android:id="@+id/llRelatedRule"
+                >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+
+                        />
+                    <include layout="@layout/setting_rule_opt_pending_cont"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >  <!--drawnMangan-->
+                        <include layout="@layout/setting_rule_opt_drawnmangan"
+                        />
+                    </LinearLayout>  <!--drawnMangan-->
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                            android:id="@+id/llRuleMultiRon"
+                    >
+                        <include layout="@layout/setting_rule_opt_multiron"
+                        />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout><!-- one view hosted in scrollview-->
+        </ScrollView>
+    </LinearLayout>  <!-- above buttons-->
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:id="@+id/llEswnResponseLine"
+        >
+            <include layout="@layout/eswnresponse"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+        >   <!--buttons-->
+            <Button
+                android:id="@+id/OK"                    
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/OK"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/Cancel"                    
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/NG"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/ShowTotal"                  
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/FixTotal"
+                android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+            />
+            <Button
+                android:id="@+id/ShowRule"                    
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/Label_ShowRule"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/Close"                   
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/Close"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/Help"                   
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/Help"
+                android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>
+    </LinearLayout> <!--resp stat and button-->
+</LinearLayout>

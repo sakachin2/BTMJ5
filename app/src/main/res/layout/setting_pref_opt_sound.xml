@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:gravity="center_vertical"
+    >
+        <TextView
+            android:id="@+id/cbSound"
+            android:text="@string/Label_Sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+	         android:gravity="center_vertical"
+                android:textSize="@dimen/textview_middle"
+    			android:background="@color/bg_dialog_remarkable2"
+        />
+        <CheckBox
+            android:id="@+id/cbNoSound"
+            android:text="@string/Label_No"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+        <CheckBox
+            android:id="@+id/cbBeepOnly"
+            android:text="@string/Label_BeepOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+        />
+        <TextView
+            android:text="@string/Label_SoundVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                android:id="@+id/llSBSoundVolume"
+            />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/DialogBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#ffccff99"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+		            android:background="@color/separater"
+        />
+        <ScrollView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            >
+                <CheckBox
+                    android:id="@+id/cbCloseOnConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Close On Connect"
+                />
+                <CheckBox
+                    android:id="@+id/cbRon_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ron No check"
+                />
+                <CheckBox
+                    android:id="@+id/cbRuleNoSync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skip Rule Sync"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Kan(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanDealAnkan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Ankan(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanDealChankan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Chanken(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbPon_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pon with any tile"
+                />
+                <CheckBox
+                    android:id="@+id/cbChii_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chii with any tile"
+                />
+                <CheckBox
+                    android:id="@+id/cbKan_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kan with any tile"
+                />
+                <CheckBox
+                    android:id="@+id/cbChankan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ChankanTest(off when Kan with any tile)"
+                />
+                <CheckBox
+                    android:id="@+id/cbWaitSelectPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pon always wait to select multiple"
+                />
+                <CheckBox
+                    android:id="@+id/cbWaitSelectCii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chii always wait to select multiple"
+                />
+                <!--CheckBox
+                    android:id="@+id/cbPositioning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bypass Positioning"
+                /-->
+                <CheckBox
+                    android:id="@+id/cbSkipDice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Emulate Touch Dice"
+                />
+                <CheckBox
+                    android:id="@+id/cbTakeDiscard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Just Discard after Taken"
+                />
+                <CheckBox
+                    android:id="@+id/cbDrawnReqDlg_Last"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="show DrwanReqDlg Last at 6 tile discard"
+                />
+                <CheckBox
+                    android:id="@+id/cbShowF2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="show F2"
+                />
+                <CheckBox
+                    android:id="@+id/cbFinalGame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="set finalGame"
+                />
+                <CheckBox
+                    android:id="@+id/cbLayoutFinalGame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Layout test(layout_test.xml)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDrawnLastShowStick" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DrawnLast show Stick"
+                />
+                <CheckBox
+                    android:id="@+id/cbBirdWithRobot" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bird Active with Robot"
+                />
+                <CheckBox
+                    android:id="@+id/cbSuspend" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suspend Requested"
+                />
+                
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FirstDealer"
+                    />
+                    <RadioGroup
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rgFirstDealer"
+                        android:layout_width="wrap_content"
+                    >
+                        <RadioButton
+                            android:id="@+id/rbFirstDealer0"
+                            android:text="No"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFirstDealer1"
+                            android:text="N1:E"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFirstDealer2"
+                            android:text="N2:E"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFirstDealer3"
+                            android:text="N1:N"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton                       
+                            android:id="@+id/rbFirstDealer4"
+                            android:text="N2:N"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                    </RadioGroup>
+	            </LinearLayout>
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FinalGame Set"
+                    />
+                    <RadioGroup
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rgFinalGameCtrSet"
+                        android:layout_width="wrap_content"
+                    >
+                        <RadioButton
+                            android:id="@+id/rbFinalSet1"
+                            android:text="East"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFinalSet2"
+                            android:text="South"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFinalSet3"
+                            android:text="West"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFinalSet4"
+                            android:text="North"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                    </RadioGroup>
+	            </LinearLayout>
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FinalGame Game"
+                    />
+                    <RadioGroup
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rgFinalGameCtrGame"
+                        android:layout_width="wrap_content"
+                    >
+                        <RadioButton
+                            android:id="@+id/rbFinalGame1"
+                            android:text="4"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFinalGame2"
+                            android:text="8"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFinalGame3"
+                            android:text="16"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbFinalGame4"
+                            android:text="20"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                    </RadioGroup>
+	            </LinearLayout>
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                            android:id="@+id/llIOErr"
+                >   <!--IOErr-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IOErr"
+                    />
+                    <include layout="@layout/eswn_checkbox"
+                    />
+	            </LinearLayout>
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                >   <!--IOErr timing-->
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cbBTIOErr"
+                            android:text="Disable bluetooth timing"
+                    />
+                    <RadioGroup
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rgBTIOErr"
+                        android:layout_width="wrap_content"
+                    >
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterTake"
+                            android:text="After Take"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterDiscard"
+                            android:text="After Discard"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterPon"
+                            android:text="After Pon"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterKan"
+                            android:text="After Kan"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterRon"
+                            android:text="After Ron"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterOpen"
+                            android:text="After Open"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                        <RadioButton
+                            android:id="@+id/rbBTIOE_AfterRobotTake"
+                            android:text="After Robot Take"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                        />
+                    </RadioGroup>
+	            </LinearLayout>
+            </LinearLayout><!-- one view hosted in scrollview-->
+    	</ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+            android:id="@+id/llShowStatus"                        
+            android:visibility="gone"
+    >
+        <Button
+            android:id="@+id/btnShowStatus"                        
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/Label_ShowStatus"
+        />
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvShowStatus"                        
+				android:textSize="@dimen/textview_small"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <Button
+            android:id="@+id/OK"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/OK"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Cancel"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Cancel"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Help"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Help"
+            android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+</LinearLayout>

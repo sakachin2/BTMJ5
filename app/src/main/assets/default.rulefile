@@ -1,0 +1,6 @@
+# comment line, no space/comment is allowed after equation
+#indicate file type
+rule=1
+Kuitan=1
+#index of 25000,27000,30000
+InitScore=1

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MainTitle"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+            <TextView
+                        android:id="@+id/TopMsgBar"
+                        android:layout_width="fill_parent"
+		    			android:layout_height="@dimen/main_title"
+		    			android:maxLines="2"
+		    			android:scrollHorizontally="true"
+		    			android:ellipsize="end"
+                            android:textColor="#ffffffff"
+		                    android:background="#ff004900"
+				            android:textSize="@dimen/textview_small_middle"
+		                    android:layout_marginBottom="60dp"
+            />
+		             <!--       android:background="#ff005900"-->
+</LinearLayout>

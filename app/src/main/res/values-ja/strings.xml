@@ -1,0 +1,1305 @@
+<resources>
+    <!--string name="app_name">ｅ雀 β</string-->
+    <string name="app_name">ｅ雀</string>
+    <string name="app_nameE">eMahjong</string>
+    <string name="app_version">v1.01</string>
+    <string name="Settings">設定</string>
+    <string name="SettingsRelated">関連設定</string>
+    <string name="Connect">接続</string>
+    <string name="StartGame">対局</string>
+    <string name="History">履歴</string>
+    <string name="On">オン</string>
+    <string name="Off">オフ</string>
+    <string name="Null"></string>
+    <string name="title_connect">接続</string>
+    <string name="NotConnected">未接続</string>
+    <string name="Exit">終了</string>
+    <string name="failedBluetooth">Bluetoothの処理の失敗</string>
+    <string name="failedBluetoothUnpair">Bluetoothのペア解除処理の失敗</string>
+    <string name="BluetoothUnpairRequested">%1$sのペア解除を要求しました</string>
+    <string name="nowDiscoverable">現在は\"可視\"状態です(一定時間有効)</string>
+    <string name="Err_No_connection_to_BT">
+				"%2$s 接続 (%1$s) 失敗\n"
+				"相手が \"接続受付\" を押していますか？\n"
+				"Bluetooth 同時複数接続のサポートはデバイスによります\n"
+				"他にBluetoothアプリが稼動していませんか？\n"
+				</string>
+    <string name="Err_No_connection_to_IP">%1$s 接続 失敗、サーバーで \"接続受付\" をしていますか？</string>
+    <string name="ErrAcceptfailed">接続待ち(%1$s)設定に失敗、アンドロイド設定でBluetooth をOff/Onしてアプリをリスタートしてみてください</string>
+    <string name="InfoAcceptCanceled">接続受付を停止しました</string>
+    <string name="InfoConnectCanceled">接続要求をキャンセルしました</string>
+    <string name="BTNotAvalable">Bluetooth が使用できません</string>
+    <string name="Already_trying_this_connection">既に接続中です</string>
+    <string name="InfoBTEnabled">Bluetoothが有効になりました, リトライしてください</string>
+    <string name="InfoBTDiscoverFinished">検索終了、%1$d 件見つかりました</string>
+	<string name="BTSecure">セキュア</string>
+	<string name="BTInSecure">非セキュア</string>
+	<string name="No_Connection_to_">接続されていません =&gt;</string> 
+    <string name="LabelLocalDevice">デバイス名 : </string>
+    <string name="LabelRemoteDevice">接続中メンバー : </string>
+	<string name="BTSecureOption">セキュア接続</string> <!--1Abu-->
+    <!--string name="BTSettingsButton">設定</string--> <!--1AbE-->
+    <string name="BTAcceptCommon">接続受付</string> <!--1Abu-->
+    <!--string name="BTStop">中断</string--> <!--1Abu-->
+    <string name="BTStopAccept">受付停止</string>
+    <string name="BTConnectCommon">接続</string>  <!--1Abu-->
+    <string name="BTGame">対戦</string>
+    <string name="BTGameRestart">ゲーム再開</string>
+    <string name="Info_GameRestarted">再接続によりゲームを再開します</string>
+    <string name="Info_IOErrRecovered">接続があります、サーバーからの中断処理要求を受けてください</string>
+    <string name="Err_InGameRestarting">切断処理中です</string>
+    <string name="Info_Reconnected">%1$s に再接続しました</string>
+    <string name="Err_ReconnectingEnv">\"%1$s\"に接続しましたが、両方が再接続モードではありません、ゲーム再開はできません。
+									再接続モード側は、接続を切断し、メニューの\"接続障害処理\"から\"中断・精算\"を行ってください
+									</string>
+    <string name="Err_ReconnectingExistStartGame">\"%1$s\"は再接続モード(ゲーム中の状態)です。\n
+									このクライアントはメニューの\"接続障害処理\"―\"再接続\"―\"切断\"でサーバーとの接続を一旦切断し、
+									必要なら\"中断・精算\"した後、\n
+									メニューから\"対局終了\"し、サーバーと接続し直してください。
+									</string>
+    <string name="Err_ReconnectingExistSuspendGame">サーバーはゲーム中ですが、\"%1$s\"は接続モード(ゲーム開始前の状態)です。\n
+									サーバーはメニューの\"接続障害処理\"―\"再接続\"―\"切断\"でこのクライアントとの接続を切断し、
+									\"中断・精算\"した後、\n
+									メニューから\"対局終了\"し、接続し直してください。
+									</string>
+    <string name="Info_Connected">%1$s と接続しました</string>
+    <string name="BTDisConnect">切断</string>
+    <string name="BTUnpair">ペア解除</string>
+    <!--string name="InfoDisconnectRequested">%1$s 切断を要求しました</string-->
+    <string name="InfoDisconnected">\"%1$s\"が,切断されました。</string>
+    <string name="InfoDisconnectedClose">\"%1$s\"が接続を閉じました</string>
+    <string name="InfoDisconnectedSomeDevice">通信の切断が発生しました</string>
+    <string name="LabelDeviceList">デバイスのリスト：</string>
+    <string name="LabelWantGroupOwner">サーバーになる</string>
+    <string name="Discoverable">可視化</string>
+    <string name="Discover">検索</string>
+    <string name="Delete">削除</string>
+    <string name="Cancel">キャンセル</string>
+    <string name="CancelExecute">取消</string>
+    <string name="Execute">実行</string>
+    <string name="Close">閉じる</string>
+    <string name="OK">OK</string>
+    <string name="NG">NG</string>
+    <string name="Send">送信</string>
+    <string name="SendDiscard">打牌+送信</string>
+    <string name="SendBackOK">同意</string>
+    <string name="SendBackNG">不同意</string>
+    <string name="Help">ヘルプ</string>
+    <string name="BTStatusPaired">ペア設定済み</string>
+    <string name="BTStatusDiscovered">利用可能</string>
+    <string name="BTStatusConnected">接続中</string>
+    <string name="BTStatusConnectedOnce">接続歴あり</string>
+    <string name="NoSession">無し</string>
+    <string name="ErrNoThread">失敗、アプリの再起動が必要です</string>
+    <string name="ErrNoNewDevice">新規デバイスは見つかりませんでした,パートナーのデバイスは\"可視\"状態ですか</string>
+    <string name="InfoDiscoverCanceled">探索がキャンセルされました</string>
+    <string name="InfoDiscoverCancelFailed">探索がキャンセルされました,理由＝%1$s</string>
+    <string name="InfoNewDevice">%1$d 件のデバイスが見つかりました</string>
+    <string name="UnknownDeviceName">不明</string>
+    <string name="Unknown">不明</string>
+    <string name="UnknownRuleName">ルールID未設定</string>
+    <string name="UnknownYourName">権兵衛</string>
+    <string name="noBTadapter">Blutoothがサポートされていません</string>
+    <string name="StatusDiscoverable">(\"可視\" 状態)</string>     <!--1Af3-->
+    <string name="StatusNotDiscoverable">(\"非可視\" 状態)</string> <!--1Af3-->
+    <string name="ErrConnectingForScan">\"切断\"してから\"検索\"してください</string>
+    <string name="ErrAssetFileNotFound">アッセットファイルが見つかりません:</string>
+    <string name="ErrAssetFileRead">アッセットファイルが読めません:</string>
+    <string name="HelpTitle_Bluetooth">無線(Bluetooth)接続</string>
+	<string name="Title_WaitingAccept">----- 接続待機中 -----</string>
+	<string name="Title_WaitingConnect">----- 接続要求中 -----</string>
+	<string name="Title_WaitingDisconnect">----- 切断要求中 -----</string>
+	<string name="Title_WaitingUnpair">----- ペア解除要求中 -----</string>
+	<string name="Msg_WaitingDiscover">\"可視\"状態のデバイスを検索中\n"
+					</string>
+	<string name="Title_WaitingDiscover">----- デバイス検索中 -----</string>
+    <string name="Game">対戦</string>
+    <string name="AcceptedBTSecureConnection">%1$s と接続しました</string><!--1Aed-->
+    <string name="AcceptedBTInSecureConnection">%1$s からの 非セキュアを受け付けました</string><!--1Aed-->
+    <string name="ErrConnectConfirmAccept">接続エラー, 接続先が "接続受付中" か確認してください</string>
+    <string name="ConnectedBTSecureConnection">%1$s に接続 しました.</string><!--1Aed-->
+    <string name="ConnectedBTInSecureConnection">%1$s に 非セキュア接続 しました。</string><!--1Aed-->
+    <string name="Info_ConnectionClosed">"%1$s" が接続を閉じました</string>
+    <string name="dev_act_msg">デバイスの応答:</string>
+    <string name="bt_not_enabled_leaving">Bluetooth は Off でした.</string>
+    <string name="alreadyconnected">既にBluetooth接続があります</string>
+    <string name="InfoBTDiscoverable">\"可視\"状態になりました</string> <!--1AbE-->
+    <string name="InfoBTDiscoverableRequested">\"可視化\"を要求しました</string>
+    <string name="InfoBTConnectable">\"可視\"状態ではなくなりました</string> <!--1AbE-->
+    <string name="InfoBTNone">\"可視\"状態でも接続可能でもなくなりました</string> <!--1AbE-->
+    <!--string name="WarningBluetoothTurnedOff">Bluetooth が OFF に設定されました\nこのアプリケーションをリスタートしてください.</string--> <!--1AbQ-->
+    <string name="WarningBluetoothTurnedOff">Bluetooth が OFF に設定されました</string>
+    <string name="WarningDeletingPaired">ぺア設定済みのデバイスをリストから削除するには\"設定\"から\"ペアを解除\"してください</string>
+	<string name="Msg_WaitingConnect">"%2$s 接続先＝%1$s\n"</string> 
+    <string name="Title_Bluetooth">---------- Bluetooth 接続 ----------</string>
+    <string name="Title_BluetoothReconnect">---------- Bluetooth 再接続 ----------</string>
+    <string name="WarningBTNotDiscoverable">
+					"このデバイスが非可視になっています\n"
+					"\"可視化\"ボタンで可視化し、再試行してください"
+	</string>           
+	<string name="Msg_WaitingAccept">"他の端末からの %2$s 接続を待機中 (デバイス名＝%1$s)\n"
+					</string>                         
+	<string name="Msg_WaitingDisconnect">%1$s</string>
+	<string name="Msg_WaitingUnpair">%1$s</string>
+    <string name="ErrNotSelected">接続先を選択してください</string>
+    <string name="ErrNotSelectedConnected">接続済のデバイスを選択してください</string>
+    <string name="lockContention">処理中、もう一度試してください:</string>
+    <string name="ErrOutOfMemory">メモリー不足-</string> 
+    <string name="Helpfile_Main">Main</string> 
+    <string name="Title_Help_Main">基本操作</string>
+    <string name="Qexit">アプリケーションを終了しますか</string>
+    <string name="ErrMixedRole">サーバー/クライアントの役割は変更できません、全接続を切断し、ダイアログを閉じてやり直してください</string>
+    <string name="ErrMemberOverflow">サーバーの最大接続クライアント数は %1$d です</string>
+    <string name="ModeServer">サーバー</string>
+    <string name="ModeClent">クライアント</string>
+    <string name="DefaultYourName">某は？</string>
+    <string name="BThintYourName">8文字迄のID名</string>
+    <string name="ErrExceptionDetected">問題が発生しました</string>
+    <string name="YourNameLabel">ID名:</string>
+
+    <!-- setting -->
+
+    <!--string name="Title_RuleFileDlgSave">設定ファイル 保存</string-->
+    <!--string name="Title_RuleFileDlgLoad">設定ファイル 読込</string-->
+    <string name="Title_RuleFileDlg">設定ファイル</string>
+    <string name="Title_RuleFileDlgFolder">設定ファイル %1$s &lt;font color=\"#000000\"&gt;(%2$s)</string>
+    <string name="Title_HistoryDlg">履歴</string>
+    <string name="Title_HistoryDlgFolder">履歴 &lt;font color=\"#000000\"&gt;(%1$s)</string>
+    <string name="Title_RuleSetting">ルール設定</string>
+    <string name="Title_PrefSetting">個人設定</string>
+    <string name="Desc_Preference">濃い緑のオプションはゲーム中も変更できます</string>
+    <string name="Title_OperationSetting">操作</string>
+    <string name="Load">読込</string>
+    <string name="Save">保存</string>
+    <string name="Label_Reload">再開</string>
+    <!--string name="Err_ReloadNotServer">サーバーのみが中断ゲームを再開を始められます</string-->
+    <string name="Msg_ReloadServer">サーバーです、次の内容で再開しますか？\n%1$s</string>
+    <string name="Msg_ReloadClient">クライアントです、次の内容で再開しますか？\n
+					OKを押すと、サーバーに送られます。\n
+					サーバーから再開を起動してもらってください。\n\n
+					%1$s</string>
+    <string name="Msg_HistoryReceived">%1$s から履歴データが送られてきました、保存しますか？\n\n%2$s</string>
+    <string name="Info_RuleSettingUpdated">変更がありました</string>
+    <string name="Info_HistoryReceivedCanceled">受信履歴データはキャンセルされました</string>
+    <string name="Info_HistorySendToServer">履歴データをサーバーに送信しました。\n%1$s</string>
+    <string name="Info_HistoryRuleSavedReceived">履歴データ用ルールを保存しました\n%1$s</string>
+    <string name="Info_HistorySendToAllClient">履歴データを全クライアントに送信しました</string>
+    <string name="Err_ReloadSelectOne">ファイル（1行のみ）を選択してください</string>
+    <string name="Err_HistoryReadFailed">%1$s 読み込みエラー</string>
+    <string name="Err_ReloadNotInterrupted">\"再開\"の場合は\"中断\"ゲームを選択してください</string>
+    <string name="Err_ReloadNooneConnected">未接続状態です</string>
+    <string name="Err_HistoryNotSameMembers">接続メンバーと履歴のメンバーが全員一致ではありません</string>
+    <string name="Err_ReloadDataErr">データにエラーがあります</string>
+    <string name="Err_ReloadDataErrReceived">%1$s から送られた履歴データにエラーがあります</string>
+    <string name="Err_AlreadyFileExists">既存です、保存できません。\
+					%1$s</string>
+    <string name="Warn_HistoryPropNotSent">中断ゲームで使用したルールファイルが見つかりません、\
+					他のメンバーから履歴ファイルを送信してもらってみてください。\
+					履歴ファイルを送信するとルールファイルも送られます。\
+					%1$s</string>
+    <string name="Info_FileWritten">%1$s を出力しました</string>
+    <string name="Err_HistoryPropLoadFailed">ルールファイルが読めません。%1$s</string>
+    <string name="Warn_ResumeDialogNoRuleFound">サーバーから履歴からの再開要求がありましたが、
+			その時使用されたルールファイルが見つかりません。
+			サーバーに履歴ファイルを\"送信\"してもらってください。</string>
+    <string name="Prompt_InitialScore">持ち点選択</string>
+    <string name="Label_DupPoint">積み棒：場</string>
+    <string name="Label_InitialScore">持ち点</string>
+	<!--string-array name="InitialScore"> 
+		<item>25000</item>
+		<item>27000</item>
+		<item>30000</item>
+	</string-array-->
+	<string-array name="MenuDialog_Setting_Debug"> 
+		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_PrefSetting</item>
+		<item>テストオプション</item>
+		<item>@string/Cancel</item>
+	</string-array>
+	<string-array name="MenuDialog_Setting"> 
+		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_PrefSetting</item>
+		<item>@string/Cancel</item>
+	</string-array>
+    <string name="Bluetooth">Bluetooth</string>
+    <string name="WifiDirect">Wifiダイレクト</string>
+	<string-array name="MenuDialog_Connect"> 
+		<item>@string/Bluetooth</item>
+		<item>@string/WifiDirect</item>
+    	<item>@string/Help</item>
+		<item>@string/Cancel</item>
+	</string-array>
+
+    <!-- CompleteDlg -->
+    <!--string name="Err_DlgCompleteType">あがりの指定(ツモ、ロン、振込)の誤り</string-->
+    <string name="Err_DlgCompleteNotOK">全員のOKがもらえた上がりがありません</string>
+    <string name="Err_ContinueNextPlayer_SomeoneOK">正当な和了者がいる場合は\"次の局：続行\"は選択できません</string>
+    <string name="Err_ContinueNextPlayer_NoOneErr">和了にチョンボ、無効があるときに\"次の局：続行\"は選択できます</string>
+    <string name="Info_ContinueNextPlayer">%1$s の和了放棄でこの局を継続します</string>
+    <!--string name="Err_DlgCompleteErrLooser">チョンボの支払者をセットしてください</string-->
+    <string name="Err_DlgPao">パオ負担者を和了者、放銃者とは別に一人選択してください</string>
+    <string name="Err_DlgPaoNoGainer">パオはあがりがあるときに設定してください</string>
+    <string name="Alert_ConfirmDrawn3R">三家和は流局の設定です。\n\"OK\"を押すと、途中流局の処理をします。
+											</string>
+    <string name="Alert_CompleteDlgConfirmSuspend">\"中断・精算\"にチェックがあります、中断しますか。</string>
+    <string name="Alert_CompleteDlgConfirmSuspendErr">\"中断・精算\"のときは\"続行\"はできません。</string>
+    <string name="Alert_SuspendNoIOErr">クライアント用：接続の切断は検知されていません。
+											\"OK\"を押すと、強制的に切断します。
+                                            サーバーが切断を検知して、クライアントの検知が遅れている場合のみ、\"OK\"を押してください
+											</string>
+    <string name="Alert_SuspendNoIOErrServer">サーバー用：接続の切断は検知されていません。
+											\"OK\"を押すと、再接続ダイアログを表示します。
+											切断をしたいクライアントを選択して切断してください。
+                                            クライアントがサーバーの切断を検知して、サーバーの切断検知が遅れている場合のみ、\"OK\"を押してください
+											</string>
+    <string name="Alert_ScoreDlgForceOK">\"トビ 確認\"に\"NG\"応答がありました。
+											ゲームを進行する方法は次の２通りです。\
+											この画面で\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"トビ 確認\"を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"対局終了\"とする。
+											</string>
+    <string name="Alert_AccountsDlgForceOK">\"終局 精算確認\"に\"NG\"応答がありました。
+											\"終局\"を完了する方法は次の２通りです。\
+											この画面で\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"終局 精算確認\"を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"終局\"とする。
+											</string>
+    <string name="Alert_FinalGameDlgForceOK">\"オーラス終局判断\"に\"NG\"応答がありました。
+											処理を続行する方法は次の２通りです。\
+											この画面で\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"オーラス終局判断\"を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に処理を進める。
+											</string>
+    <string name="Alert_SuspendIOErrDlgForceOK">接続障害が残ったままか、中断処理 要求\に\"NG\"応答がありました。\
+											\"中断・精算\"を完了する方法は、\
+											\"NG\"応答の場合は、この画面を\"キャンセル\"し、下の画面の\"送信\"ボタンで\"中断処理 確認\"を再送して\"OK\"をもらう。\
+											接続障害がある場合は、接続を回復して送信する。\
+											\"OK\"を押すと、下の画面の\"確定\"ボタンで強制的に\"中断処理\"を行うこともできます。\
+                                            接続障害が回復しない場合はそうしてください。
+											</string>
+    <string name="Alert_SuspendIOErrDlgForceOKClient">サーバーとの接続がありません。\
+											\"中断・精算\"を完了する方法は、\
+											この画面をキャンセルし、再接続してサーバーで\"中断・精算\"するか、\
+											接続できない場合は、\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"中断処理\"を行う。\
+											</string>
+    <string name="Alert_SuspendDlgForceOK">\"中断処理 要求\"に\"NG\"応答がありました。
+											\"中断\"を完了する方法は次の２通りです。\
+											この画面で\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"中断処理 確認\"を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"中断処理\"を行う。
+											</string>
+    <string name="Alert_CompleteDlg_NGCompReqDlg">\"和了 申告\"に\"NG\"応答があります。\
+    						                      和了者に再申告をしてもらうか、\
+    						                      \"無効\"、\"チョンボ\"を設定して\
+												\"送信\"してください
+											</string>
+    <string name="Alert_CompleteDlgForceOK">\"局の終了 確認\"に\"NG\"応答がありました。
+											ゲームを進行する方法は次の３通りです。\
+											この画面で\"キャンセル\"、下の画面を\"キャンセル\"で閉じ、\
+											和了者にメニューから\"和了 申告\"を再送してもらってやり直す。\
+											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"局の終了 確認\"を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"局の終了\"とする。
+											\"あがり\"を\"無効\"にするか、チョンボを設定すると局を\"続行\"（対象者は上がり放棄）することもできます。
+											</string>
+    <string name="Info_CompleteDlgForceOK">親の権限で\"局の終了\"になりました</string>
+    <string name="Alert_DrawnLastNGForceOK">\"流局承認 要求\"に\"NG\"応答がありました。
+											ゲームを進行する方法は次の３通りです。\
+											この画面で\"キャンセル\"、下の画面を\"キャンセル\"で閉じ、\
+											申告者に\"流局 申告\"を再送してもらってやり直す。\
+											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"流局承認 要求\"を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"流局\"とする。
+											</string>
+    <string name="Err_ResumeDlgNG">\"中断再開 要求\"に\"NG\"応答がありました。\
+											\"中断再開\"を再送してやり直すこともできます。
+											</string>
+    <string name="Title_CompleteDlgReq">局の終了確認 要求</string>
+    <string name="Title_CompleteDlgResp">局の終了確認 応答</string>
+    <string name="Title_CompReqDlg">和了 申告</string>
+    <string name="Title_DrawnReqDlgLast">流局 申告</string>
+    <string name="Title_DrawnReqDlgHW">途中流局 申告</string>
+    <string name="Title_DrawnDlgHW">途中流局承認 要求</string>
+    <string name="Title_DrawnDlgLast">流局承認 要求</string>
+    <string name="Title_DrawnDlgHWReceived">途中流局承認 応答</string>
+    <string name="Title_DrawnDlgLastReceived">流局承認 応答</string>
+    <string name="Title_ScoreDlg">トビ（箱割れ）確認</string>
+    <string name="Title_FinalGame">オーラス終局判断</string>
+    <string name="Info_ClosableDlgRon">上がり止め宣言</string>
+    <string name="Info_ClosableDlgPending">テンパイ止め宣言</string>
+    <string name="Title_AccountsDlg">終局 精算確認</string>
+    <string name="Title_CompNotenDlg">流れ</string>
+    <string name="CompDlg_Gainer">%1$s家（%2$s）</string>
+    <string name="Err_NowShowingTheDlg">表示中</string>
+    <string name="NormalGain">あがり</string>
+    <string name="AbnormalGain">チョンボ</string>
+    <string name="NormalGainPao">パオ</string>
+    <string name="LabelReachers">リーチ</string>
+    <string name="Label_NextGame">次の局：</string>
+    <!--string name="Label_RetryWhenErr">チョンボの時やり直しができる</string-->
+    <string name="Label_Drawn_Continue">連荘</string>
+    <string name="Label_PendingCont">テンパイ連荘</string>
+    <string name="Label_PendingContYes">親のテンパイは連荘</string>
+    <string name="Desc_PendingCont">（Noの場合流局は親流れ）</string>
+    <!--string name="Label_Drawn_NextSetting">途中流局はすべて親流れ</string-->
+    <string name="Label_Drawn_Next">親流れ</string>
+    <string name="Label_Drawn_NextPlayer">続行</string>
+    <string name="Label_Drawn_Reset">やり直し</string>
+    <string name="Label_NextGameSuspend">中断・精算</string>
+    <string name="Desc_NextGameSuspend">：得点計算し中断（保存）ないしは精算する</string>
+    <string name="Desc_DrawnNext">流局理由が\"その他\"の場合、またはチョンボを設定すると\"続行\"/\"やり直し\"も選択できます。
+								その場合、\"続行\"は上がり放棄(罰金は局の終了時に設定してください)。\"やり直し\"は罰金を払い（飛ぶかも）、同じ親でやり直す、積み棒は足さない、リーチ棒は返す。</string>
+    <string name="Desc_DrawnNextLast">チョンボがあるときはやり直しが選択できます。その場合、罰金を払い（飛ぶかも）、同じ親でやり直す。積み棒は足さない。リーチ棒は返す。</string>
+    <!--string name="Desc_CompNext">\"無効\"（罰金無し）、\"チョンボ\"（罰金あり）のとき\"やり直し\"が選択できます。その場合、同じ親でやり直し、積み棒は足さない。リーチ棒は返す。</string-->
+    <string name="Desc_CompNext">\"無効\"（罰金無し）、\"チョンボ\"（罰金あり）のとき
+					\"続行\"（上がり放棄）と\"やり直し\"が選択できます。
+					続行の時、罰金は局の終了時に設定されます</string>
+    <string name="Desc_RuleWhenErr">チョンボのとき\"和了承認\"画面で\"チョンボ\"（罰金あり）と\"無効\"（罰金なし）を選択しますが、その際、\"やり直し\"も選択できます。
+					\"やり直し\"はチョンボは罰金を払い（飛ぶかも）、同じ親でやり直す。積み棒は足さない。リーチ棒は返す。
+					\"やり直し\"しない場合、連荘、親流れは和了者が親かで決まり、和了者がいなければ、親がチョンボなら親流れ。
+    			</string>
+    <string name="Info_DrawnHWContinueThisRound">この局を続行します。</string>
+    <string name="Label_Drawn_NextField">次の場</string>
+    <string name="Desc_DrawnHW">ノーテン罰符は無し。四人立直、四開槓 は打牌で和了無しで成立</string>
+    <string name="Desc_DrawnHWSelectReason">採用するケースと、それぞれ連荘か否かにチェック</string>
+    <string name="Label_MinusStop">トビ</string>
+    <string name="Desc_MinusStop"> ＝ドボン＝ハコ割れ</string>
+    <string name="Label_Bird">焼鳥</string>
+    <string name="Desc_Bird"> </string>
+    <string name="Label_BirdPayToPlace">場に払う</string>
+    <string name="Label_BirdPayToEach">全員に払う</string>
+    <string name="Label_BirdRule2">順位には影響しない。ボットが居る対局では焼き鳥なし</string>
+    <string name="Label_MinusStopCharge">ハコ下負担調整</string>
+    <string name="Label_Yes">あり</string>
+    <string name="Label_No">なし</string>
+    <string name="Label_Minus0">0 点でもトビ</string>
+    <string name="Label_MinusPay">ハコ下</string>
+    <string name="Label_MinusPayYes">ハコ下あり</string>
+    <string name="Label_MinusPayNoGetPointAll">なし-順位確定後精算</string>
+    <string name="Label_MinusPayNoGetPointLimited">なし-ハコまでを得点とする</string>
+    <string name="Label_MinusGain">トビ賞</string>
+    <string name="Label_Payer">支払者</string>
+    <string name="Label_Gainer">支払先</string>
+    <string name="FixTotal">確定</string>
+    <string name="NotAgreed">無効</string>
+    <string name="Agreed">有効</string>
+    <string name="NoGame">ノーテン流れ</string>
+    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可</string>
+    <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
+    <string name="Label_ReachLimitOpenYakuman">役満払い</string>
+    <string name="Label_ReachLimitOpenChombo">チョンボで続行</string>
+    <string name="Label_ReachLimitOpenRobot">ボット入りの時のオープン</string>
+    <string name="Label_ReachLimitOpenRobotNone">無し</string>
+    <string name="Label_ReachLimitOpenRobotSkip">ボットの放銃は無視</string>
+    <string name="Label_ReachLimitOpenRobotNormal">ボットは通常払い</string>
+    <string name="Label_Drawn99Tile">九種九牌</string>
+    <string name="Label_Drawn3Ron">三家和</string>
+    <string name="Label_Drawn4Wind">四風連打</string>
+    <string name="Label_Drawn4Reach">四人立直</string>
+    <string name="Label_Drawn4Kan">四開槓</string>
+    <string name="Label_DrawnMangan">流し満貫</string>
+    <string name="Label_DrawnNoManganByEswn">流頭ハネ</string>
+    <!--string name="Label_DrawnManganAsPending">ノーテン罰符なし</string-->
+    <string name="Label_DrawnManganAsRon">和了扱い</string>
+    <string name="Label_DrawnManganAsDrawn">流局扱い</string>
+    <!--string name="Label_DrawnManganDropBird">焼き鳥解除</string-->
+    <!--string name="Label_DrawnManganMulti">２家、３家もあり。積み棒による加算やリーチ棒取得なし。飛んだ場合トビ賞はノーテン罰符より先に徴収し決定、複数の場合は東家に近い方から徴収。</string-->
+    <string name="Desc_DrawnMangan">流局扱い：ノーテン罰符対象、リーチ棒回収、積み棒加算共に無し、テンパイしてなければ親でも流れる。和了扱い：ノーテン罰符なし、焼き鳥解除、割れ目対象、親なら連荘。どちらの場合も複数家の場合はダブロンに従う、この場合の頭ハネとは東家に近い方。飛んだ場合トビ賞は流し満貫、ノーテン罰符の順にそれぞれ東家に近い順で徴収し決定。トリプルの流局はなし</string>
+    <string name="Label_DrawnManganPending">テ流し満貫</string>
+    <string name="Label_DrawnNoManganPendingByEswn">テ流頭ハネ</string>
+    <string name="Label_DrawnOther">その他</string>
+    <string name="Label_Dealer">親</string>
+    <string name="Label_DealerNow">承認者</string>
+    <string name="Label_Loose">払：</string>
+    <string name="Label_Gain">受取</string>
+    <string name="Label_PointReach">リーチ棒</string>
+    <string name="Label_BackPointReach">返却リーチ棒：</string>
+    <string name="Label_BackPointReach2">リー棒</string>
+    <string name="Label_PointContinued">積み棒</string>
+    <string name="Label_PointAmmount">得点</string>
+    <string name="Label_PointAmmountColon">得点：</string>
+    <string name="Label_StickAmmount">計</string>
+    <string name="Label_Result">結果</string>
+    <string name="Label_AbnormalPlayer">反則者:</string>
+    <string name="Label_PaoPlayer">負担者:</string>
+    <string name="Label_AbnormalPoint">満貫払い</string>
+    <string name="Label_Take">ツモ</string>
+    <string name="Label_Ron">ロン</string>
+    <string name="Label_Looser">放銃</string>
+    <string name="Label_Point">点</string>
+	<string-array name="CompType"> 
+		<item>" "</item>
+		<item>@string/Label_Take</item>
+		<item>@string/Label_Ron</item>
+		<item>@string/Label_Looser</item>
+		<item>@string/NotAgreed</item>
+		<item>@string/Label_ByEswn</item>
+		<item>@string/NormalGainPao</item>
+	</string-array>
+	<string-array name="OrderPrize"> 
+		<item>無し</item>
+		<item> 5 - 10</item>
+		<item>10 - 20</item>
+		<item>10 - 30</item>
+		<item>20 - 30</item>
+	</string-array>
+	<string-array name="TopPrize"> 
+		<item>25000</item>
+		<item>27000</item>
+		<item>30000</item>
+	</string-array>
+	<string-array name="NormalPoint"> 
+		<item>２０符</item>
+		<item>２５符</item>
+		<item>３０符</item>
+		<item>４０符</item>
+		<item>５０符</item>
+		<item>６０符</item>
+		<item>７０符</item>
+		<item>８０符</item>
+		<item>９０符</item>
+		<item>１００符</item>
+		<item>１１０符</item>
+	</string-array>
+	<string-array name="NormalRank"> 
+		<item>１翻</item>
+		<item>２翻</item>
+		<item>３翻</item>
+		<item>４翻</item>
+		<item>満貫</item>
+		<item>跳満</item>
+		<item>倍萬</item>
+		<item>３倍萬</item>
+		<item>役満</item>
+		<item>大役満</item>
+		<item>役満ｘ２</item>
+		<item>役満ｘ３</item>
+	</string-array>
+	<string-array name="NormalRankPao"> 
+		<item>役満払い</item>
+		<item>ダブル役満</item>
+	</string-array>
+	<string-array name="DrawnManganRank"> 
+		<item>満貫</item>
+		<item>跳満</item>
+		<item>倍萬</item>
+		<item>３倍萬</item>
+		<item>役満</item>
+	</string-array>
+	<string-array name="SuspendPenalty"> 
+		<item>なし</item>
+		<item>1000*3</item>
+		<item>2000*3</item>
+		<item>4000*3</item>
+		<item>8000*3</item>
+		<item>16000*3</item>
+	</string-array>
+	<string-array name="NormalRankPaoRate"> 
+		<item>０</item>
+		<item>半分</item>
+		<item>全部</item>
+	</string-array>
+
+    <!-- FileDialog -->
+
+    <string name="Title_FileDialog_Load">ファイル読み込み</string>
+    <string name="Title_FileDialog_Save">ファイル保存</string>
+    <string name="Title_Help_FileDialog">設定ファイル</string>
+    <string name="CurrDir">Current Folder</string>
+    <string name="Open">開く</string>
+    <string name="View">表示</string>
+    <string name="Hide">非表示</string>
+    <string name="SwitchToSD">SDフォルダー表示</string>
+    <string name="SwitchToFiles">内部フォルダー表示</string>
+    <string name="Backup">SDに複写</string>
+    <string name="Restore">SDから復元</string>
+    <string name="SelectAll">全選択</string>
+    <string name="SelectAll2">全選</string>
+    <string name="MultiSelect">複数選択</string>
+    <string name="MultiSelect2">複数</string>
+    <string name="DeSelectAll">選択解除</string>
+    <string name="DeSelectAll2">解除</string>
+    <string name="UseSD">SDフォルダー使用</string>
+    <string name="ErrFileNotSelected">ファイルを選択してください</string>
+    <string name="ErrSaveFileNotSelected">ファイル名を入力するか、ファイルを選択してください</string>
+    <string name="ErrInvalidPropertyFile">%1$s:ファイルが読めないか、内容が設定ファイルではありません</string>
+    <string name="NoSDCard">"SDカードが利用できません"</string>
+    <string name="NoAvailableDir">"内部/SDカードとも利用できません"</string>
+    <string name="NoFileFound">該当(%1$s)のファイルがありません"</string>
+    <string name="FailedListDirBySecurity">"フォルダー表示の権限がありません"</string>
+    <string name="FailedListDir">"フォルダー表示が失敗"</string>
+    <string name="FileDialogDeleteQuestion">削除の確認, 削除件数は %1$d</string>
+    <string name="FileDialogDeleteQuestionFile">削除の確認, %1$s</string>
+    <string name="FileDialogDeleted">%1$d 件削除</string>
+    <string name="SaveOverrideQuestion">%1$s を上書きしますか </string>
+    <string name="ErrFileMultipleSelected">読み込み/保存/開く は1件だけ選択してください</string>
+    <string name="Title_FileDialog">ファイルダイアログ</string>
+    <string name="LabelFilter">拡張子：</string>
+    <string name="LabelFileName">ファイル名：</string>
+    <string name="LabelFileName2">名前：</string>
+    <string name="FileType">内外種別</string>
+    <string name="FileTypeSD">ＳＤ：</string>
+    <string name="FileTypeData">内部：</string>
+    <string name="Title_FileViewer">%1$s</string>
+    <string name="HelpTitle_FileViewer">テキストファイル表示</string>
+    <string name="FailedDelete">削除失敗</string>
+    <string name="FailedSave">保存失敗</string>
+    <string name="InfoSaved">保存しました：%1$s</string>
+    <string name="InfoCopyedFile">SDに複写しました：%1$s</string>
+    <string name="InfoCopyedFileCtr">%1$d 件 複写しました</string>
+    <string name="InfoRestoredFile">SDから復元しました：%1$s</string>
+    <string name="InfoLoaded">読み込ました：%1$s</string>
+    <string name="ErrFileViewerNoText">ファイルは空です</string>
+    <string name="ErrFileViewerTooLarge">ファイルが大きすぎます、このダイアログの最大は %1%d</string>
+    <string name="ErrFileViewerRead">読み込み失敗</string>
+    <string name="ErrOpenFailed">%1$s オープン失敗</string>
+    <string name="ErrSpecifyYourname">右上の "ID名" を設定してください</string>
+    <string name="ErrSelectNextGame">連荘、親流れを選択してください</string>
+<!--BTMJ3-->
+    <string name="Label_OrientationPortrait">縦</string>
+    <string name="Label_OrientationLandscape">横</string>
+    <string name="Label_OrientationPortraitReverse">縦-上下逆</string>
+    <string name="Label_OrientationLandscapeReverse">横-左右逆</string>
+    <string name="Label_OrientationSelectMenu">毎回選択</string>
+	<string-array name="OrientationMenuDlg_Items"> 
+		<item>@string/Label_OrientationPortrait</item>
+		<item>@string/Label_OrientationLandscape</item>
+		<item>@string/Cancel</item>
+	</string-array>
+	<string-array name="ActionMenuDlg_Items"> 
+		<item>あなた</item>
+		<item>下家</item>
+		<item>対面</item>
+		<item>上家</item>
+
+		<item>模る</item>
+		<item>ポン</item>
+		<item>チー</item>
+		<item>カン</item>
+		<item>リーチ</item>
+		<item>和了</item>
+		<item>打牌</item>
+		<item>オープン</item>
+		<item>サイコロ</item>
+	</string-array>
+    <string name="ESWN_E">東</string>
+    <string name="ESWN_S">南</string>
+    <string name="ESWN_W">西</string>
+    <string name="ESWN_N">北</string>
+	<string-array name="nameESWN"> 
+		<item>@string/ESWN_E</item>
+		<item>@string/ESWN_S</item>
+		<item>@string/ESWN_W</item>
+		<item>@string/ESWN_N</item>
+	</string-array>
+    <!--string name="GameSeq1">一局</string>
+    <string name="GameSeq2">二局</string>
+    <string name="GameSeq3">三局</string>
+    <string name="GameSeq4">四局</string-->
+    <string name="GameSeq">局</string>
+    <string name="Ron2">ダブロン</string>
+    <string name="Ron3">トリプルロン</string>
+    <string name="Ron3Next">トリプルロン流れ</string>
+    <string name="NoReply">返信待</string>
+    <string name="Disconnected">切断中</string>
+    <string name="NextGame">次局</string>
+	<string-array name="strGameSeq"> 
+		<item>一</item>
+		<item>二</item>
+		<item>三</item>
+		<item>四</item>
+		<item>五</item>
+		<item>六</item>
+		<item>七</item>
+		<item>八</item>
+		<item>九</item>
+		<item>十</item>
+	</string-array>
+	<string-array name="compReplyText"> 
+		<item>送信前</item>
+		<item>@string/NoReply</item>
+		<item>@string/OK</item>
+		<item>@string/NG</item>
+		<item>和了者</item>
+		<item>@string/YournameRobot</item>
+	</string-array>
+    <string name="Label_Pending">テンパイ</string>
+    <string name="Label_PendingNo">ノーテン</string>
+    <string name="Label_NoPendingPoint">ノーテン罰符</string>
+    <string name="Label_AllNoPendingElse">その他全員ノーテン</string>
+    <string name="Label_AllNoPending">全員ノーテン</string>
+	<string-array name="drawnReplyText"> 
+		<item>送信前</item>
+		<item>@string/Label_Pending</item>
+		<item>@string/Label_PendingNo</item>
+		<item>@string/Label_DrawnMangan</item>
+	</string-array>
+    <string name="Label_Red5">赤ドラ</string>
+    <string name="Label_Dora">ドラ</string>
+    <string name="Label_DoraHidden">裏ドラ</string>
+    <string name="Label_KanDora">槓ドラ</string>
+    <string name="Label_KanDoraHidden">裏</string>
+    <string name="Label_DoraNext">次位牌</string>
+    <string name="Label_DoraItself">現物</string>
+    <string name="Label_KanDoraOpenTiming">暗槓の槓ドラ表示は即、明槓は</string>
+    <string name="Label_MinKanDoraOpenExceptRon">打牌がロンでないとき</string>
+    <string name="Label_MinKanDoraOpenJustDiscarded">打牌直後</string>
+    <string name="Label_MinKanDoraOpenJustNow">即</string>
+    <string name="Desc_KanDoraOpenTiming">\"即\"とは嶺上牌ツモ後、\"即\"のケースのみ嶺上開花で槓ドラは表示される</string>
+    <string name="Label_PaoFor">対</string>
+    <string name="Label_OpenReach">オープンリ</string>
+    <string name="Label_ScoreAddTotal">得点</string>
+    <string name="Label_ScoreNewScore">結果</string>
+    <string name="Label_ScoreMinusPay">トビ賞</string>
+    <string name="Label_MinusCharge">ハコ下分</string>
+    <string name="Label_ForBotCharge">ボット分負担</string>
+    <string name="Label_MinusPayByErr">チョンボ分はハコ下精算するが、トビ賞は</string>
+    <string name="Label_MinusPayByPending">但し、ノーテン罰符はハコ下精算する、トビ賞はテンパイ者で等分</string>
+    <string name="Label_MinusPayByErrNo">なし</string>
+    <string name="Label_MinusPayByErrSprit">均等割り</string>
+    <string name="Label_MinusPayByErrAll">全員に払う</string>
+    <string name="Label_ScoreNewTotal">合計</string>
+    <string name="Label_ScoreSetPayer">支払先は変更できます</string>
+    <string name="Label_AccountsOrder">順位</string>
+    <string name="Label_CurrentEswn">風</string>
+    <string name="Label_CompStatus">状況</string>
+    <string name="Label_AccountsScore">得点</string>
+    <string name="Label_AccountsCurrent">持ち点</string>
+    <string name="Label_AccountsTopPrize">オカ</string>
+    <string name="Label_AccountsOrderPrize">ウマ</string>
+    <string name="Label_RuleOrderPrize">ウマ</string>
+    <string name="Label_AccountsTotal">合計</string>
+    <string name="Label_AccountsTotalWithMinusCharge">精算</string>
+    <string name="Label_FinalPoint">ポイント</string>
+    <string name="Label_AccountsStartingEswn">席</string>
+    <string name="Label_AccountsSettingTopPrize">トップ賞</string>
+    <string name="Label_AccountsSettingTopPrizeEdit">%1$d (%2$d 点持ち - %3$d 返し)</string>
+    <string name="Label_AccountsSettingOrderPrize">ウマ</string>
+    <string name="Label_AccountsSettingOrderPrizeEdit">%1$d - %2$d</string>
+    <string name="Label_AccountsSettingSamePoint">同点のとき</string>
+    <string name="Label_ByEswn">頭ハネ</string>
+    <string name="Label_ByEswnOrderPrize">起家頭ハネ</string>
+    <string name="Label_Debt">%1$d 点返し</string>
+    <string name="Label_PendingPoint">ノーテン罰符：場 3000</string>
+    <string name="Label_AccountsSettingSamePointSpritCut">等分(100未満切捨)</string>
+    <string name="Label_MultiRon3Drawn">トリプルは流れ</string>
+    <string name="Info_MultiRon3Drawn">トリプルロン流れ</string>
+    <string name="Label_MultiRonDupStickByEswn">あり、積み棒は頭ハネ</string>
+    <string name="Label_MultiRonDupStickAll">積み棒は各自全額徴収</string>
+    <string name="Desc_MultiRon">なしの場合は頭ハネ。トリプルを流局としない場合はダブロン設定に従う</string>
+    <!--string name="Label_AccountsSettingSamePointSpritUp">等分(切上)</string-->
+    <string name="UserAction_Take"   >自摸</string>
+    <string name="UserAction_Pon"    >ポン</string>
+    <string name="UserAction_Chii"   >チー</string>
+    <string name="UserAction_Kan"    >カン</string>
+    <string name="UserAction_Reach"  >リーチ</string>
+    <string name="UserAction_Ron"    >和了</string>
+    <string name="UserAction_Discard">打牌</string>
+    <string name="UserAction_Reach_Open">オープンリーチ</string>
+    <string name="UserAction_Reach_Open_YN">オープン立直あり</string>
+    <string name="UserAction_Reach_Missing_YN">フリテン立直あり</string>
+    <string name="UserAction_ReachReset">リーチを取り消しました</string>
+    <string name="Label_AnkanAfterReach">立直後の暗槓あり</string>
+    <string name="UserAction_WaitOn">ち待</string>
+    <string name="UserAction_WaitOff">消待</string>
+    <string name="UserAction_DlgComp">得点</string>
+    <string name="UserAction_DlgCompResult">結果</string>
+    <string name="UserAction_DrawnGame">流局</string>
+    <string name="UserAction_DrawnHW">途中流局</string>
+    <string name="UserAction_MinusStop">トビ</string>
+    <string name="UserAction_EndScore">精算</string>
+    <!--string name="UserAction_FinalGame">オーラス終了</string-->
+
+    <string name="Title_MenuInGame">メニュー</string>
+    <string name="Label_MenuInGame">メニュー</string>
+    <string name="Label_ShowRule">ルール</string>
+	<string-array name="Items_MenuInGame"> 
+		<!--item>和了 申告</item-->
+		<item>局の終了確認の表示</item>
+		<item>流局、途中流局の申告</item>
+		<item>@string/Title_FinalGame</item>
+		<item>トビの状況表示</item>
+		<item>@string/Title_AccountsDlg</item>
+		<!--item>中断要求</item-->
+		<!--item>中断取消</item-->
+		<item>中断確認の表示</item>
+		<item>対局終了</item>
+		<item>接続障害処理</item>
+		<item>とにかく和了</item>
+		<item>個人設定</item>
+		<item>メニューのヘルプ</item>
+	</string-array>
+
+    <string name="UserActionMsg_RonTaken">ツモ!</string>
+    <string name="UserActionMsg_RonRiver">ロン!</string>
+    <string name="Msg_DiceForTempStarter">仮東を決めます、ランプの場所の人がサイコロを振ってください</string>
+    <string name="Msg_DiceForPositioning">場所決め、仮東がサイコロを振ってください</string>
+    <string name="Msg_DiceForPositionAccepting">場所決め、順番にランプをタッチして風牌を取ってください</string>
+    <string name="Msg_PositionAcceptedAll">場所移動、仮東がランプをタッチしてください</string>
+    <string name="Msg_DiceForStart1stGame">東一局、起家がサイコロを振ってください</string>
+    <string name="Msg_DiceForNewGame">親がサイコロを振ってください</string>
+    <!--string name="Msg_AcceptComplete">上がりに同意したらランプをタッチしてください</string-->
+    <string name="Err_LackingMember">メンバーが揃っていません、ルール設定でロボットを加えた対戦もできます</string>
+    <string name="Err_LackingMemberNoConnection">メンバーが揃っていません（接続がありません）</string>
+    <string name="Err_LackingMemberAllowRobotYes">メンバーが %1$d 人足りません。\nボットを入れて対戦しますか？</string>
+    <string name="Err_LackingMemberAllowRobotNo">メンバーが %1$d 人足りません。\nルール設定でボットを加えた対戦もできます。</string>
+    <string name="Err_LackingMemberReconnect">接続障害が回復していません</string>
+    <string name="Err_AlreadyRestarted">既にゲーム再開済です</string>
+    <string name="Info_WaitingAllMemberSetup">残り %1$d 人の 対局準備 完了待ち</string>
+    <string name="Info_AllMemberSetupEnd">全メンバーの 対局準備 完了</string>
+    <string name="Err_DupYourname">名前の重複があります(%1$s).</string>
+    <string name="AE_NotYourTurn">あなたの番ではありません</string>
+    <string name="AE_DiscardTaken">打牌してください</string>
+    <string name="AE_NoTileSelected">打牌を選択してください</string>
+    <string name="AE_YouHaveToTake">自摸番です</string>
+    <string name="AE_TakeKanAdditional">槓したので、嶺上牌を自模ってください</string>
+    <string name="AE_CouldNotReach">リーチできません</string>
+    <string name="AE_ShortScoreForReach">リーチ棒が出せません、トビありです</string>
+    <string name="AE_CouldNotGetLast">海底はポン,カン,チーできません</string>
+    <string name="AE_CouldNotGetLastReach">次ツモ番が回ってこない状況ではリーチできません</string>
+    <string name="AE_ReachedToLast">ツモ牌は残っていません</string>
+    <string name="AE_DuplicatedAction">重複です</string>
+    <string name="AE_TakeOnly">ツモ切り</string>
+    <string name="AE_InReach">リーチ中</string>
+    <string name="AE_KanAfterReach">設定でリーチ中の暗槓は不可です</string>
+    <string name="AE_AnkanRonNG">国士の暗カンロンは\"設定\"で不可になっています</string>
+    <string name="AE_DupRonDelayed">遅ロンです</string>
+    <string name="AE_DupActionRon">ロンは受付済です</string>
+    <string name="AE_ContinueAsNotRonable">和了放棄しています</string>
+    <string name="AE_PendingHW">途中流局の申請中です</string>
+    <string name="AE_DupRonTaken">ツモ上がりが宣言されています</string>
+    <string name="AE_AfterIssuedRon">あがりが宣言されました</string>
+    <string name="AE_AfterIssuedRonAlready">和了宣言済みです</string>
+    <string name="AE_UnavailableOpenReach">設定でオープンリーチはなしです</string>
+    <string name="AE_DrawnLastDelayTimeout">ハイテイ後のタイムアウトで流局済みです、和了できません</string>
+    <string name="AE_DrawnHWNotTaken">自摸っていません</string>
+    <string name="AE_DrawnHWDoNotDiscard">このタイプの途中流局では打牌できません</string>
+    <string name="Warning_DiceForDummy">ボットの代わりにサイコロを振ってください</string>
+    <string name="YournameRobot">Robot</string>
+    <string name="Info_EndGameReceived">%1$s が対局終了しました</string>
+    <string name="Info_EndGameDrawn_Last">流局です</string>
+    <string name="Info_DrawnHW_Confirmed">途中流局で合意しました</string>
+    <string name="Info_DrawnHW_ConfirmedNG">途中流局承認 要求にNG応答がありました</string>
+    <string name="Err_UpdateAfterSend">送信後に変更がありました。再送が必要です。</string>
+    <!--string name="Alert_DrawnHWNG">途中流局承認 要求にNG応答がありました</string-->
+    <string name="Alert_DrawnHWNGForceOK">途中流局承認 要求に\"NG\"応答があります。\
+											ゲームを進行する方法は次の３通りです。\
+											この画面で\"キャンセル\"、下の画面を\"閉じる\"で閉じ、
+											要求者にメニューから\"流局の申告\"を再送してもらってやり直す。\
+											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで承認要求を再送して\"OK\"をもらう。\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"流局\"(連荘、親流れ)、\"続行\"、\"やり直し\"をする。</string>
+    <string name="Alert_DrawnHWCancel">途中流局をキャンセルしますか？\
+											\"OK\"で\"途中流局\"は中止しこの局を続行します。\
+											\"キャンセル\"で\"途中流局\"画面に戻ります。</string>
+    <string name="Info_DrawnLast_Confirmed">流局が成立</string>
+    <string name="Info_DrawnLast_ConfirmedNG">NG応答がありました、\"流局 申告\"をやり直してください</string>
+    <string name="Info_EndGameDrawn_Halfway">途中流局申請です</string>
+    <string name="Err_CouldNotMakePair">面子ができません</string>
+    <string name="Err_RonChk">和了形ではありません</string>
+    <string name="Err_NoNeedRonAnyway">\"和了形の確認\"はしない設定です、通常の和了ボタンを使用できます</string>
+    <string name="Err_AmbiguousMakePair">複数面子候補、牌をタッチして面子を確定してください</string>
+    <string name="Err_AmbiguousMakePairKan">複数槓子候補、牌を１つタッチして確定してください</string>
+    <string name="Err_NoneCompleted">和了者はいません</string>
+    <string name="Err_YouAreNotCompleted">和了していません</string>
+    <string name="Err_TotalAgreedAlready">局の結果は確定済みです</string>
+    <string name="Err_CompReqNotShowable">全和了者が得点申告してください</string>
+    <string name="Err_CompReqRequestResend">和了者から和了申告を再送してもらってください</string>
+    <string name="Err_CompReqMultipleRon">他にも和了者がいます</string>
+    <string name="Err_CompReqNotShowableExist">和了申告/承認が完了していません。必要なら申告を再送してください</string>
+    <string name="Err_StatusFixed">この場面、状況での変更は、できません</string>
+    <string name="Err_DuplicatedDialog">再表示です</string>
+    <string name="Err_StatusForSetupEnd">対局開始後の対局要求は無視されました</string>
+    <string name="Err_CompTypeChangeIgnored">\"無効\"のみ設定とその解除ができます</string>
+    <string name="Err_CompTypeChangeIgnoredNotNG">\"NG\"と回答されたあがりのみを\"無効\"にできます</string>
+    <string name="Err_ScoreReviewNoData">トビのデータがありません、必要なら親に再送してもらってください</string>
+    <string name="Err_ScoreReviewNoEndData">精算データがありません</string>
+    <string name="Err_StartGameReqInGaming">ゲーム中にゲーム開始要求がありました</string>
+    <string name="Err_StartGameConnectionInvalid">ルール同期の確認が取れないデバイスがあります</string>
+    <string name="Err_SuspendNotInGame">中断はゲーム中に要求・取り消しできます</string>
+    <string name="Err_SuspendNoIOErr">接続の切断は発生していません</string>
+    <string name="Err_SuspendNoIOErrExitOnGameView">切断がありました、メニューの\"接続障害処理\"を使用してください</string>
+    <string name="Err_SuspendNoIOErrServer">接続の切断は発生していません（サーバーからは強制切断できません）</string>
+    <string name="Err_SuspendDlgNotNextGameTiming">中断処理は未表示です、\"局の終了確認\"からやり直してください</string>
+    <string name="Err_SuspendDlgNotServer">中断確認画面はサーバーからのみ開くことができます</string>
+    <string name="Err_SuspendDlgNoSuspendRequest">中断要求は出ていません</string>
+    <string name="Err_GamingNow">ゲーム中です</string>
+    <string name="Err_NotGamingNow">ゲームが終了しています（%1$sの操作）</string>
+    <string name="Info_SuspendRequested">中断要求がありました。%1$s 人目</string>
+    <string name="Info_SuspendRequestedDup">中断要求しましたが、すでに中断要求済です</string>
+    <string name="Info_SuspendCanceled">中断取消がありました、%1$s 人の中断要求が残っています</string>
+    <string name="Info_SuspendCanceledDup">中断取消しましたが、以前に中断要求はしていません</string>
+    <string name="Title_ResumeDlg">中断ゲームの再開 確認</string>
+    <string name="Title_SuspendDlgReq">中断処理 要求</string>
+    <string name="Title_SuspendIOErrReqDlg">接続障害処理</string>
+    <string name="Title_SuspendIOErrDlg">接続障害による中断 要求</string>
+    <string name="Title_SuspendIOErrDlgResp">接続障害による中断 応答</string>
+    <string name="Title_ConfirmEndgame">ゲームを終了確認</string>
+    <string name="Msg_ConfirmEndgame">接続がありません、ゲームを終了しますか？\n
+    				\"取消\"して、\"接続障害処理\"からを再接続、中断することもできます。
+					</string>
+    <string name="Title_ConfirmReconnectOnGameView">再接続確認</string>
+    <string name="Msg_ConfirmReconnectOnGameView">接続がありません、再接続しますか、ゲームを終了しますか</string>
+    <string name="Title_SuspendDlgResp">中断処理 応答</string>
+    <string name="Warn_ResumeDlgDupShow">%1$s から表示中の中断ゲーム対する重複再開要求がありました</string>
+    <string name="Warn_ResumeDlgNewShow">%1$s から別の中断ゲーム対する再開要求がありました</string>
+    <string name="Warn_ResumeDlgReceivedReplyUnderNoDialog">%1$s から別の中断ゲーム再開要求に応答がありました</string>
+    <string name="Warn_ResumeDlgReceivedReplyUnmatchTimestamp">%1$s から別の中断ゲーム再開要求に応答がありましたが、異なる履歴デートに対するもので無視しました</string>
+    <!--string name="Info_ResumeDlgFirstShow">%1$s から再開要求がありました</string-->
+    <string name="Label_SuspendOptionQuery">上記の結果で精算しますか、中断しますか</string>
+    <string name="Label_SuspendOption">中断処理</string>
+    <string name="Label_SuspendOptionSuspend">保存+中断</string>
+    <string name="Label_SuspendOptionGameover">精算する</string>
+    <string name="Label_SuspendOptionContinue">続行する</string>
+    <string name="Label_SuspendPenalty">中断の罰金：</string>
+    <string name="Label_SuspendPenaltyIOErr">接続障害の罰金：</string>
+    <string name="Label_SuspendPenaltyTitle">中断の罰金</string>
+    <string name="Label_SuspendPlayer">中断要求者：</string>
+    <string name="Desc_SuspendPlayer">チェックすると設定の罰金が科せられます</string>
+    <string name="Label_SuspendPaoWhenIOErr">罰金はパオ相当(8000*3)</string>
+    <string name="Label_SuspendPlayerIOErr">接続障害中断者：</string>
+    <string name="Suspend_IOEReconnect">再接続</string>
+    <string name="Suspend_IOESuspend">中断・精算</string>
+    <string name="Suspend_IOESuspend2">中断</string>
+    <string name="Info_SuspendEndgame">中断精算</string>
+    <string name="Info_SuspendSaved">中断</string>
+    <string name="Info_LastEndgame">終局</string>
+    <string name="Label_ResetReach">リ取消</string>
+    <string name="Label_ResetOpenReach">オリ取消</string>
+    <string name="Desc_SuspendPenalty">処理は省略値でダイアログで変更できます。罰金は均等払い、順位には影響しません。精算する場合、焼鳥はなしとします。\n接続障害の場合、\"パオ\"をチェック：ONするとこの設定にかかわらず、最低 8000*3 にすることができます。</string>
+    <string name="Desc_SuspendGameover">\"持ち点\"は供出リーチ棒の返却を含みます。精算の場合、焼鳥はなしとします</string>
+    <string name="Label_ctrReachStick">供出リーチ棒</string>
+    <string name="Err_FinalGameNoData">オーラス終了状況ではありません</string>
+    <string name="Info_WaitDiscardTimeout">打牌後、設定のポン・カン用時間帯が過ぎるまでチー・ツモできません</string>
+    <string name="Info_WaitKanTakableTimeout">暗槓、槍槓後、設定のロン用時間帯が過ぎるまで嶺上ツモできません</string>
+    <string name="Info_WaitDiscardTimeoutPonKan">打牌後、設定のロン用時間帯が過ぎるまでポン・カンできません</string>
+    <!--string name="Info_WaitDiscardTimeoutPonKanAndWaiting">ロン用時間中で\"ち待"中です</string-->
+    <string name="Info_WaitRequested">\"ち待\"</string>
+    <string name="Info_WaitRequestedDup">既に\"ち待\"しています</string>
+    <string name="Info_WaitCanceled">\"消待\"</string>
+    <string name="Info_WaitCanceledDup">\"ち待\"していません</string>
+    <string name="Info_YouCouldNotWaitYourDiscard">自分の打牌に対する\"ち待\"はできません</string>
+    <string name="Info_YouCouldNotWait">打牌とツモに対して\"ち待\"できます</string>
+    <string name="Info_YouCouldNotWaitByNoTimeoutSettingAutoDiscard">自動打牌の時間制限は設定されてないので、ツモ中の\"ち待\"はできません</string>
+    <string name="Info_YouCouldNotWaitByNoTimeoutSettingAutoTake">自動自摸の時間制限は設定されてません</string>
+    <string name="Info_YouCouldNotWaitByNotTakingYou">打牌前には他家は\"ち待\"できません</string>
+    <string name="Info_YouCouldNotWaitOtherAutoTake">ツモ番ではありません</string>
+    <string name="Info_YouCouldNotWaitOtherAutoDiscard">打牌番ではありません</string>
+    <string name="Info_WaitCanceledByTake">%1$s家の\"ち待\"は解消しました</string>
+    <string name="Info_PleaseWait">\"ち待\"中です</string>
+    <string name="Info_PleaseWaitWithReasonYou">あなたは\"ち待\"中（%1$s）です</string>
+    <string name="Info_PleaseWaitWithReasonOther">他家の\"ち待\"中です</string>
+    <string name="ActionWaitOther">他家待ち</string>
+    <string name="ActionBlockedThisAction">他家の鳴きで\"ちょっと待った\"状態です</string>
+    <string name="ActionBlockedYouAreNotTop">他家が先に鳴きを入れ、待ったをいれています</string>
+    <string name="ActionBlockedYouAreNotTopWaitSelectModeWithTimeout">他家が副露牌を選択中（時間切れ有り）</string>
+    <string name="ActionBlockedYouAreNotTopWaitSelectModeWithNoTimeout">他家が副露牌を選択中（時間切れ無し）</string>
+    <string name="ActionBlockedYouAreNotBlockerOfTheAction">面子を選択してオレンジのボタンを押してください</string>
+    <string name="ActionBlockedByOther">他家の鳴きの取り消し待ち</string>
+    <string name="ActionBlockedMultiRonNextAll">他家のロン宣言ありですが、設定はダブロンあり</string>
+    <string name="ActionBlockedMultiRonNextEswn">他家のロン宣言あり、頭ハネの可能性もありえます</string>
+    <string name="Info_MultiRonYouAreNewTopAll">他家がロン実行、あなたの番です。設定はダブロンあり</string>
+    <string name="Info_MultiRonYouAreNewTopEswn">他家がロン実行、あなたの番です。頭ハネの可能性もありえます</string>
+    <string name="ActionBlockedMultiRonDelayed">遅ロンです、他家のロンが取消したら有効になります</string>
+    <string name="ActionBlockedNowYourTurn">他家が鳴きを取消、自分の番です</string>
+    <string name="ActionBlockReleasedByOtherActionDone">先行する他家の鳴きにより、鳴きが取り消されました</string>
+    <string name="ActionWaitNowYou">待ち解消</string>
+    <string name="Info_PleaseWaitWithReasonYouAndOther">あなたと他家と\"ち待\"中（%1$s）です</string>
+    <string name="Info_StopAutoFixedHW">自動自摸・打牌は途中流局が確定するまで停止します。</string>
+    <string name="Warning_ActionOverTaken">手番が進み、鳴きは不成立です。</string>
+    <string name="Info_StopAutoFixedHWReleased">自動自摸・打牌の停止は解除されました。</string>
+    <!--string name="Info_StopAutoByDrawnHW">%1$d 人が途中流局申請を検討中、お待ちください</string-->
+    <string name="Info_StopAutoByDrawnHW">途中流局申請を検討中、お待ちください</string>
+    <!--string name="Info_StopAutoByDrawnHWReleased">途中流局申請をやめました、残り %1$d 人です、お待ちください</string-->
+    <string name="Info_StopAutoByDrawnHWReleased">一人が途中流局申請をやめましたが、まだ他にも残っています。お待ちください</string>
+    <string name="Info_StopAutoByDrawnHWReleasedAllAutoTakeDiscard">途中流局申請が全て取り消されました。自動自摸・打牌は再開します</string>
+    <string name="Info_StopAutoByDrawnHWReleasedAll">途中流局申請が全て取り消されました。</string>
+    <string name="Info_ActionESWN">%1$s：%2$s</string>
+    <string name="Info_ActionEswnWithName">%1$s：%3$s：%2$s</string>
+    <string name="Info_CompType_Ron_Ankan">暗槓ロン</string>
+    <string name="Info_CompType_Ron_Chankan">槍槓</string>
+    <string name="Info_CompType_Minkan_RinshanKaiho">明槓-嶺上開花</string>
+    <string name="Info_CompType_Ankan_RinshanKaiho">暗槓-嶺上開花</string>
+    <string name="Info_CompType_Ron">ロン</string>
+    <!--string name="Info_CompType_Shortcut">ダブロン頭ハネ</string-->
+    <string name="Info_NoMinusStopRobot">ボットのトビはなしの設定です</string>
+    <!--string name="Info_CompTypeTake">%1$s:&lt;font color=\"#ff8c00\"&gt;ツモ</string-->
+    <!--string name="Info_CompTypeRon">%1$s家:%2$s　　%3$s家:放銃</string-->
+    <!--string name="Info_CompTypeRon">%1$s:&lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;&lt;font color=\"#000000\"&gt;,%3$s:&lt;/font&gt;&lt;font color=\"#ff8c00\"&gt;放銃&lt;/font&gt;</string-->
+    <string name="Info_CompTypeWinner">&lt;font color=\"#000000\"&gt;%1$s:&lt;/font&gt;&lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;</string>
+    <string name="Info_CompTypeLooser">&lt;font color=\"#000000\"&gt;%1$s:&lt;/font&gt;&lt;font color=\"#ff8c00\"&gt;放銃&lt;/font&gt;</string>
+    <string name="Info_TitleCompType">%1$s:&lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;</string>
+    <string name="Info_ReplyToCompReq">%1$s家 からの応答 : %2$s</string>
+    <string name="Info_GameTitle">&lt;font color=\"#ff8c00\"&gt;%1$s&lt;/font&gt;:%2$s</string>
+    <string name="Info_GameTitleWithName">&lt;font color=\"#ff8c00\"&gt;%1$s&lt;/font&gt;:%2$s &lt;font color=\"#ff8c00\"&gt;%3$s</string>
+    <!--string name="Info_GameSeq">%1$s%2$s局 %3$d 本場</string-->
+    <string name="Info_GameSeq">%1$s %2$d 本場</string>
+    <string name="Info_GameEndMinusStop">トビで終局</string>
+    <string name="Info_GameEnded">終局です。メニューから\"対局終了\"してください</string>
+    <string name="Info_GameEndSuspendGameover">中断-精算で終局</string>
+    <string name="Info_GameEndSuspend">保存+中断されました。\"対局終了\"してください。</string>
+<!--setting-->
+    <string name="Err_TrySendFromServer">サーバーから送ってください</string>
+    <string name="Err_TryEndgameFromServer">サーバーから\"対局終了\"してください</string>
+    <string name="Err_GameStatusForMenuInGame">配牌前です</string>
+    <string name="Err_AlreadyShowing">表示中です</string>
+    <string name="Err_SendAfterSyncAll">全員同意の後はサーバーのみ再送できます</string>
+    <string name="Info_ReceivedRuleSetting">ルール設定を受信しました、確認してください</string>
+    <string name="Info_ResyncRule">ルール設定が同意後に変更されました、サーバー(%1$s)は再度、送信してください</string>
+    <string name="Info_ResyncRuleAtFirst">ルール設定の同意がされていません、サーバー(%1$s) から設定を送信してください</string>
+    <string name="Info_ResyncRuleClientChanged">クライアント（%1$S）がルールを変更しました、再度ルールの同意が必要です</string>
+    <string name="Info_ResyncRuleServerChanged">この端末はサーバーです、ルールを変更したので、送信が必要です</string>
+    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています</string>
+    <string name="Err_RuleIsInitial">ルール設定ができていません。\"設定\"ボタンを押してください</string>
+    <string name="Info_ResyncRuleChkOK">ルール設定を確認しました、対局を開始します</string>
+    <string name="Info_RuleSynchedAlready">%1$d 人とルールは同期しています、送信は行われません</string>
+    <string name="Info_BlockTimeout">\"ちょっと待った\"の時間切れ</string>
+    <string name="Info_BlockTimeoutYouAreNewTop">時間切れであなたの番です</string>
+    <string name="Info_BlockCanceled">待ったが取り消されました</string>
+    <string name="Info_BlockCanceledYouAreNewTop">待った取り消しであなたの番です</string>
+    <string name="Label_SettingSyncDate">更新日：</string>
+    <string name="Label_SettingIDName">ID名：</string>
+    <string name="Label_RuleIDName">ルール：</string>
+    <string name="Label_ShowStatus">同意状況表示</string>
+    <string name="Label_Delay">待ち時間</string>
+    <string name="Label_DelayUnit">(秒)</string>
+    <string name="Label_DelayPonKan">ロン用（赤）：打牌すると半円ランプが赤になる、この時間経過後にポン・カンできる</string>
+    <string name="Label_DelayTake">ポン・カン用（黄）：ロン用時間＋この時間経過後に緑になりツモれる</string>
+    <string name="Label_DelayLast">海底用：海底打牌の後、上記時間＋この時間経過後に流局となる</string>
+    <string name="Label_DelayDiscard">自動打牌。自模るとランプは青になり、この時間が経過すると、緑枠の牌を自動で打牌、０は制限なし。</string>
+    <string name="Label_Delay2Touch">経過すると待った解消</string>
+    <string name="Label_TimeoutTake">自動自摸。経過すると下家は自動で自摸る、０は制限なし。槓の嶺上ツモにも適用</string>
+    <string name="Label_TimeoutTakeRobot">自動自摸-ボット用。１秒以上。上の自動自摸が０の時有効、０でないときはボットもそれに従う。</string>
+    <string name="Label_RuleWait">ちょっと待った</string>
+    <string name="Label_Positioning">場所決め</string>
+    <string name="Label_Positioning_Skip">簡略化</string>
+    <string name="Desc_Positioning_Skip">（東南西北、一筒、二筒の牌を引く操作を省略）</string>
+    <string name="Desc_RuleWait">\"ち待\"、\"消待\"ボタンが表示され、\"ちょっと待った\"ができます。\
+								\"待ち時間\"の項のタイミングによっては止められない動作があります</string>
+    <!--string name="Label_2TouchCancelable">取り消し</string-->
+    <!--string name="Label_2TouchYesRonOnly">和了のみ有り</string-->
+    <string name="Label_CheckRonable">和了形の確認</string>
+    <string name="Label_2TouchCancelableRon">和了は取り消し有り</string>
+    <string name="Label_2TouchTimeout">時間切れ有り</string>
+    <!--string name="Label_2TouchPonKanChii">ポン・カン・チー：</string-->
+    <!--string name="Label_2TouchRonTsumo">ロン・ツモ上がり：</string-->
+    <!--string name="Desc_2Touch">ポン・チイーで面子候補が複数あるとき、他家のアクション、自動自摸は止まります。
+								\"取消し有り\"にするとポン・カン・チー・ロン・ツモで、取消ボタンが表示され、
+                                他家はアクション出来ません。
+								\"時間切れ有り\"にすると、タイムアウトで停止がとかれます。
+                                詳細はヘルプを参照。
+						</string-->
+    <!--string name="Desc_2Touch">\"あり\"にすると、ポン・カン・チー・和了ボタンを押したときに\"取消\"ボタンが表示され\"待った\"状態になり、
+								他家のアクションは待たされ、自動自摸は止まります。\
+								\"なし\"にするとポン・チーで面子の候補が複数あるときに、取消ボタンなしで\"待った\"状態になります。
+                                面子を選択して同じボタンを押してください。\
+                                待ったの解消は、同じボタンまたは取消ボタンを押すか、\"時間切れ有り\"とした場合で
+							    タイムアウトになったときです。\
+                                詳細はヘルプを参照。
+						</string-->
+    <!--string name="Desc_2Touch">\"和了\"は取り消しありに設定すると\"取消\"ボタンが表示され\"待った\"状態になり、
+								他家のアクションは待たされ、自動自摸は止まります。
+                                待ったの解消は、同じボタンまたは取消ボタンを押すか、時間切れになったときです。\
+								ポン・チーで面子の候補が複数あるときにも\"待った\"状態になり、時間切れも適用されます。
+                                面子を選択して同じボタンを押してください。\
+                                詳細はヘルプを参照。
+						</string-->
+    <string name="Desc_2Touch">\"和了は取り消しあり\" : 和了を押すと\"ちょっと待った\"状態になり、
+								他家のアクションは待たされ、自動自摸は止まります。
+                                解消は、再度の\"和了\"ボタン、\"取消\"ボタン、または、時間切れのときです。\
+								ポン・チーで面子の候補が複数あるときにも待った状態になます。
+                                解消は面子にする牌を選択して再度ポン・チーボタンを押してください。\
+                                詳細はヘルプを参照。
+						</string>
+    <string name="Desc_CheckRonable">振りテン、縛りのチェックはしない。</string>
+    <!--string name="Label_TimeoutTakeKan">槓してから嶺上をツモるまでのタイムアウト、０は制限なし。</string-->
+    <string name="Label_S2P">端数調整</string>
+    <string name="Label_RankMUp">切り上げ満貫あり</string>
+    <string name="Desc_RankMUp">（３０符４飜、６０符３飜は満貫）</string>
+    <string name="Label_S2PLast">精算時の1000点未満</string>
+    <string name="Label_S2P_No">なし</string>
+    <string name="Label_S2P_Floor">切捨て</string>
+    <string name="Label_S2P_Ceiling">切上げ</string>
+    <string name="Label_S2P_45">４捨５入</string>
+    <string name="Label_S2P_56">５捨６入</string>
+    <string name="Label_S2P_PM">正味の得点がプラス者切り捨て、マイナス者切り上げ</string>
+    <string name="Label_S2P_Zero">マイナスの時は切り上げはプラス方向に切り上げ。合計ゼロの調整はトップ者で調整</string>
+    <string name="Title_RuleSettingReceived">%1$s : 送信者 - &lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;</string>
+    <string name="Info_RuleSynched">ルールの同意ができました</string>
+    <string name="Info_NoRuleSynched">ルールの同意が未確認です</string>
+    <string name="Info_RuleSyncReset">%1$d 人に送信、ルールの同意の返信待ち</string>
+    <string name="Info_RuleSyncNoConnection">接続がありません</string>
+    <string name="Info_RuleSynchedNotYet">全 %1$d 中, 同意: %2$d 件, 不同意: %3$d 件, 応答待ち: %4$d</string>
+    <string name="Info_RuleSynchNG">不同意=%1$s</string>
+    <string name="Info_RuleSynchNoResp">応答待ち=%1$s</string>
+    <string name="Info_RuleSynchResponseReceivedResendRequired">%1$s からの応答を受信しましたが、変更がありました、ルール再送が必要です</string>
+    <string name="Info_RuleSynchResponseReceivedFrom">%1$s からのルール同意応答受信：%2$s</string>
+    <string name="Info_RuleChangeReceived">\"%1$s\" がルール設定を変更しました</string>
+    <string name="Info_RuleSyncNotAll">まだサーバー(%1$s)上での全員のルール同意が得られていません</string>
+    <string name="Info_InterceptedMultiRon">設定に従い頭ハネが発生</string>
+    <string name="Info_FinalGame">%1$s、オーラス</string>
+    <string name="Info_FinalGameEnd">%1$s、オーラス終了</string>
+
+    <string name="Label_Orientation">画面の向き</string>
+    <string name="Label_DelRiverTileTaken">鳴かれた牌は河から消す</string>
+    <string name="Label_NoTakeButton">自摸ボタン非表示</string>
+    <string name="Label_NoDiscardButton">打牌ボタン非表示</string>
+    <string name="Label_Sound">効果音</string>
+    <string name="Label_BeepOnly">ビープ音</string>
+    <string name="Label_SoundVolume">音量</string>
+    <string name="Label_Robot">ロボット</string>
+    <string name="Label_MinusRobot">ボットもトブ</string>
+    <string name="Label_RobotPay">ボット分の負担</string>
+    <string name="Label_RobotPaySprit">均等割り</string>
+    <string name="Label_RobotPayDependingScore">ラス者との点数差に比例</string>
+    <!--string name="Label_RobotDescription">４人揃わないときツモ切りオンリーのボットを加えて対戦できます</string-->
+    <string name="Label_AllowRobot">４人揃わない時ツモ切りボットを加え、対戦する</string>
+
+    <string name="Label_GameSet">試合</string>
+    <string name="Label_GameSetInterrupted">迄 終了、次は</string>
+    <string name="Label_FinalLast">オーラス</string>
+    <string name="Label_ClosablePending">親のテンパイ止めあり（テンパイ連荘ありのときのみ有効）</string>
+    <string name="Label_ClosableRon">親の上がり止めあり</string>
+    <string name="Label_ClosableNotTop">親がトップでなくても止め宣言可能</string>
+    <!--string name="Label_FinalLastDealerNotPending">親がノーテン（流し満貫:和了扱いは除く）のとき</string-->
+    <string name="Label_FinalLastDealerNotPending">親流れ（ノーテン、テンパイ連荘なし）のとき</string>
+    <!--string name="Label_FinalLastAllMinus">終局の場合、全員がマイナスの時</string-->
+    <string name="Label_FinalLastAllMinus">子の上り、親流れ、の時で全員がマイナスの時</string>
+    <!--string name="Label_FinalLastComment">\"止め\"は全員マイナスとは関係しません。流局で終局のときはリーチ棒は戻します。東南戦の延長戦は西-北-東、東北戦は東-北の繰り返し</string-->
+    <string name="Label_FinalLastComment">全員マイナスでも\"止め\"られます。流局で終局したときはリーチ棒は戻します。東南戦の延長戦は西-北-東、東北戦は東-北の繰り返し</string>
+    <string name="Label_CloseGame">終局</string>
+    <string name="Label_NextRound">次の場に入る</string>
+	<string-array name="GameSetType"> 
+		<item>東風戦</item>
+		<item>東々戦</item>
+		<item>東南戦</item>
+		<item>東北戦</item>
+		<item>一荘戦</item>
+	</string-array>
+	
+    <string name="Label_YakuList">役</string>
+    <string name="Label_Operation">操作</string>
+    <string name="Label_8Continue">八連荘</string>
+    <string name="Label_8ContDealer">親で８回連続和了の８回目</string>
+    <string name="Label_8ContOnePlayer">子からでも８回連続</string>
+    <string name="Label_8ContStick">８本場での親の和了</string>
+    <string name="Label_8ContStickAnyOne">８本場での親または子の和了</string>
+    <string name="Label_8ContNoNeedYaku">１飜、２飜縛りを適用</string>
+    <string name="Label_8ContReset">達成したら回数リセット</string>
+    <string name="Label_8ContMulti">ダブルあり</string>
+    <string name="Desc_8Continue">サイコロの周辺に各人連続和了回数が表示され、積み棒の本数と合わせて判定する。\"ダブルあり\"は上がり役の役満と合わせられる。\"回数リセット\"オンの場合次は１６回目/１６本場、オフの場合八連荘のチャンスが続く</string>
+    <string name="Label_YakuFix">役の確定</string>
+    <string name="Label_YakuFixFirst">先付け</string>
+    <string name="Label_YakuFixLast">後付けあり</string>
+    <string name="Label_YakuFixMiddle">中付けあり</string>
+    <string name="Label_YakuFixMultiwaitOK">片上がりOK</string>
+    <string name="Label_YakuFixMultiwaitDrawOK">片上がりツモはOK</string>
+    <string name="Desc_YakuFix">後付けあり：上がったときに役があればよい。
+		中付けあり：中付けも先付とみなす。
+		先付け：最初の副露が役に関連しているか手牌中で役があるか片上がりでなく役がある。\n
+		片上がりOK：後付けありのときに片上がりを認める。一巡フリテンには注意。\n
+		片上がりツモはOK：中付け、先付のとき片上がりはNGだがツモの時はOKとする。
+        </string>
+    <string name="Label_YakuFix2">２飜縛り</string>
+    <string name="Label_YakuFix2Stick4">４本場から</string>
+    <string name="Label_YakuFix2Stick5">５本場から</string>
+    <string name="Label_YakuFix2Last">後付けあり</string>
+    <string name="Desc_YakuFix2">後付けなしの場合、立直ツモはOKだが確定２飜でなければならない（立直・一発、立直・河底など偶然役は認められない。後付けありならOK。）</string>
+    <string name="Label_EatChange">食い変え</string>
+    <string name="Label_EatChangeNo">不可</string>
+    <string name="Label_EatChangeExceptIt">現物のみ不可</string>
+    <string name="Label_EatChangeAllOK">全てOK</string>
+    <string name="Desc_StatementOnly">この設定は決めごとの覚書であり、アプリでは判定しません</string>
+    <string name="Desc_YakuStatementOnly">この設定は決めごとの覚書であり、一部の例外を除いてアプリでは判定しません。\n例外はテキストと背景色が同じ箇所です</string>
+    <string name="Label_Kuitan">食いタンあり</string>
+    <string name="Label_PendingRank0">形式テンパイ</string>
+    <string name="Label_PendingRankNo">全て無し</string>
+    <string name="Label_PendingRankEmpty">空聴OK</string>
+    <string name="Label_PendingRankFuriten">振聴OK</string>
+    <string name="Label_PendingRank0OK">役無OK</string>
+    <string name="Label_PendingRank2">二飜縛りの時</string>
+    <string name="Label_PendingRank2Fix1">二飜の可能性が必要</string>
+    <string name="Desc_PendingRank2Fix1">。一飜縛りが役無しOKなら残り一飜</string>
+    <string name="Label_PinfuTaken">ピンヅモあり</string>
+    <string name="Label_Yaku7Pair">七対子</string>
+    <string name="Label_Yaku7Pair50_1">５０符１飜</string>
+    <string name="Label_Yaku7Pair25_2">２５符２飜</string>
+    <string name="Label_Yaku7Pair4Pair">槓子入りOK</string>
+    <string name="Label_YakuMangan8">ダブル役満</string>
+    <string name="Label_4AnkoTanki">四暗刻単騎待</string>
+    <string name="Label_Kokusi13">国士無双１３面待</string>
+    <string name="Label_9Ren9">九蓮宝燈９面待</string>
+    <string name="Label_4Wind">大四喜</string>
+    <string name="Label_Yakuman">役満</string>
+    <string name="Label_9RenPinSou">ワンズ以外の九蓮宝燈</string>
+    <string name="Label_AllGreenNoBlue">發なし緑一色</string>
+    <string name="Label_BigRing">大車輪（ピンズ２－８）</string>
+    <string name="Label_NoPair13">十三不塔・十四不塔</string>
+    <string name="Label_Rank13">数え役満（無しの場合は３倍萬）</string>
+    <!--string name="Label_OpenReachRon">オープンリーチ放銃は役満払い</string-->
+    <string name="Label_5thKan">１人が四槓子状態のとき他家は槓を宣言して流局にできる。メニューから途中流局してください。</string>
+    <string name="Err_5thKan">５槓子です。四槓子役満を阻止できる設定は%1$s</string>
+    <string name="Label_KokusiAnkanRon">国士無双は暗槓ロンできる</string>
+    <string name="Desc_Yakuman">この他、ダブル役満役と四槓子（雀頭が必要）、大三元、字一色、小四喜、清老頭、天和、地和が役満。大三元・字一色など複合役はダブルとなる</string>
+    <string name="Label_Yakuman_Renho">人和</string>
+    <string name="Label_Yakuman13NoPair">十三不塔</string>
+    <string name="Label_Yakuman14NoPair">十四不塔</string>
+    <string name="Desc_Yakuman13NoPair">ありの場合でなおかつ役満とする場合は \"役満\"の項もチェックをいれる</string>
+    <string name="Label_RenhoMix">他の役との複合OK</string>
+    <string name="Label_NoRelatedRule">一部、ダイアログの\"関連設定\"を表示しない</string>
+    <string name="Desc_Yakuman_Renho">複合OKとは、この設定（満貫なら４飜など）に他の役の飜数を加えて計算する。</string>
+	<string-array name="RenhoRank"> 
+		<item>なし</item>
+		<item>満貫</item>
+		<item>跳満</item>
+		<item>倍萬</item>
+		<item>３倍萬</item>
+		<item>役満</item>
+	</string-array>
+    <string name="Info_QueryDealerRonDealer">オーラスの親です、上がり止めを宣言できます</string>
+    <string name="Info_QueryDealerRonNonDealer">オーラス、親が上がり止めを考慮中、お待ちください</string>
+    <string name="Info_QueryDealerRonDeclaredGameover">親が上がり止めを宣言しました</string>
+    <string name="Info_QueryDealerRonDeclaredContinue">親が上がり止めをしない宣言をしました</string>
+    <string name="Info_QueryDealerPendingDealer">オーラスの親です、テンパイ止めを宣言できます</string>
+    <string name="Info_QueryDealerPendingNonDealer">オーラス、親がテンパイ止めを考慮中、お待ちください</string>
+    <string name="Info_QueryDealerPendingDeclaredGameover">親がテンパイ止めを宣言しました</string>
+    <string name="Info_QueryDealerPendingDeclaredContinue">親がテンパイ止めをしない宣言をしました</string>
+    <string name="Info_ContinueDealerRon">親の上がりで連荘</string>
+    <string name="Info_ContinueDrawnHW">オーラス、途中流局：連荘 により連荘です</string>
+    <string name="Info_ContinueDrawnHWNext">オーラス、途中流局：親流れ により次の場にはいります</string>
+    <string name="Info_GameoverDrawnHW">オーラス、途中流局：親流れ により終局です</string>
+    <string name="Info_ContinueDealerPending">親のテンパイで連荘</string>
+    <string name="Info_ContinueAllMinus">オーラス、全員マイナスで次の場に入ります</string>
+    <string name="Info_ContinueDrawn">オーラス、親流れで次の場に入ります</string>
+    <string name="Info_GameoverNonDealerRon">オーラス、子の上りで終局です</string>
+    <string name="Info_GameoverDealerNotPending">オーラス、親のノーテンで終局です</string>
+    <string name="Err_ResetHiddenKanDora">裏ドラなしまたは槓ドラなしなので槓裏はなしに調整しました</string>
+
+    <string name="Label_CompStatRon">@string/UserAction_Ron</string>
+    <string name="Label_CompStatMangan">@string/Label_DrawnMangan</string>
+    <string name="Label_CompStatPending">@string/Label_Pending</string>
+    <string name="Label_FinalGameTotalReach">（供託リーチ棒こみの合計、順位）</string>
+    <string name="Label_GameOver">終局</string>
+    <string name="Err_AlreadyGameOver">終局済みです</string>
+    <string name="Label_GameContinue">続行</string>
+    <string name="Info_GameEndDeclareRon">オーラス、上がり止めで終局</string>
+    <string name="Info_GameEndDeclarePending">オーラス、テンパイ止めで終局</string>
+    <string name="Label_YakuStandard">標準役</string>
+    <string name="Desc_YakuStandard">（七対子は別項参照）</string>
+    <string name="Label_YakuStandardList">タンヤオ、ピンフ、一盃口、ハイテイ、嶺上開花、ダブリー、槍槓\n対々和、三色同順、一気通貫、チャンタ、三暗刻、小三元、混老頭、三色同刻、三槓子\n混一色、ジュンチャン、二盃口\n清一色</string>
+    <string name="Desc_YakuLocal">ローカル役については、役満、人和、流し満貫の項も参照。それ以外は事前に取り決めをしてください</string>
+    <string name="Label_SpritPos">割れ目</string>
+    <string name="Desc_SpritPos0"> </string>
+    <string name="Label_SpritPosID">割</string>
+    <string name="Desc_SpritPos">（開門位置のプレーヤーとの得点の授受が倍）</string>
+    <string name="Desc_SpritPos2">チョンボ、ノーテン罰符、積み棒は対象外、流し満貫は\"和了扱い\"なら対象。\n
+						パオの場合、割れ目無しで負担決定後に割れ目を適用、\n
+						</string>
+    <string name="Info_RobotWaited">\"ち待\"でボットの %1$s が止められました</string>
+    <string name="Info_RobotWaitedRescheduled">\"消待\"でボットの %1$s の止めを解除しました</string>
+    <string name="Info_PlayerWaited">\"ち待\"で %1$s が止められました</string>
+    <string name="Info_PlayerWaitedRescheduled">%1$s の止めが解除されました</string>
+    <string name="TimeToRon">ロン時間帯中</string>
+    <string name="TimeToRonPonKan">チー・ツモ時間帯-前</string>
+    <string name="TimeAfterTakable">チー・ツモ時間帯-中</string>
+    <string name="WaitPonKan">ロン用時間帯</string>
+    <string name="WaitTake">ポン・カン用時間帯</string>
+    <string name="LastDrawn">流局判断</string>
+    <string name="AutoDiscard">自動打牌</string>
+    <string name="AutoTake">自動ツモ</string>
+    <string name="AutoTake0">チー・ツモ</string>
+    <string name="AutoTakeKan">自動嶺上ツモ</string>
+    <string name="AutoTakeKan0">嶺上ツモ</string>
+<!--wifidirect-->
+    <string name="ErrOtherActiveSession">
+				"接続のタイプは混合できません\n"
+                "現在の接続タイプは(%1$s)です"
+		</string>
+    <string name="WifiDirectGranted">WifiDirectの使用が許可されました</string>
+    <!--string name="WifiDirectNotGranted">WifiDirectの使用が許可されませんでした</string-->
+    <string name="WifiDirectRequiresGranted">WifiDirectの使用には\"位置情報へのアクセスの許可\"が必要です</string>
+    <string name="ExternalStorageForSDRequiresGranted">\"SDカードへ書き込み\"が不許可なので内部ファイル（再導入で削除）に出力されます</string>
+    <string name="ExternalStorageForSDGranted">SDカードへの書き込み権限が許可されました</string>
+    <string name="RemoteIP">WiFi</string>
+    <string name="ErrNowBTConnected">現在 Bluetooth 接続があります\n一旦 Bluetooth 接続を切ってリトライしてください</string>
+    <string name="DialogTitle_DeviceDetail">WiFiダイレクト</string>
+    <string name="DialogTitle_WDAR">WiFi ダイレクト 再接続</string>
+    <string name="Title_ConfirmDisconnect">切断の確認</string>
+    <string name="Title_ConfirmUnpairGO">サーバーでのペア解除の確認</string>
+    <string name="Msg_ConfirmUnpairGO">サーバーでの\"ペア解除\"は全てのペアの解除になります、\n\"ペア解除\"を実行しますか？</string>
+    <string name="Msg_ConfirmDisconnect">現在アクティブセッションがあります\n\"ペア解除\"すると切断されます\n\"ペア解除\"を実行しますか？</string>
+    <string name="Msg_IPConnectionExist">現在アクティブセッションがあります、先に\"切断\"してください</string>
+    <string name="InfoWifiEnabled">WiFi が利用可能になりました</string>
+    <string name="ErrWifiEnable">WiFiを利用可能に出来ませんでした</string>
+    <string name="InfoWifiDisabled">WiFi は無効になりました</string>
+    <string name="ErrWifiDisable">WiFi の無効化に失敗</string>
+    <string name="WarningWDNotConnected">WiFiダイレクトのペア設定がありません</string>
+    <!--string name="InfoWDOpenPort">サーバーとしてペアリングされました、"接続受付"でクライアントからの接続待ちにして下さい</string-->
+    <!--string name="InfoWDUseOwnerIP">サーバーのIPアドレス: </string-->
+    <string name="DeviceAvailable">利用可能</string>
+    <string name="DeviceInvited">招待されました</string>
+    <string name="DeviceConnected">ペア設定済み</string>
+    <string name="DeviceFailed">失敗</string>
+    <string name="DeviceUnavailable">利用不可</string>
+    <string name="DeviceUnknown">不明</string>
+    <string name="DeviceType_Dummy">ボット</string>
+    <string name="DeviceType_LocalServer">この端末(サーバー)</string>
+    <string name="DeviceType_LocalClient">この端末(クライアント)</string>
+    <string name="DeviceType_RemoteServer">接続先サーバー</string>
+    <string name="DeviceType_RemoteClient">メンバー</string>
+    <!--string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。Android8(Oreo)デバイスは設定で（Google または セキュリティとプライバシー）,位置情報,現在地にアクセスをオンにする必要があります</string-->
+    <string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。見つからない場合は"ヘルプ"を参照</string>
+    <string name="Wifi_Pair_NotAvailableDevice">\"利用可能\"に対して\"ペア設定\"してください</string>
+    <string name="Wifi_Pair_NotConnectedDevice">\"利用可能\"以外を選択してください</string>
+    <string name="Wifi_Pair_NotIPConnected">\"接続中\"を選択してください</string>
+    <string name="Wifi_Pair_AlreadyClientInGroup">既にクライアントとして\"ペア設定済み\"です</string>
+    <string name="Wifi_Pair_NotPaired">\"ペア設定済み\"を選択してください</string>
+    <string name="Wifi_Pair_NoPairedDevice">ペア解除すべきデバイスはありません</string>
+    <string name="Wifi_SelectDevice">デバイスを選択してください</string>
+    <string name="ProgressDialogTitle">\"戻る\" ボタンでキャンセルされます</string>
+    <string name="ProgressDialogMsgFindingPeer">探索中</string>
+    <string name="MyOwnerYes">サーバー</string>
+    <string name="MyOwnerNo">クライアント</string>
+    <string name="empty"></string>
+    <string name="performIPConnect">クライアント側です, サーバー側が\n\"接続受付\"を押したのを確認後 \"接続\"してください</string>
+    <string name="performIPAccept">サーバー側です\n \"接続受付\" を押しクライアントからの接続を待ちます</string>
+    <!--string name="deviceFound">デバイスが見つかりました、\"利用可能\" を選択して\"ペア設定\"をしてください。Android8(Oreo)デバイスはアンドロイドの\"設定\"で\"Google\",\"位置情報\",\"現在地にアクセス＝ＯＮ\"にする必要があります</string-->
+    <string name="deviceFound">デバイスが見つかりました、\"利用可能\" を選択して\"ペア設定\"をしてください。失敗する場合は"ヘルプ"を参照</string>
+    <string name="IPInSession">接続中</string>
+    <string name="server_text">この端末はサーバー(接続受付)側です</string><!--1Aa4-->
+    <string name="client_text">この端末はクライアント(接続要求)側です</string> <!--1Aa4-->
+    <string name="GroupOwnerIP">サーバーIPアドレス : </string>
+    <string name="ProgressDialogMsgConnecting">ペア設定中 : </string>
+    <string name="ProgressDialogMsgConnectingNFC">NFC ペア設定中 : </string>
+    <string name="IPConnect">接続</string>
+    <string name="AcceptIPConnection">接続受付</string>
+    <string name="IPDisConnect">切断</string>
+    <string name="IPReconnected">復旧</string>
+    <string name="InfoIPStopListening">接続受付ポートを閉じました</string>
+    <string name="ErrWifi">このデバイスの IP アドレスが不明です\n一旦ダイアログを閉じてWiFiの状況を確認してください</string>
+	<string name="Msg_WaitingIPAccept">"他の端末からの接続を待機中\n 端末IPアドレス=%1$s, ポート=%2$d\n"
+					</string>
+	<string name="Msg_WaitingIPConnect">"接続先＝%1$s (ポート＝%2$d).\n"
+					</string>
+    <string name="Connection_to_">接続-&lt;</string> 
+    <string name="IPConnectionErr">接続エラー</string>
+<!--WifiDirect-->
+    <string name="connect_peer">ペア設定</string>
+    <string name="enable_p2p_button">設定</string>
+    <string name="discover_peers_button">探索</string>
+    <string name="PeerDeviceName">ペア端末: </string>
+    <string name="disconnect_peer_button">ペア解除</string>
+    <string name="DiscoveryInitiated">探索開始</string>
+    <string name="DiscoveryFailedReason">探索失敗, 理由コード: </string>
+    <string name="RemoveFailedReason">ペア解除の失敗, 理由コード: </string>
+    <string name="ConnectFailedRetry">ペア設定が失敗, 再試行してください。理由コード：</string>
+    <string name="ChannelLostRetry">チャネルが失われました、再試行しています</string>
+    <string name="Info_WDPair_Deleted">削除ペア:</string>
+    <string name="Info_WDPair_Added">追加ペア:</string>
+    <string name="Info_WDPair_Updated">変更ペア:</string>
+    <string name="ChannelLostEnableP2P">エラー! チャネルが失われました\nWiFi Direct を利用可能にして(\"ヘルプ\"参照)から再試行してください</string>
+    <string name="AbortingConnection">ペアを解除しようとしています</string>
+    <string name="ConnectAbortReason">ペア設定の取り消しが失敗、理由コード: </string>
+    <string name="p2p_off_warning">
+					"\"WiFiダイレクト\"が使用できません。\"設定\"で使用可能にしてください(\"Help\"参照)\n"
+    </string>
+    <string name="wifi_failure_reason_busy">使用中</string>
+    <string name="wifi_failure_reason_error">内部エラー</string>
+    <string name="wifi_failure_reason_unsupported">このデバイスではサポートされていません</string>
+    <string name="ErrMixedModeRemainBT">接続のタイプは混合できません、Wifiダイレクト接続するときは、残ったBluetooth接続を切断してください</string>
+    <string name="ErrMixedModeRemainWD">接続のタイプは混合できません、Bluetooth接続するときは、残ったWifiダイレクト接続を切断してください</string>
+    <string name="ErrWaveFile">MediaPlayer DataSource(%1$s) エラー</string>
+</resources>

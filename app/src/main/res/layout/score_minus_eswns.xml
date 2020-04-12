@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+        >
+            <TextView
+                android:id="@+id/tvSetPayer"
+                android:text="@string/Label_ScoreSetPayer"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:visibility="gone"
+                android:textSize="@dimen/completedlg_textsize"
+                android:background="@color/editable"
+                android:maxLines="1"
+            />
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                     android:id="@+id/MinusEswn1"
+            >
+                <include layout="@layout/eswn_minus"
+                />
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                     android:id="@+id/MinusEswn2"
+            >
+                <include layout="@layout/eswn_minus"
+                />
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                     android:id="@+id/MinusEswn3"
+            >
+                <include layout="@layout/eswn_minus"
+                />
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                     android:id="@+id/MinusEswn4"
+            >
+                <include layout="@layout/eswn_minus"
+                />
+            </LinearLayout>
+        </LinearLayout>
+</LinearLayout>

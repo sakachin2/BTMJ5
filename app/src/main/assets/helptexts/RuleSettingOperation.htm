@@ -1,0 +1,90 @@
+Operation related rules.
+<BR>
+<BR>
+<BIG><B>DelayTime</B></BIG> 
+<BR>
+Set time period after Discard for "Ron", "Pon/Kan", "Chii/Draw".
+ Semicicle lamp on center of board lits as the sequence of Red, Yellow, Green then Blue.
+<BR>
+<BR>
+<B>
+Ron
+</B>
+ : <BIG><B>Red</B></BIG> lamp. Only Ron is accepted.
+ "Win" call out of this period is, if not first winner, "Late Ron" and is not accepted regardless "Double-Ron" rule.
+ Accordingly, "3Win" is accepted as AbortiveDraw if 3 plyers issued "Win" in this period.
+<BR>
+To accept Chankan Ron(Robbing a Quad) for added Kan, you can take Rinshan after this period.
+ Likewise, 2nd win call is "Late Ron" when this time exausted.
+ If claming win to Ankan is allowed for Yakuman:Kokusi(13 Orphans) by settings, this period applied.
+<BR>
+<B>
+Pon/Kan
+</B>
+ : <BIG><B>Yellow</B></BIG> lamp. Ron(only first claimer)/Pon/Kan are accepted.
+When this time exausted, lamp changes to <BIG><B>Green</B></BIG> and Ron(only first claimer)/Chii/Draw/Pon/Kan become available.
+Lamp changes to <BIG><B>Blue</B></BIG> when a tile was drawn.
+<BR>
+<B>
+After Last Discard</B> : After last discard, "ExaustiveDraw" comples after this time exausted after lamp changed to green.
+<BR>
+<B>
+AutoDraw</B> : From entered to green(drawable) period, if this time exausted next player draw automatically.
+ Also applied to drawing kan tile. 0 means no AutoDraw.
+<BR>
+<B>
+AutoDiscard</B> : After (Kan)Draw or after Pon/Chii, tile framed green in hand is discarded automatically when this time exausted.
+ If set, you may miss to claim 9-9Tile, 13 broken, 14 broken etc.
+ And when you claimed Riichi, AutoDiscard may cause "Chombo" of Noten Riichi
+ by unexpected tile selection to be discarded.
+ 0 means no AutoDiscard.
+<BR>
+<BR>
+<BIG><B>Wait!</B></BIG>
+<BR>
+<B>Win call is cancelable</B> : 
+If checked ON, by "Win" call, you can block other player's action to take time to consider winning is better or worth for your placement.
+ In Wait! status, small yellow-green lamp lits notifying blocked status to the other players.
+ Other player's Pon/Kan/Chii/Ron is queued, next player's Draw and AutoDraw are rejected. 
+ When pressed "Win" again, Win claim complete.
+<BR>
+Win call is canceled when "Cancel" pressed or timeout, if set, exausted.
+ Blocking is released and queued other player's actions are executed sequentially.
+ AutoTake timer start if set.
+<BR>
+Pon/Chii may cause Wait! status.
+ That is, for Pon, Red-Dora is to be included or not, for Chii, multiple candidate of Melds exists.
+ Selecting tile(s) in hand press again Pon/Chii, then the action completes.
+ You can not cancel your Pon/Chii.
+<BR>
+<B>Timeout:Yes</B> : When this time exausted, The action is canceled and blocking is released.
+ Queued action, if exist, is executed.
+<BR>
+e.g) In green period all action is allowed, anyone called Chii at first and entered to "Wait!" status by Melds of multiple candidate.
+ At this time, if another player called Pon, the action is queued and it is executed when timeout exausted.
+ If Chii pushed again before timeout Chii completes and Pon is canceled.
+<BR>
+<B>Check your hand</B>：
+If "Yes", your hand is checked it is winning hand or not.
+ Win call by imcomplete hand is ignored and other player is not notified about your win call.
+ For complete hand, depending on "Win call is cancelable" enters into "Wait!" status or proceed to "Win Claimed".
+ If not "Yes"(similar to real mahjong), mis-pressing "Win" button is cancelable if "Win is cancelable" is set,
+ otherwise it may be "Chmbo" of mistaken Ron.
+<BR>
+(For Pon,Kan,Chii Melds is checked, ignore the action if invalid for Melds.)
+<BR>
+<BR>
+<BIG><B>SuspendOption</B></BIG>
+ : "Resquest suspensd" and "Cancel suspend" is menu items of during game.
+By "Request suspend", "SuspendGame Claim" dialog is shown at end of the hand on server.
+ Select "Suspend", "Gameover" or "Continue".
+ Default is defined in this topic and can be change by server on the dialog.
+ Penalty can not be chanded on the dialog.
+ Getting agreements from all clients is required to proceed SuspendGame.
+<BR>
+In case of ConnectionFailure, "ConnectionFailure Notification" dialog will appear.
+ You can try reconnection. If failed to reconnect, select "Suspend"/"Gameover"
+ with game status accomplished up to end of the previous hand.
+<BR>
+<BR>
+<SMALL>RuleSettingOperation 2020/02/11</SMALL>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="blue">#101080</color>
+    <color name="red">#801010</color>
+    <color name="yellow">#ffff00</color>
+    <color name="greenyellow">#adff2f</color>
+    <color name="green">#008000</color>
+    <color name="greenlime">#00ff00</color>
+    <color name="orange">#ffa500</color>
+    <color name="darkorange">#ff8c00</color>
+    <color name="editable">#ffcc99</color>
+    <color name="btn_other">#ffa500</color>
+    <color name="editabledisabled">#e5e5e5</color>  <!-- gray-->
+    <color name="separater">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="smalldevice_title_color">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="separater2">#005900</color>  <!--scroll start-->
+    <color name="title_divider">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="markabletext">#b2ffb2</color>  <!--light green-->
+    <color name="descriptiononly">#80ff80</color> 
+    <color name="spritposid">#ffcc2400</color> 
+    <color name="black">#ff000000</color> 
+    <color name="whitegray">#fff2f2f2</color> 
+    <color name="bg_dialog_button">#ffc0c0c0</color> 
+    <color name="bg_table">#ff005900</color> 
+    <color name="bg_dialog">#ffccff99</color> 
+    <color name="bg_dialog_remarkable">#ffffff00</color>    <!--yellow-->
+    <color name="bg_dialog_remarkable2">#80ff80</color>     <!--deep green-->
+    <color name="action_execute">#ffffff00</color>    <!--yellow-->
+    <color name="action_cancel">#ffff6600</color>    <!--orange-->
+</resources>

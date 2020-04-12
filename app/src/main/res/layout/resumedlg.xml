@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:background="#ffccff99"
+    > <!--above buttons-->
+
+            <LinearLayout
+                 android:layout_width="0dp"
+                 android:layout_height="0dp"
+                 android:focusable="true"
+                 android:focusableInTouchMode="true"
+            />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+        >
+            <include layout="@layout/resumedlg_results"
+            />
+        </LinearLayout>  <!--result-->
+    </LinearLayout>
+
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater2"
+
+                        />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"   
+    > <!--above buttons-->
+        <ScrollView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            >
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                        android:background="#ffccff99"
+                >
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                                     android:gravity="center_vertical"
+                    >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/spinner_dropdown"
+					            android:id="@+id/tvGameSetType"
+                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/textview_middle"
+                                android:layout_marginLeft="20dp"
+					            android:id="@+id/tvInterruptedGame"
+                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Label_GameSetInterrupted"
+                                android:layout_marginLeft="10dp"
+                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/textview_middle"
+                                android:layout_marginLeft="10dp"
+					            android:id="@+id/tvNextGameType"
+                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Label_ctrReachStick"
+                                android:layout_marginLeft="20dp"
+                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/textview_middle"
+					            android:id="@+id/tvCtrReachStickTotal"
+                                android:layout_marginLeft="10dp"
+                        />
+
+	                </LinearLayout>
+
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+
+                    />
+                </LinearLayout>
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                                 android:gravity="center_vertical"
+                >
+                    <include layout="@layout/rule_related_resume"
+                    />
+                </LinearLayout>
+
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                        android:id="@+id/llRelatedRule" 
+                                 android:gravity="center_vertical"
+                                android:background="#ffffffff"
+                >
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+
+                    />
+                    <include layout="@layout/resumedlg_setting"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout> <!--above buttons-->
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <include layout="@layout/eswnresponse"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >   <!--buttons-->
+        <Button
+            android:id="@+id/OK"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/OK"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Cancel"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/NG"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/FixTotal"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_Reload"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Close"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Close"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/ShowRule"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_ShowRule"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Help"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Help"
+            android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+</LinearLayout>

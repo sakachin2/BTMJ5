@@ -1,0 +1,1324 @@
+<resources>
+    <!--string name="app_name">ｅ雀(Jong)β</string-->
+    <string name="app_name">ｅ雀</string>
+    <string name="app_nameE">eMahjong</string>
+    <string name="app_version">v1.01</string>
+    <string name="Settings">Settings</string>
+    <string name="SettingsRelated">Related</string>
+    <string name="Connect">Connect</string>
+    <string name="StartGame">Game</string>
+    <string name="History">Records</string>
+    <string name="On">On</string>
+    <string name="Off">Off</string>
+    <string name="Null"></string>
+    <string name="title_connect">Connect</string>
+    <string name="NotConnected">NotConnected</string>
+    <string name="Exit">Exit</string>
+    <string name="failedBluetooth">Exception on Bluetooth processing.</string>
+    <string name="failedBluetoothUnpair">Failed to unpair process of Bluetooth.</string>
+    <string name="BluetoothUnpairRequested">requested unpair %1$s.</string>
+    <string name="nowDiscoverable">Now \"Visible\" status(in a certain minutes).</string>
+    <string name="Err_No_connection_to_BT">
+				"Failed to connect %2$s(%1$s).\n"
+				"Is server in \"Accept\"ing status?\n"
+				"Multiple Bluetooth connection support depends on the device type. "
+				"Is any other Bluetooth App working？\n"
+				</string>
+    <string name="Err_No_connection_to_IP">Failed to connect to %1$s, is Server \"Accept\"ing？</string>
+    <string name="ErrAcceptfailed">\"Accept\"(%1$s) failed, try to restart APP after Bluetooth Off/On on Android Settings.</string>
+    <string name="InfoAcceptCanceled">Stooped to \"Accept\"</string>
+    <string name="InfoConnectCanceled">\"Connect\" was canceled.</string>
+    <string name="BTNotAvalable">Bluetooth is not available.</string>
+    <string name="Already_trying_this_connection">Already connecting.</string>
+    <string name="InfoBTEnabled">Now Bluetooth is available</string>
+    <string name="InfoBTDiscoverFinished">Discvery ended、found %1$d devices.</string>
+	<string name="BTSecure">Secure</string>
+	<string name="BTInSecure">Insecure</string>
+	<string name="No_Connection_to_">Not connected =&gt;</string> 
+    <string name="LabelLocalDevice">Device : </string>
+    <string name="LabelRemoteDevice">ConnectedMember : </string>
+	<string name="BTSecureOption">SecureConnection</string> <!--1Abu-->
+    <!--string name="BTSettingsButton">Settings</string--> <!--1AbE-->
+    <string name="BTAcceptCommon">Accept</string> <!--1Abu-->
+    <!--string name="BTStop">Cancel</string--> <!--1Abu-->
+    <string name="BTStopAccept">StopAccept</string>
+    <string name="BTConnectCommon">Connect</string>  <!--1Abu-->
+    <string name="BTGame">Game</string>
+    <string name="BTGameRestart">Restart</string>
+    <string name="Info_GameRestarted">Game will restart by successfull reconnection.</string>
+    <string name="Info_IOErrRecovered">Connection remains, ask disconnection to the server</string>
+    <string name="Err_InGameRestarting">Processing disconnection</string>
+    <string name="Info_Reconnected">Reconnected to %1$s.</string>
+    <string name="Err_ReconnectingEnv">Connected to \"%1$s\", but game can not be restarted because both side are not reconnection mode.
+									Disconnect from reconnection mode side and \"Suspend/Gameover\" from \"Connection failure\" of Menu.
+									</string>
+    <string name="Err_ReconnectingExistStartGame">\"%1$s\" is reconnection mode(DuringGame status).\n
+									Once disconnect from server by menu:\"Connection failure\", \"Reconnect\", \"Disconenct\".
+									Then after \"Suspend/Gameover" if needed,\n
+									reconnect to server after \"Gameover\" from menu.
+									</string>
+    <string name="Err_ReconnectingExistSuspendGame">Server is DuringGame status and \"%1$s\" is connection mode(status of start game).\n
+									Ask to server to disconnect this client by menu:\"Connection failure\", \"Reconnect\", \"Disconnect\".
+                                    Reconnect after menu:"Gameover" after "Suspend/Gameover". 
+									</string>
+    <string name="Info_Connected">Connected to %1$s.</string>
+    <string name="BTDisConnect">Disconnect</string>
+    <string name="BTUnpair">Unpair</string>
+    <!--string name="InfoDisconnectRequested">%1$s 切断を要求しました</string-->
+    <string name="InfoDisconnected">Disconnected from \"%1$s\".</string>
+    <string name="InfoDisconnectedClose">\"%1$s\" closed connection.</string>
+    <string name="InfoDisconnectedSomeDevice">Connection broken.</string>
+    <string name="LabelDeviceList">DeviceList：</string>
+    <string name="LabelWantGroupOwner">As Server</string>
+    <string name="Discoverable">Discoverable</string>
+    <string name="Discover">Discover</string>
+    <string name="Delete">Delete</string>
+    <string name="Cancel">Cancel</string>
+    <string name="CancelExecute">Cancel</string>
+    <string name="Execute">Execute</string>
+    <string name="Close">Close</string>
+    <string name="OK">OK</string>
+    <string name="NG">NG</string>
+    <string name="Send">Send</string>
+    <string name="SendDiscard">Discard+Send</string>
+    <string name="SendBackOK">Agree</string>
+    <string name="SendBackNG">Disagree</string>
+    <string name="Help">Help</string>
+    <string name="BTStatusPaired">Paired</string>
+    <string name="BTStatusDiscovered">Available</string>
+    <string name="BTStatusConnected">Connecting</string>
+    <string name="BTStatusConnectedOnce">OnceConnected</string>
+    <string name="NoSession">None</string>
+    <string name="ErrNoThread">Failed, restart this App.</string>
+    <string name="ErrNoNewDevice">No device found, is the devaice \"Discoverable\"?</string>
+    <string name="InfoDiscoverCanceled">\"Discover\" was canceled</string>
+    <string name="InfoDiscoverCancelFailed">Discover was canceled by %1$s.</string>
+    <string name="InfoNewDevice">Found %1$d devices.</string>
+    <string name="UnknownDeviceName">Unknown Device</string>
+    <string name="Unknown">Unknow</string>
+    <string name="UnknownRuleName">RuleID is not set.</string>
+    <string name="UnknownYourName">foobar</string>
+    <string name="noBTadapter">Blutooth is not supported.</string>
+    <string name="StatusDiscoverable">(\"Discoverable\")</string>     <!--1Af3-->
+    <string name="StatusNotDiscoverable">(\"NotDiscoverable\")</string> <!--1Af3-->
+    <string name="ErrConnectingForScan">\"Disconnect\", then \"Discover\".</string>
+    <string name="ErrAssetFileNotFound">Failed to find asset file:</string>
+    <string name="ErrAssetFileRead">Failed to read asset file:</string>
+    <string name="HelpTitle_Bluetooth">Bluetooth Connection</string>
+	<string name="Title_WaitingAccept">----- Accepting -----</string>
+	<string name="Title_WaitingConnect">----- Connecting -----</string>
+	<string name="Title_WaitingDisconnect">----- Disconnecting -----</string>
+	<string name="Title_WaitingUnpair">----- Unpairing -----</string>
+	<string name="Msg_WaitingDiscover">Discovering</string>
+	<string name="Title_WaitingDiscover">----- Discovering -----</string>
+    <string name="Game">Game</string>
+    <string name="AcceptedBTSecureConnection">Connected to %1$s.</string><!--1Aed-->
+    <string name="AcceptedBTInSecureConnection">Accepted Insecure connection from %1$s.</string><!--1Aed-->
+    <string name="ErrConnectConfirmAccept">Connection error, check server is \"Accept\"ing</string>
+    <string name="ConnectedBTSecureConnection">Connected to %1$s.</string><!--1Aed-->
+    <string name="ConnectedBTInSecureConnection">Connected %1$s(Insecure mode).</string><!--1Aed-->
+    <string name="Info_ConnectionClosed">"%1$s" closed connection.</string>
+    <string name="dev_act_msg">Device Response:</string>
+    <string name="bt_not_enabled_leaving">Bluetooth is Off.</string>
+    <string name="alreadyconnected">Bluetooth connection exists already.</string>
+    <string name="InfoBTDiscoverable">Now \"Discoverable\" status.</string> <!--1AbE-->
+    <string name="InfoBTDiscoverableRequested">Rquested \"Discoverable\".</string>
+    <string name="InfoBTConnectable">Now not \"Discoverable\" status.</string> <!--1AbE-->
+    <string name="InfoBTNone">Now not \"Discoverable\" status nor \"Available\"</string> <!--1AbE-->
+    <!--string name="WarningBluetoothTurnedOff">Bluetooth was set to OFF.\nRestart this App.</string--> <!--1AbQ-->
+    <string name="WarningBluetoothTurnedOff">Bluetooth was set t OFF.</string>
+    <string name="WarningDeletingPaired">\"Unpair\" from \"Settings" is required before \"Delete\" paired device.</string>
+	<string name="Msg_WaitingConnect">"%2$s connection to %1$s\n"</string> 
+    <string name="Title_Bluetooth">---------- Bluetooth Connection ----------</string>
+    <string name="Title_BluetoothReconnect">---------- Bluetooth Reconnection ----------</string>
+    <string name="WarningBTNotDiscoverable">
+					This device is not \"Discoverable\",\n
+					retry after pressing \"Discoverable\".
+	</string>           
+	<string name="Msg_WaitingAccept">"Waiting %2$s connection.(Devicename=%1$s)\n"
+					</string>                         
+	<string name="Msg_WaitingDisconnect">%1$s</string>
+	<string name="Msg_WaitingUnpair">%1$s</string>
+    <string name="ErrNotSelected">Select item connect to.</string>
+    <string name="ErrNotSelectedConnected">Select device connect to.</string>
+    <string name="lockContention">In progress, try once more:</string>
+    <string name="ErrOutOfMemory">Memry shortage-</string> 
+    <string name="Helpfile_Main">Main</string> 
+    <string name="Title_Help_Main">Overview</string>
+    <string name="Qexit">Exit confirmation</string>
+    <string name="ErrMixedRole">You could not change role of Server/Client. Disconnect all connection, the try new connection.</string>
+    <string name="ErrMemberOverflow">Max count of client is %1$d.</string>
+    <string name="ModeServer">Server</string>
+    <string name="ModeClent">Client</string>
+    <string name="DefaultYourName">Foo?</string>
+    <string name="BThintYourName">ID-Name (up to 8 chars)</string>
+    <string name="ErrExceptionDetected">Exception Occured</string>
+    <string name="YourNameLabel">ID-Name:</string>
+
+    <!-- setting -->
+
+    <!--string name="Title_RuleFileDlgSave">SettingFile Save</string-->
+    <!--string name="Title_RuleFileDlgLoad">SettingFile Load</string-->
+    <string name="Title_RuleFileDlg">RuleFile</string>
+    <string name="Title_RuleFileDlgFolder">RuleFile %1$s &lt;font color=\"#000000\"&gt;(%2$s)</string>
+    <string name="Title_HistoryDlg">Records</string>
+    <string name="Title_HistoryDlgFolder">Record &lt;font color=\"#000000\"&gt;(%1$s)</string>
+    <string name="Title_RuleSetting">RuleSettings</string>
+    <string name="Title_PrefSetting">Preference</string>
+    <string name="Desc_Preference">DarkGreen indicates changeable during game.</string>
+    <string name="Title_OperationSetting">Operations</string>
+    <string name="Load">Load</string>
+    <string name="Save">Save</string>
+    <string name="Label_Reload">Reload</string>
+    <!--string name="Err_ReloadNotServer">Only server can restart suspended game.</string-->
+    <string name="Msg_ReloadServer">You are the Server, do you request to restart the following game?\n%1$s</string>
+    <string name="Msg_ReloadClient">You are a Client, do you request to restart the following game?\n
+					Request will be sent to the server by \"OK\",\n
+					ask to server to restart the game.\n\n
+					%1$s</string>
+    <string name="Msg_HistoryReceived">The record was sent from %1$s, do you save it？\n\n%2$s</string>
+    <string name="Info_RuleSettingUpdated">Rule was changed.</string>
+    <string name="Info_HistoryReceivedCanceled">The record received was canceled.</string>
+    <string name="Info_HistorySendToServer">The record was sent to the server.\n%1$s</string>
+    <string name="Info_HistoryRuleSavedReceived">Rule of the record was saved.\n%1$s</string>
+    <string name="Info_HistorySendToAllClient">The record was sent to all client.</string>
+    <string name="Err_ReloadSelectOne">Select one item only.</string>
+    <string name="Err_HistoryReadFailed">Read failed:%1$s</string>
+    <string name="Err_ReloadNotInterrupted">Select a ssuspended game for \"Restart\".</string>
+    <string name="Err_ReloadNooneConnected">No connection.</string>
+    <string name="Err_HistoryNotSameMembers">Member connected now is not all same as the record\'s one.</string>
+    <string name="Err_ReloadDataErr">The records contains error.</string>
+    <string name="Err_ReloadDataErrReceived">Record received from %1$s contains error.</string>
+    <string name="Err_AlreadyFileExists">It is already exists, could not save to\
+					%1$s</string>
+    <string name="Warn_HistoryPropNotSent">Rule file used by the suspended game was not found,\
+					Ask to other member to send the record.\
+					The rule file is sent with the record file.\
+					%1$s</string>
+    <string name="Info_FileWritten">%1$s was written.</string>
+    <string name="Err_HistoryPropLoadFailed">Rule file read failed:%1$s.</string>
+    <string name="Warn_ResumeDialogNoRuleFound">Resume request from server.
+					Rulefile used in the suspended game is not found.
+					Ask to server to \"Send\" the record of suspended game.</string>
+    <string name="Prompt_InitialScore">InitialScore</string>
+    <string name="Label_DupPoint">Counter:</string>
+    <string name="Label_InitialScore">InitialScore</string>
+	<!--string-array name="InitialScore"> 
+		<item>25000</item>
+		<item>27000</item>
+		<item>30000</item>
+	</string-array-->
+	<string-array name="MenuDialog_Setting_Debug"> 
+		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_PrefSetting</item>
+		<item>TestOptions</item>
+		<item>@string/Cancel</item>
+	</string-array>
+	<string-array name="MenuDialog_Setting"> 
+		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_PrefSetting</item>
+		<item>@string/Cancel</item>
+	</string-array>
+    <string name="Bluetooth">Bluetooth</string>
+    <string name="WifiDirect">Wifi-Direct</string>
+	<string-array name="MenuDialog_Connect"> 
+		<item>@string/Bluetooth</item>
+		<item>@string/WifiDirect</item>
+    	<item>@string/Help</item>
+		<item>@string/Cancel</item>
+	</string-array>
+
+    <!-- CompleteDlg -->
+    <!--string name="Err_DlgCompleteType">Go out type error(Self-Drawn,Win by discard,Win discarder)</string-->
+    <string name="Err_DlgCompleteNotOK">There is no Win agreed by all.</string>
+    <string name="Err_ContinueNextPlayer_SomeoneOK">If there is valid Win, \"NextHand:Continue\" can not be selected.</string>
+    <string name="Err_ContinueNextPlayer_NoOneErr">If the \"Win\" is claimed as \"Error\" or \"Invalid\", \"NextHand:Continue\" is selectable.</string>
+    <string name="Info_ContinueNextPlayer">Continue this hand with %1$s abondoned win.</string>
+    <!--string name="Err_DlgCompleteErrLooser">Set player for the error penalty.</string-->
+    <string name="Err_DlgPao">set \"Pao\" responsile player other than winner and winning tile discarder.</string>
+    <string name="Err_DlgPaoNoGainer">\"Pao\" is askable only when a win exists.</string>
+    <string name="Alert_ConfirmDrawn3R">\"TripleRon" is \"AbortiveDrawn\" by rule setting. \nProceed to \"AbortiveDrawn\" by \"OK\".
+											</string>
+    <string name="Alert_CompleteDlgConfirmSuspend">\"Suspend/Gameover\" is checked, Do you suspend this game?</string>
+    <string name="Alert_CompleteDlgConfirmSuspendErr">\"Suspend/Gameover\" and is \"Continue\" are  inconsistent.</string>
+    <string name="Alert_SuspendNoIOErr">For client:Connection error is not detected.
+											Force to disconnect by \"OK\".
+                                            Use \"OK\" only when the server detected connection error and the client dose not yet.
+											</string>
+    <string name="Alert_SuspendNoIOErrServer">For server：Connection error is not detected.
+											Reconnection dialog will be shown by \"OK\".
+											Select and disconnect the client to be discponnected.
+                                            Use \"OK\" only when the client detected connection error and the server dose not yet.
+											</string>
+    <string name="Alert_ScoreDlgForceOK">Received \"NG\" for \"Tobi Confirmation\".
+											To proceed Gameover,\
+											1. Press \"Cancel\" then press \"Send\" again to get \"OK\" by the new dialog popup.\
+                                            OR,\
+											2. Press \"OK\", then press \"Fix\" to force Gameover.
+											</string>
+    <string name="Alert_AccountsDlgForceOK">Received \"NG\" for \"Final score\".
+											To proceed Gameover,\
+											1. Press \"Cancel\", then press \"Send\" again to get \"OK\" by the new dialog popup.\
+                                            OR,\
+											2. Press \"OK\", then press \"Fix\" to force Gameover.
+											</string>
+    <string name="Alert_FinalGameDlgForceOK">Received \"NG\" for \"On FinalHand\.
+											To procees the game,\
+											1. Press \"Cancel\", then press \"Send\" again to get \"OK\" by the new dialog popup.\
+                                            OR,\
+											2. Press \"OK\", then press \"Fix\" to force the decision.
+											</string>
+    <string name="Alert_SuspendIOErrDlgForceOK">Received \"NG\" for \"SuspendGame by ConnectionFailure\" or ConnectionFailure remains.\
+											To proceed SuspendGame,\
+											1. In case of \"NG\", press \"Cancel\" then \"Send\" again to get \"OK\" by the new dialog popup.
+											In case of ConnectionFailure remain \"Send\" after connection recovered.\
+                                            OR,\
+											2. Press \"OK\", then press \"Fix\" to force SuspendGame. Do so if could not reconnect.
+											</string>
+    <string name="Alert_SuspendIOErrDlgForceOKClient">No connection to the server.\
+											To proceed SuspendGame,\
+											1. Press \"Cancel\", then reconnect to the server which will proceed SuspendGame,\
+                                            OR,\
+											2. Press \"OK\" if reconnection failes, then press \"Fix" to force SuspendGame.\
+											</string>
+    <string name="Alert_SuspendDlgForceOK">Received \"NG\" for \"SuspendGame Claim\".
+											To proceed SuspendGame,\
+											1. Press \"Cancel\", then press \"Send\" to get \"OK\" by the new dialog popup.\
+                                            OR,\
+											2. Press \"OK\", then press \"Fix\" to force SuspenGame.
+											</string>
+    <string name="Alert_CompleteDlg_NGCompReqDlg">Received \"NG\" for \"Win Claim\",\
+    						                      Ask to the winner to \"Send\" \"Win Claim\" again.\
+    						                      Or \"Send\" with setting of \"Invalid\" or \"Error\".
+											</string>
+    <string name="Alert_CompleteDlgForceOK">Received \"NG\" for \"End-of-Hand\" call.
+											To proceed game,\
+											1. \"Cancel\" this and the dialog behind, 
+											then ask to the winner to \"Send\" again \"Win Claim\".\
+                                            OR,\
+											2. Press \"Cancel\", then \"Send\" \"End-of-Hand\" again to get \"OK\" by the new dialog popup. 
+											Dealer can set the Win as \"Invalid\" or \"Chombo\" and can cotinue the hand with the player\'s Dead hand.\
+                                            OR,\
+											3. Press \"OK\", then Press \"Fix\" to force End-of-Hand.
+											</string>
+    <string name="Info_CompleteDlgForceOK">Forced End-of-Hand by the dealer</string>
+    <string name="Alert_DrawnLastNGForceOK">Received \"NG\" for the \"AbortiveDraw Claim\".
+											To proceed the game,\
+											1. Press \"Cancel" on this and the dialog behind, 
+											ask to the claimer to \"Send\" again "AbortiveDraw Claim".\
+                                            OR,\
+											2. Press \"Cancel\", then \"Send\" again to get \"OK\" on the new dialog popup.\
+                                            OR,\
+											3. Press \"OK\", then press \"Fix\" to force proceed AbortiveDraw.
+											</string>
+    <string name="Err_ResumeDlgNG">Received \"NG\" for \"ResumeSuspended Confirmation\",\
+											You can ask again.
+											</string>
+    <string name="Title_CompleteDlgReq">End-of-Hand Claim</string>
+    <string name="Title_CompleteDlgResp">End-of-Hand Response</string>
+    <string name="Title_CompReqDlg">Win Claim</string>
+    <string name="Title_DrawnReqDlgLast">ExaustiveDraw Claim</string>
+    <string name="Title_DrawnReqDlgHW">AbortiveDraw Claim</string>
+    <string name="Title_DrawnDlgHW">AbortiveDraw Confirmation</string>
+    <string name="Title_DrawnDlgLast">ExaustiveDraw Confirmation</string>
+    <string name="Title_DrawnDlgHWReceived">AbortiveDraw Response</string>
+    <string name="Title_DrawnDlgLastReceived">ExaustiveDraw Response</string>
+    <string name="Title_ScoreDlg">Tobi Confirmation</string>
+    <string name="Title_FinalGame">On FinalHand</string>
+    <string name="Info_ClosableDlgRon">Declare Gameover by the win</string>
+    <string name="Info_ClosableDlgPending">Declare Gameover by Tenpai(1 more tile)</string>
+    <string name="Title_AccountsDlg">Final score</string>
+    <string name="Title_CompNotenDlg">Drawn hand</string>
+    <string name="CompDlg_Gainer">Player:%1$s（%2$s）</string>
+    <string name="Err_NowShowingTheDlg">Now showing</string>
+    <string name="NormalGain">Winning points</string>
+    <string name="AbnormalGain">Chombo</string>
+    <string name="NormalGainPao">Pao</string>
+    <string name="LabelReachers">Riichi</string>
+    <string name="Label_NextGame">NextHand:</string>
+    <!--string name="Label_RetryWhenErr">Redeal if Chombo is deletected.</string-->
+    <string name="Label_Drawn_Continue">Stay</string>
+    <string name="Label_PendingCont">TenpaiDealerStay</string>
+    <string name="Label_PendingContYes">Yes</string>
+    <string name="Desc_PendingCont">(No means to rotate always for ExaustiveDraw)</string>
+    <!--string name="Label_Drawn_NextSetting">Change dealer when AbortiveDraw</string-->
+    <string name="Label_Drawn_Next">Rotate</string>
+    <string name="Label_Drawn_NextPlayer">Continue</string>
+    <string name="Label_Drawn_Reset">Redeal</string>
+    <string name="Label_NextGameSuspend">Suspend/Gameover</string>
+    <string name="Desc_NextGameSuspend">" : (Suspend+Save or Gameover after score updated.)"</string>
+    <string name="Desc_DrawnNext">When AbortiveDraw is by \"Other\" or \"Chombo\" is set, \"Continue\" or \"Redeal\" is selectable. 
+				In that case \"Continue\" continue with the player\'s Dead hand (set \"Chombo\" penalty at end of the hand),
+			 \"Redeal\" sets penalty(Bankrupt may occur) and restart the hand with the same dealer, counter stick kept, riichi stick backed.</string>
+    <string name="Desc_DrawnNextLast">\"Redeal\" is selectable when a \"Chombo\" is set. In that case set penalty to the player(may bankrupt), restart the hand with same dealer, counter stick kept, riichi stick backed.</string>
+    <!--string name="Desc_CompNext">\"Invalid\"（No penalty) or \"Chombo\"（Pay penalty）is set \"Redeal\" is selectable. \"Redeal\" means restart the hand with the same dealer, counter stick keept, riichi stick backed.</string-->
+    <string name="Desc_CompNext">If \"Invalid\"(Without penalty) or \"Chombo\"(With penalty) is set,
+					 \"Continue\"(that player\' Dead hand) and \"Reset\" are selectable.
+					 Penalty is set at End-of-Hand.</string>
+    <string name="Desc_RuleWhenErr">When Chombo(Rule violation) occured, on \"Claim Win\" dialog select option of \"Chombo\"(end the hand with paying panalty) , \"Invalid\"(continue the hand without paying penalty but as the player is dead).
+					And \"Redeal\" is another option.
+					Redeal means Chombo player pays penalty(Tobi may occur), restart with the same dealer and the same counterStick, RiichiBets returned.
+					When Redeal is not selected, stay or rotate dealer is depends on winner is dealer or not. When no winner, rotate dealer if the dealer is Chombo player.
+    			</string>
+    <string name="Info_DrawnHWContinueThisRound">Continue this hand.</string>
+    <string name="Label_Drawn_NextField">Next Round</string>
+    <string name="Desc_DrawnHW">No penalty of Noten. 4Riichi and 4Kans comples when discard was not winning tile.</string>
+    <string name="Desc_DrawnHWSelectReason">Check also stay dealer or not.</string>
+    <string name="Label_MinusStop">Tobi</string>
+    <string name="Desc_MinusStop">"  = Fly away : Gameover when a plyer\'s score goes to negative."</string>
+    <string name="Label_Bird">Yakitori</string>
+    <string name="Desc_Bird">"  = Grilled chicken : The mark disappears by win and get off the penalty."</string>
+    <string name="Label_BirdPayToPlace">Divide</string>
+    <string name="Label_BirdPayToEach">To All</string>
+    <string name="Label_BirdRule2">Out of score placing. Not imposed when robot included.</string>
+    <string name="Label_MinusStopCharge">Ajust for negative score</string>
+    <string name="Label_Yes">Yes</string>
+    <string name="Label_No">No</string>
+    <string name="Label_Minus0">Also when score=0</string>
+    <string name="Label_MinusPay">Negative score</string>
+    <string name="Label_MinusPayYes">Pay for negative score</string>
+    <string name="Label_MinusPayNoGetPointAll">return after placing</string>
+    <string name="Label_MinusPayNoGetPointLimited">Limit winner\'s point</string>
+    <string name="Label_MinusGain">Tobi prize</string>
+    <string name="Label_Payer">Payer</string>
+    <string name="Label_Gainer">Destination</string>
+    <string name="FixTotal">Fix</string>
+    <string name="NotAgreed">Inv.</string>
+    <string name="Agreed">Agreed</string>
+    <string name="NoGame">DrawWithNotTenpai</string>
+    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw or Riichi deposit bankrupt you.</string>
+    <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
+    <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
+    <string name="Label_ReachLimitOpenChombo">Continue as Chombo</string>
+    <string name="Label_ReachLimitOpenRobot">For Robot game</string>
+    <string name="Label_ReachLimitOpenRobotNone">Disable</string>
+    <string name="Label_ReachLimitOpenRobotSkip">Ignore the discard.</string>
+    <string name="Label_ReachLimitOpenRobotNormal">Pay normal.</string>
+    <!--string name="Label_OpenReachRon">Pay Yakuman for OpenRiichi-er\'s ron</string-->
+    <string name="Label_Drawn99Tile">9-9Tile</string>
+    <string name="Label_Drawn3Ron">3Win</string>
+    <string name="Label_Drawn4Wind">4Winds</string>
+    <string name="Label_Drawn4Reach">4Riichi</string>
+    <string name="Label_Drawn4Kan">4Kans</string>
+    <string name="Label_DrawnMangan">NagashiMangan</string>
+    <string name="Label_DrawnNoManganByEswn">HeadBump</string>
+    <!--string name="Label_DrawnManganAsPending">NoPenalty</string-->
+    <string name="Label_DrawnManganAsRon">a Win</string>
+    <string name="Label_DrawnManganAsDrawn">a Draw</string>
+    <!--string name="Label_DrawnManganDropBird">RemoveChiken</string-->
+    <!--string name="Label_DrawnManganMulti">Allow multiple. No point by CounterStick, RiichiBeds is left. Score is caluculated at first paying the point then penalty of NotTenpai, which determins BankruptPrize gainer, if multiple, BankruptPrize is given by HeadBump rule.</string-->
+    <string name="Desc_DrawnMangan">a Drawn: Pay Noten penalty, leave Riichi beds, no additional CounterStick, rotate dealer if dealer is Noten.\n
+									a Win: No Noten penalty, remove Yakitori mark, apply Split rule, stay dealer if dealer win.\n
+									In both case Multiple Ron setting is applied. HeadBump means nearest to East wind position.
+									When Tobi occured, Tobi prize player is  determined by the paying point of NagashiMangan then Noten penalty each from nearest position to the dealer.
+									Triple Ron rule is not applied.</string>
+    <string name="Label_DrawnManganPending">Tenpai+NagashiMangan</string>
+    <string name="Label_DrawnNoManganPendingByEswn">HeadBump</string>
+    <string name="Label_DrawnOther">Others</string>
+    <string name="Label_Dealer">Dealer</string>
+    <string name="Label_DealerNow">Approver</string>
+    <string name="Label_Loose">Pay：</string>
+    <string name="Label_Gain">Gain</string>
+    <string name="Label_PointReach">RiichiBets</string>
+    <string name="Label_BackPointReach">ReturnRiichiBets:</string>
+    <string name="Label_BackPointReach2">Rii-Bets</string>
+    <string name="Label_PointContinued">Ctr</string>
+    <string name="Label_PointAmmount">Score</string>
+    <string name="Label_PointAmmountColon">Score:</string>
+    <string name="Label_StickAmmount">Tot</string>
+    <string name="Label_Result">Final</string>
+    <string name="Label_AbnormalPlayer">Violator:</string>
+    <string name="Label_PaoPlayer">Impose:</string>
+    <string name="Label_AbnormalPoint">PayMangan</string>
+    <string name="Label_Take">Draw</string>
+    <string name="Label_Ron">Ron</string>
+    <string name="Label_Looser">Disc.</string>
+    <string name="Label_Point">Pt.</string>
+	<string-array name="CompType"> 
+		<item>" "</item>
+		<item>@string/Label_Take</item>
+		<item>@string/Label_Ron</item>
+		<item>@string/Label_Looser</item>
+		<item>@string/NotAgreed</item>
+		<item>@string/Label_ByEswn</item>
+		<item>@string/NormalGainPao</item>
+	</string-array>
+	<string-array name="OrderPrize"> 
+		<item>None</item>
+		<item> 5 - 10</item>
+		<item>10 - 20</item>
+		<item>10 - 30</item>
+		<item>20 - 30</item>
+	</string-array>
+	<string-array name="TopPrize"> 
+		<item>25000</item>
+		<item>27000</item>
+		<item>30000</item>
+	</string-array>
+	<string-array name="NormalPoint"> 
+		<item>２０fu</item>
+		<item>２５fu</item>
+		<item>３０fu</item>
+		<item>４０fu</item>
+		<item>５０fu</item>
+		<item>６０fu</item>
+		<item>７０fu</item>
+		<item>８０fu</item>
+		<item>９０fu</item>
+		<item>１００fu</item>
+		<item>１１０fu</item>
+	</string-array>
+	<string-array name="NormalRank"> 
+		<item>１han</item>
+		<item>２han</item>
+		<item>３han</item>
+		<item>４han</item>
+		<item>Mangan</item>
+		<item>M*1.5</item>
+		<item>M*2</item>
+		<item>M*3</item>
+		<item>M*4</item>
+		<item>M*6</item>
+		<item>M*8</item>
+		<item>M*12</item>
+	</string-array>
+	<string-array name="NormalRankPao"> 
+		<item>Mangan*4</item>
+		<item>Mangan*8</item>
+	</string-array>
+	<string-array name="DrawnManganRank"> 
+		<item>Mangan</item>
+		<item>M*1.5</item>
+		<item>M*2</item>
+		<item>M*3</item>
+		<item>M*4</item>
+	</string-array>
+	<string-array name="SuspendPenalty"> 
+		<item>None</item>
+		<item>1000*3</item>
+		<item>2000*3</item>
+		<item>4000*3</item>
+		<item>8000*3</item>
+		<item>16000*3</item>
+	</string-array>
+	<string-array name="NormalRankPaoRate"> 
+		<item>None</item>
+		<item>Half</item>
+		<item>Full</item>
+	</string-array>
+
+    <!-- FileDialog -->
+
+    <string name="Title_FileDialog_Load">Load File</string>
+    <string name="Title_FileDialog_Save">Save File</string>
+    <string name="Title_Help_FileDialog">Rule File</string>
+    <string name="CurrDir">Current Folder</string>
+    <string name="Open">Open</string>
+    <string name="View">View</string>
+    <string name="Hide">Hide</string>
+    <string name="SwitchToSD">View SD folder</string>
+    <string name="SwitchToFiles">View internal foler</string>
+    <string name="Backup">Copy to SD</string>
+    <string name="Restore">restore from SD</string>
+    <string name="SelectAll">SelectAll</string>
+    <string name="SelectAll2">All</string>
+    <string name="MultiSelect">MultiChoice</string>
+    <string name="MultiSelect2">Multi</string>
+    <string name="DeSelectAll">Deselect</string>
+    <string name="DeSelectAll2">Reset</string>
+    <string name="UseSD">Use SD</string>
+    <string name="ErrFileNotSelected">Slect a file</string>
+    <string name="ErrSaveFileNotSelected">fill Filename or select a item from list.</string>
+    <string name="ErrInvalidPropertyFile">%1$s:read failed or not a rule file.</string>
+    <string name="NoSDCard">"No SD card available."</string>
+    <string name="NoAvailableDir">"Both Internal folder/SD card is not available."</string>
+    <string name="NoFileFound">File not found (%1$s)."</string>
+    <string name="FailedListDirBySecurity">"No autorization to access the folder."</string>
+    <string name="FailedListDir">"Failed to access to the folder."</string>
+    <string name="FileDialogDeleteQuestion">Do you delete %1$d files ?</string>
+    <string name="FileDialogDeleteQuestionFile">Do you delete %1$s ?</string>
+    <string name="FileDialogDeleted">Deleted %1$d file(s).</string>
+    <string name="SaveOverrideQuestion">Do you override existing file:%1$s ?</string>
+    <string name="ErrFileMultipleSelected">Select only one file for Load/Save/Open.</string>
+    <string name="Title_FileDialog">File Dialog</string>
+    <string name="LabelFilter">Extension:</string>
+    <string name="LabelFileName">Filename:</string>
+    <string name="LabelFileName2">Name:</string>
+    <string name="FileType">Folder</string>
+    <string name="FileTypeSD">SD:</string>
+    <string name="FileTypeData">Internal:</string>
+    <string name="Title_FileViewer">%1$s</string>
+    <string name="HelpTitle_FileViewer">View File</string>
+    <string name="FailedDelete">Failed to Delete.</string>
+    <string name="FailedSave">Failed to Save.</string>
+    <string name="InfoSaved">Saved:%1$s</string>
+    <string name="InfoCopyedFile">Copied to SD:%1$s</string>
+    <string name="InfoCopyedFileCtr">Copied %1$d file(s).</string>
+    <string name="InfoRestoredFile">Restored from SD:%1$s</string>
+    <string name="InfoLoaded">Loaded:%1$s</string>
+    <string name="ErrFileViewerNoText">File is empty.</string>
+    <string name="ErrFileViewerTooLarge">Too large file, available max is %1%d.</string>
+    <string name="ErrFileViewerRead">Read failed.</string>
+    <string name="ErrOpenFailed">Failed to open %1$s</string>
+    <string name="ErrSpecifyYourname">Set \"ID\" on top-right corner.</string>
+    <string name="ErrSelectNextGame">Select \"Keep\" or \"Rotate\" dealer.</string>
+<!--BTMJ3-->
+    <string name="Label_OrientationPortrait">Portrait</string>
+    <string name="Label_OrientationLandscape">Landscape</string>
+    <string name="Label_OrientationPortraitReverse">Portrait-Reverse</string>
+    <string name="Label_OrientationLandscapeReverse">Landscape-Reverse</string>
+    <string name="Label_OrientationSelectMenu">SelectEachTime</string>
+	<string-array name="OrientationMenuDlg_Items"> 
+		<item>@string/Label_OrientationPortrait</item>
+		<item>@string/Label_OrientationLandscape</item>
+		<item>@string/Cancel</item>
+	</string-array>
+	<string-array name="ActionMenuDlg_Items"> 
+		<item>You</item>
+		<item>Right</item>
+		<item>Facing</item>
+		<item>Left</item>
+
+		<item>Draw</item>
+		<item>Pon</item>
+		<item>Chii</item>
+		<item>Kan</item>
+		<item>Riichi</item>
+		<item>Win</item>
+		<item>Discard</item>
+		<item>Open</item>
+		<item>Dice</item>
+	</string-array>
+    <string name="ESWN_E">東</string>
+    <string name="ESWN_S">南</string>
+    <string name="ESWN_W">西</string>
+    <string name="ESWN_N">北</string>
+	<string-array name="nameESWN"> 
+		<item>@string/ESWN_E</item>
+		<item>@string/ESWN_S</item>
+		<item>@string/ESWN_W</item>
+		<item>@string/ESWN_N</item>
+	</string-array>
+    <!--string name="GameSeq1">Rot.1</string>
+    <string name="GameSeq2">Rot.2</string>
+    <string name="GameSeq3">Rot.3</string>
+    <string name="GameSeq4">Rot.4</string-->
+    <string name="GameSeq"></string>
+    <string name="Ron2">Double-Ron</string>
+    <string name="Ron3">Triple-Ron</string>
+    <string name="Ron3Next">DrawByTripleRon</string>
+    <string name="NoReply">NoReply</string>
+    <string name="Disconnected">NotConn</string>
+    <string name="NextGame">NextHand</string>
+	<string-array name="strGameSeq"> 
+		<item>１</item>
+		<item>２</item>
+		<item>３</item>
+		<item>４</item>
+		<item>５</item>
+		<item>６</item>
+		<item>７</item>
+		<item>８</item>
+		<item>９</item>
+		<item>10</item>
+	</string-array>
+	<string-array name="compReplyText"> 
+		<item>NotYet</item>
+		<item>@string/NoReply</item>
+		<item>@string/OK</item>
+		<item>@string/NG</item>
+		<item>Winner</item>
+		<item>@string/YournameRobot</item>
+	</string-array>
+    <string name="Label_Pending">Tenpai</string>
+    <string name="Label_PendingNo">Noten</string>
+    <string name="Label_NoPendingPoint">NotenPenalty</string>
+    <string name="Label_AllNoPendingElse">NotenTheOthers</string>
+    <string name="Label_AllNoPending">AllNoten</string>
+	<string-array name="drawnReplyText"> 
+		<item>NotYet</item>
+		<item>@string/Label_Pending</item>
+		<item>@string/Label_PendingNo</item>
+		<item>@string/Label_DrawnMangan</item>
+	</string-array>
+    <string name="Label_Red5">RedDora</string>
+    <string name="Label_Dora">Dora</string>
+    <string name="Label_DoraHidden">Hidden</string>
+    <string name="Label_KanDora">Kan</string>
+    <string name="Label_KanDoraHidden">Hid.</string>
+    <string name="Label_DoraNext">NextTo</string>
+    <string name="Label_DoraItself">Itself</string>
+    <string name="Label_KanDoraOpenTiming">Ankan opens imm., Minkan:</string>
+    <string name="Label_MinKanDoraOpenExceptRon">If not winning</string>
+    <string name="Label_MinKanDoraOpenJustDiscarded">at discarded.</string>
+    <string name="Label_MinKanDoraOpenJustNow">Imm.</string>
+    <string name="Desc_KanDoraOpenTiming">\"Immediately\" means just after drawn kan tile, witch only open KanDora for WinByKanTile.</string>
+    <string name="Label_PaoFor">For</string>
+    <string name="Label_OpenReach">OpenRi</string>
+    <string name="Label_ScoreAddTotal">Gain</string>
+    <string name="Label_ScoreNewScore">Score</string>
+    <string name="Label_ScoreMinusPay">TobiPz</string>
+    <string name="Label_MinusCharge">Negative</string>
+    <string name="Label_ForBotCharge">ForRobot</string>
+    <string name="Label_MinusPayByErr">Impose Chombo penalty fully, pay Tobi-Prize:</string>
+    <string name="Label_MinusPayByPending">Noten penalty is imposed, \"Tobi-Prize\" is equally divided.</string>
+    <string name="Label_MinusPayByErrNo">None</string>
+    <string name="Label_MinusPayByErrSprit">Divide</string>
+    <string name="Label_MinusPayByErrAll">To All</string>
+    <string name="Label_ScoreNewTotal">Total</string>
+    <string name="Label_ScoreSetPayer">PayTo is cahngable.</string>
+    <string name="Label_AccountsOrder">Place</string>
+    <string name="Label_CurrentEswn">W</string>
+    <string name="Label_CompStatus">Status</string>
+    <string name="Label_AccountsScore">Score</string>
+    <string name="Label_AccountsCurrent">Holding</string>
+    <string name="Label_AccountsTopPrize">TopPz</string>
+    <string name="Label_AccountsOrderPrize">PlcPz</string>
+    <string name="Label_RuleOrderPrize">PlacePrize</string>
+    <string name="Label_AccountsTotal">Total</string>
+    <string name="Label_AccountsTotalWithMinusCharge">Final</string>
+    <string name="Label_FinalPoint">Point</string>
+    <string name="Label_AccountsStartingEswn">St</string>
+    <string name="Label_AccountsSettingTopPrize">TopPrize</string>
+    <string name="Label_AccountsSettingTopPrizeEdit">%1$d (Initial:%2$d - Return:%3$d)</string>
+    <string name="Label_AccountsSettingOrderPrize">PlacementPrize</string>
+    <string name="Label_AccountsSettingOrderPrizeEdit">%1$d - %2$d</string>
+    <string name="Label_AccountsSettingSamePoint">If same</string>
+    <string name="Label_ByEswn">HeadBump</string>
+    <string name="Label_ByEswnOrderPrize">HeadBump</string>
+    <string name="Label_Debt">Returns %1$d</string>
+    <string name="Label_PendingPoint">Noten:3000</string>
+    <string name="Label_AccountsSettingSamePointSpritCut">Divide(cut100)</string>
+    <string name="Label_MultiRon3Drawn">Draw for TripleRon</string>
+    <string name="Info_MultiRon3Drawn">TripleRonDraw</string>
+    <string name="Label_MultiRonDupStickByEswn">Yes</string>
+    <string name="Label_MultiRonDupStickAll">Yes also for CounterStick</string>
+    <string name="Desc_MultiRon">No means HeadBump. Applyed to TripleRon if it is not AbortiveDraw.</string>
+    <!--string name="Label_AccountsSettingSamePointSpritUp">等分(切上)</string-->
+    <string name="UserAction_Take"   >Draw</string>
+    <string name="UserAction_Pon"    >Pon</string>
+    <string name="UserAction_Chii"   >Chii</string>
+    <string name="UserAction_Kan"    >Kan</string>
+    <string name="UserAction_Reach"  >Riichi</string>
+    <string name="UserAction_Ron"    >Win</string>
+    <string name="UserAction_Discard">Discard</string>
+    <string name="UserAction_Reach_Open">OpenRiichi</string>
+    <string name="UserAction_Reach_Open_YN">Allow Open</string>
+    <string name="UserAction_Reach_Missing_YN">Allow Furiten</string>
+    <string name="UserAction_ReachReset">Canceled Riichi.</string>
+    <string name="Label_AnkanAfterReach">Allow Ankan after Riichi.</string>
+    <string name="UserAction_WaitOn">Wait!</string>
+    <string name="UserAction_WaitOff">CanWait</string>
+    <string name="UserAction_DlgComp">Score</string>
+    <string name="UserAction_DlgCompResult">Score</string>
+    <string name="UserAction_DrawnGame">Drawn</string>
+    <string name="UserAction_DrawnHW">AbotiveDraw</string>
+    <string name="UserAction_MinusStop">Tobi</string>
+    <string name="UserAction_EndScore">FinalScore</string>
+    <!--string name="UserAction_FinalGame">EndOfLastHand</string-->
+
+    <string name="Title_MenuInGame">Menu</string>
+    <string name="Label_MenuInGame">Menu</string>
+    <string name="Label_ShowRule">Rule</string>
+	<string-array name="Items_MenuInGame"> 
+		<!--item>Claim win</item-->
+		<item>End of a hand</item>
+		<item>Draw</item>
+		<item>@string/Title_FinalGame</item>
+		<item>Tobi</item>
+		<item>@string/Title_AccountsDlg</item>
+		<!--item>Request suspend</item-->
+		<!--item>Cancel suspend</item-->
+		<item>Suspend process</item>
+		<item>Gameover</item>
+		<item>Connection failure</item>
+		<item>Win anyways</item>
+		<item>Prefeence</item>
+		<item>Help for this menu</item>
+	</string-array>
+
+    <string name="UserActionMsg_RonTaken">SelfDrawn!</string>
+    <string name="UserActionMsg_RonRiver">Ron!</string>
+    <string name="Msg_DiceForTempStarter">To assign temporary dealer, the player indicated by lamp touch the dice.</string>
+    <string name="Msg_DiceForPositioning">To assign seat position, the temporary dealer touch the dice at first.</string>
+    <string name="Msg_DiceForPositionAccepting">To get seat position, all player touch the lamp lit sequencially to get wind tile.</string>
+    <string name="Msg_PositionAcceptedAll">To transfer position, temporary dealer touch the dice.</string>
+    <string name="Msg_DiceForStart1stGame">East round 1st rotation, The first dealer cast the dice.</string>
+    <string name="Msg_DiceForNewGame">Th dealer cast the dice.</string>
+    <!--string name="Msg_AcceptComplete">Touch the lamp lit if agree to the win.</string-->
+    <string name="Err_LackingMember">Missing players, you can start game with robots if the rule allows.</string>
+    <string name="Err_LackingMemberNoConnection">Missing players(No connection)</string>
+    <string name="Err_LackingMemberAllowRobotYes">Missing %1$d players. \nDo you start game including Robot?</string>
+    <string name="Err_LackingMemberAllowRobotNo">Missing %1$d players. \nRule setting allows a game including Robot.</string>
+    <string name="Err_LackingMemberReconnect">Connection Error remains.</string>
+    <string name="Err_AlreadyRestarted">Already Restarted.</string>
+    <string name="Info_WaitingAllMemberSetup">Waiting more %1$d player\'s setup completion.</string>
+    <string name="Info_AllMemberSetupEnd">All players setup completed.</string>
+    <string name="Err_DupYourname">Duplicated name(%1$s).</string>
+    <string name="AE_NotYourTurn">Not your turn.</string>
+    <string name="AE_DiscardTaken">You have to discard.</string>
+    <string name="AE_NoTileSelected">Select tile to discard.</string>
+    <string name="AE_YouHaveToTake">Your turn to draw.</string>
+    <string name="AE_TakeKanAdditional">Draw kan tile.</string>
+    <string name="AE_CouldNotReach">Not able to Riichi.</string>
+    <string name="AE_ShortScoreForReach">You could put Riich bets, the rule is \"Tobi\":Yes.</string>
+    <string name="AE_CouldNotGetLast">Can not Pon,Kan,Chii for last Discard.</string>
+    <string name="AE_CouldNotGetLastReach">Can not Riichi if you have no chance to Draw.</string>
+    <string name="AE_ReachedToLast">No tiles to Draw.</string>
+    <string name="AE_DuplicatedAction">Duplicated action</string>
+    <string name="AE_TakeOnly">DiscardAllDrawn</string>
+    <string name="AE_InReach">Declared Riichi</string>
+    <string name="AE_KanAfterReach">By the rule setting, Ankan after Riichi declared is not available.</string>
+    <string name="AE_AnkanRonNG">By the rule setting, Ron of \"Kokushi\" for Ankan is not available.</string>
+    <string name="AE_DupRonDelayed">Delayed Ron.</string>
+    <string name="AE_DupActionRon">Declared Ron already.</string>
+    <string name="AE_ContinueAsNotRonable">Your are in DeadHand state.</string>
+    <string name="AE_PendingHW">AbortiveDraw was claimed.</string>
+    <string name="AE_DupRonTaken">Self-Draw Ron was declared already.</string>
+    <string name="AE_AfterIssuedRon">Win was declared.</string>
+    <string name="AE_AfterIssuedRonAlready">Win was declared already.</string>
+    <string name="AE_UnavailableOpenReach">By the rule, Open Riichi is not allowed.</string>
+    <string name="AE_DrawnLastDelayTimeout">Timeout after last Discard and Draw completed. Ron can not be claimed.</string>
+    <string name="AE_DrawnHWNotTaken">Not drawn.</string>
+    <string name="AE_DrawnHWDoNotDiscard">You can not discard for this type of AbortiveDraw.</string>
+    <string name="Warning_DiceForDummy">Cast the dice for Robot.</string>
+    <string name="YournameRobot">Robot</string>
+    <string name="Info_EndGameReceived">Received Gameover from %1$s.</string>
+    <string name="Info_EndGameDrawn_Last">ExaustiveDraw</string>
+    <string name="Info_DrawnHW_Confirmed">Got agreement for AbortiveDraw.</string>
+    <string name="Info_DrawnHW_ConfirmedNG">Received \"NG\" for AbortiveDraw claim.</string>
+    <string name="Err_UpdateAfterSend">Dialog was updated after \"Send\", You have to re-send.</string>
+    <!--string name="Alert_DrawnHWNG">Received \"NG\" for \"AbortiveDraw Confirmation\".</string-->
+    <string name="Alert_DrawnHWNGForceOK">Received \"NG\" for \"AbortiveDraw Confirmation\".\
+											To proceed game,\
+											1. Press \"Cancel\", press \"Close\" on the dialog behind, then ask to the claimer to \"Send\" again \"AbortiveDraw Claim\".\
+                                            OR,\
+											2. Press \"Cancel\", press \"Send\" again to get \"OK\" for new dialog popup.\
+                                            OR,\
+											3. Press \"OK\", press \"Fix\" to proceed \"AbortiveDraw\"(stay or rotate dealer), \"Continue\" or \"Redeal\".</string>
+    <string name="Alert_DrawnHWCancel">Do you cancel AbortiveDraw？\
+											\"OK\" will cancel AbortiveDraw then continue this hand.\
+											\"Cancel\" will return to \"AbortiveDraw Confirmation\".</string>
+    <string name="Info_DrawnLast_Confirmed">AbortiveDraw completed.</string>
+    <string name="Info_DrawnLast_ConfirmedNG">Received \"NG\", restart \"Draw claim\" from menu.</string>
+    <string name="Info_EndGameDrawn_Halfway">In claming AbortiveDraw</string>
+    <string name="Err_CouldNotMakePair">Can not make a Meld.</string>
+    <string name="Err_RonChk">Can not compose a winning hand.</string>
+    <string name="Err_NoNeedRonAnyway">Use \"Win\" button because setting \"Check winning hand\" is Off.</string>
+    <string name="Err_AmbiguousMakePair">Multiple candidates for a Meld, touch the tile in hand to fix a Meld.</string>
+    <string name="Err_AmbiguousMakePairKan">Multiple Meld candidates for Kan, touch the tile in hand to fix a Meld.</string>
+    <string name="Err_NoneCompleted">No winner</string>
+    <string name="Err_YouAreNotCompleted">You are not declared Win.</string>
+    <string name="Err_TotalAgreedAlready">This hand completed already</string>
+    <string name="Err_CompReqNotShowable">All winners have to claim Score.</string>
+    <string name="Err_CompReqRequestResend">Ask to winner to send again \"Win Claim"</string>
+    <string name="Err_CompReqMultipleRon">Some other player declared Win.</string>
+    <string name="Err_CompReqNotShowableExist">Some Wins are not agreed. Ask to the winner to send \"Win Claim\" if he wants.</string>
+    <string name="Err_StatusFixed">Not changable in this situation.</string>
+    <string name="Err_DuplicatedDialog">Already showing</string>
+    <string name="Err_StatusForSetupEnd">Ignored \"Game\" request, Already in during Gaming.</string>
+    <string name="Err_CompTypeChangeIgnored">You can set/reset \"Invalid\" only.</string>
+    <string name="Err_CompTypeChangeIgnoredNotNG">You can set \"Invalid\" for Win received \"NG\" only.</string>
+    <string name="Err_ScoreReviewNoData">\"Tobi\" is not recorded, ask to dealer to send again if you want.</string>
+    <string name="Err_ScoreReviewNoEndData">No \"Gameover\" data.</string>
+    <string name="Err_StartGameReqInGaming">Stating Game request during gaming.</string>
+    <string name="Err_StartGameConnectionInvalid">Rule file synchronization required for some device.</string>
+    <string name="Err_SuspendNotInGame">SuspendGame clam or cancel is availabe in duaring gaming.</string>
+    <string name="Err_SuspendNoIOErr">No connection failure detected.</string>
+    <string name="Err_SuspendNoIOErrExitOnGameView">Connection failure detected, Try MenuItem \"Connection failure\".</string>
+    <string name="Err_SuspendNoIOErrServer">No connection failure detected.(Server can not disconnect)</string>
+    <string name="Err_SuspendDlgNotNextGameTiming">\"Suspend\" confirmation dialog not yet opened, retry from \"End of a hand\" of menu.</string>
+    <string name="Err_SuspendDlgNotServer">Only server can open \"Supend\" confirmation dialog.</string>
+    <string name="Err_SuspendDlgNoSuspendRequest">\"Supend\" is not requested.</string>
+    <string name="Err_GamingNow">In during game.</string>
+    <string name="Err_NotGamingNow">Game is opevr（%1$s）</string>
+    <string name="Info_SuspendRequested">SuspendGame is claimed. %1$s/4 player</string>
+    <string name="Info_SuspendRequestedDup">SuspendGame claimed,it is duplicated.</string>
+    <string name="Info_SuspendCanceled">SuspendGame was canceled, %1$s/4 claim remain.</string>
+    <string name="Info_SuspendCanceledDup">You are not claimed SuspendGame.</string>
+    <string name="Title_ResumeDlg">ResumeSuspended Confirmation</string>
+    <string name="Title_SuspendDlgReq">SuspendGame Claim</string>
+    <string name="Title_SuspendIOErrReqDlg">ConnectionFilure Notification</string>
+    <string name="Title_SuspendIOErrDlg">SuspendGame by ConnectionFilure Claim.</string>
+    <string name="Title_SuspendIOErrDlgResp">SuspendGame by ConnectionFailure Response</string>
+    <string name="Title_ConfirmEndgame">Gameover Confirmation</string>
+    <string name="Msg_ConfirmEndgame">No connection exists, do you proceed to Gameover?\n
+						After pushing \"Cancel\", selecting \"Connection failure\" menu item, you can reconnect or suspend game.</string>
+    <string name="Title_ConfirmReconnectOnGameView">Reconnect Confirmation</string>
+    <string name="Msg_ConfirmReconnectOnGameView">No connection exists, do you want \"Reconnect\" or \"EndGame\"?</string>
+    <string name="Title_SuspendDlgResp">SuspendGame response</string>
+    <string name="Warn_ResumeDlgDupShow">%1$s requested ResumeGame now showing. Ignored it is duplicated.</string>
+    <string name="Warn_ResumeDlgNewShow">%1$s requested ResumeGame other than now showing.</string>
+    <string name="Warn_ResumeDlgReceivedReplyUnderNoDialog">Received ResumeGame confirmation response from %1$s for other than now showing.</string>
+    <string name="Warn_ResumeDlgReceivedReplyUnmatchTimestamp">Received ResumeGame confirmation response from %1$s for other than now showing. It is ignored because the record\'s Timestamp unmatch.</string>
+    <!--string name="Info_ResumeDlgFirstShow">ResumeGame received from %1$s</string-->
+    <string name="Label_SuspendOptionQuery">Do you make the game over with above scores or suspend the game?</string>
+    <string name="Label_SuspendOption">SuspendOption</string>
+    <string name="Label_SuspendOptionSuspend">Suspend</string>
+    <string name="Label_SuspendOptionGameover">Gameover</string>
+    <string name="Label_SuspendOptionContinue">Continue</string>
+    <string name="Label_SuspendPenalty">Penalty:</string>
+    <string name="Label_SuspendPenaltyIOErr">Penalty for ConnectionErr:</string>
+    <string name="Label_SuspendPenaltyTitle">SuspendPenalty</string>
+    <string name="Label_SuspendPlayer">Suspender:</string>
+    <string name="Desc_SuspendPlayer">Impose penalty on checked player by Settings</string>
+    <string name="Label_SuspendPaoWhenIOErr">Penalty As Pao(8000*3)</string>
+    <string name="Label_SuspendPlayerIOErr">PlayerConnectionFailed:</string>
+    <string name="Suspend_IOEReconnect">Reconnect</string>
+    <string name="Suspend_IOESuspend">Suspend/Gameover</string>
+    <string name="Suspend_IOESuspend2">Suspend</string>
+    <string name="Info_SuspendEndgame">ForceGameover</string>
+    <string name="Info_SuspendSaved">SuspendGame</string>
+    <string name="Info_LastEndgame">Gameover</string>
+    <string name="Label_ResetReach">Can.Ri</string>
+    <string name="Label_ResetOpenReach">Can.OR</string>
+    <string name="Desc_SuspendPenalty">Option is default and changable on dialg. Penalty is divided equally, no effect to placement.
+				 When Gameover Yakitori penalty is not imposed. 
+				When Sespend by ConnectionErr, if \"Pao\" is cheked ON on th dialog, penalty is minimum 8000*3 regardless of this setting.</string>
+    <string name="Desc_SuspendGameover">Score contains returned Riichi bets. When making game over, ChickenPenalty is not counted.</string>
+    <string name="Label_ctrReachStick">Riichi</string>
+    <string name="Err_FinalGameNoData">Not in last hand of last round.</string>
+    <string name="Info_WaitDiscardTimeout">After Discad, Chii/Draw is available after Pon/Kan time exausted.</string>
+    <string name="Info_WaitKanTakableTimeout">After Ankan/Chankan, Rinshan Take is available after Ron time exausted.</string>
+    <string name="Info_WaitDiscardTimeoutPonKan">After Discard, Pon/Kan is available after Ron time exausted.</string>
+    <!--string name="Info_WaitDiscardTimeoutPonKanAndWaiting">\"Wait!\" in Ron time.</string-->
+    <string name="Info_WaitRequested">Wait!</string>
+    <string name="Info_WaitRequestedDup">Already in \"Wait!\" status.</string>
+    <string name="Info_WaitCanceled">CancJAB\"</string>
+    <string name="Info_WaitCanceledDup">Not in \"Wait!\" status</string>
+    <string name="Info_YouCouldNotWaitYourDiscard">You can not claim \"Wait!\" for your discarded.</string>
+    <string name="Info_YouCouldNotWait">You can claim Discard of other player and your draw.</string>
+    <string name="Info_YouCouldNotWaitByNoTimeoutSettingAutoDiscard">You can not claim \"Wait!\" for your draw because AutoDiscardTime is not set.</string>
+    <string name="Info_YouCouldNotWaitByNoTimeoutSettingAutoTake">AutoTakeTime is not set</string>
+    <string name="Info_YouCouldNotWaitByNotTakingYou">You can not claim \"Wait!\" during you are drawn.</string>
+    <string name="Info_YouCouldNotWaitOtherAutoTake">Not your turn to draw.</string>
+    <string name="Info_YouCouldNotWaitOtherAutoDiscard">Not your turn to discard.</string>
+    <string name="Info_WaitCanceledByTake">\"Wait!\" by %1$s was canceled.</string>
+    <string name="Info_PleaseWait">During \"Wait!\" claimed.</string>
+    <string name="Info_PleaseWaitWithReasonYou">You are in during "Wait!" (%1$s).</string>
+    <string name="Info_PleaseWaitWithReasonOther">In during other player\'s \"Wait!\".</string>
+    <string name="ActionWaitOther">Waiting other player action.</string>
+    <string name="ActionBlockedThisAction">Blocked status by other player\'s call for discard.</string>
+    <string name="ActionBlockedYouAreNotTop">Blocked status by other player\'s calling discard.</string>
+    <string name="ActionBlockedYouAreNotTopWaitSelectModeWithTimeout">Other player is selecting Melds for the discard.(with timeout rule)</string>
+    <string name="ActionBlockedYouAreNotTopWaitSelectModeWithNoTimeout">Other player is selecting Melds for thje discard.(Witout timeout rule)</string>
+    <string name="ActionBlockedYouAreNotBlockerOfTheAction">Select tile for a Melds then push orange button.</string>
+    <string name="ActionBlockedByOther">Blocked will be relesed when other player cancel the call.</string>
+    <string name="ActionBlockedMultiRonNextAll">Other player also called Ron with rule of Multiple Ron allowed.</string>
+    <string name="ActionBlockedMultiRonNextEswn">Other player also called Ron with rule of HeadBump for multiple Ron.</string>
+    <string name="Info_MultiRonYouAreNewTopAll">Other player declared Ron and now your turn with rule of multiple Ron allowed.</string>
+    <string name="Info_MultiRonYouAreNewTopEswn">Other player declared Ron and now your turn with rule of HeadBunp for multiple Ron.</string>
+    <string name="ActionBlockedMultiRonDelayed">Late Ron. It will be accepted only when other player canceled the claim of Ron.</string>
+    <string name="ActionBlockedNowYourTurn">Other player canceled its call, now your turn.</string>
+    <string name="ActionBlockReleasedByOtherActionDone">Your call was canceled by activation of other player\'s call leading.</string>
+    <string name="ActionWaitNowYou">Block released</string>
+    <string name="Info_PleaseWaitWithReasonYouAndOther">You and other is in \"Wait!\" (%1$s).</string>
+    <string name="Info_StopAutoFixedHW">AutoDraw and AutoDiscard will be blocked until AbortiveDraw is fixed.</string>
+    <string name="Warning_ActionOverTaken">Now not your turn, the call was ignored.</string>
+    <string name="Info_StopAutoFixedHWReleased">Block of AutoDraw and AutoDiscard was released.</string>
+    <!--string name="Info_StopAutoByDrawnHW">%1$d players are considering AbortiveDraw, PLS wait.</string-->
+    <string name="Info_StopAutoByDrawnHW">AbortiveDraw was called, PLS wait.</string>
+    <!--string name="Info_StopAutoByDrawnHWReleased">AbortiveDraw was canceled but remains %1$d player. PLS wait.</string-->
+    <string name="Info_StopAutoByDrawnHWReleased">A player canceled claim of AbortiveDraw, yet other player is claiming. PLS wait.</string>
+    <string name="Info_StopAutoByDrawnHWReleasedAllAutoTakeDiscard">All calim of AbortiveDraw was canceled. Block of AutoDraw/AutoDiscard was released.</string>
+    <string name="Info_StopAutoByDrawnHWReleasedAll">All claim of AbortiveDraw was canceled.</string>
+    <string name="Info_ActionESWN">%1$s：%2$s</string>
+    <string name="Info_ActionEswnWithName">%1$s：%3$s：%2$s</string>
+    <string name="Info_CompType_Ron_Ankan">Win for a Ankan tile</string>
+    <string name="Info_CompType_Ron_Chankan">Win by Chankan</string>
+    <string name="Info_CompType_Minkan_RinshanKaiho">Minkan-Win by KanDraw</string>
+    <string name="Info_CompType_Ankan_RinshanKaiho">Ankan-Win by KanDraw</string>
+    <string name="Info_CompType_Ron">Ron</string>
+    <!--string name="Info_CompType_Shortcut">HeadBump</string-->
+    <string name="Info_NoMinusStopRobot">Setting is Robot do not get Tobi.</string>
+    <!--string name="Info_CompTypeTake">%1$s:&lt;font color=\"#ff8c00\"&gt;Draw</string-->
+    <!--string name="Info_CompTypeRon">%1$s:%2$s    %3$s:RonTile</string-->
+    <!--string name="Info_CompTypeRon">%1$s:&lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;&lt;font color=\"#000000\"&gt;,%3$s:&lt;/font&gt;&lt;font color=\"#ff8c00\"&gt;放銃&lt;/font&gt;</string-->
+    <string name="Info_CompTypeWinner">&lt;font color=\"#000000\"&gt;%1$s:&lt;/font&gt;&lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;</string>
+    <string name="Info_CompTypeLooser">&lt;font color=\"#000000\"&gt;%1$s:&lt;/font&gt;&lt;font color=\"#ff8c00\"&gt;放銃&lt;/font&gt;</string>
+    <string name="Info_TitleCompType">%1$s:&lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;</string>
+    <string name="Info_ReplyToCompReq">Received from %1$s : %2$s</string>
+    <string name="Info_GameTitle">&lt;font color=\"#ff8c00\"&gt;%1$s&lt;/font&gt;:%2$s</string>
+    <string name="Info_GameTitleWithName">&lt;font color=\"#ff8c00\"&gt;%1$s&lt;/font&gt;:%2$s &lt;font color=\"#ff8c00\"&gt;%3$s</string>
+    <!--string name="Info_GameSeq">%1$s%2$sRot. %3$d Counter</string-->
+    <string name="Info_GameSeq">%1$s ctr:%2$d</string>
+    <string name="Info_GameEndMinusStop">Gameover by Tobi</string>
+    <string name="Info_GameEnded">Gameover. Exit by Menu:Gameover.</string>
+    <string name="Info_GameEndSuspendGameover">Gameover of SuspendedGame</string>
+    <string name="Info_GameEndSuspend">Save+Suspended. proceed to menu:\"Gameover\".</string>
+<!--setting-->
+    <string name="Err_TrySendFromServer">Ask to server to send</string>
+    <string name="Err_TryEndgameFromServer">Server proceed to menu:\"Gameover\".</string>
+    <string name="Err_GameStatusForMenuInGame">Before dealing tiles.</string>
+    <string name="Err_AlreadyShowing">Already showing.</string>
+    <string name="Err_SendAfterSyncAll">Only server can send again after agreement by all gotten.</string>
+    <string name="Info_ReceivedRuleSetting">Received rule file, confirm it.</string>
+    <string name="Info_ResyncRule">Rule file was changed after agreemen received. Server(%1$s) send it again.</string>
+    <string name="Info_ResyncRuleAtFirst">The rule is not agreed, Server(%1$s) send rule file.</string>
+    <string name="Info_ResyncRuleClientChanged">Client (%1$S) changed rule. Getting Agreement required anew.</string>
+    <string name="Info_ResyncRuleServerChanged">This device is server, send the rule because it is updated.</string>
+    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\".</string>
+    <string name="Err_RuleIsInitial">Rule is not established yet. Press \"Settings\".</string>
+    <string name="Info_ResyncRuleChkOK">Rule was synchronized, game will start.</string>
+    <string name="Info_RuleSynchedAlready">Rule is synchronized with %1$d players, no send required.</string>
+    <string name="Info_BlockTimeout">Timeout of \"Wait!\"</string>
+    <string name="Info_BlockTimeoutYouAreNewTop">Your turn after block timeout.</string>
+    <string name="Info_BlockCanceled">Blocking call was canceled.</string>
+    <string name="Info_BlockCanceledYouAreNewTop">Now your turn by canceled blocking call.</string>
+    <string name="Label_SettingSyncDate">Update:</string>
+    <string name="Label_SettingIDName">ID:</string>
+    <string name="Label_RuleIDName">Rule:</string>
+    <string name="Label_ShowStatus">Status</string>
+    <string name="Label_Delay">DelayTime</string>
+    <string name="Label_DelayUnit">(Sec)</string>
+    <string name="Label_DelayPonKan">Ron (Red):Semicircle lamp becomes red just after discard. Pon/Kan is available after this time exausted.</string>
+    <string name="Label_DelayTake">Pon/Kan (Yellow):Semcircle lamp becomes gree after Ron+Pon/Kan time exausted, then Chii/Draw is available.</string>
+    <string name="Label_DelayLast">After last discard: ExaustiveDraw completes when this time exausted after lamp changed to green.</string>
+    <string name="Label_DelayDiscard">AutoDiscard:Lamp becomes blue just after draw, then the tile of green frame will be discarded when this time exausted. 0 means no timeout.</string>
+    <string name="Label_Delay2Touch">Timeout of \"Wait!\"</string>
+    <string name="Label_TimeoutTake">AutoDraw:Next player draws automatically when this time exausted from start of Chii/Draw period. 0 means no timeout. Applied for also KanDraw.</string>
+    <string name="Label_TimeoutTakeRobot">AutoDraw for Robot:Set minimum 1 second. This is applied if Autodraw above is 0, else the value above is applied.</string>
+    <string name="Label_RuleWait">Wait!</string>
+    <string name="Label_Positioning">Assign seat</string>
+    <string name="Label_Positioning_Skip">Simply.</string>
+    <string name="Desc_Positioning_Skip">（skip action to draw tile from set of 東南西北)</string>
+    <string name="Desc_RuleWait">\"JAW\"、\"CancW\" button appears, \"Wait!\" is functional.\
+								Depending \"Timeout\" setting, action can not be blocked may exist.</string>
+    <!--string name="Label_2TouchCancelable">Cancel</string-->
+    <!--string name="Label_2TouchYesRonOnly">For Win only</string-->
+    <string name="Label_CheckRonable">Check winning hand</string>
+    <string name="Label_2TouchCancelableRon">Win call is cancelable.</string>
+    <string name="Label_2TouchTimeout">Timeout:Yes</string>
+    <!--string name="Label_2TouchPonKanChii">Pon/Kan/Chii:</string-->
+    <!--string name="Label_2TouchRonTsumo">Ron/SelfDraw:</string-->
+    <!--string name="Desc_2Touch">ポン・チイーで面子候補が複数あるとき、他家のアクション、自動自摸は止まります。
+								\"取消し有り\"にするとポン・カン・チー・ロン・ツモで、取消ボタンが表示され、
+                                他家はアクション出来ません。
+								\"時間切れ有り\"にすると、タイムアウトで停止がとかれます。
+                                詳細はヘルプを参照。
+						</string-->
+    <!--string name="Desc_2Touch">\"あり\"にすると、ポン・カン・チー・和了ボタンを押したときに\"取消\"ボタンが表示され\"待った\"状態になり、
+								他家のアクションは待たされ、自動自摸は止まります。\
+								\"なし\"にするとポン・チーで面子の候補が複数あるときに、取消ボタンなしで\"待った\"状態になります。
+                                面子を選択して同じボタンを押してください。\
+                                待ったの解消は、同じボタンまたは取消ボタンを押すか、\"時間切れ有り\"とした場合で
+							    タイムアウトになったときです。\
+                                詳細はヘルプを参照。
+						</string-->
+    <!--string name="Desc_2Touch">\"和了\"は取り消しありに設定すると\"取消\"ボタンが表示され\"待った\"状態になり、
+								他家のアクションは待たされ、自動自摸は止まります。
+                                待ったの解消は、同じボタンまたは取消ボタンを押すか、時間切れになったときです。\
+								ポン・チーで面子の候補が複数あるときにも\"待った\"状態になり、時間切れも適用されます。
+                                面子を選択して同じボタンを押してください。\
+                                詳細はヘルプを参照。
+						</string-->
+    <string name="Desc_2Touch">\"Win call is cancelable\" : Enters into \"Wait!\" status by \"Win\" button and blockes other player\'s action and AutoDraw.
+                                The block will be released by \"Win\" or \"Cancel\" was pressed or timeout expired.\
+								Blocking will also occur by Pon/Chii call with multiple Melds candidate.
+                                After selecting tile to fix the Melds, press Pon/Chii again.\
+                                See also Help.
+						</string>
+    <string name="Desc_CheckRonable">Furiten and Constraint by Han are not checked.</string>
+    <!--string name="Label_TimeoutTakeKan">槓してから嶺上をツモるまでのタイムアウト、０は制限なし。</string-->
+    <string name="Label_S2P">Fraction</string>
+    <string name="Label_RankMUp">Rounded Mangan</string>
+    <string name="Desc_RankMUp">(30fu4han and 60fu3han is Mangan）</string>
+    <string name="Label_S2PLast">Under 1000</string>
+    <string name="Label_S2P_No">None</string>
+    <string name="Label_S2P_Floor">Round-Down</string>
+    <string name="Label_S2P_Ceiling">Round-Up</string>
+    <string name="Label_S2P_45">4Down 5Up</string>
+    <string name="Label_S2P_56">5Down 6Up</string>
+    <string name="Label_S2P_PM">Down if plus, Up if minus.</string>
+    <string name="Label_S2P_Zero">Up means toward zero for minus. Zero-sum adjustment is done by top place player\'point.</string>
+    <string name="Title_RuleSettingReceived">%1$s : Sender - &lt;font color=\"#ff8c00\"&gt;%2$s&lt;/font&gt;</string>
+    <string name="Info_RuleSynched">Rule agreement was done.</string>
+    <string name="Info_NoRuleSynched">Rule agreement is unconfirmed.</string>
+    <string name="Info_RuleSyncReset">Sent to %1$d players, waiting response.</string>
+    <string name="Info_RuleSyncNoConnection">No connection.</string>
+    <string name="Info_RuleSynchedNotYet">Out of %1$d, Agreed: %2$d, Disgree: %3$d, Not Responsed: %4$d</string>
+    <string name="Info_RuleSynchNG">Disagree=%1$s</string>
+    <string name="Info_RuleSynchNoResp">NotResponsed=%1$s</string>
+    <string name="Info_RuleSynchResponseReceivedResendRequired">Received from %1$s but send again by rule updated.</string>
+    <string name="Info_RuleSynchResponseReceivedFrom">Received agree from %1$s : %2$s</string>
+    <string name="Info_RuleChangeReceived">\"%1$s\" changed rule.</string>
+    <string name="Info_RuleSyncNotAll">Server(%1$s) dis not get agree from all players.</string>
+    <string name="Info_InterceptedMultiRon">HeadBump applied by rule setting.</string>
+    <string name="Info_FinalGame">%1$s, Final hand</string>
+    <string name="Info_FinalGameEnd">%1$s、End of final hand.</string>
+
+    <string name="Label_Orientation">Orientation</string>
+    <string name="Label_DelRiverTileTaken">Remove the tile called from Discard Pile.</string>
+    <string name="Label_NoTakeButton">Hide button \"Draw\"</string>
+    <string name="Label_NoDiscardButton">Hide button \"Discard\"</string>
+    <string name="Label_Sound">Sound</string>
+    <string name="Label_BeepOnly">Beep</string>
+    <string name="Label_SoundVolume">Volume</string>
+    <string name="Label_Robot">Robot</string>
+    <string name="Label_MinusRobot">Robot\' Tobi</string>
+    <string name="Label_RobotPay">Payment:</string>
+    <string name="Label_RobotPaySprit">Divide</string>
+    <string name="Label_RobotPayDependingScore">In propotion by score(See Help).</string>
+    <!--string name="Label_RobotDescription">４人揃わないときツモ切りオンリーのボットを加えて対戦できます</string-->
+    <string name="Label_AllowRobot">Allow to include robot(Just discard then drawn) when lacking player.</string>
+
+    <string name="Label_GameSet">Rounds</string>
+    <string name="Label_GameSetInterrupted">Comp. Next is</string>
+    <string name="Label_FinalLast">Final Hand</string>
+    <string name="Label_ClosablePending">Dealer may claim Gameover by Tenpai if stay dealer by Tenpai.</string>
+    <string name="Label_ClosableRon">Dealer may claim Gameover by win.</string>
+    <string name="Label_ClosableNotTop">Not top place dealer may claim.</string>
+    <!--string name="Label_FinalLastDealerNotPending">親がノーテン（流し満貫:和了扱いは除く）のとき</string-->
+    <string name="Label_FinalLastDealerNotPending">If dealer have to be rotate</string>
+    <!--string name="Label_FinalLastAllMinus">終局の場合、全員がマイナスの時</string-->
+    <string name="Label_FinalLastAllMinus">If all players\'s point are negative when rotating dealer</string>
+    <!--string name="Label_FinalLastComment">\"止め\"は全員マイナスとは関係しません。流局で終局のときはリーチ棒は戻します。東南戦の延長戦は西-北-東、東北戦は東-北の繰り返し</string-->
+    <string name="Label_FinalLastComment">Gameover is declarable even if all players point is negative. RiichBets is returned if drawn hand. Extra round is 西-北-東 for 東南 game, repeated 東-北 for 東北 game.</string>
+    <string name="Label_CloseGame">Gameover</string>
+    <string name="Label_NextRound">Next round</string>
+	<string-array name="GameSetType"> 
+		<item>東風戦</item>
+		<item>東々戦</item>
+		<item>東南戦</item>
+		<item>東北戦</item>
+		<item>一荘戦</item>
+	</string-array>
+	
+    <string name="Label_YakuList">Yaku</string>
+    <string name="Label_Operation">Oper</string>
+    <string name="Label_8Continue">8 consecutive win</string>
+    <string name="Label_8ContDealer">All as dealer</string>
+    <string name="Label_8ContOnePlayer">Start may be non-dealer</string>
+    <string name="Label_8ContStick">Dealers\'s win when counter=8</string>
+    <string name="Label_8ContStickAnyOne">Any win when counter=8</string>
+    <string name="Label_8ContNoNeedYaku">Apply 1/2-han constraint</string>
+    <string name="Label_8ContReset">Reset counter</string>
+    <string name="Label_8ContMulti">Combinable</string>
+    <string name="Desc_8Continue">Consecutive counter is shown around the dice. Completion is confirmed by it or counterStick. \"Combinable\" allow multiple Yakuman if the win itself has worth of Yakuman. If \"Reset counter\" is On, next is (16th hand)/(16 CounterStick). If Off, chance of this Yakuman continues.</string>
+    <string name="Label_YakuFix">Fix Yaku</string>
+    <string name="Label_YakuFixFirst">First only</string>
+    <string name="Label_YakuFixLast">Finally</string>
+    <string name="Label_YakuFixMiddle">Middle OK</string>
+    <string name="Label_YakuFixMultiwaitOK">Mult tile wait Ron</string>
+    <string name="Label_YakuFixMultiwaitDrawOK">Multi tile wait Draw OK</string>
+    <string name="Desc_YakuFix">Finally:Accept winning hand if it has Yaku finally.
+    							 Middle:Allow also not first calling a tile as first call.
+    							 First only:Required first calling a tile is related a Yaku of winning hand
+									 OR tiles in hand has Yaku or fixed by not multiple tile wait at Ron.\n
+                                 Muti tile wait Ron:For Finally only, accpt multiple tile wait if winning tile has Yaku. Be carefull of temporary furiten.\n     
+                                 Muti tile wait Draw OK:For Middle and First only, accpt multiple tile wait if winning tile drawn has Yaku.     
+                                 </string>
+    <string name="Label_YakuFix2">2-han constraint</string>
+    <string name="Label_YakuFix2Stick4">From 4 CounterSticks</string>
+    <string name="Label_YakuFix2Stick5">From 5</string>
+    <string name="Label_YakuFix2Last">Allows that Yaku is composed finally</string>
+    <string name="Desc_YakuFix2">Kansaki rule allows Richi and SelfDraw,
+			 but disallows Riichi and Win before next discard or Riichi and last tile drawn/discarded because those are Yaku by unexpected event.</string>
+    <string name="Label_EatChange">Call the same Meld</string>
+    <string name="Label_EatChangeNo">No</string>
+    <string name="Label_EatChangeExceptIt">No if the same tile.</string>
+    <string name="Label_EatChangeAllOK">OK fully.</string>
+    <string name="Desc_StatementOnly">This is note of rule, which is not checked by this App.</string>
+    <string name="Desc_YakuStatementOnly">This is note of rule, which is not checked by this App with some exceptions indicated by this background color.</string>
+    <string name="Label_Kuitan">Kuitan</string>
+    <string name="Label_PendingRank0">KeiTen 1-han</string>
+    <string name="Label_PendingRankNo">None all</string>
+    <string name="Label_PendingRankEmpty">Empty OK</string>
+    <string name="Label_PendingRankFuriten">Furiten OK</string>
+    <string name="Label_PendingRank0OK">0-han OK</string>
+    <string name="Label_PendingRank2">2-han constraint</string>
+    <string name="Label_PendingRank2Fix1">2-han possibility</string>
+    <string name="Desc_PendingRank2Fix1">(conditionally 1-han)</string>
+    <string name="Label_PinfuTaken">Pinfu by Draw</string>
+    <string name="Label_Yaku7Pair">7 pairs</string>
+    <string name="Label_Yaku7Pair50_1">50-fu 1-han</string>
+    <string name="Label_Yaku7Pair25_2">25-fu 2-han</string>
+    <string name="Label_Yaku7Pair4Pair">Allows Quads included</string>
+    <string name="Label_YakuMangan8">Double Yakuman(Yakuman*2)</string>
+    <string name="Label_4AnkoTanki">4-anko 1 wait</string>
+    <string name="Label_Kokusi13">Kokushi 13 wait</string>
+    <string name="Label_9Ren9">Nine gates 9 wait</string>
+    <string name="Label_4Wind">Big 4 wind</string>
+    <string name="Label_Yakuman">Yakuman</string>
+    <string name="Label_9RenPinSou">Not mans 9 gates</string>
+    <string name="Label_AllGreenNoBlue">All green w/o dragon</string>
+    <string name="Label_BigRing">7 pairs by pin2-8</string>
+    <string name="Label_NoPair13">13/14 broken</string>
+    <string name="Label_Rank13">13 or more han(Mangan*3 if not Yakuman）</string>
+    <!--string name="Label_OpenReachRon">Pay Yakuman for OpenRiichi-er\'s ron</string-->
+    <string name="Label_5thKan">Accept AbotedDraw by 5th kan for a player\'s tenpai of 4 kans. Select Draw on Menu.</string>
+    <string name="Err_5thKan">5th kan. Setting to protect Yakuman:4Kan is %1$s.</string>
+    <string name="Label_KokusiAnkanRon">Accept ron for ankan by Kokushi.</string>
+    <string name="Desc_Yakuman">Additional to this and Double Youman,4 kans with pair, Big 3 dragons, All honors, Litte 4 wind, All terminals, Heavenly hans, Hand of earth. Some are composable to Double Yakuman like as Big 3 dragons and All honors.</string>
+    <string name="Label_Yakuman_Renho">Hand of man</string>
+    <string name="Label_Yakuman13NoPair">13 broken</string>
+    <string name="Label_Yakuman14NoPair">14 broken</string>
+    <string name="Desc_Yakuman13NoPair">If Yes, check also \"Yakuman\" topic.</string>
+    <string name="Label_RenhoMix">Accept to compositablee with other Yaku.</string>
+    <string name="Label_NoRelatedRule">Hide \"Related\" topic on dialog.</string>
+    <string name="Desc_Yakuman_Renho">Specify rank. Composable means adding han of other Yaku to the han of the rank(Manga:4 han)</string>
+	<string-array name="RenhoRank"> 
+		<item>None</item>
+		<item>Mangan</item>
+		<item>M*1.5</item>
+		<item>M*2</item>
+		<item>M*3</item>
+		<item>Yakuman</item>
+	</string-array>
+    <string name="Info_QueryDealerRonDealer">Dealer\'s win at final hand, you can declare Gameover.</string>
+    <string name="Info_QueryDealerRonNonDealer">Dealer\'s win at final hand, dealer is considering Gameover.</string>
+    <string name="Info_QueryDealerRonDeclaredGameover">Dealer declared Gameover by win at final hand.</string>
+    <string name="Info_QueryDealerRonDeclaredContinue">Dealer declared to continue game regadles win at final hand.</string>
+    <string name="Info_QueryDealerPendingDealer">Dealer\'s tenpai at final hand, you can declare Gameover</string>
+    <string name="Info_QueryDealerPendingNonDealer">Dealer\'s tenpai, dealer considering Gamover</string>
+    <string name="Info_QueryDealerPendingDeclaredGameover">Dealer declared Gameover by tenpai at final hand.</string>
+    <string name="Info_QueryDealerPendingDeclaredContinue">Dealer declared to continue game regardless tenpai at final hand.</string>
+    <string name="Info_ContinueDealerRon">Stay dealer by dealer\'s win</string>
+    <string name="Info_ContinueDrawnHW">Final hand, stay dealer by rule setting of \"AbortiveDraw:stay dealer\".</string>
+    <string name="Info_ContinueDrawnHWNext">Final hand, enter to next round bt rule setting \"AbortiveDraw:rotate dealer\".</string>
+    <string name="Info_GameoverDrawnHW">Final hand, Gameover by rule setting \"AbortiveDraw:rotate dealer\".</string>
+    <string name="Info_ContinueDealerPending">Stay dealer by dealer\'s tenpai.</string>
+    <string name="Info_ContinueAllMinus">Final hand, enter to extra round by all players point are minus.</string>
+    <string name="Info_ContinueDrawn">Final hand, extra to next round by rotating dealer.</string>
+    <string name="Info_GameoverNonDealerRon">Final hand, Gameover by non-dealer\'s win.</string>
+    <string name="Info_GameoverDealerNotPending">Final hand, Gameover by dealer\'s Noten.</string>
+    <string name="Err_ResetHiddenKanDora">Uunderneath kan-Dora is set to No by No underneath-Dora or No kan-Dora.</string>
+
+    <string name="Label_CompStatRon">@string/UserAction_Ron</string>
+    <string name="Label_CompStatMangan">@string/Label_DrawnMangan</string>
+    <string name="Label_CompStatPending">@string/Label_Pending</string>
+    <string name="Label_FinalGameTotalReach">(including returned RiichiBets)</string>
+    <string name="Label_GameOver">Gmeover</string>
+    <string name="Err_AlreadyGameOver">Game was over.</string>
+    <string name="Label_GameContinue">Continue</string>
+    <string name="Info_GameEndDeclareRon">Final hand, Gameover by declaration by dealer\'s win</string>
+    <string name="Info_GameEndDeclarePending">Final hand, Gameover bt declaration by dealer\'s tenpai.</string>
+    <string name="Label_YakuStandard">Standard</string>
+    <string name="Desc_YakuStandard">(see another topic for 7 pairs)</string>
+    <string name="Label_YakuStandardList">Tanyao, Pinfu, 1 identical sequence, Last tile, Win by KanDraw, Double-Riichi,Robbing a Kan\n
+					All triplet, 3 color straight,Straight, Terminal and honor, 3 closed triplet, Little 3 dragons, All terminals and honors, 3 color triplet,3 kans\n
+					half flush, Terminal in each set, 2 identical sequences\n
+					Flush</string>
+    <string name="Desc_YakuLocal">See also topic of Yakuman, Hand of man, NagasiMangan. Otherwise, take agree in the group beforhand.</string>
+    <string name="Label_SpritPos">Wareme(割れ目)</string>
+    <string name="Desc_SpritPos0">" = SpritPos : You will see \"割\" in End-of-Hand dialog."</string>
+    <string name="Label_SpritPosID">割</string>
+    <string name="Desc_SpritPos">"  (Player of wall broken position at start of a hand pays double.)"</string>
+    <string name="Desc_SpritPos2">Chombo, Noten penalty, CounterStick is not covered, Nagasimangan is covered if it is one of win by rule setting.\n
+						In case of Pao, Sprit applied after Pao penalty applied.
+						</string>
+    <string name="Info_RobotWaited">\"Wait!\" blocked Robot\'s %1$s.</string>
+    <string name="Info_RobotWaitedRescheduled">\"CancW\" released blocking Robot\'s %1$s.</string>
+    <string name="Info_PlayerWaited">\"Wait!\" blocked %1$s.</string>
+    <string name="Info_PlayerWaitedRescheduled">Blocking %1$s was canceled.</string>
+    <string name="TimeToRon">Ron period</string>
+    <string name="TimeToRonPonKan">Pon/Kan period</string>
+    <string name="TimeAfterTakable">Chii/Draw period</string>
+    <string name="WaitPonKan">in Ron period</string>
+    <string name="WaitTake">in Pon/Kan period</string>
+    <string name="LastDrawn">AbortiveDraw</string>
+    <string name="AutoDiscard">AutoDiscard</string>
+    <string name="AutoTake">AutDraw</string>
+    <string name="AutoTake0">Chii/Draw</string>
+    <string name="AutoTakeKan">AutoKanDraw</string>
+    <string name="AutoTakeKan0">KanDraw</string>
+<!--wifidirect-->
+    <string name="ErrOtherActiveSession">
+				"Wireless mode can not be mixed.n"
+                "Current mode is %1$s."
+		</string>
+    <string name="WifiDirectGranted">WifiDirect is now available.</string>
+    <!--string name="WifiDirectNotGranted">WifiDirect is not available.</string-->
+    <string name="WifiDirectRequiresGranted">Permission of \"Access to location\" is required to use WifiDirect.</string>
+    <string name="ExternalStorageForSDRequiresGranted">No permission to \"Write to SD\", Internal data folder will be used which is cleared at reinstallation.</string>
+    <string name="ExternalStorageForSDGranted">Pemission of \"wrie to SD\" is allowd.</string>
+    <string name="RemoteIP">WiFi</string>
+    <string name="ErrNowBTConnected">Retry after once disconnect remaining bluetooth connection.</string>
+    <string name="DialogTitle_DeviceDetail">WiFiDirect</string>
+    <string name="DialogTitle_WDAR">WiFi Direct reconnection</string>
+    <string name="Title_ConfirmDisconnect">Confirmation to disconnect.</string>
+    <string name="Title_ConfirmUnpairGO">Confirmation of unpairing at server.</string>
+    <string name="Msg_ConfirmUnpairGO">On serve, \"Unpair\" dose unpair all. \nDo you proceed \"Uppair\"?</string>
+    <string name="Msg_ConfirmDisconnect">\"Unpair\" disconnects remaining connection. Do you proceed \"Unpair\"?</string>
+    <string name="Msg_IPConnectionExist">Active session remains, \"Disconnct\" it beforehand.</string>
+    <string name="InfoWifiEnabled">WiFi is now available.</string>
+    <string name="ErrWifiEnable">WiFi is not available.</string>
+    <string name="InfoWifiDisabled">WiFi was disabled.</string>
+    <string name="ErrWifiDisable">Failed to disable WiFi.</string>
+    <string name="WarningWDNotConnected">No WiFi direct pairing.</string>
+    <!--string name="InfoWDOpenPort">サーバーとしてペアリングされました、"接続受付"でクライアントからの接続待ちにして下さい</string-->
+    <!--string name="InfoWDUseOwnerIP">サーバーのIPアドレス: </string-->
+    <string name="DeviceAvailable">Available</string>
+    <string name="DeviceInvited">Invited</string>
+    <string name="DeviceConnected">Paired</string>
+    <string name="DeviceFailed">Failed</string>
+    <string name="DeviceUnavailable">Unavailable</string>
+    <string name="DeviceUnknown">Unknown</string>
+    <string name="DeviceType_Dummy">Robot</string>
+    <string name="DeviceType_LocalServer">This Device(Server)</string>
+    <string name="DeviceType_LocalClient">This Device(Client)</string>
+    <string name="DeviceType_RemoteServer">RemoteServer</string>
+    <string name="DeviceType_RemoteClient">RemoteClient</string>
+    <!--string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。Android8(Oreo)デバイスは設定で（Google または セキュリティとプライバシー）,位置情報,現在地にアクセスをオンにする必要があります</string-->
+    <string name="empty_message">No paired device found. do \"Discover\". See also Help.</string>
+    <string name="Wifi_Pair_NotAvailableDevice">do \"Pairing\" for "Available\" device.</string>
+    <string name="Wifi_Pair_NotConnectedDevice">Select other than \"Available\".</string>
+    <string name="Wifi_Pair_NotIPConnected">Select \"Connected\" device.</string>
+    <string name="Wifi_Pair_AlreadyClientInGroup">Already \"Paired\" as client.</string>
+    <string name="Wifi_Pair_NotPaired">Select \"Paired\" device.</string>
+    <string name="Wifi_Pair_NoPairedDevice">No device to \"Unpair\".</string>
+    <string name="Wifi_SelectDevice">Select a device.</string>
+    <string name="ProgressDialogTitle">\"Cancel\" will dismiss this dialog.</string>
+    <string name="ProgressDialogMsgFindingPeer">Discovering</string>
+    <string name="MyOwnerYes">Server</string>
+    <string name="MyOwnerNo">Client</string>
+    <string name="empty"></string>
+    <string name="performIPConnect">This is client side, do \"Connect\" after confirmation of server entered to \"Accept\" status.</string>
+    <string name="performIPAccept">This is server side,\nwait connection request from client after pressing \"Accept\".</string>
+    <!--string name="deviceFound">デバイスが見つかりました、\"利用可能\" を選択して\"ペア設定\"をしてください。Android8(Oreo)デバイスはアンドロイドの\"設定\"で\"Google\",\"位置情報\",\"現在地にアクセス＝ＯＮ\"にする必要があります</string-->
+    <string name="deviceFound">Found, do \"Pair\" for \"vailable\" device. See also Help.</string>
+    <string name="IPInSession">Connected</string>
+    <string name="server_text">This device is server side(Connection Acceptor)</string><!--1Aa4-->
+    <string name="client_text">This device is client side(Connection requester).</string> <!--1Aa4-->
+    <string name="GroupOwnerIP">ServerIP address : </string>
+    <string name="ProgressDialogMsgConnecting">Pairing : </string>
+    <string name="ProgressDialogMsgConnectingNFC">NFC pairing : </string>
+    <string name="IPConnect">Connect</string>
+    <string name="AcceptIPConnection">Accept</string>
+    <string name="IPDisConnect">Discon</string>
+    <string name="IPReconnected">Conn</string>
+    <string name="InfoIPStopListening">Closed accepting port.</string>
+    <string name="ErrWifi">Failed to get IP address of this device.\nConfirm status of Wifi on Android\'Settings after closing this dialog.</string>
+	<string name="Msg_WaitingIPAccept">"Accepting\n IP address=%1$s, PortNo=%2$d\n"
+					</string>
+	<string name="Msg_WaitingIPConnect">"Connecting to %1$s (PortNo＝%2$d).\n"
+					</string>
+    <string name="Connection_to_">Connect-&lt;</string> 
+    <string name="IPConnectionErr">ConnectionError</string>
+<!--WifiDirect-->
+    <string name="connect_peer">Pair</string>
+    <string name="enable_p2p_button">Settings</string>
+    <string name="discover_peers_button">Discover</string>
+    <string name="PeerDeviceName">Paired: </string>
+    <string name="disconnect_peer_button">Unpair</string>
+    <string name="DiscoveryInitiated">Discover</string>
+    <string name="DiscoveryFailedReason">Discover failed by reson: </string>
+    <string name="RemoveFailedReason">Unpair failed by reson=: </string>
+    <string name="ConnectFailedRetry">Pairing failed by reson=：</string>
+    <string name="ChannelLostRetry">Channel was lost, retrying.</string>
+    <string name="Info_WDPair_Deleted">Deleted Pair:</string>
+    <string name="Info_WDPair_Added">Added Pair:</string>
+    <string name="Info_WDPair_Updated">Updated Pair:</string>
+    <string name="ChannelLostEnableP2P">Error! Channel was lost.\nRetry after enabling WiFi Direct(See Help).</string>
+    <string name="AbortingConnection">Unpairing</string>
+    <string name="ConnectAbortReason">Unpair failed by reson: </string>
+    <string name="p2p_off_warning">
+					"\"WiFi Direct\" is not available. Enable it from \"Settings\"(See \"Help\")\n"
+    </string>
+    <string name="wifi_failure_reason_busy">Bussy</string>
+    <string name="wifi_failure_reason_error">Internal Error</string>
+    <string name="wifi_failure_reason_unsupported">It is not supported for this device.</string>
+    <string name="ErrMixedModeRemainBT">Wireless mode could not be mixed. To use Wifi direct, disconnect remaining Bluetooth connection all.</string>
+    <string name="ErrMixedModeRemainWD">Wireless mode could not be mixed. To use Bluetooth, disconnect remainig Wifi direct connection all.</string>
+    <string name="ErrWaveFile">MediaPlayer DataSource(%1$s) Error</string>
+</resources>

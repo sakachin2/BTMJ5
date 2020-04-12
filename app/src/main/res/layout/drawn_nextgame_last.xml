@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+         android:orientation="vertical"
+>
+<!-- *** drawn next filed ***-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+        >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                    android:text="@string/Label_NextGame"
+                android:textSize="@dimen/completedlg_textsize"
+            />
+            <RadioGroup
+                android:id="@+id/rgNextGame"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbContinue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/Label_Drawn_Continue"
+                />
+
+                <RadioButton
+                    android:id="@+id/rbNext"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Label_Drawn_Next"
+                />
+
+                <RadioButton
+                    android:id="@+id/rbNextPlayer"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Label_Drawn_NextPlayer"
+                    android:visibility="gone"
+        	    />
+
+                <RadioButton
+                    android:id="@+id/rbReset"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/Label_Drawn_Reset"
+        	    />
+            </RadioGroup>
+		</LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+        >
+            <CheckBox
+                 android:id="@+id/cbSuspend"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:text="@string/Label_NextGameSuspend"
+            />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                    android:text="@string/Desc_NextGameSuspend"
+            />
+		</LinearLayout>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+                android:text="@string/Desc_DrawnNextLast"
+        />
+</LinearLayout>

@@ -1,0 +1,39 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="listview_itemtext">24sp</dimen>
+    <dimen name="smalldevice_title_textsize">20sp</dimen>
+    <dimen name="smalldevice_title_height">20dp</dimen>
+    <!--dimen name="textview_middle">24sp</dimen-->
+    <dimen name="textview_middle">22sp</dimen>
+    <dimen name="textview_small_middle">20sp</dimen>
+    <dimen name="textview_large">30sp</dimen>
+    <dimen name="textview_small">16sp</dimen>
+    <dimen name="textview_membername">20sp</dimen>
+    <dimen name="textview_editable">24sp</dimen>
+    <dimen name="gvbtn_left">60dp</dimen>
+    <dimen name="gvbtn_left_small">45dp</dimen>
+    <dimen name="gvbtn_right">60dp</dimen>
+    <dimen name="gvbtn_right_small">45dp</dimen>
+    <dimen name="gvbtn_top">60dp</dimen>
+    <dimen name="gvbtn_bottom">60dp</dimen>
+    <dimen name="gvbtn_top_small">45dp</dimen>
+    <dimen name="gvbtn_bottom_small">45dp</dimen>
+    <dimen name="btn_rule_related_height">32dp</dimen>
+    <dimen name="btn_rule_related_width">64dp</dimen>
+    <dimen name="btn_rule_related_textsize">16sp</dimen>
+    <dimen name="main_bottom">60dp</dimen>
+    <dimen name="main_title">40dp</dimen>
+    <dimen name="main_msgbar">50dp</dimen>
+    <dimen name="completedlg_textsize">24sp</dimen>
+    <dimen name="okngresponse_textsize">20sp</dimen>
+    <dimen name="completedlg_textsize_middle">18sp</dimen>
+    <dimen name="spinner_item">20sp</dimen>
+    <dimen name="spinner_dropdown">24sp</dimen>
+    <dimen name="menudlg_width_portrait">73%</dimen>     <!--95==72-->
+    <dimen name="menudlg_width_landscape">46%</dimen>    <!--65==45-->
+    <dimen name="rb_textsize">12sp</dimen>
+    <dimen name="cb_textsize">12sp</dimen>
+    <dimen name="tv_textsize">12sp</dimen>
+    <dimen name="dlg_button_height">30dp</dimen>
+    <dimen name="dlg_min_width">98%</dimen>
+</resources>

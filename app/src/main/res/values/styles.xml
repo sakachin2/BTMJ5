@@ -1,0 +1,147 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerDropDownItemStyle</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerDropDownItemStyle</item>
+    	<item name="android:buttonStyle">@style/CustomButtonStyleNoCaps</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerDropDownItemStyle</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerDropDownItemStyle</item>
+    </style>
+    <!--style name="AlertDialogThemeCustom" parent="android:Theme.Holo.Dialog" -->
+    <style name="AlertDialogThemeCustom" parent="android:Theme.Holo.Light.Dialog"> 
+    	<!--item name="android:layout_width">wrap_content</item-->
+    </style>
+    	<!--item name="android:textColor">#00ff00</item-->
+    	<!--item name="android:windowMinWidthMajor">0dip</item-->     <!--landscape-->
+    	<!--item name="windowMinWidthMajor">0dip</item-->
+    	<!--item name="android:windowMinWidthMinor">80%</item-->
+    	<!--item name="android:windowMinWidthMajor">400</item-->
+    	<!--item name="android:windowMinWidthMajor">@dimen/menudlg_width</item-->
+    	<!--item name="android:windowMinWidthMinor">@dimen/menudlg_width_portrait</item-->     <!--portrait-->
+
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.Holo.Light.Dialog" >
+    </style-->
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.Dialog" >
+    </style-->
+    <!--style name="DialogThemeCustom" parent="android:Theme" >
+    </style-->
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.Dialog" >
+    </style-->
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.Light" >
+    </style-->
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.Dialog.Light" >
+    </style-->
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.Dialog" >
+    	<item name="@android:windowBackground">@color/whitegray</item>
+    	<item name="@android:textColor">@color/black</item>
+    </style-->
+    <!--style name="DialogThemeCustom" parent="android:Theme.Holo.Dialog" >
+    	<item name="android:windowBackground">@color/whitegray</item>
+    	<item name="android:textColor">@color/black</item>
+    	<item name="android:checkboxStyle">@style/CustomCBStyle</item>
+    	<item name="android:radioButtonStyle">@style/CustomRBStyle</item>
+    </style-->
+    <!--style name="DialogThemeCustom" parent="android:Theme.Holo.Light.Dialog" >
+    	<item name="android:radioButtonStyle">@style/CustomRBStyleHLD</item>
+    	<item name="android:checkboxStyle">@style/CustomCBStyleHLD</item>
+    	<item name="android:textViewStyle">@style/CustomTVStyleHLD</item>
+    	<item name="android:windowMinWidthMinor">@dimen/dlg_min_width</item>
+    </style-->
+    <!--style name="DialogThemeCustom" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
+    </style-->
+    <!--style name="DialogThemeCustom" parent="Theme.AppCompat.Light.Dialog">
+    </style-->
+    <!--style name="DialogThemeCustomNarrow" parent="android:Theme.Holo.Light.Dialog"-->
+    <style name="DialogThemeCustomNarrow" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
+    	<!--item name="android:windowMinWidthMinor">@dimen/dlg_min_width</item-->
+    	<item name="android:buttonStyle">@style/CustomButtonStyleHLD</item>
+    	<item name="android:radioButtonStyle">@style/CustomRBStyleHLD</item>
+    	<item name="android:checkboxStyle">@style/CustomCBStyleHLD</item>
+    	<item name="android:textViewStyle">@style/CustomTVStyleHLD</item>
+    	<!--item name="android:titleTextStyle">@style/CustomTitleStyleHLD</item-->
+    	<item name="android:windowTitleStyle">@style/CustomTitleStyleHLD</item>
+    </style>
+    <!--style name="DialogThemeCustomWithTitle" parent="@style/Theme.AppCompat.Light.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
+    <!--style name="DialogThemeCustomWithTitle" parent="@style/Theme.DeviceDefault.Light.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
+    <!--style name="DialogThemeCustomWithTitle" parent="@android:style/Theme.Holo.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
+    <!--style name="DialogThemeCustomWithTitle" parent="@android:style/Theme.Holo.Light.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
+    <style name="DialogThemeCustomWithTitle" parent="@android:style/Theme.DeviceDefault.Light.Dialog"> <!--titlever missing on HUAWEI T5 android8.0-->
+    	<item name="android:windowNoTitle">false</item>
+    	<item name="android:windowTitleStyle">@style/CustomTitleStyleWithTitle</item>
+    </style>
+
+    <style name="spinnerItemStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="spinnerDropDownItemStyle">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="CustomCBStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="CustomRBStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="CustomRBStyleHLD" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textSize">@dimen/rb_textsize</item>
+    </style>
+    <style name="CustomCBStyleHLD" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textSize">@dimen/cb_textsize</item>
+    </style>
+    <style name="CustomTVStyleHLD" >
+        <item name="android:textSize">@dimen/tv_textsize</item>
+    </style>
+    <style name="CustomTitleStyleHLD">
+        <item name="android:textSize">@dimen/smalldevice_title_textsize</item>
+        <item name="android:textColor">@color/smalldevice_title_color</item>
+        <!--item name="android:layout_height">@dimen/smalldevice_title_height</item--><!--titlebar hight couldnot change-->
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <style name="CustomTitleStyleWithTitle">
+        <item name="android:textSize">@dimen/smalldevice_title_textsize</item>
+        <item name="android:textColor">@color/smalldevice_title_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <!--style name="CustomButtonStyleHLD" parent="Widget.AppCompat.Button.Small">
+    </style-->
+    <!--style name="CustomButtonStyleHLD" parent="android:Widget.Button">
+    	<item name="android:layout_height">@dimen/main_button_height</item>
+    </style-->
+    <!--style name="CustomButtonStyleHLD" parent="Widget.AppCompat.Button"-->
+    <style name="CustomButtonStyleHLD" parent="android:Widget.Button">
+    	<item name="android:layout_height">@dimen/dlg_button_height</item>
+    	<!--item name="android:textColor">@color/black</item-->
+    	<!--item name="android:background">@color/bg_dialog_button</item-->
+    	<!--item name="android:textAllCaps">false</item-->
+    </style>
+    <!--style name="CustomButtonStyleNoCaps" parent="android:Widget.Button"-->
+    <style name="CustomButtonStyleNoCaps" parent="Widget.AppCompat.Button">
+    	<item name="android:textAllCaps">false</item>
+    	<item name="textAllCaps">false</item>
+    </style>
+
+</resources>

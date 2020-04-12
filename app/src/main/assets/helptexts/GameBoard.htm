@@ -1,0 +1,39 @@
+Buttons 1.
+<BR>
+<BIG><B>Rule</B></BIG> : Open "RuleSettings" dialog. Changing rule is not available in this situation.
+<BR>
+<BIG><B>Score</B></BIG> : Open "Win Claim" dialog to claim value of your win.
+<BR>
+<BIG><B>Riichi</B></BIG> : Declare Riichi. Press before "Discard".
+ When pushed it changes to <BIG><B>Can.Ri</B></BIG> to accept cancel Riichi.
+<BR>
+<BIG><B>OpenRi</B></BIG> : Declare Open-Riichi. Press before "Discard".
+ When pushed it changes to <BIG><B>Can.OR</B></BIG> to accept cancel Open-Riichi.
+ This button is visible if <B>Allow Open</b> of <B>RuleSettings,Yaku,Riichi</B> is checked on.
+<BR>
+<BR>
+Buttons 2.
+<BR>
+<BIG><B>Win</B></BIG>, Call(<BIG><B>Pon</B></BIG>, <BIG><B>Chii</B></BIG>, <BIG><B>Kan</B></BIG>),
+ <BIG><B>Draw</B></BIG> have periods for action each at <B>RuleSettings</B>,<B>Oper</B>,<B>DelayTime</B>.
+<BR>
+This is for, e.g. protecting anyone to claim Win after you called Pon that decrease his chance of win.
+<BR>
+<BIG><B>Draw</B></BIG> : You can also draw by touching small green circle on wall.
+ This button's visibility is option of <B>Preference</B>.
+<BR>
+<BIG><B>Discard</B></BIG> : Tile just drawn or touched is framed green and cadidate of discard.
+ Flicking the tile is also "Discard"ing.
+ This button's visibility is option of <B>Preference</B>.
+<BR>
+<BIG><B>Cancel</B></BIG> : By <B>RuleSettings</B>.<B>Oper</B>.<B>Wait!</B>:<B>win call is cancelable</B>,
+ this button appears when <B>Win</B> was pressed.
+<BR>
+In this situation, Push "Win" again to declare Win, push "Cancel" to cancel "Win".
+<BR>
+For call Pon,Chii and Draw+Kan, when selecting tile is requied for mutiple Melds candidate
+ Recall after selecting tile for a meld completes the call. 
+ You can not cancel your action. It is canceled by timeout if set.
+<BR>
+<BR>
+<SMALL>OnBoard 2020/02/11</SMALL>

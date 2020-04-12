@@ -1,0 +1,98 @@
+Depending Android version, some Android Settings are required.
+e.g) For Android8(Oreo) setting about location.
+<BR>
+Settings, Google, Account services, Location, set "Access to my location" to ON.
+<BR>
+Settings, Apps & notifications, Apps, ｅ雀, Permissions, set "Your location" to ON.
+<BR>
+----------------------------------------------------------------------
+<BR>
+Assign role of server to anyone in members,
+ who controls WifiDirect connection with other members(calls Client).
+ Server set <B>As server</B> to ON,
+ repeat for all clients to "Discover", "Pair" and "Connect".
+<BR>
+----------------------------------------------------------------------
+<BR>
+1st line display your <BIG><B>Device</B></BIG> name.
+<BR>
+It can be changed by Android <B>Settings</B>,<B>Wi-FiDirect</B>、<B>Device name</B>.
+<BR>
+Fill <BIG><B>ID-Name</B></BIG> by appropriate unique handle name up to 8 characters.
+ (This is shared with ID-Name on Bluetooth connection dialog.)
+ This is diaplayed on nameplate on board.
+<BR>
+Note. When <B>Resume</B> from <B>Records</B>, ID-Name is checked that you are member of the record.
+<BR>
+<BR>
+<BIG><B>ConnectedMember</B></BIG> : 
+Display <B>ID-Name</B> connected.
+<BR>
+<BR>
+<BIG><B>As Server</B></BIG>：
+On server device, set to ON, then press <B>Pair</B>.
+ According pairing status is saved to Android, it may not be as expected who is a server.
+ Result of pairing refrects to the checkbox and can not be changed.
+<BR>
+<BR>
+<BIG><B>Middle Buttons</B></BIG> 
+<BR>
+At first do pairing between 2 devices. Press <BIG><B>Discover</B></BIG> on both side simultaneously.
+<B>Paired</B> and <B>Available</B> device will be listed on <B>DeviceList</B>.
+It may take a few minutes.
+<BR>
+When discovering fails, try Wi-Fi Off/On entering into Android settings by <BIG><B>Settings</B></BIG> button.
+<BR>
+When <B>Available</B> device is displayed on <B>DeviceList</B>,
+ press <B>Pair</B> quickly before timeout.
+<BR>
+Bluetooth do pairing by <B>Connect</B>, on the other hand Wi-Fi Direct requires Paring before connecting.
+<BR>
+Request Pairing from one side. If a dialog popup to acuire permission, reply Yes.
+ When it takes time, close progress dialog, 
+ try <B>Pair</B> from other side.
+ If staying <B>Invited</B>, once <B>Unpair</B> then retry <B>Pair</B>.
+ It may be successfully Paired(connected) if you deleted all Remembered Groups entering to Android:Settings by <B>Settings</B> button of this dialog. 
+<BR>
+When became Paired, it is displayed at side of device name which is server or client.
+For paired device discovered, role of server or client is fixed already. Advance to connect process.
+<BR>
+<BIG><B>Accept</B></BIG> button appears on server.
+<BR>
+After server pushed <B>Accept</B>, client push <BIG><B>Connect</B></BIG>.
+<BR>
+<B>ID-Name</B> is diaplayed on <B>ConnectedMember</B> after connection completed.
+<BR>
+Repeat this procedure with other client one by one.
+<BR>
+When member are all present, close this dialog and start game by <B>Game</B> button.
+<BR>
+<BR>
+<BIG><B>DeviceList</B></BIG> 
+"Paired" and "Avilable" device are listed.
+<BR>
+<BIG><B>Unpair</B></BIG> returns "Paired" and "Invited" to "Available".
+Note. "Unpair" on server unpairs all paring.
+<BR>
+<BR>
+----------------------------------------------------------------------
+<BR>
+In case of connection failure during game,
+ select "Restart" or "Suspend/Gameover" when reconnected successfully.
+<BR>
+<BIG><B>Restart</B></BIG>：（Only by server）goes back to the hand.
+<BR>
+Depending timing of connection failure, countinued hand may be strange.
+In that case you can re-call "Suspend/Gameover" from menu until end of the hand to go to Suspend/Gameover.
+<BR>
+<BIG><B>Suspend/Gamover</B></BIG>：Select this when reconnection failed or all membes dose not want to continue the game.
+<BR>
+On "SuspendGame Claim" dialog select <B>Suspend</B> or <B>Gameover</B>. The hand is canceled in both case.
+<BR>
+If "Gameover" was selected, penalty of <B>RuleSettingd,ConnectionFailure</B> is imposed.
+<BR>
+If you mistaken to close, you can reopen this dialog from menu:<B>ConnectionFailure</B>.
+<BR>
+<BR>
+
+<SMALL>WDA 2020/02/11</SMALL>

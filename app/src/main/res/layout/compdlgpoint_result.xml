@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ***************************************************************** -->
+<!-- for include normal point:tiles and normal point exept stick point -->
+<!-- ***************************************************************** -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> <!-- result of each player for completedlg ,no dealer checkbox -->
+    <!--LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="60dp"
+         android:orientation="horizontal"
+            android:id="@+id/LLCompTiles"
+    -->   <!--iamgeview -->
+        <!--com.btmtest.game.gv.CompDlgTiles
+            android:id="@+id/CompTiles"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+        /-->
+    <!--/LinearLayout-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/bg_dialog"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <include layout="@layout/compdlgtiles"
+        />
+    </LinearLayout>
+
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >   <!--point and rank-->
+        <LinearLayout
+             android:layout_width="0dp"
+                         android:layout_weight="0.3"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                android:gravity="center_vertical"
+        >
+            <!--CheckBox
+                android:id="@+id/cbDealer"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_Dealer"
+                android:gravity="center_vertical"
+                android:layout_marginRight="10dp"
+            /-->
+            <TextView
+                 android:id="@+id/tvWinnerEswn"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                        android:textSize="@dimen/spinner_item"
+                android:gravity="center_vertical|right"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+            />
+            <Spinner
+                 android:id="@+id/spnPoint"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                android:visibility="gone"
+            />
+            <TextView
+                 android:id="@+id/tvBasePoint"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                        android:textSize="@dimen/spinner_item"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>    <!--Point-->
+        <LinearLayout
+             android:layout_width="0dp"
+                         android:layout_weight="0.25"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+        >
+            <Spinner
+                 android:id="@+id/spnRank"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                        android:textSize="@dimen/spinner_item"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+            />
+            <TextView
+                 android:id="@+id/tvRank"
+                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                 android:layout_width="wrap_content"
+                        android:textSize="@dimen/spinner_item"
+            />
+        </LinearLayout>     <!--Rank-->
+        <LinearLayout
+             android:layout_width="0dp"
+                 android:layout_weight="0.45"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+        >    <!--pointAmmount-->
+            <TextView
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                     android:layout_weight="0.3"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                 android:text="@string/Label_PointAmmount"
+                        android:textSize="@dimen/textview_small_middle"
+            />         
+            <TextView
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                     android:layout_weight="0.2"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                     android:id="@+id/pointCalc"
+            />         
+            <TextView
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                     android:layout_weight="0.5"
+                android:gravity="center_vertical|right"
+                android:layout_marginRight="10dp"
+                     android:id="@+id/pointAmmount"
+                        android:textSize="@dimen/completedlg_textsize"
+            />         
+        </LinearLayout> <!--PointAmmount-->
+    </LinearLayout> <!--point and rank -->
+</LinearLayout>

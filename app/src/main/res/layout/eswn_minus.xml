@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+> 
+	<LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+		            android:layout_weight="0.5"
+    >
+        <TextView android:id="@+id/LabelPayer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                             android:text="@string/Label_Payer"
+                                 android:layout_weight="1"
+                        android:layout_marginLeft="20dp"
+        />
+        <TextView android:id="@+id/tvPayer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                                 android:layout_weight="1"
+                android:textSize="@dimen/completedlg_textsize"
+        />
+        <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_weight="1"
+                android:gravity="right"
+        >
+            <TextView      android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                			android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                                     android:text="@string/Label_Gainer"
+                android:textSize="@dimen/completedlg_textsize"
+            />
+		</LinearLayout>
+	</LinearLayout>
+	<LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+		            android:layout_weight="0.5"
+    >
+                <CheckBox
+                    android:id="@+id/cbPayToE"
+                    android:text="@string/ESWN_E"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                             android:layout_weight="1"
+                />
+                <CheckBox
+                    android:id="@+id/cbPayToS"
+                    android:text="@string/ESWN_S"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                             android:layout_weight="1"
+                />
+                <CheckBox
+                    android:id="@+id/cbPayToW"
+                    android:text="@string/ESWN_W"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                             android:layout_weight="1"
+                />
+                <CheckBox
+                    android:id="@+id/cbPayToN"
+                    android:text="@string/ESWN_N"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                             android:layout_weight="1"
+                />
+	</LinearLayout>
+</LinearLayout>

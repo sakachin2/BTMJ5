@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> 
+    <include layout="@layout/setting_rule_opt_initialscore"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/Label_AccountsSettingTopPrize"
+        android:textSize="@dimen/textview_middle"
+        /> 
+        <TextView
+                android:layout_marginLeft="10dp"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:id="@+id/SettingTopPrize"
+        /> 
+    </LinearLayout>
+    <include layout="@layout/setting_rule_opt_orderprize"
+    />
+    <!--include layout="@layout/setting_rule_opt_scoretopoint"
+    /-->
+    <include layout="@layout/setting_rule_opt_bird"
+    />
+    <include layout="@layout/setting_rule_opt_minusstop"
+    />
+    <include layout="@layout/setting_rule_opt_spritpos"
+    />
+    <include layout="@layout/setting_rule_opt_dora"
+    />
+    <include layout="@layout/setting_rule_opt_robot"
+    />
+</LinearLayout>

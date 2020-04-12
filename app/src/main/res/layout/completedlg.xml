@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+     android:id="@+id/DialogContainer"
+>
+
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+            android:background="#ffccff99"
+        >
+            <LinearLayout
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:layout_weight="1"
+            >
+                <include layout="@layout/completedlg_results"
+                        android:id="@+id/compdlgresult"
+                />
+	        </LinearLayout>
+        </LinearLayout>  <!--result-->
+
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater2"
+        />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+    > <!--above buttons-->
+        <ScrollView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            > <!--one view in scroll-->
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:background="#ffccff99"
+                > <!--color-->
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                    >
+                        <!--CheckBox
+                            android:id="@+id/cbNormalGain"
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/NormalGain"
+                            android:textSize="@dimen/completedlg_textsize"
+                        /-->
+                        <TextView
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/NormalGain"
+                            android:textSize="@dimen/completedlg_textsize"
+                        />
+                        <TextView
+                            android:id="@+id/tvCompType"
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/completedlg_textsize"
+                            android:layout_marginLeft="20dp"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                                    android:id="@+id/llDoraGainers"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                        >
+                            <include layout="@layout/compdlgdora"
+                                    android:id="@+id/compdlgdora"
+                            />
+                        </LinearLayout>
+
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                        >   <!--3gainer -->
+                            <LinearLayout
+                                 android:layout_width="fill_parent"
+                                 android:layout_height="2px"
+                            />
+                            <include layout="@layout/compdlgplayer"
+                                    android:id="@+id/gainer1"
+                                    android:visibility="gone"
+                            />   <!--gainer-1 -->
+                            <include layout="@layout/compdlgplayer"
+                                    android:id="@+id/gainer2"
+                                    android:visibility="gone"
+                            />   <!--gainer-1 -->
+                            <include layout="@layout/compdlgplayer"
+                                    android:id="@+id/gainer3"
+                                    android:visibility="gone"
+                            />   <!--gainer-1 -->
+                        </LinearLayout> <!--3 gainer-->
+                    </LinearLayout> <!--dora gainer-->
+
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                                android:id="@+id/llReachers"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/compdlgreachers"
+                        />
+                    </LinearLayout>  <!--reachers-->
+
+
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/compdlgerr"
+                                android:id="@+id/compdlgerr"
+                        />
+                    </LinearLayout>  <!--error-->
+
+
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                             android:id="@+id/llPao"
+                         android:visibility="gone"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <!--CheckBox
+                            android:id="@+id/cbPao"
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/NormalGainPao"
+                            android:textSize="@dimen/completedlg_textsize"
+                        /-->
+                        <TextView
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/NormalGainPao"
+                            android:textSize="@dimen/completedlg_textsize"
+                        />
+                        <include layout="@layout/compdlgpao"
+                                android:id="@+id/compdlgpao1"
+                                    android:visibility="gone"
+                        />
+                        <include layout="@layout/compdlgpao"
+                                android:id="@+id/compdlgpao2"
+                                    android:visibility="gone"
+                        />
+                        <include layout="@layout/compdlgpao"
+                                android:id="@+id/compdlgpao3"
+                                    android:visibility="gone"
+                        />
+                    </LinearLayout>  <!--pao-->
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                                android:id="@+id/llcompd_nextgame"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/compdlg_nextgame"
+                        />
+                    </LinearLayout>  <!--error-->
+                </LinearLayout> <!--color-->
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+
+                />
+  		              <include layout="@layout/rule_related"
+                      />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                            android:id="@+id/llRelatedRule"
+                            android:visibility="gone"
+                >
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_opt_dora"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_opt_spritpos"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/setting_rule_opt_err"
+                        />
+                    </LinearLayout>
+                </LinearLayout> <!--RelatedRule-->
+            </LinearLayout><!-- one view hosted in scrollview-->
+        </ScrollView>
+    </LinearLayout> <!--above buttons-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+            android:background="#ffccff99"
+    > <!--OK/NG reply -->
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+        >
+            <include layout="@layout/eswnresponse"
+            />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >   <!--buttons-->
+        <Button
+            android:id="@+id/OK"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/OK"
+            android:layout_gravity="center_vertical"
+        />
+        <!--Button
+            android:id="@+id/CompleteNG"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/NG"
+            android:layout_gravity="center_vertical"
+        /-->
+        <Button
+            android:id="@+id/Cancel"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/NG"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/FixTotal"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/FixTotal"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/ShowRule"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_ShowRule"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Close"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Cancel"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Help"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Help"
+            android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,49 @@
+Action menu during game.
+ Also used to re-open the dialog closed by mis-operation or re-open to re-send because received \"NG".
+<BR>
+Use <B>Help</B> button for game panel buttons.
+<BR>
+<BR>
+<B>End of a hand</B>:re-open "End-of-Hand" dialog.
+<BR>
+<B>Draw</B>: show "ExaustiveDraw Claim" or "AbortiveDraw Claim" depending the hand status.
+ When "AbortiveDraw" was shown, game enters to <B>Wait!</B> status. Action "Win" is allowd but "Pon"/"Kan"/"Chii"/"Draw" is not allowed.
+ and AutoDraw stops.
+ In case of "ExaustiveDraw"(Last tile was discarded without winner), "ExautiveDraw Claim" dialog is shown to all players,
+ Use this menu item to re-open the dialog.
+<BR>
+ If you want to suspend the game, open AbortiveDraw dialog selecting this menu item and set <B>Suspend/Gamover</B> checkbox on.
+<BR>
+<B>On FinalHand</B>:at final hand, confirm to continue the game staying dealer or force gameover
+ according to RuleSettings:"Gameover by Tenpai/win".
+<BR>
+<B>Tobi</B>:re-open "Tobi Confirmation"(bunkrupt occured) dialog.
+<BR>
+<B>Final score</B>:re-open "Final score" dialog to confirm score at gameover.
+<BR>
+<B>Request suspend</B>:the hand continues but at the end of the hand,
+open "SuspendGame  Claim" dialog to suspend the game or force gameover.
+<BR>
+<B>Cancel suspend</B>:Cancel previous request by "Request suspend".
+<BR>
+<B>SuspendGame Calim</B>:re-open dialog to process SuspendGame.
+<BR>
+<B>Gameover</B>:return to the top panel.
+<BR>
+This is effective after Gamover and Connection failure occured.
+<BR>
+<B>Connection failure</B>:re-open "ConnectionFailure Notification" which was opened at ConnectionFailure detected.
+<BR>
+<B>Win anyways</B>:When <B>Check winning hand</B> of Operation-Settings is set to "Yes",
+ use this if you claim extra type of winning hands or "Check winning hand" rejects the win by defect.
+ Use for also 2nd Win if <B>Win call is cancelable</B> on Operation Settings.
+<BR>
+<B>Preference</B>：some setting of "Preference" is changable also during game.
+<BR>
+<BR>
+"Back" button of undeneath left dose not work on game screen.
+<BR>
+When game hung up, you can stop application by "Menu" button of underneath right.
+<BR>
+<BR>
+<SMALL>MenuInGameDlg 2020/02/11</SMALL>

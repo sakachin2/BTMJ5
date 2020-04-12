@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> 
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+            android:text="@string/Label_Drawn99Tile"
+            android:textSize="@dimen/completedlg_textsize"
+	         android:layout_weight="1"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+                     android:id="@+id/ll99Reacher"
+    >
+        <include layout="@layout/compdlgreacher"
+        />
+    </LinearLayout>   <!--abnormal Rank and Player-->
+</LinearLayout>

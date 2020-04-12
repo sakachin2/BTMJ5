@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> 
+<!-- ** halfway drawn type radio buttons -->
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+            > <!--drawn type radio buttons-->
+                <RadioButton
+                    android:id="@+id/rb4Reach"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn4Reach"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /> 
+                <RadioButton
+                    android:id="@+id/rb4Wind"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn4Wind"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /> 
+                <RadioButton
+                    android:id="@+id/rb4Kan"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn4Kan"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /> 
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+            > <!--drawn type radio buttons-->
+                <RadioButton
+                    android:id="@+id/rb99Tile"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn99Tile"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /> 
+                <RadioButton
+                    android:id="@+id/rb3Ron"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn3Ron"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /> 
+                <!--RadioButton
+                    android:id="@+id/rbError"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/AbnormalGain"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /--> 
+                <RadioButton
+                    android:id="@+id/rbOther"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_DrawnOther"
+                    android:textSize="@dimen/completedlg_textsize"
+                    android:layout_weight="1"
+                /> 
+        	</LinearLayout> <!--drawn type radio buttons-->
+</LinearLayout>

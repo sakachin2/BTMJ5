@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>  <!--drawnMangan-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >  <!--line1-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_GameSet"
+            android:textSize="@dimen/textview_middle"
+                android:layout_marginRight="20dp"
+        />
+        <Spinner
+             android:id="@+id/spnGameSetType"
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+        />
+    </LinearLayout>  <!--line1-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >  <!--line2-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_FinalLast"
+            android:textSize="@dimen/textview_middle"
+        />
+        <CheckBox
+            android:id="@+id/cbClosablePending"
+            android:text="@string/Label_ClosablePending"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+    </LinearLayout>  <!--line2-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >  <!--line2-->
+        <CheckBox
+            android:id="@+id/cbClosableRon"
+            android:text="@string/Label_ClosableRon"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+        <CheckBox
+            android:id="@+id/cbClosableNotTop"
+            android:text="@string/Label_ClosableNotTop"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+    </LinearLayout>  <!--line2-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+                android:gravity="center_vertical"
+    >  <!--line3-->
+        <TextView
+            android:text="@string/Label_FinalLastDealerNotPending"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/rgFinalLastDealerNotPending"
+        >
+            <RadioButton
+                android:id="@+id/rbFLNP_Close"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_CloseGame"
+            />     
+            <RadioButton
+                android:id="@+id/rbFLNP_NextRound"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_NextRound"
+            />     
+        </RadioGroup>
+    </LinearLayout>  <!--line3-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+                android:gravity="center_vertical"
+    >  <!--line4-->
+        <TextView
+            android:text="@string/Label_FinalLastAllMinus"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            android:id="@+id/rgFinalLastAllMinus"
+        >
+            <RadioButton
+                android:id="@+id/rbFLAM_Close"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_CloseGame"
+            />     
+            <RadioButton
+                android:id="@+id/rbFLAM_NextRound"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_NextRound"
+            />     
+        </RadioGroup>
+    </LinearLayout>  <!--line4-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >  <!--line5-->
+        <TextView
+            android:text="@string/Label_FinalLastComment"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+    </LinearLayout>  <!--line5-->
+
+</LinearLayout>

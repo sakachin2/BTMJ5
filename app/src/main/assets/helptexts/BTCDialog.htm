@@ -1,0 +1,76 @@
+Assign role of server to anyone in members,
+ who controls Bluetooth connection with other members(calls Client).
+<BR>
+This dialog is used also when connection failure occured during game.
+<BR>
+----------------------------------------------------------------------
+<BR>
+1st line display your <BIG><B>Device</B></BIG> name.
+<BR>
+It can be changed by Android <B>Settings</B>,<B>Bluetooth</B>.
+<BR>
+And display device status <B>Discoverable</B> (Other device nearby can find your device) or
+ <B>NotDiscoverable</B> (Other device recognize your device if paired).
+<BR>
+Fill <BIG><B>ID-Name</B></BIG> by appropriate unique handle name up to 8 characters.
+ (This is shared with ID-Name on Wifi-Direct connection dialog.)
+ This is displayed on nameplate on board.
+<BR>
+Note. When <B>Resume</B> from suspended game <B>Records</B>, ID-Name is checked whether you are a member of the record or not.
+<BR>
+<BR>
+<BIG><B>ConnectedMember</B></BIG> : 
+Display <B>ID-Name</B> connected.
+<BR>
+<BR>
+<BIG><B>Middle Line Buttons</B></BIG>
+<BR>
+To connect to not <B>Pair</B>ed, use <BIG><B>Discoverable</B></BIG> and <BIG><B>Discover</B></BIG> button.
+<BR>
+By "Discoverable" server becomes visible to clients. It becomes visible only 2 minutes.
+<BR>
+By "Discover" client finds visible server.
+<BR>
+Found device is diplayed as <B>Available</B>.
+ After server pressing <B><BIG>Accept</BIG></B>, client use "Connect" selecting available device.
+<BR>
+If Android asked to accept "Pairing" request, give permission on both side.
+ Connect to other members sequentially like this. When all member connected, "Close" dialog then press "Game" to start game.
+<BR>
+Paired devices are stored in Android across power Off/On.
+ For the device paired already at dialog open, server enter to accepting status by "Accept" button.
+ Then client use "Connect" button.
+<BR>
+<BR>
+<BIG><B>DeviceList</B></BIG>： 
+"Paired" and "Available"(found by discovering) devices are displayed.
+<BR>
+<BR>
+<BIG><B>Bottom line buttons</B></BIG> 
+<BR>
+Client, selecting server on <B>Device List</B>, press <BIG><B>Connect</B></BIG>.
+ Depending Android version, it may be required to close and reopen the dialog.
+<BR>
+<BIG><B>Disconnect</B></BIG> and <BIG><B>Unpair</B></BIG> are used from both side.
+<BR>
+----------------------------------------------------------------------
+<BR>
+In case of connection failure during game, "Reconnect" button on "ConnectionFailure Notification" dialog
+ opens this dialog. 
+ Select "Restart" or "Suspend/Gameover" when reconnected successfully.
+<BR>
+<BIG><B>Restart</B></BIG>：（Only server）restart the game.
+<BR>
+Depending timing of connection failure, countinued hand may seem to be strange.
+ Until end of the hand, you can re-open "ConnectionFailure Notification" from menu:"Connection failure" to go to Suspend/Gamover.
+<BR>
+<BIG><B>Suspend/Gamover</B></BIG>：Select this when reconnection fails or all membes do not want to continue the game.
+<BR>
+On "SuspendGame Claim" dialog select <B>Suspend</B> or <B>Gameover</B>. The hand suspended is canceled in both case.
+<BR>
+If "Gameover" was selected, penalty of RuleSettingd:<B>ConnectionFailure</B> is imposed.
+<BR>
+If you have mistaken to close this dialog, you can re-open from menu:<B>ConnectionFailure</B>.
+<BR>
+<BR>
+<SMALL>BTCDialog 2020/02/11</SMALL>

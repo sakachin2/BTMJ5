@@ -1,0 +1,51 @@
+Rules about <B>Yaku</B>(define pattern of winning hand and its value).
+<BR>
+ To check whethere winning hand is complete or not, set "Yes" on topic <B>Checking winning hand</B> of <B>Oper</B> Setting.
+ Even if "Yes" is set, any wining hand by local rule can be claimed by menu:<B>Win anyway</B>.
+<BR>
+After you called "Win", open <B>Win Claim</B> dialog by <B>Score</B> button and claim your hand's value by count of han and fu.
+ "Win Claim" is sent to the other players, after all player responsed <B>OK</B> or <B>NG</B>,
+ <B>End-of-Hand</B> dialog opens on the dealer which displays winning tiles.
+<BR>
+If the dealer is Robot, the dialog opens on the next(counter clockwise) human player.
+The dealer checks validity of the win call, then send the dialog to the other player.
+After receiving "OK" from the other players, <B>Fix</B> the game to complete "End-of-Hand".
+<BR>
+If dealer found "Chombo"("Furiten", "Noten", "Noten Riichi", "Constraint by han" etc),
+dealer can set <B>Invalid</B>(without penalty), or <B>Chombo</B>(with penalty).
+In that case dealer can select "Gameover" or "Continue" with "DeadHand" of "Chombo" players.
+DeadHand player just discard drawn tile and can not do any call.
+<BR>
+<BR>
+<BIG><B>KeiTen 1-han</BIG></B>
+<BR>
+At exaustiveDraw, if your-hand is not status of Tenpai(waiting winning tile) with Yaku, you have to pay panalty of NoTen(Not Tenpai).
+ This allows to assume some format of hands as Tenpai .
+ <BR>
+ <B>None for all</B>:not allow any KeiTen. 
+ <BR>
+ <B>Empty OK</B>:Empty means all winning tiles are exausted on river, earth and in your hands.
+ <BR>
+ <B>Furiten OK</B>:Allows winning tiles are Furiten status such as you discarded one of winning tile.
+ <BR>
+ <B>0-han OK</B>:Yaku is not requred by any winning tile.
+<BR>
+<BIG><B>2-han constrant</BIG></B>
+<BR>
+Under 2-han constraint condition, <B>0-han OK</b>:no Yaku is required. <B>2-han possibility</b>:requres possibility of Yaku more than 2-han by a winning tile.
+ But if KeiTen 1-han is "0-han OK", requires 1-han possibility.   
+<BR>
+<BIG><B>Fix Yaku</BIG></B>
+<BR>
+Japanese style Mahjong requires your winning hand to have some Yaku(at least 1 han).
+Some rule prohibit Ron by multiple tiles wait.
+ e.g. When you opened some melds and are waiting pair of dragon(1 han) and number tiles, you can not call Ron for the dragon tile discarded.  
+ If you are waiting pair of two type of dragon tiles, you can call win for either one of two.  
+<BR>
+It may exist some variation for "First only", make agreement among players beforehand.
+<BR>
+<BIG><B>Riichi</BIG></B>
+<B>For Robot game</B>:Select from "Disable OpenRiichi", "Ignore Robot's discard" or "Pay normal(Robot pays the normal score with 1-han of "Open" added).
+<BR>
+<BR>
+<SMALL>RuleSettingYaku 2020/02/11</SMALL>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> 
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            android:text="@string/Label_Pending"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+            android:textSize="@dimen/completedlg_textsize"
+	         android:id="@+id/tvPending"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:id="@+id/llPending"
+        >
+                    <include layout="@layout/eswn_checkbox"
+                    />
+        </LinearLayout>   <!--abnormal Rank and Player-->
+    </LinearLayout>
+</LinearLayout>

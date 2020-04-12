@@ -1,0 +1,104 @@
+Button <BIG><B>Yaku</B></BIG> : open child dialog related Yaku(winning pattern) such as "Kuitan", "Yakuman".
+<BR>
+Button <BIG><B>Oper</B></BIG> : open child dialog related Operation such as "DelayTime", "Check winning hand".
+<BR>
+<BR>
+<BIG><B>ID</B></BIG> : Identify the rule file, fill it such as Kansai, Tokyo etc
+to use rule file differently depending players group.
+<BR>
+Use <BIG><B>Save</B></BIG>/<BIG><B>Load</B></BIG> button when updated. 
+<BR>
+On the right of <B>ID</B>, <BIG><B>Update</B></BIG> is displayed.
+ This is key of rule synchronization. Unmatch of this among players prevents start of game even if its contents are same.
+ When changed on server <BIG><B>Send</B></BIG> to all clients,
+ game can be started when received <BIG><B>Agree</B></BIG> from all clients.
+ If you want to use rule file on a client, the client "Load" the file then "Send" to server.
+ Dialog will open on the server, which will be sent again to the other clients to synchronize.
+<BR>
+<BIG><B>OK</B></BIG> : Update is saved as "Current" and stay activated.
+<BR>
+ Update is saved by "Send" button also.
+ "Current" is kept in interal folder and removed by re-installation.
+<BIG><B>Cancel</B></BIG> :  Updates are discarded.
+<BR>
+<BR>
+<BIG><B>InitialScore</B></BIG> : TopPrize(Top players gain)=(30000-InitialScore)*4
+<BR>
+<B>Noten</B>:3000: panalty of Noten at ExaustiveDraw.
+ Noten players pay totally 3000, Tenpai players gain 3000. e.g. 1 Noten pays 3000, 3 Tenpai gain 1000 each.
+<BR>
+<B>Counter</B>:value of a counter-stick. Counter-stick(s) are shown on board when the dealer continue to stay as dealer.
+ Winner gains additional point of (value of counter-stick)*(counter of counter-stick).
+<BR>
+<BR>
+<BIG><B>PlacePrize</B></BIG> : payment by Placing(order).
+<BR>
+ e.g. when 5-10, Last player pays 10,000 to top player, 3rd player pays 5,000 to 2nd player.
+<BR>
+<B>HeadBump</B>:The player closest to the starting dealer in counterclockwise sequence get higher placement.
+<B>Divide(cut100)</B>:round down by 100.
+<BR>
+<BR>
+<BIG><B>Fraction</B></BIG> : rounding under 100 points.
+<BR>
+Negative point are rounded as following.
+<BR>
+　4Down 5Up　: -100 ～ -500 ===> 0,　-600 ～ -900 ===> -1
+<BR>
+　5Down 6Up　: -100 ～ -400 ===> 0,　-500 ～ -900 ===> -1
+<BR>
+　Round-Up 　: -100 ～ -900 ===> 0
+<BR>
+　Round-Down : -100 ～ -900 ===> 0
+<BR>
+Top place player's final score is ajusted to keep zero-sum.
+<BR>
+<BR>
+<BIG><B>Dora</B></BIG>： 
+"End-of-Hand" dialog shows Dora indicator.
+ Player has to count up han according this setting.
+<BR>
+<BR>
+<BIG><B>Tobi</B></BIG>(Bankrupt) 
+<BR>
+<B>Pay for negative score</B>：Gameover after paying fully to winner.
+<BR>
+<B>return after placing</B>：player pay once fully, after player's place is fixed by the final score,
+ bankrupted player collect up to score=0 from the player levied.
+<BR>
+<B>Limit winner's point</B> : winner's point is limited to the payer having now.
+ Player's place is determined by the score.
+<BR>
+ If "Double-Ron":Yes, discarder pays to multiple winner
+ according counterclockwide sequence starting from the winner closest to the discarder.
+ Tobi prize is given to the player when bankrupt oocured in that sequence.
+ In case of "NagashiMangan" starting collecor is the closest to the dealer.
+<BR>
+<BR>
+<BIG><B>Double-Ron</B></BIG>：
+<BR>
+<B>No</B>:HeadBump:Only the player closest to the discarder in counterclockwise sequence is granted the win.
+<BR>
+<B>Yes</B>Allow all player's win. Counter stick is by HeadBump rule.
+<B>Yes also...</B>pay also Counter-Stick to all winners.
+<BR>
+<BR>
+<BIG><B>Robot</B></BIG>：
+When Robot(s) are included, robot's debts are responsible to human players.
+<BR>
+<B>Divide</B> : divide equally robot's debts total, adjusting fraction by top place plaser's final score for zero-sum.
+<BR>
+<B>In propotion by score</B> : divide proprtinally as last place human player's pay is 0, divide proprtinally.
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;e.g score: +60000(top), +10000, -30000(last), -40000(robot)
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6-(-3)==>11, 1-(-3)==>4, -3-(-3)==>0 &nbsp;total=15 is divided.
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11/15*(-4)=-29300 (RoundDown by 100), 4/15*(-4)=-10600, 0/15*(-4)=0
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zero-sum adjusted  -29400, -10600, 0, +40000 is added to score
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;finally  +30600, -400, -30000, 0(Robot)
+<BR>
+<BR>
+<SMALL>RuleSetting 2020/02/11</SMALL>

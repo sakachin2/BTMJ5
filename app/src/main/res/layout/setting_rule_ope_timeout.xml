@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+	         android:orientation="horizontal"
+        >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_Delay"
+                    android:textSize="@dimen/textview_middle"
+                        android:layout_gravity="center_vertical"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_DelayUnit"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+			         android:layout_marginLeft="10px"
+            >
+                <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBDelayPonKan"
+                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_DelayPonKan"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                />
+	        </LinearLayout>
+        </LinearLayout>  <!--delay1-->
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBDelayTake"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_DelayTake"
+                    android:layout_gravity="center_vertical"
+            />
+        </LinearLayout> <!--delay-2-->
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBDelayLast"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_DelayLast"
+                    android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>  <!--delay3-->
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBTimeoutTake"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_TimeoutTake"
+                    android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>  <!--delay5-->
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBTimeoutTakeRobot"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_TimeoutTakeRobot"
+                    android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>  <!--delay5-->
+        <!--LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBTimeoutTakeKan"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_TimeoutTakeKan"
+                    android:layout_gravity="center_vertical"
+            />
+        </LinearLayout-->  <!--delay5-->
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                    android:id="@+id/llSBDelayDiscard"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_DelayDiscard"
+                    android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>  <!--delay4-->
+    </LinearLayout>
+</LinearLayout>
