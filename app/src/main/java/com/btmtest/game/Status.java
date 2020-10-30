@@ -1,5 +1,8 @@
-//*CID://+DATER~: update#= 531;                                    //~v@@@R~//~9513R~
+//*CID://+va06R~: update#= 536;                                    //~va02R~//~va06R~
 //**********************************************************************//~v101I~
+//2020/04/27 va06:BGM                                              //~va06I~
+//2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
+//**********************************************************************//~va02I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -68,7 +71,7 @@ public class Status //extends Handler                              //~v@@@R~
     public  int gameCtrDup;                                        //~v@@@R~
     private int gameCtrReachStick;                                 //~v@@@I~
     private boolean swRon;                                             //~v@@@I~
-    private int completeType,completeEswn,completeEswnLooser;      //~v@@@R~
+//  private int completeType,completeEswn,completeEswnLooser;      //~v@@@R~
     private int starterGameSets,starterCurrent,playerGameComplete;
     private Complete.Status completeStatus;//~v@@@I~
     public int endGameType;                                        //~v@@@R~
@@ -164,6 +167,8 @@ public class Status //extends Handler                              //~v@@@R~
     public static void setGameStatus(int Pstatus)                  //~v@@@M~
     {                                                              //~v@@@M~
     	aStatus.gameStatus=Pstatus;                                        //~v@@@M~
+        if (Pstatus==GS_GAME_STARTED)                              //+va06I~
+    	    GC.playSound(aStatus.gameCtrGame);                     //+va06I~
         if (Dump.Y) Dump.println("Status.setGameStatus status="+aStatus.gameStatus);//~v@@@R~
     }                                                              //~v@@@M~
 	//*************************************************************************//~v@@@M~
@@ -454,6 +459,7 @@ public class Status //extends Handler                              //~v@@@R~
      	   AG.aGMsg.drawMsgbar(getStringGameSeq());                   //~v@@@I~//~9520R~
 //      AG.aUADelayed.resetWaitAll(false/*swRon*/);                //~9704R~//~0226R~
         AG.aUADelayed.resetWaitAllNewGame();                       //~0226I~
+        GC.playSound(aStatus.gameCtrGame);                         //~va06M~
     }                                                              //~v@@@I~
     //******************************************************       //~v@@@I~
     private void clearTable()                                      //~v@@@I~
@@ -573,7 +579,7 @@ public class Status //extends Handler                              //~v@@@R~
     public static boolean isGaming()                               //~v@@@I~
     {                                                              //~v@@@I~
     	int status=aStatus.gameStatus;                             //~v@@@I~
-    	boolean rc=status==GS_GAME_STARTED;   //21                 //~v@@@I~//+0410R~
+    	boolean rc=status==GS_GAME_STARTED;   //21                 //~v@@@I~//~0410R~
         if (Dump.Y) Dump.println("Status.isGaming rc="+rc+",status="+status);//~v@@@I~
         return rc;
     }                                                              //~v@@@I~
@@ -586,6 +592,13 @@ public class Status //extends Handler                              //~v@@@R~
         if (Dump.Y) Dump.println("Status.isGamingNow rc="+rc);     //~9730I~
         return rc;                                                 //~9730I~
     }                                                              //~9730I~
+	//*************************************************************************//~va02I~
+    public static boolean isGamingNowAndInterRound()               //~va02I~
+    {                                                              //~va02I~
+    	boolean rc=aStatus.gameStatus>=GS_GAME_STARTED && aStatus.gameStatus<GS_BEFORE_DEAL && !isGameOver();    //21<= && <40//~va02I~
+        if (Dump.Y) Dump.println("Status.isGamingNow rc="+rc);     //~va02I~
+        return rc;                                                 //~va02I~
+    }                                                              //~va02I~
 	//*************************************************************************//~0205I~
 	//*reject before 1st draw(GS_START_GAME(20) is set at game complete or reset)//~0205I~
 	//*GS_GAME_STARTED is set at dealer's fist take                //~0205I~
@@ -598,6 +611,16 @@ public class Status //extends Handler                              //~v@@@R~
         if (Dump.Y) Dump.println("Status.isGamingForMenuInGame rc="+rc+",status="+status);//~0205I~
         return rc;                                                 //~0205I~
     }                                                              //~0205I~
+	//*************************************************************************//~va02I~
+	//*contains period inter round                                 //~va02I~
+	//*************************************************************************//~va02I~
+    public static boolean isGamingForMenuInGameAndInterRound()     //~va02I~
+    {                                                              //~va02I~
+    	int status=aStatus.gameStatus;                             //~va02I~
+    	boolean rc=status>=GS_START_GAME && status<GS_BEFORE_DEAL; //20<= && <40//~va02I~
+        if (Dump.Y) Dump.println("Status.isGamingForMenuInGame rc="+rc+",status="+status);//~va02I~
+        return rc;                                                 //~va02I~
+    }                                                              //~va02I~
 	//*************************************************************************//~v@@@I~
     public static boolean isTileSelectable()                       //~v@@@I~
     {                                                              //~v@@@I~

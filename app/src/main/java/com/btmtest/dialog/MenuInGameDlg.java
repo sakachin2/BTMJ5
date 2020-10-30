@@ -1,5 +1,7 @@
-//*CID://+DATER~:                             update#=  201;       //~1Af6R~//~v@@@R~//~9807R~
+//*CID://+va07R~:                             update#=  214;       //+va07R~
 //*****************************************************************//~v101I~
+//2020/05/08 va07:close menu in game when preference selected      //+va07I~
+//2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 
@@ -7,8 +9,6 @@ import android.widget.Button;
 
 import com.btmtest.R;
 import com.btmtest.game.Accounts;
-import com.btmtest.game.GC;
-//import com.btmtest.game.OperationSetting;
 import com.btmtest.game.Status;
 import com.btmtest.game.UA.UAEndGame;
 import com.btmtest.game.UA.UARon;
@@ -116,7 +116,8 @@ public class MenuInGameDlg                                         //~v@@@R~
 	private boolean isGaming()                                    //~0206I~//~0209R~
     {                                                              //~0206I~
     	boolean rc;
-        if (!Status.isGamingForMenuInGame())                       //~0206I~
+//      if (!Status.isGamingForMenuInGame())                       //~0206I~//~va02R~
+        if (!Status.isGamingForMenuInGameAndInterRound())          //~va02I~
         {                                                          //~0206I~
         	UView.showToast(R.string.Err_GameStatusForMenuInGame); //~0206I~
             rc=false;                                              //~0206I~
@@ -126,6 +127,27 @@ public class MenuInGameDlg                                         //~v@@@R~
     	if (Dump.Y) Dump.println("MenuInGameDlg.isGaming rc="+rc); //~0206I~
         return rc;                                                 //~0206I~
     }                                                              //~0206I~
+//**********************************                               //~va02I~
+	private boolean isGaming(int Pmsgid)                           //~va02I~
+    {                                                              //~va02I~
+    	boolean rc;                                                //~va02I~
+    	if (isGameOver())                                          //~va02I~
+        {                                                          //~va02I~
+        	UView.showToast(R.string.Info_GameEnded);              //~va02I~
+            rc=false;                                              //~va02I~
+        }                                                          //~va02I~
+        else                                                       //~va02I~
+//      if (!Status.isGamingForMenuInGame())                       //~va02R~
+        if (!Status.isGamingForMenuInGameAndInterRound())          //~va02I~
+        {                                                          //~va02I~
+        	UView.showToast(Pmsgid);                               //~va02I~
+            rc=false;                                              //~va02I~
+        }                                                          //~va02I~
+        else                                                       //~va02I~
+        	rc=true;                                               //~va02I~
+    	if (Dump.Y) Dump.println("MenuInGameDlg.isGaming rc="+rc); //~va02I~
+        return rc;                                                 //~va02I~
+    }                                                              //~va02I~
 //**********************************                               //~v@@@I~
     private void doMenuItem(int Pidx)                              //~v@@@R~
     {                                                              //~v@@@I~
@@ -145,7 +167,10 @@ public class MenuInGameDlg                                         //~v@@@R~
                 break;                                             //~v@@@R~
 			case ITEMID_DRAWN_GAME:                                //~v@@@I~
             	if (!isGaming())                                   //~0206I~
+                {
+	        		swDismiss=false;
                 	break;                                         //~0206I~
+                }
             	doDrawnGame();                                     //~v@@@I~
                 break;                                             //~v@@@I~
 			case ITEMID_FINAL_GAME:                                //~v@@@I~
@@ -180,14 +205,17 @@ public class MenuInGameDlg                                         //~v@@@R~
                 break;                                             //~9823I~
     		case ITEMID_PREF_SETTING:                              //~v@@@I~//~9A29R~//~9C04R~
             	doPrefSetting();                                   //~v@@@I~//~9A29R~//~9C04R~
-	        	swDismiss=false;                                   //~0206I~
+	        	swDismiss=true;                                   //~0206I~//+va07R~
                 break;                                             //~v@@@I~//~9A29R~//~9C04R~
 			case ITEMID_RETURN:                                    //~9903I~
             	doReturn();                                        //~9903I~
                 break;                                             //~9903I~
 			case ITEMID_IOERR:                                     //~9A18I~
-            	if (!isGaming())                                   //~0206I~
+//          	if (!isGaming())                                   //~0206I~//~va02R~
+            	if (!isGaming(R.string.Err_GameStatusForMenuInGameUseBackButton))//~va02I~
                 	break;                                         //~0206I~
+//           	if (!AG.aGC.isConnectionLost())                    //~va02R~
+//              	break;                                         //~va02R~
             	doIOErr();                                         //~9A18I~
                 break;                                             //~9A18I~
 			case ITEMID_WIN_ANYWAY:                                //~0205I~
@@ -287,19 +315,50 @@ public class MenuInGameDlg                                         //~v@@@R~
     private void doReturn()                                        //~9903I~
     {                                                              //~9903I~
     	if (Dump.Y) Dump.println("MenuInGameDlg.doReturn");        //~9903I~
-        if (!Accounts.isServer())                                  //~9B20I~
-        {                                                          //~9B20I~
-//      	if (Status.getStatusRestart()==RESTART_ONCE_IOERR)     //~9B25I~//~0411R~
-			if (AG.aBTMulti.BTGroup.getConnectedCtr()==0)          //+0411R~
-            {                                                      //~9B25I~
-		    	AG.aGC.confirmEndGameReturn();                         //~9B25I~//~0411R~
-    	        swDismiss=true;                                    //~9B25I~
-	            return;                                            //~9B25I~
-            }                                                      //~9B25I~
-            UView.showToast(R.string.Err_TryEndgameFromServer);    //~9B20I~
-            swDismiss=false;                                       //~9B20I~
-            return;                                                //~9B20I~
-        }                                                          //~9B20I~
+//        if (!Accounts.isServer())                                  //~9B20I~//~va02R~
+//        {                                                          //~9B20I~//~va02R~
+////          if (Status.getStatusRestart()==RESTART_ONCE_IOERR)     //~9B25I~//~0411R~//~va02R~
+//            if (Status.getStatusRestart()!=RESTART_NONE)         //~va02R~
+//            {                                                    //~va02R~
+//                UView.showToast(R.string.Err_SuspendNoIOErrExitOnGameView); //do connection failure//~va02R~
+//                swDismiss=false;                                 //~va02R~
+//                return;                                          //~va02R~
+//            }                                                    //~va02R~
+//            if (AG.aBTMulti.BTGroup.getConnectedCtr()==0)          //~0411R~//~va02R~
+//            {                                                      //~9B25I~//~va02R~
+//                AG.aGC.confirmEndGameReturn();                         //~9B25I~//~0411R~//~va02R~
+//                swDismiss=true;                                    //~9B25I~//~va02R~
+//                return;                                            //~9B25I~//~va02R~
+//            }                                                      //~9B25I~//~va02R~
+//            UView.showToast(R.string.Err_TryEndgameFromServer);    //~9B20I~//~va02R~
+//            swDismiss=false;                                       //~9B20I~//~va02R~
+//            return;                                                //~9B20I~//~va02R~
+//        }                                                          //~9B20I~//~va02R~
+//    //*Server                                                    //~va02R~
+//        if (Status.getStatusRestart()!=RESTART_NONE)             //~va02R~
+//        {                                                        //~va02R~
+//            UView.showToast(R.string.Err_SuspendNoIOErrExitOnGameView);  //do connection failure//~va02R~
+//            swDismiss=false;                                     //~va02R~
+//            return;                                              //~va02R~
+//        }                                                        //~va02R~
+//        if (!isGaming(R.string.Err_GameStatusForMenuInGameUseBackButton))//~va02R~
+//        {                                                        //~va02R~
+//            swDismiss=false;                                     //~va02R~
+//            return;                                              //~va02R~
+//        }                                                        //~va02R~
+//        if (AG.aGC.isConnectionLost())                           //~va02R~
+//        {                                                        //~va02R~
+//            AG.aGC.confirmEndGameReturn();                       //~va02R~
+//            swDismiss=true;                                      //~va02R~
+//            return;                                              //~va02R~
+//        }                                                        //~va02R~
+		if (Status.isGameOver() || Status.isGameSuspended())       //~va02R~
+			if (!Accounts.isServer())                              //~va02I~
+            {                                                      //~va02I~
+                UView.showToast(R.string.Err_TryEndgameFromServer);//~va02I~
+                swDismiss=false;                                   //~va02I~
+                return;                                            //~va02I~
+            }                                                      //~va02I~
     	swDismiss=AG.aGC.endGameReturn();                          //~9903R~
     }                                                              //~9903I~
 //**********************************                               //~9A18I~

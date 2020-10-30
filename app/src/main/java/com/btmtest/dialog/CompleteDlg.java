@@ -1,8 +1,9 @@
-//*CID://+DATER~:                             update#= 1097;       //~v@@@R~//~9211R~
+//*CID://+va16R~:                             update#= 1101;       //~va16R~
 //*****************************************************************//~v101I~
+//2020/10/13 va16 do not show hidden dora when reach was not declared//~va03I~
+//2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -21,7 +22,6 @@ import com.btmtest.game.Accounts;
 import com.btmtest.game.Complete;
 import com.btmtest.game.GConst;
 import com.btmtest.game.Players;
-import com.btmtest.dialog.RuleSetting;                             //~9412R~
 import com.btmtest.game.Status;
 import com.btmtest.game.TileData;
 import com.btmtest.game.UA.UAEndGame;
@@ -43,7 +43,6 @@ import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.UA.UAEndGame.*;
-import static com.btmtest.dialog.CompReqDlg.*;                     //~9410I~
 import static com.btmtest.utils.Alert.*;
 import static com.btmtest.dialog.DrawnDlgHW.*;             //~9705I~//~9706R~
 
@@ -228,7 +227,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private int rcv_typeNextGame;                                  //~9707I~
     private int widthTileImage;                                    //~9927I~
     private int[] compIndexNextPlayerToReset;                      //~9A12I~
-    private LinearLayout llReacherEswn;                            //+0328R~
+    private LinearLayout llReacherEswn;                            //~0328R~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public CompleteDlg()                                           //~v@@@R~
     {                                                              //~v@@@R~
@@ -382,7 +381,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         llReacher4       =(LinearLayout)UView.findViewById(PView,R.id.reacher4);//~9228I~
         llReachers=new LinearLayout[]{llReacher1,llReacher2,llReacher3,llReacher4};//~9228I~
         llllReachers     =(LinearLayout)UView.findViewById(PView,R.id.llReachers);//~9228I~
-    	llReacherEswn=(LinearLayout)UView.findViewById(llReacher1,R.id.llReacherEswn);//+0328R~
+    	llReacherEswn=(LinearLayout)UView.findViewById(llReacher1,R.id.llReacherEswn);//~0328R~
                                                                    //~9224I~
         llPao            =(LinearLayout)UView.findViewById(PView,R.id.llPao);//~9224I~
         llPao1           =(LinearLayout)UView.findViewById(PView,R.id.compdlgpao1);//~9224I~
@@ -396,7 +395,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //      spnsRankPao=new USpinner[llPaos.length];                   //~9224I~//~9320R~
                                                                    //~v@@@I~
     	if ((TestOption.option & TestOption.TO_COMPDLG_LAYOUT)==0) //TODO TEST//~9219I~
-			ivDora=CompDlgDora.setImageLayout(PView);              //~9219R~
+//  		ivDora=CompDlgDora.setImageLayout(PView);              //+va16R~
+    		ivDora=CompDlgDora.setImageLayout(PView,-1/*eswn gainer:any*/);//+va16I~
                                                                    //~9219I~         //~9213I~
 //        tvsEswn=new TextView[]{tvEswn1,tvEswn2,tvEswn3,tvEswn4};   //~9213R~//~9315R~
 //        tvsAmmount=new TextView[]{tvAmmount1,tvAmmount2,tvAmmount3,tvAmmount4};//~9213R~//~9315R~
@@ -2253,6 +2253,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         rgNextGame.setCheckedID(typeNextGame,swFixed);             //~9707M~
 		cbSuspend.setState(swSuspend,!swRequester);                //~0304I~
         cbSuspend.setListener(this,UCBP_SUSPEND);                  //~0304I~
+        if (swSuspend && !swRequester)                             //~va03I~
+        	alertSuspended();                                      //~va03I~
         if (Dump.Y) Dump.println("CompleteDlg.enableNextGame swReceived="+swReceived+",ctrErrLooser="+ctrErrLooser+",swRequester="+swRequester+",swEnable="+swEnable+",swFixed="+swFixed);//~9705I~//~9707R~
     }                                                              //~9705I~
     //*******************************************************      //~9705I~
@@ -3368,6 +3370,12 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //        Alert.showAlert(titleid,msgid, BUTTON_POSITIVE|Alert.BUTTON_NEGATIVE,this);//calback alertButtonAction//~0304I~//~0306R~
     	SuspendAlert.newInstance(TITLEID_REQ,this,typeNextGame);                        //~0306I~//~0307R~
     }                                                              //~0304I~
+	//*************************************************************************//~va03I~
+    public static void alertSuspended()                            //~va03I~
+    {                                                              //~va03I~
+    	if (Dump.Y) Dump.println("CompleteDlg.alertSuspended");    //~va03I~
+    	SuspendAlert.showMsg(TITLEID_REQ);                         //~va03I~
+    }                                                              //~va03I~
 	//*************************************************************************//~0306I~
     @Override //SuspendAlertI                                        //~0306I~
 	public void suspendAlertAction(int PbuttonID)                 //~0306I~

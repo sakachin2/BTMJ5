@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  766;       //~v@@@R~//~9211R~
+//*CID://+va02R~:                             update#=  770;       //~va02R~
 //*****************************************************************//~v101I~
+//2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
@@ -82,13 +83,17 @@ public class SuspendIOErrReqDlg extends UFDlg                             //~v@@
                 val>>=1;	                                       //~9A19I~
             }                                                      //~9A19I~
         }                                                          //~9A19I~
-//      if (Status.getStatusRestart()==RESTART_NONE)               //~9A29I~//+0411R~
-        if (Status.getStatusRestart()==RESTART_NONE                //+0411I~
-		&&  AG.aBTMulti.BTGroup.getConnectedCtr()!=0)              //+0411I~
+//      if (Status.getStatusRestart()==RESTART_NONE)               //~9A29I~//~0411R~
+//      if (Status.getStatusRestart()==RESTART_NONE                //~0411I~//~va02R~
+//  	&&  AG.aBTMulti.BTGroup.getConnectedCtr()!=0)              //~0411I~//~va02R~
+        if (Status.getStatusRestart()==RESTART_NONE)               //~va02I~
         {                                                          //~9A29I~
+//        if (!AG.aGC.isConnectionLost())                          //~va02R~
+//        {                                                        //~va02R~
           	UView.showToast(R.string.Err_SuspendNoIOErr);                   //~9A29I~//~9B04R~//~9B07R~
 //      	if (AG.activeSessionType==AST_BT)                      //~9B04R~
         		return false;   //exception may delayed when WD        //~9A29I~//~9B04R~//~9B07R~
+//        }                                                        //~va02R~
 //            boolean rc;                                            //~9B05R~//~9B07R~
 //            if (true)              //TODO test                     //~9B05I~//~9B07R~
 ////              rc=sendKeepAlive();                                //~9B05R~//~9B07R~

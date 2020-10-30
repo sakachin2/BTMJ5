@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  699;       //~v@@@R~//~9403R~
+//*CID://+va15R~:                             update#=  702;       //+va15R~
 //*****************************************************************//~v101I~
+//2020/10/13 va15 Add chk kuikae                                   //+va15I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~//~9412R~
 import android.content.DialogInterface;
@@ -256,8 +257,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     	    		swOK=false;                                    //~9406I~
             }                                                      //~9406I~
         }                                                          //~9406I~
-//      AG.aBTMulti.setRuleSyncStatus(PthreadIdx,swOK,sd);         //~9406I~//+0323R~
-        AG.aBTMulti.setRuleSyncStatusReply(PthreadIdx,swOK,sd);    //+0323I~
+//      AG.aBTMulti.setRuleSyncStatus(PthreadIdx,swOK,sd);         //~9406I~//~0323R~
+        AG.aBTMulti.setRuleSyncStatusReply(PthreadIdx,swOK,sd);    //~0323I~
         if (PswOK && !swOK)                                        //~9406I~
 	        UView.showToast(AG.resource.getString(R.string.Info_RuleSynchResponseReceivedResendRequired,senderYourName));//~9406I~
         else                                                       //~9406I~
@@ -2061,4 +2062,11 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         tv.setText(str);                                           //~9829I~
         if (Dump.Y) Dump.println("RuleSetting.setInitialScore");   //~9829I~
     }                                                              //~9829I~
+    //**************************************                       //+va15I~
+    public static int getSameMeld()                                //+va15I~
+    {                                                              //+va15I~
+        int rc=AG.ruleProp.getParameter(getKeyRS(RSID_EATCHANGE),EATCHANGE_DEFAULT);//+va15I~
+        if (Dump.Y) Dump.println("RuleSetting.getSameMeld rc="+rc);//+va15I~
+        return rc;                                                 //+va15I~
+    }                                                              //+va15I~
 }//class                                                           //~v@@@R~

@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  227;       //~1Ac4R~//~1Ad2R~//~9712R~
+//*CID://+va1bR~:                             update#=  228;       //+va1bR~
 //*************************************************************************//~1A65I~
+//2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//+va1bI~
 //1Ad2 2015/07/17 HelpDialog by helptext                           //~1Ad2I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
 //1Ac3 2015/07/06 WD:Unpare after active session was closed        //~1Ac3I~
@@ -378,8 +379,8 @@ public class WDA extends AxeDlg                                    //~9720I~
     @Override                                                      //~9A09I~
     protected void onClickClose()                                  //~9A09I~
     {                                                              //~9A09I~
-//      if (getYourName())            //set AG.yourName            //~9A09R~//+0322R~
-        getYourName();            //set AG.yourName                //+0322I~
+//      if (getYourName())            //set AG.yourName            //~9A09R~//~0322R~
+        getYourName();            //set AG.yourName                //~0322I~
 		    dismiss();                                             //~9A09R~
     }                                                              //~9A09I~
     //*************************************************                           //~1A84I~//~1A90I~//~9722R~
@@ -846,7 +847,7 @@ public class WDA extends AxeDlg                                    //~9720I~
 	  if (swChangedYourName)                                       //~0116I~
       {                                                            //~0116I~
 //      AG.aBTMulti.sendMsg(BTMulti.MSGID_NEWNAME,Ptext);          //~9722I~
-        AG.aBTMulti.sendMsg(MSGID_NEWNAME,Ptext);                  //~9722I~
+//      AG.aBTMulti.sendMsg(MSGID_NEWNAME,Ptext);                  //~9722I~//+va1bR~
 		swChangedYourName=false;                                   //~0116I~
       }                                                            //~0116I~
     }                                                              //~9722I~

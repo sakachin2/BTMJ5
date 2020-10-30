@@ -1,7 +1,10 @@
-//*CID://+DATER~:                             update#=  491;       //~v001R~//~@002R~//~9210R~
+//*CID://+va1bR~:                             update#=  501;       //~va1bR~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
+//2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
+//2020/10/05 va13:remember device selected                         //~va13I~
+//2020/06/02 va10:BTCDialog search contains bug for null value; delete the function which is never called//~va10I~
 //@002:20181103 use enum                                           //~v001I~
 //@001:20181103 updatebuttonstatus over config change              //~v@@@I~
 //*****************************************************************//~v@@@I~
@@ -69,6 +72,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     private static final int STRID_ACCEPT=R.string.BTAcceptCommon; //~1AbuI~//~1AebM~//~v@@@M~
     private static final int RID_DEVICELIST=R.id.DeviceList;       //~v@@@I~
     private static final int RID_GROUPLIST=R.id.GroupList;         //~v@@@I~
+    private static final String PKEY_BT_DEVICE_SELECTION="BTServerDeviceName";//~va13R~
                                                                    //~v@@@I~
     public static final int RENEWAL_MEMBER=1;                     //~v@@@I~
     public static final int RENEWAL_DEVICELIST=2;                  //~v@@@I~
@@ -685,12 +689,17 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     private void displayRemoteDeviceListView()                     //~1AbTI~//~v@@@R~
     {                                                              //~1AbTI~
         if (Dump.Y) Dump.println("BTCDialog displayRemoteDeviceListView");//~1AbTI~//~v@@@R~
+        String prevDeviceName=getPreviousSelction(PKEY_BT_DEVICE_SELECTION);//~va13I~
         ArrayList<String> keys=new ArrayList<String>(SdeviceList.devlist.keySet());//~1AbTI~//~1AbUR~
+        int prevSelection=-1;                                      //~va13I~
         int ctr=keys.size();                                       //~1AbTI~
         DL.removeAll(false/*no notifyChanged*/);                   //~v@@@R~
         for (int ii=0;ii<ctr;ii++)                                 //~1AbTI~
         {                                                          //~1AbTI~
         	String nm=keys.get(ii);                                //~1AbTI~
+            if (nm.equals(prevDeviceName))                         //~va13I~
+            	prevSelection=ii;                                  //~va13I~
+            if (Dump.Y) Dump.println("BTCDialog:displayRemoteDeviceListView nm="+nm+",prev="+prevDeviceName+",prevSelection="+prevSelection);//~va13I~
             DeviceData data=SdeviceList.get(nm);                        //~1AbTR~//~1AbUR~
             String addr=data.addr;                                 //~1AbTI~
             int stat=data.stat;                                    //~1AbTI~
@@ -717,6 +726,9 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         DL.showBottom();                                           //~v@@@R~
         if (ctr==1)                                                //~@002R~
 		    DL.setSelection(0);                                    //~@002I~
+        else                                                       //~va13I~
+        if (prevSelection>=0)                                      //~va13I~
+		    DL.setSelection(prevSelection);                        //~va13R~
     }                                                              //~1AbTI~
     //******************************************                   //~9724I~
     private void displayGroup()                                    //~9724I~
@@ -783,6 +795,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
             return;                                                //~3203I~
         }                                                          //~3203I~
 		SdeviceList.merge(sa,ID_STATUS_DISCOVERED);                //~1AbUI~
+    	if (Dump.Y) Dump.println("BTCDialog.discoveryFinished after merge="+Utils.toString(sa));//~va10I~
         ProgDlg.dismissCurrent();                                         //~3203R~
         infoNewDevice(sa.length/2);                                //~3203R~
 	    renewal(RENEWAL_DEVICELIST);                               //~v@@@I~
@@ -859,7 +872,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         waitingid=Pwaiting;                                        //~3203I~
     	if (Dump.Y) Dump.println("BTCDialog afterDismiss");     //~3201I~//~3204R~//~v@@@R~
         showWaitingMsg();                                          //~v@@@R~
-    	if (Dump.Y) Dump.println("BTCDialog afterDismiss return");//~3207I~//~v@@@R~
+    	if (Dump.Y) Dump.println("BTCDialog afterDismiss return connectionType="+connectionType);//~3207I~//~v@@@R~//~va13I~
         AG.aBTCDialog=null;                                     //~1A6kI~//~v@@@R~
         boolean enable=(connectionType!=ROLE_CLIENT)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~
 	    AG.aMainView.enableStartGame(enable); //~9620R~            //~9724R~
@@ -1176,6 +1189,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 	    //*************************************************************//~1AbUR~
         private void merge(String[] Plist,int Pstat)                //~1AbTI~//~v@@@R~
         {                                                          //~1AbTI~
+            if (Dump.Y) Dump.println("DeviceDataList:merge Plist="+Utils.toString(Plist));//~va10I~
         	for (int ii=0;ii<Plist.length/2;ii++)                  //~1AbTI~
             {                                                      //~1AbTI~
             	String name=Plist[ii*2];                           //~1AbTI~
@@ -1226,23 +1240,24 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
             	}                                                  //~v@@@I~
             }                                                      //~v@@@I~
         }                                                          //~v@@@I~
-	    //*************************************************************//~1AbUI~
-        public int search(String Pname)                            //~1AbUI~
-        {                                                          //~1AbUI~
-        	int idx=-1;                                            //~1AbUI~
-            ArrayList<String> keys=new ArrayList<String>(devlist.keySet());    //names//~1AbUI~
-        	for (int ii=0;ii<keys.size();ii++)                     //~1AbUI~
-            {                                                      //~1AbUI~
-            	String name=keys.get(ii);                          //~1AbUI~
-                if (name.equals(Pname))                            //~1AbUI~
-                {                                                  //~1AbUI~
-                	idx=ii;                                        //~1AbUI~
-                	break;                                         //~1AbUI~
-                }                                                  //~1AbUI~
-            }                                                      //~1AbUI~
-	        if (Dump.Y) Dump.println("DeviceDataList:search name="+Pname+",idx="+idx);//~1AbUI~
-            return idx;                                            //~1AbUI~
-        }                                                          //~1AbUI~
+//        //*************************************************************//~1AbUI~//~va10R~
+//        public int search(String Pname)                            //~1AbUI~//~va10R~
+//        {                                                          //~1AbUI~//~va10R~
+//            int idx=-1;                                            //~1AbUI~//~va10R~
+//            ArrayList<String> keys=new ArrayList<String>(devlist.keySet());    //names//~1AbUI~//~va10R~
+//            if (Dump.Y) Dump.println("DeviceDataList:search ksys="+Utils.toString(devlist.keySet()));//~0602I~//~va10R~
+//            for (int ii=0;ii<keys.size();ii++)                     //~1AbUI~//~va10R~
+//            {                                                      //~1AbUI~//~va10R~
+//                String name=keys.get(ii);                          //~1AbUI~//~va10R~
+//                if (name.equals(Pname))                            //~1AbUI~//~va10R~
+//                {                                                  //~1AbUI~//~va10R~
+//                    idx=ii;                                        //~1AbUI~//~va10R~
+//                    break;                                         //~1AbUI~//~va10R~
+//                }                                                  //~1AbUI~//~va10R~
+//            }                                                      //~1AbUI~//~va10R~
+//            if (Dump.Y) Dump.println("DeviceDataList:search name="+Pname+",idx="+idx);//~1AbUI~//~va10R~
+//            return idx;                                            //~1AbUI~//~va10R~
+//        }                                                          //~1AbUI~//~va10R~
 	    //*************************************************************//~1AbUI~
         private int updateStatusAll(int Pfrom,int Pto)              //~1AbUI~//~v@@@R~
         {                                                          //~1AbUI~
@@ -1469,11 +1484,14 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 			UView.showToast("BTCDialog.onConnected connectionStatus invalid");	////~v@@@I~
             return;                                                //~v@@@I~
         }                                                          //~v@@@I~
+        if (Dump.Y) Dump.println("BTCDialog.onConnected connectionType="+connectionType+",connectionStatus="+connectionStatus);//~va13I~
         if (Pswclient!=(connectionType==ROLE_CLIENT))                //~v@@@I~//~@002R~
         {                                                          //~v@@@I~
 			UView.showToast("BTCDialog.onConnected Role(Server or Client) Unmatch");//~v@@@R~
             return;                                                //~v@@@I~
         }                                                          //~v@@@I~
+        if (Pswclient)                                             //~va13I~
+	    	saveDeviceSelction(PKEY_BT_DEVICE_SELECTION,Pdevicename);//~va13R~
 		addMember(Pdevicename,Paddr);                              //~v@@@R~
         updateDialog();                                             //~v@@@I~
 //    	updateButtonStatus();                                      //~v001R~
@@ -1596,12 +1614,13 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     //******************************************                   //~9B07I~
     public static void showYourName(UEditText PetYourName,int PmemberCtr)//~9723I~
 	{                                                              //~9723I~
-        if (Dump.Y) Dump.println("BTCDialog.showYourName memberCtr="+PmemberCtr+",AG.YourName="+AG.YourName);//~9723I~//~9724R~//+0404R~
+        if (Dump.Y) Dump.println("BTCDialog.showYourName memberCtr="+PmemberCtr+",AG.YourName="+AG.YourName);//~9723I~//~9724R~//~0404R~
 //      String yourname=Utils.getPreference(PREFKEY_YOURNAME,AG.YourName);//~9723I~
 //  	PetYourName.setText(yourname);                             //~9723I~
 //  	setYourName(PetYourName);                                  //~9723I~//~9724R~
 //  	PetYourName.setText(AG.YourName);                          //~9724I~//~9905R~
-    	PetYourName.setText(AG.YourName,true/*swLostFocus*/);      //~9905I~
+      	PetYourName.setText(AG.YourName,true/*swLostFocus*/);      //~9905I~//+va1bR~
+//    	PetYourName.setText(AG.YourName,false/*No focusListener*/);//+va1bR~
 //      if (PmemberCtr==BTMulti.maxClient)                          //~v@@@R~//~9722R~//~9928R~
 //      if (PmemberCtr!=0) //disable when connected to anyone      //~9928R~//~9A23R~
         if (PmemberCtr!=0 || isReconnecting()) //disable when connected to anyone//~9A23I~
@@ -1740,7 +1759,20 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
       {                                                            //~0116I~
 	      swChangedYourName=false;                                 //~0116I~
 //      AG.aBTMulti.sendMsg(BTMulti.MSGID_NEWNAME,Ptext);                     //~v@@@R~//~@002R~
-        AG.aBTMulti.sendMsg(MSGID_NEWNAME,Ptext);                  //~@002I~
+//*disabled when any connection exist, so new name is sent at connected by @@name//~va1bI~
+//      AG.aBTMulti.sendMsg(MSGID_NEWNAME,Ptext);                  //~@002I~//~va1bR~
       }                                                            //~0116I~
     }                                                              //~v@@@I~
+    //************************************************************ //~va13I~
+    public static String getPreviousSelction(String Pkey)          //~va13I~
+    {                                                              //~va13I~
+		String svr=Utils.getPreference(Pkey,"");   //~@@01I~       //~va13I~
+        if (Dump.Y) Dump.println("BTCDialog.getPreviousSelection key="+Pkey+",server="+svr);//~va13I~
+        return svr;
+    }                                                              //~va13I~
+    //************************************************************ //~va13I~
+    public static void saveDeviceSelction(String Pkey,String PdeviceName)//~va13I~
+    {                                                              //~va13I~
+		Utils.putPreference(Pkey,PdeviceName);          //~va13I~
+    }                                                              //~va13I~
 }//class                                                           //~v@@@R~

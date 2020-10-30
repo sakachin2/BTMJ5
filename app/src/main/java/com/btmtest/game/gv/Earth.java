@@ -1,4 +1,4 @@
-//*CID://+v@@@R~: update#= 697;                                    //~v@@@R~
+//*CID://+v@@@R~: update#= 699;                                    //~v@@@R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import com.btmtest.TestOption;
 import com.btmtest.game.Players;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
@@ -33,7 +34,7 @@ public class Earth                                                 //~v@@@R~
 //  private static final int COLOR_KAN_ADD_UNDER=Color.argb(0x80,0x80,0x80,0x80);//~v@@@R~
     private static final int COMPLETE_COLOR_KAN_ADD=Color.argb(0xff,0xff,0x00,0x00);//~v@@@I~
     private static final int COMPLETE_COLOR_KAN_TAKEN=Color.argb(0xff,0xff,0x00,0x00);//~v@@@I~
-//  private static final int COMPLETE_STROKE_WIDTH_ADD_KAN=4;      //+v@@@R~
+//  private static final int COMPLETE_STROKE_WIDTH_ADD_KAN=4;      //~v@@@R~
 	private GCanvas gcanvas;                                       //~v@@@I~
     private MJTable table;                                         //~v@@@I~
     private Pieces pieces;//~v@@@I~
@@ -86,6 +87,11 @@ public class Earth                                                 //~v@@@R~
             }                                                      //~v@@@R~
         }                                                          //~v@@@R~
         if (Dump.Y) Dump.println("Earth.getRiverTilePos rc="+rc);  //~v@@@R~
+//            if ((TestOption.option & TestOption.TO_KAN_CHANKAN)!=0)//+v@@@R~
+//            {                                                    //+v@@@R~
+//                if (Dump.Y) Dump.println("Player.getRiverTilePos rc="+rc+",@@@@reset to 0 by testoption");//+v@@@R~
+//                rc=0;                                            //+v@@@R~
+//            }                                                    //+v@@@R~
         return rc;                                                 //~v@@@R~
     }                                                              //~v@@@R~
     //*******************************************************************//~v@@@R~
@@ -789,10 +795,10 @@ public class Earth                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Earth.complete player="+Pplayer+",tile:"+Ptd.toString());//~v@@@R~
         Bitmap bm=bitmapScaledAddKan;                                     //~v@@@I~
 		Rect r=rectScaledAddKan;                                   //~v@@@I~
-        int stroke_width=Pieces.getStrokeWidth(bm.getWidth());      //+v@@@I~
-//      Graphics.drawRectFrameBitmap(r,bgColor,bm,r.left,r.top,COMPLETE_STROKE_WIDTH_ADD_KAN,COMPLETE_COLOR_KAN_ADD);//+v@@@R~
-        Graphics.drawRectFrameBitmap(r,bgColor,bm,r.left,r.top,stroke_width,COMPLETE_COLOR_KAN_ADD);//+v@@@I~
-        if (Dump.Y) Dump.println("Earth.complete chankan stroke_width="+stroke_width);//+v@@@I~
+        int stroke_width=Pieces.getStrokeWidth(bm.getWidth());      //~v@@@I~
+//      Graphics.drawRectFrameBitmap(r,bgColor,bm,r.left,r.top,COMPLETE_STROKE_WIDTH_ADD_KAN,COMPLETE_COLOR_KAN_ADD);//~v@@@R~
+        Graphics.drawRectFrameBitmap(r,bgColor,bm,r.left,r.top,stroke_width,COMPLETE_COLOR_KAN_ADD);//~v@@@I~
+        if (Dump.Y) Dump.println("Earth.complete chankan stroke_width="+stroke_width);//~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
 	//*draw ron mark on earth kan  (kokusi ron for ankan)          //~v@@@R~
@@ -801,9 +807,9 @@ public class Earth                                                 //~v@@@R~
     {                                                              //~v@@@I~
 		Rect r=lastRectPair;                                       //~v@@@I~
         if (Dump.Y) Dump.println("Earth.complete flag="+Pflag+",tile:"+Ptd.toString()+",rect="+r.toString());//~v@@@I~
-//      Graphics.drawRect(r,COMPLETE_COLOR_KAN_TAKEN,COMPLETE_STROKE_WIDTH);//+v@@@R~
-        Graphics.drawRect(r,COMPLETE_COLOR_KAN_TAKEN,AG.aRiver.stroke_width_river);//+v@@@I~
-        if (Dump.Y) Dump.println("Earth.complete ankan ron stroke width="+AG.aRiver.stroke_width_river);//+v@@@I~
+//      Graphics.drawRect(r,COMPLETE_COLOR_KAN_TAKEN,COMPLETE_STROKE_WIDTH);//~v@@@R~
+        Graphics.drawRect(r,COMPLETE_COLOR_KAN_TAKEN,AG.aRiver.stroke_width_river);//~v@@@I~
+        if (Dump.Y) Dump.println("Earth.complete ankan ron stroke width="+AG.aRiver.stroke_width_river);//~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
 	//*chk space for earth                                         //~v@@@I~

@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 655;                                    //~v@@@R~//~v@@6R~//~9225R~
+//*CID://+va04R~: update#= 659;                                    //~va04R~
 //**********************************************************************//~v101I~
+//2020/04/16 va04:rule sync faile by msgseqno overrun              //~va04I~
+//2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -73,7 +75,8 @@ public class UARestart                                                //~v@@@R~/
     public static void setIOException()              //~9A28I~     //~9A29R~
     {                                                              //~9A28I~
     	if (Dump.Y) Dump.println("UARestart.setIOException");//~9A28I~//~9A29R~
-        if (!Status.isGamingNow())                                  //~9A18I~//~9A28I~
+//      if (!Status.isGamingNow())                                  //~9A18I~//~9A28I~//~va02R~
+        if (!Status.isGamingNowAndInterRound())                    //~va02I~
         	return;                                                //~9A28I~
 //      AG.aUARestart.swIOExceptionOccured=true;	//oncedetected //~9A29R~
         Status.setIOExceptionInGaming(true);                           //~9A28I~
@@ -330,7 +333,7 @@ public class UARestart                                                //~v@@@R~/
             UA.UAT.setAutoDiscardTimeout(true/*PswServer*/,player,actionID);//~9A28I~
             break;                                                 //~9A28I~
         case GCM_KAN:                                              //~9A28I~
-//          UA.UAK.setTimeout(true,player); //no autotake at first of restart//+0403R~
+//          UA.UAK.setTimeout(true,player); //no autotake at first of restart//~0403R~
             break;                                                 //~9A28I~
         default: //RON/REACH/REACH_OPEN                            //~9A28I~
             if (Dump.Y) Dump.println("UARestart.actionWaitOffAtRestartGame no Action");//~9A28I~
@@ -526,7 +529,7 @@ public class UARestart                                                //~v@@@R~/
 //******************************************************************************//~0220I~
     public boolean receivedRequestSeqNo(boolean PswServer,int Pidx,int PseqNo,String Pmsg,int Ppos/*senderDevicename*/)//~0220I~//~0224R~
     {                                                              //~0220I~
-		if (Dump.Y) Dump.println("UARestart.receivedRequestSeqNo swServer="+PswServer+",idx="+Pidx+",seq="+PseqNo);//~0220I~
+		if (Dump.Y) Dump.println("UARestart.receivedRequestSeqNo swServer="+PswServer+",idx="+Pidx+",seq="+PseqNo+",receivedSeqno="+Arrays.toString(receivedSeqNo));//+va04R~
         int idx;                                                   //~0220I~
 //      if (PswServer)                                             //~0220I~//~0221R~
         	idx=Pidx;                                              //~0220I~
@@ -584,12 +587,13 @@ public class UARestart                                                //~v@@@R~/
         	return false;                                          //~0224I~
         }                                                          //~0224I~
         if (msgid!=GCM_SETTING_SYNC_QUERY   //first seqnoMsg from server//~0224R~
+        &&  msgid!=GCM_SETTING_RESP         //may first seqnoMsg from client when rule updated at client before connect//~va04I~
         &&  msgid!=GCM_SETTING_SYNC_RESP)   //first seqnoMsg from client//~0224I~
         {                                                          //~0224I~
 			if (Dump.Y) Dump.println("UARestart.resetSeqNoBySyncQuery msgid="+msgid);//~0224R~
             return false;                                          //~0224I~
         }                                                          //~0224I~
-		if (Dump.Y) Dump.println("UARestart.resetSeqNoBySyncQuery rc=true");//~0224R~
+		if (Dump.Y) Dump.println("UARestart.resetSeqNoBySyncQuery rc=true"+",msgid="+msgid);//~0224R~//~va04R~
         return true;                                               //~0224I~
     }                                                              //~0224I~
 //******************************************************************************//~0220I~
@@ -628,6 +632,7 @@ public class UARestart                                                //~v@@@R~/
     private boolean chkStatus()                                     //~0220R~//~0322R~
     {                                                              //~0220I~
     	boolean rc=Status.isGamingForMenuInGame();                  //~0220I~
+		if (Dump.Y) Dump.println("UARestart.chkStatus rc="+rc);    //~va04I~
         return rc;                                                 //~0220I~
     }                                                              //~0220I~
     //***********************************************************************//~0220I~

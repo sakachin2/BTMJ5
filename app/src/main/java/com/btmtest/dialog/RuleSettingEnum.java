@@ -1,8 +1,13 @@
-//*CID://+DATER~: update#= 475;                                    //~@@@@R~//~9214R~
+//*CID://+va1aR~: update#= 489;                                    //+va1aR~
 //**********************************************************************//~v101I~
+//2020/10/19 va1a drop ronchk option,1han constraint only          //+va1aI~
+//2020/09/25 va12:add option:2han-30fu for 7pair                   //~va12I~
+//2020/09/25 va11:optionally evaluate point                        //~va11I~
+//**********************************************************************//~va12I~
 package com.btmtest.dialog;                                          //~@@@@R~//~9412R~
 
 import com.btmtest.R;
+import static com.btmtest.dialog.CompReqDlg.*;
 
 import static com.btmtest.StaticVars.AG;
 import java.util.HashMap;
@@ -23,9 +28,9 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9421I~
     public  static final int PAY_BY_NOT_PENDING=3000;              //~9412I~//~9421I~
                                                                    //~9421I~
-    public static final int[] rbIDPendingRank2=new int[]{R.id.rbPendingRank2No,R.id.rbPendingRank2Fix1};//+0330R~
-    public static final int PENDING_RANK2_RANK0OK=0;               //+0330R~
-    public static final int PENDING_RANK2_FIX1=1;                  //+0330I~
+    public static final int[] rbIDPendingRank2=new int[]{R.id.rbPendingRank2No,R.id.rbPendingRank2Fix1};//~0330R~
+    public static final int PENDING_RANK2_RANK0OK=0;               //~0330R~
+    public static final int PENDING_RANK2_FIX1=1;                  //~0330I~
     public static final int PENDING_RANK2_DEFAULT=PENDING_RANK2_FIX1;//~0330I~
                                                                    //~0330I~
     public static final int[] rbIDMinusStopByErr=new int[]{R.id.rbMinusStopByErrNo,R.id.rbMinusStopByErrSprit,R.id.rbMinusStopByErrAll};//~9414I~
@@ -129,9 +134,11 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int EATCHANGE_ALLOK=2;                     //~9516I~
     public static final int EATCHANGE_DEFAULT=EATCHANGE_NO;        //~9516I~
                                                                    //~9517I~
-    public static final int[] rbsYaku7Pair=new int[]{R.id.rbYaku7Pair50_1,R.id.rbYaku7Pair25_2};//~9517I~
+//  public static final int[] rbsYaku7Pair=new int[]{R.id.rbYaku7Pair50_1,R.id.rbYaku7Pair25_2};//~va12R~
+    public static final int[] rbsYaku7Pair=new int[]{R.id.rbYaku7Pair50_1,R.id.rbYaku7Pair25_2,R.id.rbYaku7Pair30_2};//~va12R~
     public static final int YAKU7PAIR_50_1=0;                      //~9517I~
     public static final int YAKU7PAIR_25_2=1;                      //~9517I~
+    public static final int YAKU7PAIR_30_2=2;                      //~0925I~
     public static final int YAKU7PAIR_DEFAULT=YAKU7PAIR_50_1;      //~9517I~
                                                                    //~9C03I~
     public static final int[] rbsOpenReach=new int[]{R.id.rbOpenReachYakuman,R.id.rbOpenReachChombo};//~0329I~
@@ -219,6 +226,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9517I~
     public static final String[] rankRenho=AG.resource.getStringArray(R.array.RenhoRank);//~9517I~
     public static final int RENHORANK_DEFAULT=rankRenho.length-1;  //~9517I~
+    public static final int[] intsRankRenho={0,RANKIDX_MANGAN,RANKIDX_HANEMAN,RANKIDX_MANGAN2,RANKIDX_MANGAN3,RANKIDX_YAKUMAN};//~va11I~
                                                                    //~9412I~
     public static final int    RSID_SYNCDATE              =1;               //~@@@@I~//~9404R~
     public static final int    RSID_SYNCDATE_FORMATTED    =2;      //~9405I~
@@ -281,6 +289,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_ANKAN_AFTER_REACH     =162;    //~9530I~
     public static final int    RSID_OPENREACH_PAY         =163;    //~0329I~
     public static final int    RSID_OPENREACH_ROBOT       =164;    //~0329I~
+    public static final int    RSID_ONESHOT               =165;    //~va11I~
                                                                    //~9427I~
     public static final int    RSID_MINUSSTOP_ROBOT       =170;     //~9404I~//~9429I~
     public static final int    RSID_ROBOT_PAY             =171;    //~9429I~
@@ -305,7 +314,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_2TOUCH                =201;    //~9C09I~//~9C10R~
     public static final int    RSID_2TOUCH_CANCELABLE_RON =201;    //~9C10I~
     public static final int    RSID_2TOUCH_TIMEOUT        =202;    //~9C09I~
-    public static final int    RSID_CHECK_RONABLE         =203;    //~0205I~
+//  public static final int    RSID_CHECK_RONABLE         =203;    //~0205I~//+va1aR~
+    public static final int    RSID_CHECK_RONVALUE        =204;    //~va11I~
 //Yaku                                                                   //~9501I~//~9516R~
     public static final int    RSID_8CONTINUE             =300;    //~9516I~
     public static final int    RSID_8CONT_NONEEDYAKU      =301;    //~9516I~
@@ -317,9 +327,11 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_YAKUFIX2LAST          =312;    //~9516I~//~9B10R~
     public static final int    RSID_YAKUFIX_MULTIWAITOK   =313;    //~0208R~
     public static final int    RSID_YAKUFIX_MULTIWAITDRAWOK=314;   //~0208I~
+    public static final int    RSID_YAKUFIX1              =315;    //~va11I~
                                                                    //~9516I~
     public static final int    RSID_EATCHANGE             =320;    //~9516I~
                                                                    //~9517I~
+    public static final int    RSID_DOUBLE_PILLOW         =329;    //~va12I~
     public static final int    RSID_KUITAN                =330;    //~9404I~//~9517I~
     public static final int    RSID_PINFUTAKEN            =331;    //~9517I~
     public static final int    RSID_7PAIR                 =332;    //~9517I~
@@ -346,8 +358,9 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_OPENREACHRON          =358;    //~9517I~//~0329R~
     public static final int    RSID_5THKAN                =359;    //~9517I~
                                                                    //~9C11I~
-    public static final int    RSID_13NOPAIR              =360;    //~9C11I~
-    public static final int    RSID_14NOPAIR              =361;    //~9C11I~
+//  public static final int    RSID_13NOPAIR              =360;    //~9C11I~//~va11R~
+//  public static final int    RSID_14NOPAIR              =361;    //~9C11I~//~va11R~
+    public static final int    RSID_NOPAIR14              =362;    //~va11I~
                                                                    //~9517I~
     public static final int    RSID_SPRITPOS              =370;    //~9528I~
     public static final int    RSID_RANKMUP               =371;    //~9528R~
@@ -416,7 +429,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  				new RSEnumPair(RSID_2TOUCH_TO_RON        ,"Delay2TTORon"         ),//~9C03R~//~9C09R~//~9C10R~
 //  				new RSEnumPair(RSID_2TOUCH               ,"2TouchCancelable"    ),//~9C09I~//~9C10R~
     				new RSEnumPair(RSID_2TOUCH_CANCELABLE_RON,"2TouchCancelableRon"    ),//~9C10I~
-    				new RSEnumPair(RSID_CHECK_RONABLE        ,"CheckRonable"           ),//~0205I~
+//  				new RSEnumPair(RSID_CHECK_RONABLE        ,"CheckRonable"           ),//~0205I~//+va1aR~
+    				new RSEnumPair(RSID_CHECK_RONVALUE       ,"CheckRonValue"          ),//~va11I~
     				new RSEnumPair(RSID_2TOUCH_TIMEOUT       ,"2TouchTimeout"        ),//~9C09I~//~9C10R~
     				new RSEnumPair(RSID_TIMEOUT_TAKE         ,"TimeoutTake"          ),//~9622R~
     				new RSEnumPair(RSID_TIMEOUT_TAKEROBOT    ,"TimeoutTakeRobot"     ),//~9701I~
@@ -438,6 +452,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_ANKAN_AFTER_REACH    ,"AnkanReach"           ),//~9530I~
     				new RSEnumPair(RSID_OPENREACH_PAY        ,"OpenReachPay"         ),//~0329I~
     				new RSEnumPair(RSID_OPENREACH_ROBOT      ,"OpenReachRobot"        ),//~0329I~
+    				new RSEnumPair(RSID_ONESHOT              ,"OneShot"               ),//~va11I~
                                                                    //~9427I~
     				new RSEnumPair(RSID_MINUSSTOP_ROBOT      ,"MinusStopRobot"       ),//~9404I~//~9429M~
     				new RSEnumPair(RSID_ROBOT_PAY            ,"RobotPay"             ),//~9429I~
@@ -460,6 +475,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_8CONT_MULTI          ,"Ron8ContMulti"     ),//~9517I~
                                                                    //~9516I~
     				new RSEnumPair(RSID_YAKUFIX              ,"YakuFix"              ),//~9516I~
+    				new RSEnumPair(RSID_YAKUFIX1             ,"YakuFix1"             ),//~va11I~
     				new RSEnumPair(RSID_YAKUFIX2             ,"YakuFix2"             ),//~9516I~
 //  				new RSEnumPair(RSID_YAKUFIX2LAST         ,"YakuFix2Last"         ),//~9516I~//~9B10R~
     				new RSEnumPair(RSID_YAKUFIX_MULTIWAITOK  ,"YakuFixMultiWaitOK"   ),//~0208I~
@@ -467,6 +483,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9516I~
     				new RSEnumPair(RSID_EATCHANGE            ,"EatChange"            ),//~9516I~
                                                                    //~9517I~
+    				new RSEnumPair(RSID_DOUBLE_PILLOW        ,"DblPillow"            ),//~va11I~
     				new RSEnumPair(RSID_KUITAN               ,"Kuitan"               ),//~9404I~//~9517M~
     				new RSEnumPair(RSID_PINFUTAKEN           ,"PinDumo"              ),//~9517I~
     				new RSEnumPair(RSID_7PAIR                ,"Pair7"                ),//~9517I~
@@ -485,6 +502,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_ALLGREEN_NOBLUE      ,"GreenNoBlue"          ),//~9517I~
     				new RSEnumPair(RSID_9RENPINSOU           ,"ChuRenPinSou"         ),//~9517I~
     				new RSEnumPair(RSID_NOPAIR13             ,"NoPair13"             ),//~9517I~
+    				new RSEnumPair(RSID_NOPAIR14             ,"NoPair14"             ),//~va11I~
     				new RSEnumPair(RSID_BIGRING              ,"BigRing"              ),//~9517I~
     				new RSEnumPair(RSID_RANK13               ,"Rank13"               ),//~9517I~
     				new RSEnumPair(RSID_RENHORANK            ,"RenhoRank"            ),//~9517I~
@@ -493,8 +511,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  				new RSEnumPair(RSID_OPENREACHRON         ,"OpenReachRon"         ),//~9517I~//~0329R~
     				new RSEnumPair(RSID_5THKAN               ,"Kan5th"               ),//~9517I~
                                                                    //~9517I~
-    				new RSEnumPair(RSID_13NOPAIR             ,"NoPair13"             ),//~9C11I~
-    				new RSEnumPair(RSID_14NOPAIR             ,"NoPair14"             ),//~9C11I~
+//  				new RSEnumPair(RSID_13NOPAIR             ,"NoPair13"             ),//~9C11I~//~va11R~
+//  				new RSEnumPair(RSID_14NOPAIR             ,"NoPair14"             ),//~9C11I~//~va11R~
                                                                    //~9C11I~
     				new RSEnumPair(RSID_SPRITPOS             ,"SpritPos"             ),//~9528I~
     				new RSEnumPair(RSID_RANKMUP              ,"RankMUp"              ),//~9528I~

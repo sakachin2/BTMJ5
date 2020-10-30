@@ -1,11 +1,13 @@
-//*CID://+DATER~:                             update#=  740;       //~v@@@R~//~9211R~
+//*CID://+va1cR~:                             update#=  860;       //~va16R~//+va1cR~
 //*****************************************************************//~v101I~
+//2020/10/20 va1c send net point to show setYaku on CompReqDlg     //+va1cI~
+//2020/10/13 va16 do not show hidden dora when reach was not declared//~va16I~
+//2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,12 @@ import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Complete;
 import com.btmtest.game.GConst;
+import com.btmtest.game.Players;
 import com.btmtest.game.Status;
 import com.btmtest.game.TileData;
+import com.btmtest.game.UA.Rank;
+import com.btmtest.game.UA.RonResult;
+import com.btmtest.game.UA.UARonValue;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.gui.UButton;
 import com.btmtest.gui.UCheckBox;
@@ -38,6 +44,7 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v
 import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.UA.Rank.*;
 import static com.btmtest.game.UA.UAReach.*;
 
 public class CompReqDlg extends UFDlg                             //~v@@@R~//~9220R~
@@ -53,9 +60,50 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                                                                    //~9213I~
     private static final int POINT_RANKM  =8000;
     private static final int POINT_RANKM_SHORT=7680;//~9212I~      //~9213R~
-    private static final int POINT_RANK_YM=40;                     //~9224I~
-    private static final int[] intsPoint={20,25,30,40,50,60,70,80,90,100,110};//~9212R~
-    private static final int[] intsRank={1,2,3,4,10,15,20,30,POINT_RANK_YM/*40*/,60,80,120};//~9212I~//~9219R~//~9224R~
+//  private static final int POINT_RANK_YM=40;                     //~9224I~//~va11R~
+    public  static int RANKID_YAKUMAN=40;                          //~va11M~
+    public  static int RANKID_YAKUMAN15=60;                        //~va11M~
+    public  static int RANKID_YAKUMAN2=80;                         //~va11M~
+    public  static int RANKID_YAKUMAN3=120;                        //~va11M~
+    public  static int RANKID_YAKUMAN4=160;                        //~va11M~
+    public  static int RANKID_YAKUMAN5=200;                        //~va11I~
+    public  static int RANKID_YAKUMAN6=240;                        //~va11I~
+    public  static int RANKID_YAKUMAN7=280;                        //~va11I~
+//  private static final int[] intsPoint={20,25,30,40,50,60,70,80,90,100,110};//~9212R~//~va11R~
+    private static final int[] intsPoint={0,20,25,30,40,50,60,70,80,90,100,110};//~va11I~
+    private static final int POINTIDX_7PAIR2=2;                    //~va16I~
+//  private static final int[] intsRank={1,2,3,4,10,15,20,30,POINT_RANK_YM/*40*/,60,80,120};//~9212I~//~9219R~//~9224R~//~va11R~
+//                                       0 1 2 3 4  5  6  7  8                    9                10              11              12//~va11I~
+//  private static final int[] intsRank={1,2,3,4,10,15,20,30,RANKID_YAKUMAN/*40*/,RANKID_YAKUMAN15,RANKID_YAKUMAN2,RANKID_YAKUMAN3,RANKID_YAKUMAN4,//~va11R~
+//                                       0 1 2 3 4 5  6  7  8  9                    10               11             12               13//~va11I~
+    public  static final int[] intsRank={0,1,2,3,4,10,15,20,30,RANKID_YAKUMAN/*40*/,RANKID_YAKUMAN15,RANKID_YAKUMAN2,RANKID_YAKUMAN3,RANKID_YAKUMAN4,//~va11I~//~va16R~
+//                                          14              15              16//~va11R~
+    										RANKID_YAKUMAN5,RANKID_YAKUMAN6,RANKID_YAKUMAN7};//~va11R~
+//  public  static final int[] intsRankIdx={1,2,3,4,4/*mangan*/,6/*haneman*/,8/*double*/,11/*triple*/,13/*yakuman*/};//~va11R~
+    public  static final int[] intsRankIdx={0,1,2,3,4,4/*mangan*/,6/*haneman*/,8/*double*/,11/*triple*/,13/*yakuman*/};//~va11I~
+//    public  static int RANKIDX_MANGAN=4;         //4han          //~va11R~
+//    public  static int RANKIDX_HANEMAN=5;        //6han          //~va11R~
+//    public  static int RANKIDX_MANGAN2=6;        //8han          //~va11R~
+//    public  static int RANKIDX_MANGAN3=7;        //11han         //~va11R~
+//    public  static int RANKIDX_YAKUMAN=8;        //13han         //~va11R~
+//    private static int RANKIDX_YAKUMAN15=9;                      //~va11R~
+//    private static int RANKIDX_YAKUMAN2=10;                      //~va11R~
+//    private static int RANKIDX_YAKUMAN3=11;                      //~va11R~
+//    private static int RANKIDX_YAKUMAN4=12;                      //~va11R~
+//    private static int RANKIDX_YAKUMAN5=13;                      //~va11R~
+//    private static int RANKIDX_YAKUMAN6=14;                      //~va11R~
+    public  static int RANKIDX_MANGAN=5;         //4han            //~va11I~
+    public  static int RANKIDX_HANEMAN=6;        //6han            //~va11I~
+    public  static int RANKIDX_MANGAN2=7;        //8han            //~va11I~
+    public  static int RANKIDX_MANGAN3=8;        //11han           //~va11I~
+    public  static int RANKIDX_YAKUMAN=9;        //13han           //~va11I~
+    private static int RANKIDX_YAKUMAN15=10;                       //~va11I~
+    private static int RANKIDX_YAKUMAN2=11;                        //~va11I~
+    private static int RANKIDX_YAKUMAN3=12;                        //~va11I~
+    private static int RANKIDX_YAKUMAN4=13;                        //~va11I~
+    private static int RANKIDX_YAKUMAN5=14;                        //~va11I~
+    private static int RANKIDX_YAKUMAN6=15;                        //~va11I~
+    private static int RANKIDX_YAKUMAN7=16;                        //~va11I~
     private static final int COLOR_YOU=Color.argb(0xff,0x00,0xbf,0xff); //deep sky blue//~9311I~
     private static final int COLOR_REPLY_BEFORESEND=Color.argb(0xff,0x1b,0xa4,0xd7);//sky blue//~9227R~
     private static final int COLOR_REPLY_OK=Color.argb(0xff,0x00,0xff,0x00);//~9227I~
@@ -85,7 +133,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private Dialog androidDlg;                                     //~v@@@I~
     public  int completeEswn,completeType,completeEswnLooser;      //~9212I~//~9217R~
     public int gameField,gameSeq,gameDup,gameReach,pointReach,pointDup;               //~9212I~//~9213R~//~9219R~
-    private int idxPoint=2/*default:30Point*/,idxRank=0;                              //~9220R~//~9221R~
+//  private int idxPoint=2/*default:30Point*/,idxRank=0;                              //~9220R~//~9221R~//~va11R~
+    private int idxPoint=3/*default:30Point*/,idxRank=0;           //~va11I~
     private boolean swRankMUp,swDealer;                            //~9217R~
     public  boolean swTake;                                        //~9217I~
     private boolean	swInitLayout;                                  //~9214R~
@@ -98,6 +147,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private View layoutView;                                       //~9220I~
     private URadioGroup rgCompType,rgWinner;	//for TEST calc            //~9220I~//~9402R~
 	private Button btnNG,btnSend,btnShowRule;                      //~9417R~
+	private Button btnShowYaku;                                    //~va11I~
 	private Accounts ACC;                                          //~9221I~
 	private boolean swReceived;                                            //~9221I~
 	private static final String[] replayText=AG.resource.getStringArray(R.array.compReplyText);//~9221I~
@@ -107,13 +157,20 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private int ctrShift;                                          //~9403I~
     private int cutEswn;                                           //~9530I~
     private int widthTileImage;                                    //~9815I~
+    private UARonValue UARV;                                       //~va11R~
 //  public  LinearLayout llDialog;                                 //~9927R~
+    private boolean swRuleChkRonValue;                             //~va11I~
+    private Players aPlayers;                                      //~va11I~
+    private RonResult ronResult;                                   //~va11I~
+    private Rank longRank;                                         //~va11I~
+    private boolean swRonChkErr;                                           //~va16I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public CompReqDlg()                                           //~v@@@R~//~9220R~//~9221R~
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("CompReqDlg.defaultConstructor"); //~9221R~
         ACC=AG.aAccounts;                                          //~9221I~
         currentEswn=ACC.getCurrentEswn();                          //~9221I~
+        aPlayers=AG.aPlayers;                                      //~va11I~
     }                                                              //~v@@@R~
     //******************************************                   //~v@@@R~
     public static CompReqDlg newInstance(Complete.Status Pstat)                        //~v@@@R~//~9220R~//~9221R~
@@ -278,9 +335,11 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         setButton();                                               //~9221I~
                                                                    //~9221I~
         setTextView(PView);                                        //~9221I~
+                                                                   //~va11I~
                                                                    //~v@@@I~
     	if ((TestOption.option & TestOption.TO_COMPREQDLG_LAYOUT)==0) //TODO TEST//~9219I~//~9220R~
-			ivDora=CompDlgDora.setImageLayout(PView);              //~9219R~
+//  		ivDora=CompDlgDora.setImageLayout(PView);              //~9219R~//~va16R~
+    		ivDora=CompDlgDora.setImageLayout(PView,completeEswn); //~va16I~
     	if ((TestOption.option & TestOption.TO_COMPREQDLG_LAYOUT)==0) //TODO TEST//~9220R~
         {                                                          //~9815I~
 //  		ivTiles=CompDlgTiles.setImageLayout(PView);            //~9220I~//~9519R~
@@ -288,8 +347,11 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             widthTileImage=ivTiles.widthTileImage;                 //~9815I~
     		if (Dump.Y) Dump.println("CompReqDlg.initLayout widthTileImage="+widthTileImage);//~9815I~
         }                                                          //~9815I~
-                                                                   //~9219I~
+        getRuleSetting();                                          //~va11I~
       	setUCheckBox(PView);	//checkbox                         //~9213I~//~9214I~//~9220R~
+                                                                   //~va11I~
+        setCompType(); //set swTake before getValue() from SetUSpinner//~va11M~
+                                                                   //~va11I~
 	    setUSpinner(PView);                                        //~9214I~
 //  	if (PrefSetting.isNoRelatedRule())                         //~9529I~//~9708R~
 //      	((LinearLayout)UView.findViewById(PView,R.id.llRelatedRule)).setVisibility(View.GONE);//~9529I~//~9708R~
@@ -298,9 +360,9 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 	        RuleSetting.setDora(PView,true/*swFixed*/);            //~9529I~
 	        RuleSetting.setSpritPos(PView,true/*swFixed*/);        //~9530I~
 //      }                                                          //~9529I~//~9708R~
-        getRuleSetting();                                                           //~v@@@I~//~9212R~
+//      getRuleSetting();                                                           //~v@@@I~//~9212R~//~va11R~
         setTitle();                                                //~v@@@I~//~9220R~
-        setCompType();                                             //~9218I~
+//      setCompType();                                             //~9218I~//~va11R~
         setNormalPoint();                                          //~9212I~
         setReplyText();                                            //~9221I~
         swInitLayout=false;                                        //~9214I~
@@ -309,11 +371,13 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private void getRuleSetting()                                      //~9212I~
     {                                                              //~9212I~
     	swRankMUp=RuleSetting.isRankMUp();   //kiriage mangan      //~9212I~
+    	swRuleChkRonValue=RuleSettingOperation.isCheckRonValue();  //~va11I~
     	cutEswn=ACC.getCutEswn();                                       //~9530I~
     }                                                              //~9212I~
     //******************************************                   //~9212I~
     private void setupValue()                                      //~9212I~
     {                                                              //~9212I~
+    	if (Dump.Y) Dump.println("CompReqDlg.setupValue");         //~va11R~
     	Rect r;                                                    //~9212I~
 //        if ((TestOption.option & TestOption.TO_COMPREQDLG_LAYOUT)!=0)            //~9212I~//~9220R~//~9810R~
 //        {                                                          //~9212I~//~9810R~
@@ -340,7 +404,19 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         	calcOut=compStat.ammount;                              //~9221I~
         	idxPoint=calcOut[CALC_AMT_IDXPOINT];                   //~9221I~
         	idxRank=calcOut[CALC_AMT_IDXRANK];                     //~9221I~
+        	int han=calcOut[CALC_AMT_HAN];                         //~va11I~
+            int net=calcOut[CALC_AMT_NET];                         //~va11I~
+//      	int point=intsPoint[idxPoint];                         //~va11I~//+va1cR~
+        	int point=calcOut[CALC_AMT_NETPOINT];                  //+va1cI~
+            longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW]);//~va11I~
+            ronResult=new RonResult(net,han,point,longRank);       //~va11I~
+	    	if (Dump.Y) Dump.println("CompReqDlg.setupValue Received ronResult="+ronResult.toString());//~va11R~
         }                                                          //~9221I~
+        else                                                       //~va16I~
+        {                                                          //~va16I~
+            longRank=new Rank();                                   //~va16I~
+    		ronResult=new RonResult(0,0,0,longRank);	//for showYakuDlg tot avoid null//~va16I~
+        }                                                          //~va16I~
         compStat.setDlg(this);                                     //~9222I~//~9226M~
     }                                                              //~9212I~
 //    //******************************************                   //~9212I~//~9810R~
@@ -407,13 +483,15 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         androidDlg.setTitle(s);                                 //~v@@@R~//~9220R~//~9927R~//~0322R~
     }                                                              //~v@@@I~//~9220R~
     //******************************************                   //~9218I~
+    //*completeTye by setValue                                     //~va11I~
+    //******************************************                   //~va11I~
     private void setCompType()                                     //~9218I~
     {                                                              //~9218I~
     	String winner;                                 //~9218R~//~9219R~
     	Spanned txt;             //~9219I~
         boolean swLooser=true;                                     //~9218R~
     //******************************                               //~9218I~
-    	if (Dump.Y) Dump.println("CompReqDlg.setCompType");       //~9218I~//~9220R~
+    	if (Dump.Y) Dump.println("CompReqDlg.setCompType completeType="+completeType);       //~9218I~//~9220R~//~va11R~
         swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~9220I~
     	winner=GConst.nameESWN[completeEswn];                      //~9218I~
         int compid;                                                //~9218I~
@@ -487,6 +565,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             net=calcOut[CALC_AMT_NET];                                             //~9220R~//~9221R~
             calcOut[CALC_AMT_IDXPOINT]=idxPoint;                   //~9221I~
             calcOut[CALC_AMT_IDXRANK]=idxRank;                     //~9221I~
+	        if (Dump.Y) Dump.println("CompReqDlg.setNormalPoint !RCV calcOut="+Arrays.toString(calcOut));//~va11I~
 //          spnPoint.select(idxPoint);                                 //~9212I~//~9221R~
 //          spnRank.select(idxRank);                                   //~9212I~//~9221R~
         }                                                          //~9221I~
@@ -560,15 +639,82 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                                                                    //~9530I~
     	completeEswn=cmp; completeEswnLooser=looser; cutEswn=cut;  //~9530I~
     }                                                              //~9530I~
+    //*********************************************************************//~va11I~
+    //*calc point for evaluate higher                              //~va11I~
+    //*from UARonData and UARonValue                              //~va11I~//~va16R~
+    //*********************************************************************//~va11I~
+    public static int calcPointBase(int Ppoint/*fu*/,int Prank/*han*/,boolean PswRankMUp)//~va11R~
+    {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("CompReqDlg.calcPointBase fu="+Ppoint+",han="+Prank+",swRankMup="+PswRankMUp);//~va11I~
+        if (Prank==0)                                              //~va11I~
+            return 0;                                              //~va11I~
+        int rank;                                                  //~va11I~
+//        if (Prank>=RANKID_YAKUMAN)   //40,60,80,120              //~va11R~
+//            rank=Prank;                                          //~va11R~
+//        else                                                     //~va11R~
+//        {                                                        //~va11R~
+            if (Prank>=MIN_RANK_YAKUMAN)      //13                 //~va11R~
+    			if (RuleSettingYaku.isYakumanByRank())                 //~va11I~
+                	rank=RANKIDX_YAKUMAN;     //8 kazoe yakuman    //~va11R~
+                else                                               //~va11I~
+	                rank=RANKIDX_MANGAN3;     //7 triple           //~va11I~
+            else                                                   //~va11I~
+            if (Prank>=11)                                         //~va11I~
+                rank=RANKIDX_MANGAN3;      //7 triple              //~va11R~
+            else                                                   //~va11I~
+            if (Prank>=8)                                          //~va11I~
+                rank=RANKIDX_MANGAN2;      //6 double              //~va11R~
+            else                                                   //~va11I~
+            if (Prank>=6)                                          //~va11I~
+                rank=RANKIDX_HANEMAN;      //5 double              //~va11I~
+            else                                                   //~va11I~
+            if (Prank>4)                                           //~va11R~
+                rank=RANKIDX_MANGAN;       //4 mangan              //~va11R~
+            else                                                   //~va11I~
+            if (Prank==4)                                          //~va11I~
+              if (Ppoint>POINT_ALLHAND)	//>30                      //~va11R~
+                rank=RANKIDX_MANGAN;       //4 mangan              //~va11M~
+              else                                                 //~va11I~
+                rank=Prank;               //4 han but not mangan   //~va11M~
+            else                                                   //~va11I~
+//              rank=Prank-1;                                      //~va11R~
+                rank=Prank;                //0-->                  //~va11I~
+            rank=intsRank[rank];           //0,1,2,3,4,10          //~va11R~
+//        }                                                        //~va11R~
+	    return calcPointBaseSub(Ppoint,rank,PswRankMUp);           //~va11I~
+    }                                                              //~va11I~
+    private static int calcPointBaseSub(int Ppoint/*fu*/,int Prank/*han*/,boolean PswRankMUp)//~va11R~
+    {                                                              //~va11I~
+    	int val;                                                   //~va11I~
+    	if (Prank>=10)                                             //~va11I~
+        {                                                          //~va11I~
+        	val=POINT_RANKM*Prank/10;                              //~va11I~
+        }                                                          //~va11I~
+        else                                                       //~va11I~
+        {                                                          //~va11I~
+        	val=Ppoint*8*4/*player*/;                              //~va11I~
+            for (int ii=2;ii<=Prank;ii++)                          //~va11I~
+            	val*=2;                                            //~va11I~
+            if (PswRankMUp)                                        //~va11I~
+		    	if (val==POINT_RANKM_SHORT)    //7680              //~va11I~
+        	    	val=POINT_RANKM; 		  //8000               //~va11I~
+            if (val>POINT_RANKM)	//8000                         //~va11I~
+            	val=POINT_RANKM;                                   //~va11I~
+            val=Utils.roundUp(val,100);                            //~va11I~
+        }                                                          //~va11I~
+    	if (Dump.Y) Dump.println("CompReqDlg.calcPointBaseSub rc="+val+",fu="+Ppoint+",han="+Prank+",swRankMup="+PswRankMUp);//~va11R~
+        return val;
+    }                                                              //~va11I~
     //*********************************************************************//~9602R~
     //*ammountNet:original total when cutPlayer option             //~9602I~
     //*********************************************************************//~9602I~
-    private void calcPoint(boolean PswDealer,boolean PswTake, int Ppoint,int Prank,boolean PswRankMUp,int[] PintOut)  //~9212R~//~9213R~//~9220R~
+    private void calcPoint(boolean PswDealer,boolean PswTake, int Ppoint,int Prank,boolean PswRankMUp,int[] PintOut)  //~9212R~//~9213R~//~9220R~//~va11R~//~0925R~
     {
     	int val,valup,valp,valc,ammount,ammountNet;                                   //~9212R~//~9213R~//~9220R~
     	int amtLooseDealer=0,amtLooseNonDealer=0;                  //~9220I~
     	int amtLooseNonDealerCutPlayer=0;                          //~9530I~
-    	if (Dump.Y) Dump.println("CompReqDlg.calcPoint comp="+completeEswn+",looser="+completeEswnLooser+",cutEswn="+cutEswn);//~9530R~
+    	if (Dump.Y) Dump.println("CompReqDlg.calcPoint compEswn="+completeEswn+",looser="+completeEswnLooser+",cutEswn="+cutEswn);//~9530R~//~va11R~
+    	if (Dump.Y) Dump.println("CompReqDlg.calcPoint rank="+Prank+",point="+Ppoint+",swTake="+PswTake+",swDealer="+PswDealer+",swRankMup="+PswRankMUp);//~va11I~
     	if (Prank>=10)                                             //~9212I~
         {                                                          //~9212I~
         	val=POINT_RANKM*Prank/10;                              //~9212R~
@@ -577,6 +723,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         else                                                       //~9212I~
         {                                                          //~9212I~
         	val=Ppoint*8*4/*player*/;                              //~9213R~
+        	if (Prank==0)                                          //~va11I~
+            	val=0;                                             //~va11I~
             for (int ii=2;ii<=Prank;ii++)                          //~9212R~
             	val*=2;                                            //~9212I~
             if (PswRankMUp)                                         //~9212M~//~9213M~//~9220R~
@@ -755,6 +903,40 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         TextView tvN    =(TextView)    UView.findViewById(PView,R.id.LabelReplyN);//~9311I~
         tvsReplyLabel=new TextView[]{tvE,tvS,tvW,tvN};             //~9311I~
     }                                                              //~9221I~
+    //*********************************************************************//~va11I~
+    private void setYaku()                                         //~va11R~
+    {                                                              //~va11I~
+        if (Dump.Y) Dump.println("CompReqDlg.setYaku swRuleChkRonValue="+swRuleChkRonValue+",rank="+longRank.toString());//~va11I~//~va16I~
+        TextView tvYaku=(TextView)    UView.findViewById(layoutView,R.id.tvYaku);//~va11R~
+	  	String txt;                                                //~va16I~
+      if (!swRuleChkRonValue)                                      //~va16I~
+	  	txt=Utils.getStr(R.string.Info_NoOptionShowValue);        //~va16I~
+      else                                                         //~va16I~
+      if (swRonChkErr)                                             //~va16R~
+      {                                                            //~va16I~
+	  	txt=Utils.getStr(R.string.Err_RonChk);                     //~va16I~
+      }                                                            //~va16I~
+      else                                                         //~va16I~
+      {                                                            //~va16I~
+    	int ctrDora=longRank.getDora();                            //~va11R~
+    	int ctrHonor=longRank.getWGR();                            //~va11R~
+    	ctrHonor+=longRank.isContains(RYAKU_WIND)?1:0;             //~va11R~
+    	ctrHonor+=longRank.isContains(RYAKU_ROUND)?1:0;            //~va11R~
+	    txt=" ";                                            //~va11I~//~va16R~
+        if (!longRank.isYakumanExceptByRank()) //except kazoeyakuman//~va11I~
+        {                                                          //~va11I~
+		    txt+=ronResult.point+" "+Utils.getStr(R.string.Label_Fu)+" "+ronResult.han+" "+Utils.getStr(R.string.Label_Han)+" : ";//~va11R~
+        }                                                          //~va11I~
+        if (ctrDora!=0)                                            //~va11I~
+	        txt+=Utils.getStr(R.string.Label_Dora)+"="+ctrDora+" ";//~va11R~
+        if (ctrHonor!=0)                                           //~va11I~
+	        txt+=Utils.getStr(R.string.Label_Honor)+"="+ctrHonor+" ";//~va11R~
+        txt+=Rank.toStringName(ronResult.longRank,false/*no Honor*/);//~va11R~
+//      txt+="WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"; //TODO test//~va11R~
+	  }                                                            //~va16I~
+        if (Dump.Y) Dump.println("CompReqDlg.setYaku text="+txt+",ronResyult="+ronResult.toString());//~va11R~
+        tvYaku.setText(txt);                                       //~va11I~
+    }                                                              //~va11I~
     //*******************************************************      //~9220I~
     private void setUCheckBox(View PView)                        //~9213I~//~9214R~//~9220R~
     {                                                              //~9213I~//~9220R~
@@ -764,7 +946,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     //*******************************************************      //~9214I~
     private void setUSpinner(View PView)                            //~9214I~
     {                                                              //~9214I~
-        if (Dump.Y) Dump.println("CompReqDlg.setUSistener");      //~9214I~//~9220R~
+        if (Dump.Y) Dump.println("CompReqDlg.setUSpinner swReceived="+swReceived);      //~9214I~//~9220R~//~va11R~
                                                                    //~9214I~
         spnPoint        =          new USpinner(PView,R.id.spnPoint);//~v@@@I~//~9214M~
         spnRank         =          new USpinner(PView,R.id.spnRank );//~v@@@I~//~9214M~
@@ -787,6 +969,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 			String[] strsRank=AG.resource.getStringArray(R.array.NormalRank);//~9221I~
             tvBasePoint.setText(strsPoint[idxPoint]);               //~9221I~
             tvRank.setText(strsRank[idxRank]);                      //~9221I~
+//  		if (swRuleChkRonValue)                                 //~va11I~//~va16R~
+	            setYaku();                                         //~va11R~
         }                                                          //~9221I~
         else                                                       //~9221I~
         {                                                          //~9221I~
@@ -797,7 +981,9 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                                                                    //~9222I~
             spnPoint.setArray(R.array.NormalPoint);                    //~v@@@I~//~9214M~//~9221I~
             spnRank.setArray(R.array.NormalRank);                      //~v@@@I~//~9214M~//~9221I~
-                                                                       //~9214I~//~9221I~
+                                                                   //~va11I~
+            evaluatePointRank();                                   //~va11R~
+                                                                   //~va11I~
             spnPoint.selectNoListen(idxPoint);                             //~9221I~//~9228M~
             spnRank.selectNoListen(idxRank);                               //~9221I~//~9228M~
             spnPoint.setListener(this,USPP_POINT);                      //~9214I~//~9221I~
@@ -834,6 +1020,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         btnNG           =              UButton.bind(layoutView,R.id.CompleteNG,this);//~9221I~
         btnSend         =              UButton.bind(layoutView,R.id.Send,this);//~9221I~
         btnShowRule     =              UButton.bind(layoutView,R.id.ShowRule,this);//~9417I~
+        btnShowYaku     =              UButton.bind(layoutView,R.id.btnShowYaku,this);//~va11I~
         if (completeEswn==currentEswn)                             //~9221R~
         {                                                          //~9221I~
         	btnNG.setVisibility(View.GONE);                        //~9221R~
@@ -866,6 +1053,9 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             case R.id.ShowRule:                                    //~9417I~
                 onClickShowRule();                                 //~9417I~
                 break;                                             //~9417I~
+	        case R.id.btnShowYaku:                                 //~va11I~
+                onClickShowYaku();                                 //~va11I~
+                break;                                             //~va11I~
             default:                                               //~9221I~
         }                                                          //~9221I~
     }                                                              //~9221I~
@@ -901,14 +1091,22 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         String msg=compStat.getAmmountMsgText();                   //~9221R~
         ACC.sendToAll(GCM_COMPDLG_REQ,msg);                        //~9221R~
 //      btnSend.setEnabled(false);                                 //~9222M~//~9320R~
-        dismiss();                                                 //~9221I~//~9222R~//+0401R~
+        dismiss();                                                 //~9221I~//~9222R~//~0401R~
     }                                                              //~9221I~
     //******************************************                   //~9417I~
-    public void onClickShowRule()                                  //~9417I~
+    private void onClickShowRule()                                  //~9417I~//~va11R~
     {                                                              //~9417I~
         if (Dump.Y) Dump.println("CompReqDlg.onClickShowRule");    //~9417I~
         showRule();                                                //~9417I~
     }                                                              //~9417I~
+    //******************************************                   //~va11I~
+    public void onClickShowYaku()                                  //~va11I~
+    {                                                              //~va11I~
+        if (Dump.Y) Dump.println("CompReqDlg.onClickShowyaku");    //~va11I~
+        if (!swRuleChkRonValue)                                     //~va11I~//~va16R~
+            UView.showToast(R.string.Info_NoOptionShowValue);       //~va11I~//~va16R~
+	    showYaku();                                                //~va16I~
+    }                                                              //~va11I~
     //*******************************************************************//~9221I~
     //*From ACAction when received GCM_COMPDLG_REQ                 //~9221I~
     //*******************************************************************//~9221I~
@@ -1061,7 +1259,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     //*******************************************************************//~9224I~
     public static boolean isRank_YM(int PidxRank)                  //~9224I~
     {                                                              //~9224I~
-    	boolean rc=intsRank[PidxRank]>=POINT_RANK_YM;              //~9224I~
+//  	boolean rc=intsRank[PidxRank]>=POINT_RANK_YM;              //~9224I~//~va11R~
+    	boolean rc=intsRank[PidxRank]>=RANKID_YAKUMAN;         //~va11I~
         if (Dump.Y) Dump.println("CompReqDlg.isRankYM idx="+PidxRank+",rc="+rc);//~9224I~
         return rc;
     }                                                              //~9221I~
@@ -1071,6 +1270,12 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         if (Dump.Y) Dump.println("CompReqDlg.showRule");           //~9417I~
         RuleSetting.showRuleInGame();                              //~9417I~
     }                                                              //~9417I~
+	//************************************************             //~va11I~
+    private void showYaku()                                        //~va11I~
+    {                                                              //~va11I~
+        if (Dump.Y) Dump.println("CompReqDlg.showYaku");           //~va11I~
+        ShowYakuDlg.newInstance(ronResult).show();                 //~va11I~
+    }                                                              //~va11I~
     //*******************************************************************//~9403I~
     public static boolean showDismissed()                             //~9403I~//~9903R~
     {                                                              //~9403I~
@@ -1184,4 +1389,291 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         		AG.aUserAction.sendToServer(GCM_OPEN,PLAYER_YOU,OPT_OPEN_ONLY_REACH,0/*p2*/,0/*p3*/);//~0329I~
         }                                                          //~0329I~
     }                                                              //~0329I~
+    //*************************************************************************//~va11I~
+    private void evaluatePointRank()                               //~va11I~
+    {                                                              //~va11I~
+        if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank swChkRonValue="+swRuleChkRonValue);//~va11I~
+        int rank=0;
+        if (swRuleChkRonValue)                                         //~va11I~
+        {                                                          //~va11I~
+//      	UARV=new UARonValue(this);                             //~va11R~
+        	UARV=AG.aUARonValue;                                   //~va11I~
+        	ronResult=UARV.getValue(PLAYER_YOU);	//left:amt,top:yaku,right:rank,bottom:point//~va11R~
+        	longRank=ronResult.longRank;                           //~va11I~
+        	swRonChkErr=ronResult.swRonChkErr;                     //~va16I~
+            setYaku();                                             //~va11R~//~va16R~
+            rank=ronResult.han;                                //~va11R~
+            int point=ronResult.point;                             //~va11R~
+	        if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank rank="+rank+",longRank="+longRank.toString());//~va11I~
+            if (longRank.isYakumanExceptByRank()) //except kazoeyakuman//~va11R~
+            {                                                      //~va11I~
+              	idxRank=-1;                                        //~va11R~
+                switch(rank)                                       //~va11R~
+                {                                                  //~va11R~
+                    case 1:                                        //~va11R~
+                        idxRank=RANKIDX_YAKUMAN;                   //~va11R~
+                        break;                                     //~va11R~
+                    case 2:                                        //~va11R~
+                        idxRank=RANKIDX_YAKUMAN2;                  //~va11R~
+                        break;                                     //~va11R~
+                    case 3:                                        //~va11R~
+                        idxRank=RANKIDX_YAKUMAN3;                  //~va11R~
+                        break;                                     //~va11R~
+//                  default:                                       //~va11R~
+                    case 4:                                        //~va11I~
+                        idxRank=RANKIDX_YAKUMAN4;                  //~va11R~
+                        break;                                     //~va11I~
+                    case 5:                                        //~va11I~
+                        idxRank=RANKIDX_YAKUMAN5;                  //~va11I~
+                        break;                                     //~va11I~
+                    case 6:                                        //~va11I~
+                        idxRank=RANKIDX_YAKUMAN6;                  //~va11I~
+                        break;                                     //~va11I~
+                    default:                                       //~va11I~
+                        idxRank=RANKIDX_YAKUMAN7;                  //~va11R~
+                }                                                  //~va11R~
+	 	    	if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank Yakuman rank="+rank+",idxRank="+idxRank);//~va11R~
+            }                                                      //~va11I~
+            else                                                   //~va11I~
+            if (longRank.isContains(RYAKU_BYRANK)) //kazoeyakuman  //~va11I~
+            	idxRank=RANKIDX_YAKUMAN;                           //~va11I~
+            else                                                   //~va11I~
+            if (rank==0)	//ronchk failed                        //~va11I~
+            {                                                      //~va11I~
+                idxRank=0;                                         //~va11I~
+            }                                                      //~va11I~
+            else                                                   //~va16I~
+    		if (rank>=MIN_RANK_YAKUMAN && !RuleSettingYaku.isYakumanByRank())//~va16I~
+            {                                                      //~va16I~
+                idxRank=RANKIDX_MANGAN3;     //max 8 triple        //~va16I~
+            }                                                      //~va16I~
+            else                                                   //~va11I~
+            {                                                      //~va11I~
+            	idxRank=-1;                                        //~va11R~
+            	for (int ii=0;ii<intsRankIdx.length;ii++)          //~va11I~
+                {                                                  //~va11I~
+                	if (rank<intsRankIdx[ii])                      //~va11I~
+                    {                                              //~va11I~
+		            	idxRank=ii-1;                              //~va11R~
+                        if (rank==4)	//4 han or mangan          //~va11R~
+                        	if (ronResult.amt<POINT_RANKM)         //~va11I~
+		            			idxRank--;              //4 han    //~va11R~
+                        break;                                     //~va11I~
+                    }                                              //~va11I~
+                }                                                  //~va11I~
+                if (idxRank<0)                                     //~va11R~
+                	idxRank=intsRankIdx.length-1;                  //~va11I~
+	 	    	if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank rank="+rank+",idxRank="+idxRank);//~va11R~
+            }                                                      //~va11I~
+        //point                                                    //~va11I~
+//            for (int ii=0;ii<intsPoint.length;ii++)                //~va11I~//~va16R~
+//            {                                                      //~va11I~//~va16R~
+//                if (point==intsPoint[ii]) //{0,20,25,30,40,50,60,70,80,90,100,110};//~va11R~//~va16R~
+//                {                                                  //~va11I~//~va16R~
+//                    idxPoint=ii;                                   //~va11I~//~va16R~
+//                    break;                                         //~va11I~//~va16R~
+//                }                                                  //~va11I~//~va16R~
+//                else                                               //~va11I~//~va16R~
+//                if (point<intsPoint[ii]) //{0,20,25,30,40,50,60,70,80,90,100,110};//~va11R~//~va16R~
+//                {                                                  //~va11I~//~va16R~
+//                    idxPoint=ii;                                   //~va11I~//~va16R~
+//                    break;                                         //~va11I~//~va16R~
+//                }                                                  //~va11I~//~va16R~
+//            }                                                      //~va11I~//~va16R~
+            if (point==POINT_7PAIR2)    //25                       //~va16I~
+                idxPoint=POINTIDX_7PAIR2; //2;                     //~va16I~
+            else                                                   //~va16I~
+            {                                                      //~va16I~
+            	int pt=Utils.roundUp(point,10);                    //~va16I~
+                idxPoint=intsPoint.length-1;	//for safety over 110//~va16I~
+                for (int ii=0;ii<intsPoint.length;ii++)            //~va16I~
+                {                                                  //~va16I~
+                    if (pt==intsPoint[ii]) //{0,20,25,30,40,50,60,70,80,90,100,110};//~va16I~
+                    {                                              //~va16I~
+                        idxPoint=ii;                               //~va16I~
+                        break;                                     //~va16I~
+                    }                                              //~va16I~
+                }                                                  //~va16I~
+            }                                                      //~va16I~
+        	if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank idxPoint="+idxPoint+",idxRank="+idxRank+",result="+ronResult.toString());//~va11R~
+        	calcOut[CALC_AMT_HAN]=rank;                            //~va11I~
+        	calcOut[CALC_AMT_NETPOINT]=point;                      //+va1cI~
+            int[] intS=longRank.rankToIntS();                  //~va11I~
+        	calcOut[CALC_AMT_RANKHIGH]=intS[0];                   //~va11I~
+        	calcOut[CALC_AMT_RANKLOW]=intS[1];                     //~va11I~
+        }                                                          //~va11I~
+        else                                                       //~va16I~
+            setYaku();	//show no setting of option to getValue    //~va16I~
+    }                                                              //~va11I~
+//    //*************************************************************************//~va11I~//~va16R~
+//    //*from UARonValue.chkEnvironmentYaku<--chkCompleteSub         //~va11R~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    public void chkEnvironmentYaku(boolean PswAllInHand)               //~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkEnvironmentYaku"); //~va11R~//~va16R~
+//        if (chkTimingYakuman())                                    //~va11I~//~va16R~
+//            return;                                                //~va11I~//~va16R~
+//        chkReach();  //reach, double-reach, open-reach and taken jasut after reach//~va11I~//~va16R~
+//        chkTaken(PswAllInHand);  //tsumo                      //~va11R~//~va16R~
+//        chkLastTile();  //hitei hotei                              //~va11I~//~va16R~
+//        chkKan();    //chankan                                     //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private boolean chkTimingYakuman()                             //~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkTimingYakuman");   //~va11I~//~va16R~
+//        boolean rc=false;                                          //~va11I~//~va16R~
+//        chk1stTake();           //1st taken availability of 13nopair and 14no pair//~va11I~//~va16R~
+//        if (chk1stParentTake())     //tenho                        //~va11I~//~va16R~
+//            rc=true;                                               //~va11I~//~va16R~
+//        if (chk1stChildTake())      //chiiho                       //~va11I~//~va16R~
+//            rc=true;                                               //~va11I~//~va16R~
+//        if (chk1stChildRon())       //renho                        //~va11I~//~va16R~
+//            rc=true;                                               //~va11I~//~va16R~
+//        if (chk8ContinuedRon())     //8renchan                     //~va11I~//~va16R~
+//            rc=true;                                               //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkTimingYakuman rc="+rc);//~va11I~//~va16R~
+//        return rc;                                                 //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+    //*************************************************************************//~va11I~
+    public static boolean chk1stTake()            //tenho   //~va11R~
+    {                                                              //~va11I~
+    	boolean rc=false;                                          //~va11R~
+    	int lastAction=AG.aPlayers.actionBeforeRon;                //~va11I~
+    	boolean swTake=lastAction==GCM_TAKE;                       //~va11I~
+        int currentEswn=AG.aAccounts.getCurrentEswn();             //~va11I~
+        int ctrTaken=AG.aPlayers.ctrTakenAll;                           //~va11R~
+        int ctrDiscarded=AG.aPlayers.ctrDiscardedAll;              //~va11R~
+        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1; //~va11I~
+        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va11I~
+        rc=swParent | swChild;                                     //~va11R~
+        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va11R~
+        return rc;
+    }                                                              //~va11I~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private boolean chk1stParentTake()                   //tenho   //~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        int ctr=aPlayers.ctrTakenAll;                              //~va11R~//~va16R~
+//        boolean sw=swTake && currentEswn==ESWN_E && ctr==1;        //~va11I~//~va16R~
+//        if (sw)                                                    //~va11I~//~va16R~
+//        {                                                          //~va11I~//~va16R~
+//            UARV.addTimingYakuman(RYAKU_PARENTTAKE,1/*yakumanRank*/,0/*amt*/);//~va11R~//~va16R~
+//        }                                                          //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chk1stParentTake sw="+sw+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctr);//~va11M~//~va16R~
+//        return sw;                                                 //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private boolean chk1stChildTake()                    //chiho   //~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        //TODO test ankan                                          //~va11I~//~va16R~
+//        int ctr=aPlayers.ctrTakenAll;                              //~va11R~//~va16R~
+//        int ctrDiscarded=aPlayers.ctrDiscardedAll;                 //~va11R~//~va16R~
+//        boolean sw=swTake && currentEswn!=ESWN_E && ctr==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va11R~//~va16R~
+//        if (sw)                                                    //~va11I~//~va16R~
+//        {                                                          //~va11I~//~va16R~
+//            UARV.addTimingYakuman(RYAKU_CHILDTAKE,1/*yakumanRank*/,0/*amt*/);//~va11R~//~va16R~
+//        }                                                          //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chk1stChildTake sw="+sw+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctr+",ctrDiscarded="+ctrDiscarded);//~va11M~//~va16R~
+//        return sw;                                                 //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private boolean chk1stChildRon()                    //lenho    //~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        boolean rc=false;                                          //~va11I~//~va16R~
+//        int ctr=aPlayers.ctrTakenAll;                              //~va11R~//~va16R~
+//        int ctrDiscarded=aPlayers.ctrDiscardedAll;                 //~va11R~//~va16R~
+//        boolean sw=!swTake && currentEswn!=ESWN_E && ctrDiscarded<=currentEswn && ctr==ctrDiscarded/*no pon,kan,chii*/;//~va11R~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chk1stChildRon sw="+sw+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctr+",ctrDiscarded="+ctrDiscarded);//~va11R~//~va16R~
+//        if (sw)                                                    //~va11I~//~va16R~
+//        {                                                          //~va11I~//~va16R~
+//            int idxRank=RuleSettingYaku.getRank1stChildRon(); //0,4(mangan),5,6,7,8(yakuman)//~va11R~//~va16R~
+//            if (idxRank==RANKIDX_YAKUMAN)    //8                   //~va11R~//~va16R~
+//            {                                                      //~va11I~//~va16R~
+//                UARV.addTimingYakuman(RYAKU_CHILDRON,1/*yakumanRank*/,0/*amt*/);//~va11R~//~va16R~
+//                rc=true;                                           //~va11I~//~va16R~
+//            }                                                      //~va11I~//~va16R~
+//            else                                                   //~va11I~//~va16R~
+//            if (idxRank>0)  //0:renho is not used                  //~va11R~//~va16R~
+//            {                                                      //~va11I~//~va16R~
+////              idxRank--;                                         //~va11R~//~va16R~
+//                int rankID=intsRank[idxRank]; //10,15              //~va11R~//~va16R~
+//                int amt=POINT_RANKM*rankID/10;                         //~va11I~//~va16R~
+//                int han=intsRankIdx[idxRank];        //4(mangan),6(haneman),8(dowble),12(triple)//~va11R~//~va16R~
+//                if (Dump.Y) Dump.println("CompReqDlg.chk1stChildRon idxRank="+idxRank+",amt="+amt+",han="+han);//~va11I~//~va16R~
+//                UARV.addTimingYakuman(RYAKU_CHILDRON_NY,han,amt);  //~va11R~//~va16R~
+//            }                                                      //~va11I~//~va16R~
+//        }                                                          //~va11I~//~va16R~
+//        return rc;                                                 //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private boolean chk8ContinuedRon()                  //8renchan //~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        boolean rc=false;                                          //~va11I~//~va16R~
+//        //TODO set manually                                        //~va11M~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.8ContinuedRon rc="+rc);//~va11R~//~va16R~
+//        return rc;                                                 //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private void chkReach()  //reach, double-reach, open-reach and taken jasut after reach//~va11I~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkReach");           //~va11I~//~va16R~
+//        if (aPlayers.getReachStatus(PLAYER_YOU)==REACH_DONE)       //~va11I~//~va16R~
+//        {                                                          //~va11I~//~va16R~
+//            if (AG.aPlayers.isOpen(PLAYER_YOU))                    //~va11I~//~va16R~
+//                UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~va11R~//~va16R~
+//            int ctrTaken=aPlayers.ctrTakenAll;                     //~va11I~//~va16R~
+//            int ctrDiscarded=aPlayers.ctrDiscardedAll;             //~va11I~//~va16R~
+//            Point p=aPlayers.getCtrReachDone(PLAYER_YOU);        //~va16R~
+//            int ctrTakenReach=p.x;//~va11I~                      //~va16R~
+//            int ctrDiscardedReach=p.y;//~va11I~                  //~va16R~
+//            int diffTaken=ctrTaken-ctrTakenReach;                  //~va11I~//~va16R~
+//            int diffDiscarded=ctrDiscarded-ctrDiscardedReach;      //~va11I~//~va16R~
+//            if (Dump.Y) Dump.println("CompReqDlg.chkReach currentEswn="+currentEswn+",ctrTakenReach="+ctrTakenReach+",ctrDiscardedReach="+ctrDiscardedReach+",ctrTaken="+ctrTaken+",ctrDiscarded="+ctrDiscarded);//~va11I~//~va16R~
+//            if (ctrTakenReach==currentEswn+1)                      //~va11R~//~va16R~
+//                UARV.addOtherYaku(RYAKU_REACH_DOUBLE,RANK_REACH_DOUBLE);//~va11R~//~va16R~
+//            else                                                   //~va11I~//~va16R~
+//                UARV.addOtherYaku(RYAKU_REACH,RANK_REACH);         //~va11R~//~va16R~
+//          if (RuleSettingYaku.isReachOneShot())                    //~va11I~//~va16R~
+//            if (swTake) //                                         //~va11I~//~va16R~
+//            {                                                      //~va11I~//~va16R~
+//                if (diffTaken==PLAYERS && diffTaken==diffDiscarded+1)//~va11I~//~va16R~
+//                    UARV.addOtherYaku(RYAKU_REACH_JUST,RANK_REACH_JUST);//~va11R~//~va16R~
+//            }                                                      //~va11I~//~va16R~
+//            else                                                   //~va11I~//~va16R~
+//            {                                                      //~va11I~//~va16R~
+//                if (diffDiscarded<=PLAYERS-1 && diffDiscarded==diffTaken)//~va11I~//~va16R~
+//                    UARV.addOtherYaku(RYAKU_REACH_JUST,RANK_REACH_JUST);//~va11R~//~va16R~
+//            }                                                      //~va11I~//~va16R~
+//        }                                                          //~va11I~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private void chkTaken(boolean PswAllInHand)  //tumo and just next take rinshan//~va11R~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkTaken swTake="+swTake+",swAllInHand="+PswAllInHand);//~va11R~//~va16R~
+//        if (swTake)   //take or kan taken                          //~va11I~//~va16R~
+////          if (aPlayers.getHandCtr(PLAYER_YOU)==0)                //~va11R~//~va16R~
+////          if (aPlayers.isClosedHand(PLAYER_YOU))                 //~va11R~//~va16R~
+//            if (PswAllInHand)                                      //~va11I~//~va16R~
+//                UARV.addOtherYaku(RYAKU_TAKE_NOEARTH,RANK_TAKE_NOEARTH);//~va11R~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private void chkLastTile()  //hitei hotei                      //~va11I~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkLastTile completeTD.flag="+Integer.toHexString(completeTD.flag));//~va11I~//~va16R~
+//        if ((completeTD.flag & TDF_LAST)!=0)                       //~va11I~//~va16R~
+//            if (swTake)                                            //~va11I~//~va16R~
+//                UARV.addOtherYaku(RYAKU_LAST_TAKEN,RANK_LAST_TAKEN);//~va11R~//~va16R~
+//            else                                                   //~va11I~//~va16R~
+//                UARV.addOtherYaku(RYAKU_LAST_DISCARDED,RANK_LAST_DISCARDED);//~va11R~//~va16R~
+//    }                                                              //~va11I~//~va16R~
+//    //*************************************************************************//~va11I~//~va16R~
+//    private void chkKan() //chankan,rinshan                        //~va11I~//~va16R~
+//    {                                                              //~va11I~//~va16R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chkKan completeType=0x"+Integer.toHexString(completeType));//~va11I~//~va16R~
+//        if ((completeType & (COMPLETE_KAN_TAKEN|COMPLETE_KAN_RIVER))!=0)//~va11I~//~va16R~
+//            UARV.addOtherYaku(RYAKU_KAN_TAKEN,RANK_KAN_TAKEN);     //~va11R~//~va16R~
+//        else                                                       //~va11I~//~va16R~
+//        if ((completeType & COMPLETE_KAN_ADD)!=0)   //chankan      //~va11I~//~va16R~
+//            UARV.addOtherYaku(RYAKU_KAN_ADD,RANK_KAN_ADD);         //~va11R~//~va16R~
+//    }                                                              //~va11I~//~va16R~
 }//class                                                           //~v@@@R~

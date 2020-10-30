@@ -1,5 +1,9 @@
-//*CID://+DATER~:                             update#=  471;       //~@002R~//~9210R~
+//*CID://+va1bR~:                             update#=  475;       //+va1bR~
 //********************************************************************************//~v101I~
+//2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//+va1bI~
+//2020/10/14 va17 chk server for "Game" button click(stop start process if start game from client)//~va02I~
+//                Game button on client is not disabled because connectionType was set to 0 because thread=null yet before openClien() at updateButtonStatus//~va02I~
+//2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //@002:20181103 use enum                                           //~@002I~
 //@001:20181103 updatebuttonstatus over config change              //~@001I~
 //****************************************************************************//~@001I~
@@ -287,12 +291,12 @@ public class BTMulti                                               //~1AebR~
     	if (Dump.Y) Dump.println("BTMulti.setRuleSyncStatus idx="+Pidx+",swOK="+PswOK+",syncDate="+Utils.toString(PsyncDate));//~9406I~//~0323R~
         BTGroup.setRuleSyncStatus(Pidx,PswOK,PsyncDate);           //~9406R~
     }                                                              //~9406I~
-    //*******************************************************      //+0323I~
-    public void setRuleSyncStatusReply(int Pidx,boolean PswOK,String PsyncDate)//+0323I~
-	{                                                              //+0323I~
-    	if (Dump.Y) Dump.println("BTMulti.setRuleSyncStatusReplay idx="+Pidx+",swOK="+PswOK+",syncDate="+Utils.toString(PsyncDate));//+0323I~
-        BTGroup.setRuleSyncStatusReplay(Pidx,PswOK,PsyncDate);     //+0323I~
-    }                                                              //+0323I~
+    //*******************************************************      //~0323I~
+    public void setRuleSyncStatusReply(int Pidx,boolean PswOK,String PsyncDate)//~0323I~
+	{                                                              //~0323I~
+    	if (Dump.Y) Dump.println("BTMulti.setRuleSyncStatusReplay idx="+Pidx+",swOK="+PswOK+",syncDate="+Utils.toString(PsyncDate));//~0323I~
+        BTGroup.setRuleSyncStatusReplay(Pidx,PswOK,PsyncDate);     //~0323I~
+    }                                                              //~0323I~
     //*******************************************************      //~1AebI~
     //* add member of other client notified from server            //~1AebI~
     //* (name,yourname,idx,),(name,yourname,idx),...               //~@002I~
@@ -322,6 +326,7 @@ public class BTMulti                                               //~1AebR~
         if (Dump.Y) Dump.println("BTMulti.updateSeq name="+Pname+",idx="+Pidx);//~@002I~
     	BTGroup.updateSeq(Pname,Pidx);                             //~@002I~
         BTIOThread t=(BTIOThread)BTGroup.getThread(BTGroup.idxServer);//~0221R~
+      if (t!=null)	//server entry thread is null on server        //+va1bI~
         t.idxMember=BTGroup.idxServer;                             //~0221R~
     }                                                              //~@002I~
     //*******************************************************      //~1AebI~
@@ -401,7 +406,7 @@ public class BTMulti                                               //~1AebR~
 			updateAdd(Plocaldevicename,AG.YourName,Members.MS_CLIENT|Members.MS_LOCAL);               //add client itself//~1AebR~
         }                                                          //~1AebI~
         updateMember(Premotedevicename,Psocket,Pswclient ? MS_SERVER : Members.MS_REMOTECLIENT);    //add remote, client for server, server for client//~1AebR~//~9824R~
-        BTCDialog.onConnected(Premotedevicename,addr,Pswclient);   //~1AebR~
+//      BTCDialog.onConnected(Premotedevicename,addr,Pswclient);   //~1AebR~//~va02R~
         if (!Pswclient)                                              //~1AebI~
         {                                                          //~1AebI~
         	serverDeviceName=Plocaldevicename;                     //~1AebI~
@@ -413,6 +418,7 @@ public class BTMulti                                               //~1AebR~
 	    	openClient(Psocket,Plocaldevicename,Premotedevicename);//~1AebR~
 			resetMemberDisconnected();	//reset other of local and server(thread!=null)//~0119I~
         }                                                          //~1AebI~
+        BTCDialog.onConnected(Premotedevicename,addr,Pswclient);   //~va02R~
 //      BTRDialog.onConnectedAfterThreadCreated(Pswclient,Premotedevicename);//~9A24R~
     }                                                              //~1AebI~
     //************************************************************ //~1AebI~
@@ -1429,7 +1435,8 @@ public class BTMulti                                               //~1AebR~
         }                                                          //~9731I~
 //      BTGroup.update(name,(Thread)null);                         //~9731I~//~9906R~//~9B02R~
     	updateMember(name,(BTIOThread)null);                            //~9B02I~
-        if (Status.isGamingNow())                                  //~9A18I~
+//      if (Status.isGamingNow())                                  //~9A18I~//~va02R~
+        if (Status.isGamingNowAndInterRound())                     //~va02I~
         {                                                          //~9A18I~
 //      	if (!BTCDialog.isReconnecting()) //BTRDialog is not opened//~9A23I~//~9B07R~
         	if (!BTCDialog.isReconnecting()  //BTRDialog is not opened//~9B07I~

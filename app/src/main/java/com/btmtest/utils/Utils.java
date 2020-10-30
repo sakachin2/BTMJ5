@@ -1,5 +1,6 @@
-//*CID://+@@01R~: update#= 254;                                    //~1Ac0R~//~v@@@R~//~@@01R~
+//*CID://+va11R~: update#= 262;                                    //~1Ac0R~//~v@@@R~//~@@01R~//~va11R~
 //**********************************************************************//~1107I~
+//2020/09/25 va11:optionally evaluate point                        //~va11I~
 //@@01 20181105 for BTMJ3                                            //~@@01I~
 //**********************************************************************//~1107I~//~v106M~
 package com.btmtest.utils;                                               //~1Ad8I~//~1Ac0I~//~v@@@R~
@@ -28,6 +29,9 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.graphics.Color;                                     //~v@@@I~
 import android.app.DialogFragment;                                 //~v@@@I~
+import android.text.Html;
+import android.text.Spanned;
+
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.AG.*;//~v@21I~//~@@01I~
 
@@ -463,6 +467,12 @@ public class Utils                                            //~1309R~//~@@@@R~
         	return "";                                             //~@@01I~
     	return AG.resource.getString(Presid);                      //~v@@@R~
     }                                                              //~v@@@I~
+//**********************                                           //+va11I~
+    public static Spanned getStrHtml(int Presid)                   //+va11I~
+	{                                                              //+va11I~
+        Spanned txt= Html.fromHtml(Utils.getStr(Presid));          //+va11I~
+    	return txt;                                                //+va11I~
+    }                                                              //+va11I~
 //**********************                                           //~v@@@I~
     public static String getStr(int Presid,String P1)              //~v@@@I~
 	{                                                              //~v@@@I~
@@ -731,7 +741,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         {                                                          //~@@01I~
         	if (ii!=0)                                             //~@@01I~
     	        sb.append(",");                                    //~@@01I~
-            sb.append(Psa2[ii]==null ? "null" : Psa2[ii].toString());//+@@01R~
+            sb.append(Psa2[ii]==null ? "null" : Psa2[ii].toString());//~@@01R~
         }                                                          //~@@01I~
         sb.append("]");                                            //~@@01I~
         String s=sb.toString();                                    //~@@01I~
@@ -767,6 +777,45 @@ public class Utils                                            //~1309R~//~@@@@R~
     {                                                              //~@@01I~
     	return Pobj==null ? "null" : Pobj.toString();              //~@@01I~
     }                                                              //~@@01I~
+    //*************************************************            //~va11I~
+    public static String toString(Object[] Pobj)                   //~va11I~
+    {                                                              //~va11I~
+        StringBuffer sb=new StringBuffer();                        //~va11I~
+        if (Pobj==null)                                            //~va11I~
+        {                                                          //~va11I~
+	        sb.append("Pobj[]=null"+"\n");                         //~va11I~
+        }                                                          //~va11I~
+        else                                                       //~va11I~
+        {                                                          //~va11I~
+        	sb.append(Pobj.toString()+"\n");                       //~va11R~
+            int ctr=0;                                             //~va11I~
+    		for (Object obj:Pobj)                                  //~va11R~
+            {                                                      //~va11I~
+	        	sb.append("["+ctr+"]="+Utils.toString(obj)+"\n");  //~va11R~
+                ctr++;                                             //~va11I~
+            }                                                      //~va11I~
+        }                                                          //~va11I~
+        return sb.toString();                                      //~va11I~
+    }                                                              //~va11I~
+    //*************************************************            //~va11I~
+    public static String toString(Object[][] Pobj)                 //~va11I~
+    {                                                              //~va11I~
+        StringBuffer sb=new StringBuffer();                        //~va11I~
+        if (Pobj==null)                                            //~va11I~
+        {                                                          //~va11I~
+	        sb.append("Pobj[][]=null"+"\n");                       //~va11I~
+        }                                                          //~va11I~
+        else                                                       //~va11I~
+        {                                                          //~va11I~
+        	sb.append(Pobj.toString()+"\n");                       //~va11R~
+            int ctr=0;                                             //~va11I~
+    		for (Object[] obj:Pobj)                                //~va11R~
+            {                                                      //~va11I~
+	        	sb.append("["+ctr+"][]="+Utils.toString(obj));  //~va11R~
+            }                                                      //~va11I~
+        }                                                          //~va11I~
+        return sb.toString();                                      //~va11I~
+    }                                                              //~va11I~
     //*************************************************            //~@@01I~
     public static String cvTextU2S(String Ptxt)                    //~@@01I~
     {                                                              //~@@01I~
@@ -896,4 +945,15 @@ public class Utils                                            //~1309R~//~@@@@R~
         if (Dump.Y) Dump.println("Utils.getAppID_UnderLOLLIPOP pkgname="+Ppkgname+",id="+taskid);//~@@01I~
         return taskid;                                             //~@@01I~
     }                                                              //~@@01I~
+//***********                                                      //~vai3I~//~va11I~
+    public static int[][] cloneArray2(int[][] Pfrom)               //~vai3R~//~va11I~
+    {                                                              //~vai3I~//~va11I~
+    	int[][] to=Pfrom.clone();                                  //~vai3I~//~va11I~
+    	if (Dump.Y) Dump.println("cloneArray2 clone 2demension 1dimen clone array="+Utils.toString(to));//~vai3I~//~va11I~
+    	int sz1=Pfrom.length;                                      //~vai3I~//~va11I~
+        for (int ii=0;ii<sz1;ii++)                                 //~vai3I~//~va11I~
+        	to[ii]=Pfrom[ii].clone();                              //~vai3I~//~va11I~
+    	if (Dump.Y) Dump.println("cloneArray2 clone 2demension return array="+Utils.toString(to));//~vai3I~//~va11I~
+        return to;                                                 //~vai3I~//~va11I~
+    }                                                              //~vai3I~//~va11I~
 }//class Utils                                                //~1309R~//~v@@@R~

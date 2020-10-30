@@ -1,0 +1,22 @@
+Winning hands and han(level of hand) values
+----------------------------------------------------------------------------
+Show n/m format if Open value is different from Closed value.
+
+"All Simples"(=Tanyao) depends on setting of "Kuitan"(means Tanyao opened).
+"All Runs"(=Pinfu)'s value is added with "Self-pick"(Tsumo) when all closed and setting of "Pinfu by Draw" is on.
+"7 Pairs"(=Chiitoitsu)'s value depends on setting of "7 Pairs". Two Fu is not added for Self-pick.
+"Hand of Man"(=Renho)' value is set from Mangan(4 han) to Yakuman depending Setting dialog.
+"Little Dragons" is set 2, but turns into 4 with 2 Dragons(White, Green or Red) as a result.
+When you selected not Yakuman, the han is added to the other if "Sum up" is on,
+get higher of "hand of Man" and the other if "Sum up" off.
+
+When no value is shown, it means 1 han except Yakuman which point dose not depend on the ha values.
+Whether some hands such as "7 Pairs by pin 2-8" is Yakuman or not is depends on "Settings".
+
+"4 Triples for 1 Tile", "13 Orphans for 13" and "9 Gates for 9" are shown 
+if Settings defined as double Yakuman.
+
+For Local hand which is not listed on this dialog, adjust han on the dialog of "Win claim".
+
+----------------------------------------------------------------------------
+2020/10/05 ShowYakuDlg

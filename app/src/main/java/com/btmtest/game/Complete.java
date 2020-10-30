@@ -1,6 +1,7 @@
-//*CID://+DATER~: update#= 462;                                    //~v@@@R~//~9228R~
+//*CID://+va1cR~: update#= 466;                                    //~va11R~//+va1cR~
 //**********************************************************************//~v101I~
-//rule                                                             //~v@@@R~
+//2020/10/20 va1c send net point to show setYaku on CompReqDlg     //+va1cI~
+//2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
 
@@ -30,7 +31,13 @@ public class Complete                            //~v@@@R~
     public  static final int CALC_AMT_IDXPOINT =5;                 //~9220I~//~9221R~//~v@@@R~//~9530R~
     public  static final int CALC_AMT_IDXRANK  =6;                 //~v@@@I~//~9530R~
 //  public  static final int CALC_AMT_MAXCTR   =6;                 //~v@@@I~//~9530R~
-    public  static final int CALC_AMT_MAXCTR   =7;                 //~9530I~
+//  public  static final int CALC_AMT_MAXCTR   =7;                 //~9530I~//~va11R~
+    public  static final int CALC_AMT_RANKHIGH =7; //longRank int high//~va11I~
+    public  static final int CALC_AMT_RANKLOW  =8; //low           //~va11I~
+    public  static final int CALC_AMT_HAN      =9; //low           //~va11I~
+//  public  static final int CALC_AMT_MAXCTR   =10;                //~va11R~//+va1cR~
+    public  static final int CALC_AMT_NETPOINT =10; //low          //+va1cI~
+    public  static final int CALC_AMT_MAXCTR   =11;                //+va1cI~
                                                                    //~v@@@I~
     public  static final int CALC_AMT_POS   =1;      //OK/NG+ammount values//~v@@@I~
                                                                    //~v@@@I~
@@ -39,7 +46,7 @@ public class Complete                            //~v@@@R~
 //  public static final int COMPLETE_COLOR=Color.argb(0xff,0xff,0x66,0x00); //orange//~v@@@I~//~9B23R~
 //  public static final int COMPLETE_COLOR=Color.argb(0xff,0xff,0x00,0x00); //red//~9B23R~
     public static final int COMPLETE_COLOR=Color.argb(0xff,0xff,0x33,0x66); //red//~9B23I~
-//  public static final int COMPLETE_STROKE_WIDTH=4;               //~v@@@R~//+0401R~
+//  public static final int COMPLETE_STROKE_WIDTH=4;               //~v@@@R~//~0401R~
     public static final int COMPLETE_TAKEN          =0x01;         //~v@@@R~
     public static final int COMPLETE_RIVER          =0x02;         //~v@@@R~
     public static final int COMPLETE_KAN_TAKEN      =0x04;         //~v@@@R~
@@ -468,23 +475,23 @@ public class Complete                            //~v@@@R~
             if (Dump.Y) Dump.println("Complete.Status.toSendText txt="+txt);//~v@@@I~
             return txt;
         }                                                          //~v@@@I~
-        //****************************************                 //~v@@@I~
-        public Status toStatus(int[] PintParm,int Ppos )           //~v@@@I~
-        {                                                          //~v@@@I~
-        	int pos=Ppos;                                          //~v@@@I~
-        	int compType  =PintParm[pos++];                        //~v@@@I~
-        	int eswn      =PintParm[pos++];                        //~v@@@I~
-        	int eswnLooser=PintParm[pos++];                        //~v@@@I~
-            TileData td=new TileData(true/*swEswnToPlayer*/,PintParm,pos);//~v@@@I~
-            pos+=PARMPOS_CTRFORTD;                                 //~v@@@I~
-        	int nullkantd         =PintParm[pos++];                //~v@@@I~
-            TileData tdCompKanTake=null;                           //~v@@@I~
-        	if (nullkantd==1)                                      //~v@@@I~
-	            tdCompKanTake=new TileData(true/*swEswnToPlayer*/,PintParm,pos);//~v@@@I~
-            Status s=new Status(compType,eswn,eswnLooser,td,tdCompKanTake);//~v@@@I~
-            if (Dump.Y) Dump.println("Complete.Status.toStatus status="+s.toString());//~v@@@I~
-            return s;
-        }                                                          //~v@@@I~
+//        //****************************************                 //~v@@@I~//~va11R~
+//        public Status toStatus(int[] PintParm,int Ppos )           //~v@@@I~//~va11R~
+//        {                                                          //~v@@@I~//~va11R~
+//            int pos=Ppos;                                          //~v@@@I~//~va11R~
+//            int compType  =PintParm[pos++];                        //~v@@@I~//~va11R~
+//            int eswn      =PintParm[pos++];                        //~v@@@I~//~va11R~
+//            int eswnLooser=PintParm[pos++];                        //~v@@@I~//~va11R~
+//            TileData td=new TileData(true/*swEswnToPlayer*/,PintParm,pos);//~v@@@I~//~va11R~
+//            pos+=PARMPOS_CTRFORTD;                                 //~v@@@I~//~va11R~
+//            int nullkantd         =PintParm[pos++];                //~v@@@I~//~va11R~
+//            TileData tdCompKanTake=null;                           //~v@@@I~//~va11R~
+//            if (nullkantd==1)                                      //~v@@@I~//~va11R~
+//                tdCompKanTake=new TileData(true/*swEswnToPlayer*/,PintParm,pos);//~v@@@I~//~va11R~
+//            Status s=new Status(compType,eswn,eswnLooser,td,tdCompKanTake);//~v@@@I~//~va11R~
+//            if (Dump.Y) Dump.println("Complete.Status.toStatus status="+s.toString());//~v@@@I~//~va11R~
+//            return s;                                            //~va11R~
+//        }                                                          //~v@@@I~//~va11R~
         //****************************************                 //~v@@@I~
         public void setAmmount(int[] Pamt)                         //~v@@@I~
         {                                                          //~v@@@I~

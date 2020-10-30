@@ -6,9 +6,12 @@ No specific server machine is required.
 I suppose you are familiar to rule and operation of Japanese style Mahjong.
  (You may be required to become familiar with some Kanji glyph a bit.) 
 <BR>
-Any local <B>Yaku</B>(winning pattern) is acceptable
- because winner can claim the value of winning hand.
+Evaluation of Value of Hands is option(Default is off on Setting=Operation dialog)
+If you do not agree the result, you can adjust the point.
+<BR>
 Depending on setting of "Check winning hand", <B>Chombo</B> by mistaken Ron may occur.
+Any local <B>Yaku</B>(winning pattern) is acceptable because you can force to declare win.
+<BR>
 Rule of <B>Yakitori</B>, <B>Wareme</B> and <B>Tobi</B> is optional
 (See Help of RuleSettings dialog about those terms).
 <BR>
@@ -18,15 +21,26 @@ Device is required portrait width 600 pixels over and 800 pixels is recommended.
 <BR>
 From Android6.0(Marshmallow), you will be asked to allow the permission of "Write to external storage".
 Give the permission for saving Rule file and Game-Record file.
+And permission:ACCESS_FINE_LOCTION is required to use WiFi-Direct. Allow it.
 <BR>
 <BIG><B>Caution! : I do not take any responsibility for loss or damage by using this App.</B></BIG>
+<BR>
+----------------------------------------------------------------------------
+<BR>
+Followins are outline to start game.
+<BR>
+Select one server device out of 4 devices, all clients <B>Connect</B> to the server.
+Server setups Rule then send to all clients.  
+After all clients agreed to the rule, Server pushes <B>game</B> to switch to game panel.
+<BR>
+For details see <B>Help</B> on each dialog.
 <BR>
 ----------------------------------------------------------------------------
 <BR>
 <BIG><B>Connect</B></BIG> : establish connection to the player.
 <BR>
 Someone have to become <BIG><B>Server</B></BIG>, the others(called <BIG><B>Client</B></BIG>）connect to the server.
- Wireless can reach about 50m, I suppose to play in the distance of analog conversation available,
+ Wireless can reach about 50M, I suppose to play in the distance of analog conversation available,
  which may be frequently required. However, due to various factors, keep distance of 6 feet.
 <BR><BR>
 <BIG><B>Settings</B></BIG>：RuleSettings and Preference.
@@ -41,11 +55,13 @@ After rule was synchronized among all players,<B>Game</B> can be start.
  Rule files can be saved/reloaded, select a file suitable for the group each.
 <BR>
 Game advances by claiming and agreeing by dialogs sent and received at each scene.
- Other player than claimer may send response "NG".
- The dealer of the hand has autority of final decision regardless of "NG" response.
+ The player other than claimer may send response "NG".
+ The dealer of the hand has authority of final decision regardless of "NG" response.
 <BR>
  e.g. On "End-of-Hand", dealer can set "Chombo" or "Invalid" to the win claimed and can force dealer's decision regardless "NG" response.
- Exceptionally on some dialog, server or dealer at starting game has the autority.
+ Exceptionally on some dialog, server or dealer at starting game has the authority.
+<BR>
+Some items of rule is not checked by the App and merely promises, those will be desided after mutual consultation.
 <BR>
 <B>Preference</B> : Screen orientation, Sound etc.
 <BR>
@@ -58,20 +74,20 @@ Game advances by claiming and agreeing by dialogs sent and received at each scen
 <BIG><B>Records</B></BIG> : shows List of game results.
 <BR>
 Suspended game is resumed from this List.
-To suspend game, select "Rquest suspend" on menu during game.
- When connection failure occured game can be suspended also.
+To suspend game, select "Request suspend" on menu during game.
+ When connection failure occurred game can be suspended also.
  The former, "SuspendGame Claim" dialog is shown at end of the hand, and SuspendGame or Gameover are selectable.
- The latter, you can try "Reconnect" and continue the hand if recovery succeded.
- Otherwide SuspendGame or Gameover are selectable as the current hand was lost.
+ The latter, you can try "Reconnect" and continue the hand if recovery succeeded.
+ Otherwise SuspendGame or Gameover are selectable as the current hand was lost.
 <BR>
 Note.
-　"hand" is used in two way.
+  "hand" is used in two way.
 <BR>
-　　1. tiles in hand.　　2. end of hand:anyone won in the hand(shot).
+    1. tiles in hand.    2. end of hand:anyone won in the hand(shot).
 <BR>
-　"draw" is used in two way.
+  "draw" is used in two way.
 <BR>
-　　1. draw tile:pick up a tile from wall.　　2. drawn hand:shot in which no one won.
+    1. draw tile:pick up a tile from wall.    2. drawn hand:shot in which no one won.
 <BR>
 <BR>
 <SMALL>Main 2020/02/11</SMALL>

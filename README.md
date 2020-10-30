@@ -10,7 +10,7 @@ Any local "Yaku"(winning pattern) is acceptable
 "Check validity of winning hand" is optional, so "Chombo" by mistaken Ron may occur.
 Rule of "Yakitori", "Wareme" and "Tobi" is optional.
 From 2 to 4 players can play game. Suspend and resume is supported.
-Device is required portrait width 600 pixels over and 800 pixels is recomended.
+Device is required portrait width 600 pixels over and 800 pixels is recommended.
 Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 *************************************************************************
@@ -19,7 +19,7 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 *****
 サーバーが不要な、仲間内で遊ぶ、"麻雀"対戦アプリです。
 *****
-点数計算はプレーヤーがすることになっています、ローカル役は何でもありです。
+アプリの点数計算は修正可能なので、ローカル役は何でもありです。
 "和了形の確認"はオプションですので誤ロンのチョンボありにできます。
 焼き鳥、割れ目、トビもあり、4人揃わなくても遊べます。
 中断・再開もできます。

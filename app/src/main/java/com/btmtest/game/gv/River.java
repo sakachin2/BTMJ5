@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 581;                                    //~v@@@R~//~0303R~
+//*CID://+va05R~: update#= 582;                                    //+va05R~
 //**********************************************************************//~v101I~
+//2020/04/26 va05:sound effect at positioning tile get             //+va05I~
+//**********************************************************************//+va05I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                       //~0303R~
@@ -22,6 +24,7 @@ import com.btmtest.game.TileData;
 import static com.btmtest.game.TileData.*;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
+import com.btmtest.utils.sound.Sound;
 
 import java.util.Arrays;
 
@@ -447,9 +450,9 @@ public class River                                                 //~v@@@R~
                 {                                                  //~v@@@I~
                 	bmComplete=bm;                                 //~0303I~
                 	rectComplete=rect;                             //~0303I~
-//  	        	Graphics.drawRect(rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~//+0401R~
-    	        	Graphics.drawRect(rect,COMPLETE_COLOR,stroke_width_river);//+0401I~
-        			if (Dump.Y) Dump.println("River.drawDiscarded swComplete=T stroke_width="+stroke_width_river);//+0401I~
+//  	        	Graphics.drawRect(rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~//~0401R~
+    	        	Graphics.drawRect(rect,COMPLETE_COLOR,stroke_width_river);//~0401I~
+        			if (Dump.Y) Dump.println("River.drawDiscarded swComplete=T stroke_width="+stroke_width_river);//~0401I~
 					rectDiscarded=null;                               //~v@@@I~
                 }                                                  //~v@@@I~
             }                                                      //~v@@@I~
@@ -500,9 +503,9 @@ public class River                                                 //~v@@@R~
         if (swComplete)                                            //~v@@@R~
         {                                                          //~0303I~
 //          Graphics.drawRect(canvas,rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@R~
-//          Graphics.drawRect(rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~//+0401R~
-            Graphics.drawRect(rect,COMPLETE_COLOR,stroke_width_river);//+0401I~
-        	if (Dump.Y) Dump.println("River.drawDiscarded swComplete=T stroke_width="+stroke_width_river);//+0401I~
+//          Graphics.drawRect(rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~//~0401R~
+            Graphics.drawRect(rect,COMPLETE_COLOR,stroke_width_river);//~0401I~
+        	if (Dump.Y) Dump.println("River.drawDiscarded swComplete=T stroke_width="+stroke_width_river);//~0401I~
             bmComplete=bm;                                         //~0303I~
             rectComplete=rect;                                     //~0303I~
         }                                                          //~0303I~
@@ -904,6 +907,7 @@ public class River                                                 //~v@@@R~
 //        }                                                        //~v@@@R~
 //        Graphics.unlockCanvas(canvas);                           //~v@@@R~
         Graphics.drawBitmap(rect,bm);                          //~v@@@I~
+   		Sound.play(SOUNDID_TAKE,false/*not change to beep when beeponly option is on*/);//+va05I~
         return ctrSelected==PLAYERS;                               //~v@@@R~
     }                                                              //~v@@@I~
     //******************************************************       //~v@@@I~
@@ -971,19 +975,19 @@ public class River                                                 //~v@@@R~
 	    if (Dump.Y) Dump.println("River.drawFrameDiscardedTile msgid="+Pmsgid+",color="+Integer.toHexString(color)+",rect="+Utils.toString(rectDiscarded));//~v@@@I~
         if (color!=0 && rectDiscarded!=null)                       //~v@@@I~
         {                                                          //~v@@@I~
-//  		Graphics.drawRect(rectDiscarded,color,COMPLETE_STROKE_WIDTH);//~v@@@R~//+0401R~
-    		Graphics.drawRect(rectDiscarded,color,stroke_width_river);//+0401I~
-            if (Dump.Y) Dump.println("River.drawFrameDiscardedTile stroke_width="+stroke_width_river);//+0401I~
+//  		Graphics.drawRect(rectDiscarded,color,COMPLETE_STROKE_WIDTH);//~v@@@R~//~0401R~
+    		Graphics.drawRect(rectDiscarded,color,stroke_width_river);//~0401I~
+            if (Dump.Y) Dump.println("River.drawFrameDiscardedTile stroke_width="+stroke_width_river);//~0401I~
             if (Pmsgid==GCM_NEXT_PLAYER_PONKAN)                    //~v@@@I~
             {                                                      //~v@@@I~
-//          	Rect r=new Rect(rectDiscarded.left+COMPLETE_STROKE_WIDTH-1,//~v@@@R~//+0401R~
-//          	                rectDiscarded.top+COMPLETE_STROKE_WIDTH-1,//~v@@@R~//+0401R~
-//          	                rectDiscarded.right-COMPLETE_STROKE_WIDTH+1,//~v@@@R~//+0401R~
-//          	                rectDiscarded.bottom-COMPLETE_STROKE_WIDTH+1);//~v@@@R~//+0401R~
-            	Rect r=new Rect(rectDiscarded.left+stroke_width_river-1,//+0401I~
-            	                rectDiscarded.top+stroke_width_river-1,//+0401I~
-            	                rectDiscarded.right-stroke_width_river+1,//+0401I~
-            	                rectDiscarded.bottom-stroke_width_river+1);//+0401I~
+//          	Rect r=new Rect(rectDiscarded.left+COMPLETE_STROKE_WIDTH-1,//~v@@@R~//~0401R~
+//          	                rectDiscarded.top+COMPLETE_STROKE_WIDTH-1,//~v@@@R~//~0401R~
+//          	                rectDiscarded.right-COMPLETE_STROKE_WIDTH+1,//~v@@@R~//~0401R~
+//          	                rectDiscarded.bottom-COMPLETE_STROKE_WIDTH+1);//~v@@@R~//~0401R~
+            	Rect r=new Rect(rectDiscarded.left+stroke_width_river-1,//~0401I~
+            	                rectDiscarded.top+stroke_width_river-1,//~0401I~
+            	                rectDiscarded.right-stroke_width_river+1,//~0401I~
+            	                rectDiscarded.bottom-stroke_width_river+1);//~0401I~
 	    		Graphics.drawRect(r,COLOR_INNER_FRAME,1);          //~v@@@I~
             }                                                      //~v@@@I~
         }                                                          //~v@@@I~

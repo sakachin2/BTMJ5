@@ -19,44 +19,57 @@
     <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+            android:background="@color/getvalue"
     >
-        <CheckBox
-            android:id="@+id/cbYakuman_AllGreenNoBlue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_AllGreenNoBlue"
-        />
-        <CheckBox
-            android:id="@+id/cbYakuman_9RenPinSou"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_9RenPinSou"
-        />
-        <CheckBox
-            android:id="@+id/cbYakuman_NoPair13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_NoPair13"
-        />                                                                                                        
-    </LinearLayout>
-    <LinearLayout
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-    >
-        <CheckBox
-            android:id="@+id/cbYakuman_BigRing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_BigRing"
-        />
-        <CheckBox
-            android:id="@+id/cbYakuman_Rank13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_Rank13"
-        />
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        >
+            <CheckBox
+                android:id="@+id/cbYakuman_AllGreenNoBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_AllGreenNoBlue"
+            />
+            <CheckBox
+                android:id="@+id/cbYakuman_9RenPinSou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_9RenPinSou"
+            />
+            <CheckBox
+                android:id="@+id/cbYakuman_NoPair13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_NoPair13"
+            />                                                                                                    
+            <CheckBox
+                android:id="@+id/cbYakuman_NoPair14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_NoPair14"
+            />                                                                                                    
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        >
+            <CheckBox
+                android:id="@+id/cbYakuman_BigRing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_BigRing"
+            />
+            <CheckBox
+                android:id="@+id/cbYakuman_Rank13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_Rank13"
+            />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
@@ -108,31 +121,38 @@
     <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
     >
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/Label_Yakuman_Renho"
-            android:textSize="@dimen/textview_middle"
-        />
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/Label_PointAmmount"
-            android:layout_marginLeft="20px"
-        />
-        <Spinner
-             android:id="@+id/spnRenhoRank"
-             android:layout_height="wrap_content"
+        <LinearLayout
              android:layout_width="wrap_content"
-        />
-        <CheckBox
-            android:id="@+id/cbYakuman_RenhoMix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_RenhoMix"
-        />
+             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+                android:background="@color/getvalue"
+        >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_Yakuman_Renho"
+                android:textSize="@dimen/textview_middle"
+            />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/Label_PointAmmount"
+                android:layout_marginLeft="20px"
+            />
+            <Spinner
+                 android:id="@+id/spnRenhoRank"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+            />
+            <CheckBox
+                android:id="@+id/cbYakuman_RenhoMix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_RenhoMix"
+            />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
@@ -145,6 +165,7 @@
                 android:text="@string/Desc_Yakuman_Renho"
         />
     </LinearLayout>
+<!--
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="2px"
@@ -192,4 +213,5 @@
                 android:text="@string/Desc_Yakuman13NoPair"
         />
     </LinearLayout>
+-->
 </LinearLayout>

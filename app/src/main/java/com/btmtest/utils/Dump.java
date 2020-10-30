@@ -1,4 +1,4 @@
-//*CID://+1Ad8R~:                                   update#=   45; //~1Ad8R~
+//*CID://+1Ad8R~:                                   update#=   49; //~1Ad8R~
 //***********************************************                  //~@@@1I~
 //1Ad8 2015/07/21 (Asgts)//1A4h 2014/12/03 catch OutOfMemory(Ajagot1w)//1B0g//~1Ad8I~
 //1Ab9 2015/05/09 Dump byte[]                                      //~1Ab9I~
@@ -14,7 +14,10 @@ import java.io.*;
 import java.util.*;
 
 import com.btmtest.R;//~v@@@R~
+import com.btmtest.TestOption;
+
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~1Ad8I~
+import static com.btmtest.TestOption.*;
 
 import android.content.Context;
 //~v@@@R~
@@ -52,13 +55,13 @@ public class Dump
         	Y=false;//dont call Dump except case of Exceoption         //~1506I~//~1Ad8R~
       	}                                                            //~v107R~//~1Ad8R~
     }                                                              //~1504I~
-    //**************************************************************//+1Ad8I~
-	public static void openExOnlyTerminal()                        //+1Ad8I~
-	{                                                              //+1Ad8I~
-      	Terminal=true;                                             //+1Ad8I~
-    	exceptionOnly=true;                                        //+1Ad8I~
-        Y=false;//dont call Dump except case of Exceoption         //+1Ad8I~
-    }                                                              //+1Ad8I~
+    //**************************************************************//~1Ad8I~
+	public static void openExOnlyTerminal()                        //~1Ad8I~
+	{                                                              //~1Ad8I~
+      	Terminal=true;                                             //~1Ad8I~
+    	exceptionOnly=true;                                        //~1Ad8I~
+        Y=false;//dont call Dump except case of Exceoption         //~1Ad8I~
+    }                                                              //~1Ad8I~
     //**************************************************************//~1Ad8I~
 	public static void open(String Pfile,boolean PswSD)            //~1Ad8I~
 	{                                                              //~1Ad8I~
@@ -69,11 +72,15 @@ public class Dump
 	public static void open(String file)                           //~1Ad8R~
 	{                                                              //~1329R~
     	exceptionOnly=false;//not exception only                   //~1506I~
+        if (!file.equals(""))                                      //~1Ad8I~
+        {                                                          //~1Ad8I~
+        	Terminal=false;                                        //~1Ad8I~
+        }                                                          //~1Ad8I~
         if (Terminal)                                              //~1Ad8I~
-        {                                                          //+1Ad8I~
-			Y = true; //call Dump                                  //+1Ad8I~
+        {                                                          //~1Ad8I~
+			Y = true; //call Dump                                  //~1Ad8I~
         	return;                                                //~1Ad8I~
-        }                                                          //+1Ad8I~
+        }                                                          //~1Ad8I~
     	if (Out!=null)                                             //~1329I~
         	return;                                                //~1329I~
         if (file.equals(""))                                       //~1Ad8I~

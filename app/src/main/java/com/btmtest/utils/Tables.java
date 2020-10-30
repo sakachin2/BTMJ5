@@ -1,5 +1,7 @@
-//*CID://+DATER~:                             update#=   10;       //~1A08R~//~9C01R~
+//*CID://+DATER~:                             update#=   11;       //~1A08R~//~9C01R~
 //*************************************************************************//~1A08I~
+//2020/04/27 va06:BGM                                              //+0427I~
+//*************************************************************************//+0427I~
 package com.btmtest.utils;                                         //~9C01I~
                                                                    //~1A08M~
 public class Tables
@@ -7,7 +9,7 @@ public class Tables
     public String name;                                            //~1A08R~
     private int id;                                                //~1A08I~
     private Object obj;                                            //~1A08R~
-    private int numKey,numValue;                                   //+9C03I~
+    private int numKey,numValue;                                   //~9C03I~
 //****************
     public Tables(String Pname,int Pid,Object Pobj)
     {
@@ -18,11 +20,11 @@ public class Tables
     {
         this(Pname,Pid,null);
     }
-//****************                                                 //+9C03I~
-    public Tables(int PnumKey,int Pid)                             //+9C03I~
-    {                                                              //+9C03I~
-        numKey=PnumKey; id=Pid;                                    //+9C03I~
-    }                                                              //+9C03I~
+//****************                                                 //~9C03I~
+    public Tables(int PnumKey,int Pid)                             //~9C03I~
+    {                                                              //~9C03I~
+        numKey=PnumKey; id=Pid;                                    //~9C03I~
+    }                                                              //~9C03I~
 //****************
 	public static int find(Tables[] Ptbl,String Pname)
     {
@@ -49,19 +51,32 @@ public class Tables
     	if (Dump.Y) Dump.println("Tables:find id="+Pid+",idx="+idx);//~9C02I~
     	return idx;                                                //~9C02I~
     }                                                              //~9C02I~
-//****************                                                 //+9C03I~
-	public static int findByNumKey(Tables[] Ptbl,int PnumKey)      //+9C03I~
-    {                                                              //+9C03I~
-    	int idx=-1,sz=Ptbl.length;                                 //+9C03I~
-    	for (int ii=0;ii<sz;ii++)                                  //+9C03I~
-    		if (PnumKey==Ptbl[ii].numKey)                          //+9C03I~
-            {                                                      //+9C03I~
-            	idx=ii;                                            //+9C03I~
-                break;                                             //+9C03I~
-            }                                                      //+9C03I~
-    	if (Dump.Y) Dump.println("Tables:findByNumkey numkey="+PnumKey+",idx="+idx);//+9C03I~
-    	return idx;                                                //+9C03I~
-    }                                                              //+9C03I~
+//****************                                                 //~9C03I~
+	public static int findByNumKey(Tables[] Ptbl,int PnumKey)      //~9C03I~
+    {                                                              //~9C03I~
+    	int idx=-1,sz=Ptbl.length;                                 //~9C03I~
+    	for (int ii=0;ii<sz;ii++)                                  //~9C03I~
+    		if (PnumKey==Ptbl[ii].numKey)                          //~9C03I~
+            {                                                      //~9C03I~
+            	idx=ii;                                            //~9C03I~
+                break;                                             //~9C03I~
+            }                                                      //~9C03I~
+    	if (Dump.Y) Dump.println("Tables:findByNumKey numkey="+PnumKey+",idx="+idx);//~9C03I~//+0427R~
+    	return idx;                                                //~9C03I~
+    }                                                              //~9C03I~
+//****************                                                 //+0427I~
+	public static int getNumKeyByNumValue(Tables[] Ptbl,int PnumValue,int Pdefault)//+0427I~
+    {                                                              //+0427I~
+    	int numK=Pdefault,sz=Ptbl.length;                          //+0427I~
+    	for (int ii=0;ii<sz;ii++)                                  //+0427I~
+    		if (PnumValue==Ptbl[ii].numValue)                      //+0427I~
+            {                                                      //+0427I~
+            	numK=Ptbl[ii].numKey;                              //+0427I~
+                break;                                             //+0427I~
+            }                                                      //+0427I~
+    	if (Dump.Y) Dump.println("Tables:getNumKeyByNumValue numValue="+PnumValue+",numKey="+numK);//+0427I~
+    	return numK;                                               //+0427I~
+    }                                                              //+0427I~
 //****************                                                 //~9C02I~
 	public static String findName(Tables[] Ptbl,int Pid,String PnotFoundName)//~9C02I~
     {                                                              //~9C02I~
@@ -120,28 +135,28 @@ public class Tables
     	if (Dump.Y) Dump.println("Tables:find id="+Pid+",obj="+(obj==null?"null":obj.toString()));//~9C02I~
         return obj;                                                //~9C02I~
     }                                                              //~9C02I~
-//****************                                                 //+9C03I~
-	public static int findNumValue(Tables[] Ptbl,int PnumKey,int Pnotfoundid)//+9C03I~
-    {                                                              //+9C03I~
-    	int val;                                                   //+9C03I~
-    	int idx=findByNumKey(Ptbl,PnumKey);                        //+9C03I~
-        if (idx==-1)                                               //+9C03I~
-        	val=Pnotfoundid;                                       //+9C03I~
-        else                                                       //+9C03I~
-        	val=Ptbl[idx].numValue;                                //+9C03I~
-    	if (Dump.Y) Dump.println("Tables:findNumValue numKey="+PnumKey+",idx="+idx+",rc="+val);//+9C03I~
-        return val;                                                //+9C03I~
-    }                                                              //+9C03I~
+//****************                                                 //~9C03I~
+	public static int findNumValue(Tables[] Ptbl,int PnumKey,int Pnotfoundid)//~9C03I~
+    {                                                              //~9C03I~
+    	int val;                                                   //~9C03I~
+    	int idx=findByNumKey(Ptbl,PnumKey);                        //~9C03I~
+        if (idx==-1)                                               //~9C03I~
+        	val=Pnotfoundid;                                       //~9C03I~
+        else                                                       //~9C03I~
+        	val=Ptbl[idx].numValue;                                //~9C03I~
+    	if (Dump.Y) Dump.println("Tables:findNumValue numKey="+PnumKey+",idx="+idx+",rc="+val);//~9C03I~
+        return val;                                                //~9C03I~
+    }                                                              //~9C03I~
 //****************                                                 //~1A08I~
 	public void setObject(Object Pobj)                             //~1A08R~
     {                                                              //~1A08I~
     	obj=Pobj;                                                  //~1A08I~
     }                                                              //~1A08I~
-//****************                                                 //+9C03I~
-	public void setNumValue(int PnumValue)                         //+9C03I~
-    {                                                              //+9C03I~
-    	numValue=PnumValue;                                        //+9C03I~
-    }                                                              //+9C03I~
+//****************                                                 //~9C03I~
+	public void setNumValue(int PnumValue)                         //~9C03I~
+    {                                                              //~9C03I~
+    	numValue=PnumValue;                                        //~9C03I~
+    }                                                              //~9C03I~
 //****************                                                 //~1A08I~
 	public Object getObject()                                      //~1A08I~
     {                                                              //~1A08I~

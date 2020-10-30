@@ -1,9 +1,10 @@
-//*CID://+DATER~:                             update#=  467;       //~v@@@R~//~0401R~
+//*CID://+DATER~:                             update#=  481;       //~v@@@R~//~0401R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.btmtest.R;
 import com.btmtest.TestOption;                                     //~v@@@R~
@@ -34,6 +35,24 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final double RATE_WIDTH_PORTRAIT_SMALLDEVICE=0.9;//~v@@@I~
     private static final String PON_TEST="Pon_Test";               //~v@@@I~
     private static final String RON_TEST="Ron_Test";               //~v@@@I~
+    private static final String DUMP_SDCARD="DumpSDCard";          //~0A08I~
+    private static final String RONVALUE_TEST="RonValue_Test";     //~0A02I~
+    private static final String RONVALUE_NODORA="NoDora";          //~0A08I~
+    private static final String CHKRANK="ChkRank";                 //+0A16I~
+    private static final String RONVALUE_CASE="RonValue_Case";     //~0A07I~
+    private static final String SET_DORA="SetDora";                //~0A14I~
+    private static final String DORA_DOWNTYPE="Dora1Type";         //~0A12I~
+    private static final String DORA_DOWNNUMBER="Dora1Num";        //~0A12I~
+    private static final String DORA_UPTYPE="Dora2Type";           //~0A12I~
+    private static final String DORA_UPNUMBER="Dora2Num";          //~0A12I~
+    private static final String DORA_KANDOWNTYPE="Dora3Type";      //~0A12I~
+    private static final String DORA_KANDOWNNUMBER="Dora3Num";     //~0A12I~
+    private static final String DORA_KANUPTYPE="Dora4Type";        //~0A12I~
+    private static final String DORA_KANUPNUMBER="Dora4Num";       //~0A12I~
+    private static final String DORA_KANUPTYPE2="Dora5Type";       //~0A12R~
+    private static final String DORA_KANUPNUMBER2="Dora5Num";      //~0A12R~
+    private static final String DORA_KANDOWNTYPE2="Dora6Type";     //~0A12I~
+    private static final String DORA_KANDOWNNUMBER2="Dora6Num";    //~0A12I~
     private static final String CHII_TEST="Chii_Test";             //~v@@@I~
     private static final String KAN_TEST="Kan_Test";               //~v@@@I~
 //  private static final String POSITIONING="Positioning";         //~v@@@R~
@@ -57,7 +76,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DISABLEBT_TIMING="DisableBT_Timing";//~v@@@I~
     private static final String KANDEAL="KanDeal";                 //~v@@@I~
     private static final String KANDEAL_ANKAN="KanDealAnkan";    //~0406I~//~0407R~
-    private static final String KANDEAL_CHANKAN="KanDealChankan";  //+0407I~
+    private static final String KANDEAL_CHANKAN="KanDealChankan";  //~0407I~
     private static final String WAITSELECT_PON="WaitSelectPon";    //~v@@@R~
     private static final String WAITSELECT_CHII="WaitSelectChii";  //~v@@@I~
                                                                    //~v@@@I~
@@ -67,6 +86,17 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final int[] rbIDBTIOErr=new int[]{R.id.rbBTIOE_AfterTake,R.id.rbBTIOE_AfterDiscard,R.id.rbBTIOE_AfterPon,R.id.rbBTIOE_AfterKan,R.id.rbBTIOE_AfterRon,R.id.rbBTIOE_AfterOpen,R.id.rbBTIOE_AfterRobotTake};//~v@@@R~
     private UCheckBox cbPon_Test,cbChii_Test,cbKan_Test,/*cbPositioning,*/cbSkipDice,cbTakeDiscard,cbDrawnReqDlg_Last;//~v@@@R~
     private UCheckBox cbRon_Test;                                  //~v@@@I~
+    private UCheckBox cbRonValue_Test,cbRonValue_NoDora;                             //~0A02I~//~0A08R~
+    private UCheckBox cbSetDora;                                   //~0A14I~
+    private UCheckBox cbChkRank;                                   //+0A16I~
+    private UCheckBox cbDumpSDCard;                                //~0A08I~
+    private EditText etRonValue_Case;                             //~0A07I~
+    private EditText etDoraDownType,etDoraDownNumber;              //~0A12I~
+    private EditText etDoraUpType,etDoraUpNumber;                  //~0A12I~
+    private EditText etKanDownType,etKanDownNumber;                //~0A12I~
+    private EditText etKanUpType,etKanUpNumber;                    //~0A12I~
+    private EditText etKanUpType2,etKanUpNumber2;                  //~0A12I~
+    private EditText etKanDownType2,etKanDownNumber2;              //~0A12I~
     private UCheckBox cbShowF2;                                    //~v@@@I~
     private UCheckBox cbFinalGame,cbLayoutFinalGame;               //~v@@@R~
     private UCheckBox cbDrawnLastShowStick;                        //~v@@@I~
@@ -75,7 +105,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbSuspend;                                   //~v@@@I~
     private UCheckBox cbBTIOErr;                                   //~v@@@I~
     private UCheckBox cbKanDeal,cbWaitSelectPon,cbWaitSelectChii;  //~v@@@R~
-    private UCheckBox cbKanDealAnkan,cbKanDealChankan;                             //~0406I~//+0407R~
+    private UCheckBox cbKanDealAnkan,cbKanDealChankan;                             //~0406I~//~0407R~
     private Prop prop;                                             //~v@@@I~
     private boolean swChanged;                                     //~v@@@I~
     private URadioGroup rgFirstDealer;                             //~v@@@I~
@@ -104,6 +134,24 @@ public class TODlg extends UFDlg                           //~v@@@R~
         super.initLayout(PView);                                   //~v@@@I~
     	cbPon_Test=new UCheckBox(PView,R.id.cbPon_Test);           //~v@@@I~
     	cbRon_Test=new UCheckBox(PView,R.id.cbRon_Test);           //~v@@@I~
+    	cbDumpSDCard=new UCheckBox(PView,R.id.cbDumpSDCard);       //~0A08I~
+    	cbRonValue_Test=new UCheckBox(PView,R.id.cbRonValue_Test); //~0A02I~
+    	cbRonValue_NoDora=new UCheckBox(PView,R.id.cbRonValue_NoDora);//~0A08I~
+    	cbChkRank=new UCheckBox(PView,R.id.cbChkRank);             //+0A16I~
+    	cbSetDora=new UCheckBox(PView,R.id.cbSetDora);             //~0A14I~
+    	etRonValue_Case=(EditText) UView.findViewById(PView,R.id.etRonValueCase);//~0A07I~
+    	etDoraDownType=(EditText) UView.findViewById(PView,R.id.etDoraDownType);//~0A12I~
+    	etDoraDownNumber=(EditText) UView.findViewById(PView,R.id.etDoraDownNumber);//~0A12I~
+    	etDoraUpType=(EditText) UView.findViewById(PView,R.id.etDoraUpType);//~0A12I~
+    	etDoraUpNumber=(EditText) UView.findViewById(PView,R.id.etDoraUpNumber);//~0A12I~
+    	etKanDownType=(EditText) UView.findViewById(PView,R.id.etKanDownType);//~0A12I~
+    	etKanDownNumber=(EditText) UView.findViewById(PView,R.id.etKanDownNumber);//~0A12I~
+    	etKanUpType=(EditText) UView.findViewById(PView,R.id.etKanUpType);//~0A12I~
+    	etKanUpNumber=(EditText) UView.findViewById(PView,R.id.etKanUpNumber);//~0A12I~
+    	etKanDownType2=(EditText) UView.findViewById(PView,R.id.etKanDownType2);//~0A12I~
+    	etKanDownNumber2=(EditText) UView.findViewById(PView,R.id.etKanDownNumber2);//~0A12I~
+    	etKanUpType2=(EditText) UView.findViewById(PView,R.id.etKanUpType2);//~0A12I~
+    	etKanUpNumber2=(EditText) UView.findViewById(PView,R.id.etKanUpNumber2);//~0A12I~
     	cbChii_Test=new UCheckBox(PView,R.id.cbChii_Test);         //~v@@@I~
     	cbKan_Test=new UCheckBox(PView,R.id.cbKan_Test);           //~v@@@I~
 //  	cbPositioning=new UCheckBox(PView,R.id.cbPositioning);     //~v@@@R~
@@ -124,7 +172,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbSuspend   =new UCheckBox(PView,R.id.cbSuspend);          //~v@@@I~
     	cbKanDeal   =new UCheckBox(PView,R.id.cbKanDeal);          //~v@@@I~
     	cbKanDealAnkan   =new UCheckBox(PView,R.id.cbKanDealAnkan);//~0406I~//~0407R~
-    	cbKanDealChankan   =new UCheckBox(PView,R.id.cbKanDealChankan);//+0407I~
+    	cbKanDealChankan   =new UCheckBox(PView,R.id.cbKanDealChankan);//~0407I~
     	cbBTIOErr   =new UCheckBox(PView,R.id.cbBTIOErr);          //~v@@@I~
         rgBTIOErr   =new URadioGroup(PView,R.id.rgBTIOErr,0,rbIDBTIOErr);//~v@@@I~
     	cbWaitSelectPon=new UCheckBox(PView,R.id.cbWaitSelectPon); //~v@@@R~
@@ -165,6 +213,24 @@ public class TODlg extends UFDlg                           //~v@@@R~
         if (Dump.Y) Dump.println("TODlg.setupDialog");             //~v@@@I~
     	cbPon_Test.setStateInt(Pprop.getParameter(PON_TEST,0));    //~v@@@I~
     	cbRon_Test.setStateInt(Pprop.getParameter(RON_TEST,0));    //~v@@@I~
+    	cbDumpSDCard.setStateInt(Pprop.getParameter(DUMP_SDCARD,0));//~0A08I~
+    	cbRonValue_Test.setStateInt(Pprop.getParameter(RONVALUE_TEST,0));//~0A02I~
+    	cbRonValue_NoDora.setStateInt(Pprop.getParameter(RONVALUE_NODORA,0));//~0A08I~
+    	cbChkRank.setStateInt(Pprop.getParameter(CHKRANK,0));      //+0A16I~
+    	cbSetDora.setStateInt(Pprop.getParameter(SET_DORA,0));     //~0A14I~
+    	etRonValue_Case.setText(Integer.toString(Pprop.getParameter(RONVALUE_CASE,0)));//~0A07I~
+    	etDoraDownType.setText(Integer.toString(Pprop.getParameter(DORA_DOWNTYPE,0)));//~0A12I~
+    	etDoraDownNumber.setText(Integer.toString(Pprop.getParameter(DORA_DOWNNUMBER,0)));//~0A12I~
+    	etDoraUpType.setText(Integer.toString(Pprop.getParameter(DORA_UPTYPE,0)));//~0A12I~
+    	etDoraUpNumber.setText(Integer.toString(Pprop.getParameter(DORA_UPNUMBER,0)));//~0A12I~
+    	etKanDownType.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNTYPE,0)));//~0A12I~
+    	etKanDownNumber.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNNUMBER,0)));//~0A12I~
+    	etKanUpType.setText(Integer.toString(Pprop.getParameter(DORA_KANUPTYPE,0)));//~0A12I~
+    	etKanUpNumber.setText(Integer.toString(Pprop.getParameter(DORA_KANUPNUMBER,0)));//~0A12I~
+    	etKanUpType2.setText(Integer.toString(Pprop.getParameter(DORA_KANUPTYPE2,0)));//~0A12I~
+    	etKanUpNumber2.setText(Integer.toString(Pprop.getParameter(DORA_KANUPNUMBER2,0)));//~0A12I~
+    	etKanDownType2.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNTYPE2,0)));//~0A12M~
+    	etKanDownNumber2.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNNUMBER2,0)));//~0A12M~
     	cbChii_Test.setStateInt(Pprop.getParameter(CHII_TEST,0));  //~v@@@I~
     	cbKan_Test.setStateInt(Pprop.getParameter(KAN_TEST,0));    //~v@@@I~
 //  	cbPositioning.setStateInt(Pprop.getParameter(POSITIONING,0));//~v@@@R~
@@ -186,7 +252,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbBTIOErr.setStateInt(Pprop.getParameter(DISABLEBT,0));    //~v@@@I~
     	cbKanDeal.setStateInt(Pprop.getParameter(KANDEAL,0));      //~v@@@I~
     	cbKanDealAnkan.setStateInt(Pprop.getParameter(KANDEAL_ANKAN,0));//~0406I~//~0407R~
-    	cbKanDealChankan.setStateInt(Pprop.getParameter(KANDEAL_CHANKAN,0));//+0407I~
+    	cbKanDealChankan.setStateInt(Pprop.getParameter(KANDEAL_CHANKAN,0));//~0407I~
         rgBTIOErr.setCheckedID(Pprop.getParameter(DISABLEBT_TIMING,0),false);//~v@@@I~
     	setEswnCB(llIOErr,Pprop.getParameter(SUSPEND_IOERR,0));    //~v@@@I~
     	cbWaitSelectPon.setStateInt(Pprop.getParameter(WAITSELECT_PON,0));//~v@@@R~
@@ -252,6 +318,44 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_RON_TEST;                      //~v@@@I~
         else                                                       //~v@@@I~
 			TestOption.option&=~TO2_RON_TEST;                      //~v@@@I~
+        if (Pprop.getParameter(DUMP_SDCARD,0)!=0)                  //~0A08I~
+        {                                                          //~0A08I~
+			TestOption.option2|=TO2_DUMP_SDCARD;                   //~0A08I~
+            Dump.open("Dump.txt",true/*sdcard*/);                  //~0A08I~
+        }                                                          //~0A08I~
+        else                                                       //~0A08I~
+			TestOption.option&=~TO2_DUMP_SDCARD;                   //~0A08I~
+        if (Pprop.getParameter(RONVALUE_TEST,0)!=0)                //~0A02I~
+			TestOption.option2|=TO2_RONVALUE_TEST;                  //~0A02I~
+        else                                                       //~0A02I~
+			TestOption.option&=~TO2_RONVALUE_TEST;                 //~0A02I~
+        if (Pprop.getParameter(RONVALUE_NODORA,0)!=0)              //~0A08I~
+			TestOption.option2|=TO2_RONVALUE_NODORA;               //~0A08I~
+        else                                                       //~0A08I~
+			TestOption.option&=~TO2_RONVALUE_NODORA;               //~0A08I~
+        if (Pprop.getParameter(CHKRANK,0)!=0)                      //+0A16I~
+			TestOption.option2|=TO2_CHKRANK;                      //+0A16I~
+        else                                                       //+0A16I~
+			TestOption.option&=~TO2_CHKRANK;                       //+0A16I~
+        if (Pprop.getParameter(SET_DORA,0)!=0)                     //~0A14I~
+			TestOption.option2|=TO2_SETDORA;                       //~0A14I~
+        else                                                       //~0A14I~
+			TestOption.option&=~TO2_SETDORA;                       //~0A14I~
+                                                                   //~0A07I~
+		TestOption.testCaseRonValue=Pprop.getParameter(RONVALUE_CASE,0);//~0A07I~
+		TestOption.testDoraDownType=Pprop.getParameter(DORA_DOWNTYPE,0);//~0A12I~
+		TestOption.testDoraDownNumber=Pprop.getParameter(DORA_DOWNNUMBER,0);//~0A12I~
+		TestOption.testDoraUpType=Pprop.getParameter(DORA_UPTYPE,0);//~0A12I~
+		TestOption.testDoraUpNumber=Pprop.getParameter(DORA_UPNUMBER,0);//~0A12I~
+		TestOption.testKanDownType=Pprop.getParameter(DORA_KANDOWNTYPE,0);//~0A12I~
+		TestOption.testKanDownNumber=Pprop.getParameter(DORA_KANDOWNNUMBER,0);//~0A12I~
+		TestOption.testKanUpType=Pprop.getParameter(DORA_KANUPTYPE,0);//~0A12I~
+		TestOption.testKanUpNumber=Pprop.getParameter(DORA_KANUPNUMBER,0);//~0A12I~
+		TestOption.testKanUpType2=Pprop.getParameter(DORA_KANUPTYPE2,0);//~0A12I~
+		TestOption.testKanUpNumber2=Pprop.getParameter(DORA_KANUPNUMBER2,0);//~0A12I~
+		TestOption.testKanDownType2=Pprop.getParameter(DORA_KANDOWNTYPE2,0);//~0A12I~
+		TestOption.testKanDownNumber2=Pprop.getParameter(DORA_KANDOWNNUMBER2,0);//~0A12I~
+                                                                   //~0A07I~
         if (Pprop.getParameter(CHII_TEST,0)!=0)                    //~v@@@I~
 			TestOption.option|=TO_CHII_TEST;                       //~v@@@I~
         else                                                       //~v@@@I~
@@ -316,10 +420,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_ANKAN_DEAL;                   //~0406I~//~0407R~
         else                                                       //~0406I~
 			TestOption.option2&=~TO2_ANKAN_DEAL;                   //~0406I~//~0407R~
-        if (Pprop.getParameter(KANDEAL_CHANKAN,0)!=0)              //+0407I~
-			TestOption.option2|=TO2_CHANKAN_DEAL;                  //+0407I~
-        else                                                       //+0407I~
-			TestOption.option2&=~TO2_CHANKAN_DEAL;                 //+0407I~
+        if (Pprop.getParameter(KANDEAL_CHANKAN,0)!=0)              //~0407I~
+			TestOption.option2|=TO2_CHANKAN_DEAL;                  //~0407I~
+        else                                                       //~0407I~
+			TestOption.option2&=~TO2_CHANKAN_DEAL;                 //~0407I~
         if (Pprop.getParameter(WAITSELECT_PON,0)!=0)               //~v@@@R~
 			TestOption.option2|=TO2_WAITSELECT_PON;                //~v@@@R~
         else                                                       //~v@@@I~
@@ -340,10 +444,14 @@ public class TODlg extends UFDlg                           //~v@@@R~
         if (Pprop.getParameter(CHANKAN,0)!=0)                      //~v@@@I~
         {                                                          //~v@@@I~
 			TestOption.option|=TO_KAN_CHANKAN;                     //~v@@@I~
+			TestOption.option|=TO_KAN_ADD;                         //~0A09I~
 //  		TestOption.option&=~TO_KAN_TEST;                       //~v@@@R~//~0401R~//~0405R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
+        {                                                          //~0A09I~
 			TestOption.option&=~TO_KAN_CHANKAN;                    //~v@@@I~
+			TestOption.option&=~TO_KAN_ADD;                        //~0A09I~
+        }                                                          //~0A09I~
         TestOption.swDisableBT=Pprop.getParameter(DISABLEBT,0)!=0; //~v@@@I~
         TestOption.timingDisableBT=Pprop.getParameter(DISABLEBT_TIMING,0);//~v@@@I~
         if (Dump.Y) Dump.println("TODlg.setTestOption from Prop TO="+Integer.toHexString(TestOption.option));//~v@@@I~
@@ -359,6 +467,24 @@ public class TODlg extends UFDlg                           //~v@@@R~
         if (Dump.Y) Dump.println("TODlg.dialog2Properties");       //~v@@@I~
         changed+=updateProp(PON_TEST,cbPon_Test.getStateInt());    //~v@@@I~
         changed+=updateProp(RON_TEST,cbRon_Test.getStateInt());    //~v@@@I~
+        changed+=updateProp(DUMP_SDCARD,cbDumpSDCard.getStateInt());//~0A08I~
+        changed+=updateProp(RONVALUE_TEST,cbRonValue_Test.getStateInt());//~0A02R~
+        changed+=updateProp(RONVALUE_NODORA,cbRonValue_NoDora.getStateInt());//~0A08I~
+        changed+=updateProp(CHKRANK,cbChkRank.getStateInt());      //+0A16I~
+        changed+=updateProp(SET_DORA,cbSetDora.getStateInt());     //~0A14I~
+        changed+=updateProp(RONVALUE_CASE,Integer.valueOf(etRonValue_Case.getText().toString()));//~0A07I~
+        changed+=updateProp(DORA_DOWNTYPE,Integer.valueOf(etDoraDownType.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_DOWNNUMBER,Integer.valueOf(etDoraDownNumber.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_UPTYPE,Integer.valueOf(etDoraUpType.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_UPNUMBER,Integer.valueOf(etDoraUpNumber.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANDOWNTYPE,Integer.valueOf(etKanDownType.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANDOWNNUMBER,Integer.valueOf(etKanDownNumber.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANUPTYPE,Integer.valueOf(etKanUpType.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANUPNUMBER,Integer.valueOf(etKanUpNumber.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANDOWNTYPE2,Integer.valueOf(etKanDownType2.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANDOWNNUMBER2,Integer.valueOf(etKanDownNumber2.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANUPTYPE2,Integer.valueOf(etKanUpType2.getText().toString()));//~0A12I~
+        changed+=updateProp(DORA_KANUPNUMBER2,Integer.valueOf(etKanUpNumber2.getText().toString()));//~0A12I~
         changed+=updateProp(CHII_TEST,cbChii_Test.getStateInt());  //~v@@@I~
         changed+=updateProp(KAN_TEST,cbKan_Test.getStateInt());    //~v@@@I~
 //      changed+=updateProp(POSITIONING,cbPositioning.getStateInt());//~v@@@R~
@@ -380,7 +506,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DISABLEBT,cbBTIOErr.getStateInt());    //~v@@@I~
         changed+=updateProp(KANDEAL,cbKanDeal.getStateInt());      //~v@@@I~
         changed+=updateProp(KANDEAL_ANKAN,cbKanDealAnkan.getStateInt());//~0406I~//~0407R~
-        changed+=updateProp(KANDEAL_CHANKAN,cbKanDealChankan.getStateInt());//+0407I~
+        changed+=updateProp(KANDEAL_CHANKAN,cbKanDealChankan.getStateInt());//~0407I~
         changed+=updateProp(DISABLEBT_TIMING,rgBTIOErr.getCheckedID());//~v@@@I~
         changed+=updateProp(SUSPEND_IOERR,getEswnCB(llIOErr));      //~v@@@I~
         changed+=updateProp(WAITSELECT_PON,cbWaitSelectPon.getStateInt());//~v@@@R~

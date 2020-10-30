@@ -68,6 +68,14 @@
                  android:textAllCaps="false"
             />
              <Button
+                        android:id="@+id/UserAction_Anyway"
+                        android:layout_width="@dimen/gvbtn_left"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:text="@string/Label_Anyway"
+                 android:textAllCaps="false"
+            />
+             <Button
                         android:id="@+id/ShowRule"
                         android:layout_width="@dimen/gvbtn_left"
                         android:layout_height="fill_parent"

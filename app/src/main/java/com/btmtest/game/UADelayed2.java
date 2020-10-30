@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 980;                                    //~v@@@R~//~9622R~
+//*CID://+va19R~: update#= 981;                                    //+va19R~
 //**********************************************************************//~v101I~
+//2020/10/18 va19 warning use anywan if blocked topn               //+va19I~
+//**********************************************************************//+va19I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -71,8 +73,8 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
     public int delay2Touch;                                    //~9B16I~
 //  public boolean sw2Touch;                                       //~9B16I~//~9C04R~
     public boolean sw2TouchPonRon;                                 //~9C04I~
-//  public boolean sw2TouchPon,sw2TouchRon;                        //~9C04R~//+0205R~
-    private boolean sw2TouchPon,sw2TouchRon;                       //+0205I~
+//  public boolean sw2TouchPon,sw2TouchRon;                        //~9C04R~//~0205R~
+    private boolean sw2TouchPon,sw2TouchRon;                       //~0205I~
 //  public boolean swBlockTimeoutPon,swBlockTimeoutRon;            //~9C05I~//~9C09R~
     public boolean swBlockTimeout;                                 //~9C09I~
     public boolean swWaitSelectMultiple;                           //~9C04R~
@@ -1248,4 +1250,11 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         if(Dump.Y) Dump.println("UADelayed2.timeoutBlockRelease on server intParm="+Arrays.toString(PintParm)+",actionID="+actionID+",player="+player);//~9C05I~
     	actionCanceledTimeout(actionID,true/*PswServer*/,false/*PswReceived*/,player);//~9C05I~
     }                                                              //~9C05I~
+    //*************************************************************************//+va19I~
+    public boolean isBlockedTop()                                  //+va19I~
+    {                                                              //+va19I~
+    	boolean rc=UAD2T.is2ndTouch(); //yourStatus==YS_BLOCK_TOP  //+va19I~
+        if(Dump.Y) Dump.println("UADelayed2.isBlockedTop rc="+rc); //+va19I~
+        return rc;                                                 //+va19I~
+    }                                                              //+va19I~
 }//class                                                           //~v@@@R~

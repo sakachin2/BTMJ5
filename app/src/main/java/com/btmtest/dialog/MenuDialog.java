@@ -1,4 +1,4 @@
-//*CID://+v@@@R~:                             update#=  162;       //~1Af6R~//~v@@@R~
+//*CID://+v@@@R~:                             update#=  163;       //~1Af6R~//~v@@@R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
@@ -9,7 +9,7 @@ import com.btmtest.dialog.PrefSetting;                             //~v@@@I~
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 
 import static com.btmtest.dialog.UMenuDlg.*;
-import static com.btmtest.StaticVars.AG;                           //+v@@@I~
+import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 
 public class MenuDialog                                            //~v@@@R~
 		implements UMenuDlg.UMenuDlgI                              //~v@@@I~
@@ -43,12 +43,12 @@ public class MenuDialog                                            //~v@@@R~
 //**********************************                               //~v@@@I~
 	public static void showSettingMenu()                           //~v@@@I~
     {                                                              //~v@@@I~
-        MenuDialog dlg;                                            //+v@@@I~
+        MenuDialog dlg;                                            //~v@@@I~
     	if (Dump.Y) Dump.println("MenuDialog.showSettingMenu");    //~v@@@I~
         if (AG.isDebuggable)                                       //~v@@@I~
-        	dlg=MenuDialog.newInstance(R.string.Settings,R.array.MenuDialog_Setting_Debug);//+v@@@R~
+        	dlg=MenuDialog.newInstance(R.string.Settings,R.array.MenuDialog_Setting_Debug);//~v@@@R~
         else                                                       //~v@@@I~
-        	dlg=MenuDialog.newInstance(R.string.Settings,R.array.MenuDialog_Setting);//+v@@@R~
+        	dlg=MenuDialog.newInstance(R.string.Settings,R.array.MenuDialog_Setting);//~v@@@R~
         dlg.show(null/*listener*/,MENUID_SETTING);                 //~v@@@R~
     }                                                              //~v@@@I~
 //**********************************                               //~v@@@I~
@@ -96,7 +96,10 @@ public class MenuDialog                                            //~v@@@R~
                 settingPreference();                               //~v@@@I~
                 break;                                             //~v@@@I~
             case 2: //operation setting                            //~v@@@I~
+        	  if (AG.isDebuggable)                                 //+v@@@I~
                 settingOperation();                                //~v@@@M~
+              else                                                 //+v@@@I~
+				umdlg.dismiss();                                   //+v@@@I~
                 break;                                             //~v@@@M~
             default:	//Cancel                                   //~v@@@I~
 				umdlg.dismiss();                                   //~v@@@I~

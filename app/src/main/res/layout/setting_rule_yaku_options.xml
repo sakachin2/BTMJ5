@@ -8,13 +8,14 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
-    			android:background="@color/descriptiononly"
     >
         <TextView
+            android:id="@+id/tvYakuStatementOnly"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-                android:text="@string/Desc_YakuStatementOnly"
+            android:textSize="@dimen/textview_small"
         />
+         <!--   android:text="@string/Desc_YakuStatementOnly"-->
     </LinearLayout>
     <LinearLayout
          android:layout_width="fill_parent"
@@ -23,7 +24,7 @@
     > 
         <LinearLayout
              android:layout_width="fill_parent"
-             android:layout_height="2px"
+             android:layout_height="4px"
                     android:background="@color/separater"
         />
         <include layout="@layout/setting_rule_yaku_standard"
@@ -44,18 +45,45 @@
              android:layout_height="wrap_content"
              android:orientation="horizontal"
         >
-            <CheckBox
-                android:id="@+id/cbKuitan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Label_Kuitan"
-            />
-            <CheckBox
-                android:id="@+id/cbPinfuTaken"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Label_PinfuTaken"
-            />
+            <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                android:background="@color/getvalue"
+            >
+                <CheckBox
+                    android:id="@+id/cbKuitan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_Kuitan"
+                />
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                android:background="@color/getvalue"
+            >
+                <CheckBox
+                    android:id="@+id/cbPinfuTaken"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_PinfuTaken"
+                />
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                android:background="@color/getvalue"
+            >
+                <CheckBox
+                    android:id="@+id/cbDoublePillow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_DoublePillow"
+                />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
              android:layout_width="fill_parent"

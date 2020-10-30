@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#= 285;        //~v@@@I~//~9B03R~
+//*CID://+DATER~:                             update#= 286;        //~v@@@I~//~9B03R~
 //**********************************************************************//~v@@@I~
 package com.btmtest.BT;                                            //~v@@@R~
 import android.bluetooth.BluetoothSocket;                         //~v@@@I~
@@ -884,14 +884,14 @@ public class Members                                                      //~v@@
         if (PsyncDate!=null)                                       //~v@@@I~
 	        MD[Pidx].ruleSyncDate=PsyncDate;                       //~v@@@R~
     }                                                              //~v@@@I~
-    //*************************************************************//+0323I~
-    public void setRuleSyncStatusReplay(int Pidx,boolean PswOK,String PsyncDate)//+0323I~
-	{                                                              //+0323I~
-    	if (Dump.Y) Dump.println("Members.setRuleSyncStatusReply idx="+Pidx+",name="+Utils.toString(MD[Pidx].name)+",swOK="+PswOK);//+0323I~
-	    setRuleSyncStatus(Pidx,PswOK,PsyncDate);                   //+0323I~
-        if (PsyncDate!=null)                                       //+0323I~
-		    MD[Pidx].ruleSyncDateBTIO=PsyncDate;                   //+0323I~
-    }                                                              //+0323I~
+    //*************************************************************//~0323I~
+    public void setRuleSyncStatusReplay(int Pidx,boolean PswOK,String PsyncDate)//~0323I~
+	{                                                              //~0323I~
+    	if (Dump.Y) Dump.println("Members.setRuleSyncStatusReply idx="+Pidx+",name="+Utils.toString(MD[Pidx].name)+",swOK="+PswOK);//~0323I~
+	    setRuleSyncStatus(Pidx,PswOK,PsyncDate);                   //~0323I~
+        if (PsyncDate!=null)                                       //~0323I~
+		    MD[Pidx].ruleSyncDateBTIO=PsyncDate;                   //~0323I~
+    }                                                              //~0323I~
     //*************************************************************//~v@@@I~
     //*return list of yourname 0:OK,1:NG:2:Not Yet Responsed       //~v@@@R~
     //*************************************************************//~v@@@I~
@@ -989,7 +989,7 @@ public class Members                                                      //~v@@
     //*************************************************************//~v@@@I~
     public int update(String[] PnameR,Thread Pthread)              //~0108I~
 	{                                                              //~0108I~
-    	if (Dump.Y) Dump.println("Members.update nameR="+ Arrays.toString(PnameR));//~v@@@I~
+    	if (Dump.Y) Dump.println("Members.update nameR="+ Arrays.toString(PnameR)+",Pthread="+Utils.toString(Pthread));//~v@@@I~//+0A14R~
         String tempname=PnameR[3];   //ipaddr                      //~v@@@I~//~0112R~
     	int idx=search(tempname);                                      //~v@@@I~
         if (idx<0)                                                 //~0112I~

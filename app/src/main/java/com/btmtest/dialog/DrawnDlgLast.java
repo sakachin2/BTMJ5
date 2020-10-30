@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1063;       //~9708R~
+//*CID://+va03R~:                             update#= 1065;       //+va03R~
 //*****************************************************************//~v101I~
+//2020/04/16 va03:alert suspendrequested                           //+va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
@@ -578,6 +579,8 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 //      setCheckNextGame();                                        //~9708I~//~9709R~
 		cbSuspend=new UCheckBox(PView,R.id.cbSuspend);             //~0308I~
 		cbSuspend.setState(swSuspend,!swRequester);                //~0308I~
+        if (swSuspend && !swRequester)                             //+va03R~
+        	CompleteDlg.alertSuspended();                          //+va03R~
         cbSuspend.setListener(this,UCBP_SUSPEND);                  //~0308I~
     }                                                              //~9308I~
     //*******************************************************      //~9308I~
@@ -951,7 +954,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         if (PdataType!=LASTDT_OKNG)                                //~0309I~
         	swSuspend=PdialogData[PARMPOS_DRAWN_LAST_SUSPEND-PARMPOS_DRAWN_DIALOGDATA]!=0;//~0308I~//~0309R~
 //      if (swUpdatedReason)                                      //~9610I~//~0331R~
-        if (PdataType!=LASTDT_OKNG)//TODO Test                     //+0331R~
+        if (PdataType!=LASTDT_OKNG)//TODO Test                     //~0331R~
         {                                                          //~9610I~
         	reloadDlgPrepare(Peswn,PdataType);                     //~9610I~
             return;                                                //~9610I~

@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 596;                                    //~v@@@R~//~v@@6R~//~9B23R~
+//*CID://+va15R~: update#= 598;                                    //~va15R~
 //**********************************************************************//~v101I~
+//2020/10/13 va15 Add chk kuikae                                   //~va15I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -8,6 +9,7 @@ package com.btmtest.game.UA;                                         //~1107R~  
 import com.btmtest.R;
 import com.btmtest.TestOption;
 import com.btmtest.dialog.PrefSetting;
+import com.btmtest.dialog.RuleSetting;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.GC;
@@ -24,9 +26,11 @@ import com.btmtest.utils.Dump;
 import com.btmtest.utils.sound.Sound;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
+import static com.btmtest.dialog.RuleSettingEnum.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;                           //~v@@@I~
 import static com.btmtest.game.Players.*;
+import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.UA.UAReach.*;
 import static com.btmtest.game.UserAction.*;                       //~v@@@I~
                                                                    //~v@@@I~
@@ -111,7 +115,7 @@ public class UADiscard                                             //~v@@@R~
         {                                                          //~9820I~//~v@@6I~
         	if (Dump.Y) Dump.println("UADiscard.selectInfo TO2_SUSPEND discardedCtr="+AG.aPlayers.getDiscardedCtr(PLAYER_YOU));//~v@@6R~
             if (AG.aPlayers.getDiscardedCtr(PLAYER_YOU)==0)        //~v@@6I~
-	            AG.aGC.suspendGame(true/*suspend*/,-1/*useraction*/);//by TestOption //~9820R~//~v@@6I~//+0307R~
+	            AG.aGC.suspendGame(true/*suspend*/,-1/*useraction*/);//by TestOption //~9820R~//~v@@6I~//~0307R~
         }                                                          //~9820I~//~v@@6I~
         AG.aHandsTouch.enableMultiSelectionMode(false);            //~v@@6I~
         TileData td=selectTile(PLAYER_YOU);                        //~v@@@I~
@@ -121,6 +125,8 @@ public class UADiscard                                             //~v@@@R~
         	return false;                                          //~v@@@I~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("UADiscard.selectInfo td="+td.type+":"+td.number+":"+td.flag);//~v@@@R~//~v@@6R~
+    	if (isSameMeld(td))                                        //~va15I~
+        	return false;                                          //~va15I~
         infoSelectedTD=td;                                         //~v@@@I~
 //      UA.msgDataToServer=UserAction.makeMsgDataToServer(Pplayer,td);//~v@@@R~
 		if (!PswServer)                                            //~v@@@I~
@@ -394,4 +400,85 @@ public class UADiscard                                             //~v@@@R~
         if (Dump.Y) Dump.println("UADiscard.autoTakeTimeoutClient rc="+rc);//~v@@6I~
         return rc;                                                 //~v@@6I~
     }                                                              //~v@@6I~
+	//*************************************************************************//~va15I~
+	//*rc:true prohibit discard                                    //~va15I~
+	//*************************************************************************//~va15I~
+    private boolean isSameMeld(TileData PtileSelected)             //~va15I~
+    {                                                              //~va15I~
+    	boolean rc=false;                                          //~va15I~
+	    if (Dump.Y) Dump.println("UADiscard.isSameMeld Discard tile="+TileData.toString(PtileSelected));//~va15I~
+        int typeSameMeld= RuleSetting.getSameMeld();                //~va15I~
+        if (typeSameMeld==EATCHANGE_ALLOK)                         //~va15I~
+        {                                                          //~va15I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld false by RuleSetting");//~va15I~
+        	return false;                                          //~va15I~
+        }                                                          //~va15I~
+    	int action=PLS.getLastActionID(PLAYER_YOU);                //~va15I~
+        if (action!=GCM_PON && action!=GCM_CHII)                   //~va15I~
+        {	                                                       //~va15I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld false by lastAction="+action);//~va15I~
+            return false;                                          //~va15I~
+        }                                                          //~va15I~
+        TileData[][] earth=PLS.getEarth(PLAYER_YOU);               //~va15I~
+	    if (Dump.Y) Dump.println("UADiscard.isSameMeld earth="+TileData.toString(earth));//~va15I~
+		int ctrPair=PLS.getCtrPair(PLAYER_YOU);                        //~va15I~
+        if (ctrPair==0)                                            //~va15I~
+        {                                                          //~va15I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld @@@@err ctrPair=0");//~va15I~
+        	return false;                                          //~va15I~
+        }                                                          //~va15I~
+        TileData[] lastPair=earth[ctrPair-1];                      //~va15I~
+        TileData tdRiver=null;                                     //~va15I~
+        int posRiver=0;                                            //~va15I~
+        for (TileData td:lastPair)                                 //~va15I~
+        {                                                          //~va15I~
+	        if ((td.flag & TDF_TAKEN_RIVER)!=0)                    //~va15I~
+            {                                                      //~va15I~
+            	tdRiver=td;	                                       //~va15I~
+                break;                                             //~va15I~
+            }                                                      //~va15I~
+            posRiver++;                                            //~va15I~
+        }                                                          //~va15I~
+        if (tdRiver==null)                                         //~va15I~
+        {                                                          //~va15I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld @@@@err no River tile found");//~va15I~
+        	return false;                                          //~va15I~
+        }                                                          //~va15I~
+        if (PtileSelected.type==tdRiver.type && PtileSelected.number==tdRiver.number)//~va15I~
+        {	                                                       //~va15I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld same tile");//~va15I~
+            rc=true;                                               //~va15I~
+        }                                                          //~va15I~
+        else                                                       //+va15I~
+        if (typeSameMeld==EATCHANGE_EXCEPTIT)	//1:err only itself//~va15I~
+        {                                                          //~va15I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld OK by prohibit itself only");//~va15I~
+            rc=false;                                              //~va15I~
+        }                                                          //~va15I~
+        else                                                       //~va15I~
+        if ((tdRiver.flag & TDF_CHII)!=0)                          //~va15I~
+        {                                                          //~va15I~
+        	if (posRiver==0)	//left side eat                    //~va15I~
+            {                                                      //~va15I~
+            	if (PtileSelected.number==tdRiver.number+3)        //~va15I~
+                {                                                  //~va15I~
+			        if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit right");//~va15I~
+        		    rc=true;                                       //~va15I~
+                }                                                  //~va15I~
+            }                                                      //~va15I~
+            else                                                   //~va15I~
+        	if (posRiver==2)	//right side eat                   //~va15I~
+            {                                                      //~va15I~
+            	if (PtileSelected.number==tdRiver.number-3)        //~va15I~
+                {                                                  //~va15I~
+			        if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit left");//~va15I~
+        		    rc=true;                                       //~va15I~
+                }                                                  //~va15I~
+            }                                                      //~va15I~
+        }                                                          //~va15I~
+    	if (rc)                                                    //~va15I~
+        	GC.actionError(0,PLAYER_YOU,R.string.AE_SameMeld);         //~va15I~
+        if (Dump.Y) Dump.println("UADiscard.isSameMeld rc="+rc);   //~va15I~
+        return rc;                                                 //~va15I~
+    }                                                              //~va15I~
 }//class                                                           //~v@@@R~

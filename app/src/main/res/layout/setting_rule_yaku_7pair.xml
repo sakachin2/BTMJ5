@@ -8,6 +8,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
+            android:background="@color/getvalue"
     >
         <TextView
             android:layout_height="wrap_content"
@@ -30,6 +31,12 @@
             <RadioButton
                 android:id="@+id/rbYaku7Pair25_2"
                 android:text="@string/Label_Yaku7Pair25_2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            />
+            <RadioButton
+                android:id="@+id/rbYaku7Pair30_2"
+                android:text="@string/Label_Yaku7Pair30_2"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />

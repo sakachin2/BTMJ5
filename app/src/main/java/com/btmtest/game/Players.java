@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 794;                                    //~v@@6R~//~9207R~
+//*CID://+va11R~: update#= 803;                                    //+va11R~
 //**********************************************************************//~v101I~
+//2020/10/13 va15 Add chk kuikae                                   //~va15I~
+//2020/09/25 va11:optionally evaluate point                        //~va11I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
@@ -1268,12 +1270,12 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@6I~
     public int takeKan(int Pplayer,TileData[] Ptds)                //~v@@6I~
     {                                                              //~v@@6I~
-        if (Dump.Y) Dump.println("Players.takeKan player="+Pplayer+",ctrKan="+AG.aTiles.ctrKan+",tds="+TileData.toString(Ptds));//~v@@6I~//+0407R~
+        if (Dump.Y) Dump.println("Players.takeKan player="+Pplayer+",ctrKan="+AG.aTiles.ctrKan+",tds="+TileData.toString(Ptds));//~v@@6I~//~0407R~
         if (AG.aTiles.ctrKan==MAXCTR_KAN)                          //~v@@6I~
         {                                                          //~v@@6I~
-//      	GC.actionError(0,Pplayer,Utils.getStr(R.string.Err_5thKan,yn));//~v@@6I~//+0407R~
-			String yn=Utils.getStr(RuleSettingYaku.is5thKanOn() ? R.string.On:R.string.Off);//+0407I~
-			UserAction.showInfo(0,Utils.getStr(R.string.Err_5thKan,yn));//+0407I~
+//      	GC.actionError(0,Pplayer,Utils.getStr(R.string.Err_5thKan,yn));//~v@@6I~//~0407R~
+			String yn=Utils.getStr(RuleSettingYaku.is5thKanOn() ? R.string.On:R.string.Off);//~0407I~
+			UserAction.showInfo(0,Utils.getStr(R.string.Err_5thKan,yn));//~0407I~
             return -1;                                             //~v@@6I~
         }                                                          //~v@@6I~
         int rc=players[Pplayer].takeKan(Ptds);                     //~v@@6I~
@@ -1296,6 +1298,13 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.complete player="+Pplayer+",rc="+rc);//~v@@@R~
         return rc;  //completeflag                                               //~v@@@I~
      }                                                              //~v@@@I~
+    //*********************************************************************//+va11I~
+	public int getCompleteFlag(int Pplayer)                        //+va11I~
+    {                                                              //+va11I~
+        int rc=completeFlag;                      //+va11I~
+        if (Dump.Y) Dump.println("Players.getCompleteFlag player="+Pplayer+",rc=0x"+Integer.toHexString(rc));//+va11I~
+        return rc;  //completeflag                                 //+va11I~
+     }                                                             //+va11I~
     //*********************************************************************//~9A12I~
 	public int resetComplete(int Pplayer)                          //~9A12I~
     {                                                              //~9A12I~
@@ -1492,8 +1501,17 @@ public class Players                                               //~v@@@R~
     public void setReachDone(int Pplayer)                          //~9228I~
     {                                                              //~9228I~
         if (Dump.Y) Dump.println("Players.setReachDone player="+Pplayer);//~9511R~
-        players[Pplayer].reachStatus=REACH_DONE;                   //~9228I~
+//      players[Pplayer].reachStatus=REACH_DONE;                   //~9228I~//~va11R~
+        players[Pplayer].setReachDone();                           //~va11R~
     }                                                              //~9228I~
+    //*********************************************************************//~va11I~
+    public Point getCtrReachDone(int Pplayer)                      //~va11I~
+    {                                                              //~va11I~
+        int t=players[Pplayer].ctrTakenReachDone;                  //~va11I~
+		int d=players[Pplayer].ctrDiscardedReachDone;              //~va11I~
+        if (Dump.Y) Dump.println("Players.getCtrReachDone take="+t+",discard="+d);//~va11I~
+        return new Point(t,d);                                     //~va11I~
+    }                                                              //~va11I~
     //*********************************************************************//~9A30I~
     public boolean  resetReachDoneBeforeDiscard(int Pplayer)       //~9A30R~
     {                                                              //~9A30I~
@@ -1522,6 +1540,20 @@ public class Players                                               //~v@@@R~
 	        players[player].resetReachAll();                      //~9704I~
         if (Dump.Y) Dump.println("Players.resetReachAll after ctrReach="+ctrReach);//~9904I~
     }                                                              //~9704I~
+    //*********************************************************************//~va11I~
+    public boolean isClosedHand(int Pplayer)                          //~va11I~
+    {                                                              //~va11I~
+    	boolean rc=players[Pplayer].isClosedHand();                 //~va11I~
+        if (Dump.Y) Dump.println("Players.isClosedhand player="+Pplayer+",rc="+rc);//~va11I~
+        return rc;
+    }                                                              //~va11I~
+    //*********************************************************************//~va15I~
+    public int getLastActionID(int Pplayer)                    //~va15I~
+    {                                                              //~va15I~
+    	int rc=players[Pplayer].lastActionID;                       //~va15I~
+        if (Dump.Y) Dump.println("Players.getLastActionID player="+Pplayer+",rc="+rc);//~va15I~
+        return rc;                                                 //~va15I~
+    }                                                              //~va15I~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
@@ -1544,9 +1576,9 @@ public class Players                                               //~v@@@R~
         private int lastActionID;                                  //~v@@@I~//~9208R~
         private int status;                                            //~v@@@I~
         private int selectedPos=-1;                                //~v@@@R~
-                                                                   //~9208I~
+        private int ctrTakenReachDone,ctrDiscardedReachDone;       //~va11R~
         private int idxEarthAddKan;                                //~v@@@R~
-        public int ctrKan;                                         //+0407I~
+        public int ctrKan;                                         //~0407I~
         private TileData tileKan;                                  //~v@@@I~//~9208M~
         private Rect[] pieceRectForAddKan;                         //~v@@@I~//~9208M~
 //      private boolean swLastActionIsKan;                         //~v@@@R~//~9208M~
@@ -1577,7 +1609,7 @@ public class Players                                               //~v@@@R~
         	status=0;                                              //~9503I~
         	selectedPos=-1;                                        //~9503I~
         	idxEarthAddKan=0;                                      //~9503I~
-        	ctrKan=0;                                              //+0407I~
+        	ctrKan=0;                                              //~0407I~
         	tileKan=null;                                          //~9503I~
             pieceRectForAddKan=new Rect[PAIRS_MAX];                //~9503I~
         }                                                          //~9503I~
@@ -1914,6 +1946,7 @@ public class Players                                               //~v@@@R~
         {                                                          //~v@@@I~
             if (Dump.Y) Dump.println("Player.reachDone");          //~v@@@I~
 	        reachStatus=REACH_DONE;                                //~v@@@R~
+        	setReachDone();	//save ctr for rech just               //~va11I~
             status|=STF_REACH;                                     //~v@@@I~
             posReach=ctrDiscarded-1;	//draw next of posRiver as Lying//~v@@@R~
             AG.aPointStick.reachDone(player);                            //~v@@@I~
@@ -1949,6 +1982,8 @@ public class Players                                               //~v@@@R~
 	            lastReachTD=null;                                  //~9708I~
             }                                                      //~9513I~
 			lastReach=-1;                                          //~9708I~
+            ctrDiscardedReachDone=0;                               //~va11I~
+            ctrTakenReachDone=0;                                   //~va11I~
             if (Dump.Y) Dump.println("Player.resetReachDone ctrReach="+ctrReach);//~9706I~
         }                                                          //~9511I~
         //*********************************************************************//~9704I~
@@ -2357,14 +2392,14 @@ public class Players                                               //~v@@@R~
             {                                                      //~v@@6I~
 		        sortTaken();                                       //~v@@6I~
             }                                                      //~v@@6I~
-            if (Dump.Y) Dump.println("Player.takeKan lastDiscarded="+TileData.toString(tileLastDiscarded));//~v@@6I~//~9208R~//+0407R~
+            if (Dump.Y) Dump.println("Player.takeKan lastDiscarded="+TileData.toString(tileLastDiscarded));//~v@@6I~//~9208R~//~0407R~
             if (kanType==0)   //for the case kan by kan taken      //~9208R~
             {                                                      //~9208I~
                 kanType=rc;	//status at 1st kan until discard      //~9208R~
                 playerKan=player;                                  //~9208I~
             }                                                      //~9208I~
-            ctrKan++;                                              //+0407I~
-            if (Dump.Y) Dump.println("Player.takeKan return rc="+rc+",ctrKan="+ctrKan+",playerKan="+playerKan);//+0407I~
+            ctrKan++;                                              //~0407I~
+            if (Dump.Y) Dump.println("Player.takeKan return rc="+rc+",ctrKan="+ctrKan+",playerKan="+playerKan);//~0407I~
             return rc;                                             //~v@@6R~
         }                                                          //~v@@6I~
         //*********************************************************************//~9301I~
@@ -2446,8 +2481,8 @@ public class Players                                               //~v@@@R~
                 kanType=rc;	//status at 1st kan until discard      //~9208R~
                 playerKan=player;                                  //~9208I~
             }                                                      //~9208I~
-            ctrKan++;                                              //+0407I~
-            if (Dump.Y) Dump.println("Player.takeKanOtherOnClient return rc="+rc+",ctrKan="+ctrKan+",tdsctr="+arrayList.size()+",lastDiscarded="+TileData.toString(tileLastDiscarded));//~v@@6R~//~9208R~//+0407R~
+            ctrKan++;                                              //~0407I~
+            if (Dump.Y) Dump.println("Player.takeKanOtherOnClient return rc="+rc+",ctrKan="+ctrKan+",tdsctr="+arrayList.size()+",lastDiscarded="+TileData.toString(tileLastDiscarded));//~v@@6R~//~9208R~//~0407R~
             return rc;                                             //~v@@6R~
         }                                                          //~v@@6I~
         //*********************************************************************//~v@@@I~
@@ -2522,6 +2557,11 @@ public class Players                                               //~v@@@R~
                     break;                                         //~v@@6R~//~9208R~
                 }                                                  //~v@@6R~
             }                                                      //~v@@6R~
+//            if ((TestOption.option & TestOption.TO_KAN_CHANKAN)!=0)//~va11R~
+//            {                                                    //~va11R~
+//                if (Dump.Y) Dump.println("Player.getKanAddEarthIndex rc="+rc+",@@@@reset to 0 by testoption");//~va11R~
+//                rc=0;                                            //~va11R~
+//            }                                                    //~va11R~
             if (Dump.Y) Dump.println("Player.getKanAddEarthIndex rc="+rc+",earcthctr="+pairOnEarth.length+",Ptds="+Ptd.toString());//~v@@6R~//~9208R~
             return rc;                                             //~v@@6R~
         }                                                          //~v@@6R~
@@ -2827,5 +2867,20 @@ public class Players                                               //~v@@@R~
             if (Dump.Y) Dump.println("Player.getTileSelected td="+TileData.toString(td));//~v@@@R~//~9208R~
             return td;                                             //~v@@@I~
         }                                                          //~v@@@I~
+        //*********************************************************************//~va11I~
+        public void setReachDone()                                      //~va11I~
+        {                                                          //~va11I~
+            ctrDiscardedReachDone=ctrDiscardedAll;                 //~va11I~
+            ctrTakenReachDone=ctrTakenAll;                         //~va11I~
+			reachStatus=REACH_DONE;                                //~va11I~
+	        if (Dump.Y) Dump.println("Player.setReachDone player="+player+",reachStatus="+reachStatus+",ctrDiscardedAll="+ctrDiscardedAll+",ctrTakenAll="+ctrTakenAll);//~va11I~
+       }                                                          //~va11I~
+        //*********************************************************************//~va11I~
+        public boolean isClosedHand()                              //~va11I~
+        {                                                          //~va11I~
+            boolean rc=isEarthReachable();                         //~va11I~
+	        if (Dump.Y) Dump.println("Player.isClosedHand player="+player+",rc="+rc);//~va11I~
+            return rc;
+        }                                                           //~va11I~
 	}//class Player                                                //~v@@@I~
 }//class Players                                                 //~dataR~//~@@@@R~//~v@@@R~

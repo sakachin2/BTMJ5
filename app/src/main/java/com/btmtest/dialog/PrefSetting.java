@@ -1,22 +1,29 @@
-//*CID://+v@@@R~:                             update#=  450;       //~v@@@R~
+//*CID://+va18R~:                             update#=  459;       //~va18R~
 //*****************************************************************//~v101I~
+//2020/10/18 va18 option to diaplay WinAnyway button               //~va18I~
+//2020/04/27 va06:BGM                                              //~va06I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
+import android.graphics.Rect;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.btmtest.R;
+import com.btmtest.game.GC;
+import com.btmtest.game.Status;
 import com.btmtest.gui.URadioGroup;
 import com.btmtest.gui.USpinBtn;
 import com.btmtest.utils.Prop;                                     //~v@@@R~
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.utils.UView;
+import com.btmtest.utils.sound.Sound;
 
 
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@@I~
 import static com.btmtest.dialog.PrefSettingEnum.*;                  //~v@@@R~
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.Status.*;
 
 //~v@@@I~
 public class PrefSetting extends SettingDlg                        //~v@@@R~
@@ -37,6 +44,14 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	public  static final int    PS_ORIENTATION_LANDSCAPE=3;        //~v@@@R~
 	public  static final int    PS_ORIENTATION_LANDSCAPE_REVERSE=4;//~v@@@I~
                                                                    //~v@@@I~
+    private URadioGroup rgBGM;                                     //~va06I~
+    private static final int[] rbIDBGM=new int[]{R.id.rbBGMNo,R.id.rbBGMSame,R.id.rbBGM4Seasons,R.id.rbBGM4SeasonsFast};//~va06R~
+	public  static final int    PS_BGM_NO=0;                       //~va06I~
+	public  static final int    PS_BGM_COMMON=1;                   //~va06R~
+	public  static final int    PS_BGM_4SEASONS=2;                 //~va06R~
+	public  static final int    PS_BGM_4SEASONS_FAST=3;            //~va06I~
+	public  static final int    PS_BGM_DEFAULT=PS_BGM_COMMON;      //~va06I~
+                                                                   //~va06I~
     public static final int 	DEFAULT_VOLUME_MIN=0;              //~v@@@I~
     public static final int 	DEFAULT_VOLUME_MAX=10;             //~v@@@I~
     public static final int 	DEFAULT_VOLUME_INC=1;              //~v@@@I~
@@ -46,11 +61,14 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private UCheckBox cbDelRiverTileTaken;                         //~v@@@I~
     private UCheckBox cbNoRelatedRule;                             //~v@@@I~
     private UCheckBox cbNoTakeButton,cbNoDiscardButton;            //~v@@@I~
+    private UCheckBox cbNoAnywayButton;                            //~va18I~
     private UCheckBox cbNoSound,cbBeepOnly;                        //~v@@@R~
 //  private boolean swFixedParm;                                   //~v@@@R~
     private Prop curPropOld;                                 //~v@@@I~
     private USpinBtn sbVolume;                                     //~v@@@I~
+    private USpinBtn sbVolumeBGM;                                  //~va06I~
     private int changedSound;                                      //~v@@@I~
+    private int changedBGM;                                        //~va06I~
     private int changedBtn;                                        //~v@@@I~
     //******************************************                   //~v@@@I~
     //******************************************                   //~v@@@M~
@@ -109,10 +127,14 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbNoRelatedRule=new UCheckBox(PView,R.id.cbNoRelatedRule); //~v@@@I~
         cbNoTakeButton=new UCheckBox(PView,R.id.cbNoTakeButton);   //~v@@@I~
         cbNoDiscardButton=new UCheckBox(PView,R.id.cbNoDiscardButton);//~v@@@I~
+        cbNoAnywayButton=new UCheckBox(PView,R.id.cbNoAnywayButton);//~va18I~
         cbNoSound=new UCheckBox(PView,R.id.cbNoSound);             //~v@@@I~
         cbBeepOnly=new UCheckBox(PView,R.id.cbBeepOnly);           //~v@@@I~
     	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBSoundVolume);//~v@@@I~
     	sbVolume= USpinBtn.newInstance(llSpinBtn,DEFAULT_VOLUME_MIN,DEFAULT_VOLUME_MAX,DEFAULT_VOLUME_INC,DEFAULT_VOLUME);//~v@@@I~
+    	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBBGMVolume);//~va06I~
+    	sbVolumeBGM= USpinBtn.newInstance(llSpinBtn,DEFAULT_VOLUME_MIN,DEFAULT_VOLUME_MAX,DEFAULT_VOLUME_INC,DEFAULT_VOLUME);//~va06I~
+        rgBGM=new URadioGroup(PView,R.id.rgBGM,0,rbIDBGM);         //~va06I~
     }                                                              //~v@@@I~
 	//*****************                                                //~1613I~//~v@@@I~
     protected void setInitialValue()                                 //~v@@@I~
@@ -156,15 +178,18 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbDelRiverTileTaken.setStateInt(Pprop.getParameter(getKeyPS(PSID_DEL_TILE_TAKEN),0/*defaultIdx*/),swFixed);//~v@@@I~
 //      cbNoRelatedRule.setStateInt(Pprop.getParameter(getKeyPS(PSID_NO_RELATED_RULE),1/*defaultIdx*/),swFixed);//~v@@@R~
         cbNoRelatedRule.setStateInt(Pprop.getParameter(getKeyPS(PSID_NO_RELATED_RULE),1/*defaultIdx*/),false);//~v@@@I~
-//      cbNoTakeButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOTAKE_BUTTON),0/*defaultIdx*/),swFixed);//+v@@@R~
-//      cbNoDiscardButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NODISCARD_BUTTON),0/*defaultIdx*/),swFixed);//+v@@@R~
-        cbNoTakeButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOTAKE_BUTTON),0/*defaultIdx*/),false);//+v@@@I~
-        cbNoDiscardButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NODISCARD_BUTTON),0/*defaultIdx*/),false);//+v@@@I~
+//      cbNoTakeButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOTAKE_BUTTON),0/*defaultIdx*/),swFixed);//~v@@@R~
+//      cbNoDiscardButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NODISCARD_BUTTON),0/*defaultIdx*/),swFixed);//~v@@@R~
+        cbNoTakeButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOTAKE_BUTTON),0/*defaultIdx*/),false);//~v@@@I~
+        cbNoDiscardButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NODISCARD_BUTTON),0/*defaultIdx*/),false);//~v@@@I~
+        cbNoAnywayButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOANYWAY_BUTTON),1/*default*/),false);//+va18R~
 //      cbNoSound.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOSOUND),0/*defaultIdx*/),swFixed);//~v@@@R~
         cbNoSound.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOSOUND),0/*defaultIdx*/),false);//~v@@@I~
         cbBeepOnly.setStateInt(Pprop.getParameter(getKeyPS(PSID_BEEPONLY),0/*defaultIdx*/),swFixed);//~v@@@I~
 //      sbVolume.setVal(Pprop.getParameter(getKeyPS(PSID_VOLUME),DEFAULT_VOLUME),swFixed);//~v@@@R~
         sbVolume.setVal(Pprop.getParameter(getKeyPS(PSID_VOLUME),DEFAULT_VOLUME),false);//~v@@@I~
+        sbVolumeBGM.setVal(Pprop.getParameter(getKeyPS(PSID_VOLUME_BGM),DEFAULT_VOLUME),false);//~va06I~
+        rgBGM.setCheckedID(Pprop.getParameter(getKeyPS(PSID_BGM),PS_BGM_DEFAULT),false);//~va06R~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
     @Override //SettingDlg                                         //~v@@@I~
@@ -181,6 +206,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         //*******************                                      //~v@@@I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties"); //~v@@@I~
 	    changedSound=0;                                            //~v@@@I~
+	    changedBGM=0;                                              //~va06I~
 	    changedBtn=0;                                              //~v@@@I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties"); //~v@@@R~
         changed+=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~v@@@I~
@@ -190,18 +216,22 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      changed+=updateProp(getKeyPS(PSID_NODISCARD_BUTTON),cbNoDiscardButton.getStateInt());//~v@@@R~
         changedBtn+=updateProp(getKeyPS(PSID_NOTAKE_BUTTON),cbNoTakeButton.getStateInt());//~v@@@I~
         changedBtn+=updateProp(getKeyPS(PSID_NODISCARD_BUTTON),cbNoDiscardButton.getStateInt());//~v@@@I~
+        changedBtn+=updateProp(getKeyPS(PSID_NOANYWAY_BUTTON),cbNoAnywayButton.getStateInt());//~va18I~
         changed+=updateProp(getKeyPS(PSID_BEEPONLY),cbBeepOnly.getStateInt());//~v@@@I~
                                                                    //~v@@@I~
         changedSound+=updateProp(getKeyPS(PSID_NOSOUND),cbNoSound.getStateInt());//~v@@@M~
         changedSound+=updateProp(getKeyPS(PSID_VOLUME),sbVolume.getVal());//~v@@@R~
-        changed+=changedSound;                                     //~v@@@I~
+        changedBGM+=updateProp(getKeyPS(PSID_VOLUME_BGM),sbVolumeBGM.getVal());//~va06I~
+        changedBGM+=updateProp(getKeyPS(PSID_BGM),rgBGM.getCheckedID());//~va06I~
+        changed+=changedSound;                                     //~va06I~
+        changed+=changedBGM;                                     //~v@@@I~//~va06I~
         changed+=changedBtn;                                       //~v@@@I~
                                                                    //~v@@@I~
         if (changed!=0)                                            //~v@@@I~
         {                                                          //~v@@@I~
 	        swChanged=true;                                        //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("PrefSetting.dialog2Properties changed="+changed+",changedSound="+changedSound);//~v@@@I~
+        if (Dump.Y) Dump.println("PrefSetting.dialog2Properties changed="+changed+",changedSound="+changedSound+",changedBGM="+changedBGM);//~v@@@I~//~va06R~
         return changed!=0;                                         //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
@@ -243,6 +273,18 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         {                                                          //~v@@@I~
         	AG.aSound.resetOption();                               //~v@@@I~
         }                                                          //~v@@@I~
+        if (changedBGM!=0 && AG.aSound!=null)                      //~va06I~
+        {                                                          //~va06I~
+        	AG.aSound.resetOptionBGM();                            //~va06I~
+	        if (Dump.Y) Dump.println("PrefSetting.onClickOK changedBGM status="+Status.getGameStatus()+",gameseq="+Status.getGameSeq().toString());//~va06I~
+        	if (Status.getGameStatus()==GS_GAME_STARTED)           //~va06I~
+            {                                                      //~va06I~
+    			Rect r=Status.getGameSeq();                        //~va06I~
+            	GC.playSound(r.top);	//gameCtrGame              //~va06I~
+            }                                                      //~va06I~
+            else                                                   //~va06I~
+	        	Sound.playBGM(SOUNDID_BGM_TOP);                    //~va06I~
+        }                                                          //~va06I~
         dismiss();                                                 //~v@@@I~
     }                                                              //~v@@@I~
 //    //*******************************************************    //~v@@@R~
@@ -309,6 +351,14 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("PrefSetting.isNoDiscardButton:"+rc);//~v@@@R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+    //**************************************                       //~va18I~
+    public static boolean isNoAnywayButton()                       //~va18I~
+    {                                                              //~va18I~
+		int def=1;	//false                                        //+va18R~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_NOANYWAY_BUTTON),def)!=0;//~va18I~
+    	if (Dump.Y) Dump.println("PrefSetting.isNoAnywayButton:"+rc);//~va18I~
+        return rc;                                                 //~va18I~
+    }                                                              //~va18I~
     //**************************************                       //~v@@@I~
     public static boolean isNoSound()                              //~v@@@I~
     {                                                              //~v@@@I~
@@ -333,4 +383,26 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSetting.getSoundVolume:"+rc);//~v@@@R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+    //**************************************                       //~va06I~
+    public static float getBGMVolume()                             //~va06I~
+    {                                                              //~va06I~
+		int level=AG.prefProp.getParameter(getKeyPS(PSID_VOLUME_BGM),DEFAULT_VOLUME);//~va06I~
+        float rc=(float)(level*0.1);                               //~va06I~
+    	if (Dump.Y) Dump.println("RuleSetting.getBGMVolume:"+rc);  //~va06I~
+        return rc;                                                 //~va06I~
+    }                                                              //~va06I~
+    //*******************************************************************************//~va06I~
+    public static boolean isNoBGM()                                //~va06R~
+    {                                                              //~va06I~
+        boolean rc=getBGMType()==PS_BGM_NO;                        //~va06R~
+    	if (Dump.Y) Dump.println("PrefSetting.getNoBGM rc="+rc);   //~va06R~
+        return rc;                                                 //~va06I~
+    }                                                              //~va06I~
+    //*******************************************************************************//~va06I~
+    public static int getBGMType()                                 //~va06I~
+    {                                                              //~va06I~
+        int rc=AG.prefProp.getParameter(getKeyPS(PSID_BGM),PS_BGM_DEFAULT);//~va06R~
+    	if (Dump.Y) Dump.println("PrefSetting.getBGMType rc="+rc); //~va06I~
+        return rc;                                                 //~va06I~
+    }                                                              //~va06I~
 }//class                                                           //~v@@@R~

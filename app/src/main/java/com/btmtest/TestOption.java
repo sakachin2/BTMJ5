@@ -1,6 +1,13 @@
-//*CID://+v@@@R~: update#= 468;                                    //~v@@@I~
+//*CID://+v@@@R~: update#= 480;                                    //~v@@@I~
 //**********************************************************************//~v@@@I~
 //TestOption                                                       //~v@@@I~
+//***********************                                          //~v@@@I~
+//TestChankan                                                      //~v@@@I~
+//  set CHANKAN_DEAL reset Kan with Any tile                       //+v@@@R~
+//                   set long of robot autotake time               //+v@@@I~
+//  set Final game to N2N(when 2 player mach, another player :east)//~v@@@I~
+//     amother player Pon 1man and later take 1man and do chankan  //~v@@@I~
+//     you declare ron                                             //~v@@@I~
 //**********************************************************************//~v@@@I~
 package com.btmtest;                                               //~v@@@I~
 import com.btmtest.BT.BTControl;
@@ -56,12 +63,25 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO2_WAITSELECT_CHII=         0x00000040;//~v@@@R~
     public static final int TO2_RON_TEST=                0x00000080;//~v@@@I~
     public static final int TO2_SHOWF2 =                 0x00000100;//~v@@@R~
-    public static final int TO2_ANKAN_DEAL              =0x00000200;//for test ankan ,deal without sort//+v@@@R~
-    public static final int TO2_CHANKAN_DEAL            =0x00000400;//+v@@@I~
+    public static final int TO2_ANKAN_DEAL              =0x00000200;//for test ankan ,deal without sort//~v@@@R~
+    public static final int TO2_CHANKAN_DEAL            =0x00000400;//~v@@@I~
+    public static final int TO2_RONVALUE_TEST=           0x00000800;//~v@@@I~
+    public static final int TO2_RONVALUE_TESTSUB=        0x00001000;//~v@@@I~
+    public static final int TO2_RONVALUE_NODORA=         0x00002000;//~v@@@R~
+    public static final int TO2_DUMP_SDCARD    =         0x00004000;//~v@@@I~
+    public static final int TO2_SETDORA        =         0x00008000;//~v@@@I~
+    public static final int TO2_CHKRANK        =         0x00010000;//~v@@@I~
     public static int option2;                                     //~v@@@I~
     public static int firstDealer;                                 //~v@@@I~
     public static int finalGameCtrSet,finalGameCtrGame;            //~v@@@I~
     public static int ioerr;                                       //~v@@@I~
+    public static int testCaseRonValue;                            //~v@@@I~
+    public static int testDoraUpType,testDoraUpNumber;             //~v@@@I~
+    public static int testDoraDownType,testDoraDownNumber;         //~v@@@I~
+    public static int testKanUpType,testKanUpNumber;               //~v@@@I~
+    public static int testKanDownType,testKanDownNumber;           //~v@@@I~
+    public static int testKanUpType2,testKanUpNumber2;             //~v@@@I~
+    public static int testKanDownType2,testKanDownNumber2;         //~v@@@I~
     public static boolean swDisableBT;                             //~v@@@I~
     public static int timingDisableBT;                             //~v@@@I~
     public static final int BTIOE_AFTER_TAKE=0;                    //~v@@@I~

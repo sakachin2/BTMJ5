@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1090;       //~v@@@R~//~9211R~
+//*CID://+va03R~:                             update#= 1092;       //~va03R~
 //*****************************************************************//~v101I~
+//2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 
@@ -16,8 +17,8 @@ import static com.btmtest.utils.Alert.*;
 public class SuspendAlert                                          //~0306R~
             implements Alert.AlertI                                //~0306R~
 {                                                                  //~2C29R~
-	private SuspendAlertI alertI;                                          //~0306I~//+0307R~
-    private boolean swNextPlayer;                                  //+0307I~
+	private SuspendAlertI alertI;                                          //~0306I~//~0307R~
+    private boolean swNextPlayer;                                  //~0307I~
 //**********************************                               //~0306I~
 	public interface SuspendAlertI                                 //~0306I~
 	{                                                              //~0306I~
@@ -31,20 +32,20 @@ public class SuspendAlert                                          //~0306R~
         int msgid=R.string.Alert_CompleteDlgConfirmSuspend;        //~0306R~
 		Alert.showAlert(Ptitleid,msgid, BUTTON_POSITIVE|Alert.BUTTON_NEGATIVE,this);//calback alertButtonAction//~0304I~//~0306I~
     }                                                              //~0304I~//~0306M~
-	//*************************************************************************//+0307I~
-    public static int newInstance(int Ptitleid,SuspendAlertI PalertI,int PtypeNextGame)//+0307I~
-    {                                                              //+0307I~
-    	if (Dump.Y) Dump.println("SuspendAlert.newInstance titleid="+Utils.getStr(Ptitleid)+",alertI="+PalertI.toString()+",typeNextGame="+PtypeNextGame);//+0307I~
+	//*************************************************************************//~0307I~
+    public static int newInstance(int Ptitleid,SuspendAlertI PalertI,int PtypeNextGame)//~0307I~
+    {                                                              //~0307I~
+    	if (Dump.Y) Dump.println("SuspendAlert.newInstance titleid="+Utils.getStr(Ptitleid)+",alertI="+PalertI.toString()+",typeNextGame="+PtypeNextGame);//~0307I~
         int rc=0;
-        if (PtypeNextGame==NGTP_NEXTPLAYER)                        //+0307I~
-        {                                                          //+0307I~
-			UView.showToastLong(R.string.Alert_CompleteDlgConfirmSuspendErr);//+0307I~
+        if (PtypeNextGame==NGTP_NEXTPLAYER)                        //+va03I~
+        {                                                          //~0307I~
+			UView.showToastLong(R.string.Alert_CompleteDlgConfirmSuspendErr);//~0307I~
             rc=-1;
-        }                                                          //+0307I~
-        else                                                       //+0307I~
+        }                                                          //~0307I~
+        else                                                       //~0307I~
         	new SuspendAlert(Ptitleid,PalertI);
-        return rc;//+0307I~
-    }                                                              //+0307I~
+        return rc;//~0307I~
+    }                                                              //~0307I~
     //*******************************************************      //~9B29I~//~0306M~
     @Override   //AlertI                                           //~9B29I~//~0306M~
 	public int alertButtonAction(int PbuttonID,int PactionID)      //~9B29I~//~0306M~
@@ -53,4 +54,10 @@ public class SuspendAlert                                          //~0306R~
         alertI.suspendAlertAction(PbuttonID);   //BUTTON_POSITIVE/BUTTON_NEGATIVE//~0306I~
         return 0;                                                  //~9B29I~//~0306M~
     }                                                              //~9B29I~//~0306M~
+	//*************************************************************************//~va03I~
+    public static void showMsg(int Ptitleid)                       //~va03I~
+    {                                                              //~va03I~
+    	if (Dump.Y) Dump.println("SuspendAlert.showMsg titleid="+Utils.getStr(Ptitleid));//~va03I~
+        Alert.showMessage(Ptitleid,R.string.Alert_SuspendRequested);//~va03I~
+    }                                                              //~va03I~
 }//class                                                           //~v@@@R~

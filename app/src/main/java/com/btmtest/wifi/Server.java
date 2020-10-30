@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=   58;       //~1AecR~//~@@@@R~//+0108R~
+//*CID://+va01R~:                             update#=   59;       //+va01R~
 //*************************************************************************//~v107I~
+//va01 2020/04/13 toast "socket closed" at WDA close               //+va01I~
 //1Aec 2015/07/26 set connection type for Server                   //~1AecI~
 //1A90 2015/04/18 (like as 1A84)WiFiDirect from Top panel          //~1A90I~
 //1A8ck2015/03/01 extends PartnerFrame/PartnerThread to wifidirect //~1A8cI~
@@ -88,10 +89,10 @@ public class Server extends Thread
         {                                                          //~v101R~
 //          AG.RemoteStatusAccept=0;                               //~v101I~//~@@@@R~
         	if (!swCancel)                                         //~v101I~
-            {                                                      //+0108I~
+            {                                                      //~0108I~
 			   Dump.println(e,"Server Error");//@@@@ add e         //~v101I~
-               WDA.acceptFailed();                                 //+0108I~
-            }                                                      //+0108I~
+               WDA.acceptFailed();                                 //~0108I~
+            }                                                      //~0108I~
             else                                                   //~v101I~
 			   if (Dump.Y) Dump.println("Server Accept canceled");//@@@@ add e//~v101I~
         }                                                        //~v107R~//~v101R~
@@ -100,31 +101,23 @@ public class Server extends Thread
     	if (Dump.Y) Dump.println("Server:run===== end");           //~v101I~
 	}
 	
-	/**
-	This is called, when the server is opened. It will announce
-	the opening to known servers by a datagram.
-	*/
-	/**
-	This is called, when the server is closed. It will announce
-	the closing to known servers by a datagram.
-	*/
-    public void close ()                                    //~v101R~
-//  {	if (!Public) return;                                      //~v107R~//~v101R~
-    {                                                              //~v101I~
-    	if (SS!=null)                                              //~v101I~
-        try                                                        //~v101I~
-        {                                                          //~v101I~
-        	SS.close();                                            //~v101I~
-        }                                                          //~v101I~
-        catch (Exception e)                                        //~v101I~
-        {                                                          //~v101I~
-			Dump.println(e,"Server:SS close");                     //~v101I~
-        }                                                          //~v101I~
-    }                                                              //~v101R~
+//    public void close ()                                    //~v101R~//+va01R~
+////  {   if (!Public) return;                                      //~v107R~//~v101R~//+va01R~
+//    {                                                              //~v101I~//+va01R~
+//        if (SS!=null)                                              //~v101I~//+va01R~
+//        try                                                        //~v101I~//+va01R~
+//        {                                                          //~v101I~//+va01R~
+//            SS.close();                                            //~v101I~//+va01R~
+//        }                                                          //~v101I~//+va01R~
+//        catch (Exception e)                                        //~v101I~//+va01R~
+//        {                                                          //~v101I~//+va01R~
+//            Dump.println(e,"Server:SS close");                     //~v101I~//+va01R~
+//        }                                                          //~v101I~//+va01R~
+//    }                                                              //~v101R~//+va01R~
 //  public static void cancel()                                    //~v101I~//~@@@@R~
     public void cancel()                                           //~@@@@I~
     {                                                              //~v101I~
-		if (Dump.Y) Dump.println("Server.cancel");                 //+0108I~
+		if (Dump.Y) Dump.println("Server.cancel");                 //~0108I~
     	if (SS!=null)                                              //~v101I~
         {                                                          //~v101I~
         	swCancel=true;                                         //~v101I~

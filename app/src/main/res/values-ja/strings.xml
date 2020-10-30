@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.01</string>
+    <string name="app_version">v1.03</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -242,6 +242,7 @@
     <string name="Alert_ConfirmDrawn3R">三家和は流局の設定です。\n\"OK\"を押すと、途中流局の処理をします。
 											</string>
     <string name="Alert_CompleteDlgConfirmSuspend">\"中断・精算\"にチェックがあります、中断しますか。</string>
+    <string name="Alert_SuspendRequested">\"中断・精算\"にチェックがあります。</string>
     <string name="Alert_CompleteDlgConfirmSuspendErr">\"中断・精算\"のときは\"続行\"はできません。</string>
     <string name="Alert_SuspendNoIOErr">クライアント用：接続の切断は検知されていません。
 											\"OK\"を押すと、強制的に切断します。
@@ -378,7 +379,8 @@
     <string name="NotAgreed">無効</string>
     <string name="Agreed">有効</string>
     <string name="NoGame">ノーテン流れ</string>
-    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可</string>
+    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。
+									ノーテンリーチはチェックされません、リーチが成立します</string>
     <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
     <string name="Label_ReachLimitOpenYakuman">役満払い</string>
     <string name="Label_ReachLimitOpenChombo">チョンボで続行</string>
@@ -431,7 +433,6 @@
 		<item>@string/NormalGainPao</item>
 	</string-array>
 	<string-array name="OrderPrize"> 
-		<item>無し</item>
 		<item> 5 - 10</item>
 		<item>10 - 20</item>
 		<item>10 - 30</item>
@@ -443,6 +444,7 @@
 		<item>30000</item>
 	</string-array>
 	<string-array name="NormalPoint"> 
+		<item>ーーー</item>
 		<item>２０符</item>
 		<item>２５符</item>
 		<item>３０符</item>
@@ -456,6 +458,7 @@
 		<item>１１０符</item>
 	</string-array>
 	<string-array name="NormalRank"> 
+		<item>０飜</item>
 		<item>１翻</item>
 		<item>２翻</item>
 		<item>３翻</item>
@@ -468,6 +471,10 @@
 		<item>大役満</item>
 		<item>役満ｘ２</item>
 		<item>役満ｘ３</item>
+		<item>役満ｘ４</item>
+		<item>役満ｘ５</item>
+		<item>役満ｘ６</item>
+		<item>役満ｘ７</item>
 	</string-array>
 	<string-array name="NormalRankPao"> 
 		<item>役満払い</item>
@@ -737,6 +744,7 @@
     <string name="Err_LackingMemberNoConnection">メンバーが揃っていません（接続がありません）</string>
     <string name="Err_LackingMemberAllowRobotYes">メンバーが %1$d 人足りません。\nボットを入れて対戦しますか？</string>
     <string name="Err_LackingMemberAllowRobotNo">メンバーが %1$d 人足りません。\nルール設定でボットを加えた対戦もできます。</string>
+    <!--string name="Err_GameFromNotServer">サーバーから対局開始してください</string-->
     <string name="Err_LackingMemberReconnect">接続障害が回復していません</string>
     <string name="Err_AlreadyRestarted">既にゲーム再開済です</string>
     <string name="Info_WaitingAllMemberSetup">残り %1$d 人の 対局準備 完了待ち</string>
@@ -790,7 +798,8 @@
     <string name="Info_EndGameDrawn_Halfway">途中流局申請です</string>
     <string name="Err_CouldNotMakePair">面子ができません</string>
     <string name="Err_RonChk">和了形ではありません</string>
-    <string name="Err_NoNeedRonAnyway">\"和了形の確認\"はしない設定です、通常の和了ボタンを使用できます</string>
+    <!--string name="Err_NoNeedRonAnyway">\"和了形の確認\"も\"１飜縛り\"も設定されてないので、通常の和了ボタンを使用できます</string-->
+    <string name="Err_NoNeedRonAnyway">\"１飜縛り\"が設定されてないので、通常の和了ボタンを使用できます</string>
     <string name="Err_AmbiguousMakePair">複数面子候補、牌をタッチして面子を確定してください</string>
     <string name="Err_AmbiguousMakePairKan">複数槓子候補、牌を１つタッチして確定してください</string>
     <string name="Err_NoneCompleted">和了者はいません</string>
@@ -829,7 +838,7 @@
     <string name="Title_SuspendIOErrDlgResp">接続障害による中断 応答</string>
     <string name="Title_ConfirmEndgame">ゲームを終了確認</string>
     <string name="Msg_ConfirmEndgame">接続がありません、ゲームを終了しますか？\n
-    				\"取消\"して、\"接続障害処理\"からを再接続、中断することもできます。
+    				\"キャンセル\"して、\"接続障害処理\"からを再接続、中断することもできます。
 					</string>
     <string name="Title_ConfirmReconnectOnGameView">再接続確認</string>
     <string name="Msg_ConfirmReconnectOnGameView">接続がありません、再接続しますか、ゲームを終了しますか</string>
@@ -934,7 +943,10 @@
 <!--setting-->
     <string name="Err_TrySendFromServer">サーバーから送ってください</string>
     <string name="Err_TryEndgameFromServer">サーバーから\"対局終了\"してください</string>
+    <string name="Err_TryBackButtonFromServer">サーバーから操作してください</string>
     <string name="Err_GameStatusForMenuInGame">配牌前です</string>
+    <string name="Err_GameStatusForMenuInGameUseBackButton">配牌前です。\"戻る\"ボタンで戻れます</string>
+    <string name="Err_ConfirmReturn">ゲーム開始前です。中断しますか</string>
     <string name="Err_AlreadyShowing">表示中です</string>
     <string name="Err_SendAfterSyncAll">全員同意の後はサーバーのみ再送できます</string>
     <string name="Info_ReceivedRuleSetting">ルール設定を受信しました、確認してください</string>
@@ -971,7 +983,8 @@
 								\"待ち時間\"の項のタイミングによっては止められない動作があります</string>
     <!--string name="Label_2TouchCancelable">取り消し</string-->
     <!--string name="Label_2TouchYesRonOnly">和了のみ有り</string-->
-    <string name="Label_CheckRonable">和了形の確認</string>
+    <!--string name="Label_CheckRonable">和了形の確認</string-->
+    <string name="Label_CheckRonValue">アプリで点数計算</string>
     <string name="Label_2TouchCancelableRon">和了は取り消し有り</string>
     <string name="Label_2TouchTimeout">時間切れ有り</string>
     <!--string name="Label_2TouchPonKanChii">ポン・カン・チー：</string-->
@@ -1004,8 +1017,8 @@
                                 解消は面子にする牌を選択して再度ポン・チーボタンを押してください。\
                                 詳細はヘルプを参照。
 						</string>
-    <string name="Desc_CheckRonable">振りテン、縛りのチェックはしない。</string>
-    <!--string name="Label_TimeoutTakeKan">槓してから嶺上をツモるまでのタイムアウト、０は制限なし。</string-->
+    <string name="Desc_CheckRonable">振りテンのチェックはしない。</string>
+    <string name="Desc_CheckRonValue">ダイアログで修正可能</string>
     <string name="Label_S2P">端数調整</string>
     <string name="Label_RankMUp">切り上げ満貫あり</string>
     <string name="Desc_RankMUp">（３０符４飜、６０符３飜は満貫）</string>
@@ -1037,7 +1050,13 @@
     <string name="Label_DelRiverTileTaken">鳴かれた牌は河から消す</string>
     <string name="Label_NoTakeButton">自摸ボタン非表示</string>
     <string name="Label_NoDiscardButton">打牌ボタン非表示</string>
+    <string name="Label_NoAnywayButton">\"とに和\"(とにかく和了)非表示</string>
     <string name="Label_Sound">効果音</string>
+    <string name="Label_BGM">BGM</string>
+    <string name="Label_BGMSame">共通</string>
+    <string name="Label_BGM4Seasons">春夏秋冬</string>
+    <string name="Label_BGM4SeasonsFast">〃(速い)</string>
+    <string name="Desc_BGM">ゲーム中のBGMを変える場合は共通以外を設定する</string>
     <string name="Label_BeepOnly">ビープ音</string>
     <string name="Label_SoundVolume">音量</string>
     <string name="Label_Robot">ロボット</string>
@@ -1093,6 +1112,9 @@
 		片上がりOK：後付けありのときに片上がりを認める。一巡フリテンには注意。\n
 		片上がりツモはOK：中付け、先付のとき片上がりはNGだがツモの時はOKとする。
         </string>
+    <string name="Label_YakuFix1">１飜縛り</string>
+    <string name="Label_YakuFix1Yes">チェックする</string>
+    <string name="Desc_YakuFix1">（しない場合、役無し誤ロンを生じさせられます）</string>
     <string name="Label_YakuFix2">２飜縛り</string>
     <string name="Label_YakuFix2Stick4">４本場から</string>
     <string name="Label_YakuFix2Stick5">５本場から</string>
@@ -1103,8 +1125,20 @@
     <string name="Label_EatChangeExceptIt">現物のみ不可</string>
     <string name="Label_EatChangeAllOK">全てOK</string>
     <string name="Desc_StatementOnly">この設定は決めごとの覚書であり、アプリでは判定しません</string>
-    <string name="Desc_YakuStatementOnly">この設定は決めごとの覚書であり、一部の例外を除いてアプリでは判定しません。\n例外はテキストと背景色が同じ箇所です</string>
+    <!--string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は濃い緑の部分\n柿色の部分はオプションで"アプリで点数計算"："YES"の時チェックします。</string-->
+    <string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は
+				&lt;span style="background-color:#80ff80;"&gt;
+				濃い緑
+				&lt;/span&gt;
+				の部分、
+				&lt;br&gt;
+				&lt;span style="background-color:#f0e68c;"&gt;
+				柿色
+				&lt;/span&gt;
+				の部分は設定で\"アプリで点数計算\"：YESの時チェックします。
+			</string>
     <string name="Label_Kuitan">食いタンあり</string>
+    <string name="Label_DoublePillow">場+風で枕も４符</string>
     <string name="Label_PendingRank0">形式テンパイ</string>
     <string name="Label_PendingRankNo">全て無し</string>
     <string name="Label_PendingRankEmpty">空聴OK</string>
@@ -1117,6 +1151,7 @@
     <string name="Label_Yaku7Pair">七対子</string>
     <string name="Label_Yaku7Pair50_1">５０符１飜</string>
     <string name="Label_Yaku7Pair25_2">２５符２飜</string>
+    <string name="Label_Yaku7Pair30_2">３０符２飜</string>
     <string name="Label_Yaku7Pair4Pair">槓子入りOK</string>
     <string name="Label_YakuMangan8">ダブル役満</string>
     <string name="Label_4AnkoTanki">四暗刻単騎待</string>
@@ -1127,20 +1162,24 @@
     <string name="Label_9RenPinSou">ワンズ以外の九蓮宝燈</string>
     <string name="Label_AllGreenNoBlue">發なし緑一色</string>
     <string name="Label_BigRing">大車輪（ピンズ２－８）</string>
-    <string name="Label_NoPair13">十三不塔・十四不塔</string>
-    <string name="Label_Rank13">数え役満（無しの場合は３倍萬）</string>
+    <string name="Label_NoPair13">十三不塔</string>
+    <string name="Label_NoPair14">十四不塔</string>
+    <string name="Label_Rank13">数え役満（無しの場合は上限は３倍萬）</string>
     <!--string name="Label_OpenReachRon">オープンリーチ放銃は役満払い</string-->
     <string name="Label_5thKan">１人が四槓子状態のとき他家は槓を宣言して流局にできる。メニューから途中流局してください。</string>
     <string name="Err_5thKan">５槓子です。四槓子役満を阻止できる設定は%1$s</string>
     <string name="Label_KokusiAnkanRon">国士無双は暗槓ロンできる</string>
-    <string name="Desc_Yakuman">この他、ダブル役満役と四槓子（雀頭が必要）、大三元、字一色、小四喜、清老頭、天和、地和が役満。大三元・字一色など複合役はダブルとなる</string>
+    <string name="Desc_Yakuman">十四不塔は第一ツモ時の頭無しです。\nこの他、ダブル役満役と四槓子（雀頭が必要）、大三元、字一色、小四喜、清老頭、天和、地和が役満。大三元・字一色など複合役はダブルとなる</string>
     <string name="Label_Yakuman_Renho">人和</string>
+<!--
     <string name="Label_Yakuman13NoPair">十三不塔</string>
     <string name="Label_Yakuman14NoPair">十四不塔</string>
     <string name="Desc_Yakuman13NoPair">ありの場合でなおかつ役満とする場合は \"役満\"の項もチェックをいれる</string>
+-->
     <string name="Label_RenhoMix">他の役との複合OK</string>
     <string name="Label_NoRelatedRule">一部、ダイアログの\"関連設定\"を表示しない</string>
-    <string name="Desc_Yakuman_Renho">複合OKとは、この設定（満貫なら４飜など）に他の役の飜数を加えて計算する。</string>
+    <string name="Desc_Yakuman_Renho">複合OKとは、この設定（満貫なら４飜など）に他の役の飜数を加えて計算する。\n
+					複合OKでない場合は通常の計算との高い方をとる</string>
 	<string-array name="RenhoRank"> 
 		<item>なし</item>
 		<item>満貫</item>
@@ -1302,4 +1341,81 @@
     <string name="ErrMixedModeRemainBT">接続のタイプは混合できません、Wifiダイレクト接続するときは、残ったBluetooth接続を切断してください</string>
     <string name="ErrMixedModeRemainWD">接続のタイプは混合できません、Bluetooth接続するときは、残ったWifiダイレクト接続を切断してください</string>
     <string name="ErrWaveFile">MediaPlayer DataSource(%1$s) エラー</string>
+	<string-array name="listYakuAll" tools:ignore="InconsistentArrays">
+        <item>七対子</item>        <!-- =0;    //chiitoi                   -->
+        <item>タンヤオ</item>      <!-- =1;    //tanyao                                 -->
+        <item>平和</item>          <!-- =2;    //pinfu                          -->
+        <item>Rsv</item>           <!-- =3;    //wgr                                 -->
+        <item>自風牌</item>        <!-- =4;    //window                             -->
+        <item>場風牌</item>        <!-- =5;    //round                            -->
+        <item>一盃口</item>        <!-- =6;    //1peiko                         -->
+        <item>三色同順</item>      <!-- =7;    //3shiki                         -->
+        <item>三色同刻</item>      <!-- =8;    //3tonko                         -->
+        <item>三暗刻</item>        <!--=9;    //3anko                          -->
+        <item>一気通貫</item>      <!--=10;   //itsu                           -->
+        <item>対々和</item>        <!--=11;   //toitoi                         -->
+        <item>混チャンタ</item>    <!--=12;   //honchan                        -->
+        <item>三槓子</item>        <!--=13;   //3kan                                 -->
+        <item>二盃口</item>        <!--=14;   //2peiko                         -->
+        <item>純チャンタ</item>    <!--=15;   //junchan                        -->
+        <item>混一色</item>        <!--=16;   //honitu                         -->
+        <item>小三元</item>        <!--=17;                                 -->
+        <item>混老頭</item>        <!--=18;   //honro                          -->
+        <item>清一色</item>        <!--=19;   //chinitu                        -->
+                                                                                -->
+        <item>立直</item>          <!--=20;  //reach                      -->
+        <item>ダブリー</item>      <!--=21;  //double reach               -->
+        <item>オープン</item>      <!--=22;                               -->
+        <item>一発</item>          <!--=23;                               -->
+        <item>ツモ</item>          <!--=24; //tsumo                       -->
+        <item>海底</item>          <!--=25; //haitei                      -->
+        <item>河底</item>          <!--=26; //hotei                       -->
+        <item>槍槓</item>          <!--=27; //chankan                     -->
+        <item>嶺上開花</item>      <!--=28; //rinshan                     -->
+        <item>rsv</item>          <!--=29; //dora                        -->
+        <item>流し満貫</item>      <!--=30;                               -->
+        <item>人和</item>          <!--=31  //renho not yakuman           -->
+                                                                                
+    <!--//yakuman                                                              
+        <item>RYAKU_YAKUMAN</item>   =32;                                      
+    -->                                                                        
+        <item>四暗刻</item>       <!--=RYAKU_YAKUMAN;   //4anko              -->
+        <item>国士無双</item>     <!--=RYAKU_YAKUMAN+1;   //kokushi          -->
+        <item>九蓮宝燈</item>     <!--=RYAKU_YAKUMAN+2;   //13poto           -->
+        <item>大車輪</item>       <!--=RYAKU_YAKUMAN+3;   //daisharin        -->
+        <item>十三不搭</item>     <!--=RYAKU_YAKUMAN+4;   //13puto           -->
+        <item>十四不搭</item>     <!--=RYAKU_YAKUMAN+5;   //14puto           -->
+        <item>大三元</item>       <!--=RYAKU_YAKUMAN+6;   //daisangen        -->
+        <item>字一色</item>       <!--=RYAKU_YAKUMAN+7;   //tuiiso           -->
+        <item>大四喜</item>       <!--=RYAKU_YAKUMAN+8;   //4siho big        -->
+        <item>小四喜</item>       <!--=RYAKU_YAKUMAN+9;   //4shiho small     -->
+        <item>緑一色</item>       <!--=RYAKU_YAKUMAN+10   //ryuiso           -->
+        <item>清老頭</item>       <!--=RYAKU_YAKUMAN+11;  //chinraoyo        -->
+        <item>四槓子</item>       <!--=RYAKU_YAKUMAN+12;  //4kan             -->
+
+        <item>天和</item>         <!--=RYAKU_YAKUMAN+13;  //tenho            -->
+        <item>地和</item>         <!--=RYAKU_YAKUMAN+14;  //chiiho           -->
+        <item>人和</item>         <!--=RYAKU_YAKUMAN+15;  //renho            -->
+        <item>数え役満</item>     <!--=RYAKU_YAKUMAN+16;  //kazoe yakuman    -->
+        <item>八連荘</item>       <!--=RYAKU_YAKUMAN+17;  //8 renchan        -->
+        <item>四暗刻単騎</item>   <!--=RYAKU_YAKUMAN+18;   //4anko tanki     -->
+        <item>国士１３面待</item> <!--=RYAKU_YAKUMAN+19;   //kokushi 13wait -->
+        <item>九蓮宝燈９面待</item><!--=RYAKU_YAKUMAN+20;  //9gate 9wait    -->
+	</string-array>
+
+    <string name="ShowYaku">詳細</string>
+    <string name="Title_ShowYakuDlg">上がり役</string>
+    <string name="Label_Dragon">白發中</string>
+    <string name="Info_NoOptionShowValue">設定は\"アプリで計算\"はオフです。符と飜を選択してください</string>
+    <string name="Label_Honor">役牌</string>
+    <string name="Label_Han">飜</string>
+    <string name="Desc_RenhoMix">複合役</string>
+    <string name="Desc_RenhoHigh">高い方</string>
+    <string name="Label_PointAmmountPt">得点</string>
+    <string name="Label_Fu">符</string>
+    <string name="Label_OneShot">一発あり</string>
+    <string name="AE_SameMeld">喰い変え違反です、他の牌を選択してください</string>
+    <string name="AE_RankFix1">一飜縛違反</string>
+    <string name="Label_Anyway">とに和</string>
+    <string name="Warn_BlockedNeedRonAnyway">\"和了\"ぼたんではなく、\"とにかく和了\"してください</string>
 </resources>

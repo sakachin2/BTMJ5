@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 226;        //~@@@@I~//~9406R~
+//*CID://+va06R~:                             update#= 235;        //~va17R~//+va06R~
 //**********************************************************************//~@@@@I~
+//2020/04/27 va06:BGM                                              //~va06I~
 //**********************************************************************//~@@@@I~
 package com.btmtest;
 
@@ -53,6 +54,7 @@ import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 import com.btmtest.game.Status;//~@@@@I~
 import com.btmtest.BT.BTMulti;                                     //~@@@@I~
+import com.btmtest.utils.sound.Sound;
 import com.btmtest.wifi.IPMulti;                                   //~9723I~
 import com.btmtest.wifi.CSI;                                       //~9B05I~
 import com.btmtest.wifi.WDI;
@@ -248,6 +250,7 @@ public class MainActivity extends AppCompatActivity
             msgIOErr=null;                                         //~9A22M~
 	        msgRead(MSGID_IOERR,msg);                              //~9A22R~
         }                                                          //~9A22I~
+        Sound.playBGM(SOUNDID_BGM_TOP);	                           //~va06R~
       }                                                            //~9719I~
       catch(Exception e)                                           //~9719I~
       {                                                            //~9719I~
@@ -288,6 +291,8 @@ public class MainActivity extends AppCompatActivity
 	        AG.aGC.onDestroy();                                        //~8C03I~//~9101R~
 		if (AG.aIPSubThread!=null)                                 //~9A02I~
 	        AG.aIPSubThread.onDestroy();                           //~9A02I~
+		if (AG.aSound!=null)                                       //~va06I~
+	        AG.aSound.stopAll();                                   //~va06I~
         super.onDestroy();                                         //~8B05I~
 //        if (true)                                                  //~9103I~//~9105R~
 //        {                                                          //~9103I~//~9105R~
@@ -466,6 +471,11 @@ public class MainActivity extends AppCompatActivity
             	MainView.drawMsg(R.string.Err_RuleIsInitial);      //~0124I~
                 break;                                             //~0124I~
             }                                                      //~0124I~
+//            if (!BTMulti.isServerDevice())                       //~va17R~
+//            {                                                    //~va17R~
+//                MainView.drawMsg(R.string.Err_GameFromNotServer);//~va17R~
+//                break;                                           //~va17R~
+//            }                                                    //~va17R~
 			if (!chkRobotGame())                                   //~0119I~
             	break;                                      //~0119I~
         	startGame(true/*chk setting*/);                                           //~8C30R~//~9101R~
@@ -577,8 +587,8 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.onExit");           //~9B06I~
     	if (GC.isOnGameView())                                     //~9B06I~
         {                                                          //~9B06I~
-//  		UView.showToast(R.string.Err_GamingNow);               //~9B06I~//+0411R~
-    		AG.aGC.exitOnGameView();                               //+0411I~
+//  		UView.showToast(R.string.Err_GamingNow);               //~9B06I~//~0411R~
+    		AG.aGC.exitOnGameView();                               //~0411I~
         	return;                                                //~9B06I~
         }                                                          //~9B06I~
     	int flag= BUTTON_POSITIVE|Alert.BUTTON_NEGATIVE|Alert.EXIT;//~8C03I~//~@@@@M~
@@ -936,6 +946,7 @@ public class MainActivity extends AppCompatActivity
 //            }                                                    //~9105R~
         }                                                          //~9103I~
     	restoreMainView();                                          //~9103I~
+        Sound.playBGM(SOUNDID_BGM_TOP);                            //~va06R~
 //        if (PswConfigChanged)                                    //~9103R~
 //        {                                                        //~9103R~
 //            if (Dump.Y) Dump.println("MainActivity.endGame postInvalidate");//~9103R~

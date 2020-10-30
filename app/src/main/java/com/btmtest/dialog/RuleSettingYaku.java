@@ -1,9 +1,12 @@
-//*CID://+DATER~:                             update#=  466;       //~v@@@R~//~0208R~
+//*CID://+va11R~:                             update#=  490;       //~va11R~//~va12R~//~va11R~
 //*****************************************************************//~v101I~
+//2020/09/25 va12:add option:2han-30fu for 7pair                   //~va12I~
+//2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.btmtest.R;
 import com.btmtest.TestOption;                                     //~v@@@R~
@@ -16,10 +19,13 @@ import com.btmtest.dialog.UFDlg;
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.gui.USpinner;
 import com.btmtest.utils.UFile;
+import com.btmtest.utils.UView;
+import com.btmtest.utils.Utils;
 
 import java.io.File;
 
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@@I~
+import static com.btmtest.dialog.CompReqDlg.RANKIDX_YAKUMAN;
 import static com.btmtest.dialog.RuleSettingEnum.*;                //~v@@@I~
 import static com.btmtest.game.GConst.*;
 
@@ -31,11 +37,13 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 	private static final String HELPFILE="RuleSettingYaku";        //~v@@@R~
     //**********************************************************   //~v@@@R~
     private UCheckBox cbKuitan,cbPinfuTaken;                       //~v@@@R~
+    private UCheckBox cbDoublePillow;                              //~va11I~
     private UCheckBox cb8ContNoNeedYaku,cb8ContReset,cb8ContMulti; //~v@@@R~
     private UCheckBox cbYakuMan2_4Anko,cbYakuMan2_Kokusi13,cbYakuMan2_9Ren9,cbYakuMan2_4Wind;//~v@@@I~
-    private UCheckBox cb13NoPair,cb14NoPair;                         //~v@@@I~
+//  private UCheckBox cb13NoPair,cb14NoPair;                         //~v@@@I~//~va11R~
 //  private UCheckBox cbYakuFix2Last;                              //~v@@@R~
     private UCheckBox cbAllGreenNoBlue,cb9RenPinSou,cbNoPair13,cbBigRing,cbRank13,cbRenhoMix,cbKokusiAnkanRon;//~v@@@R~
+    private UCheckBox cbNoPair14;                                  //~va11I~
     private UCheckBox /*cbOpenReachRon,*/cb5thKan,cbPendingRankNo;      //~v@@@R~//~0329R~//~0330R~
     private UCheckBox cbPendingRankEmpty,cbPendingRankFuriten,cbPendingRank0OK;//~0330I~
     private URadioGroup rgPendingRank2;                            //~0330I~
@@ -47,7 +55,9 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private USpinner spnRenhoRank;                                 //~v@@@I~
     private UButtonRG bg8Continue;                                 //~v@@@I~
     private URadioGroup rgYakuFix,rgYakuFix2;                      //~v@@@R~
+//  private UCheckBox  cbYakuFix1;                                 //+va11R~
     private UCheckBox  cbOpenReach,cbMissingReach,cbAnkanAfterReach;//~v@@@R~
+    private UCheckBox  cbOneShot;                                  //~va11I~
     private UCheckBox  cbYakuFixMultiwaitOK,cbYakuFixMultiwaitDrawOK;//~0208R~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
@@ -91,7 +101,10 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 	//***********************************************************      //~1613I~//~v@@@R~
     private void setupLayout(View PView)                           //~v@@@I~
     {                                                              //~v@@@I~
+        TextView tvStatementOnly=(TextView)  UView.findViewById(PView,R.id.tvYakuStatementOnly);//~va11I~
+        tvStatementOnly.setText(Utils.getStrHtml(R.string.Desc_YakuStatementOnly));//~va11I~
         cbKuitan         =          new UCheckBox(PView,R.id.cbKuitan);//~v@@@R~
+        cbDoublePillow   =          new UCheckBox(PView,R.id.cbDoublePillow);//~va11I~
         cbPinfuTaken     =          new UCheckBox(PView,R.id.cbPinfuTaken);//~v@@@I~
         cbPendingRankNo   =         new UCheckBox(PView,R.id.cbPendingRankNo);//~v@@@I~//~0330R~
         cbPendingRankEmpty=         new UCheckBox(PView,R.id.cbPendingRankEmpty);//~0330I~
@@ -114,6 +127,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         rgYakuFix=new URadioGroup(PView,R.id.rgYakuFix,0,rbsYakuFix);//~v@@@I~
     	cbYakuFixMultiwaitOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitOK);//~0208I~
     	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~0208I~
+    //*YakuFix1                                                    //~va11I~
+//  	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //+va11R~
     //*YakuFix2                                                    //~v@@@I~
         rgYakuFix2=new URadioGroup(PView,R.id.rgYakuFix2,0,rbsYakuFix2);//~v@@@I~
 //  	cbYakuFix2Last=new UCheckBox(PView,R.id.cbYakuFix2Last);   //~v@@@R~
@@ -129,19 +144,21 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cbAllGreenNoBlue=new UCheckBox(PView,R.id.cbYakuman_AllGreenNoBlue);//~v@@@I~
     	cb9RenPinSou=new UCheckBox(PView,R.id.cbYakuman_9RenPinSou);//~v@@@I~
     	cbNoPair13=new UCheckBox(PView,R.id.cbYakuman_NoPair13);   //~v@@@I~
+    	cbNoPair14=new UCheckBox(PView,R.id.cbYakuman_NoPair14);   //~va11I~
     	cbBigRing=new UCheckBox(PView,R.id.cbYakuman_BigRing);     //~v@@@I~
     	cbRank13=new UCheckBox(PView,R.id.cbYakuman_Rank13);       //~v@@@I~
     	cbRenhoMix=new UCheckBox(PView,R.id.cbYakuman_RenhoMix);   //~v@@@I~
     	cbKokusiAnkanRon=new UCheckBox(PView,R.id.cbYakuman_KokusiAnkanRon);//~v@@@I~
 //  	cbOpenReachRon=new UCheckBox(PView,R.id.cbYakuman_OpenReachRon);//~v@@@I~//~0329R~
     	cb5thKan=new UCheckBox(PView,R.id.cbYakuman_5thKan);       //~v@@@I~
-    	cb13NoPair=new UCheckBox(PView,R.id.cbYakuman_13NoPair);   //~v@@@I~
-    	cb14NoPair=new UCheckBox(PView,R.id.cbYakuman_14NoPair);   //~v@@@I~
+//  	cb13NoPair=new UCheckBox(PView,R.id.cbYakuman_13NoPair);   //~v@@@I~//~va11R~
+//  	cb14NoPair=new UCheckBox(PView,R.id.cbYakuman_14NoPair);   //~v@@@I~//~va11R~
         spnRenhoRank=new USpinner(PView,R.id.spnRenhoRank);        //~v@@@I~
         spnRenhoRank.setArray(rankRenho);                          //~v@@@I~
     //*Reach                                                       //~v@@@I~
         cbOpenReach=new UCheckBox(PView,R.id.cbOpenReach);         //~v@@@I~
         cbMissingReach=new UCheckBox(PView,R.id.cbMissingReach);   //~v@@@I~
+        cbOneShot=new UCheckBox(PView,R.id.cbOneShot);             //~va11I~
     	cbAnkanAfterReach=new UCheckBox(PView,R.id.cbAnkanAfterReach);//~v@@@I~
         rgOpenReach=new URadioGroup(PView,R.id.rgOpenReach,0/*listenerParm*/,rbsOpenReach);//~0329I~
         rgOpenReachRobot=new URadioGroup(PView,R.id.rgOpenReachRobot,0/*listenerParm*/,rbsOpenReachRobot);//~0329I~
@@ -171,6 +188,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private void properties2Dialog(Prop Pprop)                     //~v@@@I~
     {                                                              //~v@@@I~
         cbKuitan.setStateInt(Pprop.getParameter(getKeyRS(RSID_KUITAN),0),swFixed);//~v@@@I~
+        cbDoublePillow.setStateInt(Pprop.getParameter(getKeyRS(RSID_DOUBLE_PILLOW),0),swFixed);//~va11I~
         cbPinfuTaken.setStateInt(Pprop.getParameter(getKeyRS(RSID_PINFUTAKEN),0),swFixed);//~v@@@I~
         cbPendingRankNo.setStateInt(Pprop.getParameter(getKeyRS(RSID_PENDING_RANKNO),1),swFixed);//~v@@@I~//~0330R~
         cbPendingRankEmpty.setStateInt(Pprop.getParameter(getKeyRS(RSID_PENDING_RANKEMPTY),0),swFixed);//~0330R~
@@ -189,6 +207,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         rgYakuFix.setCheckedID(Pprop.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT),swFixed);//~v@@@I~
     	cbYakuFixMultiwaitOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),0),swFixed);//~0208I~
     	cbYakuFixMultiwaitDrawOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),swFixed);//~0208I~
+    //*YakuFix1                                                    //~va11I~
+//  	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),0),swFixed);//+va11R~
     //*YakuFix2                                                    //~v@@@I~
         rgYakuFix2.setCheckedID(Pprop.getParameter(getKeyRS(RSID_YAKUFIX2),YAKUFIX2_DEFAULT),swFixed);//~v@@@I~
 //  	cbYakuFix2Last.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX2LAST),1),swFixed);//~v@@@R~
@@ -204,18 +224,20 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cbAllGreenNoBlue.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLGREEN_NOBLUE),1),swFixed);//~v@@@I~
     	cb9RenPinSou.setStateInt(Pprop.getParameter(getKeyRS(RSID_9RENPINSOU),1),swFixed);//~v@@@I~
     	cbNoPair13.setStateInt(Pprop.getParameter(getKeyRS(RSID_NOPAIR13),1),swFixed);//~v@@@I~
+    	cbNoPair14.setStateInt(Pprop.getParameter(getKeyRS(RSID_NOPAIR14),1),swFixed);//~va11I~
     	cbBigRing.setStateInt(Pprop.getParameter(getKeyRS(RSID_BIGRING),1),swFixed);//~v@@@I~
     	cbRank13.setStateInt(Pprop.getParameter(getKeyRS(RSID_RANK13),1),swFixed);//~v@@@I~
     	cbKokusiAnkanRon.setStateInt(Pprop.getParameter(getKeyRS(RSID_KOKUSI_ANKANRON),1),swFixed);//~v@@@I~
 //  	cbOpenReachRon.setStateInt(Pprop.getParameter(getKeyRS(RSID_OPENREACHRON),1),swFixed);//~v@@@I~//~0329R~
     	cb5thKan.setStateInt(Pprop.getParameter(getKeyRS(RSID_5THKAN),0),swFixed);//~v@@@I~
-    	cb13NoPair.setStateInt(Pprop.getParameter(getKeyRS(RSID_13NOPAIR),1),swFixed);//~v@@@R~
-    	cb14NoPair.setStateInt(Pprop.getParameter(getKeyRS(RSID_14NOPAIR),1),swFixed);//~v@@@R~
+//  	cb13NoPair.setStateInt(Pprop.getParameter(getKeyRS(RSID_13NOPAIR),1),swFixed);//~v@@@R~//~va11R~
+//  	cb14NoPair.setStateInt(Pprop.getParameter(getKeyRS(RSID_14NOPAIR),1),swFixed);//~v@@@R~//~va11R~
     	cbRenhoMix.setStateInt(Pprop.getParameter(getKeyRS(RSID_RENHOMIX),0),swFixed);//~v@@@I~
         spnRenhoRank.select(Pprop.getParameter(getKeyRS(RSID_RENHORANK),RENHORANK_DEFAULT),swFixed);//~v@@@I~
     //*Reach                                                       //~v@@@I~
         cbOpenReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_OPEN),0/*defaultIdx*/),swFixed);//~v@@@I~
         cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~v@@@I~
+        cbOneShot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ONESHOT),1/*defaultIdx*/),swFixed);//~va11I~
         cbAnkanAfterReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_ANKAN_AFTER_REACH),1/*default ON*/),swFixed);//~v@@@I~
         rgOpenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_OPENREACH_PAY),OPENREACH_DEFAULT),swFixed);//~0329I~
         rgOpenReachRobot.setCheckedID(Pprop.getParameter(getKeyRS(RSID_OPENREACH_ROBOT),OPENREACH_ROBOT_DEFAULT),swFixed);//~0329I~
@@ -226,6 +248,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	int  changed=0;                                            //~v@@@I~
     //*******************                                          //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_KUITAN),cbKuitan.getStateInt());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_DOUBLE_PILLOW),cbDoublePillow.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_PINFUTAKEN),cbPinfuTaken.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_PENDING_RANKNO),cbPendingRankNo.getStateInt());//~v@@@I~//~0330R~
         changed+=updateProp(getKeyRS(RSID_PENDING_RANKEMPTY),cbPendingRankEmpty.getStateInt());//~0330I~
@@ -244,6 +267,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX),rgYakuFix.getCheckedID());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),cbYakuFixMultiwaitOK.getStateInt());//~0208I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),cbYakuFixMultiwaitDrawOK.getStateInt());//~0208I~
+    //*YakuFix1                                                    //~va11I~
+//      changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//+va11R~
     //*YakuFix2                                                    //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX2),rgYakuFix2.getCheckedID());//~v@@@I~
 //      changed+=updateProp(getKeyRS(RSID_YAKUFIX2LAST),cbYakuFix2Last.getStateInt());//~v@@@R~
@@ -259,18 +284,20 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_ALLGREEN_NOBLUE),cbAllGreenNoBlue.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_9RENPINSOU),cb9RenPinSou.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_NOPAIR13),cbNoPair13.getStateInt());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_NOPAIR14),cbNoPair14.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_BIGRING),cbBigRing.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_RANK13),cbRank13.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_KOKUSI_ANKANRON),cbKokusiAnkanRon.getStateInt());//~v@@@I~
 //      changed+=updateProp(getKeyRS(RSID_OPENREACHRON),cbOpenReachRon.getStateInt());//~v@@@I~//~0329R~
         changed+=updateProp(getKeyRS(RSID_5THKAN),cb5thKan.getStateInt());//~v@@@I~
-        changed+=updateProp(getKeyRS(RSID_13NOPAIR),cb13NoPair.getStateInt());//~v@@@I~
-        changed+=updateProp(getKeyRS(RSID_14NOPAIR),cb14NoPair.getStateInt());//~v@@@I~
+//      changed+=updateProp(getKeyRS(RSID_13NOPAIR),cb13NoPair.getStateInt());//~v@@@I~//~va11R~
+//      changed+=updateProp(getKeyRS(RSID_14NOPAIR),cb14NoPair.getStateInt());//~v@@@I~//~va11R~
         changed+=updateProp(getKeyRS(RSID_RENHOMIX),cbRenhoMix.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_RENHORANK),spnRenhoRank.getSelectedIndex());//~v@@@I~
     //*Reach                                                       //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_REACH_OPEN),cbOpenReach.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_REACH_MISSING),cbMissingReach.getStateInt());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_ONESHOT),cbOneShot.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_ANKAN_AFTER_REACH),cbAnkanAfterReach.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_OPENREACH_PAY),rgOpenReach.getCheckedID());//~0329I~
         changed+=updateProp(getKeyRS(RSID_OPENREACH_ROBOT),rgOpenReachRobot.getCheckedID());//~0329I~
@@ -361,6 +388,14 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isAvailableOpenReach:"+rc);//~v@@@I~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+    //*********************************************************    //~va11I~
+    public static boolean isReachOneShot()                         //~va11I~
+    {                                                              //~va11I~
+        int def=1;  //false                                        //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ONESHOT),def)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isReachOneShot:"+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
     //*********************************************************    //~0329I~
     public static boolean isAvailableOpenReachRobot()              //~0329I~
     {                                                              //~0329I~
@@ -393,28 +428,174 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.is7Pair4Pair="+rc);  //~v@@@I~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
-    //**************************************                       //~v@@@I~
-	public static boolean is13NoPair()                             //~v@@@I~
-    {                                                              //~v@@@I~
-        int def=1;  //true                                         //~v@@@R~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_13NOPAIR),def)!=0;//~v@@@I~
-        if (Dump.Y) Dump.println("RuleSetting.is13NoPair="+rc);    //~v@@@I~
-        return rc;                                                 //~v@@@I~
-    }                                                              //~v@@@I~
-    //**************************************                       //~v@@@I~
-	public static boolean is14NoPair()                             //~v@@@I~
-    {                                                              //~v@@@I~
-        int def=1;  //true                                         //~v@@@R~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_14NOPAIR),def)!=0;//~v@@@I~
-        if (Dump.Y) Dump.println("RuleSetting.is14NoPair="+rc);    //~v@@@I~
-        return rc;                                                 //~v@@@I~
-    }                                                              //~v@@@I~
-    //**************************************                       //+0407I~
-	public static boolean is5thKanOn()                             //+0407I~
-    {                                                              //+0407I~
-        int def=0;  //true                                         //+0407I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_5THKAN),def)!=0;//+0407I~
-        if (Dump.Y) Dump.println("RuleSetting.is5thKanOn="+rc);    //+0407I~
-        return rc;                                                 //+0407I~
-    }                                                              //+0407I~
+//    //**************************************                       //~v@@@I~//~va11R~
+//    public static boolean is13NoPair()                             //~v@@@I~//~va11R~
+//    {                                                              //~v@@@I~//~va11R~
+//        int def=1;  //true                                         //~v@@@R~//~va11R~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_13NOPAIR),def)!=0;//~v@@@I~//~va11R~
+//        if (Dump.Y) Dump.println("RuleSetting.is13NoPair="+rc);    //~v@@@I~//~va11R~
+//        return rc;                                                 //~v@@@I~//~va11R~
+//    }                                                              //~v@@@I~//~va11R~
+//    //**************************************                       //~v@@@I~//~va11R~
+//    public static boolean is14NoPair()                             //~v@@@I~//~va11R~
+//    {                                                              //~v@@@I~//~va11R~
+//        int def=1;  //true                                         //~v@@@R~//~va11R~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_14NOPAIR),def)!=0;//~v@@@I~//~va11R~
+//        if (Dump.Y) Dump.println("RuleSetting.is14NoPair="+rc);    //~v@@@I~//~va11R~
+//        return rc;                                                 //~v@@@I~//~va11R~
+//    }                                                              //~v@@@I~//~va11R~
+    //**************************************                       //~0407I~
+	public static boolean is5thKanOn()                             //~0407I~
+    {                                                              //~0407I~
+        int def=0;  //true                                         //~0407I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_5THKAN),def)!=0;//~0407I~
+        if (Dump.Y) Dump.println("RuleSetting.is5thKanOn="+rc);    //~0407I~
+        return rc;                                                 //~0407I~
+    }                                                              //~0407I~
+    //**************************************                       //~va11I~
+	public static boolean is13WaitAll()                            //~va11I~
+    {                                                              //~va11I~
+        int def=1;  //true                                         //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_KOKUSI13),def)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.is13WaitAll="+rc);   //~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean is7Pair50()                              //~va11I~
+    {                                                              //~va11I~
+        int def=YAKU7PAIR_50_1;  //50fu 1han                       //~va11R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_7PAIR),def)==YAKU7PAIR_50_1;//~va11R~
+        if (Dump.Y) Dump.println("RuleSetting.is7Pair50="+rc);     //~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va12R~
+	public static boolean is7Pair30()                              //~va12R~
+    {                                                              //~va12R~
+        int def=YAKU7PAIR_50_1;  //50fu 1han                       //~va12R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_7PAIR),def)==YAKU7PAIR_30_2;//~va12R~
+        if (Dump.Y) Dump.println("RuleSetting.is7Pair30="+rc);     //~va12R~
+        return rc;                                                 //~va12R~
+    }                                                              //~va12R~
+    //**************************************                       //~va11I~
+	public static boolean isAllGreenNoDragon()                     //~va11I~
+    {                                                              //~va11I~
+        int def=1;  //allow no Dragon                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLGREEN_NOBLUE),1)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isAllGreenNoDragon="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean is4WindDouble()                          //~va11I~
+    {                                                              //~va11I~
+        int def=1;  //allow no Dragon                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_4WIND),1)==1;  //~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.is4WindDouble="+rc); //~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean is9GateManOnly()                         //~va11R~
+    {                                                              //~va11I~
+        int def=1;  //allow Pin/Sou                                //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_9RENPINSOU),1)==0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.is9GateManOnly="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean is9GateDouble()                          //~va11I~
+    {                                                              //~va11I~
+        int def=1;  //double                                       //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_9REN9),1)==1;  //~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.is9GateDouble="+rc); //~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isTanyaoEarth()                          //~va11I~
+    {                                                              //~va11I~
+        int def=0;  //No                                           //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_KUITAN),0)==1;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isTanyaoEarth rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isDoublePillowPoint()                    //~va11I~
+    {                                                              //~va11I~
+        int def=0;  //No                                           //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_DOUBLE_PILLOW),0)==1;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isDoublePillowPoint rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static int getRank1stChildRon()                         //~va11R~
+    {                                                              //~va11I~
+        int idx=AG.ruleProp.getParameter(getKeyRS(RSID_RENHORANK),RENHORANK_DEFAULT);//~va11I~
+        int idxRank=intsRankRenho[idx];                            //~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.getRank1stChildRon spinner idx="+idx+",idxRank="+idxRank);//~va11I~
+        return idxRank;                                            //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isYakumanRank1stChildRon()                   //~va11I~
+    {                                                              //~va11I~
+        int idx=getRank1stChildRon();                              //~va11I~
+        boolean rc=idx==RANKIDX_YAKUMAN;                           //~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakumanRank1stChildRon rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isMixRank1stChildRon()                       //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_RENHOMIX),0)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isMixRank1stChildRon rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isPinfuTaken()                               //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PINFUTAKEN),0)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isPinfTaken rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean is4SameDouble()                          //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_4ANKO1),1)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.is4SameDouble rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isYakumanChariot()                       //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_BIGRING),1)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakumanChariot rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isYakuman13NoPair()                      //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_NOPAIR13),1)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuman13NoPair rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isYakuman14NoPair()                      //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_NOPAIR14),1)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuman14NoPair rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+    //**************************************                       //~va11I~
+	public static boolean isYakumanByRank()                        //~va11I~
+    {                                                              //~va11I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_RANK13),1)!=0;//~va11I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakumanByRank rc="+rc);//~va11I~
+        return rc;                                                 //~va11I~
+    }                                                              //~va11I~
+//    //**************************************                     //+va11R~
+//    //*1han constraint                                           //+va11R~
+//    //**************************************                     //+va11R~
+//    public static boolean isYakuFix1()                           //+va11R~
+//    {                                                            //+va11R~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX1),0)!=0;//+va11R~
+//        if (Dump.Y) Dump.println("RuleSetting.isYakuFix1 rc="+rc);//+va11R~
+//        return rc;                                               //+va11R~
+//    }                                                            //+va11R~
 }//class                                                           //~v@@@R~

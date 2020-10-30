@@ -1,4 +1,4 @@
-//*CID://+v@@@R~:                             update#=   89;       //~v@@@R~
+//*CID://+v@@@R~:                             update#=   90;       //~v@@@R~
 //*************************************************************************//~v101I~
 //*************************************************************************//~v101I~
 
@@ -69,7 +69,7 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
     private static final boolean D = true;
 
     // Return Intent extra
-//  public static String EXTRA_DEVICE_ADDRESS = "device_address";  //+v@@@R~
+//  public static String EXTRA_DEVICE_ADDRESS = "device_address";  //~v@@@R~
     public static BTDiscover registeredReceiver;                   //~v@@@I~
 
     // Member fields
@@ -145,7 +145,7 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
                 else                                               //~@@@@I~
 					newDevice=null;                                //~@@@@I~
             	UView.showToastShort(AG.resource.getString(R.string.InfoBTDiscoverFinished,devicelist.size()/2));//~v@@@R~
-                                                                   //~v@@@I~
+	            if (Dump.Y) Dump.println("BTDiscover.onReceive ACTION_DISCOVERY_FINISHED newDevice="+Utils.toString(newDevice));//+v@@@I~
             }
             else                                                   //~1AbGI~
             if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action))//~1AbGI~

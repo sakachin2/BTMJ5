@@ -1,5 +1,8 @@
-//*CID://+DATER~: update#= 354;                                    //~@@@@R~//~9214R~
+//*CID://+va18R~: update#= 356;                                    //+va18R~
 //**********************************************************************//~v101I~
+//2020/10/18 va18 option to diaplay WinAnyway button               //+va18I~
+//2020/04/27 va06:BGM                                              //~va06I~
+//**********************************************************************//~va06I~
 package com.btmtest.dialog;                                          //~@@@@R~
 
 import java.util.HashMap;
@@ -24,9 +27,12 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     public static final int    PSID_NO_RELATED_RULE         =20;   //~9520I~
     public static final int    PSID_NOTAKE_BUTTON           =30;   //~9630I~
     public static final int    PSID_NODISCARD_BUTTON        =31;   //~9630I~
+    public static final int    PSID_NOANYWAY_BUTTON         =32;   //+va18I~
     public static final int    PSID_NOSOUND                 =40;   //~9C01I~
     public static final int    PSID_BEEPONLY                =41;   //~9C01I~
-    public static final int    PSID_VOLUME                  =42;   //+9C02I~
+    public static final int    PSID_VOLUME                  =42;   //~9C02I~
+    public static final int    PSID_VOLUME_BGM              =43;   //~va06I~
+    public static final int    PSID_BGM                     =44;   //~va06I~
     private static final PSEnumPair[] pairs=                       //~9412I~
     			{                                                  //~9412I~
     				new PSEnumPair(PSID_ORIENTATION          ,"Orientation"          ),//~9412I~
@@ -34,9 +40,12 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     				new PSEnumPair(PSID_NO_RELATED_RULE      ,"NoRelatedRule"        ),//~9520I~
     				new PSEnumPair(PSID_NOTAKE_BUTTON        ,"NoTakeButton"         ),//~9630I~
     				new PSEnumPair(PSID_NODISCARD_BUTTON     ,"NoDiscardButton"      ),//~9630I~//~9C01R~
+    				new PSEnumPair(PSID_NOANYWAY_BUTTON      ,"NoAnywayButton"       ),//+va18I~
     				new PSEnumPair(PSID_NOSOUND              ,"NoSound"              ),//~9C01I~
     				new PSEnumPair(PSID_BEEPONLY             ,"BeepOnly"             ),//~9C01I~
-    				new PSEnumPair(PSID_VOLUME               ,"Volume"               ),//+9C02I~
+    				new PSEnumPair(PSID_VOLUME               ,"Volume"               ),//~9C02I~
+    				new PSEnumPair(PSID_VOLUME_BGM           ,"BGMVol"               ),//~va06I~
+    				new PSEnumPair(PSID_BGM                  ,"BGMType"              ),//~va06I~
                 };                                                  //~9412I~
     //***********************************************************  //~@@@@I~//~9404R~
 //  private static final Map<Integer,String> ID2Key=new HashMap<Integer,String>();//~@@@@I~//~9404R~//~9615R~

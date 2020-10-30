@@ -1,5 +1,6 @@
-//*CID://+v@11R~: update#= 347;                                    //~@@@@R~//~v@11R~
+//*CID://+va06R~: update#= 351;                                    //~va06R~
 //**********************************************************************//~v101I~
+//2020/04/27 va06:BGM                                              //~va06I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //**********************************************************************//~v@11I~
 package com.btmtest.game;                                          //~@@@@R~
@@ -143,8 +144,18 @@ public class GConst                                                    //~v@@@R~
     public static final int SOUNDID_PON=5;                         //~v@11I~
     public static final int SOUNDID_KAN=6;                         //~v@11I~
     public static final int SOUNDID_CHII=7;                        //~v@11I~
-    public static final int SOUNDID_DICE_ROLL=8;                   //+v@11I~
-    public static final int SOUNDID_DICE_FIX=9;                    //+v@11I~
+    public static final int SOUNDID_DICE_ROLL=8;                   //~v@11I~
+    public static final int SOUNDID_DICE_FIX=9;                    //~v@11I~
+    public static final int SOUNDID_BGM=10;                        //~va06R~
+    public static final int SOUNDID_BGM_TOP=11;                    //+va06R~
+    public static final int SOUNDID_BGM_GAME1SLOW=12;              //+va06I~
+    public static final int SOUNDID_BGM_GAME1FAST=13;              //+va06I~
+    public static final int SOUNDID_BGM_GAME2SLOW=14;              //+va06I~
+    public static final int SOUNDID_BGM_GAME2FAST=15;              //+va06I~
+    public static final int SOUNDID_BGM_GAME3SLOW=16;              //+va06I~
+    public static final int SOUNDID_BGM_GAME3FAST=17;              //+va06I~
+    public static final int SOUNDID_BGM_GAME4SLOW=18;              //+va06I~
+    public static final int SOUNDID_BGM_GAME4FAST=19;              //+va06I~
     //*******************************************                  //~v@11I~
     public GConst()                                                //~v@11I~
     {                                                              //~v@11I~

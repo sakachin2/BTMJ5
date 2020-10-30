@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 675;                                    //~9209R~
+//*CID://+DATER~: update#= 676;                                    //~9209R~
 //**********************************************************************//~v101I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -168,7 +168,8 @@ public class UAKan                                                 //~v@@@R~//~v
             	swSelectRequested=false;                        //~v@@6I~
         }                                                          //~v@@6I~
         if (Dump.Y) Dump.println("UAKan.selectInfo swSelectionRequested="+swSelectRequested+",testoption="+Integer.toHexString(TestOption.option));//~v@@6I~//~9B23R~//~0401R~
-        if ((TestOption.option & TestOption.TO_KAN_TEST)!=0) //TODO           //~v@@@I~//~v@@6R~
+//      if ((TestOption.option & TestOption.TO_KAN_TEST)!=0) //TODO           //~v@@@I~//~v@@6R~//+0A09R~
+        if ((TestOption.option & (TestOption.TO_KAN_TEST|TestOption.TO_KAN_CHANKAN))!=0) //TODO//+0A09I~
         {                                                          //~9B30I~
             rc=selectInfoTest(Pplayer);                             //~v@@@I~//~v@@6R~
         	if (!UADL.chkSelectInfo2Touch(PswServer,GCM_KAN,Pplayer,PintParm))//~9B30I~
@@ -567,7 +568,7 @@ public class UAKan                                                 //~v@@@R~//~v
         }                                                          //~0403I~
 //      GMsg.showHL(0,GCM_KAN);                                    //~9C02I~//~0401R~
         GMsg.showHL(0,GCM_KAN,Pplayer);                            //~0401I~
-    	Sound.play(SOUNDID_KAN,false/*not change to beep when beeponly option is on*/);//+0408I~
+    	Sound.play(SOUNDID_KAN,false/*not change to beep when beeponly option is on*/);//~0408I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~9301I~//~9302R~

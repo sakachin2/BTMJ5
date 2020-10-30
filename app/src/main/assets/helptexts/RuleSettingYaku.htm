@@ -1,10 +1,12 @@
 Rules about <B>Yaku</B>(define pattern of winning hand and its value).
 <BR>
- To check whethere winning hand is complete or not, set "Yes" on topic <B>Checking winning hand</B> of <B>Oper</B> Setting.
- Even if "Yes" is set, any wining hand by local rule can be claimed by menu:<B>Win anyway</B>.
+ To check whether winning hand is complete or not, set "Do check" on topic <B>1-han constraint</B> of <B>Oper</B> Setting.
+ Even if the check is set on, "Win" can be claimed for any hand by menu:<B>Win anyway</B> or "Win-A" button.
 <BR>
 After you called "Win", open <B>Win Claim</B> dialog by <B>Score</B> button and claim your hand's value by count of han and fu.
- "Win Claim" is sent to the other players, after all player responsed <B>OK</B> or <B>NG</B>,
+ (You can set <B>Evaluate Point by APP</B> of <B>Oper</B> settings.)
+<BR>
+ "Win Claim" is sent to the other players, after all player responded <B>OK</B> or <B>NG</B>,
  <B>End-of-Hand</B> dialog opens on the dealer which displays winning tiles.
 <BR>
 If the dealer is Robot, the dialog opens on the next(counter clockwise) human player.
@@ -14,38 +16,42 @@ After receiving "OK" from the other players, <B>Fix</B> the game to complete "En
 If dealer found "Chombo"("Furiten", "Noten", "Noten Riichi", "Constraint by han" etc),
 dealer can set <B>Invalid</B>(without penalty), or <B>Chombo</B>(with penalty).
 In that case dealer can select "Gameover" or "Continue" with "DeadHand" of "Chombo" players.
-DeadHand player just discard drawn tile and can not do any call.
+DeadHand player continues to play just discarding drawn tile and can not do any call.
 <BR>
 <BR>
-<BIG><B>KeiTen 1-han</BIG></B>
+<BIG><B>Psuedo-Tenpai</BIG></B>
 <BR>
-At exaustiveDraw, if your-hand is not status of Tenpai(waiting winning tile) with Yaku, you have to pay panalty of NoTen(Not Tenpai).
- This allows to assume some format of hands as Tenpai .
+This (by Japanese "Keishiki-Tenpai) means the hand is in the status of waiting winning tile,
+ but unable to call win by some reason.
+At ExhaustiveDraw, if your-hand is not status of Tenpai(waiting winning tile) with Yaku, you have to pay penalty of NoTen(Not Tenpai).
+ This agreement allows to assume some format of hands as Tenpai.
  <BR>
- <B>None for all</B>:not allow any KeiTen. 
+ <B>None all</B>:not allow any Psuedo-Tenpai. 
  <BR>
- <B>Empty OK</B>:Empty means all winning tiles are exausted on river, earth and in your hands.
+ <B>Empty OK</B>:Empty means all winning tiles are exhausted on river, earth and in your hands.
  <BR>
- <B>Furiten OK</B>:Allows winning tiles are Furiten status such as you discarded one of winning tile.
+ <B>Furiten OK</B>:Allows winning tiles are Furiten state such as you discarded one of winning tile.
  <BR>
- <B>0-han OK</B>:Yaku is not requred by any winning tile.
+ <B>0-han OK</B>:regardless <B>1-han constraint</B> rule.
 <BR>
-<BIG><B>2-han constrant</BIG></B>
+<BIG><B>2-han constraint</BIG></B>
 <BR>
-Under 2-han constraint condition, <B>0-han OK</b>:no Yaku is required. <B>2-han possibility</b>:requres possibility of Yaku more than 2-han by a winning tile.
- But if KeiTen 1-han is "0-han OK", requires 1-han possibility.   
+Under 2-han constraint condition, <B>0-han OK</b>:no Yaku is required. <B>2-han possibility</b>:requires possibility of Yaku more than 2-han by a winning tile.
+ But if Psuedo-Tenpai is "0-han OK", requires 1-han possibility.   
 <BR>
 <BIG><B>Fix Yaku</BIG></B>
 <BR>
 Japanese style Mahjong requires your winning hand to have some Yaku(at least 1 han).
-Some rule prohibit Ron by multiple tiles wait.
- e.g. When you opened some melds and are waiting pair of dragon(1 han) and number tiles, you can not call Ron for the dragon tile discarded.  
+Some rule prohibit Ron by multiple winning tiles wait.
+ e.g. When you are waiting pair of dragon(1 han) and number tiles, you can not call Ron for the dragon tile discarded by the reason of possibility of win by number tile.  
  If you are waiting pair of two type of dragon tiles, you can call win for either one of two.  
 <BR>
 It may exist some variation for "First only", make agreement among players beforehand.
 <BR>
 <BIG><B>Riichi</BIG></B>
 <B>For Robot game</B>:Select from "Disable OpenRiichi", "Ignore Robot's discard" or "Pay normal(Robot pays the normal score with 1-han of "Open" added).
+<BR>
+This app. applies <B>14 Broken</B> only to at the state of 1st Take.
 <BR>
 <BR>
 <SMALL>RuleSettingYaku 2020/02/11</SMALL>

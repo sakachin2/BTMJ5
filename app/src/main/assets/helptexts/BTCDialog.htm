@@ -1,13 +1,14 @@
 Assign role of server to anyone in members,
  who controls Bluetooth connection with other members(calls Client).
 <BR>
-This dialog is used also when connection failure occured during game.
+This dialog is used also when connection failure occurred during game.
 <BR>
 ----------------------------------------------------------------------
 <BR>
 1st line display your <BIG><B>Device</B></BIG> name.
 <BR>
 It can be changed by Android <B>Settings</B>,<B>Bluetooth</B>.
+ Set unique name.
 <BR>
 And display device status <B>Discoverable</B> (Other device nearby can find your device) or
  <B>NotDiscoverable</B> (Other device recognize your device if paired).
@@ -31,7 +32,7 @@ By "Discoverable" server becomes visible to clients. It becomes visible only 2 m
 <BR>
 By "Discover" client finds visible server.
 <BR>
-Found device is diplayed as <B>Available</B>.
+Found device is displayed as <B>Available</B>.
  After server pressing <B><BIG>Accept</BIG></B>, client use "Connect" selecting available device.
 <BR>
 If Android asked to accept "Pairing" request, give permission on both side.
@@ -49,6 +50,7 @@ Paired devices are stored in Android across power Off/On.
 <BIG><B>Bottom line buttons</B></BIG> 
 <BR>
 Client, selecting server on <B>Device List</B>, press <BIG><B>Connect</B></BIG>.
+When failed, retry after <B>Stop Accept</B> + <B>Accept</B>.
  Depending Android version, it may be required to close and reopen the dialog.
 <BR>
 <BIG><B>Disconnect</B></BIG> and <BIG><B>Unpair</B></BIG> are used from both side.
@@ -61,7 +63,7 @@ In case of connection failure during game, "Reconnect" button on "ConnectionFail
 <BR>
 <BIG><B>Restart</B></BIG>：（Only server）restart the game.
 <BR>
-Depending timing of connection failure, countinued hand may seem to be strange.
+Depending timing of connection failure, continued hand may seem to be strange.
  Until end of the hand, you can re-open "ConnectionFailure Notification" from menu:"Connection failure" to go to Suspend/Gamover.
 <BR>
 <BIG><B>Suspend/Gamover</B></BIG>：Select this when reconnection fails or all membes do not want to continue the game.
@@ -73,4 +75,4 @@ If "Gameover" was selected, penalty of RuleSettingd:<B>ConnectionFailure</B> is 
 If you have mistaken to close this dialog, you can re-open from menu:<B>ConnectionFailure</B>.
 <BR>
 <BR>
-<SMALL>BTCDialog 2020/02/11</SMALL>
+<SMALL>BTCDialog 2020/02/16</SMALL>

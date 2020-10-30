@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 405;                                    //~v@@@R~//~v@@5R~//~9218R~
+//*CID://+DATER~: update#= 411;                                    //~v@@@R~//~v@@5R~//~9218R~
 //**********************************************************************//~v101I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //reset tile to new game                                           //~v@@@R~
@@ -16,7 +16,8 @@ import com.btmtest.dialog.RuleSetting;                             //~9412I~
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GConst.*;                                  //~v@@@I~//~9412M~
 import static com.btmtest.game.gv.Pieces.*;                        //~v@@@I~//~9412M~
-import static com.btmtest.game.TileData.*;                         //~9412M~
+import static com.btmtest.game.TileData.*;
+import static com.btmtest.game.gv.Stock.*;//~9412M~
 
 
 import java.util.ArrayList;
@@ -273,10 +274,49 @@ public class Tiles                                 //~v@@@R~
                     ii--;                                          //~v@@@R~//~v@@5R~
                 }                                                  //~v@@@R~//~v@@5R~
             }                                                      //~v@@@R~
+	        if ((TestOption.option2 & TestOption.TO2_SETDORA)!=0)//~0A12I~//+0A14R~
+    	    {                                                      //~0A12I~
+        	    testSetDora(out);                                  //~0A12I~
+       		}                                                      //~0A12I~
+                                                                   //~0A12I~
             shuffledTileData = out;                                  //~v@@@R~
         }//synch                                                   //~v@@@I~
-        if (Dump.Y) Dump.println("shuffle "+TileData.toString(shuffledTileData));//~v@@5R~
+        if (Dump.Y) Dump.println("Tiles.shuffle "+TileData.toString(shuffledTileData));//~v@@5R~//~0A12R~
     }                                                              //~v@@@M~
+    //*****************************************************************//~0A12I~
+    //*for test                                                    //~0A12I~
+    //*****************************************************************//~0A12I~
+    private void testSetDora(TileData[] Pout)                           //~0A12I~
+    {                                                              //~0A12I~
+        if (Dump.Y) Dump.println("Tiles.testSetDora");              //~0A12I~
+        int type,num;                                              //~0A12I~
+        type=TestOption.testDoraUpType;                            //~0A12I~
+        num=TestOption.testDoraUpNumber;                           //~0A12I~
+        if (type>=0&&type<=3 && num>=0 && num<=8)                  //~0A12I~
+        	Pout[DORA_TDPOS]=new TileData(type,num);               //~0A12R~
+        type=TestOption.testDoraDownType;                          //~0A12I~
+        num=TestOption.testDoraDownNumber;                         //~0A12I~
+        if (type>=0&&type<=3 && num>=0 && num<=8)                  //~0A12I~
+        	Pout[DORA_TDPOS-1]=new TileData(type,num);             //~0A12R~
+                                                                   //~0A12I~
+        type=TestOption.testKanUpType;                             //~0A12I~
+        num=TestOption.testKanUpNumber;                            //~0A12R~
+        if (type>=0&&type<=3 && num>=0 && num<=8)                  //~0A12I~
+        	Pout[DORA_TDPOS-2]=new TileData(type,num);             //~0A12R~
+        type=TestOption.testKanDownType;                           //~0A12I~
+        num=TestOption.testKanDownNumber;                          //~0A12R~
+        if (type>=0&&type<=3 && num>=0 && num<=8)                  //~0A12I~
+        	Pout[DORA_TDPOS-3]=new TileData(type,num);             //~0A12R~
+                                                                   //~0A12I~
+        type=TestOption.testKanUpType2;                            //~0A12I~
+        num=TestOption.testKanUpNumber2;                           //~0A12I~
+        if (type>=0&&type<=3 && num>=0 && num<=8)                  //~0A12I~
+        	Pout[DORA_TDPOS-4]=new TileData(type,num);             //~0A12I~
+        type=TestOption.testKanDownType2;                          //~0A12I~
+        num=TestOption.testKanDownNumber2;                         //~0A12I~
+        if (type>=0&&type<=3 && num>=0 && num<=8)                  //~0A12I~
+        	Pout[DORA_TDPOS-5]=new TileData(type,num);             //~0A12I~
+    }                                                              //~0A12I~
     //*****************************************************************//~v@@5I~
     //*for test                                                    //~v@@5I~
     //*****************************************************************//~v@@5I~
@@ -583,9 +623,9 @@ public class Tiles                                 //~v@@@R~
     {                                                              //~v@@5I~
         if (ctrKan==MAXCTR_KAN)                                    //~v@@5I~
         {                                                          //~v@@5I~
-//      	GC.actionError(0,"Tiles.addCtrKan Over max 4 times Kan");//~v@@5I~//+0407R~
-			String yn=Utils.getStr(RuleSettingYaku.is5thKanOn() ? R.string.On:R.string.Off);//+0407I~
-			UserAction.showInfo(0,Utils.getStr(R.string.Err_5thKan,yn));//+0407I~
+//      	GC.actionError(0,"Tiles.addCtrKan Over max 4 times Kan");//~v@@5I~//~0407R~
+			String yn=Utils.getStr(RuleSettingYaku.is5thKanOn() ? R.string.On:R.string.Off);//~0407I~
+			UserAction.showInfo(0,Utils.getStr(R.string.Err_5thKan,yn));//~0407I~
             return -1;                                             //~v@@5I~
         }                                                          //~v@@5I~
         if (PswUpdate)                                             //~v@@5I~

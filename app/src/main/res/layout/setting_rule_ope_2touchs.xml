@@ -77,6 +77,7 @@
          android:layout_height="2px"
                 android:background="@color/separater"
     />
+<!--
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
@@ -101,6 +102,59 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/Desc_CheckRonable"
+            android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+-->
+    <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+                android:text="@string/Label_YakuFix1"
+            android:textSize="@dimen/textview_middle"
+        />
+        <CheckBox
+            android:id="@+id/cbYakuFix1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_YakuFix1Yes"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Desc_YakuFix1"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+                android:gravity="center_vertical"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_CheckRonValue"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/textview_middle"
+        />
+        <CheckBox
+            android:id="@+id/cbCheckRonValue"
+            android:text="@string/Label_Yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Desc_CheckRonValue"
             android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"

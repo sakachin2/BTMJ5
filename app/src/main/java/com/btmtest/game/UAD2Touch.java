@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#=  244;       //~1Af6R~//~v@@@R~//~9B28R~
+//*CID://+DATER~:                             update#=  245;       //~1Af6R~//~v@@@R~//~9B28R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.game;                                         //~v@@@R~
@@ -182,7 +182,7 @@ public class UAD2Touch                                             //~v@@@R~
         	updateBtn();                                           //~9B28I~
         yourActionBlocking=yourAction;	//after released           //~9B28I~
         boolean rc=blockerCtr!=0;                                  //~9B28M~
-        if (Dump.Y) Dump.println("UAD2Touch.relaeaseAuto2Touch rc="+rc+",eswn="+eswn+",blockerCtr="+blockerCtr+",blockerAction="+Arrays.toString(blockerAction)+",actionQ="+Arrays.toString(blockerEswnQ));//~9B28I~//+0402R~
+        if (Dump.Y) Dump.println("UAD2Touch.relaeaseAuto2Touch rc="+rc+",eswn="+eswn+",blockerCtr="+blockerCtr+",blockerAction="+Arrays.toString(blockerAction)+",actionQ="+Arrays.toString(blockerEswnQ));//~9B28I~//~0402R~
         return rc;                                                 //~9B28I~
     }                                                              //~v@@@I~
     //************************************************************ //~v@@@I~
@@ -387,7 +387,7 @@ public class UAD2Touch                                             //~v@@@R~
         return rc;                                                 //~9C09I~
     }                                                              //~9C09I~
 //**********************************                               //~9C09I~
-    public void updateBtn()                                        //~9C09I~
+    private void updateBtn()                                        //~9C09I~//+0A18R~
     {                                                              //~9C09I~
     	int eswn,actionID;                                         //~9C06I~
         if (Dump.Y) Dump.println("UAD2Touch.updateBtn yourActionBlocking="+yourActionBlocking+",yourStatus="+yourStatus);//~9B28R~

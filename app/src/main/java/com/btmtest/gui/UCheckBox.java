@@ -1,4 +1,4 @@
-//*CID://+v1EjR~:                             update#=   30;       //~v1EjI~
+//*CID://+v1EjR~:                             update#=   31;       //~v1EjI~
 //**************************************************************************//~v1EjI~
 //**************************************************************************//~v1EjI~
 package com.btmtest.gui;                                           //~1215R~//~v1EjI~
@@ -150,13 +150,13 @@ public class UCheckBox                                             //~v1EjI~
     	checkbox.setEnabled(Penable);                              //~v1EjI~
         if (Dump.Y) Dump.println("UCheckBox.setEnabled sw="+Penable);//~v1EjI~
     }                                                              //~v1EjI~
-    //**********************************************               //+v1EjI~
-    public boolean isEnabled()                                     //+v1EjI~
-    {                                                              //+v1EjI~
-    	boolean rc=checkbox.isEnabled();                           //+v1EjI~
-        if (Dump.Y) Dump.println("UCheckBox.isEnabled rc="+rc);    //+v1EjI~
-        return rc;                                                 //+v1EjI~
-    }                                                              //+v1EjI~
+    //**********************************************               //~v1EjI~
+    public boolean isEnabled()                                     //~v1EjI~
+    {                                                              //~v1EjI~
+    	boolean rc=checkbox.isEnabled();                           //~v1EjI~
+        if (Dump.Y) Dump.println("UCheckBox.isEnabled rc="+rc);    //~v1EjI~
+        return rc;                                                 //~v1EjI~
+    }                                                              //~v1EjI~
     //**********************************************               //~v1EjI~
     public void setStatusWithoutCallback(boolean PswChecked)       //~v1EjI~
     {                                                              //~v1EjI~
@@ -166,6 +166,12 @@ public class UCheckBox                                             //~v1EjI~
     	setEnabled(oldstat);                                       //~v1EjI~
         if (Dump.Y) Dump.println("UCheckBox.setStatus sw="+PswChecked);//~v1EjI~
     }                                                              //~v1EjI~
+    //**********************************************               //+v1EjI~
+    public void setText(String Ptext)                              //+v1EjI~
+    {                                                              //+v1EjI~
+    	checkbox.setText(Ptext);                                   //+v1EjI~
+        if (Dump.Y) Dump.println("UCheckBox.setText txt="+Ptext);  //+v1EjI~
+    }                                                              //+v1EjI~
 //    //**********************************************             //~v1EjR~
 //    public void setListener(CompoundButton.OnCheckedChangeListener Plistener,UCheckBoxI PUCBlistener,int Pparm)//~v1EjR~
 //    {                                                            //~v1EjR~

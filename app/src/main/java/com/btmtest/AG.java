@@ -1,4 +1,4 @@
-//*CID://+@@01R~:                             update#=  423;       //~@@01R~
+//*CID://+@@01R~:                             update#=  425;       //~@@01R~
 //******************************************************************************************************************//~v101R~
 //@@01 20181105 for BTMJ3                                          //~@@01I~
 //******************************************************************************************************************//~v101I~
@@ -23,6 +23,8 @@ import android.os.HandlerThread;                                   //~@@01I~
 
 import com.btmtest.BT.BTI;                                         //~@@01R~
 import com.btmtest.BT.BTMulti;                                     //~v@@@I~//~@@01R~
+import com.btmtest.game.UA.UARonValue;
+import com.btmtest.game.UA.UARon;                                  //+@@01I~
 import com.btmtest.wifi.IPMulti;                                   //~@@01I~
 import com.btmtest.dialog.BTCDialog;//~v@@@R~                      //~@@01I~
 import com.btmtest.dialog.BTRDialog;                               //~@@01I~
@@ -318,6 +320,8 @@ public class AG                                                    //~1107R~
     public  UserAction   aUserAction;                              //~@@01I~
 //  public  UADelayed    aUADelayed;                               //~@@01R~
     public  UADelayed2   aUADelayed;                               //~@@01I~
+    public UARonValue aUARonValue;                              //~@@01I~
+    public UARon      aUARon;                                      //+@@01I~
     public  LastGame    aLastGame;                                 //~@@01I~
     public  History     aHistory;                                  //~@@01I~
     public  FinalGameDlg    aFinalGameDlg;                         //~@@01R~
@@ -461,7 +465,7 @@ public class AG                                                    //~1107R~
 //                |OPTIONS_COORDINATE                                //~@@@@I~//~1Ad7R~
 //                );                                                 //~@@@@R~//~1Ad7R~
 //        MainFrameOptions.initialOptions();                       //~1Ad7R~
-//      YourName=Utils.getStr(R.string.DefaultYourName);           //~v@@@R~//+@@01R~
+//      YourName=Utils.getStr(R.string.DefaultYourName);           //~v@@@R~//~@@01R~
         YourName=Utils.getPreference(PREFKEY_YOURNAME,YourName);   //~@@01I~
         Utils.putPreference(PREFKEY_YOURNAME,YourName);            //~@@01I~
 //        LocalOpponentName=resource.getString(R.string.LocalOpponentName);//~@@@@I~//~1Ad7R~

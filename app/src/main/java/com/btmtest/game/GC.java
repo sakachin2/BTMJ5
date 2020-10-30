@@ -1,7 +1,10 @@
-//*CID://+DATER~: update#= 639;                                    //~v@@@R~//~9301R~
+//*CID://+va06R~: update#= 661;                                    //~va02R~//~va06R~//~va02R~//~va06R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
+//2020/04/27 va06:BGM                                              //~va06I~
+//2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
+//**********************************************************************//~va02I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
 
 import com.btmtest.BT.BTControl;
@@ -15,13 +18,12 @@ import com.btmtest.dialog.BTCDialog;
 import com.btmtest.dialog.CompReqDlg;
 import com.btmtest.dialog.CompleteDlg;
 import com.btmtest.dialog.MenuInGameDlg;
-import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.dialog.PrefSetting;                             //~9630I~
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.dialog.ScoreDlg;
-import com.btmtest.dialog.SuspendIOErrReqDlg;
 import com.btmtest.dialog.TestLayout;
 import com.btmtest.game.UA.UARestart;
+import com.btmtest.game.UA.UARon;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Alert;
@@ -32,12 +34,14 @@ import com.btmtest.utils.UView;//~v@@@R~
 
 import static com.btmtest.AG.*;
 import static com.btmtest.BT.enums.MsgIDConst.*;
+import static com.btmtest.dialog.PrefSetting.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.Status.*;//~v@@@I~
 import com.btmtest.game.gv.GameView;                               //~v@@@I~
 import com.btmtest.game.UA.UAEndGame;                              //~9303I~
 import com.btmtest.dialog.RuleSetting;                             //~9412I~
 import com.btmtest.utils.Utils;
+import com.btmtest.utils.sound.Sound;
 import com.btmtest.wifi.WDA;
 
 import static com.btmtest.game.GConst.*;                           //~v@@@R~
@@ -56,9 +60,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-
-import java.util.Arrays;
-
 
 public class GC implements UButton.UButtonI                        //~v@@@R~
    							,Alert.AlertI                          //~9B25I~
@@ -95,6 +96,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int BTNID_MENUINGAME  =R.id.MenuInGame;   //~9406I~
     private static final int BTNID_SHOWRULE    =R.id.ShowRule;     //~9408R~
     private static final int BTNID_ACTION_CANCEL=R.id.UserAction_Cancel;//~9B25I~
+    private static final int BTNID_ANYWAY=R.id.UserAction_Anyway;  //~va06I~
                                                                    //~v@@@I~
     private static final int BTNID_F1      =R.id.Func1;   //TODO   //~v@@@I~
     private static final int BTNID_F2      =R.id.Func2;   //TODO   //~v@@@I~
@@ -135,6 +137,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	private Button btnPon,btnKan,btnChii,btnRon;                   //~9B25I~
     private Button btnReach,btnReachOpen,btnReachReset,btnReachOpenReset;//~9A30I~
     private Button btnTake,btnDiscard;                             //~9701I~
+    private Button btnAnyway;                                      //~va06I~
     private Button btnActionCancel;                                //~9B25I~
     private boolean swBtnReach;                                    //~9A30I~
     private boolean swOpenReach;                                   //~9A31I~
@@ -142,6 +145,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //  private int btnBackgroundColor;                                //~9B25R~
     private Drawable btnBackgroundColor;                           //~9B25I~
 //    private boolean swReconnect;                                 //~0411R~
+	private int connectionCtrAtStartGame;                          //~va02I~
 //*************************                                        //~v@@@I~
 	public GC(View Pframe)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
@@ -262,6 +266,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         AG.aBTMulti.saveForReconnect();                            //~9A23I~
 		AG.aStatus.startGame();                                    //~9621I~
 		URunnable.setRunFuncSubthread(this,0/*delay*/,this/*parmObj*/,URO_STARTGAME);//~9621I~
+		connectionCtrAtStartGame=AG.aBTMulti.BTGroup.getConnectedCtr();//~va02I~
         if(Dump.Y) Dump.println("GC.startGameGo end");             //~9621I~
     }                                                              //~9621I~
 //*************************                                        //~v@@@I~
@@ -455,9 +460,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         UButton.bind(btns2,BTNID_RON,this);                         //~v@@@I~
     btnDiscard=                                             //~9630I~//~9701R~
         UButton.bind(btns2,BTNID_DISCARD,this);                     //~v@@@I~
+    btnAnyway=                                                     //~va06I~
+        UButton.bind(btns1,BTNID_ANYWAY,this);                     //~va06R~
     btnActionCancel=UButton.bind(btns2,BTNID_ACTION_CANCEL,this);  //~9B25I~
 	if (PrefSetting.isNoDiscardButton())                           //~9630R~
 	    btnDiscard.setVisibility(View.GONE);                      //~9630I~
+	if (PrefSetting.isNoAnywayButton())                            //~va06I~
+	    btnAnyway.setVisibility(View.GONE);                        //~va06I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~9701I~
     public void prefSettingChanged()                               //~9701I~
@@ -471,6 +480,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	    	btnDiscard.setVisibility(View.GONE);                   //~9701I~
         else                                                       //~9701I~
 	    	btnDiscard.setVisibility(View.VISIBLE);                //~9701I~
+		if (PrefSetting.isNoAnywayButton())                        //~va06I~
+	    	btnAnyway.setVisibility(View.GONE);                    //~va06I~
+        else                                                       //~va06I~
+	    	btnAnyway.setVisibility(View.VISIBLE);                 //~va06I~
     }                                                              //~9701I~
 //    //*************************************************************************//~v@@@I~//~9A15R~
 //    public void invalidate()                                       //~v@@@I~//~9A15R~
@@ -658,6 +671,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case BTNID_ACTION_CANCEL:                                  //~9B25I~
         	actionCancel();                                        //~9B25I~
             break;                                                 //~9B25I~
+        case BTNID_ANYWAY:                                         //+va06I~
+        	actionAnyway();                                        //+va06I~
+            break;                                                 //+va06I~
         default:                                                   //~v@@@I~
         	Alert.showMessage("btn?","Action?");                   //~v@@@I~
         }                                                          //~v@@@I~
@@ -999,7 +1015,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     public  boolean endGameReturn()                                //~9903R~
     {                                                              //~9903I~
 		if (Dump.Y) Dump.println("GC.endGameReturn");              //~9903I~
-		if (Status.isGamingNow()) //status=21 & ! gameover        //~9903I~//~0410R~
+//  	if (Status.isGamingNow()) //status=21 & ! gameover        //~9903I~//~0410R~//~va02R~
+    	if (Status.isGamingNowAndInterRound()) //status=21 & ! gameover//~va02I~
         {                                                          //~9903I~
         	                                                       //~0110I~
 		  if (!Status.isGameSuspended())                         //~0110I~
@@ -1319,12 +1336,20 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     //*******************************************************************//~9B25I~
     public void confirmEndGameReturn()                      //~9B25I~//~0411R~
     {                                                              //~9B25I~
-        if (Dump.Y) Dump.println("GC.confirmEndGAmeReturn");       //~9B25I~
+        if (Dump.Y) Dump.println("GC.confirmEndGameReturn");       //~9B25I~//~va02R~
         int titleid=R.string.Title_ConfirmEndgame;                 //~9B25I~
         int msgid=R.string.Msg_ConfirmEndgame;                     //~9B25I~
 //        swReconnect=false;                                       //~0411R~
 		Alert.showAlert(titleid,msgid, BUTTON_POSITIVE|Alert.BUTTON_NEGATIVE,AG.aGC);//calback alertButtonAction//~9B25I~
     }                                                              //~9B25I~
+    //*******************************************************************//~va02I~
+    public void confirmEndGameReturn(int Pmsgid)                   //~va02I~
+    {                                                              //~va02I~
+        if (Dump.Y) Dump.println("GC.confirmEndGameReturn msgid="+Integer.toHexString(Pmsgid));//~va02R~
+        int titleid=R.string.Title_ConfirmEndgame;                 //~va02I~
+        int msgid=Pmsgid;                                          //~va02I~
+		Alert.showAlert(titleid,msgid, BUTTON_POSITIVE|Alert.BUTTON_NEGATIVE,AG.aGC);//calback alertButtonAction//~va02I~
+    }                                                              //~va02I~
     //**************************************                       //~9B25I~
     @Override //* AlertI                                           //~9B25I~
 	public int alertButtonAction(int Pbuttonid,int Prc)            //~9B25I~
@@ -1350,6 +1375,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.actionCancel");               //~9B25I~
         AG.aUAD2Touch.actionCancel();                           //~9B25R~
     }                                                              //~9B25I~
+    //*******************************************************************//+va06I~
+    private void actionAnyway()                                    //+va06I~
+    {                                                              //+va06I~
+		if (Dump.Y) Dump.println("GC.actionAnyway");               //+va06I~
+        UARon.winAnyway();                                         //+va06I~
+    }                                                              //+va06I~
     //*******************************************************************//~9B25I~
     //*from Action2Touch on MainThread                             //~9B25I~
     //*******************************************************************//~9B25I~
@@ -1416,11 +1447,41 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     public void exitOnGameView()                                   //~0411I~
     {                                                              //~0411I~
 		if (Dump.Y) Dump.println("GC.exitOnGameView");             //~0411I~
-//      if (Status.getStatusRestart()!=RESTART_NONE)                //~9A29I~//+0411R~
-		if (AG.aBTMulti.BTGroup.getConnectedCtr()==0)              //+0411R~
+    	if (isGameOver())                                          //~va02I~
+        {                                                          //~va02I~
+			if (BTMulti.isServerDevice())                          //~va02I~
+        		UView.showToast(R.string.Info_GameEnded);          //~va02R~
+            else                                                   //~va02I~
+			    UView.showToast(R.string.Err_TryBackButtonFromServer);	//do connection failure//~va02I~
+            return;                                                //~va02I~
+        }                                                          //~va02I~
+		if (Status.isGameSuspended())                              //~va02I~
+        {                                                          //~va02I~
+			if (BTMulti.isServerDevice())                          //~va02I~
+        		UView.showToast(R.string.Info_GameEnded);          //~va02I~
+            else                                                   //~va02I~
+			    UView.showToast(R.string.Err_TryBackButtonFromServer);	//do connection failure//~va02I~
+            return;                                          //~va02I~
+        }                                                          //~va02I~
+        if (!Status.isGamingForMenuInGameAndInterRound())	//before deal//~va02I~
+        {                                                          //~va02M~
+			if (BTMulti.isServerDevice())                          //~va02I~
+			    confirmEndGameReturn(R.string.Err_ConfirmReturn);  //~va02R~
+            else                                                   //~va02I~
+			    UView.showToast(R.string.Err_TryBackButtonFromServer);	//do connection failure//~va02I~
+            return;                                                //~va02M~
+		}                                                          //~va02M~
+//      if (Status.getStatusRestart()!=RESTART_NONE)                //~9A29I~//~0411R~
+        if (Status.getStatusRestart()!=RESTART_NONE)               //~va02I~
+        {                                                          //~va02I~
+		    UView.showToast(R.string.Err_SuspendNoIOErrExitOnGameView);	//do connection failure//~va02I~
+            return;                                                //~va02I~
+        }                                                          //~va02I~
+//  	if (AG.aBTMulti.BTGroup.getConnectedCtr()==0)              //~0411R~//~va02R~
+    	if (isConnectionLost())                                    //~va02I~
         {                                                          //~0411I~
-//  		UView.showToastLong(R.string.Err_SuspendNoIOErrExitOnGameView);//+0411R~
-		    confirmEndGameReturn();                                //+0411I~
+//  		UView.showToastLong(R.string.Err_SuspendNoIOErrExitOnGameView);//~0411R~
+		    confirmEndGameReturn();                                //~0411I~
             return;                                                //~0411I~
         }                                                          //~0411I~
 //        if (ctr==0)                                              //~0411R~
@@ -1433,6 +1494,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        }                                                        //~0411R~
         UView.showToast(R.string.Err_GamingNow);                   //~0411I~
     }                                                              //~0411I~
+    //*******************************************************************//~va02I~
+    public boolean isConnectionLost()                              //~va02I~
+    {                                                              //~va02I~
+		boolean rc=connectionCtrAtStartGame!=AG.aBTMulti.BTGroup.getConnectedCtr();//~va02I~
+		if (Dump.Y) Dump.println("GC.isConnectinLost rc="+rc+",connectionCtrAtStartGame="+connectionCtrAtStartGame);//~va02I~
+        return rc;                                                 //~va02R~
+    }                                                              //~va02I~
 //    //*******************************************************************//~0411R~
 //    //*when connectionCtr=0                                      //~0411R~
 //    //*******************************************************************//~0411R~
@@ -1473,4 +1541,52 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        if (Dump.Y) Dump.println("GC.endGameForce");             //~0411R~
 //        endGame(true/*swReturn*/);                               //~0411R~
 //    }                                                            //~0411R~
+    //*******************************************************************//~va06I~
+    public static void playSound(int PctrGame)                     //~va06I~
+    {                                                              //~va06I~
+        if (Dump.Y) Dump.println("GC.playSound ctrGame="+PctrGame);//~va06I~
+        int typeBGM=PrefSetting.getBGMType();                      //~va06I~
+        int soundID;                                               //~va06I~
+        switch (typeBGM)                                           //~va06I~
+        {                                                          //~va06I~
+        case PS_BGM_NO:                                            //~va06I~
+        	soundID=-1;                                            //~va06I~
+            break;                                                 //~va06I~
+        case PS_BGM_4SEASONS:                                      //~va06I~
+            switch (PctrGame%PLAYERS)                              //~va06I~
+            {                                                      //~va06I~
+            case 0:                                                //~va06I~
+                soundID=SOUNDID_BGM_GAME1SLOW;                     //~va06I~
+                break;                                             //~va06I~
+            case 1:                                                //~va06I~
+                soundID=SOUNDID_BGM_GAME2SLOW;                     //~va06I~
+                break;                                             //~va06I~
+            case 2:                                                //~va06I~
+                soundID=SOUNDID_BGM_GAME3SLOW;                     //~va06I~
+                break;                                             //~va06I~
+            default:                                               //~va06I~
+                soundID=SOUNDID_BGM_GAME4SLOW;                     //~va06I~
+            }                                                      //~va06I~
+            break;                                                 //~va06I~
+        case PS_BGM_4SEASONS_FAST:                                 //~va06I~
+            switch (PctrGame%PLAYERS)                              //~va06I~
+            {                                                      //~va06I~
+            case 0:                                                //~va06I~
+                soundID=SOUNDID_BGM_GAME1FAST;                     //~va06I~
+                break;                                             //~va06I~
+            case 1:                                                //~va06I~
+                soundID=SOUNDID_BGM_GAME2FAST;                     //~va06I~
+                break;                                             //~va06I~
+            case 2:                                                //~va06I~
+                soundID=SOUNDID_BGM_GAME3FAST;                     //~va06I~
+                break;                                             //~va06I~
+            default:                                               //~va06I~
+                soundID=SOUNDID_BGM_GAME4FAST;                     //~va06I~
+            }                                                      //~va06I~
+            break;                                                 //~va06I~
+        default:                                                   //~va06I~
+        	soundID=SOUNDID_BGM_TOP;                               //~va06I~
+        }                                                          //~va06I~
+        Sound.playBGM(soundID);                                    //~va06I~
+    }                                                              //~va06I~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

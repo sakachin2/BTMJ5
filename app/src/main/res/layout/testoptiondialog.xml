@@ -27,6 +27,12 @@
                  android:orientation="vertical"
             >
                 <CheckBox
+                    android:id="@+id/cbDumpSDCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dump to SDCard"
+                />
+                <CheckBox
                     android:id="@+id/cbCloseOnConnect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -36,8 +42,228 @@
                     android:id="@+id/cbRon_Test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ron No check"
+                    android:text="UARonChk Test using RonValue testCase number"
                 />
+                <CheckBox
+                    android:id="@+id/cbRonValue_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UARonValue test"
+                />
+                <CheckBox
+                    android:id="@+id/cbChkRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="chkRank test:Toast Yaku"
+                />
+                <CheckBox
+                    android:id="@+id/cbRonValue_NoDora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RonValue No Dora"
+                />
+                <CheckBox
+                    android:id="@+id/cbSetDora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set Dora"
+                />
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="Dora Faceup"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etDoraUpType"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etDoraUpNumber"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="Dora FaceDown"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etDoraDownType"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etDoraDownNumber"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="Dora Kan FaceUp"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanUpType"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanUpNumber"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="Dora Kan FaceUp2"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanUpType2"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanUpNumber2"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="Dora Kan FaceDown"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanDownType"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanDownNumber"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="Dora Kan FaceDown2"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanDownType2"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etKanDownNumber2"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="horizontal"
+            android:layout_height="wrap_content"
+    >
+
+                <TextView
+                     android:text="RonvalueTestCase Number"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                />                                     
+                <EditText
+                     android:id="@+id/etRonValueCase"
+                     android:text="RonvalueTestCase"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+		            android:inputType="number"
+		            android:focusable="true"
+		            android:focusableInTouchMode="true"
+		            android:minEms="5"
+                />                                     
+    </LinearLayout>
                 <CheckBox
                     android:id="@+id/cbRuleNoSync"
                     android:layout_width="wrap_content"
@@ -129,12 +355,6 @@
                     android:text="show F2"
                 />
                 <CheckBox
-                    android:id="@+id/cbFinalGame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="set finalGame"
-                />
-                <CheckBox
                     android:id="@+id/cbLayoutFinalGame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -159,6 +379,12 @@
                     android:text="Suspend Requested"
                 />
                 
+                <CheckBox
+                    android:id="@+id/cbFinalGame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="set finalGame"
+                />
                 <LinearLayout
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"

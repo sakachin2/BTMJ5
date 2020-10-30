@@ -57,6 +57,13 @@
             android:layout_height="wrap_content"
     			android:background="@color/bg_dialog_remarkable2"
         />
+        <CheckBox
+            android:id="@+id/cbNoAnywayButton"
+            android:text="@string/Label_NoAnywayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+    			android:background="@color/bg_dialog_remarkable2"
+        />
     </LinearLayout>
     <LinearLayout
          android:layout_width="fill_parent"
@@ -64,6 +71,14 @@
          android:orientation="horizontal"
     >
         <include layout="@layout/setting_pref_opt_sound"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <include layout="@layout/setting_pref_opt_bgm"
         />
     </LinearLayout>
 </LinearLayout>

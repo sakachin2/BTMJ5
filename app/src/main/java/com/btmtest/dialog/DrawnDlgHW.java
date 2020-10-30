@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  876;       //~v@@@R~//~9211R~
+//*CID://+va03R~:                             update#=  878;       //+va03R~
 //*****************************************************************//~v101I~
+//2020/04/16 va03:alert suspendrequested                           //+va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
@@ -420,7 +421,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
 		    Arrays.fill(respStat,EGDR_NONE);                       //~0308I~
     		showAmmount();                                         //~9704I~
         }                                                          //~9703I~
-        CMP.swSent=false;                                          //+0314I~
+        CMP.swSent=false;                                          //~0314I~
     }                                                              //~9703I~
     //*******************************************************      //~9611I~
     //*UCheckBoxI                                                  //~9611I~
@@ -455,7 +456,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
         }                                                          //~9611I~
         enableFixButton(false); //requester only by enabled chkbox//~9703R~//~0308I~
         Arrays.fill(respStat,EGDR_NONE);                           //~0308I~
-        CMP.swSent=false;                                          //+0314I~
+        CMP.swSent=false;                                          //~0314I~
     }                                                              //~9611I~
     //*******************************************************      //~9426I~
     private UCheckBox[] setupEswnCB(View PView,boolean[] Psws)     //~9426I~
@@ -717,6 +718,8 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
 	    setCheckNextGame();                                        //~9305I~
 		cbSuspend=new UCheckBox(PView,R.id.cbSuspend);             //~0306I~
 		cbSuspend.setState(swSuspend,!swRequester);                //~0306I~
+        if (swSuspend && !swRequester)                             //+va03R~
+        	CompleteDlg.alertSuspended();                          //+va03R~
         cbSuspend.setListener(this,UCBP_SUSPEND);                  //~0306I~
     }                                                              //~9305I~
     //*******************************************************      //~9A14I~
@@ -826,7 +829,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
             update();                                          //~9708I~
 	        sendResponse(reason);                                  //~9311I~
             reasonSent=reason;                                     //~9A14I~
-            CMP.swSent=true;                                       //+0314I~
+            CMP.swSent=true;                                       //~0314I~
         }                                                          //~9708I~
         else                                                        //~9311I~
 	        sendResponse(EGDR_OK);                                            //~9303R~//~9304R~//~9305R~//~9306I~//~9308R~//~9311R~
