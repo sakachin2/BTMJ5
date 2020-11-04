@@ -120,6 +120,16 @@
                  android:textAllCaps="false"
             />
              <Button
+                        android:id="@+id/UserAction_Force_Reach"
+                        android:layout_height="@dimen/gvbtn_top_small"
+                        android:text="@string/Label_Force_Reach"
+	                        android:layout_width="fill_parent"
+             				android:layout_weight="1"
+                android:background="@color/action_cancel"
+                android:visibility="gone"
+                 android:textAllCaps="false"
+            />
+             <Button
                         android:id="@+id/UserAction_Reach_Open"
                         android:layout_height="@dimen/gvbtn_top_small"
                         android:text="@string/Label_OpenReach"
@@ -133,6 +143,7 @@
                         android:text="@string/Label_ResetOpenReach"
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
+                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
             />
@@ -150,6 +161,7 @@
                         android:text="@string/Label_ResetReach"
                         android:layout_width="fill_parent"
                  			android:layout_weight="1"
+                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
              />

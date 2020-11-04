@@ -1,6 +1,7 @@
-//*CID://+va1aR~: update#= 489;                                    //+va1aR~
+//*CID://+va27R~: update#= 490;                                    //+va27R~
 //**********************************************************************//~v101I~
-//2020/10/19 va1a drop ronchk option,1han constraint only          //+va1aI~
+//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
+//2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/09/25 va12:add option:2han-30fu for 7pair                   //~va12I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~va12I~
@@ -314,8 +315,9 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_2TOUCH                =201;    //~9C09I~//~9C10R~
     public static final int    RSID_2TOUCH_CANCELABLE_RON =201;    //~9C10I~
     public static final int    RSID_2TOUCH_TIMEOUT        =202;    //~9C09I~
-//  public static final int    RSID_CHECK_RONABLE         =203;    //~0205I~//+va1aR~
+//  public static final int    RSID_CHECK_RONABLE         =203;    //~0205I~//~va1aR~
     public static final int    RSID_CHECK_RONVALUE        =204;    //~va11I~
+    public static final int    RSID_CHECK_REACH           =205;    //+va27I~
 //Yaku                                                                   //~9501I~//~9516R~
     public static final int    RSID_8CONTINUE             =300;    //~9516I~
     public static final int    RSID_8CONT_NONEEDYAKU      =301;    //~9516I~
@@ -429,8 +431,9 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  				new RSEnumPair(RSID_2TOUCH_TO_RON        ,"Delay2TTORon"         ),//~9C03R~//~9C09R~//~9C10R~
 //  				new RSEnumPair(RSID_2TOUCH               ,"2TouchCancelable"    ),//~9C09I~//~9C10R~
     				new RSEnumPair(RSID_2TOUCH_CANCELABLE_RON,"2TouchCancelableRon"    ),//~9C10I~
-//  				new RSEnumPair(RSID_CHECK_RONABLE        ,"CheckRonable"           ),//~0205I~//+va1aR~
+//  				new RSEnumPair(RSID_CHECK_RONABLE        ,"CheckRonable"           ),//~0205I~//~va1aR~
     				new RSEnumPair(RSID_CHECK_RONVALUE       ,"CheckRonValue"          ),//~va11I~
+    				new RSEnumPair(RSID_CHECK_REACH          ,"CheckReach"             ),//+va27I~
     				new RSEnumPair(RSID_2TOUCH_TIMEOUT       ,"2TouchTimeout"        ),//~9C09I~//~9C10R~
     				new RSEnumPair(RSID_TIMEOUT_TAKE         ,"TimeoutTake"          ),//~9622R~
     				new RSEnumPair(RSID_TIMEOUT_TAKEROBOT    ,"TimeoutTakeRobot"     ),//~9701I~

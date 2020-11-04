@@ -1,5 +1,7 @@
-//*CID://+va15R~: update#= 598;                                    //~va15R~
+//*CID://+va28R~: update#= 602;                                    //+va28R~
 //**********************************************************************//~v101I~
+//2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//+va28I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/10/13 va15 Add chk kuikae                                   //~va15I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
@@ -10,6 +12,7 @@ import com.btmtest.R;
 import com.btmtest.TestOption;
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;
+import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.GC;
@@ -18,6 +21,7 @@ import com.btmtest.game.Robot;
 import com.btmtest.game.TileData;
 import com.btmtest.game.UADelayed;
 import com.btmtest.game.UADelayed2;
+import com.btmtest.game.gv.GMsg;
 import com.btmtest.game.gv.Hands;
 import com.btmtest.game.gv.River;
 import com.btmtest.game.gv.Stock;
@@ -31,7 +35,6 @@ import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;                           //~v@@@I~
 import static com.btmtest.game.Players.*;
 import static com.btmtest.game.TileData.*;
-import static com.btmtest.game.UA.UAReach.*;
 import static com.btmtest.game.UserAction.*;                       //~v@@@I~
                                                                    //~v@@@I~
 public class UADiscard                                             //~v@@@R~
@@ -40,13 +43,11 @@ public class UADiscard                                             //~v@@@R~
     private Players PLS;                                           //~v@@@R~
     private UADelayed2 UADL;                                       //~9B28I~
     private boolean isServer;                                      //~v@@@I~
-//  private Tiles tiles;                                           //~v@@@I~//~v@@6R~
     private Hands hands;                                           //~v@@@I~
     private Stock stock;                                           //~v@@@I~
     private River river;                                           //~v@@@R~
     private TileData infoSelectedTD;                               //~v@@@I~
-//  private int delayTake,delayPonKan;
-//  private int timeout;                                           //~v@@6R~
+   private boolean swCheckReach;                                    //~va27I~
 //*************************                                        //~v@@@I~
 	public UADiscard(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
@@ -69,6 +70,7 @@ public class UADiscard                                             //~v@@@R~
 //      delayTake=OperationSetting.getDelayTake();                 //~v@@6R~
 //      delayPonKan=OperationSetting.getDelayPonKan();             //~v@@6R~
 //      timeout=RuleSetting.getTimeoutTake();                      //~v@@6R~
+    	swCheckReach= RuleSettingOperation.isCheckReach();         //~va27I~
         if (Dump.Y) Dump.println("UADiscard init");//~v@@@R~       //~v@@6R~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
@@ -125,6 +127,8 @@ public class UADiscard                                             //~v@@@R~
         	return false;                                          //~v@@@I~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("UADiscard.selectInfo td="+td.type+":"+td.number+":"+td.flag);//~v@@@R~//~v@@6R~
+		if (!chkTenpai(td))                                        //~va27I~
+			return false;                                          //~va27I~
     	if (isSameMeld(td))                                        //~va15I~
         	return false;                                          //~va15I~
         infoSelectedTD=td;                                         //~v@@@I~
@@ -133,6 +137,29 @@ public class UADiscard                                             //~v@@@R~
 	        UA.msgDataToServer=ACAction.strTD(td);                 //~v@@@R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
+	//*************************************************************************//~va27I~
+    private boolean chkTenpai(TileData PtdDiscard)                 //~va27I~
+    {                                                              //~va27I~
+    	boolean rc=true;                                           //~va27I~
+        if (Dump.Y) Dump.println("UADiscard.chkTenpai");           //~va27I~
+		int statReachOld=PLS.getReachStatus(PLAYER_YOU);           //~va27I~
+        if (statReachOld==REACH_BEFORE_DISCARD)                    //~va27I~
+        {                                                          //~va27I~
+            int actionID=PLS.getReachAction();                     //~va27I~
+            if (actionID==GCM_REACH||actionID==GCM_REACH_OPEN)     //~va27I~
+                if (swCheckReach)                                  //~va27R~
+                {                                                  //~va27R~
+                    if (!AG.aUAReachChk.chkReach(PLAYER_YOU,PtdDiscard))//~va27R~
+                    {                                              //~va27R~
+                        GMsg.drawMsgbar(R.string.Err_ReachNoten);  //~va27R~
+//                      AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//+va28R~
+                        return false;                              //~va27R~
+                    }                                              //~va27R~
+                }                                                  //~va27R~
+        }                                                          //~va27I~
+        if (Dump.Y) Dump.println("UADiscard.chkTenpai rc="+rc);    //~va27I~
+        return rc;                                                 //~va27I~
+    }                                                              //~va27I~
 	//*************************************************************************//~v@@@I~
     public boolean discard(boolean PswServer,boolean PswReceived,int Pplayer,int[] PintParm)//~v@@@R~
     {                                                              //~v@@@I~
@@ -449,7 +476,7 @@ public class UADiscard                                             //~v@@@R~
 	        if (Dump.Y) Dump.println("UADiscard.isSameMeld same tile");//~va15I~
             rc=true;                                               //~va15I~
         }                                                          //~va15I~
-        else                                                       //+va15I~
+        else                                                       //~va15I~
         if (typeSameMeld==EATCHANGE_EXCEPTIT)	//1:err only itself//~va15I~
         {                                                          //~va15I~
 	        if (Dump.Y) Dump.println("UADiscard.isSameMeld OK by prohibit itself only");//~va15I~

@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 755;                                    //~v@@@R~//~v@@7R~//~9321R~
+//*CID://+va27R~: update#= 758;                                    //~va27R~
 //**********************************************************************//~v101I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //v@@7 190130 isyourtturn                                          //~v@@7I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -819,7 +820,10 @@ public class UserAction       //~v@@@R~
             break;                                                 //~v@@@R~
         case GCM_REACH:                                            //~v@@@R~//~v@@7R~
         case GCM_REACH_OPEN:                                       //~v@@7I~
-            rc=UARE.selectInfo(isServer,Pplayer);                  //~v@@7I~
+        case GCM_FORCE_REACH:                                      //~va27I~
+        case GCM_FORCE_REACH_OPEN:                                 //~va27I~
+//          rc=UARE.selectInfo(isServer,Pplayer,);                 //+va27R~
+            rc=UARE.selectInfo(isServer,Pplayer,PactionID);        //+va27I~
             if (rc)                                                //~9A30R~//~9A31R~
     		    updateButtonStatusReach(PactionID);         //~9A30R~//~9A31R~
             break;                                                 //~v@@@R~//~v@@7R~
@@ -860,7 +864,8 @@ public class UserAction       //~v@@@R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@R~
 	//*************************************************************************//~9A31I~
-    private void updateButtonStatusReach(int Pactionid)            //~9A31I~
+//  private void updateButtonStatusReach(int Pactionid)            //~va27R~
+    public  void updateButtonStatusReach(int Pactionid)            //~va27I~
     {                                                              //~9A31I~
         if (Dump.Y) Dump.println("UserAction.updateButtonStatusReach actionid="+Pactionid);//~9A31I~
 		EventCB.postEvent(ECB_ACTION_REACH,Pactionid);	//to GC.updateButtonStatusReach onMainThread//~9A31I~
@@ -998,18 +1003,20 @@ public class UserAction       //~v@@@R~
 //          rc=takeKan(Pplayer);                                   //~v@@@R~//~v@@7R~
             rc=UAK.takeKan(PswServer,swReceived,Pplayer,PintParm); //~v@@7I~
         	break;                                                 //~v@@@I~
-	 	case GCM_TIMEOUT_TO_TAKABLE_RINSHAN:                       //+0403I~
-        	swKeepPrevActionID=true;	//not set to PrevActionID  //+0403I~
-        	swRobot=false;                                         //+0403I~
-            rc=UAK.clientTakableRinshan(Pplayer,PintParm);         //+0403I~
-        	break;                                                 //+0403I~
+	 	case GCM_TIMEOUT_TO_TAKABLE_RINSHAN:                       //~0403I~
+        	swKeepPrevActionID=true;	//not set to PrevActionID  //~0403I~
+        	swRobot=false;                                         //~0403I~
+            rc=UAK.clientTakableRinshan(Pplayer,PintParm);         //~0403I~
+        	break;                                                 //~0403I~
 	 	case GCM_REACH:                                            //~v@@@I~
+	 	case GCM_FORCE_REACH:                                      //~va27I~
 	        swRobot=false;                                         //~v@@7I~
 //          rc=reach(Pplayer);                                     //~v@@@R~//~v@@7R~
             rc=UARE.reach(PswServer,swReceived,Pplayer,PintParm);   //~v@@7I~
         	swKeepPrevActionID=true;	//not set to PrevActionID  //~v@@7I~
         	break;                                                 //~v@@@I~
 	 	case GCM_REACH_OPEN:                                       //~v@@7I~
+	 	case GCM_FORCE_REACH_OPEN:                                 //~va27I~
 	        swRobot=false;                                         //~v@@7I~
             rc=UARE.reachOpen(PswServer,swReceived,Pplayer,PintParm);//~v@@7I~
         	swKeepPrevActionID=true;	//not set to PrevActionID  //~v@@7I~

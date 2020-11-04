@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 389;                                    //~@@@@R~//~9214R~
+//*CID://+va27R~: update#= 391;                                    //~va27R~
 //**********************************************************************//~v101I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
+//**********************************************************************//~va27I~
 package com.btmtest.game;                                          //~@@@@R~
 
 import java.util.HashMap;
@@ -66,6 +68,9 @@ public enum GCMsgID                                                //~@@@@R~
     public static final int    GCM_RON_ANYWAY   =24;               //~0205I~
     public static final int    GCM_REACH_RESET  =25;               //~9A30I~
     public static final int    GCM_REACH_OPEN_RESET=26;            //~9A30I~
+    public static final int    GCM_FORCE_REACH         =27;        //~va27I~
+    public static final int    GCM_FORCE_REACH_OPEN    =28;        //+va27I~
+    public static final int    GCM_FORCE_REACH_ENABLE  =29;        //+va27R~
     public static final int    GCM_2TOUCH         =30;             //~9B18I~
 //    public static final int    GCM_PON_C        =32;             //~9B16R~//~9B17R~//~9B18R~
 //    public static final int    GCM_CHII_C       =33;             //~9B16R~//~9B17R~//~9B18R~
@@ -134,7 +139,7 @@ public enum GCMsgID                                                //~@@@@R~
     public static final int    GCM_TIMEOUT_TO_PONKAN          =310;//~9623I~
     public static final int    GCM_TIMEOUT_TO_TAKE            =311;//~9623I~//~9624R~
     public static final int    GCM_TIMEOUT_TO_LASTDRAWN       =312;//~9624I~
-    public static final int    GCM_TIMEOUT_TO_TAKABLE_RINSHAN =313;//+0403R~
+    public static final int    GCM_TIMEOUT_TO_TAKABLE_RINSHAN =313;//~0403R~
     public static final int    GCM_TIMEOUT_AUTOTAKE0          =320;//~9630I~
     public static final int    GCM_TIMEOUT_AUTOTAKE_KAN0      =321;//~9630I~
     public static final int    GCM_TIMEOUT_STOPAUTO           =322;//~9701I~

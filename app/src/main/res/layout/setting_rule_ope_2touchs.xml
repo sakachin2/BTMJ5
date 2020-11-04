@@ -160,4 +160,33 @@
                 android:layout_gravity="center_vertical"
         />
     </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+                android:gravity="center_vertical"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_CheckReach"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/textview_middle"
+        />
+        <CheckBox
+            android:id="@+id/cbCheckReach"
+            android:text="@string/Label_Yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Desc_CheckReach"
+            android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
 </LinearLayout>

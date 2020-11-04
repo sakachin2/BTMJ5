@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.03</string>
+    <string name="app_version">v1.04</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -698,6 +698,7 @@
     <string name="UserAction_Discard">打牌</string>
     <string name="UserAction_Reach_Open">オープンリーチ</string>
     <string name="UserAction_Reach_Open_YN">オープン立直あり</string>
+    <string name="Desc_OpenReach">ボット入りのときは下記、追加の設定あり</string>
     <string name="UserAction_Reach_Missing_YN">フリテン立直あり</string>
     <string name="UserAction_ReachReset">リーチを取り消しました</string>
     <string name="Label_AnkanAfterReach">立直後の暗槓あり</string>
@@ -753,6 +754,7 @@
     <string name="AE_NotYourTurn">あなたの番ではありません</string>
     <string name="AE_DiscardTaken">打牌してください</string>
     <string name="AE_NoTileSelected">打牌を選択してください</string>
+    <string name="AE_NoTileSelectedAtReach">打牌を選択してからリーチしてください</string>
     <string name="AE_YouHaveToTake">自摸番です</string>
     <string name="AE_TakeKanAdditional">槓したので、嶺上牌を自模ってください</string>
     <string name="AE_CouldNotReach">リーチできません</string>
@@ -798,6 +800,7 @@
     <string name="Info_EndGameDrawn_Halfway">途中流局申請です</string>
     <string name="Err_CouldNotMakePair">面子ができません</string>
     <string name="Err_RonChk">和了形ではありません</string>
+    <string name="Err_ReachNoten">その捨て牌ではテンパイ形になりません</string>
     <!--string name="Err_NoNeedRonAnyway">\"和了形の確認\"も\"１飜縛り\"も設定されてないので、通常の和了ボタンを使用できます</string-->
     <string name="Err_NoNeedRonAnyway">\"１飜縛り\"が設定されてないので、通常の和了ボタンを使用できます</string>
     <string name="Err_AmbiguousMakePair">複数面子候補、牌をタッチして面子を確定してください</string>
@@ -867,6 +870,7 @@
     <string name="Info_SuspendSaved">中断</string>
     <string name="Info_LastEndgame">終局</string>
     <string name="Label_ResetReach">リ取消</string>
+    <string name="Label_Force_Reach">聴牌！</string>
     <string name="Label_ResetOpenReach">オリ取消</string>
     <string name="Desc_SuspendPenalty">処理は省略値でダイアログで変更できます。罰金は均等払い、順位には影響しません。精算する場合、焼鳥はなしとします。\n接続障害の場合、\"パオ\"をチェック：ONするとこの設定にかかわらず、最低 8000*3 にすることができます。</string>
     <string name="Desc_SuspendGameover">\"持ち点\"は供出リーチ棒の返却を含みます。精算の場合、焼鳥はなしとします</string>
@@ -985,6 +989,7 @@
     <!--string name="Label_2TouchYesRonOnly">和了のみ有り</string-->
     <!--string name="Label_CheckRonable">和了形の確認</string-->
     <string name="Label_CheckRonValue">アプリで点数計算</string>
+    <string name="Label_CheckReach">テンパイ確認</string>
     <string name="Label_2TouchCancelableRon">和了は取り消し有り</string>
     <string name="Label_2TouchTimeout">時間切れ有り</string>
     <!--string name="Label_2TouchPonKanChii">ポン・カン・チー：</string-->
@@ -1019,6 +1024,7 @@
 						</string>
     <string name="Desc_CheckRonable">振りテンのチェックはしない。</string>
     <string name="Desc_CheckRonValue">ダイアログで修正可能</string>
+    <string name="Desc_CheckReach">立直のとき聴牌チェック、フリテンは考慮しない</string>
     <string name="Label_S2P">端数調整</string>
     <string name="Label_RankMUp">切り上げ満貫あり</string>
     <string name="Desc_RankMUp">（３０符４飜、６０符３飜は満貫）</string>

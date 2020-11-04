@@ -1,7 +1,10 @@
-//*CID://+va11R~: update#= 796;                                    //~va11R~
+//*CID://+va11R~: update#= 798;                                    //~va11R~
 //**********************************************************************//~v101I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
+//point Same  1/9/ji==>4/8  2->8==>2/4                             //+va11I~
+//point Kan   1/9/ji:16/32 tanyao:8/16                             //+va11I~
+//**********************************************************************//+va11I~
 package com.btmtest.game.UA;                                       //~va11R~
 
 import com.btmtest.TestOption;
@@ -105,8 +108,8 @@ public class UARonData                                             //~va11R~
         int pointNotNum=getPointNotNum();                          //~va11I~
         int base;                                                  //~va11I~
         boolean swAllInHand=UARDT.swAllInHand;                     //~va11R~
-//      base=swAllInHand ? POINT_ALLHAND : POINT_NOTALLHAND;       //+va11R~
-        base=(swAllInHand && !UARDT.swTaken) ? POINT_ALLHAND : POINT_NOTALLHAND;  //menzen ron:30,else 20//+va11I~
+//      base=swAllInHand ? POINT_ALLHAND : POINT_NOTALLHAND;       //~va11R~
+        base=(swAllInHand && !UARDT.swTaken) ? POINT_ALLHAND : POINT_NOTALLHAND;  //menzen ron:30,else 20//~va11I~
 //      int pointS[]=getPointNum(base+pointPillow+pointNotNum);    //~va11R~
         int pointS[]=getPointNum(base+pointNotNum);                //~va11I~
         if (Dump.Y) Dump.println("UARonData.getPoint pointNotNum="+pointNotNum+",swAllInHand="+swAllInHand+",base="+base+",pointS="+Arrays.toString(pointS));//~va11R~
@@ -162,7 +165,7 @@ public class UARonData                                             //~va11R~
             else                                                   //~va11I~
             	pt+=getPointSame(null,pair.swHand,pair.type,pair.number);//~va11R~
         }                                                          //~va11I~
-        if (Dump.Y) Dump.println("UARonData.getPointNotNum point="+pt);//~va11I~
+        if (Dump.Y) Dump.println("UARonData.getPointNotNum pt="+pt);//~va11R~
         return pt;                                                 //~va11I~
     }                                                              //~va11I~
     //******************************************                   //~va11I~

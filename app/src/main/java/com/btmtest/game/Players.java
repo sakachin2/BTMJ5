@@ -1,5 +1,7 @@
-//*CID://+va11R~: update#= 803;                                    //+va11R~
+//*CID://+va27R~: update#= 806;                                    //~va27R~
 //**********************************************************************//~v101I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
+//2020/11/01 va21 move chk1stTake to Players from CompReqDlg because static method mocking is hard//~va21I~
 //2020/10/13 va15 Add chk kuikae                                   //~va15I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
@@ -82,6 +84,24 @@ public class Players                                               //~v@@@R~
         for (int ii=0;ii<PLAYERS;ii++)                             //~v@@@I~
         	players[ii]=new Player(ii);                           //~v@@@I~
     }                                                              //~0914I~//~v@@@R~
+    //*************************************************************************//~va21I~
+    public boolean chk1stTake()                                    //~va21I~
+    {                                                              //~va21I~
+    	boolean rc=false;                                          //~va21I~
+//  	int lastAction=AG.aPlayers.actionBeforeRon;                //~va21I~
+    	int lastAction=actionBeforeRon;                            //~va21I~
+    	boolean swTake=lastAction==GCM_TAKE;                       //~va21I~
+        int currentEswn=AG.aAccounts.getCurrentEswn();             //~va21I~
+//      int ctrTaken=AG.aPlayers.ctrTakenAll;                      //~va21I~
+        int ctrTaken=ctrTakenAll;                                  //~va21I~
+//      int ctrDiscarded=AG.aPlayers.ctrDiscardedAll;              //~va21I~
+        int ctrDiscarded=ctrDiscardedAll;                          //~va21I~
+        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//~va21I~
+        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va21I~
+        rc=swParent | swChild;                                     //~va21I~
+        if (Dump.Y) Dump.println("Players.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va21I~
+        return rc;                                                 //~va21I~
+    }                                                              //~va21I~
     //*********************************************************    //~v@@@I~
     public  void newGame(boolean Psw1st,int Pplayer)                        //~v@@@I~//~9503R~
     {                                                              //~v@@@I~
@@ -1098,6 +1118,19 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("UserAction.reachOpen rc="+rc);   //~9301I~
         return rc;                                                 //~9301I~
     }                                                              //~9301I~
+    //*********************************************************************//~va27I~
+	public void setReachAction(int PactionID)                      //~va27I~
+    {                                                              //~va27I~
+    	players[PLAYER_YOU].actionReach=PactionID;                 //~va27I~
+        if (Dump.Y) Dump.println("Players.setReachAction PLAYER_YOU actionID="+PactionID);//~va27I~
+    }                                                              //~va27I~
+    //*********************************************************************//~va27I~
+	public int getReachAction()                                    //+va27R~
+    {                                                              //~va27I~
+    	int actionID=players[PLAYER_YOU].actionReach;              //~va27I~
+        if (Dump.Y) Dump.println("Players.getReachAction PLAYER_YOU actionID="+actionID);//~va27I~
+        return actionID;                                           //+va27I~
+    }                                                              //~va27I~
     //*********************************************************************//~v@@@I~
 	public int getDiscardedCtr(int Pplayer)                        //~v@@@I~
     {                                                              //~v@@@I~
@@ -1298,13 +1331,13 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.complete player="+Pplayer+",rc="+rc);//~v@@@R~
         return rc;  //completeflag                                               //~v@@@I~
      }                                                              //~v@@@I~
-    //*********************************************************************//+va11I~
-	public int getCompleteFlag(int Pplayer)                        //+va11I~
-    {                                                              //+va11I~
-        int rc=completeFlag;                      //+va11I~
-        if (Dump.Y) Dump.println("Players.getCompleteFlag player="+Pplayer+",rc=0x"+Integer.toHexString(rc));//+va11I~
-        return rc;  //completeflag                                 //+va11I~
-     }                                                             //+va11I~
+    //*********************************************************************//~va11I~
+	public int getCompleteFlag(int Pplayer)                        //~va11I~
+    {                                                              //~va11I~
+        int rc=completeFlag;                      //~va11I~
+        if (Dump.Y) Dump.println("Players.getCompleteFlag player="+Pplayer+",rc=0x"+Integer.toHexString(rc));//~va11I~
+        return rc;  //completeflag                                 //~va11I~
+     }                                                             //~va11I~
     //*********************************************************************//~9A12I~
 	public int resetComplete(int Pplayer)                          //~9A12I~
     {                                                              //~9A12I~
@@ -1582,6 +1615,7 @@ public class Players                                               //~v@@@R~
         private TileData tileKan;                                  //~v@@@I~//~9208M~
         private Rect[] pieceRectForAddKan;                         //~v@@@I~//~9208M~
 //      private boolean swLastActionIsKan;                         //~v@@@R~//~9208M~
+        private int actionReach;                                   //~va27I~
         //*****************************************************    //~v@@@I~
         public Player(int Pplayer)                                 //~v@@@I~
         {                                                          //~v@@@I~

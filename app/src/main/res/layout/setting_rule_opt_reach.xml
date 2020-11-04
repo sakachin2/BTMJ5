@@ -22,24 +22,11 @@
             android:layout_width="wrap_content"
     			android:background="@color/descriptiononly"
         />
-        <LinearLayout
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:orientation="horizontal"
-    			android:background="@color/getvalue"
-        >
-            <CheckBox
-                android:id="@+id/cbOneShot"
-                android:text="@string/Label_OneShot"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-            />
-	    </LinearLayout>
-        <CheckBox
-            android:id="@+id/cbMissingReach"
-            android:text="@string/UserAction_Reach_Missing_YN"
-            android:layout_height="wrap_content"
+        <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Desc_OpenReach"
+            android:layout_marginLeft="5dp"
         />
     </LinearLayout>  <!--line1-->
     <LinearLayout
@@ -48,11 +35,24 @@
          android:orientation="horizontal"
     >  <!--line1-->
         <CheckBox
+            android:id="@+id/cbOneShot"
+            android:text="@string/Label_OneShot"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+    			android:background="@color/getvalue"
+        />
+        <CheckBox
             android:id="@+id/cbAnkanAfterReach"
             android:text="@string/Label_AnkanAfterReach"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
     			android:background="@color/descriptiononly"
+        />
+        <CheckBox
+            android:id="@+id/cbMissingReach"
+            android:text="@string/UserAction_Reach_Missing_YN"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
         />
     </LinearLayout>  <!--line1-->
     <LinearLayout

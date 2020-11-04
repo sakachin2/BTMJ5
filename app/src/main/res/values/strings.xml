@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.03</string>
+    <string name="app_version">v1.04</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -711,6 +711,7 @@
     <string name="UserAction_Discard">Discard</string>
     <string name="UserAction_Reach_Open">OpenRiichi</string>
     <string name="UserAction_Reach_Open_YN">Allow Open</string>
+    <string name="Desc_OpenReach">Additional setting bellow if Robot included</string>
     <string name="UserAction_Reach_Missing_YN">Allow Furiten</string>
     <string name="UserAction_ReachReset">Canceled Riichi.</string>
     <string name="Label_AnkanAfterReach">Allow Ankan after Riichi.</string>
@@ -766,6 +767,7 @@
     <string name="AE_NotYourTurn">Not your turn.</string>
     <string name="AE_DiscardTaken">You have to discard.</string>
     <string name="AE_NoTileSelected">Select tile to discard.</string>
+    <string name="AE_NoTileSelectedAtReach">Select tile to discard before Riichi call.</string>
     <string name="AE_YouHaveToTake">Your turn to draw.</string>
     <string name="AE_TakeKanAdditional">Draw Kan tile.</string>
     <string name="AE_CouldNotReach">Not able to Riichi.</string>
@@ -812,6 +814,7 @@
     <string name="Info_EndGameDrawn_Halfway">In claming AbortiveDraw</string>
     <string name="Err_CouldNotMakePair">Can not make a Meld.</string>
     <string name="Err_RonChk">Can not compose a winning hand.</string>
+    <string name="Err_ReachNoten">Not Tenpai(Not next-to-win state) by the Discard</string>
     <!--string name="Err_NoNeedRonAnyway">Use \"Win\" button because setting \"Check winning hand\" and check of \"1 han-constraint\" is Off.</string-->
     <string name="Err_NoNeedRonAnyway">Use \"Win\" button because setting of \"1 han-constraint\" checking is Off.</string>
     <string name="Err_AmbiguousMakePair">Multiple candidates for a Meld, touch the tile in hand to fix a Meld.</string>
@@ -880,6 +883,7 @@
     <string name="Info_SuspendSaved">SuspendGame</string>
     <string name="Info_LastEndgame">Gameover</string>
     <string name="Label_ResetReach">Can.Ri</string>
+    <string name="Label_Force_Reach">Tenpai!</string>
     <string name="Label_ResetOpenReach">Can.OR</string>
     <string name="Desc_SuspendPenalty">Option is default and changeable on dialog. Penalty is divided equally, no effect to placement.
 				 When Gameover, Yakitori penalty is not imposed. 
@@ -1000,6 +1004,7 @@
     <!--string name="Label_2TouchYesRonOnly">For Win only</string-->
     <!--string name="Label_CheckRonable">Check winning hand</string-->
     <string name="Label_CheckRonValue">Evaluate Point by App.</string>
+    <string name="Label_CheckReach">Confirm Tenpai.</string>
     <string name="Label_2TouchCancelableRon">Win call is cancelable.</string>
     <string name="Label_2TouchTimeout">Timeout:Yes</string>
     <!--string name="Label_2TouchPonKanChii">Pon/Kan/Chii:</string-->
@@ -1012,6 +1017,7 @@
 						</string>
     <string name="Desc_CheckRonable">Furiten not checked.</string>
     <string name="Desc_CheckRonValue">You can correct it on Dialog.</string>
+    <string name="Desc_CheckReach">At Reach call, Furiten is not checked.</string>
     <string name="Label_S2P">Fraction</string>
     <string name="Label_RankMUp">Rounded Mangan</string>
     <string name="Desc_RankMUp">(30fu4han and 60fu3han is Mangan）</string>

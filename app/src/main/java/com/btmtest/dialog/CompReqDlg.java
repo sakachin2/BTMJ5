@@ -1,6 +1,7 @@
-//*CID://+va1cR~:                             update#=  860;       //~va16R~//+va1cR~
+//*CID://+va20R~:                             update#=  862;       //+va20R~
 //*****************************************************************//~v101I~
-//2020/10/20 va1c send net point to show setYaku on CompReqDlg     //+va1cI~
+//2020/11/01 va21 move chk1stTake to Players from CompReqDlg because static method mocking is hard//+va20I~
+//2020/10/20 va1c send net point to show setYaku on CompReqDlg     //~va1cI~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va16I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
@@ -406,8 +407,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         	idxRank=calcOut[CALC_AMT_IDXRANK];                     //~9221I~
         	int han=calcOut[CALC_AMT_HAN];                         //~va11I~
             int net=calcOut[CALC_AMT_NET];                         //~va11I~
-//      	int point=intsPoint[idxPoint];                         //~va11I~//+va1cR~
-        	int point=calcOut[CALC_AMT_NETPOINT];                  //+va1cI~
+//      	int point=intsPoint[idxPoint];                         //~va11I~//~va1cR~
+        	int point=calcOut[CALC_AMT_NETPOINT];                  //~va1cI~
             longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW]);//~va11I~
             ronResult=new RonResult(net,han,point,longRank);       //~va11I~
 	    	if (Dump.Y) Dump.println("CompReqDlg.setupValue Received ronResult="+ronResult.toString());//~va11R~
@@ -1497,7 +1498,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             }                                                      //~va16I~
         	if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank idxPoint="+idxPoint+",idxRank="+idxRank+",result="+ronResult.toString());//~va11R~
         	calcOut[CALC_AMT_HAN]=rank;                            //~va11I~
-        	calcOut[CALC_AMT_NETPOINT]=point;                      //+va1cI~
+        	calcOut[CALC_AMT_NETPOINT]=point;                      //~va1cI~
             int[] intS=longRank.rankToIntS();                  //~va11I~
         	calcOut[CALC_AMT_RANKHIGH]=intS[0];                   //~va11I~
         	calcOut[CALC_AMT_RANKLOW]=intS[1];                     //~va11I~
@@ -1536,18 +1537,20 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //        return rc;                                                 //~va11I~//~va16R~
 //    }                                                              //~va11I~//~va16R~
     //*************************************************************************//~va11I~
-    public static boolean chk1stTake()            //tenho   //~va11R~
+    public static boolean chk1stTake()            //tenho          //~va1cR~
     {                                                              //~va11I~
-    	boolean rc=false;                                          //~va11R~
-    	int lastAction=AG.aPlayers.actionBeforeRon;                //~va11I~
-    	boolean swTake=lastAction==GCM_TAKE;                       //~va11I~
-        int currentEswn=AG.aAccounts.getCurrentEswn();             //~va11I~
-        int ctrTaken=AG.aPlayers.ctrTakenAll;                           //~va11R~
-        int ctrDiscarded=AG.aPlayers.ctrDiscardedAll;              //~va11R~
-        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1; //~va11I~
-        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va11I~
-        rc=swParent | swChild;                                     //~va11R~
-        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va11R~
+//        boolean rc=false;                                        //+va20R~
+//        int lastAction=AG.aPlayers.actionBeforeRon;              //+va20R~
+//        boolean swTake=lastAction==GCM_TAKE;                     //+va20R~
+//        int currentEswn=AG.aAccounts.getCurrentEswn();           //+va20R~
+//        int ctrTaken=AG.aPlayers.ctrTakenAll;                    //+va20R~
+//        int ctrDiscarded=AG.aPlayers.ctrDiscardedAll;            //+va20R~
+//        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//+va20R~
+//        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//+va20R~
+//        rc=swParent | swChild;                                   //+va20R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//+va20R~
+        boolean rc=AG.aPlayers.chk1stTake();                       //+va20I~
+        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc);  //+va20I~
         return rc;
     }                                                              //~va11I~
 //    //*************************************************************************//~va11I~//~va16R~

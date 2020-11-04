@@ -1,7 +1,8 @@
-//*CID://+va06R~: update#= 661;                                    //~va02R~//~va06R~//~va02R~//~va06R~
+//*CID://+va27R~: update#= 667;                                    //~va02R~//~va06R~//~va02R~//~va27R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
 //**********************************************************************//~va02I~
@@ -90,6 +91,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int BTNID_DLGCOMPR=R.id.UserAction_DlgCompResult;//~v@@@I~
     private static final int BTNID_REACH_OPEN  =R.id.UserAction_Reach_Open;//~9301I~
     private static final int BTNID_REACH_OPEN_RESET  =R.id.UserAction_Reach_Open_Reset;//~9A30I~
+    private static final int BTNID_FORCE_REACH =R.id.UserAction_Force_Reach;//~va27I~
     private static final int BTNID_DRAWNGAME   =R.id.UserAction_DrawnGame;//~9302I~
     private static final int BTNID_MINUSSTOP   =R.id.UserAction_MinusStop;//~9322I~
     private static final int BTNID_ENDSCORE    =R.id.UserAction_EndScore;//~9402I~
@@ -136,11 +138,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //    private UButton btnReach,btnReachOpen,btnRon;                //~9301I~
 	private Button btnPon,btnKan,btnChii,btnRon;                   //~9B25I~
     private Button btnReach,btnReachOpen,btnReachReset,btnReachOpenReset;//~9A30I~
+    private Button btnForceReach;                                  //~va27I~
     private Button btnTake,btnDiscard;                             //~9701I~
     private Button btnAnyway;                                      //~va06I~
     private Button btnActionCancel;                                //~9B25I~
     private boolean swBtnReach;                                    //~9A30I~
     private boolean swOpenReach;                                   //~9A31I~
+    private boolean swOpenReachNow;                                //~va27I~
     public  boolean swGameView;                                    //~9B06I~
 //  private int btnBackgroundColor;                                //~9B25R~
     private Drawable btnBackgroundColor;                           //~9B25I~
@@ -444,6 +448,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         UButton.bind(btns1,BTNID_REACH,this);                       //~v@@@I~//~9618I~
     btnReachReset=UButton.bind(btns1,BTNID_REACH_RESET,this);      //~9A30I~
     btnReachOpenReset=UButton.bind(btns1,BTNID_REACH_OPEN_RESET,this);//~9A30I~
+    btnForceReach=UButton.bind(btns1,BTNID_FORCE_REACH,this);      //~va27I~
                                                                    //~v@@@I~
     btnTake=                                                       //~9701I~
         UButton.bind(btns2,BTNID_TAKE,this);                        //~v@@@I~
@@ -623,6 +628,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //          updateButtonStatusReach(id);                           //~9A30R~//~9A31R~
         	sendMsg(GCM_REACH_OPEN_RESET,null);                    //~9A30I~
             break;                                                 //~9A30I~
+        case BTNID_FORCE_REACH:                                    //~va27I~
+			if (isRestarting())                                    //~va27I~
+            	break;                                             //~va27I~
+        	sendMsg(swOpenReachNow ? GCM_FORCE_REACH_OPEN : GCM_FORCE_REACH,null);//~va27I~
+            break;                                                 //~va27I~
         case BTNID_RON:                                           //~v@@@I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
@@ -671,9 +681,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case BTNID_ACTION_CANCEL:                                  //~9B25I~
         	actionCancel();                                        //~9B25I~
             break;                                                 //~9B25I~
-        case BTNID_ANYWAY:                                         //+va06I~
-        	actionAnyway();                                        //+va06I~
-            break;                                                 //+va06I~
+        case BTNID_ANYWAY:                                         //~va06I~
+        	actionAnyway();                                        //~va06I~
+            break;                                                 //~va06I~
         default:                                                   //~v@@@I~
         	Alert.showMessage("btn?","Action?");                   //~v@@@I~
         }                                                          //~v@@@I~
@@ -1262,28 +1272,53 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        }                                                        //~9A12I~
         AG.aStatus.suspendGameResetComplete();
     }//~9A12I~
+    //*******************************************************************//~va27I~
+    private void calledReach()                                     //~va27I~
+    {                                                              //~va27I~
+            btnReach.setVisibility(View.GONE);                     //~va27I~
+            btnReachReset.setVisibility(View.VISIBLE);             //~va27I~
+            if (swOpenReach)                                       //~va27I~
+	            btnReachOpen.setEnabled(false);                    //~va27I~
+            swBtnReach=true;                                       //~va27I~
+            swOpenReachNow=false;                                  //~va27I~
+    }                                                              //~va27I~
+    //*******************************************************************//+va27I~
+    private void calledReachOpen()                                 //~va27I~
+    {                                                              //~va27I~
+            btnReachOpen.setVisibility(View.GONE);                 //~va27I~
+            btnReachOpenReset.setVisibility(View.VISIBLE);         //~va27I~
+            btnReach.setEnabled(false);                            //~va27I~
+            swBtnReach=true;                                       //~va27I~
+            swOpenReachNow=true;                                   //~va27I~
+    }                                                              //~va27I~
     //*******************************************************************//~9A30I~
     //*from UserAction after isYourTurn().rc=OK thru MainActivity with EventCB     //~9A30I~//~9A31R~
     //*******************************************************************//~9A30I~
     public void updateButtonStatusReach(int PactionID)                //~9A30R~//~9A31R~
     {                                                              //~9A30I~
-        if (Dump.Y) Dump.println("GC.updateButtonStatusReach actionID="+PactionID+",swBtnReach="+swBtnReach);//~9A30R~//~9A31R~
+        if (Dump.Y) Dump.println("GC.updateButtonStatusReach actionID="+PactionID+",swBtnReach="+swBtnReach+",swOpenReach="+swOpenReach+",swOpenReachNow="+swOpenReachNow);//~9A30R~//~va27R~
     	switch(PactionID)                                             //~9A30R~
         {                                                          //~9A30I~
         case GCM_REACH:     //action id is on GVH thread           //~9A30R~//~9A31R~
 //      case BTNID_REACH:                                          //~9A30I~//~9A31R~
-            btnReach.setVisibility(View.GONE);                     //~9A30I~
-            btnReachReset.setVisibility(View.VISIBLE);             //~9A30I~
-            if (swOpenReach)                                       //~9A31I~
-	            btnReachOpen.setEnabled(false);                        //~9A30I~//~9A31R~
-            swBtnReach=true;                                       //~9A30I~
+//            btnReach.setVisibility(View.GONE);                   //~va27R~
+//            btnReachReset.setVisibility(View.VISIBLE);           //~va27R~
+//            if (swOpenReach)                                     //~va27R~
+//                btnReachOpen.setEnabled(false);                        //~9A30I~//~va27R~
+//            swBtnReach=true;                                     //~va27R~
+//            swOpenReachNow=false;                                //~va27R~
+			calledReach();                                         //~va27I~
+            btnForceReach.setVisibility(View.GONE);                //+va27I~
             break;                                                 //~9A30I~
         case GCM_REACH_OPEN:                                       //~9A30R~//~9A31R~
 //      case BTNID_REACH_OPEN:                                     //~9A30I~//~9A31R~
-            btnReachOpen.setVisibility(View.GONE);                 //~9A30I~
-            btnReachOpenReset.setVisibility(View.VISIBLE);         //~9A30I~
-            btnReach.setEnabled(false);                            //~9A30I~
-            swBtnReach=true;                                       //~9A30I~
+//            btnReachOpen.setVisibility(View.GONE);               //~va27R~
+//            btnReachOpenReset.setVisibility(View.VISIBLE);       //~va27R~
+//            btnReach.setEnabled(false);                          //~va27R~
+//            swBtnReach=true;                                     //~va27R~
+//            swOpenReachNow=true;                                 //~va27R~
+			calledReachOpen();                                     //~va27I~
+            btnForceReach.setVisibility(View.GONE);                //+va27I~
             break;                                                 //~9A30I~
         case GCM_REACH_RESET:                                      //~9A30R~//~9A31R~
 //      case BTNID_REACH_RESET:                                    //~9A30I~//~9A31R~
@@ -1291,16 +1326,32 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             btnReachReset.setVisibility(View.GONE);                //~9A30I~
             if (swOpenReach)                                       //~9A31I~
     	        btnReachOpen.setEnabled(true);                         //~9A30I~//~9A31R~
+            btnForceReach.setVisibility(View.GONE);                //~va27I~
             swBtnReach=false;                                      //~9A30I~
+            swOpenReachNow=false;                                  //~va27I~
             break;                                                 //~9A30I~
         case GCM_REACH_OPEN_RESET:                                 //~9A30R~//~9A31R~
 //      case BTNID_REACH_OPEN_RESET:                               //~9A30I~//~9A31R~
             btnReachOpen.setVisibility(View.VISIBLE);              //~9A30I~
             btnReachOpenReset.setVisibility(View.GONE);            //~9A30I~
             btnReach.setEnabled(true);                             //~9A30I~
+            btnForceReach.setVisibility(View.GONE);                //~va27I~
             swBtnReach=false;                                      //~9A30I~
+            swOpenReachNow=false;                                  //~va27I~
             break;                                                 //~9A30I~
+        case GCM_FORCE_REACH:                                      //~va27I~
+            btnForceReach.setVisibility(View.GONE);                //~va27I~
+			calledReach();                                         //~va27I~
+            break;                                                 //~va27I~
+        case GCM_FORCE_REACH_OPEN:                                 //~va27I~
+            btnForceReach.setVisibility(View.GONE);                //~va27I~
+			calledReachOpen();                                     //~va27I~
+            break;                                                 //~va27I~
+        case GCM_FORCE_REACH_ENABLE:                               //~va27I~
+            btnForceReach.setVisibility(View.VISIBLE);             //~va27I~
+            break;                                                 //~va27I~
         default:    //at Discard                                   //~9A30I~//~9A31R~
+            swOpenReachNow=false;                                  //~va27I~
             if (!swBtnReach)                                       //~9A30I~
             	break;                                             //~9A30I~
             btnReach.setVisibility(View.VISIBLE);                  //~9A30I~
@@ -1375,12 +1426,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.actionCancel");               //~9B25I~
         AG.aUAD2Touch.actionCancel();                           //~9B25R~
     }                                                              //~9B25I~
-    //*******************************************************************//+va06I~
-    private void actionAnyway()                                    //+va06I~
-    {                                                              //+va06I~
-		if (Dump.Y) Dump.println("GC.actionAnyway");               //+va06I~
-        UARon.winAnyway();                                         //+va06I~
-    }                                                              //+va06I~
+    //*******************************************************************//~va06I~
+    private void actionAnyway()                                    //~va06I~
+    {                                                              //~va06I~
+		if (Dump.Y) Dump.println("GC.actionAnyway");               //~va06I~
+        UARon.winAnyway();                                         //~va06I~
+    }                                                              //~va06I~
     //*******************************************************************//~9B25I~
     //*from Action2Touch on MainThread                             //~9B25I~
     //*******************************************************************//~9B25I~

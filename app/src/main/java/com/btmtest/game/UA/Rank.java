@@ -1,4 +1,4 @@
-//*CID://+va11R~: update#= 824;                                    //~va11R~
+//*CID://+va11R~: update#= 826;                                    //~va11R~
 //**********************************************************************//~v101I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
@@ -91,7 +91,7 @@ public class Rank                                                  //~va11R~
     private static final long MASK_STANDARD  =0x00000000FFFFFFFFL; //~va11R~
     private static final long MASK_LOW       =0x00000000FFFFFFFFL; //~va11R~
     private static final long MASK_YAKUMAN   =0x00FFFFFF00000000L; //~va11I~
-    private static final long MASK_YAKU      =0x30FFFFFFFFFFFFFFL; //except dora//+va11R~
+    private static final long MASK_YAKU      =0x30FFFFFFFFFFFFFFL; //except dora//~va11R~
     private static final long BIT_BYRANK=(1L<<RYAKU_BYRANK);       //~va11I~
                                                                    //~va11I~
                                                                    //~va11I~
@@ -489,7 +489,7 @@ public class Rank                                                  //~va11R~
     {                                                              //~va11I~
     	int ctr=(int)(Prank.rank>>DORA_SHIFTIN);                   //~va11I~
         ctr&=DORA_MASK;                                            //~va11I~
-    	if (Dump.Y) Dump.println("Rank.getDora rc="+ctr+",rank="+toString(Prank));//~va11I~
+//  	if (Dump.Y) Dump.println("Rank.getDora rc="+ctr+",rank="+toString(Prank));//~va11R~
         return ctr;                                                //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
@@ -502,7 +502,7 @@ public class Rank                                                  //~va11R~
     {                                                              //~va11I~
     	int ctr=(int)(Prank.rank>>WGR_SHIFTIN);                    //~va11I~
         ctr&=WGR_MASK;                                             //~va11I~
-    	if (Dump.Y) Dump.println("Rank.getWGR rc="+ctr+",rank="+toString(Prank));//~va11I~
+//  	if (Dump.Y) Dump.println("Rank.getWGR rc="+ctr+",rank="+toString(Prank));//+va11R~
         return ctr;                                                //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~

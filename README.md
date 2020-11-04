@@ -1,6 +1,6 @@
 ﻿# README.md 
 *************************************************************************
-ｅ雀（Jong)           2020/04/11  V1.01
+ｅ雀（Jong)           2020/11/05  V1.04
 Japanese style Mahjong game to play among your friends.
 No specific server machine is required.
 *****
@@ -15,7 +15,7 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 *************************************************************************
 (Japanese)
-ｅ雀                  2020/04/11  V1.01
+ｅ雀                  2020/11/05  V1.04
 *****
 サーバーが不要な、仲間内で遊ぶ、"麻雀"対戦アプリです。
 *****

@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 573;                                    //~v@@@R~//~v@@6R~//~9309R~
+//*CID://+va28R~: update#= 581;                                    //+va28R~
 //**********************************************************************//~v101I~
+//2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//+va28I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -7,6 +9,8 @@ package com.btmtest.game.UA;                                         //~1107R~  
 
 import com.btmtest.R;
 import com.btmtest.TestOption;
+import com.btmtest.dialog.RuleSetting;
+import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Players;
@@ -36,6 +40,7 @@ public class UAReach                                                //~v@@@R~//~
 	public static final int OPT_OPEN_ONLY99=9;      //no need to send Hands//~9519I~
                                                                    //~v@@6I~
     private UserAction UA;                                         //~v@@@I~
+    private UAReachChk UARC;                                       //~va27I~
     private Players PLS;                                           //~v@@@R~
     private boolean isServer;                                      //~v@@@I~
 //  private Tiles tiles;                                           //~v@@@I~//~v@@6R~
@@ -44,6 +49,8 @@ public class UAReach                                                //~v@@@R~//~
 //  private Accounts ACC;                                          //~v@@6R~
 //  private boolean statusReach;                                   //~v@@6R~
     private River river;                                           //~v@@@I~//~v@@6R~
+    private boolean swCheckReach;                                  //~va27I~
+    private int actionID;                                          //~va27I~
 //*************************                                        //~v@@@I~
 	public UAReach(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~v@@6R~
     {                                                              //~0914I~
@@ -54,6 +61,7 @@ public class UAReach                                                //~v@@@R~//~
 	//*************************************************************************//~v@@@I~
 	public void init()                                             //~v@@@I~
     {                                                              //~v@@@I~
+        if (Dump.Y) Dump.println("UserReach init");//~v@@@I~       //~va27I~
         PLS=AG.aPlayers;                                           //~v@@@R~
 //      tiles=AG.aTiles;                                           //~v@@@R~//~v@@6R~
 //      hands=AG.aHands;                                           //~v@@6R~
@@ -63,7 +71,8 @@ public class UAReach                                                //~v@@@R~//~
 //      ACC=AG.aAccounts;                                          //~v@@@R~//~v@@6R~
 //        acaction=AG.aACAction;                                   //~v@@@I~
 //      isServer=Accounts.isServer();                              //~v@@@R~//~v@@6R~
-        if (Dump.Y) Dump.println("UserAction init");//~v@@@I~      //~v@@6R~
+        UARC=new UAReachChk();                                     //~va27I~
+    	swCheckReach= RuleSettingOperation.isCheckReach();//~va27I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@6I~
     public boolean reach(int Pplayer)                              //~v@@6I~
@@ -77,14 +86,43 @@ public class UAReach                                                //~v@@@R~//~
         return true;                                               //~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~v@@6I~
-    public boolean selectInfo(boolean PswServer,int Pplayer)       //~v@@6I~
+//  public boolean selectInfo(boolean PswServer,int Pplayer)       //~va27R~
+    public boolean selectInfo(boolean PswServer,int Pplayer,int PactionID)//~va27I~
     {                                                              //~v@@6I~
+        if (Dump.Y) Dump.println("UAReach.selectInfo actionID="+PactionID+",swServer="+PswServer+",player="+Pplayer+",swCheckReach="+swCheckReach);//~va27R~
+        actionID=PactionID;                                        //~va27I~
 //        statusReach=PLS.reachAvailableStatus();                  //~v@@6R~
 //        boolean rc=(statusReach!=REACH_NA)                       //~v@@6R~
+		if (!chkTenpai(PactionID))                                 //~va27R~
+			return false;                                          //~va27R~
 		boolean rc=AG.aUADelayed.chkSelectInfo2TouchOtherAction(PswServer,GCM_TAKE,Pplayer);//~9B28R~
-        if (Dump.Y) Dump.println("UAReach.selectInfo swServer="+PswServer+",player="+Pplayer+",rc="+rc);//~v@@6R~
+        if (Dump.Y) Dump.println("UAReach.selectInfo rc="+rc);     //~va27R~
         return rc;
     }                                                              //~v@@6I~
+	//*************************************************************************//~va27I~
+    private boolean chkTenpai(int PactionID)                       //~va27R~
+    {                                                              //~va27I~
+    	boolean rc=true;                                           //~va27I~
+        if (Dump.Y) Dump.println("UAReach.chkTenpai");             //~va27I~
+        if (PactionID==GCM_REACH||PactionID==GCM_REACH_OPEN)	//not FORCE//~va27I~
+            if (swCheckReach)                                      //~va27R~
+            {                                                      //~va27R~
+                TileData td=PLS.getTileSelected(PLAYER_YOU);       //~va27R~
+                if (td==null)                                      //~va27R~
+                {                                                  //~va27R~
+                    GMsg.drawMsgbar(R.string.AE_NoTileSelectedAtReach);//~va27R~
+                    return false;                                  //~va27R~
+                }                                                  //~va27R~
+                if (!UARC.chkReach(PLAYER_YOU,td))                 //~va27R~
+                {                                                  //~va27R~
+                    GMsg.drawMsgbar(R.string.Err_ReachNoten);      //~va27R~
+//                  AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//+va28R~
+                    return false;                                  //~va27R~
+                }                                                  //~va27R~
+            }                                                      //~va27R~
+        if (Dump.Y) Dump.println("UAReach.chkTenpai rc="+rc);      //~va27I~
+        return rc;                                                 //~va27I~
+    }                                                              //~va27I~
 	//*************************************************************************//~v@@@I~
 	//*Pplayer: relative pos of triggered player                   //~v@@@R~
 	//*************************************************************************//~v@@@I~
@@ -123,7 +161,10 @@ public class UAReach                                                //~v@@@R~//~
 //		swDraw=Pplayer==PLAYER_YOU;                                //~v@@@I~//~v@@6R~
         river.reach(Pplayer);                                      //~v@@6I~
   	    if (Pplayer==PLAYER_YOU)                                   //~9A30I~
+        {                                                          //~va27I~
 	        ACAction.showErrmsg(0,R.string.UserAction_Reach);	//show requester only//~9A30I~
+        	PLS.setReachAction(actionID);	//chk at Discard       //~va27I~
+        }                                                          //~va27I~
         GMsg.showHL(0,GCM_REACH);                                  //~9C02I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
@@ -155,8 +196,10 @@ public class UAReach                                                //~v@@@R~//~
         }                                                          //~v@@6I~
         river.reach(Pplayer);                                      //~v@@6I~
   	    if (Pplayer==PLAYER_YOU)                                   //~9A30R~
+        {                                                          //~va27I~
 	        ACAction.showErrmsg(0,R.string.UserAction_Reach_Open);	//show requester only//~9A30I~
-                                                                   //~9A30I~
+        	PLS.setReachAction(actionID);	//chk at Discard       //~va27I~
+        }                                                          //~va27I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_OPEN)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
         GMsg.showHL(0,GCM_REACH);                                  //~9C02I~
@@ -344,7 +387,7 @@ public class UAReach                                                //~v@@@R~//~
     //*************************************************************************//~v@@6I~
     public static void postOpenOnly(int Pplayer,boolean PswReach)      //~v@@6R~
     {                                                              //~v@@6I~
-        if (Dump.Y) Dump.println("UAReach.postOpenOnly player="+Pplayer+",swReach="+PswReach);//~v@@6R~//~9519R~//+0329R~
+        if (Dump.Y) Dump.println("UAReach.postOpenOnly player="+Pplayer+",swReach="+PswReach);//~v@@6R~//~9519R~//~0329R~
         GameViewHandler.sendMsg(GCM_OPEN,Pplayer,PswReach ? OPT_OPEN_ONLY_REACH : OPT_OPEN_ONLY_PENDING,0);//~v@@6R~
     }                                                              //~v@@6I~
     //*************************************************************************//~9519I~

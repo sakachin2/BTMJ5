@@ -1,5 +1,8 @@
-//*CID://+va1aR~: update#= 883;                                    //~va1aR~
+//*CID://+va24R~: update#= 896;                                    //~va24R~
 //**********************************************************************//~v101I~
+//2020/11/02 va24 chkCompleteSub may cause stackoverflow           //~va24I~
+//2020/11/02 va23 use Junit for UARonValue                         //~va23I~
+//2020/10/20 va20 use Junit for UARonchk                           //~va20I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
@@ -40,11 +43,14 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //    private int ctrTileAll;                                        //~9C12I~//~va11R~
     public int[][] dupCtrAll=new int[PIECE_TYPECTR_ALL][PIECE_NUMBERCTR];//hand and earth //4*9//~va11R~
 //  private Rect ronValue;  //(value,yaky,han,fu)                  //~va11R~
-    private RonResult ronResult;                                   //~va11I~
-    private TileData tdRonLast;                                    //~va11I~
+//  private RonResult ronResult;                                   //~va23R~
+    protected RonResult ronResult;                                 //~va23I~
+    protected TileData tdRonLast;                                  //~va24R~
     public  TileData tdRonRiver;		//river ronTile when not taken(not on tdsHand)//~va11R~
-    private boolean sw13WaitAll,sw7Pair50,sw7Pair30,swAllGreenNoDragon;//~va11R~
-    private boolean sw4WindDouble,sw9GateManOnly,sw9GateDouble,swRankMUp;//~va11R~
+    public boolean sw13WaitAll;                                 //~va24R~
+    private boolean sw7Pair50,sw7Pair30,swAllGreenNoDragon;       //~va24I~
+    public boolean sw4WindDouble,sw9GateDouble;                    //~va24R~
+    private boolean sw9GateManOnly,swRankMUp;                      //~va24R~
     private UARonDataTree UARDT;                                   //~va11I~
     public  TileData[][] tdssEarth;                                //~va11R~
     public  TileData[] tdsHand;                                    //~va11I~
@@ -55,8 +61,9 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //  public  boolean swAllHand;                                     //~va11R~
 //  private CompReqDlg compReqDlg;                                 //~va11R~
     public boolean sw7P;                                           //~va11I~
-    private boolean sw1stTake;                                     //~va11I~
-    private int ctrAnkan;
+    protected boolean sw1stTake;                                   //~va24R~
+//  private int ctrAnkan;                                          //~va23R~
+    protected int ctrAnkan;	//for androidTest                      //~va23I~
     public boolean swChkRank;                                      //~va11I~
     public Pair[] pairEarth;                                       //~va11I~
     private boolean swRonnable;                                    //~va11I~
@@ -160,7 +167,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         	pairEarth=testPairEarth;                               //~va11I~
         	swAllInHand=testSwAllHand;                             //~va11R~
         }                                                          //~va11I~
-        boolean rc=chkCompleteSub();                               //~va11R~
+//      boolean rc=chkCompleteSub();                               //~va24R~
+        boolean rc=chkRonValueSub();                               //~va24I~
         if (Dump.Y) Dump.println("UARonValue.getValue rc="+rc+",ronvalue="+ronResult.toString());//~va11R~
         return ronResult;                                          //~va11R~
     }                                                              //~va11I~
@@ -215,17 +223,19 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         return ronResult;                                          //~va11R~
     }                                                              //~va11I~
 	//*************************************************************************//~va11M~
-    private boolean chkCompleteSub()                                  //~va11R~
+//  private boolean chkCompleteSub()                               //~va20R~
+//  protected boolean chkCompleteSub()                             //~va24R~
+    protected boolean chkRonValueSub()                             //~va24I~
     {
         int rank;//~va11M~
     	ronResult=new RonResult(0,0,0,new Rank());                                 //~va11R~
     	swYakuman=false;                                           //~va11I~
 		swTanyao=false;                                            //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.chkCompleteSub dupctr="+Utils.toString(dupCtr));//~va11M~
+        if (Dump.Y) Dump.println("UARonValue.chkRonValueSub dupctr="+Utils.toString(dupCtr));//~va24R~
 //        if (!swCheckRonable)   //ronchk not done                 //~va11R~
 //        {                                                        //~va11R~
 //            swRonnable=chkRonnable();                            //~va11R~
-//            if (Dump.Y) Dump.println("UARonValue.chkCompleteSub swRonnable="+swRonnable);//~va11R~
+//            if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swRonnable="+swRonnable);//~va24R~
 //        }                                                        //~va11R~
         UARDT=new UARonDataTree(this,player,dupCtr);	//chk dora //~va11R~
         if (chk13NoPair())  //13/14 avoid dup with tenho,chiiho    //~va11R~
@@ -238,7 +248,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //      	if (!swCheckRonable)   //ronchk not done               //~va11I~//~va1aR~
 //          {                                                      //~va11I~//~va1aR~
                 swRonnable=chkRonnable();                          //~va11I~
-                if (Dump.Y) Dump.println("UARonValue.chkCompleteSub swChkRank="+swChkRank+",swRonnable="+swRonnable);//~va11I~
+                if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swChkRank="+swChkRank+",swRonnable="+swRonnable);//~va24R~
                 if (!swRonnable)                                   //~va11I~
                 {                                                  //~va11I~
                     ronResult.swRonChkErr=true;                    //~va11R~
@@ -253,7 +263,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         {                                                          //~va11I~
             if (swChkRank)  //1han constraint chk                  //~va11R~
             {                                                      //~va11R~
-                if (Dump.Y) Dump.println("UARonValue.chkCompleteSub Chkrank rc=true by swYakuOtherEnvironment longRankOther="+UARDT.longRankOther.toStringName());//~va11R~
+                if (Dump.Y) Dump.println("UARonValue.chkRonValueSub Chkrank rc=true by swYakuOtherEnvironment longRankOther="+UARDT.longRankOther.toStringName());//~va24R~
                 ronResult.han=1;    //at least                     //~va11R~
                 return true;                                       //~va11R~
             }                                                      //~va11R~
@@ -261,7 +271,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //      if (!swCheckRonable)   //ronchk not done                   //~va11R~
 //      {                                                          //~va11R~
 //          swRonnable=chkRonnable();                              //~va11R~
-//          if (Dump.Y) Dump.println("UARonValue.chkCompleteSub swRonnable="+swRonnable);//~va11R~
+//          if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swRonnable="+swRonnable);//~va24R~
 //          if (!swRonnable)                                       //~va11R~
 //              return false;                                      //~va11R~
 //      }                                                          //~va11R~
@@ -276,7 +286,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //            if (!swCheckRonable)   //ronchk not done             //~va11R~
 //            {                                                    //~va11R~
 //                swRonnable=chkRonnable();                        //~va11R~
-//                if (Dump.Y) Dump.println("UARonValue.chkCompleteSub swRonnable="+swRonnable);//~va11R~
+//                if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swRonnable="+swRonnable);//~va24R~
 //                if (!swRonnable)                                 //~va11R~
 //                    return false;                                //~va11R~
 //                swRonChkDone=true;                               //~va11R~
@@ -287,7 +297,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //            if (!swRonChkDone)   //ronchk not done               //~va11R~
 //            {                                                    //~va11R~
 //                swRonnable=chkRonnable();                        //~va11R~
-//                if (Dump.Y) Dump.println("UARonValue.chkCompleteSub swYakuman do ronChk");//~va11R~
+//                if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swYakuman do ronChk");//~va24R~
 //                if (!swRonnable)                                 //~va11R~
 //                    return false;                                //~va11R~
 //                swRonChkDone=true;                               //~va11R~
@@ -301,7 +311,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         	UARDT.getAmmount(ronResult,rc/*makePair rc*/);         //~va11R~
         }                                                          //~va11I~
         rc|=sw7P;                                                  //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.chkCompleteSub rc="+rc+",ronResult="+ronResult.toString());//~va11R~
+        if (Dump.Y) Dump.println("UARonValue.chkRonValueSub rc="+rc+",ronResult="+ronResult.toString());//~va24R~
         return rc;                                                 //~va11I~
     }                                                              //~9C11I~//~va11M~
     //*************************************************************************//~va11I~
@@ -458,7 +468,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
             else                                                   //~va11I~
 		    	addYakuman(RYAKU_13ALL,swDouble/*double*/);        //~va11I~
         }                                                          //~va11M~
-        if (Dump.Y) Dump.println("UARonValue.chk13All rc="+rc+",ronType="+ronType+",ronNumber="+ronNumber);//~va11R~
+        if (Dump.Y) Dump.println("UARonValue.chk13All rc="+rc+",ronType="+ronType+",ronNumber="+ronNumber+",sw13WaitAll="+sw13WaitAll);//~va24R~
         return rc;                                                 //~9C11I~//~va11M~
     }                                                              //~9C11I~//~va11M~
 	//*************************************************************************//~9C11I~//~va11M~
@@ -700,7 +710,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
             else                                                   //~va11I~
 		    	addYakuman(RYAKU_4WINDSMALL,rc==2/*double*/);      //~va11I~
         }                                                          //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.chk4Wind rc="+rc+",ctrPillow="+ctrPillow+",ctrNonPillow="+ctrNonPillow);//~va11I~
+        if (Dump.Y) Dump.println("UARonValue.chk4Wind rc="+rc+",sw4WindDouble="+sw4WindDouble+",ctrPillow="+ctrPillow+",ctrNonPillow="+ctrNonPillow);//~va24R~
         return rc!=0;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
@@ -763,7 +773,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 		    	addYakuman(RYAKU_9GATE2,true/*double*/);           //~va11I~
             else                                                   //~va11I~
 	    		addYakuman(RYAKU_9GATE,false/*double*/);             //~va11R~
-        if (Dump.Y) Dump.println("UARonValue.chk9Gate rc="+rc);//~va11I~
+        if (Dump.Y) Dump.println("UARonValue.chk9Gate rc="+rc+",sw9GateDouble="+sw9GateDouble+",sw9GateManOnly="+sw9GateManOnly);//+va24R~
         return rc!=0;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************
@@ -933,7 +943,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
       	return rc;//~va11R~
     }                                                              //~9C12I~
     //*************************************************************************//~va11I~
-    //* from UARonChk when RO2_RON_TEST                            //~va11I~
+    //* from UARonChk when TO2_RON_TEST                            //~va23R~
     //*************************************************************************//~va11I~
     private static boolean swGetTestHand;                          //~va11I~
     private static int[][] testHand;                               //~va11I~

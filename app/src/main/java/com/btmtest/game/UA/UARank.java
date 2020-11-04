@@ -1,5 +1,7 @@
-//*CID://+va11R~: update#= 803;                                    //~va11R~
+//*CID://+va26R~: update#= 809;                                    //+va26R~
 //**********************************************************************//~v101I~
+//2020/11/02 va26 (BUG)Pinfu check err;missing check notnum        //+va26I~
+//2020/11/02 va25 (BUG)Straight check error                        //~va25R~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.UA;                                       //~va11R~
@@ -80,7 +82,7 @@ public class UARank                                                //~va11R~
 //      dupCtrAll=PdupCtrAll;                                      //~va11R~
         swTanyao=UARDT.swTanyao;                                   //~va11I~
 //      rankTanyao=UARDT.rankTanyao;                               //~va11R~
-        swHonor=UARDT.swHonor;	//yakuhai                          //~va11I~
+        swHonor=UARDT.swHonor;	//yakuhai including pillow         //+va26R~
         statusPillow=UARD.statusPillow;                            //~va11R~
         typePillow=UARD.typePillow;                                //~va11I~
         numberPillow=UARD.numberPillow;                            //~va11I~
@@ -189,6 +191,9 @@ public class UARank                                                //~va11R~
         else                                                       //~va11I~
         if (swHonor)  //true also if pillow is honor               //~va11R~
         	rc=false;                                              //~va11I~
+        else                                                       //+va26I~
+     	if (ctrPairNotNum!=0)                                      //+va26I~
+        	rc=false;                                              //+va26I~
         else                                                       //~va11I~
         {                                                          //~va11I~
             boolean swSide=false;                                  //~va11I~
@@ -216,7 +221,7 @@ public class UARank                                                //~va11R~
             	rc=false;                                          //~va11I~
             }                                                      //~va11I~
         }                                                          //~va11I~
-        if (Dump.Y) Dump.println("UARank.isPinfu intNoAllHand="+intNotAllHand+",swHonor="+swHonor+",rc="+rc+",pairNumS="+Pair.toString(pairNumS));//~va11R~
+        if (Dump.Y) Dump.println("UARank.isPinfu intNoAllHand="+intNotAllHand+",ctrPairNotNum="+ctrPairNotNum+",swHonor="+swHonor+",rc="+rc+",pairNumS="+Pair.toString(pairNumS));//+va26R~
         return rc;                                                 //~va11M~
     }                                                              //~va11I~
     //******************************************************************//~va11I~
@@ -355,7 +360,7 @@ public class UARank                                                //~va11R~
         	return 0;                                              //~va11I~
         }                                                          //~va11I~
         int rc=0;                                                           //~va11I~
-        int wkBit=0;                                               //+va11I~
+        int wkBit=0;                                               //~va11I~
         for (int ii=0;ii<sizePairSeqS;ii++)                        //~va11R~
         {                                                          //~va11I~
         	Pair pair1,pair2;                                      //~va11R~
@@ -365,7 +370,8 @@ public class UARank                                                //~va11R~
             int num1=pair1.number;                                 //~va11I~
             if (num1!=0 && num1!=3 && num1!=6)                     //~va11I~
             	continue;                                          //~va11I~
-            wkBit|=(1<<num1);                                      //+va11I~
+//          wkBit|=(1<<num1);                                      //~va25R~
+            wkBit=(1<<num1);                                       //~va25I~
             for (int jj=ii+1;jj<sizePairSeqS;jj++)                 //~va11R~
             {                                                      //~va11I~
                 pair2=pairNumS[jj];                                //~va11R~
@@ -375,11 +381,13 @@ public class UARank                                                //~va11R~
 	            if (num2!=0 && num2!=3 && num2!=6)                 //~va11I~
      		       	continue;                                      //~va11I~
                 if (pair2.type==pair1.type && num2!=num1)          //~va11I~
-                {                                                  //+va11I~
-                    wkBit|=(1<<num2);                              //+va11R~
-                }                                                  //+va11I~
+                {                                                  //~va11I~
+                    wkBit|=(1<<num2);                              //~va11R~
+                }                                                  //~va11I~
             }                                                      //~va11I~
-            if (wkBit==0x07)                                       //+va11R~
+	    	if (Dump.Y) Dump.println("UARank.chkStraight ii="+ii+",wkBit="+Integer.toHexString(wkBit));//~va25I~
+//          if (wkBit==0x07)     //   6   3  0                     //~va25R~
+            if (wkBit==0x49)     //B-0100 1001                     //~va25R~
             {                                                      //~va11I~
 	            addYaku(RYAKU_STRAIGHT);                           //~va11I~
 	        	rc=RANK_STRAIGHT;                                  //~va11I~
@@ -388,7 +396,7 @@ public class UARank                                                //~va11R~
         }                                                          //~va11I~
         if (rc!=0)                                                 //~va11R~
         	rc-=intNotAllHand;                                     //~va11R~
-    	if (Dump.Y) Dump.println("UARank.chkStraight rc="+rc+",wkBit="+wkBit);//+va11R~
+    	if (Dump.Y) Dump.println("UARank.chkStraight rc="+rc+",wkBit="+Integer.toHexString(wkBit));//~va25R~
     	return rc;                                                 //~va11I~
     }                                                              //~va11I~
     //****************************************************************//~va11I~

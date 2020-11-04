@@ -1,5 +1,6 @@
-//*CID://+v@11R~: update#= 417;                                    //~v@21R~//~v@11R~
+//*CID://+va27R~: update#= 418;                                    //~v@21R~//+va27R~
 //**********************************************************************//~v101I~
+//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
@@ -425,6 +426,8 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         	case GCM_REACH_OPEN:                                   //~v@11I~
         	case GCM_REACH_RESET:                                  //~v@11I~
         	case GCM_REACH_OPEN_RESET:                             //~v@11I~
+        	case GCM_FORCE_REACH:                                  //+va27I~
+        	case GCM_FORCE_REACH_OPEN:                             //+va27I~
         	case GCM_RON:                                          //~v@@@I~
         	case GCM_RON_ANYWAY:                                   //~v@11I~
         	case GCM_DISCARD:                                      //~v@@@I~
@@ -459,7 +462,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
             	AG.aUADelayed.timeoutToPonKan(Pmsg);               //~v@11I~
                 break;                                             //~v@11I~
         	case GCM_TIMEOUT_TO_TAKABLE_RINSHAN:                   //~v@11R~
-            	AG.aUADelayed.timeoutToTakableRinshan(Pmsg);       //+v@11R~
+            	AG.aUADelayed.timeoutToTakableRinshan(Pmsg);       //~v@11R~
                 break;                                             //~v@11I~
         	case GCM_TIMEOUT_TO_TAKE:                              //~v@11I~
             	AG.aUADelayed.timeoutToTake(Pmsg);                 //~v@11I~

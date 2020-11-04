@@ -1,4 +1,4 @@
-//*CID://+va11R~: update#= 262;                                    //~1Ac0R~//~v@@@R~//~@@01R~//~va11R~
+//*CID://+va11R~: update#= 263;                                    //~1Ac0R~//~v@@@R~//~@@01R~//~va11R~
 //**********************************************************************//~1107I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //@@01 20181105 for BTMJ3                                            //~@@01I~
@@ -467,12 +467,12 @@ public class Utils                                            //~1309R~//~@@@@R~
         	return "";                                             //~@@01I~
     	return AG.resource.getString(Presid);                      //~v@@@R~
     }                                                              //~v@@@I~
-//**********************                                           //+va11I~
-    public static Spanned getStrHtml(int Presid)                   //+va11I~
-	{                                                              //+va11I~
-        Spanned txt= Html.fromHtml(Utils.getStr(Presid));          //+va11I~
-    	return txt;                                                //+va11I~
-    }                                                              //+va11I~
+//**********************                                           //~va11I~
+    public static Spanned getStrHtml(int Presid)                   //~va11I~
+	{                                                              //~va11I~
+        Spanned txt= Html.fromHtml(Utils.getStr(Presid));          //~va11I~
+    	return txt;                                                //~va11I~
+    }                                                              //~va11I~
 //**********************                                           //~v@@@I~
     public static String getStr(int Presid,String P1)              //~v@@@I~
 	{                                                              //~v@@@I~
@@ -956,4 +956,13 @@ public class Utils                                            //~1309R~//~@@@@R~
     	if (Dump.Y) Dump.println("cloneArray2 clone 2demension return array="+Utils.toString(to));//~vai3I~//~va11I~
         return to;                                                 //~vai3I~//~va11I~
     }                                                              //~vai3I~//~va11I~
+//***********                                                      //+va11I~
+    public static void copyArray2(int[][] Pfrom,int[][] Pto)    //+va11I~
+    {                                                              //+va11I~
+    	if (Dump.Y) Dump.println("Utils.copyArray2");              //+va11I~
+    	int sz1=Pfrom.length;                                      //+va11I~
+        for (int ii=0;ii<sz1;ii++)                                 //+va11I~
+        	System.arraycopy(Pfrom[ii],0,Pto[ii],0,Pfrom[ii].length);//+va11I~
+    	if (Dump.Y) Dump.println("Utils.copyArray2 Pto"+Utils.toString(Pto));//+va11I~
+    }                                                              //+va11I~
 }//class Utils                                                //~1309R~//~v@@@R~

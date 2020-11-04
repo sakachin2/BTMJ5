@@ -1,5 +1,6 @@
-//*CID://+va1aR~: update#= 669;                                    //~va1aR~
+//*CID://+va29R~: update#= 670;                                    //+va29R~
 //**********************************************************************//~v101I~
+//2020/11/04 va29 (BUG)missing to add 1han of OpenReach            //+va29I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/18 va19 warning use anywan if blocked topn               //~va19I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -461,12 +462,12 @@ public class UARon                                                 //~v@@@R~//~v
     {                                                              //~0205I~
     	boolean rc=true;                                           //~0205I~
     //***********************                                      //~0205I~
-//  	boolean swChk= RuleSettingOperation.isCheckRonable();       //~0205I~//~va11R~//+va1aR~
+//  	boolean swChk= RuleSettingOperation.isCheckRonable();       //~0205I~//~va11R~//~va1aR~
         boolean swFix1= RuleSettingOperation.isYakuFix1();         //~va11R~
-		if (Dump.Y) Dump.println("UARon.winAnyway swCheckFix1="+swFix1);//~0205R~//~va11R~//+va1aR~
+		if (Dump.Y) Dump.println("UARon.winAnyway swCheckFix1="+swFix1);//~0205R~//~va11R~//~va1aR~
 //      if (!swChk)	//no ronchk, no need to RON_ANYWAY             //~0205I~//~va11R~
-//      if (!swChk && !swFix1)                                     //~va11R~//+va1aR~
-        if (!swFix1)                                               //+va1aI~
+//      if (!swChk && !swFix1)                                     //~va11R~//~va1aR~
+        if (!swFix1)                                               //~va1aI~
         {                                                          //~0205I~
             UView.showToastLong(R.string.Err_NoNeedRonAnyway);         //~0205I~//~0215R~
         	return false;	//no dismiss                           //~0205I~
@@ -596,6 +597,8 @@ public class UARon                                                 //~v@@@R~//~v
 	        	UARV.addOtherYaku(RYAKU_REACH_DOUBLE,RANK_REACH_DOUBLE);//~va11I~
             else                                                   //~va11I~
 	        	UARV.addOtherYaku(RYAKU_REACH,RANK_REACH);         //~va11I~
+            if (PLS.isOpenReach(PLAYER_YOU))                       //+va29I~
+	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//+va29I~
     	  if (RuleSettingYaku.isReachOneShot())                    //~va11I~
             if (swTake)	//                                         //~va11I~
             {                                                      //~va11I~

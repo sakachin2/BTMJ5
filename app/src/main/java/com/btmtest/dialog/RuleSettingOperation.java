@@ -1,6 +1,7 @@
-//*CID://+va1aR~:                             update#=  486;       //+va1aR~
+//*CID://+va27R~:                             update#=  487;       //+va27R~
 //*****************************************************************//~v101I~
-//2020/10/19 va1a drop ronchk option,1han constraint only          //+va1aI~
+//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
+//2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
 import android.view.View;
@@ -28,6 +29,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
+	private static final int DEFAULT_CHK_REACH=1;                  //+va27I~
 	private static final int DEFAULT_FIX1=1;
     //**********************************************************   //~v@@@I~
     private static final int UNIT_SEC=10;                          //~9622I~//~v@@@M~
@@ -46,8 +48,9 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     private UCheckBox cb2TouchTimeout;                             //~9C09I~
 //  private UCheckBox cb2TouchPon,cb2TouchRon;                     //~9C07I~//~9C09R~
     private UCheckBox cb2TouchCancelableRon;                       //~9C10I~
-//  private UCheckBox cb2CheckRonable;                             //~0205I~//+va1aR~
+//  private UCheckBox cb2CheckRonable;                             //~0205I~//~va1aR~
     private UCheckBox cb2CheckRonValue;                            //~0928I~
+    private UCheckBox cb2CheckReach;                               //+va27I~
     private UCheckBox  cbYakuFix1;                                 //~0A15I~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
@@ -122,9 +125,10 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //      cb2TouchTORon=new UCheckBox(llSpinBtn,R.id.cb2TouchTimeout);    //2touchMode//~9C03R~//~9C09R~
 //      rg2Touch=new URadioGroup(PView,R.id.rg2Touch,0/*parm to listener*/,rbs2Touch);//~9C09I~//~9C10R~
         cb2TouchCancelableRon=new UCheckBox(PView,R.id.cb2TouchCancelableRon);    //2touchMode//~9C10I~
-//      cb2CheckRonable=new UCheckBox(PView,R.id.cbCheckRonable);    //2touchMode//~0205I~//+va1aR~
+//      cb2CheckRonable=new UCheckBox(PView,R.id.cbCheckRonable);    //2touchMode//~0205I~//~va1aR~
                                                                    //~0A15I~
         cb2CheckRonValue=new UCheckBox(PView,R.id.cbCheckRonValue);    //2touchMode//~0928I~
+        cb2CheckReach=new UCheckBox(PView,R.id.cbCheckReach);    //2touchMode//+va27I~
     //*YakuFix1                                                    //~0A15I~
     	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~0A15I~
         cb2TouchTimeout=new UCheckBox(PView,R.id.cb2TouchTimeout);    //2touchMode//~9C09R~
@@ -184,10 +188,11 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //      cb2TouchRon.setStateInt(Pprop.getParameter(getKeyRS(RSID_2TOUCH_RON),0/*default false*/),swFixed);//~9C07I~//~9C09R~//~9C10R~
 //      rg2Touch.setCheckedID(Pprop.getParameter(getKeyRS(RSID_2TOUCH),0),swFixed);//~9C09I~//~9C10R~
         cb2TouchCancelableRon.setStateInt(Pprop.getParameter(getKeyRS(RSID_2TOUCH_CANCELABLE_RON),0/*default false*/),swFixed);//~9C10I~
-//      cb2CheckRonable.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_RONABLE),0/*default false*/),swFixed);//~0205I~//+va1aR~
+//      cb2CheckRonable.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_RONABLE),0/*default false*/),swFixed);//~0205I~//~va1aR~
     //*YakuFix1                                                    //~0A15I~
     	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),DEFAULT_FIX1),swFixed);//~0A15I~
         cb2CheckRonValue.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_RONVALUE),DEFAULT_RONVALUE/*default false*/),swFixed);//~0928I~
+        cb2CheckReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_REACH),DEFAULT_CHK_REACH/*default false*/),swFixed);//+va27I~
         cb2TouchTimeout.setStateInt(Pprop.getParameter(getKeyRS(RSID_2TOUCH_TIMEOUT),0/*default false*/),swFixed);//~9C09I~
     //*positioning                                                 //~v@@@I~
         cbPositioning.setStateInt(Pprop.getParameter(getKeyRS(RSID_POSITIONING),0/*default false*/),swFixed);//~v@@@I~
@@ -222,10 +227,11 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //      changed+=updateProp(getKeyRS(RSID_2TOUCH_RON),cb2TouchRon.getStateInt());//~9C07I~//~9C09R~
 //      changed+=updateProp(getKeyRS(RSID_2TOUCH),rg2Touch.getCheckedID());//~9C09I~//~9C10R~
         changed+=updateProp(getKeyRS(RSID_2TOUCH_CANCELABLE_RON),cb2TouchCancelableRon.getStateInt());//~9C10I~
-//      changed+=updateProp(getKeyRS(RSID_CHECK_RONABLE),cb2CheckRonable.getStateInt());//~0205I~//+va1aR~
+//      changed+=updateProp(getKeyRS(RSID_CHECK_RONABLE),cb2CheckRonable.getStateInt());//~0205I~//~va1aR~
     //*YakuFix1                                                    //~0A15I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~0A15I~
         changed+=updateProp(getKeyRS(RSID_CHECK_RONVALUE),cb2CheckRonValue.getStateInt());//~0928I~
+        changed+=updateProp(getKeyRS(RSID_CHECK_REACH),cb2CheckReach.getStateInt());//+va27I~
         changed+=updateProp(getKeyRS(RSID_2TOUCH_TIMEOUT),cb2TouchTimeout.getStateInt());//~9C09I~
     //*positioning                                                 //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_POSITIONING),cbPositioning.getStateInt());//~v@@@I~
@@ -462,14 +468,14 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.is2TouchCancelableRon rc="+rc);//~9C10I~
         return rc;                                                 //~9C10I~
     }                                                              //~9C10I~
-//    //**************************************                       //~0205I~//+va1aR~
-//    public static boolean isCheckRonable()                         //~0205I~//+va1aR~
-//    {                                                              //~0205I~//+va1aR~
-//        int def=0;  //false                                        //~0205I~//+va1aR~
-//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHECK_RONABLE),def)!=0;//~0205I~//+va1aR~
-//        if (Dump.Y) Dump.println("RuleSetting.isCheckRonable rc="+rc);//~0205I~//+va1aR~
-//        return rc;                                                 //~0205I~//+va1aR~
-//    }                                                              //~0205I~//+va1aR~
+//    //**************************************                       //~0205I~//~va1aR~
+//    public static boolean isCheckRonable()                         //~0205I~//~va1aR~
+//    {                                                              //~0205I~//~va1aR~
+//        int def=0;  //false                                        //~0205I~//~va1aR~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHECK_RONABLE),def)!=0;//~0205I~//~va1aR~
+//        if (Dump.Y) Dump.println("RuleSetting.isCheckRonable rc="+rc);//~0205I~//~va1aR~
+//        return rc;                                                 //~0205I~//~va1aR~
+//    }                                                              //~0205I~//~va1aR~
     //**************************************                       //~0928I~
     public static boolean isCheckRonValue()                        //~0928I~
     {                                                              //~0928I~
@@ -478,6 +484,14 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isCheckRonValue rc="+rc);//~0928I~
         return rc;                                                 //~0928I~
     }                                                              //~0928I~
+    //**************************************                       //+va27I~
+    public static boolean isCheckReach()                           //+va27I~
+    {                                                              //+va27I~
+        int def=DEFAULT_CHK_REACH;  //false                        //+va27I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHECK_REACH),def)!=0;//+va27I~
+        if (Dump.Y) Dump.println("RuleSetting.isCheckReach rc="+rc);//+va27I~
+        return rc;                                                 //+va27I~
+    }                                                              //+va27I~
     //**************************************                       //~v@@@I~
 	public static boolean isPositioningSkip()                      //~v@@@I~
     {                                                              //~v@@@I~

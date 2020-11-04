@@ -1,5 +1,6 @@
-//*CID://+@@01R~:                             update#=  425;       //~@@01R~
+//*CID://+va27R~:                             update#=  427;       //+va27R~
 //******************************************************************************************************************//~v101R~
+//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
 //@@01 20181105 for BTMJ3                                          //~@@01I~
 //******************************************************************************************************************//~v101I~
 //*Globals *****                                             //~1107I~//~1Ad7R~
@@ -24,7 +25,8 @@ import android.os.HandlerThread;                                   //~@@01I~
 import com.btmtest.BT.BTI;                                         //~@@01R~
 import com.btmtest.BT.BTMulti;                                     //~v@@@I~//~@@01R~
 import com.btmtest.game.UA.UARonValue;
-import com.btmtest.game.UA.UARon;                                  //+@@01I~
+import com.btmtest.game.UA.UAReachChk;                             //+va27I~
+import com.btmtest.game.UA.UARon;                                  //~@@01I~
 import com.btmtest.wifi.IPMulti;                                   //~@@01I~
 import com.btmtest.dialog.BTCDialog;//~v@@@R~                      //~@@01I~
 import com.btmtest.dialog.BTRDialog;                               //~@@01I~
@@ -321,7 +323,8 @@ public class AG                                                    //~1107R~
 //  public  UADelayed    aUADelayed;                               //~@@01R~
     public  UADelayed2   aUADelayed;                               //~@@01I~
     public UARonValue aUARonValue;                              //~@@01I~
-    public UARon      aUARon;                                      //+@@01I~
+    public UAReachChk aUAReachChk;                                 //+va27I~
+    public UARon      aUARon;                                      //~@@01I~
     public  LastGame    aLastGame;                                 //~@@01I~
     public  History     aHistory;                                  //~@@01I~
     public  FinalGameDlg    aFinalGameDlg;                         //~@@01R~
@@ -507,7 +510,8 @@ public class AG                                                    //~1107R~
 //        Home=p.getProperty("user.home")+p.getProperty("file.separator");//~1Ad7R~//~v@@@R~
 //    }                                                              //~1Ad7I~//~v@@@R~
 //*************************************************************    //~v@@@I~
-    private static void loadProp()                                      //~v@@@I~
+//  private static void loadProp()                                 //~@@01R~
+    public  static void loadProp()                                 //~@@01I~
     {                                                              //~v@@@I~
         AG.ruleProp=loadProp(ruleFile,ruleFileDefault);               //~v@@@R~
 //      AG.opeProp=loadProp(opeFile,opeFileDefault);                  //~v@@@R~//~@@01R~
@@ -519,7 +523,8 @@ public class AG                                                    //~1107R~
 	        AG.ruleProp.setParameter(getKeyRS(RSID_SYNCDATE),PROP_INIT_SYNCDATE);//~@@01I~
     }                                                              //~v@@@I~
 //*************************************************************    //~@@01I~
-    private void createSettings()                                  //~@@01I~
+//  private void createSettings()                                  //~@@01R~
+    public  void createSettings() //public for androidTest         //~@@01I~
     {                                                              //~@@01I~
     	if (Dump.Y) Dump.println("AG.createSettings");             //~@@01I~
         new RuleSettingEnum();                                     //~@@01I~

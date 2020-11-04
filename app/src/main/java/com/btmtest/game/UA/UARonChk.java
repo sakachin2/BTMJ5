@@ -1,6 +1,9 @@
-//*CID://+va1aR~: update#= 730;                                    //+va1aR~
+//*CID://+va27R~: update#= 737;                                    //~va27R~
 //**********************************************************************//~v101I~
-//2020/10/19 va1a drop ronchk option,1han constraint only          //+va1aI~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
+//2020/11/01 va22 (BUG)is13NoPair is checking after drop pillow    //~va22I~
+//2020/10/20 va20 use Junit for UARonchk                           //~va20I~
+//2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/10 va14 (BUG)7pairwith Kan is err even optio allow it    //~va14I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
@@ -36,7 +39,7 @@ public class UARonChk                                                //~v@@@R~//
     protected boolean sw7Pair4Pair;                                  //~9C11I~//~va11R~
     protected boolean sw14NoPair,sw13NoPair;                         //~9C11R~//~va11R~
     protected boolean swIs14NoPair;                                //~va11I~
-//  protected boolean swCheckRonable;                                //~0205I~//~va11R~//+va1aR~
+//  protected boolean swCheckRonable;                                //~0205I~//~va11R~//~va1aR~
     protected int ctrRecursive;                                      //~9C12I~//~va11R~
     protected int ctrTileAll;                                        //~9C12I~//~va11R~
     protected int ctrPair;                                         //~va11I~
@@ -44,7 +47,7 @@ public class UARonChk                                                //~v@@@R~//
     private boolean sw13_14NoPair,sw1stTake;                       //~va11R~
     public boolean swAllInHand;                           //~va11I~
 //*************************                                        //~v@@@I~
-	UARonChk()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9C11R~
+	public UARonChk()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~va1aR~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("UARonChk Constructor");         //~1506R~//~@@@@R~//~v@@@R~//~9C11R~
         init();                                                    //~v@@@I~//~va14R~
@@ -57,7 +60,7 @@ public class UARonChk                                                //~v@@@R~//
 //      sw14NoPair= RuleSettingYaku.is14NoPair();                  //~9C11I~//~va11R~
         sw13NoPair= RuleSettingYaku.isYakuman13NoPair();           //~va11I~
         sw14NoPair= RuleSettingYaku.isYakuman14NoPair();           //~va11I~
-//      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~0205R~//+va1aR~
+//      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~0205R~//~va1aR~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va11I~
     protected boolean isAllInHand()                                //~va11R~
@@ -76,7 +79,7 @@ public class UARonChk                                                //~v@@@R~//
         player=Pplayer;                                            //~va11I~
         swAllInHand=isAllInHand();                                 //~va11I~
 		ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //including Ron tile//~va11I~
-        if (Dump.Y) Dump.println("UARonChk.chkComplete player="+Pplayer+",ctrPair="+ctrPair);//~9C11I~//~0205R~//~va11R~//+va1aR~
+        if (Dump.Y) Dump.println("UARonChk.chkComplete player="+Pplayer+",ctrPair="+ctrPair);//~9C11I~//~0205R~//~va11R~//~va1aR~
         TileData[] tds=AG.aPlayers.getHands(Pplayer);		//including Ron tile//~9C11R~
         TileData tdRon=null;                                       //~9C11I~
         if (!Tiles.isTakenStatus(tds.length))                      //~9C11I~
@@ -86,8 +89,8 @@ public class UARonChk                                                //~v@@@R~//
 ////          ronTest();                                             //~9C12M~//~9C13R~//~va11R~
 //            return true;                                           //~9C12M~//~va11R~
 //        }                                                          //~9C12M~//~va11R~
-//      if (!swCheckRonable)                                       //~0205I~//+va1aR~
-//  		return true;                                           //~0205I~//+va1aR~
+//      if (!swCheckRonable)                                       //~0205I~//~va1aR~
+//  		return true;                                           //~0205I~//~va1aR~
         sw1stTake=CompReqDlg.chk1stTake();                         //~va11I~
         sortTiles(tds,tdRon);                                      //~9C11R~
         if ((TestOption.option2 & TestOption.TO2_RON_TEST)!=0) //TODO//~va11I~
@@ -100,7 +103,8 @@ public class UARonChk                                                //~v@@@R~//
         return rc;//~9C12I~
     }                                                              //~9C12I~
 	//*************************************************************************//~9C12I~
-    private boolean chkCompleteSub()                               //~9C12I~
+//  private boolean chkCompleteSub()                               //~va20R~
+    protected boolean chkCompleteSub()                             //~va20I~
     {                                                              //~9C12I~
         boolean rc=isStandardPairing();                                     //~9C11I~//~9C12R~
         sw13_14NoPair=false;                                       //~va11I~
@@ -148,6 +152,18 @@ public class UARonChk                                                //~v@@@R~//
 //      if (Dump.Y) Dump.println("UARonChk.sortTiles dupctrNotNum="+Arrays.toString(dupCtrNotNum));//~9C11I~//~9C12R~
         if (Dump.Y) Dump.println("UARonChk.sortTiles dupctrNum="+ Utils.toString(dupCtr));//~9C12I~
     }                                                              //~9C11I~
+	//*************************************************************************//~va27I~
+	//from UAReachChk                                              //~va27I~
+	//*************************************************************************//~va27I~
+    public boolean isStandardPairing(int [][] PdupCtr)             //~va27R~
+    {                                                              //~va27I~
+        if (Dump.Y) Dump.println("UARonChk.isStandardPairing dupCtr="+ Utils.toString(PdupCtr));//~va27I~
+        int[][] dupCtrSave=dupCtr;                                 //~va27I~
+        dupCtr=PdupCtr;                                            //~va27I~
+    	boolean rc=isStandardPairing();                            //~va27I~
+        dupCtr=dupCtrSave;                                         //~va27I~
+        return rc;
+    }                                                              //~va27I~
 	//*************************************************************************//~9C11I~
 	//*search 2pair then chk pairing                               //~9C11I~
 	//*************************************************************************//~9C11I~
@@ -585,18 +601,26 @@ public class UARonChk                                                //~v@@@R~//
         }                                                          //~9C11I~
         else                                                       //~9C11I~
         {                                                          //~9C11I~
+        	Point p2=selectPillow();	//type and number          //~va22I~
+            if (p2!=null)          //2 pillow                      //~va22I~
+            {                                                      //~va22I~
+            	rc=false;                                          //~va22I~
+            	restorePillow(p2);                                 //~va22I~
+            }                                                      //~va22I~
 			if (!sw13NoPair)                                       //~9C11I~
 	            rc=false;                                          //~9C11I~
         }                                                          //~9C11I~
         if (rc)                                                    //~9C11R~
         {                                                          //~9C11I~
         	if (p!=null)                                           //~9C11I~
-	            dropPillow(p);                                     //~9C11R~
+//              dropPillow(p);                                     //~va22R~
+                dupCtr[p.x][p.y]--; //drop 1/2 of pillow           //~va22I~
         	rc=chkNoPairingNotNum() && chkNoPairingNum();            //~9C11I~
         	if (p!=null)                                           //~va11I~
-            	restorePillow(p);                                  //~va11I~
+//          	restorePillow(p);                                  //~va22R~
+                dupCtr[p.x][p.y]++; //restore 1/2 of pillow        //~va22I~
         }                                                          //~9C11I~
-        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc);    //~9C11I~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc+",wIs14NoPair="+swIs14NoPair);//~va22R~
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
 	//*************************************************************************//~9C11I~
@@ -679,928 +703,4 @@ public class UARonChk                                                //~v@@@R~//
         if (Dump.Y) Dump.println("UARonChk.chkNoPairingSeq rc="+rc);//~9C11I~
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
-	//*************************************************************************//~9C12I~
-	private void ronTest()                                         //~9C12I~
-    {                                                              //~9C12I~
-	    boolean rc;
-        if (Dump.Y) Dump.println("UARonChk.ronTest");              //~9C12I~
-		ctrTileAll=HANDCTR_TAKEN;                                  //~9C12I~
-        dupCtr=new int[][]{   //4 anko                             //~9C12R~
-        	{3,3,0, 0,0,0, 0,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12R~
-    	    { 3,3,0,0,  2,0,0, 0,0} };                         //7 //~9C12R~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-1 4Anko rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{           //7 pair                     //~9C12I~
-        	{2,2,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{2,2,2, 0,0,0, 2,0,2},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-2 7pair rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{           //7 pair err                 //~9C12I~
-        	{2,2,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{2,2,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-3 7pair err rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12R~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{2,2,4, 2,2,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-4 4seq  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12R~
-        	{1,1,3, 4,3,1, 1,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-5 4seq-3  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-6 13All  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-7 13All err1  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,1,0, 0,0,0, 0,0,1},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-8 13All err2  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{3,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,1},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-9 13All err3  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 1,0,0, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-10 13NoPair       rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{2,0,0, 1,0,0, 1,0,0},                                 //~9C12I~
-        	{0,0,1, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-11 13NoPair       rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 1,0,0, 1,0,0},                                 //~9C12I~
-        	{0,0,1, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 1,1,1,2,  1,0,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-12 13NoPair       rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 1,0,0, 1,0,0},                                 //~9C12I~
-        	{1,0,0, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{1,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-13 13NoPair err1  rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,1, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{1,0,0, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 1,1,1,1,  1,1,1, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-14 13NoPair err2  rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 1,0,0, 0,0,0},                                 //~9C12I~
-        	{1,0,0, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  1,1,1, 0,0} };                         //7 //~9C12I~
-		ctrTileAll=11;                                             //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-		ctrTileAll=HANDCTR_TAKEN;                                  //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-15 13NoPair err3  rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 1,0,0, 1,0,0},                                 //~9C12I~
-        	{0,0,1, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{0,1,0, 0,1,0, 0,1,0},                                 //~9C12I~
-    	    { 0,1,1,1,  1,1,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-16 14NoPair       rc="+rc);//~9C12R~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,0, 1,0,0, 1,0,0},                                 //~9C12I~
-        	{0,0,1, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{0,1,0, 0,1,0, 0,1,0},                                 //~9C12I~
-    	    { 0,2,0,1,  1,1,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-17 14NoPair err1  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,0,1, 0,0,0, 1,0,0},                                 //~9C12I~
-        	{0,0,1, 0,0,1, 0,0,1},                                 //~9C12I~
-        	{0,1,0, 0,1,0, 0,1,0},                                 //~9C12I~
-    	    { 0,1,1,1,  1,1,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-18 14NoPair err2  rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{        //34567    2.5.8  sou           //~9C12I~
-        	{0,1,1, 1,1,1, 1,0,0},                                 //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-21 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,1, 1,2,1, 1,0,0},                                 //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-21 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,1, 1,1,1, 1,1,0},                                 //~9C12I~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-21 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                 //2345 pin  2.5        //~9C12I~
-        	{0,0,2, 1,1,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-22 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,1, 1,1,2, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-22 2              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                   //2345678 pin 2.5.8  //~9C12I~
-        	{0,2,1, 1,1,1, 1,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-23 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,2,1, 1,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-23 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,1,1, 1,2,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-23 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{              //67888 gg    5.8.g       //~9C12I~
-        	{2,0,0, 0,1,1, 1,3,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-24 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{2,0,0, 0,0,1, 1,4,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-24 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{3,0,0, 0,0,1, 1,3,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-24 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                     //5666 zou 4.5.6   //~9C12I~
-        	{0,0,0, 1,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-25 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 0,2,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-25 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 0,1,3, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-25 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                           //4666 sou 4.5.6//~9C12I~
-        	{0,0,0, 2,0,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-26 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 1,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-26 1              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                     //2345666 pin 1.2.4.5.7//~9C12I~
-        	{1,1,1, 1,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-27 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,2,1, 1,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-27 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 2,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-27 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,2,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-27 4              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,1,3, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-27 5              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                   //2345777 pin 2.5.6  //~9C12I~
-        	{0,2,1, 1,1,0, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-28 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,2,0, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-28 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,1,1, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-28 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                         //2333456 pin   1.2.4.7//~9C12I~
-        	{1,1,3, 1,1,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-29 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,2,3, 1,1,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-29 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,3, 2,1,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-29 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,3, 1,1,1, 1,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-29 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                //3334568 pin 7.8       //~9C12I~
-        	{0,0,3, 1,1,1, 1,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-30 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 1,1,1, 0,2,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-30 2              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                       //3455666 pin 2.4.5.7//~9C12I~
-        	{0,1,1, 1,2,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                       //3455666 pin 2.4.5.7//~9C12I~
-        	{0,0,1, 2,2,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                       //3455666 pin 2.4.5.7//~9C12I~
-        	{0,0,1, 1,3,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                       //3455666 pin 2.4.5.7//~9C12I~
-        	{0,0,1, 1,2,3, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                   //3455777 pin 2.5.6  //~9C12I~
-        	{0,1,1, 1,2,0, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,1, 1,3,0, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,1, 1,2,1, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{            //3445666 pin 2.4.5         //~9C12R~
-        	{0,1,1, 2,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{            //3445666 pin 2.4.5         //~9C12R~
-        	{0,0,1, 3,1,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{            //3445666 pin 2.4.5         //~9C12R~
-        	{0,0,1, 2,2,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-31 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //3455678 man 2.5.8        //~9C12I~
-        	{0,1,1, 1,2,1, 1,1,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-32 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //3455678 man 2.5.8        //~9C12I~
-        	{0,0,1, 1,3,1, 1,1,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-32 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //3455678 man 2.5.8        //~9C12I~
-        	{0,0,1, 1,2,1, 1,2,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-32 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{1,1,1, 1,1,1, 1,1,3},      //2345678999 man 1.2.4.5.7.8//~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-33 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,2,1, 1,1,1, 1,1,3},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-33 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 2,1,1, 1,1,3},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-33 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,2,1, 1,1,3},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-33 4              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,1,1, 2,1,3},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-33 5              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,1,1, 1,1,1, 1,2,3},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-33 6              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                 //3334445 sou 3.4.5.6  //~9C12I~
-        	{0,0,4, 3,1,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-34 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 4,1,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-34 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 3,2,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-34 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 3,1,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-34 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                 //3334555 sou 2.3.4.5.6//~9C12I~
-        	{0,1,3, 1,3,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-35 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,4, 1,3,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-35 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 2,3,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-35 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 1,4,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-35 4              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 1,3,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-35 5              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{               //3335777 sou 4.5.6      //~9C12I~
-        	{0,0,3, 1,1,0, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-36 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 0,2,0, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-36 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 0,1,1, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-36 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                  //3334455  sou 3.4.5.6//~9C12I~
-        	{0,0,4, 2,2,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-37 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 3,2,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-37 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 2,3,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-37 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,3, 2,2,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-37 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //3344455 sou  3.4.5       //~9C12I~
-        	{0,0,3, 3,2,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-38 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,2, 4,2,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-38 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,2, 3,3,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-38 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{           //4555567  man   3.4.6.7     //~9C12I~
-        	{0,0,1, 1,4,1, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-39 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 2,4,1, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-39 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 1,4,2, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-39 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 1,4,1, 2,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-39 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{              //4555566 man    3.4.6.7  //~9C12I~
-        	{0,0,1, 1,4,2, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-40 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 2,4,2, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-40 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 1,4,3, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-40 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 1,4,2, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-40 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{                 //5555667 man    4.6.7 //~9C12I~
-        	{0,0,0, 1,4,2, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-41 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 0,4,3, 1,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-41 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{                                        //~9C12I~
-        	{0,0,0, 0,4,2, 2,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-41 3              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //5555677  man 4.6.7       //~9C12I~
-        	{0,0,0, 1,4,1, 2,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-42 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //5555677                  //~9C12I~
-        	{0,0,0, 0,4,2, 2,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-42 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //5555677                  //~9C12I~
-        	{0,0,0, 0,4,1, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-42 1              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //2334455556677  2.5.8.6.7 //~9C12I~
-        	{0,2,2, 2,4,2, 2,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-51 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334455556677  2.5.8.6.7 //~9C12I~
-        	{0,1,2, 2,4,3, 2,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-51 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334455556677  2.5.8.6.7 //~9C12I~
-        	{0,1,2, 2,4,2, 3,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-51 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334455556677  2.5.8.6.7 //~9C12I~
-        	{0,1,2, 2,4,2, 2,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-51 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //2334456777789  2.5.8.3.6.9//~9C12I~
-        	{0,2,2, 2,1,1, 4,1,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-52 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334456777789  2.5.8.3.6.9//~9C12I~
-        	{0,1,2, 2,2,1, 4,1,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-52 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334456777789  2.5.8.3.6.9//~9C12I~
-        	{0,1,2, 2,1,1, 4,2,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-52 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334456777789  2.5.8.3.6.9//~9C12I~
-        	{0,1,3, 2,1,1, 4,1,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-52 4              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334456777789  2.5.8.3.6.9//~9C12I~
-        	{0,1,2, 2,1,2, 4,1,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-52 5              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2334456777789  2.5.8.3.6.9//~9C12I~
-        	{0,1,2, 2,1,1, 4,1,2},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-52 6              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //1223344445556  1.7.5.6   //~9C12I~
-        	{2,2,2, 4,3,1, 0,0,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-53 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //1223344445556  1.7.5.6   //~9C12I~
-        	{1,2,2, 4,3,1, 1,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-53 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //1223344445556  1.7.5.6   //~9C12I~
-        	{1,2,2, 4,4,1, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-53 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //1223344445556  1.7.5.6   //~9C12I~
-        	{1,2,2, 4,3,2, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-53 4              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //2222345666678  1.4.7.5.8 //~9C12I~
-        	{1,4,1, 1,1,4, 1,1,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-54 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2222345666678  1.4.7.5.8 //~9C12I~
-        	{0,4,1, 2,1,4, 1,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-54 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2222345666678  1.4.7.5.8 //~9C12I~
-        	{0,4,1, 1,1,4, 2,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-54 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2222345666678  1.4.7.5.8 //~9C12I~
-        	{0,4,1, 1,2,4, 1,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-54 4              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2222345666678  1.4.7.5.8 //~9C12I~
-        	{0,4,1, 1,1,4, 1,2,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-54 5              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-        dupCtr=new int[][]{             //2223445566778  4.7.3.6.9 //~9C12I~
-        	{0,3,1, 3,2,2, 2,1,0},                                 //~9C12R~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-55 1              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2223445566778  4.7.3.6.9 //~9C12I~
-        	{0,3,1, 2,2,2, 3,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-55 2              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2223445566778  4.7.3.6.9 //~9C12I~
-        	{0,3,2, 2,2,2, 2,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-55 3              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2223445566778  4.7.3.6.9 //~9C12I~
-        	{0,3,1, 2,2,3, 2,1,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-55 4              rc="+rc);//~9C12I~
-        dupCtr=new int[][]{             //2223445566778  4.7.3.6.9 //~9C12I~
-        	{0,3,1, 2,2,2, 2,1,1},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~9C12I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~9C12I~
-	    rc=chkCompleteSub();                                       //~9C12I~
-        if (Dump.Y) Dump.println("UARonChk.ronTest-55 5              rc="+rc);//~9C12I~
-                                                                   //~9C12I~
-    }                                                              //~9C12I~
 }//class                                                           //~v@@@R~
