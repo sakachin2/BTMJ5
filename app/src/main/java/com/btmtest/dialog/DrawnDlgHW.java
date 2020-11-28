@@ -1,6 +1,7 @@
-//*CID://+va03R~:                             update#=  878;       //+va03R~
+//*CID://+va40R~:                             update#=  879;       //+va40R~
 //*****************************************************************//~v101I~
-//2020/04/16 va03:alert suspendrequested                           //+va03I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
@@ -53,8 +54,10 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     private static final int COLOR_RESPNG=Color.argb(0xff,0xff,0x66,0x00);//orange//~9305I~
     private static final int COLOR_RESPBOT=Color.argb(0xff,0xc0,0xc0,0xc0);//~9228I~//~9305I~
     private static final int COLOR_YOU=Color.argb(0xff,0x00,0xbf,0xff); //deep sky blue//~9305I~
-	private static final int COLOR_REQUESTER=AG.resource.getColor(R.color.yellow);//~9705R~
-	private static final int COLOR_NON_REQUESTER=AG.resource.getColor(R.color.bg_dialog);//~9705I~
+//	private static final int COLOR_REQUESTER=AG.resource.getColor(R.color.yellow);//+va40R~
+//	private static final int COLOR_NON_REQUESTER=AG.resource.getColor(R.color.bg_dialog);//+va40R~
+  	private static final int COLOR_REQUESTER=AG.getColor(R.color.yellow);//+va40I~
+  	private static final int COLOR_NON_REQUESTER=AG.getColor(R.color.bg_dialog);//+va40I~
                                                                    //~9426I~
 	public static final int NEXTGAME_UNKNOWN=-1;                   //~9306I~
     public  static final int[] rbIDsNGTP={R.id.rbContinue,                          //~9305I~//~9705R~//~9706R~//~9708R~
@@ -718,8 +721,8 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
 	    setCheckNextGame();                                        //~9305I~
 		cbSuspend=new UCheckBox(PView,R.id.cbSuspend);             //~0306I~
 		cbSuspend.setState(swSuspend,!swRequester);                //~0306I~
-        if (swSuspend && !swRequester)                             //+va03R~
-        	CompleteDlg.alertSuspended();                          //+va03R~
+        if (swSuspend && !swRequester)                             //~va03R~
+        	CompleteDlg.alertSuspended();                          //~va03R~
         cbSuspend.setListener(this,UCBP_SUSPEND);                  //~0306I~
     }                                                              //~9305I~
     //*******************************************************      //~9A14I~

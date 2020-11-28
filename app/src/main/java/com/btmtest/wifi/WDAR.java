@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  212;       //~1Ac4R~//~1Ad2R~//~9712R~
+//*CID://+va45R~:                             update#=  213;       //+va45R~
 //*************************************************************************//~1A65I~
+//2020/11/20 va45 (Bug)WD:Suspend button was diable when disconnected//+va45I~
 //1Ad2 2015/07/17 HelpDialog by helptext                           //~1Ad2I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
 //1Ac3 2015/07/06 WD:Unpare after active session was closed        //~1Ac3I~
@@ -455,7 +456,8 @@ public class WDAR extends WDA                                      //~9B03I~
 //          	btnConnect.setVisibility(View.GONE);               //~9B04I~//~0218R~
 			btnConnect.setEnabled(!swReconnectedAll);              //~0218I~
         }                                                          //~9B04I~
-        btnSuspendGame.setEnabled(swReconnectedAll);               //~9B04I~
+//      btnSuspendGame.setEnabled(swReconnectedAll);               //~9B04I~//+va45R~
+        btnSuspendGame.setEnabled(!swReconnectedAll);              //+va45I~
     }                                                              //~9B04I~
 //                                                                   //~9729I~//~9B03R~
 ////    //**********************************                           //~1A65I~//~9721R~//~9B03R~
@@ -1075,11 +1077,11 @@ public class WDAR extends WDA                                      //~9B03I~
         	UView.showToast(R.string.Err_LackingMemberReconnect);  //~0116I~
             return false;                                                //~v@01I~//~0116R~
         }                                                          //~v@01I~//~0116I~
-        if (Status.isStatusRestarted())                            //+0218I~
-        {                                                          //+0218I~
-        	UView.showToast(R.string.Err_AlreadyRestarted);        //+0218I~
-            return false;                                          //+0218I~
-        }                                                          //+0218I~
+        if (Status.isStatusRestarted())                            //~0218I~
+        {                                                          //~0218I~
+        	UView.showToast(R.string.Err_AlreadyRestarted);        //~0218I~
+            return false;                                          //~0218I~
+        }                                                          //~0218I~
     	AG.aUARestart.stopAutoTakeDiscardReset();                  //~9B04I~
 //      UserAction.showInfoAll(0,R.string.Info_GameRestarted);     //~9B04I~//~0115R~
 		return true;                                               //~0116I~

@@ -1,5 +1,6 @@
-//*CID://+va16R~:                             update#= 1101;       //~va16R~
+//*CID://+va40R~:                             update#= 1102;       //+va40R~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va03I~
 //2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
@@ -395,8 +396,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //      spnsRankPao=new USpinner[llPaos.length];                   //~9224I~//~9320R~
                                                                    //~v@@@I~
     	if ((TestOption.option & TestOption.TO_COMPDLG_LAYOUT)==0) //TODO TEST//~9219I~
-//  		ivDora=CompDlgDora.setImageLayout(PView);              //+va16R~
-    		ivDora=CompDlgDora.setImageLayout(PView,-1/*eswn gainer:any*/);//+va16I~
+//  		ivDora=CompDlgDora.setImageLayout(PView);              //~va16R~
+    		ivDora=CompDlgDora.setImageLayout(PView,-1/*eswn gainer:any*/);//~va16I~
                                                                    //~9219I~         //~9213I~
 //        tvsEswn=new TextView[]{tvEswn1,tvEswn2,tvEswn3,tvEswn4};   //~9213R~//~9315R~
 //        tvsAmmount=new TextView[]{tvAmmount1,tvAmmount2,tvAmmount3,tvAmmount4};//~9213R~//~9315R~
@@ -723,7 +724,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private void setTitle(String Pcmt)                             //~9223I~
     {                                                              //~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.seTitle cmt="+Pcmt+",title="+title);//~9306I~
-		Spanned s=Html.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//~9223I~
+//  	Spanned s=Html.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//+va40R~
+    	Spanned s=Utils.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//+va40I~
         androidDlg.setTitle(s);                                    //~9223I~
     }                                                              //~9223I~
     //******************************************                   //~9223I~
@@ -753,7 +755,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         Complete.Status stat=sortedStatus[0];                      //~9223I~
         if (!stat.swTake)                                          //~9223I~
         	sb.append(Utils.getStr(R.string.Info_CompTypeLooser,GConst.nameESWN[stat.completeEswnLooser]));//~9223I~
-        spannedText=Html.fromHtml(sb.toString());                    //~9223I~
+//      spannedText=Html.fromHtml(sb.toString());                  //+va40R~
+        spannedText=Utils.fromHtml(sb.toString());                 //+va40I~
         tvCompType.setText(spannedText);                           //~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.setCompType  sb="+sb.toString());//~9223I~
     }                                                              //~9223I~

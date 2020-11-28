@@ -1,5 +1,8 @@
-//*CID://+DATER~: update#= 292;                                    //~v@@@R~//~9410R~
+//*CID://+va40R~: update#= 294;                                    //+va40R~
 //**********************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2020/11/06 va30 change greenrobot EventCB to URunnable           //~va30I~
+//**********************************************************************//~va30I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.utils;
@@ -24,11 +27,12 @@ import android.view.View;
 
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.app.DialogFragment;                                 //~v@@@I~
+//import android.app.DialogFragment;                               //+va40R~
+import android.support.v4.app.DialogFragment;                      //+va40I~
 import android.widget.LinearLayout;
 
 import java.util.EmptyStackException;
-import de.greenrobot.event.EventBus;
+//import de.greenrobot.event.EventBus;                             //~va30R~
 
 import com.btmtest.R;
                                                                    //~v@@@I~
@@ -285,7 +289,8 @@ public class UView                                                 //~v@@@I~
     	if (Dump.Y) Dump.println("showToast msg="+msg);            //~v@@@M~
         if (AG.status==AG.STATUS_STOPFINISH)                       //~v@@@M~
             return;                                                //~v@@@M~
-    	EventBus.getDefault().post(new EventToast(msg,false));     //~v@@@M~
+//  	EventBus.getDefault().post(new EventToast(msg,false));     //~va30R~
+    	EventCB.post(new EventToast(msg,false));                   //~va30I~
     }                                                              //~v@@@M~
 //**********************************************************       //~v@@@M~
     public static void showToastLong(int Presid,String Ptext)      //~v@@@M~
@@ -294,7 +299,8 @@ public class UView                                                 //~v@@@I~
     	if (Dump.Y) Dump.println("showToastLong msg="+msg);        //~v@@@M~
         if (AG.status==AG.STATUS_STOPFINISH)                       //~v@@@M~
             return;                                                //~v@@@M~
-    	EventBus.getDefault().post(new EventToast(msg,true));      //~v@@@M~
+//  	EventBus.getDefault().post(new EventToast(msg,true));      //~va30R~
+    	EventCB.post(new EventToast(msg,true));                    //~va30I~
     }                                                              //~v@@@M~
 //**********************************************************       //~v@@@M~
     public static void showToast(String Ptext)                     //~v@@@M~
@@ -307,7 +313,8 @@ public class UView                                                 //~v@@@I~
     	if (Dump.Y) Dump.println("showToast msg="+Ptext);          //~v@@@I~
         if (AG.status==AG.STATUS_STOPFINISH)                       //~v@@@I~
             return;                                                //~v@@@I~
-    	EventBus.getDefault().post(new EventToast(Ptext,false));   //~v@@@I~
+//  	EventBus.getDefault().post(new EventToast(Ptext,false));   //~va30R~
+    	EventCB.post(new EventToast(Ptext,false));                 //~va30I~
     }                                                              //~v@@@I~
 //**********************************************************       //~v@@@M~
     public static void showToastLong(String Ptext)                 //~v@@@M~
@@ -315,7 +322,8 @@ public class UView                                                 //~v@@@I~
     	if (Dump.Y) Dump.println("showToastLong msg="+Ptext);      //~v@@@M~
         if (AG.status==AG.STATUS_STOPFINISH)                       //~v@@@M~
             return;                                                //~v@@@M~
-    	EventBus.getDefault().post(new EventToast(Ptext,true));    //~v@@@M~
+//  	EventBus.getDefault().post(new EventToast(Ptext,true));    //~va30R~
+    	EventCB.post(new EventToast(Ptext,true));                  //~va30I~
     }                                                              //~v@@@M~
 //****************                                                 //~1416I~//~1Ad7R~//~v@@@I~
     public static View findViewById(View Playout,int Pid)          //~1416I~//~1Ad7R~//~v@@@I~
@@ -565,12 +573,12 @@ public class UView                                                 //~v@@@I~
     public static String showParentPathWidth(View Pview)           //~0327I~
     {                                                              //~0327I~
         StringBuffer sb=new StringBuffer();                        //~0327I~
-        for (View v=Pview;v!=null;)                                //+0327R~
+        for (View v=Pview;v!=null;)                                //~0327R~
         {                                                          //~0327I~
-        	if (!(v instanceof View))                              //+0327I~
-            	break;                                             //+0327I~
+        	if (!(v instanceof View))                              //~0327I~
+            	break;                                             //~0327I~
         	int id=v.getId();                                      //~0327I~
-    		sb.append("id="+Integer.toHexString(v.getId())+",width="+v.getWidth()+"\t");//+0327R~
+    		sb.append("id="+Integer.toHexString(v.getId())+",width="+v.getWidth()+"\t");//~0327R~
         	if (v.getParent() instanceof View)                     //~0327I~
             	v=(View)v.getParent();                             //~0327I~
             else                                                   //~0327I~

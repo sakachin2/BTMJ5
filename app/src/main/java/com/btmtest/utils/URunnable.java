@@ -1,11 +1,12 @@
-//*CID://+@@@@R~: update#= 151;                                    //~@@@@R~
+//*CID://+va40R~: update#= 157;                                    //~va40R~
 //**********************************************************************//~v106I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*run on UIThread after delay time specified                      //~1A6tR~
 //*run on subThread(setRunFuncSubthread())                         //~@@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.utils;                                //~1107R~  //~1108R~//~1109R~//~@@@@R~//~1A6tR~
 
-import android.app.ProgressDialog;
+//import android.app.ProgressDialog;                               //+va40R~
 
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@@@@I~
 //**********************************************************************//~1107I~
@@ -144,19 +145,22 @@ public class URunnable                                             //~@@@@R~
 			if (Dump.Y) Dump.println("URunnable:CallbackRunnable end run");//~@@@@R~
         }                                                          //~@@@@I~
     }                                                              //~@@@@I~
-//******************************************************************//~@@@@I~
-    public static void dismissDialog(URunnableData Pdata)          //~1A6tI~//~@@@@I~
-    {                                                              //~1A6tI~//~@@@@I~
-    	if (Pdata==null)                                           //~1A6tI~//~@@@@I~
-        	return;                                                //~1A6tI~//~@@@@I~
-    	android.app.Dialog dlg=Pdata.progressDialog;       //~1A6tI~//~@@@@I~
-		dismissDialog(dlg);                                        //~1A6tI~//~@@@@I~
-    }                                                              //~1A6tI~//~@@@@I~
+//******************************************************************//~va40R~
+//*no user                                                         //~va40I~
+//******************************************************************//~va40I~
+//    public static void dismissDialog(URunnableData Pdata)          //~1A6tI~//~va40R~
+//    {                                                              //~1A6tI~//~va40R~
+//        if (Pdata==null)                                           //~1A6tI~//~va40R~
+//            return;                                                //~1A6tI~//~va40R~
+//        android.app.Dialog dlg=Pdata.progressDialog;       //~1A6tI~//~va40R~
+//        dismissDialog(dlg);                                        //~1A6tI~//~va40R~
+//    }                                                              //~1A6tI~//~va40R~
+//******************************************************************//~va40I~
     public static void dismissDialog(android.app.Dialog Pdialog)   //~1A6eM~//~@@@@I~
     {                                                              //~1A6eM~//~@@@@I~
     	if (Pdialog==null)                                         //~1A6eM~//~@@@@I~
         	return;                                                //~1A6eM~//~@@@@I~
-        if (Dump.Y) Dump.println("URunnable:DismissDialogI:runOnUiThread="+Pdialog.toString());//~1A6eR~//+@@@@R~
+        if (Dump.Y) Dump.println("URunnable:DismissDialogI:runOnUiThread="+Pdialog.toString());//~1A6eR~//~@@@@R~
     	DismissDialogI uithreadi=new URunnable().new DismissDialogI();   //~1A6eI~//~@@@@I~
         UiThread.runOnUiThread(uithreadi,Pdialog);                 //~1A6eM~//~@@@@I~
     }                                                              //~1A6eM~//~@@@@I~
@@ -172,51 +176,56 @@ public class URunnable                                             //~@@@@R~
         }                                                          //~1A6eM~//~@@@@I~
 	}                                                              //~1A6eM~//~@@@@I~
 //****************************************                         //~1A6eI~//~@@@@I~
-//  public static ProgressDialog simpleProgressDialogShow(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6eI~//~1A6tR~//~@@@@I~
-    public static URunnableData simpleProgressDialogShow(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6tI~//~@@@@I~
-    {                                                              //~1A6eI~//~@@@@I~
-//      ProgressDialog dlg=new ProgressDialog(AG.context);         //~1A6eI~//~1A6tR~//~@@@@I~
-        URunnableData dlg=new URunnable().new URunnableData();	//asynchronously filled at uithread execution//~1A6tI~//~@@@@I~
-        if (Dump.Y) Dump.println("URunnable:simpleProgressDialogShow msg="+Pmsg+",dialog="+dlg.toString());//~1A6eI~//~@@@@I~
-	    SimpleProgressDialogShowI uithreadi=new URunnable().new SimpleProgressDialogShowI(Ptitleid,Pmsg,Pindeterminate,Pcancelable);//~1A6eI~//~@@@@I~
-        UiThread.runOnUiThread(uithreadi,dlg);                     //~1A6eI~//~@@@@I~
-        return dlg;                                                //~1A6eI~//~@@@@I~
-    }                                                              //~1A6eI~//~@@@@I~
-    class SimpleProgressDialogShowI implements UiThread.UiThreadI           //~1A6eI~//~@@@@I~
-    {                                                              //~1A6eI~//~@@@@I~
-        int titleid;                                               //~1A6eI~//~@@@@I~
-        String msg;                                                //~1A6eI~//~@@@@I~
-		boolean indeterminate,cancelable;                          //~1A6eI~//~@@@@I~
-        URunnableData data;                                        //~1A6tI~//~@@@@I~
-	    public SimpleProgressDialogShowI(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6eI~//~@@@@I~
-        {                                                          //~1A6eI~//~@@@@I~
-        	titleid=Ptitleid; msg=Pmsg; indeterminate=Pindeterminate; cancelable=Pcancelable;//~1A6eI~//~@@@@I~
-        }                                                          //~1A6eI~//~@@@@I~
-        @Override                                                  //~1A6eI~//~@@@@I~
-		public void runOnUiThread(Object Pparm)                                //~1A6eI~//~@@@@I~
-        {                                                          //~1A6eI~//~@@@@I~
-        	if (Dump.Y) Dump.println("URunnable:SimpleProgressDialogShow:runOnUiThread");//~1A6eR~//~@@@@I~
-//          ProgressDialog dlg=(ProgressDialog)Pparm;              //~1A6eI~//~1A6tR~//~@@@@I~
-            data=(URunnableData)Pparm;                             //~1A6tI~//~@@@@I~
-			ProgressDialog dlg=new ProgressDialog(AG.context);     //~1A6tR~//~@@@@I~
-			data.progressDialog=dlg;                               //~1A6tI~//~@@@@I~
-            dlg.setTitle(AG.resource.getString(titleid));           //~1A6eI~//~@@@@I~
-            dlg.setMessage(msg);                                   //~1A6eI~//~@@@@I~
-            dlg.setIndeterminate(indeterminate);                   //~1A6eI~//~@@@@I~
-            dlg.setCancelable(cancelable);                         //~1A6eI~//~@@@@I~
-	        dlg.show();                                           //~1A6eI~//~@@@@I~
-        }                                                          //~1A6eI~//~@@@@I~
-	}                                                              //~1A6eI~//~@@@@I~
+//*No user                                                         //~@@@@I~
 //****************************************                         //~@@@@I~
-    public class URunnableData                                         //~1A6tR~//~@@@@I~
-    {                                                              //~@@@@I~
-        public ProgressDialog progressDialog;                                           //~1A6tI~//~@@@@I~
-        public URunnableData()                                         //~1A6tR~//~@@@@I~
-        {                                                          //~@@@@I~
-        }                                                          //~@@@@I~
-        public URunnableData(ProgressDialog Pdlg)                      //~1A6tI~//~@@@@I~
-        {                                                              //~1A6tI~//~@@@@I~
-            progressDialog=Pdlg;                                                 //~1A6tI~//~@@@@I~
-        }                                                              //~1A6tI~//~@@@@I~
-    }//class                                                       //~@@@@I~
+////  public static ProgressDialog simpleProgressDialogShow(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6eI~//~1A6tR~//~va40R~
+//    public static URunnableData simpleProgressDialogShow(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6tI~//~va40R~
+//    {                                                              //~1A6eI~//~va40R~
+////      ProgressDialog dlg=new ProgressDialog(AG.context);         //~1A6eI~//~1A6tR~//~va40R~
+//        URunnableData dlg=new URunnable().new URunnableData();  //asynchronously filled at uithread execution//~1A6tI~//~va40R~
+//        if (Dump.Y) Dump.println("URunnable:simpleProgressDialogShow msg="+Pmsg+",dialog="+dlg.toString());//~1A6eI~//~va40R~
+//        SimpleProgressDialogShowI uithreadi=new URunnable().new SimpleProgressDialogShowI(Ptitleid,Pmsg,Pindeterminate,Pcancelable);//~1A6eI~//~va40R~
+//        UiThread.runOnUiThread(uithreadi,dlg);                     //~1A6eI~//~va40R~
+//        return dlg;                                                //~1A6eI~//~va40R~
+//    }                                                              //~1A6eI~//~va40R~
+//****************************************                         //~@@@@I~
+//*No user                                                         //~@@@@I~
+//****************************************                         //~@@@@I~
+//    class SimpleProgressDialogShowI implements UiThread.UiThreadI           //~1A6eI~//~va40R~
+//    {                                                              //~1A6eI~//~va40R~
+//        int titleid;                                               //~1A6eI~//~va40R~
+//        String msg;                                                //~1A6eI~//~va40R~
+//        boolean indeterminate,cancelable;                          //~1A6eI~//~va40R~
+//        URunnableData data;                                        //~1A6tI~//~va40R~
+//        public SimpleProgressDialogShowI(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6eI~//~va40R~
+//        {                                                          //~1A6eI~//~va40R~
+//            titleid=Ptitleid; msg=Pmsg; indeterminate=Pindeterminate; cancelable=Pcancelable;//~1A6eI~//~va40R~
+//        }                                                          //~1A6eI~//~va40R~
+//        @Override                                                  //~1A6eI~//~va40R~
+//        public void runOnUiThread(Object Pparm)                                //~1A6eI~//~va40R~
+//        {                                                          //~1A6eI~//~va40R~
+//            if (Dump.Y) Dump.println("URunnable:SimpleProgressDialogShow:runOnUiThread");//~1A6eR~//~va40R~
+////          ProgressDialog dlg=(ProgressDialog)Pparm;              //~1A6eI~//~1A6tR~//~va40R~
+//            data=(URunnableData)Pparm;                             //~1A6tI~//~va40R~
+//            ProgressDialog dlg=new ProgressDialog(AG.context);     //~1A6tR~//~va40R~
+//            data.progressDialog=dlg;                               //~1A6tI~//~va40R~
+//            dlg.setTitle(AG.resource.getString(titleid));           //~1A6eI~//~va40R~
+//            dlg.setMessage(msg);                                   //~1A6eI~//~va40R~
+//            dlg.setIndeterminate(indeterminate);                   //~1A6eI~//~va40R~
+//            dlg.setCancelable(cancelable);                         //~1A6eI~//~va40R~
+//            dlg.show();                                           //~1A6eI~//~va40R~
+//        }                                                          //~1A6eI~//~va40R~
+//    }                                                              //~1A6eI~//~va40R~
+//****************************************                         //~@@@@I~
+//    public class URunnableData                                         //~1A6tR~//~va40R~
+//    {                                                            //~va40R~
+//        public ProgressDialog progressDialog;                                           //~1A6tI~//~va40R~
+//        public URunnableData()                                         //~1A6tR~//~va40R~
+//        {                                                        //~va40R~
+//        }                                                        //~va40R~
+//        public URunnableData(ProgressDialog Pdlg)                      //~1A6tI~//~va40R~
+//        {                                                              //~1A6tI~//~va40R~
+//            progressDialog=Pdlg;                                                 //~1A6tI~//~va40R~
+//        }                                                              //~1A6tI~//~va40R~
+//    }//class                                                     //~va40R~
 }//class URunnable                                            //~1214R~//~@@@@R~

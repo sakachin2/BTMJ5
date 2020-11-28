@@ -1,5 +1,7 @@
-//*CID://+DATER~:                             update#= 286;        //~v@@@I~//~9B03R~
+//*CID://+va46R~:                             update#= 291;        //~va46R~
 //**********************************************************************//~v@@@I~
+//2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
+//**********************************************************************//~va46I~
 package com.btmtest.BT;                                            //~v@@@R~
 import android.bluetooth.BluetoothSocket;                         //~v@@@I~
 
@@ -989,7 +991,7 @@ public class Members                                                      //~v@@
     //*************************************************************//~v@@@I~
     public int update(String[] PnameR,Thread Pthread)              //~0108I~
 	{                                                              //~0108I~
-    	if (Dump.Y) Dump.println("Members.update nameR="+ Arrays.toString(PnameR)+",Pthread="+Utils.toString(Pthread));//~v@@@I~//+0A14R~
+    	if (Dump.Y) Dump.println("Members.update nameR="+ Arrays.toString(PnameR)+",Pthread="+Utils.toString(Pthread));//~v@@@I~//~0A14R~
         String tempname=PnameR[3];   //ipaddr                      //~v@@@I~//~0112R~
     	int idx=search(tempname);                                      //~v@@@I~
         if (idx<0)                                                 //~0112I~
@@ -1032,6 +1034,23 @@ public class Members                                                      //~v@@
     	if (Dump.Y) Dump.println("Members.update idxLocal="+idxLocal+",idxServer="+idxServer);//~9B03I~
         return idx;                                                //~9B03I~
     }                                                              //~9B03I~
+    //*************************************************************//~va46I~
+    //*at reconnect(keep member seq by macaddr at initial connection completed)//~va46I~
+    //*************************************************************//~va46I~
+    public int updateReconnect(String PmacAddr,String Pname,String Pyourname,String PsyncDate)//~va46I~
+	{                                                              //~va46I~
+    	if (Dump.Y) Dump.println("Members.updateReconnect mac="+PmacAddr+",name="+Pname+",yn="+Pyourname+",syncDate="+PsyncDate);//~va46R~
+    	int idx=searchByMacAddr(PmacAddr);                         //~va46I~
+        if (idx>=0)                                                //~va46I~
+        {                                                          //~va46I~
+        	MD[idx].name=Pname;                                    //~va46I~
+        	MD[idx].yourname=Pyourname;                            //~va46I~
+            setRuleSyncDateBTIO(idx,PsyncDate);                    //~va46I~
+	    	if (Dump.Y) Dump.println("Members.updateReconnect idx="+idx+",member="+MD[idx].toString());//+va46R~
+        }                                                          //~va46I~
+    	if (Dump.Y) Dump.println("Members.updateReconnect rc="+idx);//~va46I~
+        return idx;                                                //~va46I~
+    }                                                              //~va46I~
     //*************************************************************//~0110I~
     public int setReconnectErr(String Pname,boolean PswOn)         //~0110I~
 	{                                                              //~0110I~
@@ -1174,7 +1193,7 @@ public class Members                                                      //~v@@
             if (Pthread==null)      //disconnected                 //~v@@@I~
             {                                                      //~9B11I~
 		    	if (Dump.Y) Dump.println("Members.update set thread=null");//~9B11I~
-	        	MD[idx].yourname="";                               //~v@@@I~
+            	MD[idx].yourname="";                               //~v@@@I~
 	        	MD[idx].status=0;                                  //~9B11I~
             }                                                      //~9B11I~
             else                                                   //~v@@@I~

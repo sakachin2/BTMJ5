@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  571;       //~v@@@R~//~9404R~
+//*CID://+va40R~:                             update#=  572;       //~v@@@R~//+va40R~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
@@ -124,7 +125,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     {                                                              //~0114I~
     	String path=swSD ? workDirSD : pathDataDir;                //~0114I~
         if (Dump.Y) Dump.println("HistoryDlg:setTitle path="+path);//~0114I~
-        Spanned s= Html.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//~0114I~
+//      Spanned s= Html.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//+va40R~
+        Spanned s=Utils.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//+va40I~
         getDialog().setTitle(s);                                               //~0114I~
     }                                                              //~0114I~
     //******************************************                   //~9823I~
@@ -525,7 +527,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         for (int jj=0;jj<PLAYERS;jj++)                             //~9824I~
         {                                                          //~9824I~
             String yn=members.MD[jj].getYourName();                //~9824I~
-            if (Dump.Y) Dump.println("HistoryDlg.chkMember memberYN="+yn+",MD["+jj+"]="+members.MD[jj].toString());//~9824I~//+0305R~
+            if (Dump.Y) Dump.println("HistoryDlg.chkMember memberYN="+yn+",MD["+jj+"]="+members.MD[jj].toString());//~9824I~//~0305R~
             if (yn==null || Accounts.isRobotName(yn)>0)              //~9824I~//~9828R~//~0204R~
 //          if (yn==null || Accounts.isRobotName2(yn)>0)  //botname japanese and english//~0204R~
                 ctrRobotNow++;                                     //~9824I~

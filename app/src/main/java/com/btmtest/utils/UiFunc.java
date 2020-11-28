@@ -1,11 +1,13 @@
-//*CID://+v@@@R~:                             update#=   66;       //~v@@@R~
+//*CID://+va49R~:                             update#=   68;       //~va49R~
 //**********************************************************************//~v105I~
+//2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
 //**********************************************************************//~v105I~
 package com.btmtest.utils;                                         //~v@@@R~
                                                                    //~v@@@I~
-import static com.btmtest.StaticVars.AG;                           //~v@21I~//+v@@@I~
+import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@@I~
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.View;
 import android.app.Dialog;                                         //~v@@@I~
@@ -39,6 +41,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     private final static int FUNC_SETHEIGHT=16;                    //~@@@@I~//~v@@@R~
     private final static int FUNC_SETLAYOUTHEIGHT=17;              //~@@@@I~//~v@@@R~
     private final static int FUNC_APPENDSPAN=18;                   //~v101I~//~v@@@R~
+    private final static int FUNC_BGDRAWABLE  =19;                 //~va49I~
                                                                    //~v101I~
     private final static int DEFAULT_TEXT_SIZE=48;                 //~@@@@I~
     private String line;                                              //~1221R~//~1425R~
@@ -53,6 +56,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
                                                                    //~1310I~
 //    protected Font  font;                                            //~1310I~
     private int bgcolor,fgcolor;                                         //~1310R~//~v@@@R~
+    private Drawable bgDrawable;                                   //~va49I~
     private int imagebgcolor;                                    //~@@@@I~//~v@@@R~
     ScrollView scrollview;                                         //~1425R~
     int pos=0;                                                     //~1221I~
@@ -87,6 +91,15 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     {                                                              //~1310I~
         ((View)Pparm).setBackgroundColor(bgcolor);                        //~1310I~
     }                                                              //~1310I~
+    public void setBackgroundDrawable(View Pview,Drawable Pdrawable)//~va49I~
+    {                                                              //~va49I~
+    	bgDrawable=Pdrawable;                                      //~va49I~
+    	runOnUiThread(FUNC_BGDRAWABLE,Pview);   //by Component     //~va49I~
+    }                                                              //~va49I~
+    public void setBackgroundDrawableUI(Object Pparm)              //~va49I~
+    {                                                              //~va49I~
+        ((View)Pparm).setBackground(bgDrawable);              //~va49I~
+    }                                                              //~va49I~
     public void setBGFGUI(Object Pparm)                            //~1312I~
     {                                                              //~1312I~
     	((View)Pparm).setBackgroundColor(bgcolor);                        //~1312I~
@@ -227,7 +240,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 	@Override                                                      //~1221I~
     public void runOnUiThread(Object Pparm)                        //~1221I~//~v@@@R~
     {                                                              //~1221I~
-        if (Dump.Y) Dump.println("Component runOnUi case="+funcid);//~1506R~//~v@@@R~
+        if (Dump.Y) Dump.println("UiFunc.runOnUiThread case="+funcid);//~1506R~//~v@@@R~//+va49I~
         switch(funcid)                                       //~1221I~//~v@@@R~
         {                                                          //~1221I~
         case FUNC_APPEND:                                          //~1221I~//~v@@@R~
@@ -284,6 +297,9 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
         case FUNC_APPENDSPAN:                                      //~v101I~//~v@@@R~
             appendSpanUI(Pparm);                                   //~v101I~
             break;                                                 //~v101I~
+        case FUNC_BGDRAWABLE:                                      //~va49I~
+        	setBackgroundDrawableUI(Pparm);                        //~va49I~
+            break;                                                 //~va49I~
         }                                                          //~1221I~
     }                                                              //~1221I~
 //*****************                                                //~1221I~

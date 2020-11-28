@@ -1,4 +1,4 @@
-//*CID://+va11R~:                             update#=  490;       //~va11R~//~va12R~//~va11R~
+//*CID://+va12R~:                             update#=  492;
 //*****************************************************************//~v101I~
 //2020/09/25 va12:add option:2han-30fu for 7pair                   //~va12I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -55,7 +55,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private USpinner spnRenhoRank;                                 //~v@@@I~
     private UButtonRG bg8Continue;                                 //~v@@@I~
     private URadioGroup rgYakuFix,rgYakuFix2;                      //~v@@@R~
-//  private UCheckBox  cbYakuFix1;                                 //+va11R~
+//  private UCheckBox  cbYakuFix1;                                 //~va11R~
     private UCheckBox  cbOpenReach,cbMissingReach,cbAnkanAfterReach;//~v@@@R~
     private UCheckBox  cbOneShot;                                  //~va11I~
     private UCheckBox  cbYakuFixMultiwaitOK,cbYakuFixMultiwaitDrawOK;//~0208R~
@@ -128,7 +128,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cbYakuFixMultiwaitOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitOK);//~0208I~
     	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~0208I~
     //*YakuFix1                                                    //~va11I~
-//  	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //+va11R~
+//  	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~va11R~
     //*YakuFix2                                                    //~v@@@I~
         rgYakuFix2=new URadioGroup(PView,R.id.rgYakuFix2,0,rbsYakuFix2);//~v@@@I~
 //  	cbYakuFix2Last=new UCheckBox(PView,R.id.cbYakuFix2Last);   //~v@@@R~
@@ -208,7 +208,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cbYakuFixMultiwaitOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),0),swFixed);//~0208I~
     	cbYakuFixMultiwaitDrawOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),swFixed);//~0208I~
     //*YakuFix1                                                    //~va11I~
-//  	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),0),swFixed);//+va11R~
+//  	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),0),swFixed);//~va11R~
     //*YakuFix2                                                    //~v@@@I~
         rgYakuFix2.setCheckedID(Pprop.getParameter(getKeyRS(RSID_YAKUFIX2),YAKUFIX2_DEFAULT),swFixed);//~v@@@I~
 //  	cbYakuFix2Last.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX2LAST),1),swFixed);//~v@@@R~
@@ -268,7 +268,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),cbYakuFixMultiwaitOK.getStateInt());//~0208I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),cbYakuFixMultiwaitDrawOK.getStateInt());//~0208I~
     //*YakuFix1                                                    //~va11I~
-//      changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//+va11R~
+//      changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~va11R~
     //*YakuFix2                                                    //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX2),rgYakuFix2.getCheckedID());//~v@@@I~
 //      changed+=updateProp(getKeyRS(RSID_YAKUFIX2LAST),cbYakuFix2Last.getStateInt());//~v@@@R~
@@ -589,13 +589,13 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isYakumanByRank rc="+rc);//~va11I~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
-//    //**************************************                     //+va11R~
-//    //*1han constraint                                           //+va11R~
-//    //**************************************                     //+va11R~
-//    public static boolean isYakuFix1()                           //+va11R~
-//    {                                                            //+va11R~
-//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX1),0)!=0;//+va11R~
-//        if (Dump.Y) Dump.println("RuleSetting.isYakuFix1 rc="+rc);//+va11R~
-//        return rc;                                               //+va11R~
-//    }                                                            //+va11R~
+//    //**************************************                     //~va11R~
+//    //*1han constraint                                           //~va11R~
+//    //**************************************                     //~va11R~
+//    public static boolean isYakuFix1()                           //~va11R~
+//    {                                                            //~va11R~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX1),0)!=0;//~va11R~
+//        if (Dump.Y) Dump.println("RuleSetting.isYakuFix1 rc="+rc);//~va11R~
+//        return rc;                                               //~va11R~
+//    }                                                            //~va11R~
 }//class                                                           //~v@@@R~

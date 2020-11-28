@@ -1,7 +1,9 @@
-//*CID://+va27R~: update#= 667;                                    //~va02R~//~va06R~//~va02R~//~va27R~
+//*CID://+va49R~: update#= 671;                                    //~va49R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
+//2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
@@ -41,6 +43,7 @@ import static com.btmtest.game.Status.*;//~v@@@I~
 import com.btmtest.game.gv.GameView;                               //~v@@@I~
 import com.btmtest.game.UA.UAEndGame;                              //~9303I~
 import com.btmtest.dialog.RuleSetting;                             //~9412I~
+import com.btmtest.utils.UiFunc;
 import com.btmtest.utils.Utils;
 import com.btmtest.utils.sound.Sound;
 import com.btmtest.wifi.WDA;
@@ -142,6 +145,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private Button btnTake,btnDiscard;                             //~9701I~
     private Button btnAnyway;                                      //~va06I~
     private Button btnActionCancel;                                //~9B25I~
+    private Button btnCompReq;                                     //~va49I~
     private boolean swBtnReach;                                    //~9A30I~
     private boolean swOpenReach;                                   //~9A31I~
     private boolean swOpenReachNow;                                //~va27I~
@@ -318,7 +322,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if(Dump.Y) Dump.println("GC.init3");                       //~v@@@I~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
-            int lp=ViewGroup.LayoutParams.FILL_PARENT;             //~v@@@I~
+//          int lp=ViewGroup.LayoutParams.FILL_PARENT;             //~v@@@I~//~va40R~
+            int lp=ViewGroup.LayoutParams.MATCH_PARENT;            //~va40I~
             if (Dump.Y) Dump.println("GC.init3 addView gameView="+gameView.toString());//~v@@@R~
             frame.addView(gameView,lp,lp);                         //~v@@@I~
             AG.swMainView=false;                                   //~9815I~
@@ -429,6 +434,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        btnWaitOn.setVisibility(View.GONE);                        //~9629I~//~9B15R~
 //        btnWaitOff.setVisibility(View.GONE);                       //~9629I~//~9B15R~
 //    }                                                              //~9629I~//~9B15R~
+    btnCompReq=                                                    //~va49I~
         UButton.bind(btns1,BTNID_DLGCOMP,this);                    //~v@@@I~
         UButton.bind(btns1,BTNID_DLGCOMPR,this);                   //~v@@@I~
 //  Button btnReachOpen=                                           //~9301I~//~9A30R~
@@ -1057,6 +1063,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.showDlgComp");                //~v@@@I~
 //        if (chkComplete(true)==0)                                  //~v@@@I~//~9403R~
 //            UView.showToast(R.string.Err_NoneCompleted);           //~v@@@I~//~9403R~
+	    highlightCompReq(false/*PswOn*/);                           //+va49I~
     	CompReqDlg.showDismissed();                                //~9403I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
@@ -1282,7 +1289,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             swBtnReach=true;                                       //~va27I~
             swOpenReachNow=false;                                  //~va27I~
     }                                                              //~va27I~
-    //*******************************************************************//+va27I~
+    //*******************************************************************//~va27I~
     private void calledReachOpen()                                 //~va27I~
     {                                                              //~va27I~
             btnReachOpen.setVisibility(View.GONE);                 //~va27I~
@@ -1308,7 +1315,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //            swBtnReach=true;                                     //~va27R~
 //            swOpenReachNow=false;                                //~va27R~
 			calledReach();                                         //~va27I~
-            btnForceReach.setVisibility(View.GONE);                //+va27I~
+            btnForceReach.setVisibility(View.GONE);                //~va27I~
             break;                                                 //~9A30I~
         case GCM_REACH_OPEN:                                       //~9A30R~//~9A31R~
 //      case BTNID_REACH_OPEN:                                     //~9A30I~//~9A31R~
@@ -1318,7 +1325,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //            swBtnReach=true;                                     //~va27R~
 //            swOpenReachNow=true;                                 //~va27R~
 			calledReachOpen();                                     //~va27I~
-            btnForceReach.setVisibility(View.GONE);                //+va27I~
+            btnForceReach.setVisibility(View.GONE);                //~va27I~
             break;                                                 //~9A30I~
         case GCM_REACH_RESET:                                      //~9A30R~//~9A31R~
 //      case BTNID_REACH_RESET:                                    //~9A30I~//~9A31R~
@@ -1640,4 +1647,24 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~va06I~
         Sound.playBGM(soundID);                                    //~va06I~
     }                                                              //~va06I~
+    //*******************************************************************//~va49I~
+    public void highlightCompReq(boolean PswOn)                    //~va49I~
+    {                                                              //~va49I~
+        if (Dump.Y) Dump.println("GC.highlightCompReq sw="+PswOn); //~va49I~
+    	highlightButton(btnCompReq,PswOn);                          //~va49I~
+    }                                                              //~va49I~
+    //*******************************************************************//~va49I~
+    private void highlightButton(Button Pbtn,boolean PswOn)        //~va49R~
+    {                                                              //~va49I~
+        if (Dump.Y) Dump.println("GC.highlightButton sw="+PswOn);  //~va49I~
+    	if (PswOn)                                                 //~va49I~
+        {                                                          //~va49I~
+        	int color=AG.getColor(R.color.action_cancel);          //~va49I~
+		    new UiFunc().setBackground(Pbtn,color);                //~va49R~
+        }                                                          //~va49I~
+        else                                                       //~va49I~
+        {                                                          //~va49I~
+		    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColor/*drawable*/);//~va49I~
+        }                                                          //~va49I~
+    }                                                              //~va49I~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

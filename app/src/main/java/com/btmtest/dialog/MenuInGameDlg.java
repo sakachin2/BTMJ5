@@ -1,6 +1,7 @@
-//*CID://+va07R~:                             update#=  214;       //+va07R~
+//*CID://+va48R~:                             update#=  215;       //+va48R~
 //*****************************************************************//~v101I~
-//2020/05/08 va07:close menu in game when preference selected      //+va07I~
+//2020/11/21 va48 (Bug)gameover rejected on client after suspendgame//+va48I~
+//2020/05/08 va07:close menu in game when preference selected      //~va07I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
@@ -205,7 +206,7 @@ public class MenuInGameDlg                                         //~v@@@R~
                 break;                                             //~9823I~
     		case ITEMID_PREF_SETTING:                              //~v@@@I~//~9A29R~//~9C04R~
             	doPrefSetting();                                   //~v@@@I~//~9A29R~//~9C04R~
-	        	swDismiss=true;                                   //~0206I~//+va07R~
+	        	swDismiss=true;                                   //~0206I~//~va07R~
                 break;                                             //~v@@@I~//~9A29R~//~9C04R~
 			case ITEMID_RETURN:                                    //~9903I~
             	doReturn();                                        //~9903I~
@@ -355,9 +356,12 @@ public class MenuInGameDlg                                         //~v@@@R~
 		if (Status.isGameOver() || Status.isGameSuspended())       //~va02R~
 			if (!Accounts.isServer())                              //~va02I~
             {                                                      //~va02I~
+			  if (AG.aBTMulti.BTGroup.getConnectedCtr()!=0)        //+va48I~
+              {                                                    //+va48I~
                 UView.showToast(R.string.Err_TryEndgameFromServer);//~va02I~
                 swDismiss=false;                                   //~va02I~
                 return;                                            //~va02I~
+              }                                                    //+va48I~
             }                                                      //~va02I~
     	swDismiss=AG.aGC.endGameReturn();                          //~9903R~
     }                                                              //~9903I~

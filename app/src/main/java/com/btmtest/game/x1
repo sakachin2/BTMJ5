@@ -1,0 +1,783 @@
+Locale: ja_JP
+
+02:172433.622:Prop.getParameter key=RonValue_Test,def=0
+02:172433.623:Prop.getParameter str=0
+02:172433.624:Prop.getParameter key=NoDora,def=0
+02:172433.625:Prop.getParameter str=0
+02:172433.626:Prop.getParameter key=ChkRank,def=0
+02:172433.627:Prop.getParameter str=0
+02:172433.627:Prop.getParameter key=SetDora,def=0
+02:172433.628:Prop.getParameter str=0
+02:172433.629:Prop.getParameter key=RonValue_Case,def=0
+02:172433.630:Prop.getParameter str=0
+02:172433.631:Prop.getParameter key=Dora1Type,def=0
+02:172433.632:Prop.getParameter str=0
+02:172433.633:Prop.getParameter key=Dora1Num,def=0
+02:172433.634:Prop.getParameter str=0
+02:172433.635:Prop.getParameter key=Dora2Type,def=0
+02:172433.635:Prop.getParameter str=0
+02:172433.636:Prop.getParameter key=Dora2Num,def=0
+02:172433.637:Prop.getParameter str=0
+02:172433.638:Prop.getParameter key=Dora3Type,def=0
+02:172433.639:Prop.getParameter str=0
+02:172433.640:Prop.getParameter key=Dora3Num,def=0
+02:172433.641:Prop.getParameter str=0
+02:172433.642:Prop.getParameter key=Dora4Type,def=0
+02:172433.643:Prop.getParameter str=0
+02:172433.644:Prop.getParameter key=Dora4Num,def=0
+02:172433.645:Prop.getParameter str=0
+02:172433.646:Prop.getParameter key=Dora5Type,def=0
+02:172433.646:Prop.getParameter str=0
+02:172433.647:Prop.getParameter key=Dora5Num,def=0
+02:172433.648:Prop.getParameter str=0
+02:172433.649:Prop.getParameter key=Dora6Type,def=0
+02:172433.650:Prop.getParameter str=0
+02:172433.651:Prop.getParameter key=Dora6Num,def=0
+02:172433.652:Prop.getParameter str=0
+02:172433.653:Prop.getParameter key=Chii_Test,def=0
+02:172433.654:Prop.getParameter str=0
+02:172433.655:Prop.getParameter key=Kan_Test,def=0
+02:172433.656:Prop.getParameter str=0
+02:172433.657:Prop.getParameter key=SkipDice,def=0
+02:172433.657:Prop.getParameter str=0
+02:172433.658:Prop.getParameter key=TakeDiscard,def=0
+02:172433.659:Prop.getParameter str=0
+02:172433.660:Prop.getParameter key=DrawnReqDlg_Last,def=0
+02:172433.661:Prop.getParameter str=0
+02:172433.662:Prop.getParameter key=ShowF2,def=0
+02:172433.663:Prop.getParameter str=0
+02:172433.664:Prop.getParameter key=FinalGame,def=0
+02:172433.665:Prop.getParameter str=0
+02:172433.665:Prop.getParameter key=LayoutFinalGame,def=0
+02:172433.666:Prop.getParameter str=0
+02:172433.667:Prop.getParameter key=DrawnLastShowStick,def=0
+02:172433.668:Prop.getParameter str=0
+02:172433.669:Prop.getParameter key=RobotBird,def=0
+02:172433.670:Prop.getParameter str=0
+02:172433.671:Prop.getParameter key=CloseOnConnect,def=0
+02:172433.672:Prop.getParameter str=0
+02:172433.673:Prop.getParameter key=RuleNoSync,def=0
+02:172433.674:Prop.getParameter str=0
+02:172433.674:Prop.getParameter key=Suspend,def=0
+02:172433.675:Prop.getParameter str=0
+02:172433.676:Prop.getParameter key=KanDeal,def=0
+02:172433.677:Prop.getParameter str=0
+02:172433.678:Prop.getParameter key=KanDealAnkan,def=0
+02:172433.679:Prop.getParameter str=0
+02:172433.680:Prop.getParameter key=KanDealChankan,def=0
+02:172433.681:Prop.getParameter str=0
+02:172433.682:Prop.getParameter key=WaitSelectPon,def=0
+02:172433.682:Prop.getParameter str=0
+02:172433.683:Prop.getParameter key=WaitSelectChii,def=0
+02:172433.684:Prop.getParameter str=0
+02:172433.685:Prop.getParameter key=IOErr,def=0
+02:172433.686:Prop.getParameter str=0
+02:172433.687:Prop.getParameter key=FirstDealer,def=0
+02:172433.688:Prop.getParameter str=0
+02:172433.689:Prop.getParameter key=FinalCtrSet,def=0
+02:172433.690:Prop.getParameter str=0
+02:172433.690:Prop.getParameter key=FinalCtrGame,def=0
+02:172433.691:Prop.getParameter str=0
+02:172433.692:Prop.getParameter key=Chankan,def=0
+02:172433.693:Prop.getParameter str=0
+02:172433.694:Prop.getParameter key=DisableBT,def=0
+02:172433.695:Prop.getParameter str=0
+02:172433.696:Prop.getParameter key=DisableBT_Timing,def=0
+02:172433.697:Prop.getParameter str=0
+02:172433.698:TODlg.setTestOption from Prop TO=38040004
+02:172433.699:TODlg.setTestOption from Prop TO2=4008
+02:172433.701:TODlg.setTestOption firstDealer=0
+02:172433.702:TODlg.setTestOption finalGameCtr set=0,game=3
+02:172433.703:TODlg.setTestOption timingDisableBT=0
+02:172433.709:Pieces.recycleAll
+02:172433.710:Pieces.recyclePieces
+02:172433.711:Pieces.recyclePiecesRiver
+02:172433.712:Pieces.recyclePiecesStock
+02:172433.713:Pieces.recyclePieces4
+02:172433.714:Pieces.recyclePieceDice
+02:172433.715:Pieces.recyclePieces2
+02:172433.715:Pieces.recycleBird
+02:172433.722:Status Constructor
+02:172433.737:BTMulti:constructor maxclient=4,memberRole=0
+02:172433.739:===========BTI start============
+02:172433.743:UHandler constructor main looper
+02:172433.747:BTDiscover constructor
+02:172433.753:BTControl.BTCreate +++ BTCreate+++
+02:172433.765:MemberData.constructor name=未接続
+02:172433.766:MemberData.constructor name=未接続
+02:172433.767:MemberData.constructor name=未接続
+02:172433.768:MemberData.constructor name=未接続
+02:172433.769:IPMulti:constructor maxclient=4,memberRole=0
+02:172433.771:IPSubThread.newInstance
+02:172433.776:UHandler constructor looper=Looper (IPMulti, tid 805) {569e553}
+02:172433.777:IPSubThread Constructor
+02:172433.778:UHandler.onResume Qctr=0,activity=com.btmtest.MainActivity@9c59cd4
+02:172433.779:MainActivity.initHistory swInitApp=true
+02:172433.780:UFile.chkWritableSD
+02:172433.781:UFile.chkGrantedSD
+02:172433.782:Uview.isPermissionGranted Build.VERSION.SDK_INIT=29
+02:172433.784:Uview.isPermissionGranted type=android.permission.WRITE_EXTERNAL_STORAGE,rc=true
+02:172433.785:Uview.isPermissionGrantedExternalStorage rc=true
+02:172433.786:MenuDialogConnect rc=true
+02:172433.787:Ufile.GetSDpath:/sdcard/eMahjong
+02:172433.788:UFile.chkWritableSD rc=true,path=/sdcard/eMahjong
+02:172433.793:History.defaultConstructor
+02:172433.800:Ufile.GetSDpath:/sdcard/eMahjong
+02:172433.801:FileDialog.getFolder getFilesDir=/data/user/0/com.btmtest.debug/files
+02:172433.802:FileDialog.getFolder getAbsolutePath=/data/user/0/com.btmtest.debug/files
+02:172433.803:FileDialog.getFolder rc=[/sdcard/eMahjong, /data/user/0/com.btmtest.debug/files]
+02:172433.815:MainActivity:onStart
+02:172433.821:MainActivity:onResume
+02:172433.824:CSI:onResume
+02:172433.825:CSI:registerReceiver
+02:172433.826:CSI:registerReceiver_From28
+02:172433.827:CSI.registerReceiver_From28 registerNetworkCallback
+02:172433.837:CSI:registerReceiverSutDown
+02:172433.840:BTI onResume
+02:172433.841:BTDiscover registerReceiver
+02:172433.842:BTDiscover registerReceiver receiver!=null:true
+806:172433.843:CSI:chkConnectivity swOnlineP2P=true,stat=0,network=100
+02:172433.845:UHandler.onResume Qctr=0,activity=com.btmtest.MainActivity@9c59cd4
+02:172433.848:UHandler.onResume Qctr=0,activity=com.btmtest.MainActivity@9c59cd4
+02:172433.849:MainActivity:onResume swIOErr=false,msgIOErr=null
+02:172433.850:Tables:find id=11,idx=-1
+02:172433.851:Tables:find id=11,obj=null
+02:172433.852:BGMList.play swNosound=false,id=11,currentID=0,isPlaying=false
+02:172433.853:BGMList stopSound currentPlayer=null
+02:172433.854:BGMList.playSound start: id=11,volume=0.5
+02:172433.855:Tables:findByNumKey numkey=11,idx=0
+02:172433.910:Sound.playSound create player=android.media.MediaPlayer@42eabcb
+02:172433.911:Sound.playSound player=android.media.MediaPlayer@42eabcb
+02:172433.912:Sound.playSound setVolume level=0.5
+02:172433.914:BGMList.playSound before prepare swPrepared=[Z@a392fa8
+02:172433.916:BGM.playSound after seekTo
+02:172433.919:BGMList.playSound after start
+02:172433.921:BGMList.playSound after setListener=com.btmtest.utils.sound.BGMList@aceaac1
+02:172433.922:playSound end:id=11,player=android.media.MediaPlayer@42eabcb
+02:172433.959:SPList.onLoadComplete id=1,stat=0,pool=android.media.SoundPool@35a31fd
+02:172433.961:SPList.onLoadComplete id=2,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.342:SPList.onLoadComplete id=3,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.347:SPList.onLoadComplete id=4,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.364:MainActivity:onWindowFocusChanged focus=true
+02:172434.370:MainActivity.hideNavigationBar swHide=true
+02:172434.373:UView: getScreenSize w=1200,h=1848
+02:172434.374:UView:getScreenSize dp2pix=1.5,sp2pix=1.5
+02:172434.377:UView:getTitleBarHeight  DecorView rect=Rect(0, 0 - 1200, 1848)
+02:172434.389:UView TitleBar top=0,bottom=0
+02:172434.391:UView:getScreemRealSize getRealSize() w=1200,h=1920
+02:172434.393:MainActivity.hideNavigationBar scrNavigationbarRightWidth=0,scrW=1200,scrH=1848
+02:172434.399:SPList.onLoadComplete id=5,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.401:SPList.onLoadComplete id=6,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.555:SPList.onLoadComplete id=7,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.681:SPList.onLoadComplete id=8,stat=0,pool=android.media.SoundPool@35a31fd
+02:172434.786:SPList.onLoadComplete id=9,stat=0,pool=android.media.SoundPool@35a31fd
+02:172435.966:UButton:onClick listener=MainActivity,id=2131296277
+02:172435.967:MainView.drawMsg clearMsg
+02:172435.967:MainView.drawMsg msgbar=
+02:172435.969:AG.isMainThread rc=true,curr=Thread[main,5,main],main=Thread[main,5,main]
+02:172435.970:MainView.drawMsg setText msg=
+02:172435.971:MainActivity:onClickButton接続
+02:172435.973:Status.resetEndgameSomeone before swEndgameSomeone=false
+02:172435.973:Status.resetEndgameSomeone after  swEndgameSomeone=false
+02:172435.974:MainActivity.onConnect
+02:172435.976:MenuDlgConnect.showMenu
+02:172435.977:MenuDlgConnect.newInstance strarrayid=7f030005
+02:172435.978:MenuDlgConnect.show menuid=1
+02:172435.982:UMenuDlg.show
+02:172435.983:UMenuDlg.newInstance multichice=false,title=接続,itemsid=7f030005
+02:172435.986:UMenuDlg.show call showDF
+02:172435.990:UMenuDlg.show after call showDF androidDialog==null?=true
+02:172436.006:UMenuDlg.onCreateDialog entry
+02:172436.006:UMenuDlg:onCreateDialog swTheme=true
+02:172436.007:UMenuDlg.setLayout
+02:172436.008:UMenuDlg.setMenuitem items=Bluetooth,Wifiダイレクト,ヘルプ,キャンセル
+02:172436.029:UMenuDlg.setWidth
+02:172436.100:UMenuDlg.onCreateDialog exit
+02:172436.239:MainActivity:onWindowFocusChanged focus=false
+02:172437.346:UMenuDlg.onClick idx=1
+02:172437.348:UMenuDlg.onClick menuid=1,idx=1item=Wifiダイレクト
+02:172437.349:MenuDlgConnect.menuItemSelected menuid=1,item=Wifiダイレクト,listener!=null=false
+02:172437.349:MenuDlgConnect.menuConnect idx=1
+02:172437.350:MenuDlgConnect.connectWifiDirect
+02:172437.351:MenuDialogConnect.chkGranted
+02:172437.352:Uview.isPermissionGranted Build.VERSION.SDK_INIT=29
+02:172437.354:Uview.isPermissionGranted type=android.permission.ACCESS_FINE_LOCATION,rc=true
+02:172437.355:Uview.isPermissionGrantedLocation rc=true
+02:172437.355:MenuDialogConnect rc=true
+02:172437.356:MenuDlgConnect.chkMixMode mode=1
+02:172437.357:Members.getConnectionModeCtr ii=0,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.358:Members.getConnectionModeCtr ii=1,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.359:Members.getConnectionModeCtr ii=2,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.360:Members.getConnectionModeCtr ii=3,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.361:Members.getConnectionModeCtr ctrs=[0, 0, 0, 0]
+02:172437.361:WDI:startRemoteIP remoteStatus=0
+02:172437.362:WDI:constructor
+02:172437.366:WDIReceiver.onCreate
+02:172437.384:getIPAddress mac=86:50:75:ee:76:2f
+02:172437.390:isPont2point=false,isUp=true
+02:172437.391:name=dummy0,displayName=dummy0
+02:172437.392:toString=name:dummy0 (dummy0)
+02:172437.401:getIPAddress mac=12:e9:6f:14:19:14
+02:172437.406:isPont2point=false,isUp=false
+02:172437.407:name=seth_lte0,displayName=seth_lte0
+02:172437.408:toString=name:seth_lte0 (seth_lte0)
+02:172437.419:getIPAddress mac=ca:1f:c5:dc:79:2b
+02:172437.424:isPont2point=false,isUp=false
+02:172437.425:name=seth_lte1,displayName=seth_lte1
+02:172437.426:toString=name:seth_lte1 (seth_lte1)
+02:172437.434:getIPAddress mac=b6:df:1c:81:24:81
+02:172437.439:isPont2point=false,isUp=false
+02:172437.440:name=seth_lte2,displayName=seth_lte2
+02:172437.441:toString=name:seth_lte2 (seth_lte2)
+02:172437.445:getIPAddress mac=
+02:172437.449:isPont2point=false,isUp=false
+02:172437.450:name=ip_vti0,displayName=ip_vti0
+02:172437.451:toString=name:ip_vti0 (ip_vti0)
+02:172437.454:getIPAddress mac=
+02:172437.459:isPont2point=false,isUp=true
+02:172437.459:name=lo,displayName=lo
+02:172437.460:toString=name:lo (lo)
+02:172437.467:getIPAddress mac=1a:0e:28:2d:27:9e
+02:172437.471:isPont2point=false,isUp=false
+02:172437.472:name=seth_lte3,displayName=seth_lte3
+02:172437.473:toString=name:seth_lte3 (seth_lte3)
+02:172437.476:getIPAddress mac=
+02:172437.480:isPont2point=false,isUp=false
+02:172437.481:name=sit0,displayName=sit0
+02:172437.481:toString=name:sit0 (sit0)
+02:172437.487:getIPAddress mac=c2:b5:52:31:ee:ec
+02:172437.491:isPont2point=false,isUp=true
+02:172437.493:name=wlan0,displayName=wlan0
+02:172437.493:toString=name:wlan0 (wlan0)
+02:172437.494:getIPAddress:192.168.2.111
+02:172437.500:getIPAddress mac=52:fb:35:aa:5d:fd
+02:172437.505:isPont2point=false,isUp=false
+02:172437.506:name=seth_lte10,displayName=seth_lte10
+02:172437.506:toString=name:seth_lte10 (seth_lte10)
+02:172437.509:getIPAddress mac=
+02:172437.513:isPont2point=false,isUp=false
+02:172437.514:name=ip6tnl0,displayName=ip6tnl0
+02:172437.514:toString=name:ip6tnl0 (ip6tnl0)
+02:172437.519:getIPAddress mac=
+02:172437.522:isPont2point=true,isUp=false
+02:172437.523:name=vowifi_tun0,displayName=vowifi_tun0
+02:172437.524:toString=name:vowifi_tun0 (vowifi_tun0)
+02:172437.530:getIPAddress mac=26:fc:1f:32:c4:47
+02:172437.535:isPont2point=false,isUp=false
+02:172437.536:name=seth_lte13,displayName=seth_lte13
+02:172437.537:toString=name:seth_lte13 (seth_lte13)
+02:172437.542:getIPAddress mac=c6:73:7a:01:2e:5d
+02:172437.545:isPont2point=false,isUp=true
+02:172437.546:name=p2p-wlan0-1,displayName=p2p-wlan0-1
+02:172437.546:toString=name:p2p-wlan0-1 (p2p-wlan0-1)
+02:172437.547:getIPAddress:192.168.49.206
+02:172437.552:getIPAddress mac=7a:a0:ed:2f:32:48
+02:172437.556:isPont2point=false,isUp=false
+02:172437.556:name=seth_lte11,displayName=seth_lte11
+02:172437.557:toString=name:seth_lte11 (seth_lte11)
+02:172437.562:getIPAddress mac=6e:44:7e:f0:6e:2e
+02:172437.566:isPont2point=false,isUp=false
+02:172437.567:name=seth_lte12,displayName=seth_lte12
+02:172437.568:toString=name:seth_lte12 (seth_lte12)
+02:172437.574:getIPAddress mac=86:f3:dc:9d:f8:69
+02:172437.579:isPont2point=false,isUp=false
+02:172437.580:name=seth_lte8,displayName=seth_lte8
+02:172437.581:toString=name:seth_lte8 (seth_lte8)
+02:172437.585:getIPAddress mac=
+02:172437.588:isPont2point=false,isUp=false
+02:172437.589:name=ip6_vti0,displayName=ip6_vti0
+02:172437.590:toString=name:ip6_vti0 (ip6_vti0)
+02:172437.595:getIPAddress mac=aa:78:44:62:14:e0
+02:172437.599:isPont2point=false,isUp=false
+02:172437.601:name=seth_lte9,displayName=seth_lte9
+02:172437.601:toString=name:seth_lte9 (seth_lte9)
+02:172437.607:getIPAddress mac=ea:ba:b3:47:56:0f
+02:172437.611:isPont2point=false,isUp=false
+02:172437.611:name=seth_lte4,displayName=seth_lte4
+02:172437.612:toString=name:seth_lte4 (seth_lte4)
+02:172437.617:getIPAddress mac=b6:e5:49:6a:75:db
+02:172437.620:isPont2point=false,isUp=false
+02:172437.621:name=seth_lte5,displayName=seth_lte5
+02:172437.621:toString=name:seth_lte5 (seth_lte5)
+02:172437.626:getIPAddress mac=ea:2f:f1:89:3f:14
+02:172437.629:isPont2point=false,isUp=false
+02:172437.630:name=seth_lte6,displayName=seth_lte6
+02:172437.631:toString=name:seth_lte6 (seth_lte6)
+02:172437.636:getIPAddress mac=66:64:09:38:0e:02
+02:172437.641:isPont2point=false,isUp=false
+02:172437.642:name=seth_lte7,displayName=seth_lte7
+02:172437.642:toString=name:seth_lte7 (seth_lte7)
+02:172437.643:IPConnectionWD getPortNo:6975
+02:172437.644:IPConnectionWD:startWD
+02:172437.651:WDA:showDialog
+02:172437.652:WDA:newInstance
+02:172437.653:AxeDlg.constructor
+02:172437.653:WDA:default constructor
+02:172437.654:WDI.shownWDA
+02:172437.654:WDIReceiver.shownWDA
+02:172437.655:WDIReceiver.unregisterReceiver receiver=null
+02:172437.655:AxeDlg.newInstance with AxeDlg title=WiFiダイレクト,layoutid=7f0c00cb,helpfile=WDA
+02:172437.656:UFDlg.newInstance title=WiFiダイレクト
+02:172437.656:UFDlg.newInstance setArgument
+02:172437.659:WiFiDirectActivity.onCreate
+02:172437.663:WiFiDirectActivity.onCreate initialize return channel=android.net.wifi.p2p.WifiP2pManager$Channel@c6a6e52
+02:172437.679:WDA:enableWiFi_ICE_CREAM_SANDWITCH isWifiEnabled=true
+02:172437.681:enableWiFi rc=true
+02:172437.682:WDA:showDialog init_ICE_CREAM_SANDWICH swWifiEnable=true
+02:172437.683:AxeDlg.showDialog title=null
+02:172437.684:UFDlg.show tag=WDA
+02:172437.703:UFDlg.onCreate swSmallDevice=false
+02:172437.704:UFDlg.onCreate setStyle non small
+02:172437.704:UFDlg.onCreateDialog
+02:172437.706:UFDlg.onCreateView
+02:172437.923:UFDlg.onCreateView layoutid=7f0c00cb
+02:172437.944:Uview.getDialogPaddingHorizontal padding=48
+02:172437.945:UFDlg:setDivider color=0
+02:172437.947:UFDlg.setDivider getid titleDivider=10204a1,view==null?=true
+02:172437.948:UFDlg.setDivider user title_divider=7f09031e,view==null?=false
+02:172437.948:AxeDlg.initLayout
+02:172437.949:UFDlg:initLayout
+02:172437.950:UFDlg:initLayoutUFDlg
+02:172437.951:UFDlg:initButton
+02:172437.952:AxeDlg.initLayoutAdditional
+02:172437.952:WDA:setupDialogExtended
+02:172437.953:WDA:resetMembersMode
+02:172437.954:Members.resetMode Pmode=1,old=-1
+02:172437.954:Members.resetMode ii=0,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.955:Members.resetMode set new
+02:172437.956:Members.resetMode ii=1,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.956:Members.resetMode set new
+02:172437.957:Members.resetMode ii=2,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.957:Members.resetMode set new
+02:172437.958:Members.resetMode ii=3,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.958:Members.resetMode set new
+02:172437.962:UButton:getView id=7f0900bf
+02:172437.963:UButton:setButtonListener listener=WDA,id=2131296447
+02:172437.964:UButton:getView id=7f0900c0
+02:172437.965:UButton:setButtonListener listener=WDA,id=2131296448
+02:172437.967:UView.findViewById rc==null?=false,id=7f0900a4
+02:172437.970:UView.findViewById rc==null?=false,id=7f090160
+02:172437.971:UCheckBox.createListener
+02:172437.972:UCheckBox.setListener native listener=com.btmtest.gui.UCheckBox$1@9affff3
+02:172437.973:UCheckBox.constructor chkbox=null?false,id=7f090160
+02:172437.973:UEditText.setText text=a10,swLostFocus=true
+02:172437.976:UEditText onTextChanged afterTextChanged text=a10,swLostFocus=false
+02:172437.977:UEditText.textChanged swSetText=true,listener=WDA{8de34b0 #1 WDA}
+02:172437.978:UEditText.setFocusListener
+02:172437.980:GroupList.constructor
+02:172437.982:UEditText onTextChanged afterTextChanged text=a10,swLostFocus=true
+02:172437.983:Members.getConnectedCtr MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.984:Members.getConnectedCtr MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.985:Members.getConnectedCtr MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.985:Members.getConnectedCtr MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.986:Members.getConnectedCtr ctr=0
+02:172437.986:Members.getMemberCtr ctr=0,ctrRemoteClient=0,ii=0,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.987:Members.getMemberCtr ctr=0,ctrRemoteClient=0,ii=1,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.988:Members.getMemberCtr ctr=0,ctrRemoteClient=0,ii=2,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.989:Members.getMemberCtr ctr=0,ctrRemoteClient=0,ii=3,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172437.989:Members.getMemberCtr rc=0
+02:172437.990:GroupList displayGroup connectedctr=0,memberctr=0
+02:172437.995:UView.findViewById rc==null?=false,id=7f090038
+02:172437.997:List setMode isFocusable=false
+02:172437.998:List setmode isFocusableInTouchMode=false
+02:172437.999:List setMode isFocusable=false
+02:172437.999:List setmode isFocusableInTouchMode=false
+02:172438.000:BTMulti.isServerDevice rc=false
+02:172438.000:GroupList displayGroup gl.length=4,swNotConnectedToServer=false
+02:172438.001:GroupList.YNDN role=0,idx=0,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.001:GroupList.YNDN role=0,idx=1,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.002:UListView.add item=未接続,item2=未接続
+02:172438.002:UListView.add isFocusable=false
+02:172438.003:GroupList.YNDN role=0,idx=2,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.003:GroupList.YNDN role=0,idx=3,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.004:UListView.add item=未接続,item2=未接続
+02:172438.005:UListView.add isFocusable=false
+02:172438.006:UListView notifyChaged
+02:172438.006:AG.isMainThread rc=true,curr=Thread[main,5,main],main=Thread[main,5,main]
+02:172438.007:UListView notifyChaged adapter=com.btmtest.gui.UListView$ListArrayAdapter@aca3f29
+02:172438.007:GroupList.showYourName memberCtr=0
+02:172438.008:WDA.showYourName PmemberCtr=0
+02:172438.008:WDA.showYourName Pdisable=false
+02:172438.009:AxeDlg SetButtonListenerAll btnid=2131296318
+02:172438.010:UButton:getView id=7f09003e
+02:172438.010:UButton:setButtonListener listener=WDA,id=2131296318
+02:172438.010:AxeDlg SetButtonListenerAll btnid=2131296319
+02:172438.011:UButton:getView id=7f09003f
+02:172438.011:UButton:setButtonListener listener=WDA,id=2131296319
+02:172438.012:AxeDlg SetButtonListenerAll btnid=2131296462
+02:172438.012:UButton:getView id=7f0900ce
+02:172438.012:UButton:setButtonListener listener=WDA,id=2131296462
+02:172438.013:AxeDlg SetButtonListenerAll btnid=2131296274
+02:172438.013:UButton:getView id=7f090012
+02:172438.014:UButton:setButtonListener listener=WDA,id=2131296274
+02:172438.014:AxeDlg SetButtonListenerAll btnid=2131296315
+02:172438.014:UButton:getView id=7f09003b
+02:172438.015:UButton:setButtonListener listener=WDA,id=2131296315
+02:172438.015:UButton:bind id=7f090001
+02:172438.015:UView.findViewById rc==null?=false,id=7f090001
+02:172438.016:UButton:bind id=7f090085
+02:172438.017:UView.findViewById rc==null?=false,id=7f090085
+02:172438.017:UButton:bind id=7f09003e
+02:172438.018:UView.findViewById rc==null?=false,id=7f09003e
+02:172438.018:UButton:bind id=7f09003f
+02:172438.019:UView.findViewById rc==null?=false,id=7f09003f
+02:172438.019:WDA:updateButtonView Powner=false,paired=false,remotestatus=0,remotestatusaccept=0,connected=false
+02:172438.020:WDA.chkIPConnection
+02:172438.021:Members.getConnectionModeCtr ii=0,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.022:Members.getConnectionModeCtr ii=1,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.022:Members.getConnectionModeCtr ii=2,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.023:Members.getConnectionModeCtr ii=3,MD=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.023:Members.getConnectionModeCtr ctrs=[0, 0]
+02:172438.024:AxeDlg layout=ffffffff,btnid=2131296257
+02:172438.024:UButton:getView id=7f090001
+02:172438.025:UButton:setButtonListener listener=WDA,id=2131296257
+02:172438.025:AxeDlg layout=ffffffff,btnid=2131296389
+02:172438.026:UButton:getView id=7f090085
+02:172438.026:UButton:setButtonListener listener=WDA,id=2131296389
+02:172438.026:AxeDlg layout=ffffffff,btnid=2131296447
+02:172438.027:UButton:getView id=7f0900bf
+02:172438.027:UButton:setButtonListener listener=WDA,id=2131296447
+02:172438.028:AxeDlg layout=ffffffff,btnid=2131296461
+02:172438.028:UButton:getView id=7f0900cd
+02:172438.028:UButton:setButtonListener listener=WDA,id=2131296461
+02:172438.029:AxeDlg layout=ffffffff,btnid=2131296448
+02:172438.029:UButton:getView id=7f0900c0
+02:172438.030:UButton:setButtonListener listener=WDA,id=2131296448
+02:172438.033:UFDlg:onActivityCreated
+02:172438.035:UFDlg:RestoreInstanciate bundle not null=false
+02:172438.035:UFDlg:initDialog bundle not null=false
+02:172438.051:UFDlg.onStart
+02:172438.051:UFDlg.onResume
+02:172438.052:UFDlg.getDialogWidth ww=0
+02:172438.053:UFDlg.setWidthOnResume ww=0
+02:172438.053:Uview.setDialogWidthMatchParentPortrait swPortrait=true
+02:172438.054:WiFiDirectActivity.onResume
+02:172438.055:WiFiDirectActivity.registerReceiver old receiver=null
+02:172438.059:UMenuDlg.onDismiss
+02:172438.060:UMenuDlg.remove
+02:172438.061:UFDlg.remove
+02:172438.062:UFDlg.remove exit
+02:172438.063:MainActivity:onWindowFocusChanged focus=true
+02:172438.063:MainActivity.hideNavigationBar swHide=true
+02:172438.065:UView: getScreenSize w=1200,h=1848
+02:172438.066:UView:getScreenSize dp2pix=1.5,sp2pix=1.5
+02:172438.067:UView:getTitleBarHeight  DecorView rect=Rect(0, 0 - 1200, 1848)
+02:172438.069:UView TitleBar top=0,bottom=0
+02:172438.070:UView:getScreemRealSize getRealSize() w=1200,h=1920
+02:172438.071:MainActivity.hideNavigationBar scrNavigationbarRightWidth=0,scrW=1200,scrH=1848
+02:172438.118:UListView:ListArrayAdapter getview Ppos=0,CheckedItemPos=-1
+02:172438.118:GroupList:getViewCustom Ppos=0,CheckedItemPos=-1
+02:172438.128:Members.searchByYourname parm=未接続
+02:172438.129:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.130:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.130:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.131:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.131:Members.searchByYourname parm=未接続
+02:172438.131:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.132:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.132:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.133:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.134:GroupList:getViewCustom Ppos=0,v1=未接続,v2=未接続
+02:172438.138:UListView:ListArrayAdapter getview Ppos=1,CheckedItemPos=-1
+02:172438.138:GroupList:getViewCustom Ppos=1,CheckedItemPos=-1
+02:172438.139:Members.searchByYourname parm=未接続
+02:172438.140:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.140:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.141:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.141:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.142:Members.searchByYourname parm=未接続
+02:172438.142:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.142:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.143:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.143:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.143:GroupList:getViewCustom Ppos=1,v1=未接続,v2=未接続
+02:172438.161:UListView:ListArrayAdapter getview Ppos=0,CheckedItemPos=-1
+02:172438.162:GroupList:getViewCustom Ppos=0,CheckedItemPos=-1
+02:172438.163:Members.searchByYourname parm=未接続
+02:172438.163:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.164:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.165:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.165:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.166:Members.searchByYourname parm=未接続
+02:172438.166:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.167:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.167:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.168:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.168:GroupList:getViewCustom Ppos=0,v1=未接続,v2=未接続
+02:172438.170:UListView:ListArrayAdapter getview Ppos=1,CheckedItemPos=-1
+02:172438.171:GroupList:getViewCustom Ppos=1,CheckedItemPos=-1
+02:172438.171:Members.searchByYourname parm=未接続
+02:172438.172:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.173:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.173:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.174:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.174:Members.searchByYourname parm=未接続
+02:172438.175:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.175:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.176:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.176:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.177:GroupList:getViewCustom Ppos=1,v1=未接続,v2=未接続
+02:172438.208:UListView:ListArrayAdapter getview Ppos=0,CheckedItemPos=-1
+02:172438.209:GroupList:getViewCustom Ppos=0,CheckedItemPos=-1
+02:172438.210:Members.searchByYourname parm=未接続
+02:172438.211:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.211:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.212:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.213:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.214:Members.searchByYourname parm=未接続
+02:172438.214:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.215:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.216:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.216:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.217:GroupList:getViewCustom Ppos=0,v1=未接続,v2=未接続
+02:172438.219:UListView:ListArrayAdapter getview Ppos=1,CheckedItemPos=-1
+02:172438.220:GroupList:getViewCustom Ppos=1,CheckedItemPos=-1
+02:172438.221:Members.searchByYourname parm=未接続
+02:172438.221:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.222:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.222:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.222:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.223:Members.searchByYourname parm=未接続
+02:172438.223:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.224:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.224:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.224:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.225:GroupList:getViewCustom Ppos=1,v1=未接続,v2=未接続
+02:172438.239:UListView:ListArrayAdapter getview Ppos=0,CheckedItemPos=-1
+02:172438.240:GroupList:getViewCustom Ppos=0,CheckedItemPos=-1
+02:172438.241:Members.searchByYourname parm=未接続
+02:172438.241:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.242:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.242:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.243:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.243:Members.searchByYourname parm=未接続
+02:172438.244:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.244:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.245:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.245:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.246:GroupList:getViewCustom Ppos=0,v1=未接続,v2=未接続
+02:172438.248:UListView:ListArrayAdapter getview Ppos=1,CheckedItemPos=-1
+02:172438.248:GroupList:getViewCustom Ppos=1,CheckedItemPos=-1
+02:172438.249:Members.searchByYourname parm=未接続
+02:172438.249:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.250:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.250:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.251:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.251:Members.searchByYourname parm=未接続
+02:172438.252:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.252:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.252:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.253:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.253:GroupList:getViewCustom Ppos=1,v1=未接続,v2=未接続
+02:172438.264:UListView:ListArrayAdapter getview Ppos=0,CheckedItemPos=-1
+02:172438.264:GroupList:getViewCustom Ppos=0,CheckedItemPos=-1
+02:172438.265:Members.searchByYourname parm=未接続
+02:172438.265:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.266:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.266:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.266:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.267:Members.searchByYourname parm=未接続
+02:172438.267:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.267:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.267:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.268:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.268:GroupList:getViewCustom Ppos=0,v1=未接続,v2=未接続
+02:172438.271:UListView:ListArrayAdapter getview Ppos=1,CheckedItemPos=-1
+02:172438.272:GroupList:getViewCustom Ppos=1,CheckedItemPos=-1
+02:172438.279:Members.searchByYourname parm=未接続
+02:172438.280:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.280:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.280:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.281:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.281:Members.searchByYourname parm=未接続
+02:172438.282:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.282:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.282:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.282:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.283:GroupList:getViewCustom Ppos=1,v1=未接続,v2=未接続
+02:172438.403:WiFiDirectBroadCastReceiver:onReceive action=android.net.wifi.p2p.STATE_CHANGED
+02:172438.404:WiFiDirectActivity.setIsWifiP2pEnabled enable=true
+02:172438.405:WiFiDirectBroadCastReceiver:onReceive:P2P state changed TEST:Enabled issue requestPair
+02:172438.406:WiFiDirectBroadCastReceiver:onReceive:P2P state changed - 2
+02:172438.407:UMenuDlg.onDestroyView
+02:172438.411:UMenuDlg.onDestroy
+02:172438.411:MenuDlgConnect.onDestroy
+02:172438.426:MainActivity:onWindowFocusChanged focus=false
+02:172438.428:DeviceListFragment.onPeersAvailable list count=1
+02:172438.429:DeviceListFragment:onPeersAvailable slectedpos=-1
+02:172438.429:DeviceListFragment.drawListView
+02:172438.430:WDA:peerUpdated ctr=1
+02:172438.430:WDA:updateButtonView Powner=false,paired=false,remotestatus=1,remotestatusaccept=0,connected=false
+02:172438.431:DeviceListFragment onListItemClicked positoion=0
+02:172438.431:DeviceDetailFragment showDetail:name=H8A9,addr=da:9b:3b:87:b0:f6
+02:172438.432:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.432:DeviceListFragment.drawListView
+02:172438.433:DeviceListFragment:setState
+02:172438.433:DeviceDetailFragment.setStatus txt=サーバー側です
+ "接続受付" を押しクライアントからの接続を待ちます
+02:172438.438:DeviceListFragment:getView pos=0
+02:172438.452:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.453:DeviceListFragment:getView pos==selcted=0
+02:172438.453:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.454:Members.getMemberSocketIP name=H8A9
+02:172438.454:Members.search by name=H8A9
+02:172438.454:Members.search MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.454:Members.search MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.455:Members.search MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.455:Members.search MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.455:Members.search not found
+02:172438.456:IPMulti:getRemoteIPAddr swServer=false,devicename=H8A9,ipa=null
+02:172438.456:DeviceListFragment:getView ipa=null
+02:172438.456:DeviceListFragment:getDeviceStatus:Peer status :0=ペア設定済み
+02:172438.457:DeviceListFragment.updateOwner name=H8A9,device.status=0,isGroupOwner=false
+02:172438.457:DeviceListFragment.updateOwner device=Device: H8A9
+ deviceAddress: da:9b:3b:87:b0:f6
+ primary type: 10-0050F204-5
+ secondary type: null
+ wps: 392
+ grpcapab: 0
+ devcapab: 37
+ status: 0
+ wfdInfo: WFD enabled: trueWFD DeviceInfo: 0
+ WFD CtrlPort: 0
+ WFD MaxThroughput: 0
+02:172438.458:DeviceListFragment.updateOwner nameOwner=null,swOwner=false
+02:172438.458:updateOwner owner=false
+02:172438.471:DeviceListFragment:getView pos=0
+02:172438.471:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.472:DeviceListFragment:getView pos==selcted=0
+02:172438.472:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.473:Members.getMemberSocketIP name=H8A9
+02:172438.473:Members.search by name=H8A9
+02:172438.474:Members.search MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.474:Members.search MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.475:Members.search MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.475:Members.search MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.475:Members.search not found
+02:172438.476:IPMulti:getRemoteIPAddr swServer=false,devicename=H8A9,ipa=null
+02:172438.476:DeviceListFragment:getView ipa=null
+02:172438.477:DeviceListFragment:getDeviceStatus:Peer status :0=ペア設定済み
+02:172438.477:DeviceListFragment.updateOwner name=H8A9,device.status=0,isGroupOwner=false
+02:172438.478:DeviceListFragment.updateOwner device=Device: H8A9
+ deviceAddress: da:9b:3b:87:b0:f6
+ primary type: 10-0050F204-5
+ secondary type: null
+ wps: 392
+ grpcapab: 0
+ devcapab: 37
+ status: 0
+ wfdInfo: WFD enabled: trueWFD DeviceInfo: 0
+ WFD CtrlPort: 0
+ WFD MaxThroughput: 0
+02:172438.478:DeviceListFragment.updateOwner nameOwner=null,swOwner=false
+02:172438.479:updateOwner owner=false
+02:172438.488:UListView:ListArrayAdapter getview Ppos=0,CheckedItemPos=-1
+02:172438.488:GroupList:getViewCustom Ppos=0,CheckedItemPos=-1
+02:172438.494:Members.searchByYourname parm=未接続
+02:172438.495:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.495:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.495:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.496:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.496:Members.searchByYourname parm=未接続
+02:172438.496:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.497:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.497:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.497:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.498:GroupList:getViewCustom Ppos=0,v1=未接続,v2=未接続
+02:172438.500:UListView:ListArrayAdapter getview Ppos=1,CheckedItemPos=-1
+02:172438.501:GroupList:getViewCustom Ppos=1,CheckedItemPos=-1
+02:172438.501:Members.searchByYourname parm=未接続
+02:172438.501:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.501:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.502:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.502:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.502:Members.searchByYourname parm=未接続
+02:172438.502:Members.searchByYourname MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.502:Members.searchByYourname MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.503:Members.searchByYourname MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.503:Members.searchByYourname MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.503:GroupList:getViewCustom Ppos=1,v1=未接続,v2=未接続
+02:172438.507:DeviceListFragment:getView pos=0
+02:172438.508:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.509:DeviceListFragment:getView pos==selcted=0
+02:172438.509:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.509:Members.getMemberSocketIP name=H8A9
+02:172438.509:Members.search by name=H8A9
+02:172438.510:Members.search MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.510:Members.search MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.510:Members.search MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.510:Members.search MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.510:Members.search not found
+02:172438.510:IPMulti:getRemoteIPAddr swServer=false,devicename=H8A9,ipa=null
+02:172438.511:DeviceListFragment:getView ipa=null
+02:172438.511:DeviceListFragment:getDeviceStatus:Peer status :0=ペア設定済み
+02:172438.511:DeviceListFragment.updateOwner name=H8A9,device.status=0,isGroupOwner=false
+02:172438.512:DeviceListFragment.updateOwner device=Device: H8A9
+ deviceAddress: da:9b:3b:87:b0:f6
+ primary type: 10-0050F204-5
+ secondary type: null
+ wps: 392
+ grpcapab: 0
+ devcapab: 37
+ status: 0
+ wfdInfo: WFD enabled: trueWFD DeviceInfo: 0
+ WFD CtrlPort: 0
+ WFD MaxThroughput: 0
+02:172438.512:DeviceListFragment.updateOwner nameOwner=null,swOwner=false
+02:172438.512:updateOwner owner=false
+02:172438.515:DeviceListFragment:getView pos=0
+02:172438.515:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.516:DeviceListFragment:getView pos==selcted=0
+02:172438.516:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.517:Members.getMemberSocketIP name=H8A9
+02:172438.517:Members.search by name=H8A9
+02:172438.517:Members.search MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.517:Members.search MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.517:Members.search MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.518:Members.search MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.518:Members.search not found
+02:172438.518:IPMulti:getRemoteIPAddr swServer=false,devicename=H8A9,ipa=null
+02:172438.518:DeviceListFragment:getView ipa=null
+02:172438.518:DeviceListFragment:getDeviceStatus:Peer status :0=ペア設定済み
+02:172438.518:DeviceListFragment.updateOwner name=H8A9,device.status=0,isGroupOwner=false
+02:172438.519:DeviceListFragment.updateOwner device=Device: H8A9
+ deviceAddress: da:9b:3b:87:b0:f6
+ primary type: 10-0050F204-5
+ secondary type: null
+ wps: 392
+ grpcapab: 0
+ devcapab: 37
+ status: 0
+ wfdInfo: WFD enabled: trueWFD DeviceInfo: 0
+ WFD CtrlPort: 0
+ WFD MaxThroughput: 0
+02:172438.519:DeviceListFragment.updateOwner nameOwner=null,swOwner=false
+02:172438.519:updateOwner owner=false
+02:172438.547:DeviceListFragment:getView pos=0
+02:172438.548:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.549:DeviceListFragment:getView pos==selcted=0
+02:172438.549:DeviceDetailFragment.getDeviceName name=H8A9,devicename=H8A9,deviceAddress=da:9b:3b:87:b0:f6
+02:172438.549:Members.getMemberSocketIP name=H8A9
+02:172438.549:Members.search by name=H8A9
+02:172438.549:Members.search MD[0]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.549:Members.search MD[1]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.550:Members.search MD[2]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.550:Members.search MD[3]=name=未接続,addr=null,yourname=null,macAddr=null,status=0x0,connectionMode=-1,syncDate=null,syncDateBTIO=null,thread=null,statusRuleSync=0,SocketBT=null,socketIP=null,robot=null,account=null
+02:172438.550:Members.search not found
+02:172438.550:IPMulti:getRemoteIPAddr swServer=false,devicename=H8A9,ipa=null
+02:172438.550:DeviceListFragment:getView ipa=null
+02:172438.550:DeviceListFragment:getDeviceStatus:Peer status :0=ペア設定済み
+02:172438.551:DeviceListFragment.updateOwner name=H8A9,device.status=0,isGroupOwner=false
+02:172438.551:DeviceListFragment.updateOwner device=Device: H8A9
+ deviceAddress: da:9b:3b:87:b0:f6
+ primary type: 10-0050F204-5
+ secondary type: null
+ wps: 392
+ grpcapab: 0
+ devcapab: 37
+ status: 0
+ wfdInfo: WFD enabled: trueWFD DeviceInfo: 0
+ WFD CtrlPort: 0
+ WFD MaxThroughput: 0
+02:172438.551:DeviceListFragment.updateOwner nameOwner=null,swOwner=false
+02:172438.552:updateOwner owner=false

@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.04</string>
+    <string name="app_version">v1.09</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -49,8 +49,8 @@
     <string name="Info_IOErrRecovered">Connection remains, ask disconnection to the server</string>
     <string name="Err_InGameRestarting">Processing disconnection</string>
     <string name="Info_Reconnected">Reconnected to %1$s.</string>
-    <string name="Err_ReconnectingEnv">Connected to \"%1$s\", but game can not be restarted because both side are not reconnection mode.
-									Disconnect from reconnection mode side and \"Suspend/Gameover\" from \"Connection failure\" of Menu.
+    <string name="Err_ReconnectingEnv">Connected to \"%1$s\", but game can not be restarted because one side is APP restarted state.
+									Disconnect from the side in game and \"Suspend/Gameover\" from \"Connection failure\" of Menu.
 									</string>
     <string name="Err_ReconnectingExistStartGame">\"%1$s\" is reconnection mode(DuringGame status).\n
 									Once disconnect from server by menu:\"Connection failure\", \"Reconnect\", \"Disconenct\".
@@ -961,7 +961,7 @@
     <string name="Info_GameEndSuspend">Save+Suspended. proceed to menu:\"Gameover\".</string>
 <!--setting-->
     <string name="Err_TrySendFromServer">Ask to server to send</string>
-    <string name="Err_TryEndgameFromServer">Server proceed to menu:\"Gameover\".</string>
+    <string name="Err_TryEndgameFromServer">Connection exists, proceed to menu:\"Gameover\" on server.</string>
     <string name="Err_TryBackButtonFromServer">Try on server.</string>
     <string name="Err_GameStatusForMenuInGame">Before dealing tiles.</string>
     <string name="Err_GameStatusForMenuInGameUseBackButton">Before dealing tiles. Use \"Back\" button to return.</string>
@@ -1263,7 +1263,7 @@
     <string name="Msg_ConfirmDisconnect">\"Unpair\" disconnects remaining connection. Do you proceed \"Unpair\"?</string>
     <string name="Msg_IPConnectionExist">Active session remains, \"Disconnect\" it beforehand.</string>
     <string name="InfoWifiEnabled">WiFi is now available.</string>
-    <string name="ErrWifiEnable">WiFi is not available.</string>
+    <string name="ErrWifiEnable">WiFi is not available. From Android-Q(10), set manually from Setting button.</string>
     <string name="InfoWifiDisabled">WiFi was disabled.</string>
     <string name="ErrWifiDisable">Failed to disable WiFi.</string>
     <string name="WarningWDNotConnected">No WiFi direct pairing.</string>
@@ -1329,7 +1329,7 @@
     <string name="Info_WDPair_Deleted">Deleted Pair:</string>
     <string name="Info_WDPair_Added">Added Pair:</string>
     <string name="Info_WDPair_Updated">Updated Pair:</string>
-    <string name="ChannelLostEnableP2P">Error! Channel was lost.\nRetry after enabling WiFi Direct(See Help).</string>
+    <string name="ChannelLostEnableP2P">Error! Channel was lost.\nTo continue to use WiFiDirect, retry after enabling WiFi Direct(See Help).</string>
     <string name="AbortingConnection">Unpairing</string>
     <string name="ConnectAbortReason">Unpair failed by reason: </string>
     <string name="p2p_off_warning">

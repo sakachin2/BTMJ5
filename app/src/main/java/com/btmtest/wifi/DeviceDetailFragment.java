@@ -1,5 +1,7 @@
-//*CID://+DATER~:                             update#=  173;       //~1AbBR~//~@@@@R~//~9A03R~
+//*CID://+va44R~:                             update#=  193;       //~va44R~
 //*************************************************************************//~1A65I~
+//2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired/owner flag not set//~va44I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1AbB 2015/06/22 mask mac addr for security                       //~1AbBI~
 //1Aa4 2015/04/20 show also empty msg for server side              //~1Aa4I~
 //1A90 2015/04/18 (like as 1A84)WiFiDirect from Top panel          //~1A90I~
@@ -34,13 +36,14 @@ import java.util.List;
 import android.annotation.TargetApi;                               //~1A65R~
 import android.content.res.Resources;                              //~1A65R~
 //import android.net.Uri;
-import android.net.wifi.WpsInfo;
+//import android.net.wifi.WpsInfo;                                 //~va40R~
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.net.wifi.p2p.WifiP2pManager.GroupInfoListener;
+import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,7 +51,7 @@ import android.widget.TextView;
 import com.btmtest.R;
 import com.btmtest.utils.Alert;
 import com.btmtest.utils.Dump;
-import com.btmtest.utils.URunnable;
+//import com.btmtest.utils.URunnable;                              //~va40R~
 import com.btmtest.utils.Utils;
 //~@@@@I~
 import static com.btmtest.StaticVars.AG;                           //~9721I~//~@@@@I~
@@ -72,6 +75,7 @@ public class DeviceDetailFragment implements ConnectionInfoListener
     private static final int BTNID_DISCONNECT=R.id.btn_disconnect; //~1A65I~
 	private static final int COLOR_STATUS_NORMAL=0xffffffff;       //~@@@@I~
 	private static final int COLOR_STATUS_ERR=0xffffa500;          //~@@@@I~
+	private static final String LOCAL_HOSTNAME="LocalHost";        //~va44I~
 //  private TextView /*tvGroupOwner,*/tvDeviceInfo,tvStatusText,/*tvDeviceAddress,*/tvGroupIP;//~1A65R~//~@@@@R~
     private TextView tvDeviceInfo,tvStatusText;                    //~@@@@I~
     private TextView tvPeerStatus,tvPeerInfo;                        //~1A84I~//~1A90I~
@@ -88,7 +92,7 @@ public class DeviceDetailFragment implements ConnectionInfoListener
     private WifiP2pDevice device;
     private WifiP2pInfo info;
 //  ProgressDialog progressDialog = null;                          //~1A6tR~
-    URunnable.URunnableData progressDialog = null;                           //~1A6tR~
+//  URunnable.URunnableData progressDialog = null;                 //~va40R~
     public String ownerIPAddress,peerDevice;                       //~1A65R~
 
 //    @Override                                                    //~1A65R~
@@ -360,7 +364,7 @@ public class DeviceDetailFragment implements ConnectionInfoListener
                 setStatus(true,R.string.Wifi_Pair_NotConnectedDevice);//~@@@@I~
                 return;                                         //~@@@@I~
             }                                                      //~@@@@I~
-            if (dev.status==WifiP2pDevice.INVITED)                 //~9A04I~//+0117R~
+            if (dev.status==WifiP2pDevice.INVITED)                 //~9A04I~//~0117R~
             {                                                      //~9A04I~
 		    	if (Dump.Y) Dump.println("DeviceDetailFragment:status INVITED");//~9A04I~
                     WDA.getWDActivity().cancelConnect();//~9A04I~
@@ -432,7 +436,8 @@ public class DeviceDetailFragment implements ConnectionInfoListener
         this.info = info;
 //      this.getView().setVisibility(View.VISIBLE);                //~@@@@R~
 		if (Dump.Y) Dump.println("onConnectionInfoAvailable:infoToString="+info.toString());//~1A65I~
-
+        if (!info.groupFormed)                                     //~va44I~
+        	return;                                                //~va44R~
         // The owner IP is now known.
 //      TextView view = (TextView) mContentView.findViewById(R.id.group_owner);//~1A65R~
 //      TextView view=tvGroupOwner;                                //~1A65R~
@@ -479,7 +484,6 @@ public class DeviceDetailFragment implements ConnectionInfoListener
             setStatus(false,R.string.client_text);                 //~@@@@I~
 			if (Dump.Y) Dump.println("onConnectionInfoAvailable:Server:statusText="+tvStatusText.getText().toString());//~1A65R~
         }
-
         // hide the connect button
 //      mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);//~1A65R~
 //  	WDA.SWDA.connected();	//update AG.RemotestatusWD     //~1A65I~//~1A84R~//~1A90I~
@@ -652,9 +656,14 @@ public class DeviceDetailFragment implements ConnectionInfoListener
     @Override                                                      //~1A65I~
     public void onGroupInfoAvailable(final WifiP2pGroup Pgroup)    //~1A65I~
 	{                                                              //~1A65I~
+    	String localDevName=LOCAL_HOSTNAME;                        //~va44R~
     //*******************                                          //~1A65I~
       	try                                                        //~1A65I~
       	{                                                          //~1A65I~
+      		if (Dump.Y) Dump.println("DeviceDetailFragment:onGroupInfoAvailable Pgroup="+Pgroup);//~va44R~
+            if (Pgroup==null)                                      //~va44I~
+            	return;                                            //~va44I~
+      		if (Dump.Y) Dump.println("DeviceDetailFragment:onGroupInfoAvailable Interface="+Pgroup.getInterface()+",networkname="+Pgroup.getNetworkName()+",passphrase="+Pgroup.getPassphrase()+",toString="+Pgroup.toString());//~va44I~
         	boolean owner=Pgroup.isGroupOwner();                   //~1A65I~
 	    	WifiP2pDevice deviceOwner=Pgroup.getOwner();           //~1A65I~
             swGroupInfoOwner=owner;                                //~@@@@I~
@@ -680,18 +689,25 @@ public class DeviceDetailFragment implements ConnectionInfoListener
                 	clientCtr++;                                   //~1A65I~
 //                  peers+=client.deviceName+" ";                  //~1A67R~
                     peers+=getDeviceName(client)+" ";              //~1A67R~
+		      		if (Dump.Y) Dump.println("DeviceDetailFragment:onGroupInfoAvailable connected devices="+peers);//~va44I~
+//                  if (localDevName==null)                        //~va44R~
+//                  	localDevName=peers;                        //~va44R~
                 }                                                  //~1A65I~
             }                                                      //~1A65I~
             if (owner)                                             //~1A65I~
+            {                                                      //~va44I~
 				if (clientCtr!=0)                                  //~1A65R~
 	            	peerDevice=peers.trim();                       //~1A65R~
                 else                                               //~1A65I~
 	            	peerDevice="None";                             //~1A65I~
+                localDevName=getDeviceName(deviceOwner);           //~va44I~
+            }                                                      //~va44I~
             else                                                   //~1A65I~
             {                                                      //~1A67R~
 //          	peerDevice=deviceOwner.deviceName;                 //~1A67R~
 	            peerDevice=getDeviceName(deviceOwner);             //~1A67R~
             }                                                      //~1A67R~
+            WDA.getDeviceListFragment().updateThisDevice(localDevName,owner);//~va44R~
 //            TextView tv=tvDeviceInfo;                              //~1A65I~//~@@@@R~
 ////          tv.setText(WDA.getResourceString(R.string.PeerDeviceName)+peerDevice);//~1A65R~//~1A84R~//~1A90I~//~@@@@R~
 //            tv.setText(peerDevice);                                //~1A84I~//~1A90I~//~@@@@R~
@@ -717,6 +733,25 @@ public class DeviceDetailFragment implements ConnectionInfoListener
       		Dump.println(e,"DeviceDetailFragment:onGroupInfoAvailable");//~1A65I~
       	}                                                          //~1A65I~
     }                                                              //~1A65I~
+	//***********************************************************************************//~va44I~
+	//*from WifiDirectActivity:DeviceInfoListener(from API29)      //~va44R~
+	//***********************************************************************************//~va44I~
+    public void onDeviceInfoAvailable(WifiP2pDevice Pdevice)       //~va44I~
+	{                                                              //~va44I~
+    //*******************                                          //~va44I~
+      	try                                                        //~va44I~
+      	{                                                          //~va44I~
+      		if (Dump.Y) Dump.println("DeviceDetailFragment:onDeviceupInfoAvailable swGroupInfoOwner="+swGroupInfoOwner+",device="+Utils.toString(Pdevice));//~va44R~
+            if (Pdevice==null)                                     //~va44I~
+            	return;                                            //~va44I~
+            WDA.getDeviceListFragment().updateThisDevice(Pdevice); //+va44R~
+//          WDA.getDeviceListFragment().updateThisDevice(getDeviceName(Pdevice),swGroupInfoOwner);//+va44R~
+      	}                                                          //~va44I~
+      	catch(Exception e)                                         //~va44I~
+      	{                                                          //~va44I~
+      		Dump.println(e,"DeviceDetailFragment:onDeviceInfoAvailable");//~va44I~
+      	}                                                          //~va44I~
+    }                                                              //~va44I~
 //    //*******************************************************************************************************//~1A65I~//~@@@@R~
 //    public void setVisibility(int Pvisibility)                     //~1A65R~//~@@@@R~
 //    {                                                              //~1A65I~//~@@@@R~

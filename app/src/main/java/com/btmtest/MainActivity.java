@@ -1,5 +1,7 @@
-//*CID://+va06R~:                             update#= 235;        //~va17R~//+va06R~
+//*CID://+va41R~:                             update#= 238;        //~va17R~//~va30R~//+va41R~
 //**********************************************************************//~@@@@I~
+//2020/11/08 va41 (Bug) coding Main.onPause had call CSI.onResume  //+va41I~
+//2020/11/06 va30 change greenrobot EventCB to URunnable           //~va30I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //**********************************************************************//~@@@@I~
 package com.btmtest;
@@ -18,7 +20,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
                                                                    //~@@@@I~
-import de.greenrobot.event.EventBus;                               //~8930I~//~8C30I~//~@@@@M~
+//import de.greenrobot.event.EventBus;                               //~8930I~//~8C30I~//~va30R~
 
 import com.btmtest.dialog.CompReqDlg;
 import com.btmtest.dialog.CompleteDlg;
@@ -210,7 +212,7 @@ public class MainActivity extends AppCompatActivity
         if(Dump.Y) Dump.println("MainActivity:onStart");           //~8B05I~
         super.onStart();                                           //~8B05I~
         swStopped=false;                                           //~9A22I~
-		registerEventBus(true);                                    //~8C30I~
+//		registerEventBus(true);                                    //~va30R~
     }                                                              //~8B05I~
 	//*************************                                    //~9A22I~
 	//*now background                                              //~9A22I~
@@ -263,7 +265,8 @@ public class MainActivity extends AppCompatActivity
         if(Dump.Y) Dump.println("MainActivity:onPause");           //~8B05I~
     	try                                                        //~9719I~//~0113M~
         {                                                          //~9719I~//~0113M~
-        AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~
+//      AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~//+va41R~
+        AG.aCSI.onPause();                                         //+va41I~
         AG.aBTI.onPause();                                         //~@@@@I~
 	    WDI.onPause();		//unregister receiver                  //~0113I~
         super.onPause();                                           //~8B05I~
@@ -286,7 +289,7 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {                                   //~8B05I~
         if(Dump.Y) Dump.println("MainActivity:onDestroy");         //~8B05I~
 	    AG.aCSI.onDestroy();                                       //~9B05I~
-    	registerEventBus(false);                                   //~9A22I~
+//        registerEventBus(false);                                 //~va30R~
 		if (AG.aGC!=null)                                          //~9101I~
 	        AG.aGC.onDestroy();                                        //~8C03I~//~9101R~
 		if (AG.aIPSubThread!=null)                                 //~9A02I~
@@ -603,17 +606,17 @@ public class MainActivity extends AppCompatActivity
 //**********************************************************       //~8930I~//~8C30I~
 //*toast on main thread from UView                                 //~v@@@R~//~8C30I~
 //**********************************************************       //~8930I~//~8C30I~
-    private void registerEventBus(boolean Pswon)                   //~8C30I~
-    {                                                              //~8C30I~
-        if (Dump.Y) Dump.println("registerEventBus sw="+Pswon);    //~8C30I~
-    	if (Pswon)                                                 //~8C30I~
-        {                                                          //~8C30I~
-        	if(!EventBus.getDefault().isRegistered(this))              //~8930I~//~8C30I~
-        		EventBus.getDefault().register(this);                  //~8930I~//~8C30I~
-        }                                                          //~8C30I~
-        else                                                       //~8C30I~
-	        EventBus.getDefault().unregister(this);                    //~8930I~//~8C30I~
-    }                                                              //~8C30I~
+//    private void registerEventBus(boolean Pswon)                 //~va30R~
+//    {                                                            //~va30R~
+//        if (Dump.Y) Dump.println("registerEventBus sw="+Pswon);  //~va30R~
+//        if (Pswon)                                               //~va30R~
+//        {                                                        //~va30R~
+//            if(!EventBus.getDefault().isRegistered(this))              //~8930I~//~va30R~
+//                EventBus.getDefault().register(this);                  //~8930I~//~va30R~
+//        }                                                        //~va30R~
+//        else                                                     //~va30R~
+//            EventBus.getDefault().unregister(this);                    //~8930I~//~va30R~
+//    }                                                            //~va30R~
     public void onEventMainThread(EventToast Pevent)               //~8930I~//~8C30I~
     {                                                              //~8930I~//~8C30I~
     	Pevent.showToast();                                         //~8930I~//~v@@@R~//~8C30I~
@@ -1038,7 +1041,7 @@ public class MainActivity extends AppCompatActivity
             }                                                      //~8B26I~//~9102I~
             if (flag!=0)                                           //~8B26R~//~9102I~
             {                                                      //~8B26I~//~9102I~
-        		if (Dump.Y) Dump.println("Main.hideNavigationBar version="+Build.VERSION.SDK+",flag="+Integer.toHexString(flag));//~8B26I~//~9102I~//~9511R~
+        		if (Dump.Y) Dump.println("Main.hideNavigationBar version="+Build.VERSION.SDK_INT+",flag="+Integer.toHexString(flag));//~8B26I~//~9102I~//~9511R~
                 decor.setSystemUiVisibility(flag);                 //~8B26R~//~9102I~
             }                                                      //~8B26I~//~9102I~
         }                                                          //~8B26I~//~9102I~

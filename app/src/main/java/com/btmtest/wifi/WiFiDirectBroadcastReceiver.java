@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=   35;       //~1Ac4R~//~@@@@R~//~9A03R~
+//*CID://+va40R~:                             update#=   38;       //~va40R~
 //*************************************************************************//~1A65I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
 //1A6s 2015/02/17 move NFC starter from WifiDirect dialog to MainFrame//~1A65I~
 //1A65 2015/01/29 implement Wifi-Direct function(>=Api14:android4.0)//~1A65I~
@@ -23,16 +24,19 @@
 package com.btmtest.wifi;                                               //~v@@@I~//~9719I~//~1Ac4I~
 
 //import android.annotation.TargetApi;                               //~1A65I~//~@@@@R~
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.NetworkInfo;
+//import android.net.NetworkInfo;                                  //~va40R~
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
                                                                    //~1A65I~
 import com.btmtest.utils.Dump;
+import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;                           //~9721I~//~@@@@I~
 
@@ -66,6 +70,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
      * @see android.content.BroadcastReceiver#onReceive(android.content.Context,
      * android.content.Intent)
      */
+    @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
       try                                                          //~1A65I~
@@ -109,11 +114,24 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 return;
             }
             if (Dump.Y) Dump.println("WiFiDirectBroadCastReceiver:onReceive:P2P connection changed");//~1A65I~
-
-            NetworkInfo networkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
-
-            if (networkInfo.isConnected()) {
+          boolean swPaired;
+//          if (true)                                              //+va40R~
+//          {                                                      //+va40R~
+          	WifiP2pInfo p2pinfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO);//~va40I~
+            swPaired = p2pinfo.groupFormed;                        //~va40I~
+            if (Dump.Y) Dump.println("WiFiDirectBroadcastReceiver.onReceive swPaired=" + swPaired + ",WifiP2pInfo=" + Utils.toString(p2pinfo));//~va40I~
+//          }                                                      //+va40R~
+//          else                                                   //+va40R~
+//          {                                                      //+va40R~
+////          NetworkInfo networkInfo = (NetworkInfo) intent       //+va40R~
+//            android.net.NetworkInfo networkInfo=(android.net.NetworkInfo)intent//+va40R~
+//                    .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);//+va40R~
+//            swPaired=networkInfo.isConnected();                  //+va40R~
+//            if (Dump.Y) Dump.println("WiFiDirectBroadcastReceiver.onReceive swPaired=" + swPaired + ",networkInfo=" + Utils.toString(networkInfo));//+va40R~
+//          }                                                      //+va40R~
+//          if (networkInfo.isConnected()) {                       //~va40R~
+            if (swPaired)                                          //~va40I~
+            {                                                      //~va40I~
 //  			WiFiDirectActivity.dismissProgDlg();	//current ProgDlg:DoPair  //~@@@@I~//~9A04R~//~9A05R~
     			WDA.getWDActivity().dismissProgDlg(WiFiDirectActivity.PROGRESS_CONNECT);	//current ProgDlg:DoPair//~9A05I~
                 // we are connected with the other device, request connection
@@ -134,7 +152,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 //              if (clearCtr==1)  //client                         //~9A05R~
 //      			WDA.getWDActivity().removeGroup();	//TODO test//~9A05R~
 				AG.aWDA.enableCBWantGroupOwner(true); 	//disconnected//~9A03R~
-//              WDA.getDeviceListFragment().setConnected(false);   //+9A05R~
+//              WDA.getDeviceListFragment().setConnected(false);   //~9A05R~
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             if (Dump.Y) Dump.println("WiFiDirectBroadCastReceiver:onReceive:P2P this device changed");//~1A65I~

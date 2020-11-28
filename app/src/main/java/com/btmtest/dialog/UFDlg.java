@@ -1,13 +1,17 @@
-//*CID://+DATER~:                             update#=  228;       //~1Af6R~//~v@@@R~//~9813R~
+//*CID://+va40R~:                             update#=  231;       //~va40R~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*common FragmentDialog                                           //~v@@@I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+//import android.app.FragmentManager;                              //~va40R~
+import android.support.v4.app.FragmentManager;                     //~va40I~
+//import android.app.FragmentTransaction;                          //~va40R~
+import android.support.v4.app.FragmentTransaction;                 //~va40I~
 import android.content.DialogInterface;
 import android.os.Bundle;                                          //~v@@@I~
-import android.app.DialogFragment;                                 //~v@@@I~
+//import android.app.DialogFragment;                               //~va40R~
+import android.support.v4.app.DialogFragment;                      //~va40I~
 import android.app.Dialog;                                         //~v@@@I~
 import android.view.Window;
 import android.view.WindowManager;
@@ -375,7 +379,8 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 ////      if (Dump.Y) Dump.println("UFDlg.setDivider R.id.titleDivider="+id+",view==null?="+(v==null));//~v@@@R~
         int color=Pcolor;                                          //~v@@@I~
         if (Pcolor==0)                                             //~v@@@I~
-            color=AG.resource.getColor(R.color.title_divider);//~v@@@I~
+//          color=AG.resource.getColor(R.color.title_divider);     //+va40R~
+            color=AG.getColor(R.color.title_divider);              //+va40I~
         id=Pdlg.getContext().getResources().getIdentifier("android:id/titleDivider",null,null);//~v@@@I~
         v=Pdlg.findViewById(id);                                   //~v@@@I~
         if (Dump.Y) Dump.println("UFDlg.setDivider getid titleDivider="+Integer.toHexString(id)+",view==null?="+(v==null));//~v@@@I~
@@ -435,12 +440,12 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
         	return;                                                //~v@@@I~
     	if (PswNoRule)                                             //~v@@@I~
         {                                                          //~v@@@I~
-            btnRule.setText(Utils.getStr(R.string.View));          //~v@@@I~//+0207R~
+            btnRule.setText(Utils.getStr(R.string.View));          //~v@@@I~//~0207R~
             llRelatedRule.setVisibility(View.GONE);                //~v@@@I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
-            btnRule.setText(Utils.getStr(R.string.Hide));        //~v@@@I~//+0207R~
+            btnRule.setText(Utils.getStr(R.string.Hide));        //~v@@@I~//~0207R~
             llRelatedRule.setVisibility(View.VISIBLE);             //~v@@@I~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~

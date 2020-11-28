@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.04</string>
+    <string name="app_version">v1.09</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -49,8 +49,8 @@
     <string name="Info_IOErrRecovered">接続があります、サーバーからの中断処理要求を受けてください</string>
     <string name="Err_InGameRestarting">切断処理中です</string>
     <string name="Info_Reconnected">%1$s に再接続しました</string>
-    <string name="Err_ReconnectingEnv">\"%1$s\"に接続しましたが、両方が再接続モードではありません、ゲーム再開はできません。
-									再接続モード側は、接続を切断し、メニューの\"接続障害処理\"から\"中断・精算\"を行ってください
+    <string name="Err_ReconnectingEnv">\"%1$s\"に接続しましたが、片方のアプリは再起動です、ゲーム再開はできません。
+									ゲーム中側は、接続を切断し、メニューの\"接続障害処理\"から\"中断・精算\"を行ってください
 									</string>
     <string name="Err_ReconnectingExistStartGame">\"%1$s\"は再接続モード(ゲーム中の状態)です。\n
 									このクライアントはメニューの\"接続障害処理\"―\"再接続\"―\"切断\"でサーバーとの接続を一旦切断し、
@@ -946,7 +946,7 @@
     <string name="Info_GameEndSuspend">保存+中断されました。\"対局終了\"してください。</string>
 <!--setting-->
     <string name="Err_TrySendFromServer">サーバーから送ってください</string>
-    <string name="Err_TryEndgameFromServer">サーバーから\"対局終了\"してください</string>
+    <string name="Err_TryEndgameFromServer">接続しています、サーバーから\"対局終了\"してください</string>
     <string name="Err_TryBackButtonFromServer">サーバーから操作してください</string>
     <string name="Err_GameStatusForMenuInGame">配牌前です</string>
     <string name="Err_GameStatusForMenuInGameUseBackButton">配牌前です。\"戻る\"ボタンで戻れます</string>
@@ -1268,7 +1268,7 @@
     <string name="Msg_ConfirmDisconnect">現在アクティブセッションがあります\n\"ペア解除\"すると切断されます\n\"ペア解除\"を実行しますか？</string>
     <string name="Msg_IPConnectionExist">現在アクティブセッションがあります、先に\"切断\"してください</string>
     <string name="InfoWifiEnabled">WiFi が利用可能になりました</string>
-    <string name="ErrWifiEnable">WiFiを利用可能に出来ませんでした</string>
+    <string name="ErrWifiEnable">WiFiを利用可能に出来ませんでした、Android-Q(10)以降では設定から手動でONにしてください</string>
     <string name="InfoWifiDisabled">WiFi は無効になりました</string>
     <string name="ErrWifiDisable">WiFi の無効化に失敗</string>
     <string name="WarningWDNotConnected">WiFiダイレクトのペア設定がありません</string>
@@ -1335,7 +1335,7 @@
     <string name="Info_WDPair_Deleted">削除ペア:</string>
     <string name="Info_WDPair_Added">追加ペア:</string>
     <string name="Info_WDPair_Updated">変更ペア:</string>
-    <string name="ChannelLostEnableP2P">エラー! チャネルが失われました\nWiFi Direct を利用可能にして(\"ヘルプ\"参照)から再試行してください</string>
+    <string name="ChannelLostEnableP2P">エラー! チャネルが失われました\n引き続きWiFiダイレクトを使用する場合は、WiFi Direct を利用可能にして(\"ヘルプ\"参照)から再試行してください</string>
     <string name="AbortingConnection">ペアを解除しようとしています</string>
     <string name="ConnectAbortReason">ペア設定の取り消しが失敗、理由コード: </string>
     <string name="p2p_off_warning">

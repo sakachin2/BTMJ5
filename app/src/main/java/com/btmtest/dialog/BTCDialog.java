@@ -1,7 +1,8 @@
-//*CID://+va1bR~:                             update#=  501;       //~va1bR~
+//*CID://+va40R~:                             update#=  502;       //+va40R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
 //2020/10/05 va13:remember device selected                         //~va13I~
 //2020/06/02 va10:BTCDialog search contains bug for null value; delete the function which is never called//~va10I~
@@ -1619,20 +1620,22 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 //  	PetYourName.setText(yourname);                             //~9723I~
 //  	setYourName(PetYourName);                                  //~9723I~//~9724R~
 //  	PetYourName.setText(AG.YourName);                          //~9724I~//~9905R~
-      	PetYourName.setText(AG.YourName,true/*swLostFocus*/);      //~9905I~//+va1bR~
-//    	PetYourName.setText(AG.YourName,false/*No focusListener*/);//+va1bR~
+      	PetYourName.setText(AG.YourName,true/*swLostFocus*/);      //~9905I~//~va1bR~
+//    	PetYourName.setText(AG.YourName,false/*No focusListener*/);//~va1bR~
 //      if (PmemberCtr==BTMulti.maxClient)                          //~v@@@R~//~9722R~//~9928R~
 //      if (PmemberCtr!=0) //disable when connected to anyone      //~9928R~//~9A23R~
         if (PmemberCtr!=0 || isReconnecting()) //disable when connected to anyone//~9A23I~
         {                                                          //~v@@@I~
-	    	int colorEditableDisabled=AG.resource.getColor(COLOR_EDITABLE_DISABLED);//~9722I~
+//      	int colorEditableDisabled=AG.resource.getColor(COLOR_EDITABLE_DISABLED);//+va40R~
+        	int colorEditableDisabled=AG.getColor(COLOR_EDITABLE_DISABLED);//+va40I~
 	        PetYourName.editText.setBackgroundColor(colorEditableDisabled);//~v@@@R~//~9722R~
 	        PetYourName.editText.setEnabled(false);                          //~v@@@I~//~9722R~
 	        PetYourName.editText.setTextColor(Color.BLACK);         //~v@@@I~//~9722R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
-	    	int colorEditable=AG.resource.getColor(COLOR_EDITABLE);        //~v@@@I~//~9722I~
+//      	int colorEditable=AG.resource.getColor(COLOR_EDITABLE);        //~v@@@I~//+va40R~
+        	int colorEditable=AG.getColor(COLOR_EDITABLE);         //+va40I~
 	        PetYourName.editText.setBackgroundColor(colorEditable);  //~v@@@R~//~9722R~
 	        PetYourName.editText.setEnabled(true);                           //~v@@@I~//~9722R~
         }                                                          //~v@@@I~

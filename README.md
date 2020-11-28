@@ -1,8 +1,9 @@
 ﻿# README.md 
 *************************************************************************
-ｅ雀（Jong)           2020/11/05  V1.04
+ｅ雀（eJong)           2020/11/21  V1.09
 Japanese style Mahjong game to play among your friends.
 No specific server machine is required.
+Target version<=Android10.
 *****
 I suppose you are familiar to rule and operation of Japanese style Mahjong.
 Any local "Yaku"(winning pattern) is acceptable
@@ -15,9 +16,10 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 *************************************************************************
 (Japanese)
-ｅ雀                  2020/11/05  V1.04
+ｅ雀                  2020/11/21  V1.09
 *****
 サーバーが不要な、仲間内で遊ぶ、"麻雀"対戦アプリです。
+Android10 対応。
 *****
 アプリの点数計算は修正可能なので、ローカル役は何でもありです。
 "和了形の確認"はオプションですので誤ロンのチョンボありにできます。

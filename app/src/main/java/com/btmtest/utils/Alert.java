@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 158;                                    //~@003R~//~0411R~
+//*CID://+va40R~: update#= 161;                                    //~va40R~
 //**********************************************************************//~1107I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //@003:20181103 dismiss alert dialog when interrupted bt other appl//~@003R~
 //**********************************************************************//~1107I~
 package com.btmtest.utils;                                         //~1107R~  //~1108R~//~1109R~//~@@@@R~//~v@@@R~
@@ -7,7 +8,8 @@ package com.btmtest.utils;                                         //~1107R~  //
 import com.btmtest.R;                                                 //~@@@@R~//~v@@@R~
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@003I~
 
-import android.app.DialogFragment;
+//import android.app.DialogFragment;                               //~va40R~
+import android.support.v4.app.DialogFragment;                      //~va40I~
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -232,7 +234,7 @@ public class Alert extends DialogFragment                          //~v@@@R~
     {                                                              //~1212I~
         int labelID;                                               //~0411I~
     	flag=Pflag;                                                //~1212I~//~v@@@R~
-        if (Dump.Y) Dump.println("Alert.setButton flag=x"+Integer.toHexString(flag)+",labelIDs="+ Arrays.toString(labelIDs));//+0411R~
+        if (Dump.Y) Dump.println("Alert.setButton flag=x"+Integer.toHexString(flag)+",labelIDs="+ Arrays.toString(labelIDs));//~0411R~
         if ((Pflag & BUTTON_POSITIVE)!=0)                          //~1212I~
         {                                                          //~1212I~
         	if (labelIDs!=null)                                    //~0411I~

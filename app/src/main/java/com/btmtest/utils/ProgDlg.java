@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 154;                                    //~1A2jR~//~v@@@R~//~9A05R~
+//*CID://+va40R~: update#= 163;                                    //~va40R~
 //**********************************************************************//~1107I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //**********************************************************************//~1107I~
 package com.btmtest.utils;                                         //~1107R~  //~1108R~//~1109R~//~@@@@R~//~v@@@R~
 
@@ -8,12 +9,16 @@ import java.io.Serializable;
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import com.btmtest.R;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.app.DialogFragment;
+//import android.app.ProgressDialog;                               //+va40R~
+//import android.app.DialogFragment;                               //~va40R~
+import android.support.v4.app.DialogFragment;                      //~va40I~
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 //**********************************************************************//~1107I~
 public class ProgDlg extends DialogFragment                        //~v@@@R~
@@ -22,6 +27,7 @@ public class ProgDlg extends DialogFragment                        //~v@@@R~
 	private static final String PARM_TITLE="title";                //~v@@@I~
 	private static final String PARM_MSG="msg";                    //~v@@@I~
 	private static final String PARM_CANCELABLE="cancelable";      //~v@@@I~
+	private static final int LAYOUTID=R.layout.progdlg;              //~va40I~
 //    private static final String PARM_CALLBACK="callback";        //~v@@@R~
 	public  static final int REASON_CANCEL=0;                      //~v@@@R~
 	public  static final int REASON_DISMISS=1;                     //~v@@@R~
@@ -29,8 +35,11 @@ public class ProgDlg extends DialogFragment                        //~v@@@R~
 	private Boolean swCancel=false;                                //~v@@@I~
 //    private boolean dismissCallback=true;                                  //~@@@2I~//~v@@@R~
 //    private boolean showing;                                       //~@@@2I~//~v@@@R~
-    private ProgressDialog androidDialog;                          //~v@@@R~
+//  private ProgressDialog androidDialog;                          //~va40R~
+    private Dialog androidDialog;                                  //~va40I~
     private String dialogMsg;                                      //~9A05I~
+    private View layoutview;                                       //~va40I~
+    private AlertDialog.Builder builder;                           //~va40I~
 //**********************************                               //~1211I~
 	public interface ProgDlgI extends Serializable                                            //~1107R~//~1211R~//~@@@@R~//~v@@@I~
 	{                                                                  //~0914I~//~v@@@I~
@@ -111,17 +120,25 @@ public class ProgDlg extends DialogFragment                        //~v@@@R~
 //      callback=(ProgDlgI)b.getSerializable(PARM_CALLBACK);       //~v@@@R~
   		setCancelable(cancelable);                                 //~v@@@R~
                                                                    //~v@@@I~
-        ProgressDialog pdlg=new ProgressDialog(getActivity());                  //~v@@@I~
+//      ProgressDialog pdlg=new ProgressDialog(getActivity());     //~va40R~
+    	builder=new AlertDialog.Builder(AG.context);               //~va40I~
+        layoutview = AG.inflater.inflate(LAYOUTID,null);           //~va40I~
+        builder.setView(layoutview);                               //~va40I~
     	if (title!=null)                                           //~v@@@I~
-    		pdlg.setTitle(title);                                  //~v@@@I~
+//  		pdlg.setTitle(title);                                  //~va40R~
+    		builder.setTitle(title);                               //~va40I~
         else                                                       //~v@@@I~
-	    	pdlg.setTitle(Utils.getStr(R.string.app_name));        //~v@@@R~
-	    pdlg.setMessage(msg);                                      //~v@@@I~
+//      	pdlg.setTitle(Utils.getStr(R.string.app_name));        //~va40R~
+        	builder.setTitle(Utils.getStr(R.string.app_name));     //~va40I~
+//      pdlg.setMessage(msg);                                      //~va40R~
+        builder.setMessage(msg);                                   //~va40I~
         dialogMsg=msg;                                             //~9A05I~
-	    pdlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);       //~v@@@I~
+//      pdlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);       //~va40R~
 //        AG.androidDialog=pdlg;                                   //~v@@@R~
+        setButton();                                        //~va40I~
+    	Dialog pdlg=builder.create();                              //~va40I~
         androidDialog=pdlg;                                        //~v@@@I~
-        setButton();                                               //~v@@@M~
+//      setButton();                                               //~va40R~
         if (Dump.Y) Dump.println("ProgDlg onCreateDialog return androidDialog="+androidDialog.toString());//~v@@@R~
         if (Dump.Y) Dump.println("ProgDlg.showProgDlg this="+this.toString()+",msg="+msg);//~v@@@R~//~9A05R~
     	return pdlg;                                               //~v@@@I~
@@ -159,9 +176,9 @@ public class ProgDlg extends DialogFragment                        //~v@@@R~
     {                                                              //~@@@2I~
         if (Dump.Y) Dump.println("ProgDlg setButton");      //~@@@2I~//~v@@@R~
 //      AG.androidDialog.setButton(                                   //~@@@2I~//~v@@@R~
-        androidDialog.setButton(                                   //~v@@@I~
-        		DialogInterface.BUTTON_NEGATIVE,                   //~@@@2I~
+//      		DialogInterface.BUTTON_NEGATIVE,                   //~va40R~
 //              Utils.getStr(R.string.Close),             //~1A2jI~//~v@@@R~//~9A05R~
+        builder.setNegativeButton(                                 //~va40I~
                 Utils.getStr(R.string.Cancel),                     //~9A05I~
                 new OnClickListener()              //~@@@2I~
                 	{                                              //~@@@2I~
@@ -219,7 +236,7 @@ public class ProgDlg extends DialogFragment                        //~v@@@R~
     public static boolean dismissCurrentUI()                                //~@@@2I~//~v@@@R~
     {                                                              //~@@@2I~
     	boolean rc=false;                                          //~@@@2I~//~v@@@R~
-		if (Dump.Y) Dump.println("ProgDlg.dismissCurrent "+Utils.toString(AG.progDlg));//+9A05R~
+		if (Dump.Y) Dump.println("ProgDlg.dismissCurrent "+Utils.toString(AG.progDlg));//~9A05R~
 //  	if (Utils.isShowingDialogFragment(AG.progDlg))            //~@@@2R~//~v@@@R~
     	if (Utils.isShowingDialogFragment(AG.progDlg))          //~v@@@I~
     	{                                                          //~@@@2I~
@@ -227,7 +244,7 @@ public class ProgDlg extends DialogFragment                        //~v@@@R~
         	AG.progDlg.dismiss();                               //~v@@@I~
             rc=true;                                               //~@@@2I~
         }                                                          //~@@@2I~
-    	if (Dump.Y) Dump.println("ProgDlg static dismiss rc="+rc); //+9A05R~
+    	if (Dump.Y) Dump.println("ProgDlg static dismiss rc="+rc); //~9A05R~
         AG.progDlg=null;	                                       //~v@@@I~//~9A05M~
         return rc;                                                 //~@@@2I~
     }                                                              //~@@@2I~

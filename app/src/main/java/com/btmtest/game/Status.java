@@ -1,5 +1,6 @@
-//*CID://+va06R~: update#= 536;                                    //~va02R~//~va06R~
+//*CID://+va40R~: update#= 537;                                    //+va40R~
 //**********************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //**********************************************************************//~va02I~
@@ -167,8 +168,8 @@ public class Status //extends Handler                              //~v@@@R~
     public static void setGameStatus(int Pstatus)                  //~v@@@M~
     {                                                              //~v@@@M~
     	aStatus.gameStatus=Pstatus;                                        //~v@@@M~
-        if (Pstatus==GS_GAME_STARTED)                              //+va06I~
-    	    GC.playSound(aStatus.gameCtrGame);                     //+va06I~
+        if (Pstatus==GS_GAME_STARTED)                              //~va06I~
+    	    GC.playSound(aStatus.gameCtrGame);                     //~va06I~
         if (Dump.Y) Dump.println("Status.setGameStatus status="+aStatus.gameStatus);//~v@@@R~
     }                                                              //~v@@@M~
 	//*************************************************************************//~v@@@M~
@@ -715,14 +716,16 @@ public class Status //extends Handler                              //~v@@@R~
     {                                                              //~v@@@I~
         String s=getStringGameSeq();                               //~v@@@R~
         if (Dump.Y) Dump.println("Status.getSpannedGameTitle parm="+Ptitle+",s="+s);//~v@@@I~
-		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//~9223I~//~v@@@I~
+//		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//~9223I~//+va40R~
+  		return Utils.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//+va40I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~0218I~
     public static Spanned getSpannedGameTitleWithName(String Ptitle,String Pname)//~0218I~
     {                                                              //~0218I~
         String s=getStringGameSeq();                               //~0218I~
         if (Dump.Y) Dump.println("Status.getSpannedGameTitle parm="+Ptitle+",s="+s+",name="+Pname);//~0218I~
-		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//~0218I~
+//		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//+va40R~
+  		return Utils.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//+va40I~
     }                                                              //~0218I~
 	//*************************************************************************//~v@@@I~
     public static String getStringGameSeq()                        //~v@@@I~

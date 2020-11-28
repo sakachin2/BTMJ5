@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  489;       //~v@@@R~//~9404R~
+//*CID://+va40R~:                             update#=  490;       //+va40R~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.os.Bundle;
@@ -85,7 +86,8 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
 //  	String title=Utils.getStr(swLoad ? TITLEID_LOAD : TITLEID_SAVE)+"："+((workDirSD!=null) ? workDirSD : pathDataDir);//~9617R~//~0114R~
     	String action=Utils.getStr(swLoad ? R.string.Load : R.string.Save);//~0114I~
     	String path=(workDirSD!=null) ? workDirSD : pathDataDir;   //~0114I~
-        Spanned title= Html.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//~0114I~
+//      Spanned title= Html.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//+va40R~
+        Spanned title=Utils.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//+va40I~
         getDialog().setTitle(title);                                           //~9617I~
     }                                                              //~9617I~
     //*********************************************************************//~9B09I~
@@ -136,13 +138,13 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
             else                                                   //~0114I~
             	multipleSelected=new int[]{pos};                   //~0114I~
         }                                                          //~0114I~
-        if (Dump.Y) Dump.println("RuleFileDlg.getSelectedList swMultiSelect="+swMultiSelect+",multipleSelect="+Arrays.toString(multipleSelected));//~0114I~//+0115R~
+        if (Dump.Y) Dump.println("RuleFileDlg.getSelectedList swMultiSelect="+swMultiSelect+",multipleSelect="+Arrays.toString(multipleSelected));//~0114I~//~0115R~
     }                                                              //~0114I~
     //**********************************************************************//~0114I~
     @Override                                                      //~0114I~
     protected void onClickSelectAll()                              //~0114I~
     {                                                              //~0114I~
-        if (Dump.Y) Dump.println("RuleFileDlg.onClickSelectAll");   //~0114I~//+0115R~
+        if (Dump.Y) Dump.println("RuleFileDlg.onClickSelectAll");   //~0114I~//~0115R~
         if (!swMultiSelect)                                        //~0114I~
         {                                                          //~0114I~
 		    cbMultiSelect.setState(true);	//listener set COICEMODE_MULTIPLE//~0114I~
@@ -161,7 +163,7 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
         }                                                          //~0114I~
         else                                                       //~0114I~
 			rc=Ppos==lvFilename.getSelectedPos();                  //~0114I~
-        if (Dump.Y) Dump.println("RuleFileDlg.isSelectedItem pos="+Ppos+",swMultiSelect="+swMultiSelect+",rc="+rc);//~0114I~//+0115R~
+        if (Dump.Y) Dump.println("RuleFileDlg.isSelectedItem pos="+Ppos+",swMultiSelect="+swMultiSelect+",rc="+rc);//~0114I~//~0115R~
 		return rc;                                                 //~0114I~
     }                                                              //~0114I~
     //*******************************************************      //~0114I~
@@ -170,7 +172,7 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
     @Override                                                      //~0114I~
     public void onChangedUCB(CompoundButton Pbtn, boolean PisChecked, int Pparm)//~0114I~
     {                                                              //~0114I~
-        if (Dump.Y) Dump.println("RuleFileDlg.onChangedUCB parm="+Pparm+",isChecked="+PisChecked);//~0114I~//+0115R~
+        if (Dump.Y) Dump.println("RuleFileDlg.onChangedUCB parm="+Pparm+",isChecked="+PisChecked);//~0114I~//~0115R~
         switch(Pparm)                                              //~0114I~
         {                                                          //~0114I~
         case UCBP_MULTISELECT:                                     //~0114I~
@@ -181,7 +183,7 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
     //****************************************************************************//~0114I~
     public void changedMultiSelect(boolean PswOn)                  //~0114I~
     {                                                              //~0114I~
-        if (Dump.Y) Dump.println("RuleFileDlg.changedMultiSelect sw="+PswOn+",old="+swMultiSelect);//~0114I~//+0115R~
+        if (Dump.Y) Dump.println("RuleFileDlg.changedMultiSelect sw="+PswOn+",old="+swMultiSelect);//~0114I~//~0115R~
         swMultiSelect=PswOn;                                       //~0114I~
         if (swMultiSelect)                                         //~0114I~
         {                                                          //~0114I~

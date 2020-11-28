@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  116;       //~1Ac4R~//~@@@@R~//~9A03R~
+//*CID://+va44R~:                             update#=  126;       //~va44R~
 //*************************************************************************//~1A65I~
+//2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired/owner flag not set//~va44I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
 //1Ac0 2015/07/06 for mutual exclusive problem of IP and wifidirect;try to use connectivityManager API//~1Ac0I~
 //1Aby 2015/06/21 NFCWD:system settings id is not ACTION_WIREESS_SETTING but ACTION_WIFI_SETTINGS//~1AbyI~
@@ -29,6 +30,8 @@ package com.btmtest.wifi;                                          //~1Ac4I~
 
 
 //import android.annotation.TargetApi;                               //~1A65I~//~1Ac4R~
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,6 +45,7 @@ import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 //import android.os.Bundle;
+import android.os.Build;
 import android.os.Looper;
 import android.provider.Settings;
 import android.widget.Toast;
@@ -97,7 +101,7 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI ,ChannelListener, De
     public  static final int PROGRESS_CONNECT=1;                   //~9A04I~//~9A05R~
     public  static final int PROGRESS_DISCOVER=2;                  //~9A04I~//~9A05R~
 	private WiFiDirectActivity aWifiDirectActivity;                //~9A04I~
-    private boolean swProgDlg;                                     //+0124I~
+    private boolean swProgDlg;                                     //~0124I~
     //*******************************************************************//~1A65I~
 	public WiFiDirectActivity()                                    //~1A65I~
     {                                                              //~1A65R~
@@ -180,7 +184,9 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI ,ChannelListener, De
      */
 //  public void resetData() {                                      //~9A05R~
     public int resetData() {                                       //~9A05I~
-        if (Dump.Y) Dump.println("WiFiDirectActibity:resetData");  //~@@@@I~
+        if (Dump.Y) Dump.println("WiFiDirectActibity:resetData AG.aWDA="+Utils.toString(AG.aWDA));  //~@@@@I~//~va44R~
+        if (AG.aWDA==null)	//dismissed                            //~va44I~
+        	return 0;                                                //~va44I~
 //      DeviceListFragment fragmentList = (DeviceListFragment) getFragmentManager()//~1A65R~
 //              .findFragmentById(R.id.frag_list);                 //~1A65R~
         DeviceListFragment fragmentList =WDA.getDeviceListFragment();//~1A65R~
@@ -303,9 +309,9 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI ,ChannelListener, De
     //***********************************************************************************//~0124I~
     private void initiateDiscovery(boolean PswProgDlg)             //~0124R~
     {                                                              //~0124I~
-        if (Dump.Y) Dump.println("WiFiDirectActivity.initiateDiscover");//+0124R~
+        if (Dump.Y) Dump.println("WiFiDirectActivity.initiateDiscover");//~0124R~
         final DeviceListFragment fragment = WDA.getDeviceListFragment();//~0124I~
-        swProgDlg=PswProgDlg;                                      //+0124R~
+        swProgDlg=PswProgDlg;                                      //~0124R~
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener()//~0124I~
         {                                                          //~0124I~
             @Override                                              //~0124I~
@@ -789,4 +795,54 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI ,ChannelListener, De
         if (Paction==0 || idProgress==Paction)                     //~9A05R~
 	        ProgDlg.dismissCurrent();                                  //~9A04I~//~9A05R~
     }                                                              //~9A04I~
+//****************************************                         //~va44I~
+    public void requestThisInfo()                                  //~va44I~
+    {                                                              //~va44I~
+        if (Dump.Y) Dump.println("WifiDirectActivity:requestThisInfo");//~va44R~
+        DeviceDetailFragment DDF=WDA.getDeviceDetailFragment();    //~va44I~
+        if (manager!=null && channel!=null)                        //~va44I~
+        {                                                          //~va44I~
+            requestDeviceInfo();                                   //~va44I~
+	        manager.requestConnectionInfo(channel,DDF);   //set swOwner//+va44I~
+    	    manager.requestGroupInfo(channel,DDF/*GroupInfoListener*/);//set this deviceName//~va44R~
+//          manager.requestConnectionInfo(channel,DDF);   //set swOwner//+va44R~
+//          requestDeviceInfo();                                   //~va44R~
+        }                                                          //~va44I~
+    }                                                              //~va44I~
+    private void requestDeviceInfo()                               //~va44I~
+    {                                                              //~va44I~
+        if (Dump.Y) Dump.println("WifiDirectActivity:requestDeviceInfo buildVersion="+Build.VERSION.SDK_INT);//~va44I~
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q) //api29 android10//~va44I~
+			requestDeviceInfo_From29();                     //~va44I~
+    }                                                              //~va44I~
+    @TargetApi(Build.VERSION_CODES.Q)         //api29 android10    //~va44I~
+    private void requestDeviceInfo_From29()                        //~va44I~
+    {                                                              //~va44I~
+        if (Dump.Y) Dump.println("WifiDirectActivity:requestDeviceInfo buildVersion="+Build.VERSION.SDK_INT);//~va44I~
+        WifiP2pManager.DeviceInfoListener listener=                //~va44R~
+        new WifiP2pManager.DeviceInfoListener()                    //~va44I~
+        	{                                                      //~va44I~
+            	@Override                                          //~va44I~
+			    public void onDeviceInfoAvailable(WifiP2pDevice Pdevice)//~va44I~
+                {                                                  //~va44I~
+			        if (Dump.Y) Dump.println("WifiDirectActivity:requestDeviceInfo.onDeviceInfoAvailable");//~va44I~
+					try                                            //~va44I~
+      				{                                              //~va44I~
+				    	onDeviceInfoAvailableCall(Pdevice);        //~va44I~
+                    }                                              //~va44I~
+      				catch(Exception e)                             //~va44I~
+      				{                                              //~va44I~
+          				Dump.println(e,"WiFiDirectActivity:onDeviceInfoAvailable");//~va44I~
+      				}                                              //~va44I~
+                }                                                  //~va44I~
+            };                                                      //~va44I~
+        manager.requestDeviceInfo(channel,listener);                       //~va44I~
+    }                                                              //~va44I~
+    private void onDeviceInfoAvailableCall(WifiP2pDevice Pdevice)  //~va44I~
+    {                                                              //~va44I~
+        if (Dump.Y) Dump.println("WifiDirectActivity:onDeviceInfoAvailableCall device="+Utils.toString(Pdevice));//~va44I~
+        DeviceDetailFragment DDF=WDA.getDeviceDetailFragment();    //~va44I~
+        if (DDF!=null)                                             //~va44I~
+        	DDF.onDeviceInfoAvailable(Pdevice);                    //~va44I~
+    }                                                              //~va44I~
  }

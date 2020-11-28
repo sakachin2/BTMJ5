@@ -1,5 +1,7 @@
-//*CID://+DATER~:                             update#=  166;       //~1Aa5R~//~@@@@R~//~0112R~
+//*CID://+va44R~:                             update#=  174;       //~va40R~//~va44R~
 //*************************************************************************//~1A65I~
+//2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired flag yet off//~va40I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1Aa5 2015/04/20 test function for mdpi listview                  //~1Aa5I~
 //1A8p 2015/04/10 listview devcice list for mdpi                   //~1A8pI~
 //1A8n 2015/04/09 Wi-Fi direct ip addr is not shown                //~1A6nI~//~1A8nI~
@@ -42,17 +44,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.btmtest.BT.GroupList;
 import com.btmtest.BT.Members;
 import com.btmtest.R;
 import com.btmtest.dialog.BTCDialog;
-import com.btmtest.gui.UEditText;
 import com.btmtest.utils.Dump;
-import com.btmtest.utils.URunnable;
 import com.btmtest.utils.Utils;
 
 import java.util.ArrayList;
@@ -79,7 +77,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
                                                                    //~1A65I~
     private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
 //  ProgressDialog progressDialog = null;                          //~1A6tR~
-    URunnable.URunnableData progressDialog = null;                           //~1A6tI~
+//  URunnable.URunnableData progressDialog = null;                 //~va40R~
     View mContentView = null;
     private WifiP2pDevice device;
     private ListView listView;                                     //~1A65I~
@@ -98,7 +96,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
     private Button btnNFC;                                         //~1A6aI~
     private int resid_textrow;                                     //~1A6pI~//~1A8pI~
     public int statusConnected;                                    //~@@@@R~
-    public int ctrConnected,ctrInvited;                            //+0116R~
+    public int ctrConnected,ctrInvited;                            //~0116R~
     //******************************************                   //~1A65I~
     public DeviceListFragment()                                    //~1A65I~
     {                                                              //~1A65I~
@@ -202,7 +200,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
         int sz=getListAdapter().items.size();                            //~1Aa5I~
         int ctr=0;                                                 //~1Aa5I~
         ctrConnected=0;                                            //~0116I~
-        ctrInvited=0;                                              //+0116I~
+        ctrInvited=0;                                              //~0116I~
         for (int ii=0;ii<sz;ii++)                                  //~1Aa5I~
         {                                                          //~1Aa5I~
 	        WifiP2pDevice device=(WifiP2pDevice)getListAdapter().getItem(ii);//~1Aa5I~
@@ -216,7 +214,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
                 break;                                             //~1Aa5I~
             case WifiP2pDevice.INVITED:      //1                   //~1Aa5I~
                 ctr++;                                             //~1Aa5I~
-                ctrInvited++;                                      //+0116I~
+                ctrInvited++;                                      //~0116I~
                 break;                                             //~1Aa5I~
             case WifiP2pDevice.FAILED:       //2                   //~1Aa5I~
                 ctr++;                                             //~1Aa5I~
@@ -410,8 +408,30 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
         view =tvMyOwner;                                           //~1A65I~
         updateThisOwner(device);                               //~1A65R~
         if (Dump.Y) Dump.println("DeviceListFragment:updateThisDevice device="+device.deviceName+",owner="+device.isGroupOwner());//~1A65I~
-	    setEmptyMsg();                                             //~1A65I~
+//      setEmptyMsg();  //duplicated with updateThisOwner           //~1A65I~//~va44R~
     }
+    //***************************************************************************//~va44I~
+    //*from groupInfoAvailable                                     //~va44I~
+    //***************************************************************************//~va44I~
+    public void updateThisDevice(String PdeviceName,boolean PswOwner)//~va44I~
+	{                                                              //~va44I~
+		if (Dump.Y) Dump.println("DeviceListFragment:updateThisDevice PswOwner="+PswOwner+",thisDevice="+thisDevice+",PdeviceName="+PdeviceName);//~va44I~
+        if (thisDevice!=null || PdeviceName==null)                 //~va44I~
+            return;                                                //~va44I~
+//      this.device = device;                                      //~va44I~
+//      thisStatus=device.status;                                  //~va44I~
+        thisStatus=WifiP2pDevice.CONNECTED;	//THIS_DEVICE_CHANGED was not received//+va44I~
+        TextView view =tvMyName;                                   //~va44I~
+//      view.setText(DeviceDetailFragment.getDeviceName(device));  //~va44I~
+        view.setText(PdeviceName);                                 //~va44I~
+//      thisDevice=device.deviceName;                              //~va44I~
+        thisDevice=PdeviceName;                                    //~va44I~
+//      thisDeviceAddr=device.deviceAddress;                       //~va44I~
+//      AG.aIPMulti.thisDeviceMacAddr=thisDeviceAddr;              //~va44I~
+//      view =tvMyOwner;                                           //~va44I~
+//      updateThisOwner(device);                                   //~va44I~
+    	updateThisOwner(PswOwner);                                   //~va44I~
+    }                                                              //~va44I~
 
     //***************************************************************************//~1A65I~
     //*PeerListListener                                            //~1A65I~
@@ -431,6 +451,11 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
         peers.clear();
 //      peers.addAll(peerList.getDeviceList());                    //~1A65R~
         peers.addAll(devices);                                     //~1A65I~
+        if (peers.size()!=0)                                       //~va44R~
+        {                                                          //~va44I~
+	        if (thisStatus!=WifiP2pDevice.CONNECTED)	//THIS_DEVICE_CHANGED was not received//~va44R~
+            	AG.aWDA.aWDActivity.requestThisInfo();             //~va44I~
+        }                                                          //~va44I~
         if (peers.size() != 0)	                                   //~1Aa5R~
         {                                                          //~1Aa5R~
             if (WiFiDirectActivity.Stestdevicelist)                //~1Aa5I~
@@ -582,7 +607,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 	//*******************************************************************************************************//~1A65I~
 	//*from updateThis                                             //~1A65I~
 	//*******************************************************************************************************//~1A65I~
-    public boolean updateThisOwner(WifiP2pDevice device)           //~1A65R~
+    private boolean updateThisOwner(WifiP2pDevice device)           //~1A65R~//~va44R~
     {                                                              //~1A65I~
     	boolean owner=updateOwner(device,tvMyOwner);
     	thisOwner=owner?1:0;//~1A65R~
@@ -632,6 +657,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 	//*******************************************************************************************************//~1A65I~
     public void setEmptyMsg()                                      //~1A65I~
     {                                                              //~1A65I~
+        if (Dump.Y) Dump.println("DeviceListFragment:setEmptyMsg thisStatus="+thisStatus+",thisOwner="+thisOwner);//~va40I~
         int msgid=R.string.empty;                                  //~1A65I~
         if (thisStatus==WifiP2pDevice.CONNECTED)                   //~1A65I~
         {                                                          //~1A65I~
@@ -712,12 +738,14 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 //        URunnable.dismissDialog(progressDialog);                       //~1A67I~//~1A6eI~//~@@@@R~
 //    }                                                              //~1A67I~//~1A6eI~//~@@@@R~
 //****************************************                         //~1A6eI~
+//*No User                                                         //~va40I~
+//****************************************                         //~va40I~
 //  private ProgressDialog progressDialogShow(int Ptitleid,String Pmsg,boolean Pindeterminate,boolean Pcancelable)//~1A6eI~//~1A6tR~
-    private URunnable.URunnableData progressDialogShow(int Ptitleid, String Pmsg, boolean Pindeterminate, boolean Pcancelable)//~1A6tI~
-    {                                                              //~1A6eI~
-        if (Dump.Y) Dump.println("DeviceListFragment:progressDialogShow");//~1A6eI~//~@@@@R~
-        return URunnable.simpleProgressDialogShow(Ptitleid,Pmsg,Pindeterminate,Pcancelable);//~1A6eI~
-    }                                                              //~1A6eI~
+//    private URunnable.URunnableData progressDialogShow(int Ptitleid, String Pmsg, boolean Pindeterminate, boolean Pcancelable)//~va40R~
+//    {                                                            //~va40R~
+//        if (Dump.Y) Dump.println("DeviceListFragment:progressDialogShow");//~1A6eI~//~va40R~
+//        return URunnable.simpleProgressDialogShow(Ptitleid,Pmsg,Pindeterminate,Pcancelable);//~va40R~
+//    }                                                            //~va40R~
 //****************************************                         //~1Aa5I~
     public void setStatus(boolean PswErr,int Pmsgid)               //~1Aa5R~
     {                                                              //~1Aa5I~

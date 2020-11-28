@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  422;       //~@002R~//~9210R~
+//*CID://+va46R~:                             update#=  426;       //~va46R~
 //********************************************************************************//~v101I~
+//2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //@002:20181103 use enum                                           //~@002I~
 //@001:20181103 updatebuttonstatus over config change              //~@001I~
 //****************************************************************************//~@001I~
@@ -41,11 +42,12 @@ public class IPMulti extends BTMulti                                            
     }                                                              //~1AebR~
     //************************************************************************//~9723R~
     //*From Server after accept() and PernerFrame after connect()  //~9723R~
+    //*From PertnerFrame.connect                                   //~0B19I~
     //************************************************************************//~9723I~
 //  public void onConnected(Socket Psocket,ConnectionDta PconnectionData,Boolean PswClient)//~9723R~
     public void onConnected(Socket Psocket, ConnectionData PconnectionData, Boolean PswClient)//~9723I~
     {                                                              //~9723I~
-    	if (Dump.Y) Dump.println("IPMulti:onConnected connectionData="+PconnectionData.toString());//~0117I~
+    	if (Dump.Y) Dump.println("IPMulti:onConnected swClient="+PswClient+",connectionData="+PconnectionData.toString());//~0117I~//~0B19R~
         AG.RemoteStatus=AG.RS_IPCONNECTED;                         //~9729I~
     	swServer=!PswClient;                                       //~9724I~
         connectionData=PconnectionData;                            //~9723I~
@@ -193,6 +195,10 @@ public class IPMulti extends BTMulti                                            
         {                                                          //~0107I~
             setReconnectErr(PnameR); //devname,macaddr             //~0116R~
 //      	updateMember(PnameR[0],PnameR[1],""/*syncDate*/);      //~0107I~//~0108R~
+            String macAddr=PnameR[4];                              //~va46I~
+            String syncDT=PnameR[2];                               //~va46I~
+        	updateMember(PnameR[0],PnameR[1],macAddr,syncDT,false/*swNotify*/); //set connected status on devicelist of dialog//+va46R~
+			WDA.onConnectionChanged();  //update Dialog            //+va46I~
             return;                                                //~0107I~
         }                                                          //~0107I~
 	    if (WDA.isReconnecting())                                  //~9B03I~
@@ -237,11 +243,11 @@ public class IPMulti extends BTMulti                                            
 //***************************************************************************//~9815I~
     public void receivedNameAdd(IPIOThread PioThread,String[] PnameAdd)//~9815R~
     {                                                              //~9815I~
-        updateNotified(PnameAdd);  //-->BTM.updateNotified,updateSeq//+0224R~
+        updateNotified(PnameAdd);  //-->BTM.updateNotified,updateSeq//~0224R~
         if (clientThread!=null)                                    //~9A10I~
         {                                                          //~9A10I~
-//      	clientThread.idxMember=AG.aBTMulti.BTGroup.idxLocal;   //~9A10I~//+0224R~
-        	clientThread.idxMember=AG.aBTMulti.BTGroup.idxServer; //seqno[] idx//+0224I~
+//      	clientThread.idxMember=AG.aBTMulti.BTGroup.idxLocal;   //~9A10I~//~0224R~
+        	clientThread.idxMember=AG.aBTMulti.BTGroup.idxServer; //seqno[] idx//~0224I~
         	clientThread.idxServer=AG.aBTMulti.BTGroup.idxServer;  //~9A10I~
         }                                                          //~9A10I~
     	if (Dump.Y) Dump.println("IPMulti:receivedNameAdd PnameAdd="+ Arrays.toString(PnameAdd)); //devicename,yourname,syncdata,ipaddr//~9815R~

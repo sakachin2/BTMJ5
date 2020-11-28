@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=   58;       //~@@@@I~//~9514R~
+//*CID://+va40R~:                             update#=   59;       //+va40R~
 //**********************************************************************//~@@@@I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //**********************************************************************//~@@@@I~
 package com.btmtest.utils;                                         //~@@@@R~
 
@@ -190,22 +191,22 @@ public class Prop                                                  //~@@@@R~
 	{                                                              //~@@@@I~
 		P=Pprop.P;                                                 //~@@@@R~
 	}                                                              //~@@@@I~
-	//************************************************************ //~@@@@I~
-	public  synchronized void saveProperties(String text)          //~@@@@R~
-    {                                                              //~9616I~
-    	if (Dump.Y) Dump.println("Prop.saveProperties fnm="+propFilename+",text="+text);//~9616I~//~9826R~
-		try                                                        //~9616R~
-		{                                                          //~@@@@R~
-			FileOutputStream out=new FileOutputStream(propFilename);//~@@@@R~
-			P.save(out,text);
-			out.close();
-		}
-		catch (Exception e)                                        //~1401R~
-		{                                                          //~1401I~
-            Dump.println(e,"Property:"+propFilename+ "save failed");//~1308I~//~1401I~//~@@@@R~
-		}                                                          //~1308I~//~1401I~
-        if (Dump.Y) Dump.println("Property "+text+" saved to "+propFilename);        //~1308I~//~1506R~//~@@@@R~
-	}
+//    //************************************************************ //~@@@@I~//+va40R~
+//    public  synchronized void saveProperties(String text)          //~@@@@R~//+va40R~
+//    {                                                              //~9616I~//+va40R~
+//        if (Dump.Y) Dump.println("Prop.saveProperties fnm="+propFilename+",text="+text);//~9616I~//~9826R~//+va40R~
+//        try                                                        //~9616R~//+va40R~
+//        {                                                          //~@@@@R~//+va40R~
+//            FileOutputStream out=new FileOutputStream(propFilename);//~@@@@R~//+va40R~
+//            P.save(out,text);                                    //+va40R~
+//            out.close();                                         //+va40R~
+//        }                                                        //+va40R~
+//        catch (Exception e)                                        //~1401R~//+va40R~
+//        {                                                          //~1401I~//+va40R~
+//            Dump.println(e,"Property:"+propFilename+ "save failed");//~1308I~//~1401I~//~@@@@R~//+va40R~
+//        }                                                          //~1308I~//~1401I~//+va40R~
+//        if (Dump.Y) Dump.println("Property "+text+" saved to "+propFilename);        //~1308I~//~1506R~//~@@@@R~//+va40R~
+//    }                                                            //+va40R~
 	//************************************************************ //~9826I~
 	public  static void savePropertiesString(String Pfnm,String Ptext)//~9826R~
     {                                                              //~9826I~
@@ -224,23 +225,23 @@ public class Prop                                                  //~@@@@R~
 		}                                                          //~9826I~
         if (Dump.Y) Dump.println("Property saved to "+Pfnm);       //~9826I~
 	}                                                              //~9826I~
-	//************************************************************ //~@@@@I~
-	public  synchronized boolean saveProperties(String Pfname,FileOutputStream Pfos,String Pcmt)//~@@@@I~
-	{                                                              //~@@@@I~
-    	boolean rc=false;                                              //~@@@@I~
-        if (Dump.Y) Dump.println("Prop.saveProperties file="+Pfname+",cmt="+Pcmt);//~@@@@I~
-        try                                                        //~@@@@I~
-		{                                                          //~@@@@I~
-			P.save(Pfos,Pcmt);                                     //~@@@@I~
-			Pfos.close();                                          //~@@@@I~
-            rc=true;                                               //~@@@@I~
-		}                                                          //~@@@@I~
-		catch (Exception e)                                        //~@@@@I~
-		{                                                          //~@@@@I~
-            Dump.println(e,"Prop.saveProperties:filename="+Pfname);//~@@@@I~
-		}                                                          //~@@@@I~
-        return rc;                                                 //~@@@@I~
-	}                                                              //~@@@@I~
+//    //************************************************************ //~@@@@I~//+va40R~
+//    public  synchronized boolean saveProperties(String Pfname,FileOutputStream Pfos,String Pcmt)//~@@@@I~//+va40R~
+//    {                                                              //~@@@@I~//+va40R~
+//        boolean rc=false;                                              //~@@@@I~//+va40R~
+//        if (Dump.Y) Dump.println("Prop.saveProperties file="+Pfname+",cmt="+Pcmt);//~@@@@I~//+va40R~
+//        try                                                        //~@@@@I~//+va40R~
+//        {                                                          //~@@@@I~//+va40R~
+//            P.save(Pfos,Pcmt);                                     //~@@@@I~//+va40R~
+//            Pfos.close();                                          //~@@@@I~//+va40R~
+//            rc=true;                                               //~@@@@I~//+va40R~
+//        }                                                          //~@@@@I~//+va40R~
+//        catch (Exception e)                                        //~@@@@I~//+va40R~
+//        {                                                          //~@@@@I~//+va40R~
+//            Dump.println(e,"Prop.saveProperties:filename="+Pfname);//~@@@@I~//+va40R~
+//        }                                                          //~@@@@I~//+va40R~
+//        return rc;                                                 //~@@@@I~//+va40R~
+//    }                                                              //~@@@@I~//+va40R~
 	//************************************************************ //~@@@@I~
 	public  synchronized void setParameter(String key, boolean value)//~@@@@R~
 	{                                                              //~@@@@R~
@@ -302,7 +303,7 @@ public class Prop                                                  //~@@@@R~
 		try                                                        //~@@@@I~
 		{                                                          //~@@@@R~
 			String s=getParameter(key,"");                         //~@@@@R~
-    		if (Dump.Y) Dump.println("Prop.getParameter str="+s);  //+0217I~
+    		if (Dump.Y) Dump.println("Prop.getParameter str="+s);  //~0217I~
             if (s.equals(""))                                      //~@@@@I~
             	return def;                                        //~@@@@I~
 			return Integer.parseInt(s);                            //~@@@@I~

@@ -1,6 +1,7 @@
-//*CID://+va29R~: update#= 670;                                    //+va29R~
+//*CID://+va49R~: update#= 672;                                    //+va49R~
 //**********************************************************************//~v101I~
-//2020/11/04 va29 (BUG)missing to add 1han of OpenReach            //+va29I~
+//2020/11/21 va49 highlight compreqdlg button when Ron             //+va49I~
+//2020/11/04 va29 (BUG)missing to add 1han of OpenReach            //~va29I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/18 va19 warning use anywan if blocked topn               //~va19I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -310,6 +311,10 @@ public class UARon                                                 //~v@@@R~//~v
         }                                                          //~v@@6I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_RON)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
+        if (Pplayer==PLAYER_YOU)                                   //+va49R~
+        {                                                          //+va49R~
+        	AG.aGC.highlightCompReq(true/*swOn*/);                 //+va49R~
+        }                                                          //+va49R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va08I~
@@ -597,8 +602,8 @@ public class UARon                                                 //~v@@@R~//~v
 	        	UARV.addOtherYaku(RYAKU_REACH_DOUBLE,RANK_REACH_DOUBLE);//~va11I~
             else                                                   //~va11I~
 	        	UARV.addOtherYaku(RYAKU_REACH,RANK_REACH);         //~va11I~
-            if (PLS.isOpenReach(PLAYER_YOU))                       //+va29I~
-	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//+va29I~
+            if (PLS.isOpenReach(PLAYER_YOU))                       //~va29I~
+	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~va29I~
     	  if (RuleSettingYaku.isReachOneShot())                    //~va11I~
             if (swTake)	//                                         //~va11I~
             {                                                      //~va11I~

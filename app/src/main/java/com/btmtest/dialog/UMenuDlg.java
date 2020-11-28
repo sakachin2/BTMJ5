@@ -1,14 +1,18 @@
-//*CID://+DATER~:                             update#=  229;       //~1Af6R~//~v@@@R~//~v@@1R~//~9904R~
+//*CID://+va40R~:                             update#=  231;       //~va40R~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v@@1I~
 //multichoice option; dismiss control by selected option           //~v@@1I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+//import android.app.DialogFragment;                               //+va40R~
+import android.support.v4.app.DialogFragment;                      //+va40I~
+//import android.app.FragmentManager;                              //~va40R~
+import android.support.v4.app.FragmentManager;                     //~va40I~
+//import android.app.FragmentTransaction;                          //~va40R~
+import android.support.v4.app.FragmentTransaction;                 //~va40I~
 import android.content.DialogInterface;
 import android.app.AlertDialog;                                    //~v@@@I~
 import android.graphics.Color;
@@ -72,7 +76,7 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
 //**********************************                               //~v@@1I~
 	private static UMenuDlg newInstance(String Ptitle,int Pitemsid,boolean Pmultichoice)//~v@@1I~
     {                                                              //~v@@1I~
-    	if (Dump.Y) Dump.println("UMenuDlg.newInstance multichice="+Pmultichoice+",title="+Ptitle+",itemsid="+Integer.toHexString(Pitemsid));//~v@@1I~//+9B20R~
+    	if (Dump.Y) Dump.println("UMenuDlg.newInstance multichice="+Pmultichoice+",title="+Ptitle+",itemsid="+Integer.toHexString(Pitemsid));//~v@@1I~//~9B20R~
     	UMenuDlg dlg=new UMenuDlg();                               //~v@@1I~
     	Bundle b=new Bundle();                                     //~v@@1I~
         b.putString(PARM_TITLE,Ptitle);                            //~v@@1I~

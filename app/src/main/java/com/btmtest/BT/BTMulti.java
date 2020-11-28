@@ -1,6 +1,7 @@
-//*CID://+va1bR~:                             update#=  475;       //+va1bR~
+//*CID://+va46R~:                             update#=  481;       //~va46R~
 //********************************************************************************//~v101I~
-//2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//+va1bI~
+//2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
+//2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
 //2020/10/14 va17 chk server for "Game" button click(stop start process if start game from client)//~va02I~
 //                Game button on client is not disabled because connectionType was set to 0 because thread=null yet before openClien() at updateButtonStatus//~va02I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
@@ -126,9 +127,24 @@ public class BTMulti                                               //~1AebR~
         	return false;                                          //~1AebI~
         }                                                          //~1AebI~
         if (Dump.Y) Dump.println("BTMulti.updateMember name="+Pname+",youtrname="+(Pyourname==null?"null":Pyourname)+",status="+Pstatus+",synchDate="+PsyncDate);//~1AebR~//~@002R~//~9619R~
-        notifyToMembers(true/*connected*/,Pname,Pyourname);        //~1AebR~
+	    notifyToMembers(true/*connected*/,Pname,Pyourname);        //~1AebR~
         return true;                                               //~1AebI~
     }                                                              //~1AebI~
+    //*******************************************************      //~va46I~
+    //*at reconnect search by macaddr                              //~va46I~
+    //*******************************************************      //~va46I~
+    public boolean updateMember(String Pname,String Pyourname,String PmacAddr,String PsyncDate,boolean PswNotify)//+va46R~
+	{                                                              //~va46I~
+    	if (Dump.Y) Dump.println("BTMulti.updateMember name="+Pname+",yourname="+Pyourname+",macAddr="+PmacAddr+",syncData="+PsyncDate);//~va46I~
+    	int rc=BTGroup.updateReconnect(PmacAddr,Pname,Pyourname,PsyncDate);//~va46I~
+    	if (rc<0)                                                  //~va46I~
+        {                                                          //~va46I~
+        	return false;                                          //~va46I~
+        }                                                          //~va46I~
+        if (PswNotify)                                             //+va46I~
+	        notifyToMembers(true/*connected*/,Pname,Pyourname);    //+va46R~
+        return true;                                               //~va46I~
+    }                                                              //~va46I~
     //*******************************************************      //~1AebI~
     //*received yourname from client at connected                  //~1AebI~
     //*******************************************************      //~1AebI~
@@ -326,7 +342,7 @@ public class BTMulti                                               //~1AebR~
         if (Dump.Y) Dump.println("BTMulti.updateSeq name="+Pname+",idx="+Pidx);//~@002I~
     	BTGroup.updateSeq(Pname,Pidx);                             //~@002I~
         BTIOThread t=(BTIOThread)BTGroup.getThread(BTGroup.idxServer);//~0221R~
-      if (t!=null)	//server entry thread is null on server        //+va1bI~
+      if (t!=null)	//server entry thread is null on server        //~va1bI~
         t.idxMember=BTGroup.idxServer;                             //~0221R~
     }                                                              //~@002I~
     //*******************************************************      //~1AebI~

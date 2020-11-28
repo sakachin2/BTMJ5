@@ -1,6 +1,7 @@
-//*CID://+va15R~:                             update#=  702;       //+va15R~
+//*CID://+va40R~:                             update#=  703;       //+va40R~
 //*****************************************************************//~v101I~
-//2020/10/13 va15 Add chk kuikae                                   //+va15I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2020/10/13 va15 Add chk kuikae                                   //~va15I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~//~9412R~
 import android.content.DialogInterface;
@@ -395,7 +396,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.setTitle swReceived="+swReceived);//~9405I~//~9412R~
         if (!swReceived)                                           //~9405I~
         	return;                                                //~9405I~
-		Spanned st=Html.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//~9223I~//~v@@@I~//~9405I~
+//		Spanned st=Html.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//~9223I~//~v@@@I~//+va40R~
+  		Spanned st=Utils.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//+va40I~
         getDialog().setTitle(st);                                              //~9405I~
     }                                                              //~9405I~
 	//*****************                                            //~9403I~
@@ -2062,11 +2064,11 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         tv.setText(str);                                           //~9829I~
         if (Dump.Y) Dump.println("RuleSetting.setInitialScore");   //~9829I~
     }                                                              //~9829I~
-    //**************************************                       //+va15I~
-    public static int getSameMeld()                                //+va15I~
-    {                                                              //+va15I~
-        int rc=AG.ruleProp.getParameter(getKeyRS(RSID_EATCHANGE),EATCHANGE_DEFAULT);//+va15I~
-        if (Dump.Y) Dump.println("RuleSetting.getSameMeld rc="+rc);//+va15I~
-        return rc;                                                 //+va15I~
-    }                                                              //+va15I~
+    //**************************************                       //~va15I~
+    public static int getSameMeld()                                //~va15I~
+    {                                                              //~va15I~
+        int rc=AG.ruleProp.getParameter(getKeyRS(RSID_EATCHANGE),EATCHANGE_DEFAULT);//~va15I~
+        if (Dump.Y) Dump.println("RuleSetting.getSameMeld rc="+rc);//~va15I~
+        return rc;                                                 //~va15I~
+    }                                                              //~va15I~
 }//class                                                           //~v@@@R~

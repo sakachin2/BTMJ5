@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 409;                                    //~v@21R~//~9A15R~
+//*CID://+va40R~: update#= 411;                                    //~va40R~
 //**********************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
+//**********************************************************************//~va40I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -12,6 +14,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Matrix;
+import android.os.Build;
 import android.view.View;
 
 import com.btmtest.utils.Dump;
@@ -787,11 +790,29 @@ public class Graphics //extends Handler                            //~v@@@R~
             drawText(AG.aGraphics.canvasShadow,Ptext,Pxx,Pyy,Ppaint);//~9C02I~
         }                                                          //~9C02I~
     }                                                              //~9C02I~
+    //****************************************************         //~va40I~
+	@SuppressWarnings("deprecation")                               //+va40I~
+	private static void drawText_From16(Canvas Pcanvas,String Ptext,float[] Ppos,Paint Ppaint)//~va40I~
+    {                                                              //~va40I~
+        if (Dump.Y) Dump.println("Graphics.drawText_From16");      //~va40I~
+        Pcanvas.drawPosText(Ptext,Ppos,Ppaint);                    //~va40I~
+    }                                                              //~va40I~
+	@SuppressWarnings("deprecation")                               //+va40I~
+    //****************************************************         //~va40I~
+	private static void drawText_Bellow16(Canvas Pcanvas,String Ptext,float[] Ppos,Paint Ppaint)//~va40I~
+    {                                                              //~va40I~
+        if (Dump.Y) Dump.println("Graphics.drawText_Bellow16");    //~va40I~
+        Pcanvas.drawPosText(Ptext,Ppos,Ppaint);                    //~va40I~
+    }                                                              //~va40I~
     //****************************************************         //~v@@@I~
 	public static void drawText(Canvas Pcanvas,String Ptext,float[] Ppos,Paint Ppaint)//~v@@@I~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Graphics.drawText by path text="+Ptext+",canvas="+Pcanvas.toString()+",Ppos="+ Arrays.toString(Ppos));//~v@@@R~//~0216R~
-        Pcanvas.drawPosText(Ptext,Ppos,Ppaint);                       //~v@@@I~
+//      Pcanvas.drawPosText(Ptext,Ppos,Ppaint);                       //~v@@@I~//~va40R~
+	 	if (Build.VERSION.SDK_INT>=16) //api16 android4.1:Jelly Bean//~va40I~
+			drawText_From16(Pcanvas,Ptext,Ppos,Ppaint);            //~va40I~
+        else                                                       //~va40I~
+			drawText_Bellow16(Pcanvas,Ptext,Ppos,Ppaint);          //~va40I~
 //      AG.aGraphics.canvasShadow.drawPosText(Ptext,Ppos,Ppaint);        //bitmap is work//~v@@@R~//~9A16R~
     }                                                              //~v@@@I~
     //****************************************************         //~v@@@I~
@@ -960,9 +981,9 @@ public class Graphics //extends Handler                            //~v@@@R~
         p.setColor(Pcolor);                                        //~0407I~
         p.setStyle(Paint.Style.STROKE);                            //~0407I~
         p.setStrokeWidth((float)Pwidth);                           //~0407I~
-        if (Pcanvas==null)                                         //+0407I~
-            AG.aGraphics.canvasShadow.drawLines(Ppoints,p);        //+0407I~
-        else                                                       //+0407I~
-	        Pcanvas.drawLines(Ppoints,p);                          //+0407R~
+        if (Pcanvas==null)                                         //~0407I~
+            AG.aGraphics.canvasShadow.drawLines(Ppoints,p);        //~0407I~
+        else                                                       //~0407I~
+	        Pcanvas.drawLines(Ppoints,p);                          //~0407R~
     }                                                              //~0407I~
 }//class Graphics                                                 //~dataR~//~@@@@R~//~v@@@R~

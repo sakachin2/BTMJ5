@@ -1,6 +1,7 @@
-//*CID://+va27R~:                             update#=  427;       //+va27R~
+//*CID://+va40R~:                             update#=  435;       //~va40R~
 //******************************************************************************************************************//~v101R~
-//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //@@01 20181105 for BTMJ3                                          //~@@01I~
 //******************************************************************************************************************//~v101I~
 //*Globals *****                                             //~1107I~//~1Ad7R~
@@ -11,13 +12,15 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Stack;
 
-import android.app.ProgressDialog;
+//import android.app.ProgressDialog;                               //~va40R~
 import android.graphics.Bitmap;
 import android.os.Build;                                           //~vab0R~//~v101I~
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.app.FragmentManager;                                //~v@@@R~
+//import android.app.FragmentManager;                              //~va40R~
+import android.support.v4.app.FragmentManager;                     //~va40I~
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.os.HandlerThread;                                   //~@@01I~
@@ -25,7 +28,7 @@ import android.os.HandlerThread;                                   //~@@01I~
 import com.btmtest.BT.BTI;                                         //~@@01R~
 import com.btmtest.BT.BTMulti;                                     //~v@@@I~//~@@01R~
 import com.btmtest.game.UA.UARonValue;
-import com.btmtest.game.UA.UAReachChk;                             //+va27I~
+import com.btmtest.game.UA.UAReachChk;                             //~va27I~
 import com.btmtest.game.UA.UARon;                                  //~@@01I~
 import com.btmtest.wifi.IPMulti;                                   //~@@01I~
 import com.btmtest.dialog.BTCDialog;//~v@@@R~                      //~@@01I~
@@ -323,7 +326,7 @@ public class AG                                                    //~1107R~
 //  public  UADelayed    aUADelayed;                               //~@@01R~
     public  UADelayed2   aUADelayed;                               //~@@01I~
     public UARonValue aUARonValue;                              //~@@01I~
-    public UAReachChk aUAReachChk;                                 //+va27I~
+    public UAReachChk aUAReachChk;                                 //~va27I~
     public UARon      aUARon;                                      //~@@01I~
     public  LastGame    aLastGame;                                 //~@@01I~
     public  History     aHistory;                                  //~@@01I~
@@ -356,7 +359,7 @@ public class AG                                                    //~1107R~
     public  UAD2Touch aUAD2Touch;                                  //~@@01R~
                                                                    //~@@01I~
     public  ProgDlg progDlg;                                       //~@@01I~
-    public ProgressDialog androidDialog;                          //~@@01I~
+//  public ProgressDialog androidDialog;                           //~va40R~
     public Sound aSound;                                           //~@@01I~
                                                                    //~@@01I~
     public Stack<View> stackSnackbarLayout=new Stack<View>();      //~@@01I~
@@ -446,7 +449,8 @@ public class AG                                                    //~1107R~
         	Dump.open("");	//write all to Terminal log,not exception only//~@@01R~
 //        startupCtr=Prop.getPreference(PKEY_STARTUPCTR,0);    //~v107I~//~@@@@R~//~1Ad7R~
 //        Prop.putPreference(PKEY_STARTUPCTR,startupCtr+1);    //~v107I~//~@@@@R~//~1Ad7R~
-        fragmentManager=aMainActivity.getFragmentManager();        //~v@@@I~
+//      fragmentManager=aMainActivity.getFragmentManager();        //~va40R~
+        fragmentManager=aMainActivity.getSupportFragmentManager();//~va40I~
         appName=context.getText(R.string.app_name).toString();     //~1402I~//~1Ad7R~
         appNameE=Utils.getStr(R.string.app_nameE);                 //~@@01I~
 //        pkgName=context.getPackageName();                          //~1A6aI~//~1Ad7R~
@@ -559,4 +563,20 @@ public class AG                                                    //~1107R~
         }                                                          //~@@01I~
         return rc;                                                 //~@@01R~
     }                                                              //~@@01I~
+//*************************************************************    //~va40I~
+    public        int getColor(int Pcolor)                         //~va40R~
+    {                                                              //~va40I~
+    	int rc;                                                    //~va40I~
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) //api23 Marshmallow android6//~va40I~
+        	rc= ContextCompat.getColor(AG.context,Pcolor);           //~va40I~
+        else                                                       //~va40I~
+		    rc=getColor_Under23(Pcolor);                        //~va40I~
+        return rc;                                                 //~va40I~
+    }                                                              //~va40I~
+//*************************************************************    //~va40I~
+	@SuppressWarnings("deprecation")                                //~va40I~
+    private       int getColor_Under23(int Pcolor)                 //+va40R~
+    {                                                              //~va40I~
+        return AG.resource.getColor(Pcolor);                    //~va40I~
+    }                                                              //~va40I~
 }//class AG                                                        //~1107R~

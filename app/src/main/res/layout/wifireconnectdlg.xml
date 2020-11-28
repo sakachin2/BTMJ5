@@ -327,8 +327,8 @@
                     android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                          android:layout_weight="1"
-                    android:visibility="gone"
                 />
+                <!--    android:visibility="gone"  va43-->
                 <Button
                     android:id="@+id/IPDisConnect"
                     android:text="@string/IPDisConnect"

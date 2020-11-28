@@ -1,5 +1,6 @@
-//*CID://+va11R~: update#= 263;                                    //~1Ac0R~//~v@@@R~//~@@01R~//~va11R~
+//*CID://+va40R~: update#= 269;                                    //~1Ac0R~//~v@@@R~//~@@01R~//~va40R~
 //**********************************************************************//~1107I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //@@01 20181105 for BTMJ3                                            //~@@01I~
 //**********************************************************************//~1107I~//~v106M~
@@ -28,10 +29,13 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.graphics.Color;                                     //~v@@@I~
-import android.app.DialogFragment;                                 //~v@@@I~
+//import android.app.DialogFragment;                               //~va40R~
+import android.os.Build;
+import android.support.v4.app.DialogFragment;                      //~va40I~
 import android.text.Html;
 import android.text.Spanned;
 
+import static android.support.v4.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.AG.*;//~v@21I~//~@@01I~
 
@@ -469,9 +473,10 @@ public class Utils                                            //~1309R~//~@@@@R~
     }                                                              //~v@@@I~
 //**********************                                           //~va11I~
     public static Spanned getStrHtml(int Presid)                   //~va11I~
-	{                                                              //~va11I~
-        Spanned txt= Html.fromHtml(Utils.getStr(Presid));          //~va11I~
-    	return txt;                                                //~va11I~
+    {                                                              //~va11I~
+//      Spanned txt= Html.fromHtml(Utils.getStr(Presid));          //~va11I~//~va40R~
+        Spanned txt=Utils.fromHtml(Utils.getStr(Presid));          //~va40I~
+        return txt;                                                //~va11I~
     }                                                              //~va11I~
 //**********************                                           //~v@@@I~
     public static String getStr(int Presid,String P1)              //~v@@@I~
@@ -927,6 +932,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         	task.moveToFront();                                    //~@@01R~
         }                                                          //~@@01I~
     }                                                              //~@@01I~
+	@SuppressWarnings("deprecation")                               //+va40I~
     //*******************************************************************//~@@01I~
     public static int getAppID_Under_LOLLIPOP(String Ppkgname)     //~@@01I~
     {                                                              //~@@01I~
@@ -956,13 +962,33 @@ public class Utils                                            //~1309R~//~@@@@R~
     	if (Dump.Y) Dump.println("cloneArray2 clone 2demension return array="+Utils.toString(to));//~vai3I~//~va11I~
         return to;                                                 //~vai3I~//~va11I~
     }                                                              //~vai3I~//~va11I~
-//***********                                                      //+va11I~
-    public static void copyArray2(int[][] Pfrom,int[][] Pto)    //+va11I~
-    {                                                              //+va11I~
-    	if (Dump.Y) Dump.println("Utils.copyArray2");              //+va11I~
-    	int sz1=Pfrom.length;                                      //+va11I~
-        for (int ii=0;ii<sz1;ii++)                                 //+va11I~
-        	System.arraycopy(Pfrom[ii],0,Pto[ii],0,Pfrom[ii].length);//+va11I~
-    	if (Dump.Y) Dump.println("Utils.copyArray2 Pto"+Utils.toString(Pto));//+va11I~
-    }                                                              //+va11I~
+//***********                                                      //~va11I~
+    public static void copyArray2(int[][] Pfrom,int[][] Pto)    //~va11I~
+    {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("Utils.copyArray2");              //~va11I~
+    	int sz1=Pfrom.length;                                      //~va11I~
+        for (int ii=0;ii<sz1;ii++)                                 //~va11I~
+        	System.arraycopy(Pfrom[ii],0,Pto[ii],0,Pfrom[ii].length);//~va11I~
+    	if (Dump.Y) Dump.println("Utils.copyArray2 Pto"+Utils.toString(Pto));//~va11I~
+    }                                                              //~va11I~
+//***********                                                      //~va40I~
+    public static Spanned fromHtml(String PtextHtml)               //~va40I~
+    {                                                              //~va40I~
+    	if (Dump.Y) Dump.println("Utils.fromHtml text="+PtextHtml); //~va40I~
+        Spanned s;                                                 //~va40I~
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) //api24 android7:N//~va40I~
+        {                                                          //~va40I~
+        	int flag=FROM_HTML_MODE_LEGACY;                        //~va40I~
+        	s=Html.fromHtml(PtextHtml,flag);                            //~va40I~
+        }                                                          //~va40I~
+        else                                                       //~va40I~
+		    s=fromHtml_Under24(PtextHtml);                   //~va40I~
+        return s;                                                  //~va40I~
+    }                                                              //~va40I~
+//*************************************************************    //~va40I~
+	@SuppressWarnings("deprecation")                               //~va40I~
+    private static Spanned fromHtml_Under24(String PtextHtml)      //~va40I~
+    {                                                              //~va40I~
+        return Html.fromHtml(PtextHtml);                           //~va40I~
+    }                                                              //~va40I~
 }//class Utils                                                //~1309R~//~v@@@R~

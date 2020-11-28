@@ -1,5 +1,6 @@
-//*CID://+v@@@R~:                             update#=  147;       //~1Af6R~//~v@@@R~
+//*CID://+va40R~:                             update#=  149;       //+va40R~
 //*****************************************************************//~v101I~
+//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 
@@ -65,13 +66,14 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
         htmltxt=UFile.getHelpFileExt(helpFilename,".htm",false);   //~v@@@R~
         if (htmltxt!=null)                                         //~v@@@I~
         {                                                          //~v@@@I~
-//      	txt=adjustHtml(htmltxt);                               //+v@@@R~
-        	txt=htmltxt;                                           //+v@@@I~
-			Spanned s;                                             //~v@@@I~
-        	if (AG.osVersion>=24) // Nougat:android 7.0            //~v@@@I~
-			    s=getHtmlSpanned(txt);                             //~v@@@R~
-            else                                                   //~v@@@I~
-        		s=Html.fromHtml(txt);                              //~v@@@R~
+//      	txt=adjustHtml(htmltxt);                               //~v@@@R~
+        	txt=htmltxt;                                           //~v@@@I~
+//            Spanned s;                                           //+va40R~
+//            if (AG.osVersion>=24) // Nougat:android 7.0          //+va40R~
+//                s=getHtmlSpanned(txt);                           //+va40R~
+//            else                                                 //+va40R~
+//                s=Html.fromHtml(txt);                            //+va40R~
+            Spanned s=Utils.fromHtml(txt);                         //+va40R~
             tvMessage.setText(s);                                  //~v@@@I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
@@ -94,16 +96,16 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
     	if (Dump.Y) Dump.println("HelpDialog adjustHtml inp="+Ptxt+",out="+txt);//~v@@@I~
         return txt;
     }                                                              //~v@@@I~
-//**********************************                               //~v@@@I~
-	@TargetApi(24) //android7 Nougat                               //+v@@@R~
-    public Spanned getHtmlSpanned(String Ptxt)                     //~v@@@I~
-    {                                                              //~v@@@I~
-    	if (Dump.Y) Dump.println("HelpDialog getHtmlSpanned api>=24(Nogaut 7.0) string="+Ptxt);//~v@@@I~
-//      int flag=TO_HTML_PARAGRAPH_LINES_INDIVIDUAL;               //+v@@@R~
-        int flag=FROM_HTML_MODE_LEGACY;                            //+v@@@I~
-        Spanned s=Html.fromHtml(Ptxt,flag);                     //~v@@@I~
-        return s;                                                  //~v@@@I~
-    }                                                              //~v@@@I~
+////**********************************                             //+va40R~
+//    @TargetApi(24) //android7 Nougat                             //+va40R~
+//    public Spanned getHtmlSpanned(String Ptxt)                   //+va40R~
+//    {                                                            //+va40R~
+//        if (Dump.Y) Dump.println("HelpDialog getHtmlSpanned api>=24(Nogaut 7.0) string="+Ptxt);//+va40R~
+////      int flag=TO_HTML_PARAGRAPH_LINES_INDIVIDUAL;             //+va40R~
+//        int flag=FROM_HTML_MODE_LEGACY;                          //+va40R~
+//        Spanned s=Html.fromHtml(Ptxt,flag);                      //+va40R~
+//        return s;                                                //+va40R~
+//    }                                                            //+va40R~
     //******************************************                   //~v@@@I~
 	public static void show(String Ptitle,String Pfnm)                  //~v@@@I~
 	{                                                              //~v@@@I~

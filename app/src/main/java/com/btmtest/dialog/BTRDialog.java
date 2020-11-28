@@ -1,5 +1,8 @@
-//*CID://+DATER~:                             update#=  491;       //~v001R~//~@002R~//~9210R~
+//*CID://+va47R~:                             update#=  493;       //+va47R~
 //*****************************************************************//~v101I~
+//2020/11/21 va47 (Bug)BT;suspend button disabled on server after disconnected//+va47I~
+//2020/11/20 va45 (Bug)WD:Suspend button was diable when disconnected//~va45I~
+//*****************************************************************//~va45I~
 //*BlietoothRecobectDialog                                       //~v@@@I~//~9A21R~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -185,11 +188,11 @@ public class BTRDialog extends BTCDialog                           //~9A21R~
         	UView.showToast(R.string.Err_LackingMemberReconnect);  //~0218I~
             return false;                                          //~0218I~
         }                                                          //~0218I~
-        if (Status.isStatusRestarted())                            //+0218I~
-        {                                                          //+0218I~
-        	UView.showToast(R.string.Err_AlreadyRestarted);        //+0218I~
-            return false;                                          //+0218I~
-        }                                                          //+0218I~
+        if (Status.isStatusRestarted())                            //~0218I~
+        {                                                          //~0218I~
+        	UView.showToast(R.string.Err_AlreadyRestarted);        //~0218I~
+            return false;                                          //~0218I~
+        }                                                          //~0218I~
 //  	SuspendIOErrReqDlg.stopAutoTakeDiscardReset();//~9A24R~//~9A26R~//~9A27R~//~9A29R~
     	AG.aUARestart.stopAutoTakeDiscardReset();                  //~9A29I~
 //      UserAction.showInfoAll(0,R.string.Info_GameRestarted);     //~9A24I~//~0115R~
@@ -282,6 +285,7 @@ public class BTRDialog extends BTCDialog                           //~9A21R~
 //          	btnConnect.setVisibility(View.VISIBLE);            //~9B07I~//~0218R~
 			btnConnect.setEnabled(!swReconnectedAll);              //~0218I~
         }                                                          //~9A30I~
-        btnSuspendGame.setEnabled(swReconnectedAll);               //~9A30I~
+//      btnSuspendGame.setEnabled(swReconnectedAll);               //~9A30I~//+va47R~
+        btnSuspendGame.setEnabled(!swReconnectedAll);              //+va47I~
     }                                                              //~9A23I~
 }//class                                                           //~v@@@R~
