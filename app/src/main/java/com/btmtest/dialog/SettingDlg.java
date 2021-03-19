@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#=  460;       //~v@@@R~//~9404R~
+//*CID://+DATER~:                             update#=  461;       //~v@@@R~//~9404R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -177,18 +177,18 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
 //        btnCancel.setText(Utils.getStr(PswClose ? R.string.Close : R.string.Cancel));//~9409R~
 //    }                                                            //~9409R~
     //*******************************************************      //~9406I~
-//  private void showSyncStatusReset(int PctrSent)                             //~9406I~//~9A29R~//+9B25R~
-    private void showSyncStatusReset(Point Ppoint)                 //+9B25I~
+//  private void showSyncStatusReset(int PctrSent)                             //~9406I~//~9A29R~//~9B25R~
+    private void showSyncStatusReset(Point Ppoint)                 //~9B25I~
     {                                                              //~9406I~
-        if (Dump.Y) Dump.println("SettingDlg.showSyncStatusReset ctrSent,ctrClient="+Ppoint.toString());//+9B25I~
-//  	if (PctrSent!=0)                                            //~9A29I~//+9B25R~
-    	if (Ppoint.x!=0)                                           //+9B25I~
+        if (Dump.Y) Dump.println("SettingDlg.showSyncStatusReset ctrSent,ctrClient="+Ppoint.toString());//~9B25I~
+//  	if (PctrSent!=0)                                            //~9A29I~//~9B25R~
+    	if (Ppoint.x!=0)                                           //~9B25I~
 	        tvShowStatus.setText(Utils.getStr(R.string.Info_RuleSyncReset,Ppoint.x));//~9406I~//~9A29R~
         else                                                       //~9A29I~
-    	if (Ppoint.y==0)                                           //+9B25I~
+    	if (Ppoint.y==0)                                           //~9B25I~
 	        tvShowStatus.setText(Utils.getStr(R.string.Info_RuleSyncNoConnection));//~9A29I~
-        else                                                       //+9B25I~
-	        tvShowStatus.setText(Utils.getStr(R.string.Info_RuleSynchedAlready,Ppoint.y));//+9B25I~
+        else                                                       //~9B25I~
+	        tvShowStatus.setText(Utils.getStr(R.string.Info_RuleSynchedAlready,Ppoint.y));//~9B25I~
 //      setButtonClose(true);                                      //~9409R~
     }                                                              //~9406I~
     //*******************************************************      //~9405I~
@@ -332,12 +332,12 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
 //  	BTMulti.setRuleOutOfSynch();                               //~9709I~//~9B25R~
         String props=Pprop.toString(Pcmt);                         //~9404I~
 //      ctrSent=aBTM.sendMsgToAllClientProp(GCM_SETTING,props);     //~9404I~//~9406R~//~9A29R~//~9B25R~
-//      ctrSent=aBTM.sendMsgToAllClientPropNotSynched(GCM_SETTING,props);//+9B25R~
-        Point p=aBTM.sendMsgToAllClientPropNotSynched(GCM_SETTING,props);//+9B25I~
+//      ctrSent=aBTM.sendMsgToAllClientPropNotSynched(GCM_SETTING,props);//~9B25R~
+        Point p=aBTM.sendMsgToAllClientPropNotSynched(GCM_SETTING,props);//~9B25I~
 //  	BTMulti.setRuleOutOfSynch();                               //~9405I~//~9709R~
 	    aBTM.setLockRuleSetting(false);	//release on server        //~9406R~
-//  	showSyncStatusReset(ctrSent);                                     //~9406I~//~9A29R~//+9B25R~
-    	showSyncStatusReset(p);                                    //+9B25I~
+//  	showSyncStatusReset(ctrSent);                                     //~9406I~//~9A29R~//~9B25R~
+    	showSyncStatusReset(p);                                    //~9B25I~
     }                                                              //~9404I~
 //    //*******************************************************      //~9826I~//~9901R~
 //    //*on Server,send setting to all client                        //~9826I~//~9901R~
@@ -397,6 +397,7 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
         saveProperties(true/*swReceived*/);   //save to current.rule                 //~9616I~//~9621R~
         AG.ruleProp.resetProperties(curProp);   //replace Properties of AG.ruleProp.P by curProp.P//~9616I~
         AG.ruleSyncDate=AG.ruleProp.getParameter(getKeyRS(RSID_SYNCDATE),"Unknown");//~9616I~//~9A31R~
+        if (Dump.Y) Dump.println("SettingDlg.saveReceived AG.ruleSyncDate="+AG.ruleSyncDate);//+1319I~
     }                                                              //~9616I~
     //*******************************************************      //~v@@@I~
     protected int updateProp(String Pkey,int Pnewval)              //~v@@@R~

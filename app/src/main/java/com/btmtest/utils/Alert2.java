@@ -5,10 +5,8 @@
 //**********************************************************************//~0411I~
 package com.btmtest.utils;                                         //~1107R~  //~1108R~//~1109R~//~@@@@R~//~v@@@R~
 
-import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@003I~
-
 //import android.app.DialogFragment;                               //+va40R~
-import android.support.v4.app.DialogFragment;                      //+va40I~
+import androidx.fragment.app.DialogFragment;                      //+va40I~
 
 //**********************************************************************//~1107I~
 public class Alert2 extends DialogFragment                          //~v@@@R~//~@003R~

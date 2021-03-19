@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#=  245;       //~1Af6R~//~v@@@R~//~9B28R~
+//*CID://+DATER~:                             update#=  246;       //~1Af6R~//~v@@@R~//~9B28R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.game;                                         //~v@@@R~
@@ -383,11 +383,11 @@ public class UAD2Touch                                             //~v@@@R~
         else                                                       //~9C09I~
         	action=PactionID;                                       //~9C09I~
 	    boolean rc=UADL.isWaitSelectMultipleMode(action);          //~9C09I~
-        if (Dump.Y) Dump.println("UAD2Touch.isWaitSelectMode action="+action+",yourStatus="+yourStatus+",rc="+rc);//~9C09I~
+        if (Dump.Y) Dump.println("UAD2Touch.isWaitSelecMultipletMode action="+action+",yourStatus="+yourStatus+",rc="+rc);//~9C09I~//+1130R~
         return rc;                                                 //~9C09I~
     }                                                              //~9C09I~
 //**********************************                               //~9C09I~
-    private void updateBtn()                                        //~9C09I~//+0A18R~
+    private void updateBtn()                                        //~9C09I~//~0A18R~
     {                                                              //~9C09I~
     	int eswn,actionID;                                         //~9C06I~
         if (Dump.Y) Dump.println("UAD2Touch.updateBtn yourActionBlocking="+yourActionBlocking+",yourStatus="+yourStatus);//~9B28R~

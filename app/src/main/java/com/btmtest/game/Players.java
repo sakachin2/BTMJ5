@@ -1,5 +1,8 @@
-//*CID://+va27R~: update#= 806;                                    //~va27R~
+//*CID://+va6gR~: update#= 838;                                    //+va6gR~
 //**********************************************************************//~v101I~
+//2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//+va6gI~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/11/01 va21 move chk1stTake to Players from CompReqDlg because static method mocking is hard//~va21I~
 //2020/10/13 va15 Add chk kuikae                                   //~va15I~
@@ -13,13 +16,16 @@ import android.graphics.Rect;
 
 import com.btmtest.R;
 import com.btmtest.TestOption;
+import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.UA.UARestart;
+import com.btmtest.game.gv.GMsg;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.Complete.*;
@@ -75,6 +81,8 @@ public class Players                                               //~v@@@R~
     public int typeAction;                                         //~9B14I~
     private static final int AT_STD=1; //standard action           //~9B14I~
     private static final int AT_COMB=2; //combination action       //~9B14I~
+                                                                   //~va66I~
+    private boolean swManualRobot; //robot take by button intraining mode//~va66R~
 //*************************                                        //~v@@@I~
 	public Players()                                               //~v@@@R~
     {                                                              //~0914I~
@@ -85,7 +93,10 @@ public class Players                                               //~v@@@R~
         	players[ii]=new Player(ii);                           //~v@@@I~
     }                                                              //~0914I~//~v@@@R~
     //*************************************************************************//~va21I~
-    public boolean chk1stTake()                                    //~va21I~
+    //*at ron declared                                             //~va60I~
+    //*************************************************************************//~va60I~
+//  public boolean chk1stTake()                                    //~va21I~//~va60R~
+    public boolean chk1stTakeRon()                                 //~va60I~
     {                                                              //~va21I~
     	boolean rc=false;                                          //~va21I~
 //  	int lastAction=AG.aPlayers.actionBeforeRon;                //~va21I~
@@ -99,14 +110,34 @@ public class Players                                               //~v@@@R~
         boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//~va21I~
         boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va21I~
         rc=swParent | swChild;                                     //~va21I~
-        if (Dump.Y) Dump.println("Players.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va21I~
+        if (Dump.Y) Dump.println("Players.chk1stTakeRon rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va21I~//~va60R~
         return rc;                                                 //~va21I~
     }                                                              //~va21I~
+    //*************************************************************************//~va60I~
+    //*at taken                                                    //~va60I~
+    //*************************************************************************//~va60I~
+    public boolean is1stTake()                                     //~va60I~
+    {                                                              //~va60I~
+    	boolean rc=false;                                          //~va60I~
+//  	int lastAction=actionBeforeRon;                            //~va60I~
+//  	boolean swTake=lastAction==GCM_TAKE;                       //~va60I~
+        int currentEswn=AG.aAccounts.getCurrentEswn();             //~va60I~
+        int ctrTaken=ctrTakenAll;                                  //~va60I~
+        int ctrDiscarded=ctrDiscardedAll;                          //~va60I~
+//      boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//~va60I~
+        boolean swParent=currentEswn==ESWN_E && ctrTaken==1;       //~va60I~
+        boolean swChild=currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va60I~
+        rc=swParent | swChild;                                     //~va60I~
+        if (Dump.Y) Dump.println("Players.is1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va60I~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
     //*********************************************************    //~v@@@I~
     public  void newGame(boolean Psw1st,int Pplayer)                        //~v@@@I~//~9503R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Players.newGame sw1st="+Psw1st+",player="+Pplayer);//~v@@@I~//~9503R~
 	    playerCurrent=Pplayer;                                     //~9503I~
+        if (AG.swTrainingMode)                                     //~va66I~
+	    	swManualRobot= RuleSettingOperation.isAllowRobotAllButton();//~va66R~
         if (Psw1st)                                                //~9503I~
         	return;                                                //~9503I~
         if (ctrTakenAll==0)	//dup call                             //~9503I~
@@ -204,7 +235,8 @@ public class Players                                               //~v@@@R~
     //******************************************************       //~v@@@I~
     //*taken from river                                            //~v@@@I~
     //******************************************************       //~v@@@I~
-    private void setCurrentPlayerWithoutLight(int Pplayer)                     //~v@@@I~//~v@@6R~
+//  private void setCurrentPlayerWithoutLight(int Pplayer)                     //~v@@@I~//~v@@6R~//~va60R~
+    public void setCurrentPlayerWithoutLight(int Pplayer) //public for IT mock//~va60I~
     {                                                              //~v@@@I~
         playerCurrent=Pplayer;                                     //~v@@@I~
         if (Dump.Y) Dump.println("Players.setCurrentPlayerWithoutLight="+playerCurrent);//~v@@@I~//~v@@6R~
@@ -284,6 +316,7 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.setInitialDeal player="+Pplayer+",pos="+Ppos+",eswn="+Peswn+",swSort="+PswSort);//~v@@5R~
 //      players[Pplayer].setInitialDeal(Ptd,Ppos,Peswn);           //~v@@5R~
         players[Pplayer].setInitialDeal(Ptd,Ppos,Peswn,PswSort);   //~v@@5I~
+        AG.aRoundStat.deal(Pplayer,Peswn);                         //~va60I~
     }                                                              //~v@@5I~
    //*********************************************************************//~v@@@I~
    //*for client                                                   //~v@@@I~
@@ -385,6 +418,16 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.isActionDoneExceptRon rc="+rc+",parm Pplayer="+Pplayer+",taken="+PctrTaken+",discard="+PctrDiscarded);//~0404I~
 	    return rc;                                                 //~0404I~
     }                                                              //~0404I~
+    //*********************************************************************//~va66I~
+    public int getCtrReachedPlayer(int PplayerExcept/*-1 count all*/)//~va66I~
+    {                                                              //~va66I~
+    	int ctr=0;                                                 //~va66I~
+    	for (int ii=0;ii<PLAYERS;ii++)                             //~va66I~
+	        if (players[ii].reachStatus==REACH_DONE)               //~va66I~
+            	ctr++;                                             //~va66I~
+        if (Dump.Y) Dump.println("Player.getCtrReachedPlayer player="+PplayerExcept+",rc="+ctr);//~va66I~
+        return ctr;                                                //~va66I~
+    }                                                              //~va66I~
     //*********************************************************************//~v@@@I~
     public boolean isYourTurn(int PactionID,int Pplayer,int PprevActionID)//~v@@@R~
     {                                                              //~v@@@I~
@@ -508,10 +551,17 @@ public class Players                                               //~v@@@R~
 //                      break;                                     //~9B14I~//~0228R~
 //                  }                                              //~9B14I~//~0228R~
                 	rc = (Pplayer == nextPlayer(cp)) && swLastActionIsDiscard;//~v@@@R~
+		        	if (Dump.Y) Dump.println("Players.isYourTurn GCM_TAKE rc="+rc+",Pplayer="+Pplayer+",swLastActionIsDiscard="+swLastActionIsDiscard+",playerCurrent="+playerCurrent+"swTrainingMode="+AG.swTrainingMode+",swManualRobot="+swManualRobot);//~va66R~
                     if (!rc)                                       //~v@@6I~
                     {                                              //~v@@6I~
                     	if (Pplayer==playerCurrent && !swLastActionIsDiscard)//~v@@6R~
                         {                                          //~9225I~
+						  if (swManualRobot)                       //~va66R~
+                          {                                        //~va66I~
+					        GC.actionError(0,Pplayer,GMsg.editEswn(R.string.AE_DiscardTakenRobot,Pplayer));//~va66I~
+                            errmsgid=-1;	//issued               //~va66I~
+                          }                                        //~va66I~
+                          else                                     //~va66I~
 		        			errmsgid=R.string.AE_DiscardTaken;     //~v@@6I~
                             break;                                 //~9225I~
                         }                                          //~9225I~
@@ -705,6 +755,22 @@ public class Players                                               //~v@@@R~
 //                    if (Pplayer == nextPlayer(cp))                 //~v@@6I~//~9C07R~
 //                        errmsgid=R.string.AE_YouHaveToTake;        //~v@@6I~//~9C07R~
 //                }                                                  //~v@@6I~//~9C07R~
+				if (!rc)                                           //~va66I~
+                {                                                  //~va66I~
+                    if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0)//~va66I~
+                    {                                              //~va66I~
+						if (lastActionID==GCM_KAN)                 //~va66I~
+                        {                                          //~va66I~
+					        GC.actionError(0,Pplayer,GMsg.editEswn(R.string.AE_TakeKanAdditionalRobot,Pplayer));//~va66I~
+                            errmsgid=-1;	//issued               //~va66I~
+                        }                                          //~va66I~
+						if (lastActionID==GCM_DISCARD)             //~va66I~
+                        {                                          //~va66I~
+					        GC.actionError(0,Pplayer, GMsg.editEswn(R.string.AE_NextHaveToTakeRobot,nextPlayer(Pplayer)));//~va66I~
+                            errmsgid=-1;	//issued               //~va66I~
+                        }                                          //~va66I~
+                    }                                              //~va66I~
+                }                                                  //~va66I~
                 break;                                             //~v@@@M~
             case GCM_REACH:                                        //~v@@@R~
             case GCM_REACH_OPEN:                                   //~9301I~
@@ -798,7 +864,7 @@ public class Players                                               //~v@@@R~
         {                                                          //~v@@@I~
             if (errmsgid>0) //-1 for err but no msg                //~9315I~
             {                                                      //~9315I~
-        	if (Dump.Y) Dump.println("Players.isYourTurn Not Your Turn player="+Pplayer+",currentPlayer="+cp+",action="+PactionID+",lastActionID="+PprevActionID);//~v@@@R~
+        	if (Dump.Y) Dump.println("Players.isYourTurn set err player="+Pplayer+",currentPlayer="+cp+",action="+PactionID+",lastActionID="+PprevActionID);//~v@@@R~//~va60R~
         	if (PswMsg)                                            //~v@@@I~
             {                                                      //~v@@6I~
 	        	GC.actionError(0,Pplayer,errmsgid); //~v@@@R~      //~v@@6R~
@@ -849,10 +915,12 @@ public class Players                                               //~v@@@R~
         return rc;
     }                                                              //~9225I~
     //*********************************************************************//~9208I~
+    //*return errmsgid or 0(noerr) or -1(ignore err)               //~va66I~
+    //*********************************************************************//~va66I~
     private int isRonAvailable(int Pplayer)                        //~9208R~
     {                                                              //~9208I~
         int errmsgid=0;                                            //~9208R~
-        if (Dump.Y) Dump.println("Players.isRonAvailable Pplayer="+Pplayer+"kanType="+kanType+",swLastActionisDiscard="+swLastActionIsDiscard);//~9226I~//~0401R~//~0404R~
+        if (Dump.Y) Dump.println("Players.isRonAvailable Pplayer="+Pplayer+",kanType="+kanType+",swLastActionisDiscard="+swLastActionIsDiscard);//~9226I~//~0401R~//~0404R~//~va60R~
 //      if (Pplayer!=PLAYER_YOU)                                   //~9208I~//~9226R~
 //      	return 0;                                              //~9208I~//~9226R~
 		if (AG.aComplete.isDrawnDelayLastTimeout())                //~9603I~
@@ -921,7 +989,15 @@ public class Players                                               //~v@@@R~
         		    if (!AG.aUADelayed.isDupRonOK2Touch(Pplayer))//swRonnable!=true  //~9B29I~//~0404R~
                     {                                              //~9B29I~
                     	if (!AG.aUADelayed.isDupRonOK(Pplayer,tileComplete))//~9226R~//~9B29R~
+                        {                                          //~va66I~
+            			  if (AG.aAccounts.isRobotPlayer(Pplayer)) //~va66I~
+                          {                                        //~va66I~
+                            delayedRonRobotMsg(Pplayer);           //~va66I~
+                            errmsgid=-1;	//issued               //~va66R~
+                          }                                        //~va66I~
+                          else                                     //~va66I~
                         	errmsgid=R.string.AE_DupRonDelayed;        //~9222R~//~9226R~//~9B29R~
+                        }                                          //~va66I~
                     }                                              //~9B29I~
                 }                                                  //~9302I~
             }                                                      //~9222I~//~9226R~
@@ -946,6 +1022,26 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.isRonAvailable Pplayer="+Pplayer+",errmsgid="+Integer.toHexString(errmsgid)+",lastActionID="+lastActionID+",playerCurrent="+playerCurrent+",kanType=="+kanType);//~9208R~//~9218R~//~9226R~
         return errmsgid;                                           //~9208R~
     }                                                              //~9208I~
+    //*********************************************************************//~va66I~
+    //*robot dup ron, re-show other winner                         //~va66R~
+    //*********************************************************************//~va66I~
+	private void delayedRonRobotMsg(int Pplayer)                   //~va66I~
+    {                                                              //~va66I~
+        if (Dump.Y) Dump.println("Players.delayedRonRobotMsg @@@@robot dupron ignored player="+Pplayer);//~va66R~
+        String msg="";                                             //~va66I~
+        boolean sw1st=true;                                        //~va66I~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~va66I~
+        {                                                          //~va66I~
+			if (getPlayerCompleteFlag(ii/*players*/)!=0)           //~va66R~
+            {                                                      //~va66I~
+        	    if (!sw1st)                                        //~va66I~
+        			msg+=", ";                                     //~va66I~
+        		msg+=AG.aGMsg.getHLName(0,GCM_RON,ii);             //~va66R~
+                sw1st=false;                                       //~va66I~
+            }                                                      //~va66I~
+        }                                                          //~va66I~
+        GMsg.showHL(0,msg);                                        //~va66I~
+    }                                                              //~va66I~
     //*********************************************************************//~9208I~
     //*Pon/Chii is for tileLastDiscarded                           //~9B12I~
     //*********************************************************************//~9B12I~
@@ -1005,6 +1101,7 @@ public class Players                                               //~v@@@R~
 //      Ptd.setPlayer(Pplayer);                                    //~v@@@R~
         Ptd.setPlayer(Pplayer,Peswn);                              //~v@@@I~
     	players[Pplayer].takeOne(Ptd);                              //~v@@@R~
+        AG.aRoundStat.takeOne(Pplayer,Peswn,Ptd);                 //~va60I~
         tileCurrentTaken=Ptd;                                      //~v@@@R~
 //      AG.aDiceBox.setWaitingDiscard(Pplayer);                    //~v@@@R~
 //      AG.aDiceBox.setWaitingDiscard(Pplayer,PswShadow);          //~v@@@R~
@@ -1056,6 +1153,7 @@ public class Players                                               //~v@@@R~
         playerLastDiscarded=Pplayer;                               //~v@@@M~
 //        swLastActionIsDiscard=true;                              //~v@@@R~
     	players[Pplayer].discard(Ptd);                             //~v@@@M~
+        AG.aRoundStat.discard(Pplayer,Ptd);                       //~va60I~
 //      tileLastDiscarded=players[Pplayer].discardedTile;    //specific object remover//~v@@@I~//~v@@6R~
 //      TileData.copyTD(Ptd,tileLastDiscarded);                    //~v@@@R~//~v@@6R~
         if (PswLight)                                              //~v@@@I~
@@ -1119,28 +1217,32 @@ public class Players                                               //~v@@@R~
         return rc;                                                 //~9301I~
     }                                                              //~9301I~
     //*********************************************************************//~va27I~
-	public void setReachAction(int PactionID)                      //~va27I~
+//  public void setReachAction(int PactionID)                      //~va27I~//~va66R~
+    public void setReachAction(int PactionID,int Pplayer)          //~va66I~
     {                                                              //~va27I~
-    	players[PLAYER_YOU].actionReach=PactionID;                 //~va27I~
-        if (Dump.Y) Dump.println("Players.setReachAction PLAYER_YOU actionID="+PactionID);//~va27I~
+//  	players[PLAYER_YOU].actionReach=PactionID;                 //~va27I~//~va66R~
+    	players[Pplayer].actionReach=PactionID;                    //~va66I~
+        if (Dump.Y) Dump.println("Players.setReachAction player="+Pplayer+",actionID="+PactionID);//~va27I~//~va66R~
     }                                                              //~va27I~
     //*********************************************************************//~va27I~
-	public int getReachAction()                                    //+va27R~
+//	public int getReachAction()                                    //~va27R~//~va66R~
+  	public int getReachAction(int Pplayer)                         //~va66I~
     {                                                              //~va27I~
-    	int actionID=players[PLAYER_YOU].actionReach;              //~va27I~
-        if (Dump.Y) Dump.println("Players.getReachAction PLAYER_YOU actionID="+actionID);//~va27I~
-        return actionID;                                           //+va27I~
+//  	int actionID=players[PLAYER_YOU].actionReach;              //~va27I~//~va66R~
+    	int actionID=players[Pplayer].actionReach;                 //~va66I~
+        if (Dump.Y) Dump.println("Players.getReachAction player="+Pplayer+",actionID="+actionID);//~va27I~//~va66R~
+        return actionID;                                           //~va27I~
     }                                                              //~va27I~
     //*********************************************************************//~v@@@I~
 	public int getDiscardedCtr(int Pplayer)                        //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.getDiscardedCtr player="+Pplayer+",ctr="+players[Pplayer].ctrDiscarded);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.getDiscardedCtr player="+Pplayer+",ctr="+players[Pplayer].ctrDiscarded);//~v@@@I~//~va60R~
     	return players[Pplayer].ctrDiscarded;                      //~v@@@R~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public int getLastDiscardedPlayer()                            //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.getLastDiscardedPlayer ="+playerLastDiscarded);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.getLastDiscardedPlayer ="+playerLastDiscarded);//~v@@@I~//~va60R~
     	return playerLastDiscarded;                                //~v@@@I~
     }                                                              //~v@@@I~
 //    //*********************************************************************//~v@@@R~
@@ -1150,14 +1252,14 @@ public class Players                                               //~v@@@R~
 //    {                                                            //~v@@@R~
 //        players[Pplayer].ctrDiscarded++;                         //~v@@@R~
 //        playerLastDiscarded=Pplayer;                             //~v@@@R~
-//        if (Dump.Y) Dump.println("Player.saveDiscarded player="+Pplayer+",ctr="+players[Pplayer].ctrDiscarded);//~v@@@R~
+//        if (Dump.Y) Dump.println("Players.saveDiscarded player="+Pplayer+",ctr="+players[Pplayer].ctrDiscarded);//~v@@@R~//~va60R~
 //        return players[Pplayer].ctrDiscarded;                    //~v@@@R~
 //    }                                                            //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public int takenDiscarded(int Pplayer)                         //~v@@@I~
     {                                                              //~v@@@I~
     	players[Pplayer].ctrDiscarded--;                           //~v@@@I~
-        if (Dump.Y) Dump.println("Player.takentDiscarded player="+Pplayer+",ctr="+players[Pplayer].ctrDiscarded);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.takentDiscarded player="+Pplayer+",ctr="+players[Pplayer].ctrDiscarded);//~v@@@I~//~va60R~
     	return players[Pplayer].ctrDiscarded;                      //~v@@@I~
     }                                                              //~v@@@I~
 //    //*********************************************************************//~v@@@I~//~9503R~
@@ -1171,13 +1273,13 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public int getPosReach(int Pplayer)                            //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.getPosReach player="+Pplayer);//~v@@@R~
+        if (Dump.Y) Dump.println("Players.getPosReach player="+Pplayer);//~v@@@R~//~va60R~
         return players[Pplayer].getPosReach();                     //~v@@@R~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public TileData getDiscardedTile(int Pplayer)                  //~v@@@R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.getDiscarddTile player="+Pplayer+",discardedTile="+players[Pplayer].discardedTile);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.getDiscarddTile player="+Pplayer+",discardedTile="+players[Pplayer].discardedTile);//~v@@@I~//~va60R~
         return players[Pplayer].discardedTile;                     //~v@@@R~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@R~
@@ -1185,13 +1287,13 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@R~
     public int getReachStatus(int Pplayer)                         //~v@@@R~
     {                                                              //~v@@@R~
-        if (Dump.Y) Dump.println("Player.getReachStatus player="+Pplayer+",rc="+players[Pplayer].reachStatus);//~v@@@I~//~9301R~
+        if (Dump.Y) Dump.println("Players.getReachStatus player="+Pplayer+",rc="+players[Pplayer].reachStatus);//~v@@@I~//~9301R~//~va60R~
 		return players[Pplayer].reachStatus;                       //~v@@@I~
     }                                                              //~v@@@R~
 //    //*********************************************************************//~v@@@I~//~0322R~
 //    public boolean takePon(int Pplayer)                            //~v@@@I~//~0322R~
 //    {                                                              //~v@@@I~//~0322R~
-//        if (Dump.Y) Dump.println("Player.takePon player="+Pplayer);//~v@@@I~//~0322R~
+//        if (Dump.Y) Dump.println("Players.takePon player="+Pplayer);//~v@@@I~//~0322R~//~va60R~
 ////        if (isYourDiscarded(Pplayer))                            //~v@@@R~//~0322R~
 ////            return false;                                        //~v@@@R~//~0322R~
 //        TileData td=tileLastDiscarded;                             //~v@@@I~//~0322R~
@@ -1205,10 +1307,11 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public boolean takePon(int Pplayer,TileData[] Ptds)                 //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.takePon player="+Pplayer);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.takePon player="+Pplayer);//~v@@@I~//~va60R~
         TileData td=tileLastDiscarded;                             //~v@@@I~
         td.setTakenRiver();                                        //~v@@@I~
         players[Pplayer].takePon(Ptds);                             //~v@@@I~
+        AG.aRoundStat.takePon(Pplayer,Ptds);                       //~va60I~
 //      setCurrentPlayer(Pplayer);                                 //~v@@@I~//~v@@5R~
 //      setCurrentPlayer(Pplayer,false/*swShadow*/);               //~v@@5I~//~v@@@R~
         setCurrentPlayer(Pplayer,Pplayer!=PLAYER_YOU/*swShadow*/); //~v@@@R~
@@ -1217,8 +1320,8 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@5I~
 	public boolean takePonOtherOnClient(boolean PswShadow,int Pplayer,TileData[] Ptds)//~v@@5I~
     {                                                              //~v@@5I~
-        if (Dump.Y) Dump.println("Player.takePonOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@5I~
-//      TileData td=tileLastDiscarded;                             //~v@@5I~
+        if (Dump.Y) Dump.println("Players.takePonOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@5I~//~va60R~
+//      TileData td=tileLastDiscarded;                             //~v@@5I~//~va60R~
         Ptds[PAIRCTR-1].setTakenRiver();                                        //~v@@5I~
 //      if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
 //          players[PLAYER_YOU].takePon(Ptds);            //~v@@5I~//~v@@@R~
@@ -1229,7 +1332,7 @@ public class Players                                               //~v@@@R~
 //    //*********************************************************************//~v@@@I~//~0322R~
 //    public boolean takeChii(int Pplayer)                            //~v@@@I~//~0322R~
 //    {                                                              //~v@@@I~//~0322R~
-//        if (Dump.Y) Dump.println("Player.takeChii player="+Pplayer);//~v@@@I~//~0322R~
+//        if (Dump.Y) Dump.println("Players.takeChii player="+Pplayer);//~v@@@I~//~0322R~//~va60R~
 ////        if (isYourDiscarded(Pplayer))                            //~v@@@R~//~0322R~
 ////            return false;                                        //~v@@@R~//~0322R~
 //        TileData td=tileLastDiscarded;                             //~v@@@I~//~0322R~
@@ -1243,17 +1346,18 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public boolean takeChii(int Pplayer,TileData[] Ptds)           //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.takeChii player="+Pplayer);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.takeChii player="+Pplayer);//~v@@@I~//~va60R~
         TileData td=tileLastDiscarded;                             //~v@@@I~
         td.setTakenRiver();                                        //~v@@@I~
         players[Pplayer].takeChii(Ptds);                           //~v@@@I~
+        AG.aRoundStat.takeChii(Pplayer,Ptds);                      //~va60I~
         setCurrentPlayer(Pplayer,Pplayer!=PLAYER_YOU/*swShadow*/); //~v@@@I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public boolean takeChiiOtherOnClient(boolean PswShadow,int Pplayer,TileData[] Ptds)//~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.takeChiiOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.takeChiiOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@@I~//~va60R~
 //      Ptds[PAIRCTR-1].setTakenRiver();                           //~v@@@R~
         TileData.setTakenRiver(Ptds);  //taken is not last tile    //~v@@@I~
 //      if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
@@ -1290,7 +1394,7 @@ public class Players                                               //~v@@@R~
 //            return -1;                                             //~v@@@I~//~v@@6R~
 //        }                                                          //~v@@@I~//~v@@6R~
 ////        ctrKan++;                                                //~v@@@R~//~v@@6R~
-//        if (Dump.Y) Dump.println("Player.takeKan player="+Pplayer);//~v@@@R~//~v@@6R~
+//        if (Dump.Y) Dump.println("Players.takeKan player="+Pplayer);//~v@@@R~//~v@@6R~//~va60R~
 ////      Ptdkan.setPlayer(Pplayer);                                 //~v@@@R~//~v@@6R~
 ////      players[Pplayer].takeKan(td,Ptdkan,swRiver);               //~v@@@R~//~v@@6R~
 //        int rc=players[Pplayer].takeKan();                           //~v@@@I~//~v@@6R~
@@ -1312,6 +1416,7 @@ public class Players                                               //~v@@@R~
             return -1;                                             //~v@@6I~
         }                                                          //~v@@6I~
         int rc=players[Pplayer].takeKan(Ptds);                     //~v@@6I~
+        AG.aRoundStat.takeKan(Pplayer,Ptds);                       //~va60I~
         setCurrentPlayer(Pplayer);                                 //~v@@6I~
     	setNextPlayer(Pplayer-1);	//next is take from wanpai     //~v@@6I~
         return rc;                                                 //~v@@6I~
@@ -1319,7 +1424,7 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@6I~
 	public int takeKanOtherOnClient(boolean PswShadow,int Pplayer,TileData[] Ptds)//~v@@6R~
     {                                                              //~v@@6I~
-        if (Dump.Y) Dump.println("Player.takeKanOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@6I~
+        if (Dump.Y) Dump.println("Players.takeKanOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@6I~//~va60R~
         int rc=players[Pplayer].takeKanOtherOnClient(Ptds);        //~v@@6R~
         setCurrentPlayer(Pplayer,PswShadow);                       //~v@@6I~
         return rc;                                                 //~v@@6R~
@@ -1338,6 +1443,13 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.getCompleteFlag player="+Pplayer+",rc=0x"+Integer.toHexString(rc));//~va11I~
         return rc;  //completeflag                                 //~va11I~
      }                                                             //~va11I~
+    //*********************************************************************//~va66I~
+	public int getPlayerCompleteFlag(int Pplayer)                  //~va66I~
+    {                                                              //~va66I~
+        int rc=players[Pplayer].playerCompleteFlag;                //~va66I~
+        if (Dump.Y) Dump.println("Players.getplayerCompleteFlag player="+Pplayer+",rc=0x"+Integer.toHexString(rc));//~va66I~
+        return rc;  //playerCompleteflag                           //~va66I~
+     }                                                             //~va66I~
     //*********************************************************************//~9A12I~
 	public int resetComplete(int Pplayer)                          //~9A12I~
     {                                                              //~9A12I~
@@ -1367,27 +1479,27 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public TileData[][] getEarth(int Pplayer)                      //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.getEarth player="+Pplayer);//~v@@@I~
+        if (Dump.Y) Dump.println("Players.getEarth player="+Pplayer+",pairOnEarth="+TileData.toString(players[Pplayer].pairOnEarth));//~va60R~
         return players[Pplayer].pairOnEarth;                       //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public Point getPointPair(int Pplayer)                         //~v@@@I~
     {                                                              //~v@@@I~
     	Point p=players[Pplayer].pointPairRightBottom;             //~v@@@I~
-        if (Dump.Y) Dump.println("Player.getPointPair "+(p==null ? "null" : "x="+p.x+",y="+p.y));//~v@@@I~
+        if (Dump.Y) Dump.println("Players.getPointPair "+(p==null ? "null" : "x="+p.x+",y="+p.y));//~v@@@I~//~va60R~
         return p;                                                  //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public Rect getPieceRectForAddKan(int Pplayer)                //~v@@@R~
     {                                                              //~v@@@I~
     	Rect r=players[Pplayer].pieceRectForAddKan[players[Pplayer].idxEarthAddKan];//~v@@@R~
-        if (Dump.Y) Dump.println("Player.getPointPairForAddKan idxEarthAddKan="+players[Pplayer].idxEarthAddKan+",rect= l="+r.left+",t="+r.top+",r="+r.right+",b="+r.bottom);//~v@@@R~
+        if (Dump.Y) Dump.println("Players.getPointPairForAddKan idxEarthAddKan="+players[Pplayer].idxEarthAddKan+",rect= l="+r.left+",t="+r.top+",r="+r.right+",b="+r.bottom);//~v@@@R~//~va60R~
         return r;                                                  //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public void savePointPair(int Pplayer,Point Prightbottom)     //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.savePointPair player="+Pplayer+",point="+Prightbottom.toString());//~9312I~
+        if (Dump.Y) Dump.println("Players.savePointPair player="+Pplayer+",point="+Prightbottom.toString());//~9312I~//~va60R~
         players[Pplayer].savePointPair(Prightbottom);               //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
@@ -1398,9 +1510,16 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public void setTileSelected(int Pplayer,int Ppos)             //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Player.setTileSelected player="+Pplayer+",pos="+Ppos);//~9626I~
+        if (Dump.Y) Dump.println("Players.setTileSelected player="+Pplayer+",pos="+Ppos);//~9626I~//~va60R~
         players[Pplayer].setTileSelected(Ppos);                    //~v@@@I~
     }                                                              //~v@@@I~
+    //*********************************************************************//~va66I~
+	public void setTileSelected(int Pplayer,TileData Ptd)          //~va66I~
+    {                                                              //~va66I~
+        if (Dump.Y) Dump.println("Players.setTileSelected player="+Pplayer+",Ptd="+TileData.toString(Ptd));//~va66I~
+        int pos=players[Pplayer].searchWithCtrRemain(Ptd);         //~va66I~
+        setTileSelected(Pplayer,pos);                              //~va66I~
+    }                                                              //~va66I~
     //*********************************************************************//~v@@@I~
 	public TileData getTileSelected(int Pplayer)                   //~v@@@I~
     {                                                              //~v@@@I~
@@ -1553,7 +1672,7 @@ public class Players                                               //~v@@@R~
         return rc;                                                 //~9A30I~
     }                                                              //~9A30I~
     //*********************************************************************//~9511I~
-    //*from UARon                                                  //~9706I~
+    //*from UARon to reaset reach by ron as winning tile           //~va66R~
     //*********************************************************************//~9706I~
     public void resetReachDone(int Pplayer)                        //~9511I~
     {                                                              //~9511I~
@@ -1573,6 +1692,15 @@ public class Players                                               //~v@@@R~
 	        players[player].resetReachAll();                      //~9704I~
         if (Dump.Y) Dump.println("Players.resetReachAll after ctrReach="+ctrReach);//~9904I~
     }                                                              //~9704I~
+    //*********************************************************************//+va6gI~
+    public void clearReachAll()                                    //+va6gI~
+    {                                                              //+va6gI~
+        if (Dump.Y) Dump.println("Players.clearReachAll before ctrReach="+ctrReach);//+va6gI~
+        for (int player=0;player<PLAYERS;player++)                 //+va6gI~
+	        players[player].clearReachAll();                       //+va6gI~
+        ctrReach=0;                                                //+va6gI~
+        if (Dump.Y) Dump.println("Players.clearReachAll after ctrReach="+ctrReach);//+va6gI~
+    }                                                              //+va6gI~
     //*********************************************************************//~va11I~
     public boolean isClosedHand(int Pplayer)                          //~va11I~
     {                                                              //~va11I~
@@ -1616,6 +1744,7 @@ public class Players                                               //~v@@@R~
         private Rect[] pieceRectForAddKan;                         //~v@@@I~//~9208M~
 //      private boolean swLastActionIsKan;                         //~v@@@R~//~9208M~
         private int actionReach;                                   //~va27I~
+        private int playerCompleteFlag;                            //~va66I~
         //*****************************************************    //~v@@@I~
         public Player(int Pplayer)                                 //~v@@@I~
         {                                                          //~v@@@I~
@@ -1992,12 +2121,12 @@ public class Players                                               //~v@@@R~
             ctrReach++;                                            //~9511I~
             if (Dump.Y) Dump.println("Player.reachDone ctrReach="+ctrReach);//~9706I~
         }                                                          //~v@@@I~
-        //*********************************************************************//~9511I~
-        //*from UARon                                              //~9706I~
-        //*********************************************************************//~9706I~
+        //*****************************************************************************//~va66R~
+        //*from UARon reset reach when called ron for the tile discarded calling reach//~va66R~
+        //*****************************************************************************//~va66R~
         public void resetReachDone()                               //~9511R~
         {                                                          //~9511I~
-            if (Dump.Y) Dump.println("Player.resetReachDone playerRon="+player+",swLastActionIsDiscard="+swLastActionIsDiscard+",tileLastDiscarded="+ Utils.toString(tileLastDiscarded));//~9B12R~
+            if (Dump.Y) Dump.println("Player.resetReachDone player Discarded="+player+",swLastActionIsDiscard="+swLastActionIsDiscard+",tileLastDiscarded="+ Utils.toString(tileLastDiscarded));//~9B12R~//~va66R~
 //			if (tileLastDiscarded==null || !tileLastDiscarded.isReached())//~9706I~//~9B12R~
   			if (!swLastActionIsDiscard  || !tileLastDiscarded.isReached())//~9B12I~
             {                                                      //~9706I~
@@ -2031,6 +2160,15 @@ public class Players                                               //~v@@@R~
 	            AG.aAccounts.resetReachAll(player); //back ptrReach               //~9704I~//~9904R~
             }                                                      //~9704I~
         }                                                          //~9704I~
+        //*********************************************************************//+va6gI~
+        public void clearReachAll()                                //+va6gI~
+        {                                                          //+va6gI~
+            if ((status & (STF_REACH | STF_OPEN))!=0)              //+va6gI~
+            {                                                      //+va6gI~
+	            if (Dump.Y) Dump.println("Player.clearReachAll reachFlag on player="+player+",ctrReach="+ctrReach+",status="+Integer.toHexString(status));//+va6gI~
+            	status&=~(STF_REACH | STF_OPEN);                   //+va6gI~
+            }                                                      //+va6gI~
+        }                                                          //+va6gI~
         //*********************************************************************//~v@@@I~
         //*-1 if not reached                                       //~v@@@I~
         //*********************************************************************//~v@@@I~
@@ -2843,6 +2981,7 @@ public class Players                                               //~v@@@R~
 	            completeFlag=flag;                                 //~v@@@I~
             else                                                   //~9208I~
 	            completeFlag=0;                                    //~9208I~
+            playerCompleteFlag=completeFlag;                       //~va66I~
             return rc;                                             //~9208R~
         }                                                          //~v@@@I~
         //*********************************************************************//~v@@@I~
@@ -2864,6 +3003,7 @@ public class Players                                               //~v@@@R~
 //      	AG.aComplete.resetComplete(this,completeFlag);         //~9A12I~
 //          setTileRon(completeFlag);                              //~9A12I~
             resetTileRon(completeFlag);                            //~9A12I~
+            playerCompleteFlag=0;                                  //~va66I~
             return completeFlag;                                   //~9A12I~
         }                                                          //~9A12I~
         //*********************************************************************//~9A14I~

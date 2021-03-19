@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 411;                                    //~v@@@R~//~v@@5R~//~9218R~
+//*CID://+DATER~: update#= 415;                                    //~v@@@R~//~v@@5R~//~9218R~
 //**********************************************************************//~v101I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //reset tile to new game                                           //~v@@@R~
@@ -129,39 +129,9 @@ public class Tiles                                 //~v@@@R~
             td = new TileData(TT_JI,jj/*number*/, false/*dora*/);  //~v@@5I~
             tds[ctr++] = td;                                         //~v@@@I~
         }                                                          //~v@@@I~
-//        idx[TT_3WGR]=ctr;                                        //~v@@@R~
-//        for (int jj=0;jj<TT_3WGR_CTR;jj++)                       //~v@@@R~
-//        {                                                        //~v@@@R~
-//            td=new TileData(TT_JI,jj+TT_4ESWN/*number*/,false/*dora*/);//~v@@@R~//~v@@5R~
-//            tds[ctr++]=td;                                       //~v@@@R~
-//        }                                                        //~v@@@R~
         if (Dump.Y) Dump.println("Tiles.setupBase ="+TileData.toString(baseTileData));//~9C01I~
     }                                                              //~v@@@I~
 
-    ////*************************                                      //~v@@@R~
-//    public void setupInitial()                                   //~v@@@R~
-//    {                                                            //~v@@@R~
-//        TileData[] tds=getNewAll();                              //~v@@@R~
-//        suffiledTileData=tds;                                    //~v@@@R~
-//        int jj=0;                                                //~v@@@R~
-//        for (int ii=0;ii<PIECE_DUPCTR;ii++)   //3                //~v@@@R~
-//        {                                                        //~v@@@R~
-//            System.arraycopy(baseTileData,0,tds,ii*TD_CTR,TD_CTR);//~v@@@R~
-//        }                                                        //~v@@@R~
-//    }                                                            //~v@@@R~
-////*************************                                        //~v@@@I~//~9C01R~
-//    public boolean addDora(int Ptype, int Pnumber)                  //~v@@@I~//~9C01R~
-//    {                                                              //~v@@@I~//~9C01R~
-//        if (Dump.Y) Dump.println("Tiles.addDora type=" + Ptype + ",number=" + Pnumber);//~v@@@I~//~9C01R~
-//        if (Ptype >= typeIndex.length)                               //~v@@@I~//~9C01R~
-//            return false;                                          //~v@@@I~//~9C01R~
-//        int pos = typeIndex[Ptype];                                   //~v@@@I~//~9C01R~
-//        pos += Pnumber;                                              //~v@@@I~//~9C01R~
-//        if (pos >= tileData.length)                                  //~v@@@I~//~9C01R~
-//            return false;                                          //~v@@@I~//~9C01R~
-//        tileData[pos].setDora();                                 //~9C01R~
-//        return true;//~v@@@I~                                    //~9C01R~
-//    }                                                              //~v@@@I~//~9C01R~
     //**************************************************************** //~v@@@I~
     public void cutTiles(int Prolls)                               //~v@@@I~
     {                                                              //~v@@@I~
@@ -169,11 +139,6 @@ public class Tiles                                 //~v@@@R~
         posCut = Prolls;                                             //~v@@@I~
     }                                                              //~v@@@I~
 
-    ////*************************                                      //~v@@@R~
-//    public void reset()                                          //~v@@@R~
-//    {                                                            //~v@@@R~
-//        tileData=(TileData[])suffiledTileData.clone();           //~v@@@R~
-//    }                                                            //~v@@@R~
 //*************************                                        //~v@@@I~
     public TileData[] getShuffled()                                           //~v@@@I~
     {                                                              //~v@@@I~
@@ -238,6 +203,7 @@ public class Tiles                                 //~v@@@R~
     public void shuffle()                                          //~v@@@I~
     {                                                              //~v@@@M~
         boolean[][] red5List = shuffleRed5();                        //~v@@@I~
+        if (Dump.Y) Dump.println("Tiles.shuffle testOption 1="+Integer.toHexString(TestOption.option)+",2="+Integer.toHexString(TestOption.option2));//~1204I~
         if ((TestOption.option & TestOption.TO_KAN_ADDDEAL)!=0)               //~v@@5I~
         {	shuffleKanAdd(); return;}                               //~v@@5I~
         if ((TestOption.option2 & TestOption.TO2_ANKAN_DEAL)!=0)   //~0406I~//~0407R~
@@ -250,7 +216,8 @@ public class Tiles                                 //~v@@@R~
             TileData[] out = getNewAllTile();                        //~v@@@R~
             int outctr = 0;                                          //~v@@@R~
             int typectr = PIECE_TYPECTR;                             //~v@@@I~
-            for (int ii = 0; ii < PIECE_TILECTR; ii++)                   //~v@@@R~
+//          for (int ii = 0; ii < PIECE_TILECTR; ii++)                   //~v@@@R~//~1315R~
+            for (;;)                                               //~1315I~
             {                                                      //~v@@@R~
                 int jj = Utils.getRandom(typectr);   //max 34-1        //~v@@@R~//~v@@5R~//~9C01R~
                 if (Dump.Y) Dump.println("Tiles.shuffle rand="+jj);//~v@@@I~//~v@@5R~
@@ -271,10 +238,12 @@ public class Tiles                                 //~v@@@R~
                     if (Dump.Y)  Dump.println("Tiles.shuffle remove typectr=" + typectr + ",outctr=" + outctr);//~v@@5R~
                     al.remove(jj);                                 //~v@@@R~//~v@@5R~
                     typectr--;                                     //~v@@@R~//~v@@5R~
-                    ii--;                                          //~v@@@R~//~v@@5R~
+//                  ii--;                                          //~v@@@R~//~v@@5R~//~1315R~
+                    if (typectr==0)                                //~1315I~
+                        break;                                     //~1315I~
                 }                                                  //~v@@@R~//~v@@5R~
             }                                                      //~v@@@R~
-	        if ((TestOption.option2 & TestOption.TO2_SETDORA)!=0)//~0A12I~//+0A14R~
+	        if ((TestOption.option2 & TestOption.TO2_SETDORA)!=0)//~0A12I~//~0A14R~
     	    {                                                      //~0A12I~
         	    testSetDora(out);                                  //~0A12I~
        		}                                                      //~0A12I~
@@ -493,12 +462,12 @@ public class Tiles                                 //~v@@@R~
 //        }                                                        //~v@@@R~
         TileData[] tgt=new TileData[HANDCTR*PLAYERS];              //~v@@@I~
         TileData[] src=shuffledTileData;                           //~v@@@I~
-        if (Dump.Y)                                                //~v@@@I~
-        	for (int ii=TILECTR_KEEPLEFT;ii<HANDCTR*PLAYERS;ii++)  //~v@@@R~
-            {                                                      //~v@@@I~
-            	TileData td=src[ii];                               //~v@@@I~
-            	Dump.println("Tiles.SetInitialDeal before type="+td.type+",no="+td.number+",ctr="+td.ctrRemain);//~v@@@R~
-            }                                                      //~v@@@I~
+//        if (Dump.Y)                                                //~v@@@I~//~1109R~
+//            for (int ii=TILECTR_KEEPLEFT;ii<HANDCTR*PLAYERS;ii++)  //~v@@@R~//~1109R~
+//            {                                                      //~v@@@I~//~1109R~
+//                TileData td=src[ii];                               //~v@@@I~//~1109R~
+//                Dump.println("Tiles.SetInitialDeal before type="+td.type+",no="+td.number+",ctr="+td.ctrRemain);//~v@@@R~//~1109R~
+//            }                                                      //~v@@@I~//~1109R~
         int tgtpos=0;                                              //~v@@@I~
 		int srcpos=TILECTR_KEEPLEFT;                               //~v@@@I~
         int ctreach=4;                                             //~v@@@I~

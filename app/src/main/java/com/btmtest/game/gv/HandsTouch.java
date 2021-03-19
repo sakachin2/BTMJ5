@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 629;                                    //~v@@@R~//~v@21R~//~9B30R~
+//*CID://+va60R~: update#= 630;                                    //~v@@@R~//~v@21R~//~9B30R~//+va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//**********************************************************************//+va60I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -47,6 +49,10 @@ public class HandsTouch                                            //~v@@@R~
     private boolean swMultiSelectionMode=false,enableKan=false;    //~v@21R~
     private boolean[] swSelectedMulti;                                //~v@21I~
 //*************************                                        //~v@@@I~
+	public HandsTouch()	//for IT                                   //+va60I~
+    {                                                              //+va60I~
+        if (Dump.Y) Dump.println("HandsTouch.default constructor");//+va60I~
+    }                                                              //+va60I~
 	public HandsTouch(GCanvas Pgcanvas,Hands Phands,Rect Prect)    //~v@@@R~
     {                                                              //~0914I~
     	AG.aHandsTouch=this;                                       //~v@21I~
@@ -163,7 +169,7 @@ public class HandsTouch                                            //~v@@@R~
         r=new Rect(xx,yy,xx+pieceW,yy+pieceH);                     //~v@@@I~
 //      bm=bmsHands[Ppos];                                         //~v@@@R~
 //      Graphics.drawRect(r,COLOR_SELECTED,WIDTH_SELECTED);        //~v@@@R~//~0401R~
-        Graphics.drawRect(r,COLOR_SELECTED,AG.aHands.complete_stroke_width_hand); //~0401I~//+0406R~
+        Graphics.drawRect(r,COLOR_SELECTED,AG.aHands.complete_stroke_width_hand); //~0401I~//~0406R~
         if (Dump.Y) Dump.println("HandsTouch.drawTouch stroke_width="+AG.aHands.complete_stroke_width_hand);//~0401I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@21I~

@@ -1,5 +1,7 @@
-//*CID://+v@@@R~: update#= 391;                                    //~v@@@R~
+//*CID://+va60R~: update#= 392;                                    //~v@@@R~//+va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//**********************************************************************//+va60I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -38,6 +40,7 @@ public class GCanvas                                               //~v@@@I~
     private Graphics aGraphics;                                    //~v@@@I~
     private ICanvas iCanvas;                                       //~v@21I~//~v@@@M~
 //*************************                                        //~v@@@I~
+    public GCanvas(){}                    //for IT Mocking         //+va60I~
 //  public GCanvas(SurfaceHolder Pholder,MJTable Ptable,int Pww,int Phh)//~v@@@R~
     public GCanvas(MJTable Ptable,int Pww,int Phh)                 //~v@@@I~
     {                                                              //~0914I~
@@ -170,7 +173,7 @@ public class GCanvas                                               //~v@@@I~
         switch(Pmsg.what)                                          //~v@@@I~
         {                                                          //~v@@@I~
         case GCM_TEST:                                             //~v@@@I~
-            drawTest(msgData);  //GCM_TEST                         //+v@@@R~
+            drawTest(msgData);  //GCM_TEST                         //~v@@@R~
             break;                                                 //~v@@@I~
         case GCM_INIT:                                             //~v@@@I~
             drawInit();                                            //~v@@@R~
@@ -186,7 +189,7 @@ public class GCanvas                                               //~v@@@I~
         Graphics.drawRect(rect,COLOR_BG_TABLE);       //~v@@@I~
     }                                                              //~v@@@M~
 	//*********************************************************    //~v@@@I~
-	private void drawTest(String Pmsgdata)   //BY GCM_TEST         //+v@@@R~
+	private void drawTest(String Pmsgdata)   //BY GCM_TEST         //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("GCanvas.drawTest");              //~v@@@I~
         drawBG();                                                  //~v@@@I~
@@ -200,7 +203,7 @@ public class GCanvas                                               //~v@@@I~
 		drawTest(xx,yy,bmPiecesRiver);                             //~v@@@R~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
-	private int drawTest(int Pxx,int Pyy,Bitmap[][][] Pbmps) //BY GCM_TEST//+v@@@R~
+	private int drawTest(int Pxx,int Pyy,Bitmap[][][] Pbmps) //BY GCM_TEST//~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("GCanvas.drawTest yy="+Pyy);      //~v@@@R~
         int sepW=2;                                                //~v@@@I~

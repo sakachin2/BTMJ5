@@ -1,0 +1,446 @@
+#######################################################################
+##### Parameter File for XE : v1.29 : Dec 24 2020 ( 21-01-21  16:06 ) #
+#######################################################################
+
+##### Function Key assignment #########################################
+##### Valid KeyID List                                                #
+##### (You can also use any char key with Alt like as Alt+a)          #
+##### (You can also use almost char key with Ctrl like as Ctrl+a)     #
+#####     Shift Modifier=>Shift+(S+)  Alt+(A+)    Ctrl+(C+)   
+# Esc         Tab         Backspace   Enter       Insert      
+# Delete      Home        End         Page-up     Page-down   
+# Left-arrow  Right-arrow Up-arrow    Down-arrow  F1          
+# F2          F3          F4          F5          F6          
+# F7          F8          F9          F10         F11         
+# F12         10KEY-0     10KEY-1     10KEY-2     10KEY-3     
+# 10KEY-4     10KEY-5     10KEY-6     10KEY-7     10KEY-8     
+# 10KEY-9     10KEY-/     10KEY-*     10KEY--     10KEY-+     
+# 10KEY-.     10KEY-,     10KEY-Enter 
+#################
+[FUNCTION]
+#################                   (*):Fixed,it can not re-assign.
+#(Function-name)     =   (KeyID)            =(Cmd)=(Cmd)# (Japanese comment)
+#Execute+Next-Line   =(*)  10KEY-Enter      = ENT =     # 実行+改行
+#Execute+Next-Line   =(*)  Enter            = ENT =     # 実行+改行
+ Next-Line           =   C+10KEY-Enter      =     =     # 次行
+#Reset               =(*)  Esc              = RES =     # 取消
+#Insert-Toggle       =(*)  Insert           = INS =     # 挿入/置換
+ Cursor-Right/Down   =   A+Backspace        = CSD =     # 横書/縦書
+ HEX-input-on/off    =   C+F11              = XIN =     # HEX入力オン/オフ
+#Up                  =(*)  Up-arrow         =     =     # 上
+#Down                =(*)  Down-arrow       =     =     # 下
+#Left                =(*)  Left-arrow       =     =     # 左
+#Right               =(*)  Right-arrow      =     =     # 右
+#Next-Tab            =(*)  Tab              =     =     # タブ(前進)
+#Prev-Tab            =(*)S+Tab              =     =     # タブ(後退)
+ Prev-Tab            =   C+t                =     =     # タブ(後退)
+ Jump:Char<-->Hex    =   A+g                =     =     # 飛ぶ(文字<-->Hex部)
+ Top-of-Line         =   S+Left-arrow       =     =     # 行頭
+ Top-of-Line         =   C+l                =     =     # 行頭
+ End-of-Line         =   S+Right-arrow      =     =     # 行末
+ End-of-Line         =   C+r                =     =     # 行末
+ Parenthesis         =   A+.                =     =     # 括弧探索
+ Parenthesis-NX      =   A+,                =     =     # 括弧探索-NX
+ XML-Tag             =   A+/                =     =     # XMLタグ探索
+ Scroll-Up-Line      =   S+Up-arrow         =     =     # 1行上表示
+ Scroll-Up-Line      =   C+u                =     =     # 1行上表示
+ Scroll-Down-Line    =   S+Down-arrow       =     =     # 1行下表示
+ Scroll-Down-Line    =   C+f                =     =     # 1行下表示
+ Next-Value          =   S+Down-arrow       =     =     # 次の値
+ Next-Value          =   C+f                =     =     # 次の値
+ Prev-Value          =   S+Up-arrow         =     =     # 前の値
+ Prev-Value          =   C+u                =     =     # 前の値
+#Top-of-Screen       =(*)  Home             = HOM =     # 画面の先頭行
+#Page-Up             =(*)  Page-up          = UP  =     # 前ページ
+ Page-Up             =     F7               = UP  =     # 前ページ
+#Page-Down           =(*)  Page-down        = DOW =     # 次ページ
+ Page-Down           =     F8               = DOW =     # 次ページ
+ Scroll-Left         =     F10              = LEF =     # 左ページ
+ Scroll-Right        =     F11              = RIG =     # 右ページ
+ Set-Scroll-Size     =                      = SCR =     # スクロール量設定
+ Top-of-File         =   S+Page-up          = TOP =     # ファイル先頭行
+ Top-of-File         =   C+p                = TOP =     # ファイル先頭行
+ Top-of-File         =   A+Page-up          = TOP =     # ファイル先頭行
+ End-of-File         =   S+Page-down        = BOT =     # ファイル終端行
+ End-of-File         =   C+n                = BOT =     # ファイル終端行
+ End-of-File         =   A+Page-down        = BOT =     # ファイル終端行
+#Backspace           =(*)  Backspace        =     =     # 後退
+#Delete-Char         =(*)  Delete           =     =     # 文字削除
+ Delete-Line         =   S+Delete           =     =     # 行削除
+ Delete-Line         =   C+d                =     =     # 行削除
+ Erase-End-of-Line   =     End              =     =     # 行末削除
+ Erase-End-of-Line   =   A+t                =     =     # 行末削除
+ Erase-Top-of-Line   =   S+Backspace        =     =     # 行頭削除
+ Erase-Top-of-Line   =   C+b                =     =     # 行頭削除
+ Clear-Top-of-Line   =   S+End              =     =     # 行頭クリアー
+ Clear-Top-of-Line   =   C+e                =     =     # 行頭クリアー
+ Split-Line          =   S+Enter            = SPL =     # 行分割
+ Split-Line          =   S+10KEY-Enter      = SPL =     # 行分割
+ Split-Line          =   A+s                = SPL =     # 行分割
+ Split-Line          =   C+x                = SPL =     # 行分割
+ Join-Line           =                      = JOI =     # 行連結
+ TextFlow            =                      = TFL = TF  # パラグラフ整形
+ Insert-Line         =   S+Insert           =     =     # 行挿入
+ Insert-Line         =   C+a                =     =     # 行挿入
+ Repeat-Line         =   S+F10              =     =     # 行繰返し
+ Repeat-Line         =   A+r                =     =     # 行繰返し
+ Region-Start/End    =   C+F6               =     =     # 領域始点/終点
+ Region-Start/End    =   A+F6               =     =     # 領域始点/終点
+ Region-Start/End    =   A+v                =     =     # 領域始点/終点
+ Block-Start/End     =   C+F7               =     =     # ブロック始点/終点
+ Block-Start/End     =   A+F7               =     =     # ブロック始点/終点
+ Block-Start/End     =   A+b                =     =     # ブロック始点/終点
+ Block-copy-to-CB    =   C+F9               =     =     # ブロックのCB複写
+ Block-copy-to-CB    =   A+F9               =     =     # ブロックのCB複写
+ Word-Copy-To-CB     =   A+w                =     =     # ワードをCBに複写
+ Word->CmdLine       =   C+w                =     =     # ワード->コマンド行
+ Standard-Paste      =   C+v                =     =     # 標準貼付
+ Block-Insert        =   C+Insert           =     =     # ブロック挿入複写
+#                   (=   Ctrl+10KEY-0      )            # Same Key Code
+ Block-Insert        =   A+Insert           =     =     # ブロック挿入複写
+ Block-Insert        =   A+c                =     =     # ブロック挿入複写
+ Block-Copy-Override =   C+F8               =     =     # ブロック上書貼付
+ Block-Copy-Override =   A+F8               =     =     # ブロック上書貼付
+ Block-Copy-Override =   A+p                =     =     # ブロック上書貼付
+ Block-Over-Space    =   A+o                =     =     # ブロック空白上書
+ Block-Cut           =   C+Delete           =     =     # ブロック切抜
+#                   (=   Ctrl+10KEY-.      )            # Same Key Code
+ Block-Cut           =   A+Delete           =     =     # ブロック切抜
+ Block-Cut           =   A+d                =     =     # ブロック切抜
+ Block-Clear         =   A+End              =     =     # ブロッククリアー
+ Block-Clear         =   A+e                =     =     # ブロッククリアー
+ Block-Move(cut)     =   A+m                =     =     # ブロック削除移動
+ Block-Move(clear)   =   A+n                =     =     # ブロック空化移動
+ LineMark-Start/End  =   A+h                =     =     # 行マーク開始/終了
+ LineIns-Copy        =   A+i                =     =     # 行挿入複写
+ LineIns-Move(cut)   =   A+j                =     =     # 行挿入削除移動
+ LineIns-Move(clear) =   A+k                =     =     # 行挿入空化移動
+ CUT/COPY-2ndCB      =                      = CUT =     # CUT/COPY(第２CB)
+ PASTE-2ndCB         =                      = PAS =     # 貼り付け(第２CB)
+ Line-Exclude        =   A+x                =     =     # 行非表示
+ Line-Include        =   A+y                =     =     # 行再表示
+ Line-Include-Fisrt  =   A+f                =     =     # 先頭1行再表示
+ Line-Include-Last   =   A+l                =     =     # 末尾1行再表示
+ Drop-Set-Of-Lines   =                      = DRO =     # 一括行削除
+ Drop-Lines/Del-file =                      = DEL =     # 一括行削除/File削除
+ Linecnt-On/Off      =     F6               =     =     # 行数<->サイズ表示
+ User-Name/Id        =   S+F6               = UG  =     # ユーザー名/Id表示
+ LongFileName        =   S+F11              = LFN =     # 長いファイル名表示
+ FileDescription     =   S+F10              = DFD =     # ファイルの説明表示
+ FileDescription     =   C+F10              = DFD =     # ファイルの説明表示
+ Dir-Linecmd-Cut     =     F10              =     =     # DIR 行コマンド複写
+ Dir-Linecmd-Paste   =     F11              =     =     # DIR 行コマンド貼付
+ HSplit              =     F2               = HSP =     # 水平画面分割
+ VSplit              =   S+F2               = VSP =     # 垂直画面分割
+ Swap                =     F9               = SWA = W   # 分割画面交換
+ Next-Panel          =   S+F8               = NEX = +   # 次画面
+ Prev-Panel          =   S+F7               = PRE = -   # 前画面
+ DirPath-Up          =   A+Left-arrow       = DPU =     # 経路昇
+ DirPath-Down        =   A+Right-arrow      = DPD =     # 経路降
+ Exit                =   S+F9               = EXI =     # 区画保存終了
+ Return              =     F4               = RET =     # 保存終了
+ Quit                =   S+F4               = QUI =     # 破棄終了
+ End                 =     F3               = END =     # 戻る
+ Save                =   S+F3               = SAV = S   # 保存
+ Cancel              =     F1               = CAN =     # 破棄
+ Edit                =                      = EDI = E   # 編集
+ Edit-Text           =                      = ET  =     # 編集-テキスト
+ Edit-Bin            =                      = EB  =     # 編集-バイナリ－
+ Edit-Hex            =                      = EH  =     # 編集-Hex
+ Edit-SPF            =                      = EN  =     # 編集-SPF
+ Edit-COB            =                      = EC  = EL  # 編集-行番付COBOL
+ Edit-COBK           =                      = EK  =     # 編集-行番無COBOL
+ Edit-SPFCOB         =                      = ECN = EI  # 編集-行番付SPFCOB
+ Edit-SPFCOBK        =                      = EKN = EJ  # 編集-行番無SPFCOB
+ Edit-Fixed80        =                      = E8  =     # 編集-行番無80桁固定
+ Browse              =                      = BRO = B   # 表示
+ Browse-Text         =                      = BT  =     # 表示-テキスト
+ Browse-Bin          =                      = BB  =     # 表示-バイナリ－
+ Browse-Hex          =                      = BH  =     # 表示-Hex
+ Browse-SPF          =                      = BN  =     # 表示-SPF
+ Browse-COB          =                      = BC  = BL  # 表示-行番付COBOL
+ Browse-COBK         =                      = BK  =     # 表示-行番無COBOL
+ Browse-SPFCOB       =                      = BCN = BI  # 表示-行番付SPFCOB
+ Browse-SPFCOBK      =                      = BKN = BJ  # 表示-行番無SPFCOB
+ Browse-Fixed80      =                      = B8  =     # 表示-行番無80桁固定
+ Select              =                      = SEL = S   # 選択
+ Select-Text         =                      = ST  =     # 選択-テキスト
+ Select-Bin          =                      = SB  =     # 選択-バイナリ－
+ Select-Hex          =                      = SH  =     # 選択-Hex
+ Select-SPF          =                      = SN  =     # 選択-SPF
+ Select-COB          =                      = SC  = SL  # 選択-行番付COBOL
+ Select-COBK         =                      = SK  =     # 選択-行番無COBOL
+ Select-SPFCOB       =                      = SCN = SI  # 選択-行番付SPFCOB
+ Select-SPFCOBK      =                      = SKN = SJ  # 選択-行番無SPFCOB
+ Select-Fixed80      =                      = S8  =     # 選択-行番無80桁固定
+ Create              =                      = CRE =     # 作成
+ Replace             =                      = REP =     # 置換
+ Copy                =                      = COP =     # ファイル複写
+ Move                =                      = MOV =     # ファイル移動複写
+ Append              =                      = APP =     # ファイル追加複写
+ Send-Filename-Ins   =   A+i                = SDI =     # ファイル名送る-挿入
+ Send-Filename-Rep   =   A+r                = SDR =     # ファイル名送る-置換
+ Send-Filename-Del   =   A+d                = SDD =     # ファイル名送る-削除
+ Send-Filename-Up    =   A+Up-arrow         =     =     # ファイル名送る-上
+ Send-Filename-Down  =   A+Down-arrow       =     =     # ファイル名送る-下
+ Undo                =   S+F1               = UND = U   # 修正戻し
+ Redo                =   C+F2               = RED =     # 修正戻しの取消
+ Locate              =                      = LOC = L   # 行位置付け
+ Position            =                      = POS =     # 行位置付け
+ Find(Case-sense)    =                      = FIN = F   # 探索(大小区別有)
+ Find(Case-insense)  =                      = IFI = I   # 探索(大小区別無)
+ FindPSP             =   C+F5               =     =     # 探索(分割画面)
+ FindPSP(reverse)    =   S+C+F5             =     =     # 反転探索(分割画面)
+ FindPSF             =   A+F5               =     =     # 探索(このファイル)
+ FindPSF(reverse)    =   S+A+F5             =     =     # 反転探索(ファイル)
+ Display-PSx-Find    =                      = PSD =     # PSxコマンド表示
+ FindWordFwd(Case)   =   C+]                = FWF =     # ワード次探索-大小有
+ FindWordBwd(Case)   =   C+[                = FWB =     # ワード前探索-大小有
+ FindWordFwd(NoCase) =   A+]                = IWF =     # ワード次探索-大小無
+ FindWordBwd(NoCase) =   A+[                = IWB =     # ワード前探索-大小無
+ Exclude-CaseSense   =                      = EXC = X   # 非表示(大小区別有)
+ Exclude-CaseInsense =                      = IX  =     # 非表示(大小区別無)
+ Exclude-Exchange    =                      = FLI = XX  # 表示行交換
+ Find-NXonly-CaseS   =                      = FNX =     # 表示行探索-大小別有
+ Find-NXonly-CaseIS  =                      = INX =     # 表示行探索-大小別無
+ Re-Find             =     F5               =     =     # 再探索
+ Re-Find(reverse)    =   S+F5               =     =     # 反転再探索
+ Change              =                      = CHA = C   # 置換(大小区別有)
+ Change(CaseInsense) =                      = IC  =     # 置換(大小区別無)
+ Change-NXonly       =                      = CNX =     # 表示置換-大小別有
+ Change-NX-CaseIS    =                      = ICN =     # 表示行置換-大小別無
+ Re-Change           =     F6               =     =     # 再探索置換
+ Re-Change(reverse)  =   S+F6               =     =     # 反転再探索置換
+ Retrieve            =     F12              =     =     # 前コマンド
+ R-Retrieve          =   S+F12              =     =     # 次コマンド
+ Cmd_Repeat          =   C+F12              =     =     # コマンド反復
+ Retrieve-OfTheScr   =   A+F12              =     =     # 前コマンド-画面毎
+ R-Retrieve-OfTheScr =   S+A+F12            =     =     # 次コマンド-画面毎
+ CmdHistoryList      =   S+C+F12            = CHL =     # コマンド履歴
+ Short-Cut-Input     =   A+a                =     =     # 短縮キー入力
+ Short-Cut-Query     =   A+q                =     =     # 短縮キー表示
+ Short-Path          =                      = SP  =     # 短縮パス名
+ 3270-Hotkey         =   A+z                = TN3 =     # 3270ホットキー
+ Hex-Vertical        =   C+F10              = HEX =     # HEX２段表示
+ Line-Number         =                      = NUM =     # 行番号コマンド
+ Renumber            =                      = REN =     # 行番号振り直し
+ Sort                =                      = SOR =     # ソート
+ Rotate              =                      = ROT =     # 回転
+ DBCS-Conv           =                      = CV  =     # 日本語変換
+ Refresh             =   S+F1               = REF =     # リフレッシュ
+ Basic-Calc          =                      = XBC =     # 簡易計算
+ Table-Calc          =                      = TC  =     # 簡易表計算
+ File-Version        =                      = VER =     # ファイルバージョン
+ Tab-column          =                      = TAB =     # タブ桁数
+ Column-gauge        =   S+F11              = COL =     # 桁定規
+ Set-Boundary        =                      = BOU = BND # 境界設定
+ Line-Change-tag     =                      = CID =     # 行変更タグ
+ Option-set          =                      = OPT =     # オプション設定
+ EBCDIC-setting      =                      = EBC =     # EBCDIC設定
+ UTF8-Mode-Switch    =   A+u                = UTF =     # UTF8モードSW
+ Combine-W0-UniChar  =   A+:                = CMB =     # 0幅-UniChar-結合
+ Temp-Ligature-Opt   =   A+;                = LIG =     # Ligature-一時的変更
+ CapsLock            =                      = CAP =     # 大文字固定
+ INI-write           =                      = INI =     # INI出力
+ SyntaxHighLight     =   C+s                = SYN =     # 構文カラー\\示
+ FileProfile         =                      = PRO =     # プロファイル
+ DOS-command         =                      = DOS = >   # DOSコマンド
+ Submit-script-file  =                      = SUB =     # スクリプト実行
+ remote-shell        =                      = RSH =     # リモートシェル
+ Node                =                      = NOD =     # Node
+ TSO                 =                      = TSO =     # TSO
+ Execute-xecmd-file  =                      = EXE =     # ファイルを実行
+ OpenByAssociation   =                      = ASS = !   # 関連付けを実行
+ Command-by-Timer    =                      = AT  =     # タイマー実行
+ Sleep               =                      = SLE =     # タイマー休眠
+ Help                =                      = HEL = ?   # 説明
+ Key                 =                      = KEY = K   # キー入力
+ (J)LineChr-BL-x03- =   A+1                            # (日)罫線文字-
+ (J)LineChr-BL-x03- =   C+End                          # (日)罫線文字-
+#                   (=   Ctrl+10KEY-1      )            # Same Key Code
+ (J)LineChr-BT-x15- =   A+2                            # (日)罫線文字-
+ (J)LineChr-BT-x15- =   C+Down-arrow                   # (日)罫線文字-
+#                   (=   Ctrl+10KEY-2      )            # Same Key Code
+ (J)LineChr-BR-x04- =   A+3                            # (日)罫線文字-
+ (J)LineChr-BR-x04- =   C+Page-down                    # (日)罫線文字-
+#                   (=   Ctrl+10KEY-3      )            # Same Key Code
+ (J)LineChr-LT-x19- =   A+4                            # (日)罫線文字-
+ (J)LineChr-LT-x19- =   C+Left-arrow                   # (日)罫線文字-
+#                   (=   Ctrl+10KEY-4      )            # Same Key Code
+ (J)LineChr-CX-x10- =   A+5                            # (日)罫線文字-
+ (J)LineChr-CX-x10- =   C+10KEY-5                      # (日)罫線文字-
+ (J)LineChr-RT-x17- =   A+6                            # (日)罫線文字-
+ (J)LineChr-RT-x17- =   C+Right-arrow                  # (日)罫線文字-
+#                   (=   Ctrl+10KEY-6      )            # Same Key Code
+ (J)LineChr-TL-x01- =   A+7                            # (日)罫線文字-
+ (J)LineChr-TL-x01- =   C+Home                         # (日)罫線文字-
+#                   (=   Ctrl+10KEY-7      )            # Same Key Code
+ (J)LineChr-TT-x16- =   A+8                            # (日)罫線文字-
+ (J)LineChr-TT-x16- =   C+Up-arrow                     # (日)罫線文字-
+#                   (=   Ctrl+10KEY-8      )            # Same Key Code
+ (J)LineChr-TR-x02- =   A+9                            # (日)罫線文字-
+ (J)LineChr-TR-x02- =   C+Page-up                      # (日)罫線文字-
+#                   (=   Ctrl+10KEY-9      )            # Same Key Code
+ (J)LineChr-HL-x06- =   A+-                            # (日)罫線文字-
+ (J)LineChr-HL-x06- =   C+10KEY--                      # (日)罫線文字-
+ (J)LineChr-VL-x05- =   A+^                            # (日)罫線文字-
+ (J)LineChr-VL-x05- =   C+10KEY-+                      # (日)罫線文字-
+ (E)LineChr-BL-xC0-ﾀ =   A+1                            # (英)罫線文字-ﾀ
+ (E)LineChr-BL-xC0-ﾀ =   C+End                          # (英)罫線文字-ﾀ
+#                   (=   Ctrl+10KEY-1      )            # Same Key Code
+ (E)LineChr-BT-xC1-ﾁ =   A+2                            # (英)罫線文字-ﾁ
+ (E)LineChr-BT-xC1-ﾁ =   C+Down-arrow                   # (英)罫線文字-ﾁ
+#                   (=   Ctrl+10KEY-2      )            # Same Key Code
+ (E)LineChr-BR-xD9-ﾙ =   A+3                            # (英)罫線文字-ﾙ
+ (E)LineChr-BR-xD9-ﾙ =   C+Page-down                    # (英)罫線文字-ﾙ
+#                   (=   Ctrl+10KEY-3      )            # Same Key Code
+ (E)LineChr-LT-xC3-ﾃ =   A+4                            # (英)罫線文字-ﾃ
+ (E)LineChr-LT-xC3-ﾃ =   C+Left-arrow                   # (英)罫線文字-ﾃ
+#                   (=   Ctrl+10KEY-4      )            # Same Key Code
+ (E)LineChr-CX-xC5-ﾅ =   A+5                            # (英)罫線文字-ﾅ
+ (E)LineChr-CX-xC5-ﾅ =   C+10KEY-5                      # (英)罫線文字-ﾅ
+ (E)LineChr-RT-xB4-ｴ =   A+6                            # (英)罫線文字-ｴ
+ (E)LineChr-RT-xB4-ｴ =   C+Right-arrow                  # (英)罫線文字-ｴ
+#                   (=   Ctrl+10KEY-6      )            # Same Key Code
+ (E)LineChr-TL-xDA-ﾚ =   A+7                            # (英)罫線文字-ﾚ
+ (E)LineChr-TL-xDA-ﾚ =   C+Home                         # (英)罫線文字-ﾚ
+#                   (=   Ctrl+10KEY-7      )            # Same Key Code
+ (E)LineChr-TT-xC2-ﾂ =   A+8                            # (英)罫線文字-ﾂ
+ (E)LineChr-TT-xC2-ﾂ =   C+Up-arrow                     # (英)罫線文字-ﾂ
+#                   (=   Ctrl+10KEY-8      )            # Same Key Code
+ (E)LineChr-TR-xBF-ｿ =   A+9                            # (英)罫線文字-ｿ
+ (E)LineChr-TR-xBF-ｿ =   C+Page-up                      # (英)罫線文字-ｿ
+#                   (=   Ctrl+10KEY-9      )            # Same Key Code
+ (E)LineChr-HL-xC4-ﾄ =   A+-                            # (英)罫線文字-ﾄ
+ (E)LineChr-HL-xC4-ﾄ =   C+10KEY--                      # (英)罫線文字-ﾄ
+ (E)LineChr-VL-xB3-ｳ =   A+^                            # (英)罫線文字-ｳ
+ (E)LineChr-VL-xB3-ｳ =   C+10KEY-+                      # (英)罫線文字-ｳ
+ Null-Char(0x00)     =   C+2                            # ヌル文字(0x00)
+#################
+
+##### Other parameter #################################################
+##### Format: Keyword  = value    #(default value)# comment           #
+#####    Keyword      : see .doc                                      #
+#####    value        : see comment                                   #
+[OTHER]
+
+ Command_Stack     = 40  #( 40)# input command stack count
+
+ Confirm_CANCEL    =  1  #(1)# Confirm when CANCEL file update
+
+ Confirm_SAVE      =  1  #(1)# Confirm when replace file by SAVE
+
+ Confirm_UNDO      =  1  #(1)# Confirm when UNDO file update
+
+ Dump_When_Err     =  1  #(1)# write dump when err detected
+
+ R-Ctl_ENTER       =  0  #(0)# use Right-Ctrl key as Enter
+
+ R-Ctl_NewLine     =  0  #(0)# use Right-Ctrl key as NewLine if R-Ctl_ENTER=1
+
+ LNX_Keymap        =""   ##(Linux Console Version Only) Keymap file to detect remapping by xmodmap cmd
+
+ InsertLine_Indent =  1  #(1)# indentation at line insert
+
+#Change ID format specification table
+##### Format: Type = start column="CID top 2 byte"=extention list,...
+#####   To delete pre-defined entry,Set start column to 0
+ Change_ID_Type_C  = 68 = "//" = C,H,CPP,HPP,JAVA
+ Change_ID_Type_ASM= 68 = ";;" = ASM
+ Change_ID_Type_DOC= 71 = "||" = DOC,ME
+ Change_ID_Type_4  =  0 = "  " =  # You can use this entry
+ Change_ID_Type_5  =  0 = "  " =  # You can use this entry
+ Change_ID_Type_6  =  0 = "  " =  # You can use this entry
+ Change_ID_Type_7  =  0 = "  " =  # You can use this entry
+ Change_ID_Type_8  =  0 = "  " =  # You can use this entry
+ Change_ID_Type_9  =  0 = "  " =  # You can use this entry
+
+ Fixed_CID_prefix  = "CID:"     # prefix ID of fixed CID(max 15byte)||v015
+
+ Initial_Ins_Mode  =  0  #(0)# Initialy 0:Rep mode, 1:Ins mode 
+
+ Box_Ins_Cursor    =  1  #(1)# 0:Box Cursor if Rep mode, 1:if Ins mode
+
+ EOF(^Z)_Write     =  3  #(3)# 0:Drop EOF, 1:Write EOF
+#                            # 2:Same as input(write for new file)
+#                            # 3:Same as input(not write for new file)
+
+ ASCII_only        =  0  #(0)# 0:Ctrl char input 0:accept, 1:reject
+
+ Beep              =  1  #(1)# 0:Beep off, 1:Beep on
+
+ UnicodeTbl        ="" #("")# Unicode Codepoint File:SBCS/DBCS/Unprintable specification
+ UnicodeTbl_Console="" #("")# Unicode Codepoint File for console version
+ EBCDIC_cfg        ="" #("::xeebc.map")# EBCDIC translation config filename
+#Valid Char Tbl(hex) 0123456789ABCDEF0123456789ABCDEF
+# Ctrl Key comb=Ctrl+2abcdefghijklmnopqrstuvwxyz[\]6-
+ (J)Valid_Ctrl_char= 00000000000000000000000000000000
+ (E)Valid_Ctrl_char= 00000000000000000000000000000000
+
+#Display Trans Table      0123456789ABCDEF
+ (J)Disp_trans_tbl = 00 = 1000000010101100
+ (J)Disp_trans_tbl = 10 = 0101000010000000
+ (J)Disp_trans_tbl = 70 = 0000000000000001
+ (J)Disp_trans_tbl = 80 = 1000000000000000
+ (J)Disp_trans_tbl = A0 = 1000000000000000
+ (J)Disp_trans_tbl = F0 = 0000000000000111
+
+ (E)Disp_trans_tbl = 00 = 1000000000000000
+ (E)Disp_trans_tbl = F0 = 0000000000000001
+
+ (J)Disp_tr_tb_wxe = 00 = 1000000000001100
+ (J)Disp_tr_tb_wxe = 10 = 0000000000001000
+ (J)Disp_tr_tb_wxe = 70 = 0000000000000001
+ (J)Disp_tr_tb_wxe = 80 = 1000000000000000
+ (J)Disp_tr_tb_wxe = A0 = 1000000000000000
+ (J)Disp_tr_tb_wxe = F0 = 0000000000000111
+
+ (E)Disp_tr_tb_wxe = 00 = 1000000000000000
+ (E)Disp_tr_tb_wxe = F0 = 0000000000000001
+
+ (J)Disp_trans_char=FF #(FF)# display char for Japanese mode un-displayable char. (FF means U-25aa)
+ (E)Disp_trans_char=FF #(FF)# display char for English  mode un-displayable char. (FF means U-25aa)
+
+ (J)Tab_disp_char  =FFFF #(FFFF)# Tab display char for Japanese mode. (FFFF means U-21be & U-21c0)
+ (E)Tab_disp_char  =FFFF #(FFFF)# Tab display char for English  mode. (FFFF means U-21be & U-21c0)
+
+ DBCSspace_dispchar=FF #(FF)# DBCS space display char. (FF means U-2591)
+
+ Keyboard_Speed    = 30  #( 30)# char count per second(2-->30)        ||v01a
+ Keyboard_Delay    =250  #(250)# milisecond (250-->1000)              ||v01a
+ Kbd_Speed_at_exit = 30  #( 30)# Speed at exit editor (2-->30)        ||v01a
+ Kbd_Delay_at_exit =250  #(250)# Delay at exit editor (250-->1000)    ||v01a
+
+ DirList_Indent    =  1  #(  1)# Directory List Indentation           ||v03n
+
+ XPrint_Command    ="" #("XPRINT.EXE")# XP command
+ XPrint_Command_DOS="" #("")# XP command
+ XPrint_Command_GCC="" #("")# XP command
+ XPrint_Command_WIN="" #("")# XP command
+ XPrint_Command_OS2="" #("")# XP command
+ XPrint_Command_LNX="" #("")# XP command
+
+ Print_Command     ="" #("")# Print command string
+ Print_Command_DOS ="" #("")# Print command string
+ Print_Command_GCC ="" #("")# Print command string
+ Print_Command_WIN ="" #("")# Print command string
+ Print_Command_OS2 ="" #("")# Print command string
+ Print_Command_LNX ="" #("")# Print command string
+
+ Sub_Shell_Init    ="prompt $p$l" #("prompt $p$l")# sub shell init cmd||v063
+
+ LNX_Subshell_xe   ="" #("")# xe(Linux-curses) shell pgm name for ">" cmd. default=(dash?bash:sh)
+ LNX_ShellTerm_gxe ="" #("")# gxe(Linux-gtk) sub terminal start cmd.
+
+ LNX_CmdTerm_gxe   ="" #("")# gxe(Linux-gtk) string to process shell cmd.
+
+
+ CompareFile_Cmd   ="xfc" #("xfc")# File compare cmd.
+ CompareDir_Cmd    ="xdc" #("xdc")# Directory compare cmd.
+ Search_Cmd        ="grep" #("grep")# String search cmd.
+
+#Bounds            = .cob     =  7  72  # default boundary for the file extension name(Sample)||v123
+
+ LargeFileSize(MB) =1024  #(1024)# Size of large file to issue warning when open, 0 means no limit. ||vazd
+
+#################

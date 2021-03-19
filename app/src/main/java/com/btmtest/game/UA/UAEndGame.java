@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 713;                                    //~v@@@R~//~9305R~
+//*CID://+va60R~: update#= 720;                                    //~va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.UA;                                       //~v@@@R~
@@ -10,7 +11,6 @@ import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
-import static com.btmtest.game.UserAction.*;
 import static com.btmtest.dialog.DrawnDlgHW.*;                     //~9306I~
 
 import com.btmtest.R;
@@ -20,9 +20,8 @@ import com.btmtest.dialog.DrawnDlgLast;
 import com.btmtest.dialog.DrawnReqDlgLast;                         //~9307R~
 import com.btmtest.dialog.DrawnReqDlgHW;
 import com.btmtest.dialog.OKNGDlg;
-import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
-import com.btmtest.game.Complete;
+import com.btmtest.game.RA.RoundStat;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
@@ -102,10 +101,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 	public  static final int NGTP_RESET      =3; //retry the round //~9704I~
     public  static final int NGTP_NEXTROUND  =4; //additinal round //~9A12I~
 	public  static final int NGTP_AGREED     =9;                   //~9612I~
-//    public  static final int NGTP_E       =2;                      //~9319I~//~9526R~
-//    public  static final int NGTP_S       =3;                      //~9319I~//~9526R~
-//    public  static final int NGTP_W       =4;                      //~9319I~//~9526R~
-//    public  static final int NGTP_N       =5;                      //~9319I~//~9526R~
                                                                    //~9311I~
     public static final int LASTDT_REASON=1;                      //~9311I~
     public static final int LASTDT_DIALOG=2;                      //~9311I~
@@ -149,7 +144,7 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     	resetResponseHW();                                         //~9703I~
         Arrays.fill(confirmResponseLast,EGDR_NONE);                //~9308I~//~9311M~
         Arrays.fill(dialogDataLast,0);                             //~0309I~
-        if (Dump.Y) Dump.println("UAEndGame.resetStatus dialogDataLast="+Arrays.toString(dialogDataLast));//+0331I~
+        if (Dump.Y) Dump.println("UAEndGame.resetStatus dialogDataLast="+Arrays.toString(dialogDataLast));//~0331I~
    		swResponsedAllPending=false;                          //~9311I~
    		swResponsedAllConfLast=false;                         //~9311I~
    		swSuspend=false;                                           //~0306I~
@@ -227,26 +222,7 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     	if (Dump.Y) Dump.println("UAEndGame.drawn swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer+",type(msgid)="+type+",reason="+reason+",old="+old+",intp="+Arrays.toString(PintParm)+",strParm="+Arrays.toString(PstrParm));//~v@@@R~//~9305R~//~9426R~//~9610R~
         switch(type)                                               //~v@@@I~
         {                                                          //~v@@@I~
-//        case ENDGAME_DRAWN_HALFWAY_RESPONSE_DELAYED:    //by request dialog response at server(client treated by selectInfo)//~9518I~//~9519R~
-////          if (swTestHW)                                          //~9518R~//~9519R~
-//                sendToCurrentDealer(PswServer,Pplayer,reason); //send CONFIRM if dealer is on client//~9518I~//~9519R~
-////          else                                                   //~9518R~//~9519R~
-////          sendToCurrentDealerReason(type,PswServer,Pplayer,reason); //send CONFIRM if dealer is on client//~9518R~//~9519R~
-//            UA.setNoMsgToClient();                                 //~9518I~//~9519R~
-//            break;                                                 //~9518I~//~9519R~
         case ENDGAME_DRAWN_HALFWAY_RESPONSE:	//by request dialog response at server(client treated by selectInfo)//~v@@@R~//~9305R~
-//            if (PswServer)                                       //~v@@@R~
-//            {                                                    //~v@@@R~
-//                status.endGame(ENDGAME_DRAWN_HALFWAY);           //~v@@@R~
-//                setResponse(Pplayer,reason);                     //~v@@@R~
-//                UA.msgDataToClient=makeMsgDataToClient(Pplayer,ENDGAME_DRAWN_HALFWAY,reason);//~v@@@R~
-////              UA.sendToClient(true/*swAll*/,false/*swRobot*/,GCM_ENDGAME_DRAWN,PLAYER_YOU,msg);//~v@@@R~
-//            }                                                    //~v@@@R~
-////            else                                               //~v@@@R~
-////            {                                                  //~v@@@R~
-////                UA.sendToServer(GCM_ENDGAME_DRAWN,Pplayer,ENDGAME_DRAWN_HALFWAY,reason,0);//~v@@@R~
-////            }                                                  //~v@@@R~
-//      	Arrays.fill(reasonResponseHW,EGDR_NONE);               //~9305I~//~9703R~
   		  	resetResponseHW();                                     //~9703I~
             rc2=sendOpenOnlyToOtherClient(Pplayer,reason);         //~9518R~
 //          if (rc2)                                               //~9518I~//~9519R~
@@ -256,14 +232,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
            		sendToCurrentDealer(PswServer,Pplayer,reason); //send CONFIRM if dealer is on client//~9307R~//~9518R~
           	UA.setNoMsgToClient();                                 //~v@@@I~
             break;                                                 //~v@@@I~
-//        case ENDGAME_DRAWN_HALFWAY_DELAYED:                        //~9518R~//~9519R~
-////          if (swTestHW)                                          //~9518R~//~9519R~
-//                sendToCurrentDealer(PswServer,Pplayer,reason,swsError); //send CONFIRM if dealer is on client//~9518I~//~9519R~
-////          else                                                   //~9518R~//~9519R~
-////          sendToCurrentDealerReason(type,PswServer,Pplayer,reason,swsError); //send CONFIRM if dealer is on client//~9518R~//~9519R~
-//            UA.setNoMsgToClient();                                 //~9518I~//~9519R~
-//            break;                                                 //~9518I~//~9519R~
-//      case ENDGAME_DRAWN_HALFWAY:	//by client BTIIO msg at server at client "Send" button on ReqDlgHW//~9518I~//~9705R~
         case ENDGAME_DRAWN_HALFWAY_REQUEST:	//by client BTIIO msg at server at client "Send" button on ReqDlgHW//~9705I~
 //      	Arrays.fill(reasonResponseHW,EGDR_NONE);               //~9608I~//~9703R~
     		if (Dump.Y) Dump.println("UAEndGame.drawn HALFWAY_REQUEST eswnRequester="+eswnRequester);//~9705I~//~0306R~
@@ -349,15 +317,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 //              if (Pplayer==PLAYER_YOU)	//dialog response on server//~9306I~//~9B14R~
 //              {                                                  //~9306I~//~9B14R~
 	            	if (Dump.Y) Dump.println("UAEndGame.drawn msg from dialog");//~9306I~
-//	        		sendConfirmedToOtherClientHW(Pplayer,reason,typeNextGame);	//HW_CONFIRMED open dialog on all client//~9306I~//~9308R~//~9311R~//~9426R~
-//	        		sendConfirmedToOtherClientHW(Pplayer,reason,typeNextGame,swsError);	//HW_CONFIRMED open dialog on all client//~9426I~//~9705R~
-//	        		sendConfirmedToOtherClientHW(Pplayer,reason,typeNextGame,eswnRequester,swsError);	//HW_CONFIRMED open dialog on all client//~9705I~//~9B14R~
-//              }                                                  //~9306I~//~9B14R~
-//              else                                               //~9306I~//~9B14R~
-//              {                                                  //~9311I~//~9B14R~
-//              	if (Dump.Y) Dump.println("UAEndGame.drawn msg from BTIO");//~9306I~//~9B14R~
-//  				showDrawnHWResultDlg(reason,typeNextGame);	//update//~9311I~//~9426R~
-//  				showDrawnHWResultDlg(reason,typeNextGame,swsError);	//update//~9426I~//~9705R~
     				showDrawnHWResultDlg(reason,typeNextGame,swsError,eswnRequester);	//update//~9705I~
 //              }                                                  //~9311I~//~9B14R~
             }                                                      //~9306I~
@@ -371,26 +330,7 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 //                  sendConfirmedToCurrentDealerHW(Pplayer,reason,typeNextGame,swsError); //HW_CONFIRMED//~9426I~//~9705R~
                     sendConfirmedToCurrentDealerHW(Pplayer,reason,typeNextGame,eswnRequester,swsError); //HW_CONFIRMED//~9705I~
 //              }                                                  //~9306I~//~9B14R~
-//              else     //msg from dealer                         //~9306I~//~9B14R~
-//              {                                                  //~9306I~//~9B14R~
-//              	if (Dump.Y) Dump.println("UAEndGame.drawn server is NOT requester and msg from dealer");//~9306I~//~9311R~//~9B14R~
-//resend may occur  if (reasonResponseHW[Accounts.getCurrentEswn()]!=EGDR_OK)//~9311I~//~9703R~
-//  	        		showDrawnHWResultDlg(reason,typeNextGame);	//update//~9306I~//~9311R~//~9426R~
-//  	        		showDrawnHWResultDlg(reason,typeNextGame,swsError);	//update//~9426I~//~9518R~
-//  		        	if (swTestHW)                              //~9518R~
-//  	  	        		showDrawnHWResultDlg(reason,typeNextGame,swsError);	//update//~9518I~//~9705R~
-//  	  	        		showDrawnHWResultDlg(reason,typeNextGame,swsError,eswnRequester);	//update//~9705I~//~9B14R~
-//                      else                                       //~9518R~
-//  	        		showDrawnHWResultDlgReason(type,reason,typeNextGame,swsError);	//update//~9518R~
-//                  sendConfirmRequestHWToOtherClientAll(type,Pplayer,reason,typeNextGame,eswnRequester,swsError); //HW_CONFIRMED//~9B14R~
-//              }                                                  //~9306I~//~9B14R~
             }                                                      //~9306I~
-//          }//serrver                                             //~9B14R~
-//          else  //client                                         //~9B14R~
-//          {                                                      //~9B14R~
-//                if (Dump.Y) Dump.println("UAEndGame.drawn Client except dealer");//~9B14R~
-//                showDrawnHWResultDlg(reason,typeNextGame,swsError,eswnRequester);   //update//~9B14R~
-//          }                                                      //~9B14R~
             UA.setNoMsgToClient();                                 //~v@@@R~
             break;                                                 //~v@@@I~
         case ENDGAME_DRAWN_HALFWAY_CONFIRMED:	//all device       //~v@@@I~
@@ -409,8 +349,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     		if (realPlayer==PLAYER_YOU                             //~9306I~
             ||  reasonResponseHW[Accounts.getCurrentEswn()]==EGDR_NONE//~9306I~//~9608R~
             ||  reasonResponseHW[Accounts.getCurrentEswn()]==EGDR_NG)//~9608I~
-//  	        showDrawnHWResultDlg(reason,typeNextGame);                          //~v@@@I~//~9306R~//~9426R~
-//  	        showDrawnHWResultDlg(reason,typeNextGame,swsError);//~9426I~//~9705R~
     	        showDrawnHWResultDlg(reason,typeNextGame,swsError,eswnRequester);//~9705I~
             break;                                                 //~v@@@I~
         case ENDGAME_DRAWN_LAST:	//Drawn_LAST on all            //~9307R~
@@ -424,10 +362,13 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
             showDlg();                                             //~9307I~
             break;                                                 //~v@@@M~
         case ENDGAME_DRAWN_LAST_RESPONSE:	//on Server Drawn_LAST on server sent by selectInfo//~9307R~//~9308R~
+		    setPendingRobot();			    //pending of smartrobot on server//~va60I~
     		setResponseLast(Pplayer,reason);                       //~9307I~
             if (swResponsedAllPending)                                 //~9307I~//~9311R~
             {                                                      //~9309I~
 				sendOpen(Pplayer,reason);                                    //~9308R~//~9309I~
+//              if (PswServer)                                     //~va60R~
+//  				sendOpenRobot(Pplayer);                        //~va60R~
     			sendToCurrentDealerLast(PswServer,Pplayer,reason); //show dlg on dealer or send CONFIRM to dealer//~9307R~//~9311M~
 			}                                                      //~9309I~
           	UA.setNoMsgToClient();                                 //~9307I~
@@ -445,10 +386,8 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
             	getDialogParm(PstrParm);	                       //~9310I~
             else                                                   //~9310I~
             {                                                      //~9310I~
-//      		System.arraycopy(PintParm,PARMPOS_DRAWN_RESPSTAT,reasonResponse,0,PLAYERS);//~9310R~
-//          	if (Dump.Y) Dump.println("UAEndGame.drawn on dealer received LAST_CONFIRM_REQUEST responseReason="+Arrays.toString(reasonResponse));//~9310R~
 	        	System.arraycopy(PintParm,PARMPOS_DRAWN_DIALOGDATA,dialogDataLast,0,PARMPOS_DRAWN_DIALOGDATA_CTR);//~9310I~
-	    		if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRM_REQUEST dialogDataLast="+Arrays.toString(dialogDataLast));//~9310I~//~9311R~//+0331R~
+	    		if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRM_REQUEST dialogDataLast="+Arrays.toString(dialogDataLast));//~9310I~//~9311R~//~0331R~
             }                                                      //~9310I~
 //  	    showDrawnDlgLast(reason,dialogDataLast);               //~9310R~//~9311R~
 	    	if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRM_REQUEST before clear confirmResponseLast="+Arrays.toString(confirmResponseLast));//~0331I~
@@ -462,8 +401,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
             }                                                      //~9310I~
             break;                                                 //~9310I~
         case ENDGAME_DRAWN_LAST_CONFIRM_RESPONSE:	//on server	   //~9308I~
-//  	    p=getReason_typeNextGame(reason);                      //~9308R~//~9311R~
-//          reason=p.x; typeNextGame=p.y;                          //~9308R~//~9311R~
             if (isUpdateAfterSend())                               //~0309R~
             {                                                      //~0309I~
 		        UA.setNoMsgToClient();                             //~0309I~
@@ -471,103 +408,21 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
          	}                                                      //~0309I~
             if (setResponseConfLast(Pplayer,reason))	//all responsed//~9308I~
                 drawnLastConfirmed(); //confirmed msg to all       //~9308I~
-//            if (AG.aAccounts.getCurrentDealerReal()==PLAYER_YOU)    //server is requester//~9308R~//~9311R~
-//            {                                                      //~9308R~//~9311R~
-//                if (Dump.Y) Dump.println("UAEndGame.drawn server is requester");//~9308R~//~9311R~
-//                if (Pplayer==PLAYER_YOU)    //dialog response on server//~9308R~//~9311R~
-//                {                                                  //~9308R~//~9311R~
-//                    if (Dump.Y) Dump.println("UAEndGame.drawn msg from dialog");//~9308R~//~9311R~
-//                    sendConfirmedLastToOtherClient(Pplayer,reason,typeNextGame);    //open dialog on all client//~9308R~//~9311R~
-//                }                                                  //~9308R~//~9311R~
-//                else                                               //~9308R~//~9311R~
-//                {                                                  //~9308I~//~9311R~
-//                    if (Dump.Y) Dump.println("UAEndGame.drawn msg from BTIO");//~9308R~//~9311R~
-//                    showDrawnDlgLast(reason);                      //~9308I~//~9311R~
-//                }                                                  //~9308I~//~9311R~
-//            }                                                      //~9308R~//~9311R~
-//            else           //server is not dealer                  //~9310R~//~9311R~
-//            {                                                      //~9308R~//~9311R~
-//                if (Pplayer==PLAYER_YOU)    //dialog response on server//~9308R~//~9311R~
-//                {                                                  //~9308R~//~9311R~
-//                    if (Dump.Y) Dump.println("UAEndGame.drawn server is NOT requester and msg from Dialog");//~9308R~//~9311R~
-//                    sendConfirmedLastToCurrentDealer(Pplayer,reason,typeNextGame);//~9308R~//~9311R~
-//                }                                                  //~9308R~//~9311R~
-//                else     //msg from dealer                         //~9308R~//~9311R~
-//                {                                                  //~9308R~//~9311R~
-//                    if (Dump.Y) Dump.println("UAEndGame.drawn server is NOT requester and msg from requester");//~9308R~//~9311R~
-//                    showDrawnDlgLast(reason);  //update            //~9308R~//~9311R~
-//                }                                                  //~9308R~//~9311R~
-//            }                                                      //~9308R~//~9311R~
             sendConfirmedLastToCurrentDealer(Pplayer,reason,typeNextGame);      //CONFIRMED + respstat//~9311R~
             if (PswServer)                                         //~9308I~
 		        UA.setNoMsgToClient();                             //~9308I~
             break;                                                 //~9308I~
         case ENDGAME_DRAWN_LAST_CONFIRMED:	//all device           //~9308I~
-//            System.arraycopy(PintParm,PARMPOS_DRAWN_RESPSTAT,reasonResponse,0,PLAYERS);//~9308I~//~9309R~//~9311R~
-//            System.arraycopy(PintParm,PARMPOS_DRAWN_RESPSTAT2,confirmResponseLast,0,PLAYERS);//~9309I~//~9311R~
-//            if (PintParm.length>=PARMPOS_DRAWN_DIALOGDATA)         //~9310I~//~9311R~
-//            {                                                      //~9310I~//~9311R~
-//                System.arraycopy(PintParm,PARMPOS_DRAWN_DIALOGDATA,dialogDataLast,0,PARMPOS_DRAWN_DIALOGDATA_CTR);//~9310I~//~9311R~
-//                if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRMED dialogData="+Arrays.toString(dialogDataLast));//~9310I~//~9311R~
-//            }                                                      //~9310I~//~9311R~
-//            else                                                   //~9310I~//~9311R~
-//            {                                                      //~9310I~//~9311R~
-//                Arrays.fill(dialogDataLast,0);                     //~9310R~//~9311R~
-//                if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRMED dialogData=null");//~9310I~//~9311R~
-//            }                                                      //~9310I~//~9311R~
-//            if (chkResponseConfLast())                             //~9308I~//~9311R~
-//                swResponsedAllConfLast=true;                       //~9308I~//~9311R~
-//            realPlayer=AG.aAccounts.getCurrentDealerReal();        //~9308R~//~9311R~
-//            if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRMED dealer realPlayer="+realPlayer+",reson="+Arrays.toString(confirmResponseLast)+",currentEswn="+Accounts.getCurrentEswn()+",swResponsedAllPending="+swResponsedAllPending);//~9308R~//~9311R~
-//            if (realPlayer==PLAYER_YOU                             //~9308I~//~9311R~
-//            ||  confirmResponseLast[Accounts.getCurrentEswn()]==EGDR_NONE)//~9308R~//~9311R~
-//                showDrawnDlgLast(reason);                          //~9308I~//~9310R~//~9311R~
             System.arraycopy(PintParm,PARMPOS_DRAWN_RESPSTAT,confirmResponseLast,0,PLAYERS);//~9311I~
     		if (Dump.Y) Dump.println("UAEndGame.drawn CONFIRMED rspstat="+Arrays.toString(confirmResponseLast));//~9311I~
             showDlgLast(LASTDT_OKNG,Pplayer);	//update ok/ng     //~9311R~
             break;                                                 //~9308I~
         default:                                                   //~v@@@R~
     		if (Dump.Y) Dump.println("UAEndGame.drawn unknown type");//~9308I~
-//            if (old==ENDGAME_NONE) //all device                    //~v@@@R~//~9308R~
-//            {                                                      //~v@@@R~//~9308R~
-//                if (PswServer)                                     //~v@@@R~//~9308R~
-//                {                                                  //~v@@@R~//~9308R~
-//    //                if (type==ENDGAME_DRAWN_HALFWAY)             //~v@@@R~//~9308R~
-//    //                {                                            //~v@@@R~//~9308R~
-//    //                    setResponse(Pplayer,reason);    //set at requested from client//~v@@@R~//~9308R~
-//    //                    UserAction.showInfoAllEswn(0/*opt*/,Utils.getStr(R.string.Info_EndGameDrawn_Halfway));//~v@@@R~//~9308R~
-//    //                    UA.setNoMsgToClient();                   //~v@@@R~//~9308R~
-//    //                    UA.sendToTheClientOther(Pplayer,GCM_ENDGAME_DRAWN,type+MSG_SEPAPP2+reason);//~v@@@R~//~9308R~
-//    //                }                                            //~v@@@R~//~9308R~
-//    //                else                                         //~v@@@R~//~9308R~
-//    //                {                                            //~v@@@R~//~9308R~
-//                        UserAction.showInfoAllEswn(0/*opt*/,Utils.getStr(R.string.Info_EndGameDrawn_Last));//~v@@@R~//~9308R~
-//                        AG.aUserAction.msgDataToClient=makeMsgDataToClient(Pplayer,type,reason);//~v@@@R~//~9308R~
-//    //                }                                            //~v@@@R~//~9308R~
-//                }                                                  //~v@@@R~//~9308R~
-//                status.endGame(type);                              //~v@@@R~//~9308R~
-//    //          showDialog(PswServer,PswReceived,Pplayer,reason);  //~v@@@R~//~9308R~
-//                showDlg();                                         //~v@@@R~//~9308R~
-//            }                                                      //~v@@@R~//~9308R~
-//    //        else                                                 //~v@@@R~//~9308R~
-//    //        {                                                    //~v@@@R~//~9308R~
-//    //            if (type==ENDGAME_DRAWN_HALFWAY)                 //~v@@@R~//~9308R~
-//    //                if (PswServer)                               //~v@@@R~//~9308R~
-//    //                {                                            //~v@@@R~//~9308R~
-//    //                    UA.setNoMsgToClient();                   //~v@@@R~//~9308R~
-//    //                    setResponse(Pplayer,reason);    //set at requested from client//~v@@@R~//~9308R~
-//    //                }                                            //~v@@@R~//~9308R~
-//    //        }                                                    //~v@@@R~//~9308R~
 		}//switch                                                  //~v@@@I~
     	if (Dump.Y) Dump.println("UAEndGame.drawn return true");   //~9308I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@M~
-//    //*************************************************************************//~v@@@R~
-//    public void showDialog(boolean PswServer,boolean PswReceived,int Pplayer,int Preason)//~v@@@R~
-//    {                                                            //~v@@@R~
-//        if (Dump.Y) Dump.println("UAEndGame.showDialog player="+Pplayer+",reason="+Preason);//~v@@@R~
-//        DrawnReqDlg.newInstance().show();                        //~v@@@R~
-//    }                                                            //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public  String makeMsgDataToClient(int Pplayer,int Ptype,int Preason)//~v@@@R~
     {                                                              //~v@@@I~
@@ -737,21 +592,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     public void showDrawnHWResultDlg(int Preason,int PtypeNextGame,int PeswnRequester)//~9705I~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("UAEndGame.showDrawnResultDlg reason="+Preason+",typenextgame="+PtypeNextGame+",eswnRequester="+PeswnRequester+",dlg==null?"+(dlgConfirmHW==null));//~v@@@R~//~9705R~
-////      if (dlgConfirmHW==null)                                    //~v@@@R~//~9611R~//~0308R~
-//        if (!Utils.isShowingDialogFragment(dlgConfirmHW))          //~9611I~//~0308R~
-//        {                                                          //~v@@@I~//~0308R~
-////          dlgConfirmHW=DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW);//~v@@@R~//~9611R~//~0308R~
-////          dlgConfirmHW.show();                                   //~v@@@M~//~9611R~//~0308R~
-////          DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW).show();//~9611I~//~9705R~//~0308R~
-//            DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW,PeswnRequester).show();//~9705I~//~0308R~
-//        }                                                          //~v@@@I~//~0308R~
-//        else                                                       //~v@@@I~//~0308R~
-//        {                                                          //~v@@@I~//~0308R~
-////          UView.showToast("dup dialog");                         //~v@@@I~//~9902R~//~0308R~
-////          dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW);  //~9308R~//~9705R~//~0308R~
-////          dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW,Preason);//~9705R~//~0308R~
-//            dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW,Preason,PeswnRequester);//~9705I~//~0308R~
-//        }                                                          //~v@@@I~//~0308R~
         if (Utils.isShowingDialogFragment(dlgConfirmHW))           //~0308I~
         {                                                          //~0308I~
         	if (Dump.Y) Dump.println("UAEndGame.showDrawnResultDlg showing");//~0308I~
@@ -770,20 +610,11 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
         if (!Utils.isShowingDialogFragment(dlgConfirmHW))          //~9611I~//~0308R~
         {                                                          //~9426I~//~0308R~
         	if (Dump.Y) Dump.println("UAEndGame.showDrawnResultDlg new");//~0308I~
-//          dlgConfirmHW=DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW,swsError);//~9426I~//~9611R~//~0308R~
-//          dlgConfirmHW.show();                                   //~9426I~//~9611R~//~0308R~
-//              DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW,swsError).show();//~9611I~//~9705R~//~0308R~
-//              DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW,swsError,PeswnRequester).show();//~9705I~//~0306R~//~0308R~
                 DrawnDlgHW.newInstance(Preason,PtypeNextGame,reasonResponseHW,swsError,PeswnRequester,swSuspend).show();//~0306I~//~0308R~
         }                                                          //~9426I~//~0308R~
         else                                                       //~9426I~//~0308R~
         {                                                          //~9426I~//~0308R~
         	if (Dump.Y) Dump.println("UAEndGame.showDrawnResultDlg dup repaint");//~0308I~
-//          UView.showToast("dup dialog");                         //~9426I~//~9902R~//~0308R~
-//          dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW);  //~9426I~//~0308R~
-//          dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW,swsError);//~9426I~//~9705R~//~0308R~
-//          dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW,swsError,Preason);//~9705R~//~0308R~
-//          dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW,swsError,Preason,PeswnRequester);//~9705I~//~0306R~//~0308R~
             dlgConfirmHW.repaint(PtypeNextGame,reasonResponseHW,swsError,Preason,PeswnRequester,swSuspend);//~0306I~//~0308R~
         }                                                          //~9426I~//~0308R~
       }                                                            //~0308I~
@@ -807,7 +638,7 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
         if (Dump.Y) Dump.println("UAEndGame.showDlgFromMenu  rc="+rc);//~9904I~
         return rc;
     }                                                              //~9701I~
-	public static void showDlg()                                   //~9701I~
+	private static void showDlg()                                   //~9701I~//~1223R~
     {                                                              //~9701I~
         if (Dump.Y) Dump.println("UAEndGame.showDlg");     //~9701I~//~9A20R~
 		showDlg(false/*PswFromMenu*/);                             //~9701I~
@@ -818,7 +649,7 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 	//*from GC,button click or selected from MenuInGame            //~9610I~
 	//*************************************************************************//~9311I~
 //  public static void showDlg()                                   //~v@@@M~//~9311M~//~9701R~
-    public static boolean showDlg(boolean PswFromMenu)                //~9701I~//~9904R~
+    private static boolean showDlg(boolean PswFromMenu)                //~9701I~//~9904R~//~1223R~
     {                                                              //~v@@@M~//~9311M~
         UAEndGame UAEG=AG.aUAEndGame;                              //~9311R~
         if (UAEG==null)                                            //~9311I~
@@ -842,32 +673,11 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
         ||  (TestOption.option & TO_DRAWNREQDLG_LAST)!=0 // TODO TEST //~9311I~//~9417R~//~9420R~
         )                                                          //~9311I~
         {                                                          //~9306I~//~9311M~
-        	if (Dump.Y) Dump.println("UAEndGame.showDlg GrawnLast TestOption:DrawnLast="+((TestOption.option & TO_DRAWNREQDLG_LAST)!=0));//~9A14I~
-////            if (UAEG.swResponsedAllConfLast)              //~9308R~//~9311R~//~9610R~
-////                UAEG.showDrawnDlgLast();//~9308R~                //~9311R~//~9610R~
-//            if (UAEG.chkNGConfLast())                              //~9311R~//~9610R~
-//            {                                                      //~9311I~//~9610R~
-//                UAEG.resetStatus();                                //~9311I~//~9610R~
-//                DrawnReqDlgLast.newInstance().show();              //~9311I~//~9610R~
-//            }                                                      //~9311I~//~9610R~
-//            else                                                   //~9311I~//~9610R~
-//            if (UAEG.swResponsedAllPending)                        //~9311R~//~9610R~
-//                UAEG.showDlgLast(LASTDT_REASON,player);            //~9311R~//~9610R~
-//            else                                                   //~9311I~//~9610R~
-//            if (UAEG.swResponsedAllConfLast)                       //~9311R~//~9610R~
-//            {                                                      //~9311I~//~9610R~
-////              UAEG.showDrawnDlgLast();                           //~9311R~//~9610R~
-//                UAEG.showDlgLast(LASTDT_DIALOG,player);            //~9311R~//~9610R~
-//            }                                                      //~9311I~//~9610R~
-//            else                                                   //~9311I~//~9610R~
+        	if (Dump.Y) Dump.println("UAEndGame.showDlg DrawnLast TestOption:DrawnLast="+((TestOption.option & TO_DRAWNREQDLG_LAST)!=0));//~9A14I~//~1212R~
 				DrawnReqDlgLast.newInstance().show();                      //~v@@@M~//~9308R~//~9311M~
         }                                                          //~9306I~//~9311M~
         else                                                       //~v@@@M~//~9311M~
         {                                                          //~v@@@I~//~9311M~
-//            if (AG.aStatus.endGameType==ENDGAME_NONE)            //~v@@@R~//~9311M~
-//                AG.aStatus.endGame(ENDGAME_DRAWN_HALFWAY);       //~v@@@R~//~9311M~
-//  		if (PswFromMenu)                                       //~9701I~//~9A24R~
-//          	stopAutoTakeDiscard();                             //~9701I~//~9A24R~
 			DrawnReqDlgHW.newInstance().show();                    //~v@@@M~//~9311M~
         }                                                          //~v@@@I~//~9311M~
         return true;                                               //~9904I~
@@ -876,7 +686,7 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     private void showDlgLast(int PdataType,int Pplayer)            //~9311R~
     {                                                              //~9311I~
         boolean swRequester=AG.aAccounts.getCurrentDealerReal()==PLAYER_YOU;	//dialer//~9307R~//~9311R~//~0308I~
-        if (Dump.Y) Dump.println("UAEndGame.showDlgLast swRequester="+swRequester+",case="+PdataType+",player="+Pplayer);//~9311I~//~0308R~//+0331R~
+        if (Dump.Y) Dump.println("UAEndGame.showDlgLast swRequester="+swRequester+",case="+PdataType+",player="+Pplayer);//~9311I~//~0308R~//~0331R~
         int eswn=Accounts.playerToEswn(Pplayer);                   //~9311I~
       if (swRequester)                                             //~0308I~
       {                                                            //~0308I~
@@ -905,11 +715,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 	//*************************************************************************//~v@@@I~
     private void  sendToCurrentDealer(boolean PswServer,int Pplayer,int Preason)//~v@@@R~//~9305R~
     {                                                              //~v@@@I~
-//  	if (PswServer)                                             //~v@@@I~//~9308R~
-//  		status.endGame(ENDGAME_DRAWN_HALFWAY);                 //~v@@@I~//~9308R~
-//        int playerE=Accounts.eswnToPlayer(0/*East*/);   //East:Dealer                   //~v@@@I~//~9306R~
-////      int realPlayer=AG.aAccounts.mapDummyPlayer(playerE);       //~v@@@R~//~9306R~
-//        int realPlayer=AG.aAccounts.mapDummyPlayerByCurrentEswn(playerE);//~9306R~
         int realPlayer=AG.aAccounts.getCurrentDealerReal();        //~9306I~
         eswnRequester=Accounts.playerToEswn(Pplayer);              //~9705I~
         if (Dump.Y) Dump.println("UAEndGame.sendToCurrentDealer PswServer="+PswServer+",player="+Pplayer+",reason="+Preason+",eswnRequester="+eswnRequester);//~9705I~
@@ -976,13 +781,6 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     	String msg=Pmsgtype+MSG_SEPAPP2+Preason+MSG_SEPAPP2+Psuspendid+MSG_SEPAPP2+PtypeNextGame+MSG_SEPAPP2+PeswnRequester;//~0306R~
     	msg+=MSG_SEPAPP2+DrawnDlgHW.makeMsgDataBoolean(PswsError); //~9B14I~
         if (Dump.Y) Dump.println("UAEndGame.sendConfirmeRequestHWToOtherClientAll player="+Pplayer+",reason="+Preason+",typeNextGame="+PtypeNextGame+",eswnRequester="+PeswnRequester+",suspendid="+Psuspendid+",msg="+msg);//~9B14R~//~0306R~
-//        for (int ii=0;ii<PLAYERS;ii++)                           //~9B14R~
-//        {                                                        //~9B14R~
-//            if (ii!=0 && ii!=Pplayer)                            //~9B14R~
-//            {                                                    //~9B14R~
-//                sendToTheClient(ii,msg);                         //~9B14R~
-//            }                                                    //~9B14R~
-//        }                                                        //~9B14R~
 		UA.sendToTheClientOther(Pplayer/*skip*/,GCM_ENDGAME_DRAWN,msg);//~v@@@I~//~9B14I~
     }                                                              //~9B14I~
 	//*************************************************************************//~9310I~
@@ -1054,22 +852,10 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
             showDlgLast(LASTDT_OKNG,Pplayer);                      //~9311R~
         else                                                       //~9308I~
         {                                                          //~9308I~
-//      	String msg=ENDGAME_DRAWN_LAST_CONFIRMED+MSG_SEPAPP2+Preason;//~9308R~
-//  	    String msg=makeMsgConfirmedLast(Preason,PtypeNextGame);//~9308R~
-//  		String msg=makeMsgDataRespStat(ENDGAME_DRAWN_LAST_CONFIRMED,Preason,PtypeNextGame,reasonResponse,confirmResponseLast);//~9308I~//~9309R~//~9311R~
-//          msg+=getMsgDialogData();                               //~9310I~//~9311R~
-//  		String msg=makeMsgDataRespStat(ENDGAME_DRAWN_LAST_CONFIRMED,Preason,PtypeNextGame,confirmResponseLast);//~9311I~//~9705R~
     		String msg=makeMsgDataRespStat(ENDGAME_DRAWN_LAST_CONFIRMED,Preason,PtypeNextGame,0/*eswnRequester:no meening for DrawnLast*/,confirmResponseLast);//~9705I~
-//          UA.sendToTheClient(realPlayer, GCM_ENDGAME_DRAWN, msg);//~9308I~//~9610R~
             sendToTheClient(false/*transferToReal*/,realPlayer,msg);//~9610I~
         }                                                          //~9308I~
     }                                                              //~9308I~
-//    //*************************************************************************//~v@@@I~//~0303R~
-//    private void drawnHWConfirmed()                                //~v@@@I~//~0303R~
-//    {                                                              //~v@@@I~//~0303R~
-//        if (Dump.Y) Dump.println("UAEndGame.drawnHWConfirmed");//~v@@@I~//~0303R~
-//        UserAction.showInfoAllEswn(0/*opt*/,Utils.getStr(swFoundNG ? R.string.Info_DrawnHW_ConfirmedNG : R.string.Info_DrawnHW_Confirmed));//~v@@@R~//~9608R~//~0303R~
-//    }                                                              //~v@@@I~//~0303R~
 	//*************************************************************************//~9308I~
     private void drawnLastConfirmed()                              //~9308I~
     {                                                              //~9308I~
@@ -1082,14 +868,11 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
     //*************************************************************************//~9309I~
     private void sendOpen(int Pplayer,int Preason)                           //~9308R~//~9309R~//~9423R~
     {                                                            //~9308R~//~9309R~
-//        boolean swReach=AG.aPlayers.getPosReach(Pplayer)>=0;     //~9308R~//~9309R~
-//        if (Dump.Y) Dump.println("UAEndGame.sendOpen player="+Pplayer+",reach="+swReach+",reason="+Preason);//~9308R~//~9309R~
-//        if (swReach || Preason==EGDR_PENDING)                    //~9309R~
-//            UAReach.postOpenOnly(Pplayer,swReach);                       //~9308R~//~9309R~
         if (Dump.Y) Dump.println("UAEndGame.sendOpen reasonResponse="+Arrays.toString(reasonResponse));//~9309I~
 		for (int eswn=0;eswn<PLAYERS;eswn++)                           //~9309I~
         {                                                          //~9309I~
 	        if (AG.aAccounts.isDummyByCurrentEswn(eswn))           //~9309R~
+              if (!AG.aRoundStat.swThinkRobot)                     //~va60I~
             	continue;                                          //~9309I~
 	        int pl=AG.aAccounts.eswnToPlayer(eswn);                //~9309I~
 	        boolean swReach=AG.aPlayers.getPosReach(pl)>=0;       //~9309I~
@@ -1098,6 +881,48 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 				UAReach.postOpenOnly(pl,swReach);                  //~9309I~
         }                                                          //~9309I~
     }                                                            //~9308R~//~9309R~
+//    //*************************************************************************//+va60R~
+//    //*on Server, send GCM_OPEN to dealer with tile of reach/pending robot//+va60R~
+//    //*************************************************************************//+va60R~
+//    private void sendOpenRobot(int Pplayer)                      //+va60R~
+//    {                                                            //+va60R~
+//        if (Dump.Y) Dump.println("UAEndGame.sendOpenRobot player="+Pplayer+",reasonResponse="+Arrays.toString(reasonResponse));//+va60R~
+//        for (int eswn=0;eswn<PLAYERS;eswn++)//all robot          //+va60R~
+//        {                                                        //+va60R~
+//            if (!AG.aAccounts.isDummyByCurrentEswn(eswn))        //+va60R~
+//                continue;                                        //+va60R~
+//            int pl=AG.aAccounts.eswnToPlayer(eswn);   //robot    //+va60R~
+//            int opt;                                             //+va60R~
+//            if (AG.aPlayers.getPosReach(pl)>=0)                  //+va60R~
+//                opt=OPT_OPEN_ONLY_REACH;                         //+va60R~
+//            else                                                 //+va60R~
+//            if (reasonResponse[eswn]==EGDR_PENDING)              //+va60R~
+//                opt=OPT_OPEN_ONLY_PENDING;                       //+va60R~
+//            else                                                 //+va60R~
+//                opt=0;                                           //+va60R~
+//            if (opt!=0)                                          //+va60R~
+//                sendOpenRobotToClient(opt,Pplayer,pl,eswn);      //+va60R~
+//        }                                                        //+va60R~
+//    }                                                            //+va60R~
+//    //*************************************************************************//+va60R~
+//    //*on Server, send GCM_OPEN to dealer with tile of reach/pending robot//+va60R~
+//    //*************************************************************************//+va60R~
+//    private void sendOpenRobotToClient(int PoptOpen,int Pplayer,int PplayerRobot,int PeswnRobot)//+va60R~
+//    {                                                            //+va60R~
+//        if (Dump.Y) Dump.println("UAEndGame.sendOpenRobotToClient opetOpen="+PoptOpen+",player="+Pplayer+",playerRobot="+PplayerRobot+",eswnRobot="+PeswnRobot);//+va60R~
+//        TileData[] tds=AG.aPlayers.getHands(PplayerRobot);       //+va60R~
+//        int ctr=tds.length;                                      //+va60R~
+////        for (int eswn=0;eswn<PLAYERS;eswn++)    //all real     //+va60R~
+////        {                                                      //+va60R~
+////            if (AG.aAccounts.isDummyByCurrentEswn(eswn))       //+va60R~
+////                continue;                                      //+va60R~
+////            int pl=AG.aAccounts.eswnToPlayer(eswn);            //+va60R~
+////            String msgDataToClient=AG.aUAReach.makeMsgDataToClient(pl,PoptOpen,tds,ctr);//+va60R~
+////            sendToClient(swSendAll,PactionID,Pplayer,msgDataToClient);//+va60R~
+////        }                                                      //+va60R~
+//          String msgDataToClient=UA.UARE.makeMsgDataToClient(Pplayer,PoptOpen,tds,ctr);//+va60R~
+//          UA.sendToClient(true/*all*/,false/*robot*/,GCM_OPEN,Pplayer,msgDataToClient);//+va60R~
+//    }                                                            //+va60R~
     //*************************************************************************//~9518I~
     //*on Server send GCM_OPEN                                     //~9518I~
     //*************************************************************************//~9518I~
@@ -1239,4 +1064,24 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 	    if (Dump.Y) Dump.println("UAEndGame.isUpdateAfterSendServer rc="+rc+",swSent="+AG.aComplete.swSent);//~0314I~
         return rc;                                                 //~0314I~
     }                                                              //~0314I~
+    //******************************************************************//~va60I~
+    //*for smartRobot, set robot tenpai status                     //~va60I~
+    //******************************************************************//~va60I~
+    private void setPendingRobot()                                 //~va66I~//~va60M~
+    {                                                              //~va66I~//~va60M~
+        if (Dump.Y) Dump.println("DrawnDlgLast.setPendingRobot");  //~va60I~
+        if (!AG.aAccounts.isServer())                                   //~va66I~//~va60I~
+        	return;                                                //~va66I~//~va60M~
+        if (!AG.aRoundStat.swThinkRobot)                           //~va60I~
+        	return;                                                //~va60I~
+        RoundStat.RSPlayer RSP;                                    //~va66I~//~va60M~
+        for (int ii=0;ii<PLAYERS;ii++) //current eswn              //~va66I~//~va60M~
+        {                                                          //~va66I~//~va60M~
+	        RSP=AG.aRoundStat.RSP[ii];                             //~va66I~//~va60M~
+        	if (!RSP.swRobot)                                      //~va66I~//~va60M~
+            	continue;                                          //~va66I~//~va60M~
+    		reasonResponse[ii]=(RSP.getCurrentShanten()==0) ? EGDR_PENDING : EGDR_PENDINGNO;//~va60I~
+        }                                                          //~va66I~//~va60M~
+        if (Dump.Y) Dump.println("DrawnDlgLast.setPendingRobot reasonResponse="+Arrays.toString(reasonResponse));//~va66I~//~va60I~
+    }                                                              //~va66I~//~va60M~
 }//class UAEndGame                                                 //~dataR~//~@@@@R~//~v@@@R~

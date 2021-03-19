@@ -1,20 +1,20 @@
-//*CID://+va40R~:                             update#=  231;       //~va40R~
+//*CID://+va52R~:                             update#=  233;       //~va52R~
 //*****************************************************************//~v101I~
+//2020/11/29 va52 lint err(setStyle 1st parm)                      //~va52I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*common FragmentDialog                                           //~v@@@I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 //import android.app.FragmentManager;                              //~va40R~
-import android.support.v4.app.FragmentManager;                     //~va40I~
+import androidx.fragment.app.FragmentManager;                     //~va40I~
 //import android.app.FragmentTransaction;                          //~va40R~
-import android.support.v4.app.FragmentTransaction;                 //~va40I~
+import androidx.fragment.app.FragmentTransaction;                 //~va40I~
 import android.content.DialogInterface;
 import android.os.Bundle;                                          //~v@@@I~
 //import android.app.DialogFragment;                               //~va40R~
-import android.support.v4.app.DialogFragment;                      //~va40I~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.app.Dialog;                                         //~v@@@I~
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;                                      //~v@@@I~
 import android.view.ViewGroup;                                     //~v@@@I~
 import android.view.LayoutInflater;                                //~v@@@I~
@@ -181,7 +181,8 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
         if (AG.swSmallDevice)                                         //~v@@@I~
         {                                                          //~v@@@I~
     		if (Dump.Y) Dump.println("UFDlg.onCreate setStyle smallDevice");   //~v@@@I~//~9923R~
-	        setStyle(0,R.style.DialogThemeCustomNarrow);           //~v@@@I~
+//          setStyle(0,R.style.DialogThemeCustomNarrow);           //~v@@@I~//~va52R~
+            setStyle(DialogFragment.STYLE_NORMAL/*=0*/,R.style.DialogThemeCustomNarrow);//~va52I~
         }                                                          //~v@@@I~
         else                                                       //~9923I~
         {                                                          //~9923I~
@@ -379,8 +380,8 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 ////      if (Dump.Y) Dump.println("UFDlg.setDivider R.id.titleDivider="+id+",view==null?="+(v==null));//~v@@@R~
         int color=Pcolor;                                          //~v@@@I~
         if (Pcolor==0)                                             //~v@@@I~
-//          color=AG.resource.getColor(R.color.title_divider);     //+va40R~
-            color=AG.getColor(R.color.title_divider);              //+va40I~
+//          color=AG.resource.getColor(R.color.title_divider);     //~va40R~
+            color=AG.getColor(R.color.title_divider);              //~va40I~
         id=Pdlg.getContext().getResources().getIdentifier("android:id/titleDivider",null,null);//~v@@@I~
         v=Pdlg.findViewById(id);                                   //~v@@@I~
         if (Dump.Y) Dump.println("UFDlg.setDivider getid titleDivider="+Integer.toHexString(id)+",view==null?="+(v==null));//~v@@@I~
@@ -454,7 +455,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     public void onClickButton(Button Pbutton)                   //~v@@@R~
 	{                                                              //~v@@@I~
     	boolean rc=true;                                           //~v@@@I~
-        if (Dump.Y) Dump.println("UFDlg:onClickButton"+Pbutton.getText());//~v@@@I~
+        if (Dump.Y) Dump.println("UFDlg:onClickButton:"+Pbutton.getText());//~v@@@I~//+va52R~
     	try                                                        //~v@@@I~
         {                                                          //~v@@@I~
         	int id=Pbutton.getId();                                //~v@@@I~

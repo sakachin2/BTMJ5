@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 609;                                    //~v@@@R~//~v@@5R~//~v@@@R~//~v@@6R~//~9B18R~
+//*CID://+va60R~: update#= 614;                                    //~va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
@@ -10,6 +11,7 @@ import com.btmtest.TestOption;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Players;
+import com.btmtest.game.Robot;
 import com.btmtest.game.TileData;
 import com.btmtest.game.Tiles;
 import com.btmtest.game.UADelayed2;
@@ -320,6 +322,12 @@ public class UAPon                                                 //~v@@@R~
         int playerDiscarded=PLS.getLastDiscardedPlayer();          //~v@@@I~
         river.takePon(playerDiscarded);                                     //~v@@@R~
 //      UA.UAT.setTimeout(Pplayer,GCM_PON);	//autodiscard timeout  //~v@@6R~
+        Robot r=null;                                              //~va60I~
+      	if (PswServer)                                             //~va60I~
+        	r=ACC.getRobot(Pplayer);                               //~va60I~
+      if (r!=null)                                                 //~va60I~
+        r.takePon(Pplayer);	//do discrd                            //+va60R~
+      else                                                         //~va60I~
         UA.UAT.setAutoDiscardTimeout(PswServer,Pplayer,GCM_PON);	//autodiscard timeout//~v@@6I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_PON)//~v@@6I~
           	TestOption.disableBT();                                //~v@@6I~
@@ -327,7 +335,7 @@ public class UAPon                                                 //~v@@@R~
         drawLightToDiscard(Pplayer);                               //~9C06I~
 //      GMsg.showHL(0,GCM_PON);                                    //~9C02I~//~0401R~
         GMsg.showHL(0,GCM_PON,Pplayer);                            //~0401I~
-    	Sound.play(SOUNDID_PON,false/*not change to beep when beeponly option is on*/);//+0408I~
+    	Sound.play(SOUNDID_PON,false/*not change to beep when beeponly option is on*/);//~0408I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~9C06I~

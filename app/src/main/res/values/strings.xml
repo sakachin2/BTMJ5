@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.09</string>
+    <string name="app_version">v1.10</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -186,6 +186,7 @@
     <string name="Err_ReloadNotInterrupted">Select a suspended game for \"Restart\".</string>
     <string name="Err_ReloadNooneConnected">No connection.</string>
     <string name="Err_HistoryNotSameMembers">Member connected now is not all same as the record\'s one.</string>
+    <string name="Err_HistoryIsTrainingMode">The history data is "play alone" mode, try after disconnected all connection.</string>
     <string name="Err_ReloadDataErr">The records contains error.</string>
     <string name="Err_ReloadDataErrReceived">Record received from %1$s contains error.</string>
     <string name="Err_AlreadyFileExists">It is already exists, could not save to\
@@ -755,7 +756,9 @@
     <string name="Msg_DiceForNewGame">Th dealer cast the dice.</string>
     <!--string name="Msg_AcceptComplete">Touch the lamp lit if agree to the win.</string-->
     <string name="Err_LackingMember">Missing players, you can start game with robots if the rule allows.</string>
-    <string name="Err_LackingMemberNoConnection">Missing players(No connection)</string>
+    <!--string name="Err_LackingMemberNoConnection">Missing players(No connection)</string-->
+    <string name="Err_LackingMemberNoConnection">No connection. Check on \"Allow to include robot\" for your practice.</string>
+    <string name="Err_LackingMemberNoConnectionTraining">No Connection, do you enter in One-Player-Traning-Mode ?</string>
     <string name="Err_LackingMemberAllowRobotYes">Missing %1$d players. \nDo you start game including Robot?</string>
     <string name="Err_LackingMemberAllowRobotNo">Missing %1$d players. \nRule setting allows a game including Robot.</string>
     <!--string name="Err_GameFromNotServer">Start "Game" from server side.</string-->
@@ -766,10 +769,13 @@
     <string name="Err_DupYourname">Duplicated name(%1$s).</string>
     <string name="AE_NotYourTurn">Not your turn.</string>
     <string name="AE_DiscardTaken">You have to discard.</string>
+    <string name="AE_DiscardTakenRobot">%1$s:You have to discard.</string>
     <string name="AE_NoTileSelected">Select tile to discard.</string>
     <string name="AE_NoTileSelectedAtReach">Select tile to discard before Riichi call.</string>
     <string name="AE_YouHaveToTake">Your turn to draw.</string>
-    <string name="AE_TakeKanAdditional">Draw Kan tile.</string>
+    <string name="AE_NextHaveToTakeRobot">%1$s:Yourr turn to draw.</string>
+    <string name="AE_TakeKanAdditional">Draw Kan tile(Rinshan).</string>
+    <string name="AE_TakeKanAdditionalRobot">%1$s:Draw Kan tile(Rinshan).</string>
     <string name="AE_CouldNotReach">Not able to Riichi.</string>
     <string name="AE_ShortScoreForReach">You could put Riich bets, the rule is \"Tobi\":Yes.</string>
     <string name="AE_CouldNotGetLast">Can not Pon,Kan,Chii for last Discard.</string>
@@ -781,6 +787,7 @@
     <string name="AE_KanAfterReach">By the rule setting, Ankan after Riichi declared is not available.</string>
     <string name="AE_AnkanRonNG">By the rule setting, Ron of \"Kokushi\" for Ankan is not available.</string>
     <string name="AE_DupRonDelayed">Delayed Ron.</string>
+    <string name="AE_DupRonDelayedRobot">%1$s:Delayed Ron.</string>
     <string name="AE_DupActionRon">Declared Ron already.</string>
     <string name="AE_ContinueAsNotRonable">Your are in DeadHand state.</string>
     <string name="AE_PendingHW">AbortiveDraw was claimed.</string>
@@ -843,6 +850,7 @@
     <string name="Err_SuspendDlgNotServer">Only server can open \"Suspend\" confirmation dialog.</string>
     <string name="Err_SuspendDlgNoSuspendRequest">\"Suspend\" is not requested.</string>
     <string name="Err_GamingNow">In during game.</string>
+    <string name="Err_ConfirmReturn_TrainingMode">In during play-alone. Do you stop the game.</string>
     <string name="Err_NotGamingNow">Game is opevr（%1$s）</string>
     <string name="Info_SuspendRequested">SuspendGame is claimed. %1$s/4 player</string>
     <string name="Info_SuspendRequestedDup">SuspendGame claimed, it is duplicated.</string>
@@ -912,6 +920,7 @@
     <string name="Info_PleaseWaitWithReasonOther">In during other player\'s \"Wait!\".</string>
     <string name="ActionWaitOther">Waiting other player action.</string>
     <string name="ActionBlockedThisAction">Blocked status by other player\'s call for discard.</string>
+    <string name="ActionBlockedByHumanForRobot">Robot action was blocked by human player action priority.</string>
     <string name="ActionBlockedYouAreNotTop">Blocked status by other player\'s calling discard.</string>
     <string name="ActionBlockedYouAreNotTopWaitSelectModeWithTimeout">Other player is selecting Melds for the discard.(with timeout rule)</string>
     <string name="ActionBlockedYouAreNotTopWaitSelectModeWithNoTimeout">Other player is selecting Melds for thje discard.(Witout timeout rule)</string>
@@ -993,7 +1002,9 @@
     <string name="Label_DelayDiscard">AutoDiscard:Lamp becomes blue just after draw, then the tile of green frame will be discarded when this time exhausted. 0 means no timeout.</string>
     <string name="Label_Delay2Touch">Timeout of \"Wait!\"</string>
     <string name="Label_TimeoutTake">AutoDraw:Next player draws automatically when this time exhausted from start of Chii/Draw period. 0 means no timeout. Applied for also KanDraw.</string>
-    <string name="Label_TimeoutTakeRobot">AutoDraw for Robot:Set minimum 1 second. This is applied if Autodraw above is 0, else the value above is applied.</string>
+    <!--string name="Label_TimeoutTakeRobot">AutoDraw for Robot:Set minimum 1 second. This is applied if Autodraw above is 0, else the value above is applied.</string-->
+    <string name="Label_TimeoutTakeRobot">AutoDraw for Robot:Set minimum 1 second. This is applied only if Autodraw above is 0.</string>
+    <!--string name="Label_TimeoutTakeRobot">AutoDraw for Robot:Applied if Autodraw above is 0. \"Robot\" setting allows Take manually in traning mode.</string-->
     <string name="Label_RuleWait">Wait!</string>
     <string name="Label_Positioning">Assign seat</string>
     <string name="Label_Positioning_Skip">Simply.</string>
@@ -1059,11 +1070,14 @@
     <string name="Label_BeepOnly">Beep</string>
     <string name="Label_SoundVolume">Vol.</string>
     <string name="Label_Robot">Robot</string>
-    <string name="Label_MinusRobot">Robot\' Tobi</string>
-    <string name="Label_RobotPay">Payment:</string>
+    <string name="Label_MinusRobot">Gameover also by Robot\'s minus score if Tobi is ON.</string>
+    <string name="Label_ThinkRobot">Novices. If Off, simply discard the taken.</string>
+    <string name="Label_RobotPay">Burden for Robot:</string>
     <string name="Label_RobotPaySprit">Divide</string>
     <string name="Label_RobotPayDependingScore">In proportion by score(See Help).</string>
-    <string name="Label_AllowRobot">Allow to include robot(Just discard then drawn) when lacking player.</string>
+    <string name="Label_AllowRobot">Allow match include robot when less than 4 players, or play alone.</string>
+    <!--string name="Label_AllowRobotAll">Allow Training Mode</string-->
+    <string name="Label_AllowRobotAllButton">When playing alone, \"Take\" is not by timeout but by using button.</string>
 
     <string name="Label_GameSet">Rounds</string>
     <string name="Label_GameSetInterrupted">Comp. Next is</string>
@@ -1418,4 +1432,21 @@
     <string name="AE_RankFix1">Hand required at least 1 han.</string>
     <string name="Label_Anyway">Win-A</string>
     <string name="Warn_BlockedNeedRonAnyway">Use not \"Win\" but \"Win anyway" to proceed Win.</string>
+    <string name="AE_TestRobotDiscardButtonServerOnly">Discard button for Robot Test is sServer only</string>
+<!-- resumeDlg check isRobotName; faile by unmatch when eng:jpn match-->  
+	<string-array name="Default_YourNameRobot_English_deprecated">
+		<item>--Me--</item>
+		<item>" あ(Alex) "</item>
+		<item>" て(Beth) "</item>
+		<item>" ま(Chris) "</item>
+		<item>" け(Dave) "</item>
+	</string-array>
+	<string-array name="Default_YourNameRobot"> 
+		<item>" S それがし "</item>
+		<item>" A あきらくん "</item>
+		<item>" T てるちゃん "</item>
+		<item>" M まあちゃん "</item>
+		<item>" K けんちゃん "</item>
+	</string-array>
+    <string name="Warn_TrainingModeWithNotThinkRobot">Robot setting is \"Simply discard the taken\",\nEnjoy by setting of \"Novices\".</string>
 </resources>

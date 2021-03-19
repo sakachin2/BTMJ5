@@ -1,6 +1,8 @@
-//*CID://+va20R~:                             update#=  862;       //+va20R~
+//*CID://+va66R~:                             update#=  879;       //~va60R~//~va66R~
 //*****************************************************************//~v101I~
-//2020/11/01 va21 move chk1stTake to Players from CompReqDlg because static method mocking is hard//+va20I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/11/01 va21 move chk1stTake to Players from CompReqDlg because static method mocking is hard//~va20I~
 //2020/10/20 va1c send net point to show setYaku on CompReqDlg     //~va1cI~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va16I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -133,6 +135,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //  protected UFDlg ufdlg;                                         //~v@@@R~//~9227R~
     private Dialog androidDlg;                                     //~v@@@I~
     public  int completeEswn,completeType,completeEswnLooser;      //~9212I~//~9217R~
+  	private int supporterEswn,completePlayer;                      //~va60R~
     public int gameField,gameSeq,gameDup,gameReach,pointReach,pointDup;               //~9212I~//~9213R~//~9219R~
 //  private int idxPoint=2/*default:30Point*/,idxRank=0;                              //~9220R~//~9221R~//~va11R~
     private int idxPoint=3/*default:30Point*/,idxRank=0;           //~va11I~
@@ -186,7 +189,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         dlg.tagSuffix=Integer.toString(Pstat.completeEswn);	//for multiple instance//~9227I~
         if (Dump.Y) Dump.println("CompReqDld:newInstance tag="+dlg.tagSuffix);//~9226I~//~9227R~
         dlg.compStat=Pstat;                                        //~9221I~
-        if (Dump.Y) Dump.println("CompReqDld:newInstance completeEswn="+Pstat.completeEswn);//~9519I~
+        if (Dump.Y) Dump.println("CompReqDld:newInstance Pstat="+Pstat.toString());//~9519I~//~va60R~
         return dlg;                                                //~v@@@R~
     }                                                              //~v@@@R~
     //*******************************************************************//~9403M~
@@ -395,11 +398,15 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //      compStat=Status.getCompleteStatus(); //eswn+type       //~9219R~//~9220I~//~9221R~
     	completeType=compStat.completeType;                        //~9217M~
     	completeEswn=compStat.completeEswn;                        //~9217R~
+    	completePlayer=Accounts.eswnToPlayer(completeEswn);        //~va60I~
+    	supporterEswn=compStat.supporterEswn;                      //~va60R~
     	completeEswnLooser=compStat.completeEswnLooser;            //~9217R~
     	completeTD=compStat.completeTD;                            //~9217I~
     	completeKanTakenTD=compStat.completeKanTakenTD;            //~9217I~
         swDealer=completeEswn==0;                                  //~9221I~
-        swReceived=completeEswn!=currentEswn;                      //~9221R~
+//      swReceived=completeEswn!=currentEswn;                      //~9221R~//~va60R~
+        swReceived=completeEswn!=currentEswn && supporterEswn!=currentEswn;//~va60R~
+    	if (Dump.Y) Dump.println("CompReqDlg.setupValue swReceived="+swReceived+",currentEswn="+currentEswn+",completeEswn="+completeEswn+",supporterEswn="+supporterEswn);//~va60R~
         if (swReceived)                                            //~9221I~
         {                                                          //~9221I~
         	calcOut=compStat.ammount;                              //~9221I~
@@ -1022,7 +1029,10 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         btnSend         =              UButton.bind(layoutView,R.id.Send,this);//~9221I~
         btnShowRule     =              UButton.bind(layoutView,R.id.ShowRule,this);//~9417I~
         btnShowYaku     =              UButton.bind(layoutView,R.id.btnShowYaku,this);//~va11I~
-        if (completeEswn==currentEswn)                             //~9221R~
+        if (Dump.Y) Dump.println("CompReqDlg.setButton completeEswn="+completeEswn+",currentEswn="+currentEswn+",supporterEswn="+supporterEswn+",swTrainingMode="+AG.swTrainingMode);//~va60R~
+//      if (completeEswn==currentEswn)                             //~9221R~//~va60R~
+//      if (completeEswn==currentEswn || supporterEswn==currentEswn)//~va60R~//~va66R~
+        if (!AG.swTrainingMode && (completeEswn==currentEswn || supporterEswn==currentEswn))//~va66I~
         {                                                          //~9221I~
         	btnNG.setVisibility(View.GONE);                        //~9221R~
         	btnOK.setVisibility(View.GONE);                        //~9221I~
@@ -1064,18 +1074,22 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     @Override                                                      //~v@@@I~//~9221M~
     public void onClickOK()                                       //~v@@@R~//~9221M~
     {                                                              //~1602M~//~v@@@I~//~9221M~
-        if (Dump.Y) Dump.println("onClickOK");                     //~v@@@I~//~9221M~
+        if (Dump.Y) Dump.println("CompReqDlg.onClickOK");                     //~v@@@I~//~9221M~//~va66R~
         compStat.setOK(currentEswn,true);                              //~9221R~
         sendReply(true);                                           //~9221I~
         if (compStat.swReplyAll)                                   //~9410I~
 	    	 CompleteDlg.showResult(compStat.completeEswn);        //~9410R~
 	    sendOpen();                                                //~0329I~
+        if (AG.swTrainingMode)                                     //+va66M~
+        {                                                          //+va66M~
+	        compStat.setAmmount(calcOut);  //for CompleteDlg       //+va66M~
+        }                                                          //+va66M~
         dismiss();                                                 //~9221I~
     }                                                              //~1602M~//~v@@@I~//~9221M~
     //******************************************                   //~9221I~
     public void onClickNG()                                        //~9221R~
     {                                                              //~9221I~
-        if (Dump.Y) Dump.println("onClickNG");                     //~9221R~
+        if (Dump.Y) Dump.println("CompReqDlg.onClickNG");                     //~9221R~//~va66R~
         compStat.setOK(currentEswn,false);                             //~9221I~
         sendReply(false);                                          //~9221I~
         if (compStat.swReplyAll)                                   //~9410I~
@@ -1089,7 +1103,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         compStat.setAmmount(calcOut);                              //~9221M~
         compStat.requestSent(); //fill all by NORESP status                  //~9222I~//~9227R~
     	setReplyText();	//draw after reset                         //~9222I~
-        String msg=compStat.getAmmountMsgText();                   //~9221R~
+//      String msg=compStat.getAmmountMsgText();                   //~9221R~//~va60R~
+        String msg=compStat.getAmmountMsgText(compStat.completeEswn); //for robot, currentEswn!=completeEswn//~va60I~
         ACC.sendToAll(GCM_COMPDLG_REQ,msg);                        //~9221R~
 //      btnSend.setEnabled(false);                                 //~9222M~//~9320R~
         dismiss();                                                 //~9221I~//~9222R~//~0401R~
@@ -1135,7 +1150,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             Complete.setAmmount(amts,CALC_AMT_POS,stat);           //~9221R~
         	stat.requestSent();                                    //~9222I~//~9227R~
             newInstance(stat).show();                              //~9221R~
-            skipEswn=srcEswn;                                      //~9227I~
+//          skipEswn=srcEswn;                                      //~9227I~//~va60R~
+            skipEswn=AG.aAccounts.getRealSenderEswn(srcEswn);	//completeEswn or realDealer for Robot//~va60R~
         }                                                          //~9221R~
         else   //GCM_COMPDLG_RESP                               //~9221R~//~0218R~
         {                                                          //~9221R~
@@ -1152,12 +1168,12 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //          	stat.setErr(false);                                //~0301R~
 	            CompleteDlg.showResult(srcEswn);                   //~9227R~
             }                                                      //~0301I~
-            skipEswn=replyEswn;                                   //~9227I~
+            skipEswn=replyEswn; //sender's currenteswn            //~9227I~
         }                                                          //~9221R~
-        if (AG.aAccounts.isServer())                               //~9221M~
+        if (AG.aAccounts.isServer())                               //~9221M~//~va60R~
         {                                                          //~9221I~
-	        int idxAccount=AG.aAccounts.currentEswnToMember(skipEswn);           //~9221R~//~9227I~
-			AG.aAccounts.sendToClient(false/*PswRobot*/,idxAccount/*Pskip*/,PmsgID,PmsgData);//~9221M~
+            int idxAccount=AG.aAccounts.currentEswnToMember(skipEswn);           //~9221R~//~9227I~//~va60R~
+     		AG.aAccounts.sendToClient(false/*PswRobot*/,idxAccount/*Pskip*/,PmsgID,PmsgData);//~9221M~//~va60R~
         }                                                          //~9221I~
     }                                                              //~9221I~
     //*******************************************************************//~9221I~
@@ -1333,6 +1349,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         int curEswn=AG.aAccounts.getCurrentEswn();                 //~9410I~
         int rc=0;                                                  //~9903I~
         boolean swYou=false;                                       //~0106I~
+        boolean swRobot=false;                                     //~va60I~
         for (int ii=0;ii<ctr;ii++)                                 //~9403I~
         {                                                          //~9403I~
             if (ss[ii].completeEswn==curEswn)                      //~0106I~
@@ -1346,11 +1363,20 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             else                                                   //~9403I~
             if (ss[ii].completeEswn==curEswn)                      //~9B11I~
                 UView.showToast(R.string.Err_CompReqRequestResend);  //~9403I~//~9603R~
+            else                                                   //~va60I~
+            if (ss[ii].isShowableRobot(curEswn))                   //~va60I~
+            {                                                      //~va60I~
+				if (Dump.Y) Dump.println("CompReqDlg.shwComplete robot completion for comp idx="+ii);//~va60I~
+                CompReqDlg.newInstance(ss[ii]).show(ii);           //~va60I~
+                swRobot=true;                                      //~va60I~
+                rc++;                                              //~va60I~
+            }                                                      //~va60I~
 //            else    //for multiron                                 //~9B11I~//~0106R~
 //            if (!(ss[ii].swInvalid || ss[ii].swErr))               //~9B11I~//~0106R~
 //                UView.showToast(R.string.Err_CompReqMultipleRon);     //~9B11I~//~0106R~
         }                                                          //~9403I~
-        if (!swYou)                                                //~0106I~
+      if (!swRobot)                                                //~0106I~//~va60I~
+        if (!swYou)                                                //~va60I~
         {                                                          //~0106I~
         	UView.showToast(R.string.Err_YouAreNotCompleted);      //~0106I~
             return 0;                                              //~0106I~
@@ -1368,6 +1394,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //            else    //for multiron                               //~0106I~
             if (ss[ii].completeEswn==curEswn)                      //~0106I~
             	continue;                                          //~0106I~
+            if (ss[ii].supporterEswn==curEswn)                     //~va60R~
+            	continue;                                          //~va60R~
             if (!(ss[ii].swInvalid || ss[ii].swErr))               //~0106I~
                 UView.showToast(R.string.Err_CompReqMultipleRon);  //~0106I~
                                                                    //~0106I~
@@ -1399,7 +1427,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         {                                                          //~va11I~
 //      	UARV=new UARonValue(this);                             //~va11R~
         	UARV=AG.aUARonValue;                                   //~va11I~
-        	ronResult=UARV.getValue(PLAYER_YOU);	//left:amt,top:yaku,right:rank,bottom:point//~va11R~
+//      	ronResult=UARV.getValue(PLAYER_YOU);	//left:amt,top:yaku,right:rank,bottom:point//~va11R~//~va60R~
+        	ronResult=UARV.getValue(completePlayer);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~va60I~
         	longRank=ronResult.longRank;                           //~va11I~
         	swRonChkErr=ronResult.swRonChkErr;                     //~va16I~
             setYaku();                                             //~va11R~//~va16R~
@@ -1539,18 +1568,19 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     //*************************************************************************//~va11I~
     public static boolean chk1stTake()            //tenho          //~va1cR~
     {                                                              //~va11I~
-//        boolean rc=false;                                        //+va20R~
-//        int lastAction=AG.aPlayers.actionBeforeRon;              //+va20R~
-//        boolean swTake=lastAction==GCM_TAKE;                     //+va20R~
-//        int currentEswn=AG.aAccounts.getCurrentEswn();           //+va20R~
-//        int ctrTaken=AG.aPlayers.ctrTakenAll;                    //+va20R~
-//        int ctrDiscarded=AG.aPlayers.ctrDiscardedAll;            //+va20R~
-//        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//+va20R~
-//        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//+va20R~
-//        rc=swParent | swChild;                                   //+va20R~
-//        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//+va20R~
-        boolean rc=AG.aPlayers.chk1stTake();                       //+va20I~
-        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc);  //+va20I~
+//        boolean rc=false;                                        //~va20R~
+//        int lastAction=AG.aPlayers.actionBeforeRon;              //~va20R~
+//        boolean swTake=lastAction==GCM_TAKE;                     //~va20R~
+//        int currentEswn=AG.aAccounts.getCurrentEswn();           //~va20R~
+//        int ctrTaken=AG.aPlayers.ctrTakenAll;                    //~va20R~
+//        int ctrDiscarded=AG.aPlayers.ctrDiscardedAll;            //~va20R~
+//        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//~va20R~
+//        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va20R~
+//        rc=swParent | swChild;                                   //~va20R~
+//        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va20R~
+//      boolean rc=AG.aPlayers.chk1stTake();                       //~va20R~
+        boolean rc=AG.aPlayers.chk1stTakeRon();                    //~va20I~
+        if (Dump.Y) Dump.println("CompReqDlg.chk1stTake rc="+rc);  //~va20I~
         return rc;
     }                                                              //~va11I~
 //    //*************************************************************************//~va11I~//~va16R~

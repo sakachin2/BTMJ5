@@ -1,0 +1,15 @@
+*func WGR not pao 2 player W R and G
+**********case red5 orphan
+**deal          rphan is red5
+05 0 0   0000 0300 0600   1000  1300 1600   2000 2300 2600  0010  0020 0030  0310  
+05 1 1   0010 0310 0610   1000  1400 1700   3000 3000 3010  3100 3120  3400  3410
+05 2 2   0010 0310 0610   1000  1400 1700   3000 3300 3310  3600 3610  3500  3510
+***************
+11 0 0   3430 1   *take white 
+17 0 0            *discard
+12 1 1   3400 3410 0000      *pon white   player 1
+11 0 0   3530 1   *take green     
+17 0 0            *discard
+12 2 2   3500 3510 0000      *pon green player2 
+11 0 0   3630 1   *take red  not pao W & G is not same
+17 0 0            *discard

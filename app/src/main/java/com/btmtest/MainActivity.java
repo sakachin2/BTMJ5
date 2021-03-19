@@ -1,6 +1,7 @@
-//*CID://+va41R~:                             update#= 238;        //~va17R~//~va30R~//+va41R~
+//*CID://+va66R~:                             update#= 249;        //~va66R~
 //**********************************************************************//~@@@@I~
-//2020/11/08 va41 (Bug) coding Main.onPause had call CSI.onResume  //+va41I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2020/11/08 va41 (Bug) coding Main.onPause had call CSI.onResume  //~va41I~
 //2020/11/06 va30 change greenrobot EventCB to URunnable           //~va30I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //**********************************************************************//~@@@@I~
@@ -11,7 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -22,27 +23,17 @@ import android.widget.ImageView;
                                                                    //~@@@@I~
 //import de.greenrobot.event.EventBus;                               //~8930I~//~8C30I~//~va30R~
 
-import com.btmtest.dialog.CompReqDlg;
-import com.btmtest.dialog.CompleteDlg;
-import com.btmtest.dialog.DrawnDlgHW;
-import com.btmtest.dialog.DrawnDlgLast;
-import com.btmtest.dialog.DrawnReqDlgHW;
-import com.btmtest.dialog.DrawnReqDlgLast;
-import com.btmtest.dialog.FinalGameDlg;
 import com.btmtest.dialog.HelpDialog;
 import com.btmtest.dialog.MenuDialog;
 import com.btmtest.dialog.MenuDlgConnect;
 import com.btmtest.dialog.OrientationMenuDlg;
-import com.btmtest.dialog.ScoreDlg;
 import com.btmtest.dialog.TestLayout;
 import com.btmtest.game.Accounts;
-import com.btmtest.game.Complete;
 import com.btmtest.game.GConst;
 import com.btmtest.game.History;
 import com.btmtest.game.HistoryData;
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;                             //~9412R~
-import com.btmtest.game.UA.UAEndGame;
 import com.btmtest.game.gv.Pieces;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Alert;                                    //~8B07I~
@@ -68,7 +59,6 @@ import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.game.GConst.*;                          //~8B22I~
 import static com.btmtest.StaticVars.AG;                           //~@@@@M~
 import static com.btmtest.dialog.PrefSetting.*;
-import static com.btmtest.game.UA.UAEndGame.*;
 import static com.btmtest.utils.Alert.*;
 
 public class MainActivity extends AppCompatActivity
@@ -265,8 +255,8 @@ public class MainActivity extends AppCompatActivity
         if(Dump.Y) Dump.println("MainActivity:onPause");           //~8B05I~
     	try                                                        //~9719I~//~0113M~
         {                                                          //~9719I~//~0113M~
-//      AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~//+va41R~
-        AG.aCSI.onPause();                                         //+va41I~
+//      AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~//~va41R~
+        AG.aCSI.onPause();                                         //~va41I~
         AG.aBTI.onPause();                                         //~@@@@I~
 	    WDI.onPause();		//unregister receiver                  //~0113I~
         super.onPause();                                           //~8B05I~
@@ -734,9 +724,12 @@ public class MainActivity extends AppCompatActivity
 	        if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~9411I~
 //          if (!chkMember())                                      //~@@@@I~//~9621R~
 //      	if (RuleSetting.chkChangedRule())                          //~@@@@I~//~9406R~//~9620R~
+         if (!AG.swTrainingMode)                                      //~va66I~
+         {                                                         //~va66I~
           if (!PswResume)                                          //~9901I~
         	if (!chkRuleSync(true/*swMsg*/))                       //~9620R~
             	return;   //rule not synched                                         //~@@@@I~//~9406R~
+         }                                                         //~va66I~
 //  		if (!createAccounts())                                 //~9621R~
 //          	return;   //rule not synched                       //~9621R~
             if (!chkMember())                                      //~9621I~
@@ -1143,9 +1136,28 @@ public class MainActivity extends AppCompatActivity
     {                                                              //~0119I~
     	boolean rc;                                                //~0119I~
         int ctrActive=BTMulti.getMemberConnected();                //~0119I~
+        if (Dump.Y) Dump.println("MainActivity.chkRobotGamec ctrActive="+ctrActive);//~va66I~
+        AG.swTrainingMode=false;                                    //~va66I~
         if (ctrActive==0)                                          //~0119I~
         {                                                          //~0119I~
-            UView.showToast(R.string.Err_LackingMemberNoConnection);//~0119I~
+//          UView.showToast(R.string.Err_LackingMemberNoConnection);//~0119I~//~va66R~
+//  	    if (RuleSetting.isAllowRobotAll())                     //~va66R~
+			if (RuleSetting.isAllowRobot())                        //~va66I~
+            {                                                      //~va66I~
+        		AG.swTrainingMode=true;                             //~va66I~
+    			AG.aBTMulti.setTrainingMode();                     //+va66I~
+	            String msg=Utils.getStr(R.string.Err_LackingMemberNoConnectionTraining);//~va66I~
+		        int flag=BUTTON_POSITIVE|BUTTON_NEGATIVE;          //~va66I~
+				Alert.showAlert(0/*app_name*/,msg,flag,this);      //~va66I~
+                if (!RuleSetting.isThinkRobot())                   //~va66I~
+		            UView.showToastLong(R.string.Warn_TrainingModeWithNotThinkRobot);//~va66I~
+                                                                   //~va66I~
+            }                                                      //~va66I~
+            else                                                   //~va66I~
+            {                                                      //~va66I~
+	            String msg=Utils.getStr(R.string.Err_LackingMemberNoConnection);//~va66I~
+				Alert.showMessage(0/*app_name*/,msg);              //~va66I~
+            }                                                      //~va66I~
             return false;                                          //~0119I~
         }                                                          //~0119I~
         if (ctrActive+1<PLAYERS)                                   //~0119R~
@@ -1169,12 +1181,22 @@ public class MainActivity extends AppCompatActivity
     @Override   //AlertI                                           //~9611I~//~0119I~
 	public int alertButtonAction(int Pbuttonid,int Prc)            //~9611I~//~0119I~
     {                                                              //~9611I~//~0119I~
-        if (Dump.Y) Dump.println("MainActivity.alertButtonAction buttonID="+Pbuttonid+",rc="+Prc);//~9611I~//~9709R~//~9A14R~//~0119I~//~0329R~
+        if (Dump.Y) Dump.println("MainActivity.alertButtonAction swTrainingMode="+AG.swTrainingMode+",buttonID="+Pbuttonid+",rc="+Prc);//~9611I~//~9709R~//~9A14R~//~0119I~//~0329R~//~va66R~
+      try                                                          //~va66I~
+      {                                                            //~va66I~
     	if (Pbuttonid==BUTTON_POSITIVE)                            //~9611I~//~0119I~
         {                                                          //~0119I~
             BTMulti.resetMemberDisconnected();                     //~0119R~
         	startGame(true/*chk setting*/);                        //~0119I~
         }                                                          //~0119I~
+        else                                                       //~va66I~
+        	AG.swTrainingMode=false;                                //~va66I~
+      }                                                            //~va66I~
+      catch(Exception e)                                           //~va66I~
+      {                                                            //~va66I~
+        Dump.println(e,"MainActivity.alertButtonAction");          //~va66R~
+      }                                                            //~va66I~
+                                                                   //~va66I~
         return 0;                                                  //~9611I~//~0119I~
     }                                                              //~9611I~//~0119I~
 //***************************************************************************//~9621I~

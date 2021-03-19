@@ -1,5 +1,8 @@
-//*CID://+va06R~: update#= 351;                                    //~va06R~
+//*CID://+va6iR~: update#= 362;                                    //~va6eR~//~va6iR~
 //**********************************************************************//~v101I~
+//2021/03/15 va6i add BGM of eburishou kouka                       //~va6iI~
+//2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
+//2021/02/10 va68 change robot name                                //~va68I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //**********************************************************************//~v@11I~
@@ -9,12 +12,16 @@ import android.graphics.Color;
 
 import com.btmtest.AG;
 import com.btmtest.R;
+import com.btmtest.utils.Dump;
+import com.btmtest.utils.Utils;
 
-import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 import static com.btmtest.StaticVars.*;
 
-public class GConst                                                    //~v@@@R~//~@@@@R~
+public class GConst                                                    //~v@@@R~//~@@@@R~//~va06R~
 {                                                                  //~0914I~//~@@@@R~
 	public static final int PLAYERS          =4;                   //~@@@@I~
     public static final int PLAYER_YOU       =0;                   //~@@@@I~
@@ -123,6 +130,10 @@ public class GConst                                                    //~v@@@R~
                                                                    //~v@11I~
     public static final String[] nameESWN=AG.resource.getStringArray(R.array.nameESWN);                                     //~v@@7R~//~v@11R~
     public static final String[] gameSeq=AG.resource.getStringArray(R.array.strGameSeq);                          //~v@11R~
+//  public static final String[] robotYourNameDefault=AG.resource.getStringArray(R.array.Default_YourNameRobot);//~va6eI~
+    public static final String[] robotYourNameDefaultConst=AG.resource.getStringArray(R.array.Default_YourNameRobot);//~va6eI~
+    public static             String[] robotYourNameDefault=new String[PLAYERS];//~va6eR~
+    public static final String   strCancel=AG.resource.getString(R.string.Cancel);//~va68I~
                                                                    //~v@11I~
 	public static final String PREFKEY_YOURNAME="YourName";          //~v@@@I~//~v@11I~
 	public static final String ENCODING= "UTF-8";  //~v@11I~
@@ -147,15 +158,17 @@ public class GConst                                                    //~v@@@R~
     public static final int SOUNDID_DICE_ROLL=8;                   //~v@11I~
     public static final int SOUNDID_DICE_FIX=9;                    //~v@11I~
     public static final int SOUNDID_BGM=10;                        //~va06R~
-    public static final int SOUNDID_BGM_TOP=11;                    //+va06R~
-    public static final int SOUNDID_BGM_GAME1SLOW=12;              //+va06I~
-    public static final int SOUNDID_BGM_GAME1FAST=13;              //+va06I~
-    public static final int SOUNDID_BGM_GAME2SLOW=14;              //+va06I~
-    public static final int SOUNDID_BGM_GAME2FAST=15;              //+va06I~
-    public static final int SOUNDID_BGM_GAME3SLOW=16;              //+va06I~
-    public static final int SOUNDID_BGM_GAME3FAST=17;              //+va06I~
-    public static final int SOUNDID_BGM_GAME4SLOW=18;              //+va06I~
-    public static final int SOUNDID_BGM_GAME4FAST=19;              //+va06I~
+    public static final int SOUNDID_BGM_TOP=11;                    //~va06R~
+    public static final int SOUNDID_BGM_GAME1SLOW=12;              //~va06I~
+    public static final int SOUNDID_BGM_GAME1FAST=13;              //~va06I~
+    public static final int SOUNDID_BGM_GAME2SLOW=14;              //~va06I~
+    public static final int SOUNDID_BGM_GAME2FAST=15;              //~va06I~
+    public static final int SOUNDID_BGM_GAME3SLOW=16;              //~va06I~
+    public static final int SOUNDID_BGM_GAME3FAST=17;              //~va06I~
+    public static final int SOUNDID_BGM_GAME4SLOW=18;              //~va06I~
+    public static final int SOUNDID_BGM_GAME4FAST=19;              //~va06I~
+    public static final int SOUNDID_BGM_EBURISHOU=20;              //~va6iI~
+    public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //+va6iI~
     //*******************************************                  //~v@11I~
     public GConst()                                                //~v@11I~
     {                                                              //~v@11I~
@@ -164,5 +177,21 @@ public class GConst                                                    //~v@@@R~
     //*******************************************                  //~v@11I~
     private void init()                                            //~v@11I~
     {                                                              //~v@11I~
+//        LocalDateTime today=LocalDateTime.now();                 //~va6eR~
+//        int day=today.getDayOfYear();                            //~va6eR~
+   	    Date date=new Date();	//current datetime                 //~va6eR~
+        String strDay=new SimpleDateFormat("dd").format(date);      //~va6eR~
+        int day= Utils.parseInt(strDay,1);                            //~va6eI~
+        int idx=day%(robotYourNameDefaultConst.length-1);     //keep me//~va6eR~
+        for (int ii=0,ctr=0;ii<robotYourNameDefaultConst.length;ii++)    //~va6eI~
+        {                                                          //~va6eI~
+        	if (ii==0 || ii!=idx+1)                                //~va6eI~
+            {                                                      //~va6eI~
+		    	robotYourNameDefault[ctr++]=robotYourNameDefaultConst[ii];//~va6eI~
+                if (ctr==PLAYERS)                                  //~va6eI~
+                	break;                                          //~va6eI~
+            }                                                      //~va6eI~
+        }                                                          //~va6eI~
+        if (Dump.Y) Dump.println("GConst.init day="+day+",robotName="+ Arrays.toString(robotYourNameDefault));//~va6eI~
     }                                                              //~v@11I~
 }//class GCMsgId                                                   //~@@@@R~

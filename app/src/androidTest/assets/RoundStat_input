@@ -1,0 +1,14 @@
+*test kan add but not chankan
+**deal          
+05 0 0   0000 0100 0200   1000  1010 1020   1100 1200 1300        2100 2200  2300  0620 
+05 1 1   0100 0200 0300   0300  0410        1300 1400      1800   2100 2200  2300  2400  2410
+05 2 2   0100 0200 0300   0600  0710 0800   1300 1400 1500        3500 3500  3200  3210 
+05 3 3   0200 0210 0220   0300  0310 0320   0600 0610             3100 3200  3000  3010 3020
+***************
+11 0 0   2400 0      *discard 0620   pon by player3, player3 discard 1800
+11 0 0   3100 0      *player 0 take and discard
+11 1 1   1500 0      *player 1 take and discard 1800 tenpai
+11 2 2   3120 0      *player 2 take and discard
+11 3 3   0630 0      *player 3 take and chankan ,player 1 chankan Ron
+11 3 3   0700 0      *rinshan
+99 20000 0              *                 0:dummy for eswn

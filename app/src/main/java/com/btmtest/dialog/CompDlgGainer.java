@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#=  535;       //~v@@@R~//~9211R~
+//*CID://+DATER~:                             update#=  536;       //~v@@@R~//~9211R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -144,6 +144,7 @@ public class CompDlgGainer                                         //~9219R~
         gameReach=r.bottom;                                        //~9222I~
                                                                    //~9222I~
         swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~9222I~
+    	if (Dump.Y) Dump.println("CompDlgGainer.setupValue calcOut="+Arrays.toString(calcOut));//+1211I~
     }                                                              //~9212I~
     //******************************************
     private void setNormalPoint()                                  //~9212I~
@@ -163,13 +164,13 @@ public class CompDlgGainer                                         //~9219R~
     {                                                              //~9223I~
     	if (Dump.Y) Dump.println("CompDlgGainer.setNormalPointErr");//~9223I~
 		tvWinnerEswn.setText(GConst.nameESWN[completeEswn]);       //~9223I~
-//      tvBasePoint.setText(Utils.getStr(R.string.AbnormalGain));  //~9223I~//+0301R~
-        tvBasePoint.setText(Utils.getStr(PswErr ? R.string.AbnormalGain : R.string.NotAgreed));//+0301I~
+//      tvBasePoint.setText(Utils.getStr(R.string.AbnormalGain));  //~9223I~//~0301R~
+        tvBasePoint.setText(Utils.getStr(PswErr ? R.string.AbnormalGain : R.string.NotAgreed));//~0301I~
         tvRank.setText("");                                        //~9223I~
         tvPointCalc.setText("");                                   //~9223I~
 //      tvPoint.setText("");                                        //~9223I~//~9B10R~
-//  	int errScore=(completeEswn==ESWN_E) ? POINT_RANKM_DEALER : POINT_RANKM;//~9B10I~//+0301R~
-    	int errScore=PswErr ? ((completeEswn==ESWN_E) ? POINT_RANKM_DEALER : POINT_RANKM) : 0;//+0301I~
+//  	int errScore=(completeEswn==ESWN_E) ? POINT_RANKM_DEALER : POINT_RANKM;//~9B10I~//~0301R~
+    	int errScore=PswErr ? ((completeEswn==ESWN_E) ? POINT_RANKM_DEALER : POINT_RANKM) : 0;//~0301I~
         tvPoint.setText(Integer.toString(-errScore));               //~9B10I~
     }                                                              //~9223I~
     //******************************************                   //~9223I~

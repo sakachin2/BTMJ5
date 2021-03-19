@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1152;       //~v@@@R~//~9211R~
+//*CID://+va66R~:                             update#= 1155;       //~va66R~
 //*****************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.text.Spanned;
@@ -119,7 +120,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     private Accounts ACC;                                          //~9322I~
     private Complete CMP;                                          //~9322I~
     private boolean swInitLayout;                                          //~9322I~
-//  private boolean swNoPayMinusError=true;	//TODO                 //~9414R~//+0322R~
+//  private boolean swNoPayMinusError=true;	//TODO                 //~9414R~//~0322R~
 //  private int[] payerInfo=new int[PLAYERS*PLAYERS];              //~9322I~//~9408R~
     private boolean swDismissBeforNew;                             //~9322I~
 //  private int[] eswnMinusPrizeTo=new int[PLAYERS];               //~9403R~//~9415R~
@@ -484,7 +485,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     @Override                                                      //~9321I~
     public void setButton()                                        //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("FinalGameDlg.setButton typeClose="+Integer.toHexString(typeClose));//~9523I~//~9524R~
+        if (Dump.Y) Dump.println("FinalGameDlg.setButton swTrainingMode="+AG.swTrainingMode+",typeClose="+Integer.toHexString(typeClose));//~9523I~//~9524R~//~va66R~
         if ((typeClose & CLOSABLE_QUERY_DECLARED)!=0)              //~9523I~
         {                                                          //~9523I~
             btnOK.setVisibility(View.VISIBLE);                     //~9523I~
@@ -522,6 +523,9 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
 	            btnFixGame.setEnabled(swAllOK);                    //~9525I~
 	            btnOK.setVisibility(View.GONE);                    //~9525I~
 	            btnCancel.setVisibility(View.GONE);                //~9902I~
+              if (AG.swTrainingMode)                               //+va66I~
+                btnSend.setVisibility(View.GONE);                  //+va66I~
+              else                                                 //+va66I~
 	            btnSend.setVisibility(View.VISIBLE);               //~9525I~
             }                                                      //~9525I~
         }                                                          //~9523I~//~9524R~//~9525R~

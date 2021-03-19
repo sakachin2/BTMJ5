@@ -1,0 +1,19 @@
+*func player eswn td(type,num,remain,red5)
+**********case red5 orphan
+**deal          rphan is red5
+05 0 0   0110  0210 0310   1010 1110 1210   2010 2210         3030 3130 3230   3430  3530
+*deal 3dragon
+05 1 1   0010 0310 0610   1010  1410   3010 3110 3210  3310 3410 3420    3610 3620
+***************
+*11 0 0   3500 1   *take green 
+*17 0 0            *discard
+11 0 0   3530 1   *take green 
+17 0 0            *discard
+11 0 0   3430 1   *take white     
+17 0 0            *discard
+12 1 1   3410 3420 0000      *pon white 
+11 0 0   3630 1   *take red  
+17 0 0            *discard
+12 1 1   3610 3620 0000      *pon red
+11 0 0   3530 1   *take green 
+17 0 0            *discard

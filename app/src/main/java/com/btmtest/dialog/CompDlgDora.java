@@ -11,7 +11,7 @@ package com.btmtest.dialog;                                        //~9219R~
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.graphics.Canvas;
 import android.view.View;

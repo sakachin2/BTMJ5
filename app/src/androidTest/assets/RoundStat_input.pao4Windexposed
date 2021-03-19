@@ -1,0 +1,24 @@
+*func 4WIND exposed ctr
+**deal          
+05 0 0   0000 0300 0600   1000  1300 1600   2000 2300 2600  0010  0020 0030  0310  
+05 1 1   0010 0310 0610   1000  1400 1700   3000 3010 3100  3110 3200  3210  1800
+***************
+*11 0 0   3300 1   *take east  
+*17 0 0            *discard
+11 0 0   3310 1   *take east  
+17 0 0            *discard
+11 0 0   3320 1   *take east  
+17 0 0            *discard
+*
+11 0 0   3020 1   *take east  
+17 0 0            *discard
+12 1 1   3000 3010 0000      *pon East    player 1
+11 0 0   3120 1   *take south 
+17 0 0            *discard
+12 1 1   3100 3110 0000      *pon S       player 1
+11 0 0   3220 1   *take N   NO Pao E & S
+17 0 0            *discard
+12 1 1   3200 3210 0000      *pon W       player 1
+*
+11 0 0   3330 1   *take N  no pao 4th tile
+17 0 0            *discard

@@ -8,18 +8,15 @@ package com.btmtest.dialog;                                         //~v@@@R~
 
 import android.app.Dialog;
 //import android.app.DialogFragment;                               //+va40R~
-import android.support.v4.app.DialogFragment;                      //+va40I~
+import androidx.fragment.app.DialogFragment;                      //+va40I~
 //import android.app.FragmentManager;                              //~va40R~
-import android.support.v4.app.FragmentManager;                     //~va40I~
 //import android.app.FragmentTransaction;                          //~va40R~
-import android.support.v4.app.FragmentTransaction;                 //~va40I~
 import android.content.DialogInterface;
 import android.app.AlertDialog;                                    //~v@@@I~
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,7 +26,6 @@ import android.widget.Toast;
 
 import com.btmtest.R;
 import com.btmtest.gui.UButton;
-import com.btmtest.utils.Alert;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;

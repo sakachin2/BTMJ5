@@ -1,7 +1,8 @@
-//*CID://+va19R~: update#= 981;                                    //+va19R~
+//*CID://+va60R~: update#= 988;                                    //~va19R~//~va60R~
 //**********************************************************************//~v101I~
-//2020/10/18 va19 warning use anywan if blocked topn               //+va19I~
-//**********************************************************************//+va19I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/10/18 va19 warning use anywan if blocked topn               //~va19I~
+//**********************************************************************//~va19I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -17,6 +18,7 @@ import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Alert;                                    //~9B16I~
+import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
@@ -85,7 +87,12 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
     private UAD2Touch UAD2T;                                      //~9B25I~//~9B28R~
     private int actionNewBlocker;                                  //~9B26I~
     private boolean swRonable;                                    //~9B28I~
+    private boolean swRobot;                                       //~va60I~
 //*************************                                        //~v@@@I~
+	public UADelayed2()   //for IT                                 //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UADelayed2.default Constructor");//~va60I~
+    }                                                              //~va60I~
 	public UADelayed2(UserAction Pua)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9B17R~
     {                                                              //~0914I~
         AG.aUADelayed=this;                                        //~v@@@I~//~9B17R~
@@ -193,6 +200,25 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         if (Dump.Y) Dump.println("UADelayed2.isBlockMode rc="+rc+",actionID="+PactionID);//~9C04R~
         return rc;                                                 //~9C04I~
     }                                                              //~9C04I~
+	//*************************************************************************//~va60I~
+    private boolean isBlockMode(int PactionID,boolean PswServer,int Pplayer)//~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UADelayed2.isBlockMode swServer="+PswServer+",Pplayer="+Pplayer+",actionid="+PactionID);//~va60I~
+		if (PactionID!=GCM_RON)                                    //~va60I~
+        {                                                          //~va60I~
+        	if (PswServer)                                         //~va60I~
+        	{                                                      //~va60I~
+        		if (AG.aAccounts.isRobotPlayer(Pplayer))           //~va60I~
+                {                                                  //~va60I~
+			    	if (Dump.Y) Dump.println("UADelayed.isBlockMode return false by robot action on server");//~va60I~
+        	    	return false;                                  //~va60I~
+                }                                                  //~va60I~
+        	}                                                      //~va60I~
+        }                                                          //~va60I~
+    	boolean rc=is2TouchMode(PactionID)||isWaitSelectMultipleMode(PactionID);//~va60I~
+        if (Dump.Y) Dump.println("UADelayed2.isBlockMode rc="+rc+",actionID="+PactionID);//~va60I~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
 	//*************************************************************************//~9B28I~
 	//*from UA.selectInfo at action device                         //~9B28I~
 	//*For other than Pon/Kan/Chii/Ron, Take and Reach                             //~9B28I~//~9C04R~
@@ -220,9 +246,19 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
     public int isYourTune(int PactionID,int Pplayer)               //~9C06R~
     {                                                              //~9C06I~
     	int msgid=0;                                               //~9C06I~
-        if (Dump.Y) Dump.println("UADelayed2.isYourTune actionID="+PactionID+",player="+Pplayer);//~9C06I~
+        if (Dump.Y) Dump.println("UADelayed2.isYourTune actionID="+PactionID+",player="+Pplayer+",swStopAuto="+swStopAuto2Touch);//~9C06I~//~va60R~
         if (Pplayer!=PLAYER_YOU)                                   //~9C06I~
+        {                                                          //~va60I~
+            if (AG.aAccounts.isDummyPlayer(Pplayer))  //call by robot//~va60I~
+            {                                                      //~va60I~
+		        if (swStopAuto2Touch)  //blocked                   //~va60I~
+                {                                                  //~va60I~
+	        		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~
+                    return -1;                                     //~va60I~
+                }                                                  //~va60I~
+            }                                                      //~va60I~
         	return msgid;                                          //~9C06I~
+        }                                                          //~va60I~
         if (swStopAuto2Touch)  //blocked                                    //~9C06I~//~9C07R~
         {                                                          //~9C06I~
             if (UAD2T.is2ndTouchOtherAction(PactionID))    //Top But different action//~9C06R~
@@ -244,25 +280,46 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         if (Dump.Y) Dump.println("UADelayed2.isYourTune msgid="+Integer.toHexString(msgid));//~9C06R~
         return msgid;                                              //~9C06I~
     }                                                              //~9C06I~
+	//*************************************************************************//~va60I~
+	//*from RARon                                                  //~va60I~
+	//*rc:true:issue Ron                                           //~va60I~
+	//*************************************************************************//~va60I~
+    public boolean chkSelectInfo2TouchRobot(int Pplayer,int[] PintParm)//~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2TouchRobot player="+Pplayer);//~va60I~
+        swRobot=true;                                              //~va60I~
+	    boolean rc=chkSelectInfo2Touch(true/*PswServer*/,GCM_RON/*PactionID*/,Pplayer,PintParm);//~va60I~
+        swRobot=false;                                             //~va60I~
+        if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2TouchRobot rc="+rc);//~va60I~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
 	//*************************************************************************//~9B17I~
 	//*from UA.selectInfo at action device                         //~9B17R~
 	//*rc:true:continue to action                                  //~9B17I~
 	//*************************************************************************//~9B17I~
     public boolean chkSelectInfo2Touch(boolean PswServer,int PactionID,int Pplayer,int[] PintParm)//~9B17I~//~9B18R~
     {                                                              //~9B17I~
-        if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2Touch swServer="+PswServer+",action="+PactionID+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~9B17R~//~9B18R~//~9B28R~//~9C10R~
+        if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2Touch swRobot="+swRobot+",swServer="+PswServer+",action="+PactionID+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~9B17R~//~9B18R~//~9B28R~//~9C10R~//~va60R~
         if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2Touch stopAuto2Tuch="+swStopAuto2Touch+",sw2TouchPon="+sw2TouchPon+",sw2touchRon="+sw2TouchRon+",swBtn2Touch="+swBtn2Touch);//~9B25I~//~9B28R~
 //      if (!sw2Touch)                                             //~9B17I~//~9C04R~
-        if (!is2TouchMode(PactionID))	//Not cancelable Ron                             //~9C04R~//~9C10R~
+//      if (!is2TouchMode(PactionID))	//Not cancelable Ron                             //~9C04R~//~9C10R~//~va60R~
+        if (swRobot || !is2TouchMode(PactionID))	//Not cancelable Ron//~va60I~
         {                                                          //~9B18I~
 //  		if (isWaitSelectMultipleMode(PactionID))               //~9C05I~//~9C10R~
             if (UAD2T.isWaitSelectMultipleMode(0/*status*/,PactionID))  //pon,chii blockes until select multiple comp//~9C10I~
             	return chkSelectInfoMultiple(PswServer,PactionID,Pplayer); //~9C05R~//~9C07R~
 	        if (!swStopAuto2Touch)              //Not blocked by Ron//~9C10I~
             {                                                      //~9C10I~
-        		if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2Touch no 2touchMode");//~9B18I~//~9C10R~
+        		if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2Touch no 2touchMode swRobot="+swRobot);//~9B18I~//~9C10R~//~va60R~
         		return true;                                           //~9B17I~//~9C10R~
             }                                                      //~9C10I~
+            else                                                   //+va60I~
+        	if (swRobot) //from chkSelectInfo2TouchRobot<-RARon    //+va60I~
+            {                                                      //+va60I~
+	        	UView.showToast(R.string.ActionBlockedByHumanForRobot);//+va60I~
+                return false;                                      //+va60I~
+            }                                                      //+va60I~
+	        if (Dump.Y) Dump.println("UADelayed2.chkSelectInfo2Touch blocked swStopAuto2Touch");//~va60I~
         }                                                          //~9B18I~
         if (swStopAuto2Touch)                                      //~9B28M~
         {                                                          //~9B28M~
@@ -590,7 +647,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 	    	UA.showInfo(0,R.string.Info_BlockCanceled);            //~9C07I~
     }                                                              //~9B23I~
     //*************************************************************************//~9C05I~
-    public void actionCanceledTimeout(int PactionID,boolean PswServer,boolean PswReceived,int Pplayer)//~9C05I~
+    private void actionCanceledTimeout(int PactionID,boolean PswServer,boolean PswReceived,int Pplayer)//~9C05I~//~va60R~
     {                                                              //~9C05I~
         Message msg=msgWaiting;                                    //~9C05I~
         if (Dump.Y) Dump.println("UADelayed2.actionCanceledTimeout actionID="+PactionID+",swServer="+PswServer+",player="+Pplayer+",msgWaiting="+ Utils.toString(msgWaiting));//~9C05R~
@@ -660,7 +717,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         return rc;                                                 //~9C07I~
 	}                                                              //~9C07I~
     //*************************************************************************//~9B21I~
-    public void actionDone(int PactionID,boolean PswServer,int Pplayer)//~9B21I~//~9B24R~//~9B27R~
+    private void actionDone(int PactionID,boolean PswServer,int Pplayer)//~9B21I~//~9B24R~//~9B27R~//~va60R~
     {                                                              //~9B21I~
         if (Dump.Y) Dump.println("UADelayed2.actionDone actionID="+PactionID+",swServer="+PswServer+",player="+Pplayer);//~9B21I~
     	if (swStop)                                                //~9B21I~
@@ -670,9 +727,10 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         }                                                          //~9B21I~
 //      if (!sw2Touch)                                             //~9B21I~//~9C04R~
 //      if (!is2TouchMode(PactionID))                              //~9C04R~
-        if (!isBlockMode(PactionID))                               //~9C04I~
+//      if (!isBlockMode(PactionID))                               //~9C04I~//~va60R~
+        if (!isBlockMode(PactionID,PswServer,Pplayer))             //~va60I~
         {                                                          //~9B21I~
-        	if (Dump.Y) Dump.println("UADelayed2.actionDone no 2touchMode");//~9B21I~
+        	if (Dump.Y) Dump.println("UADelayed2.actionDone not 2touchMode");//~9B21I~//~va60R~
         	return;                                                //~9B21I~
         }                                                          //~9B21I~
         removePendingMsg2Touch();                                  //~9B22I~
@@ -1250,11 +1308,11 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         if(Dump.Y) Dump.println("UADelayed2.timeoutBlockRelease on server intParm="+Arrays.toString(PintParm)+",actionID="+actionID+",player="+player);//~9C05I~
     	actionCanceledTimeout(actionID,true/*PswServer*/,false/*PswReceived*/,player);//~9C05I~
     }                                                              //~9C05I~
-    //*************************************************************************//+va19I~
-    public boolean isBlockedTop()                                  //+va19I~
-    {                                                              //+va19I~
-    	boolean rc=UAD2T.is2ndTouch(); //yourStatus==YS_BLOCK_TOP  //+va19I~
-        if(Dump.Y) Dump.println("UADelayed2.isBlockedTop rc="+rc); //+va19I~
-        return rc;                                                 //+va19I~
-    }                                                              //+va19I~
+    //*************************************************************************//~va19I~
+    public boolean isBlockedTop()                                  //~va19I~
+    {                                                              //~va19I~
+    	boolean rc=UAD2T.is2ndTouch(); //yourStatus==YS_BLOCK_TOP  //~va19I~
+        if(Dump.Y) Dump.println("UADelayed2.isBlockedTop rc="+rc); //~va19I~
+        return rc;                                                 //~va19I~
+    }                                                              //~va19I~
 }//class                                                           //~v@@@R~

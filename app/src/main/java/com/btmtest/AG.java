@@ -1,5 +1,7 @@
-//*CID://+va40R~:                             update#=  435;       //~va40R~
+//*CID://+va66R~:                             update#=  448;       //~va66R~
 //******************************************************************************************************************//~v101R~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //@@01 20181105 for BTMJ3                                          //~@@01I~
@@ -19,8 +21,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 //import android.app.FragmentManager;                              //~va40R~
-import android.support.v4.app.FragmentManager;                     //~va40I~
-import android.support.v4.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;                     //~va40I~
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.os.HandlerThread;                                   //~@@01I~
@@ -64,9 +66,7 @@ import com.btmtest.game.gv.GameViewHandler;                        //~@@01I~
 import com.btmtest.game.gv.MJTable;                                //~@@01I~
 import com.btmtest.game.ACAction;                                  //~@@01I~
 import com.btmtest.game.ACATouch;                                  //~@@01I~
-import com.btmtest.game.Accounts;                                  //~@@01I~
 import com.btmtest.game.UserAction;                                //~@@01I~
-import com.btmtest.game.UADelayed;                                 //~@@01I~
 import com.btmtest.game.UADelayed2;                                //~@@01I~
 import com.btmtest.game.UA.UAEndGame;                                   //~@@01I~
 import com.btmtest.game.LastGame;                                  //~@@01I~
@@ -98,6 +98,14 @@ import com.btmtest.wifi.PartnerFrame;                              //~@@01R~
 import com.btmtest.wifi.IPSubThread;                               //~@@01I~
 import com.btmtest.wifi.CSI;                                       //~@@01I~
 import com.btmtest.utils.sound.Sound;                                    //~@@01I~
+import com.btmtest.game.RA.Shanten;                                //~va60I~
+import com.btmtest.game.RA.RoundStat;                              //~va60I~
+import com.btmtest.game.RA.RADiscard;                              //~va60I~
+import com.btmtest.game.RA.RADSmart;                               //~va60I~
+import com.btmtest.game.RA.RADSEval;                               //+va66I~
+import com.btmtest.game.RA.RACall;                                 //~va60I~
+import com.btmtest.game.RA.RARon;                                  //~va60I~
+import com.btmtest.game.RA.RAReach;                                //~va60I~
                                                                    //~@@01I~
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@@01I~
 import static com.btmtest.dialog.RuleSettingEnum.*;
@@ -357,6 +365,14 @@ public class AG                                                    //~1107R~
     public  SuspendIOErrDlg aSuspendIOErrDlg;                      //~@@01I~
     public  ActionAlert aActionAlert;                              //~@@01I~
     public  UAD2Touch aUAD2Touch;                                  //~@@01R~
+    public  Shanten aShanten;                                      //~va60I~
+    public  RoundStat aRoundStat;                                  //~va60R~
+    public  RADiscard aRADiscard;                                  //~va60I~
+    public  RADSmart  aRADSmart;                                   //~va60I~
+    public  RADSEval  aRADSEval;                                   //+va66I~
+    public  RACall    aRACall;                                     //~va60I~
+    public  RAReach   aRAReach;                                    //~va60I~
+    public  RARon     aRARon;                                      //~va60R~
                                                                    //~@@01I~
     public  ProgDlg progDlg;                                       //~@@01I~
 //  public ProgressDialog androidDialog;                           //~va40R~
@@ -394,6 +410,7 @@ public class AG                                                    //~1107R~
     private int msgSeqNo;                                          //~@@01I~
     private int[] msgSeqNoEach=new int[PLAYERS];                   //~@@01I~
     private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~
+    public boolean swTrainingMode;                                 //~va66R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
 //************************************                             //~@@01I~
@@ -575,7 +592,7 @@ public class AG                                                    //~1107R~
     }                                                              //~va40I~
 //*************************************************************    //~va40I~
 	@SuppressWarnings("deprecation")                                //~va40I~
-    private       int getColor_Under23(int Pcolor)                 //+va40R~
+    private       int getColor_Under23(int Pcolor)                 //~va40R~
     {                                                              //~va40I~
         return AG.resource.getColor(Pcolor);                    //~va40I~
     }                                                              //~va40I~

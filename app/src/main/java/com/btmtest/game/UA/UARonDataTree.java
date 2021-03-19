@@ -1,5 +1,7 @@
-//*CID://+va11R~: update#= 847;                                    //~va11R~
+//*CID://+va60R~: update#= 857;                                    //~va64R~//~va60R~
 //**********************************************************************//~v101I~
+//2021/01/26 va64 (Bug)yaku:1stChildRon falsg was lost when not mix and get higher//~va64I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.UA;                                       //~va11R~
@@ -72,10 +74,19 @@ public class UARonDataTree                                         //~va11R~
     public boolean swTaken,swAllInHand;                            //~va11R~
     public boolean swNoMixSpecial;                                 //~va11I~
     public int rankDora;                                           //~va11I~
+    private int[] itsDoraOpen;                                     //~va60I~
+    private int   ctrDoraOpen;                                     //~va60I~
 	//*************************************************************************//~va11I~
-    public UARonDataTree(UARonValue PuaRonValue,int Pplayer,int[][] PdupCtr)//~va11R~
+    public UARonDataTree(UARonValue PuaRonValue)                   //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.Constructor");     //~va60I~
+        UARV=PuaRonValue;                                          //~va60I~
+//      UARDT=new UARonDataTree(this);	//chk dora                 //~va60I~
+    }                                                              //~va60I~
+//  public UARonDataTree(UARonValue PuaRonValue,int Pplayer,int[][] PdupCtr)//~va11R~//~va60R~
+    public void initInstance(int Pplayer,int[][] PdupCtr)          //~va60I~
     {                                                              //~va11I~
-        UARV=PuaRonValue;                                          //~va11R~
+//      UARV=PuaRonValue;                                          //~va11R~//~va60R~
 //      tdRon=PtdRon;                                              //~va11R~
         player=Pplayer;                                            //~va11I~
         dupCtr=PdupCtr;                                            //~va11I~
@@ -196,7 +207,7 @@ public class UARonDataTree                                         //~va11R~
                     pointFinal=uard.pointMax;                      //~va11R~
                     longRankFinal=uard.longRankMax;                //~va11I~
 			        if (Dump.Y) Dump.println("UARonDataTree.getAmmount swChkRank="+UARV.swChkRank+",v="+v+",amt="+amt+",rankFinal="+rankFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal));//~va11R~
-                    if (UARV.swChkRank && longRankFinal.isContainsAnyYakuExceptDora())//+va11R~
+                    if (UARV.swChkRank && longRankFinal.isContainsAnyYakuExceptDora())//~va11R~
                     	break;                                     //~va11I~
                 }                                                  //~va11I~
                                                                    //~va11I~
@@ -215,9 +226,10 @@ public class UARonDataTree                                         //~va11R~
 			if (swNoMixSpecial && amtSpecial>amt)//renho           //~va11R~
             {                                                      //~va11I~
             	//TODO test renho+other mix                        //~va11I~
-		        if (Dump.Y) Dump.println("UARonDataTree.getAmmount selected special amt="+amt+",amtSpecial="+amtSpecial+",rankSpecial="+rankSpecial);//~va11R~
+		        if (Dump.Y) Dump.println("UARonDataTree.getAmmount selected special amt="+amt+",amtSpecial="+amtSpecial+",rankSpecial="+rankSpecial+",longRankSpecial="+longRankSpecial);//~va11R~//~va64R~
             	amt=amtSpecial;                                    //~va11I~
             	rankFinal=rankSpecial;                             //~va11R~
+            	longRankFinal=longRankSpecial;                     //~va64I~
                 pointFinal=0;                                      //~va11R~
 //              addYakuOther(yakuSpecial);//renho not Yakuman      //~va11R~
 			    typeMaxUARD=TYPE_MAX_UARD_SPECIAL;                 //~va11I~
@@ -480,8 +492,15 @@ public class UARonDataTree                                         //~va11R~
     {                                                              //~va11I~
     	int type,num,ctrUp=0,ctrDown=0,ctrKanUp=0,ctrKanDown=0;    //~va11I~
         //**********************************                       //~va11I~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDora player="+player+",swEmulation="+UARV.swEmulation);//+va60I~
         if ((TestOption.option2 & TO2_RONVALUE_NODORA)!=0)          //~va11I~
         	return 0;                                              //~va11I~
+//      if (UARV.itsDoraOpen!=null)                                //~va60R~
+        if (UARV.swEmulation)                                      //~va60I~
+        {                                                          //~va60I~
+		    return chkDoraOpen(UARV.itsDoraOpen,UARV.ctrDoraOpen); //~va60I~
+        }                                                          //~va60I~
+        ctrDoraOpen=0;                                             //~va60I~
     	int[] dora= CompDlgDora.getDoraTiles();	//{upper.type,upper.number,lower.type,lower.number}//~va11R~
         if (Dump.Y) Dump.println("UARonDataTree.chkDora stock="+Arrays.toString(dora));//~va11R~
         if (Dump.Y) Dump.println("UARonDataTree.chkDora dupCtrAll="+Utils.toString(dupCtrAll));//~va11R~
@@ -489,9 +508,15 @@ public class UARonDataTree                                         //~va11R~
         type=dora[0]; num=dora[1];                                 //~va11I~
         num=getNextDora(RuleSetting.isDoraNext(),type,num);        //~va11I~
         ctrUp=dupCtrAll[type][num];  //ron tile is containd        //~va11R~
+        if (itsDoraOpen!=null)                                     //~va60I~
+        {                                                          //~va60I~
+            itsDoraOpen[ctrDoraOpen++]=type;                       //~va60I~
+            itsDoraOpen[ctrDoraOpen++]=num;                        //~va60I~
+        }                                                          //~va60I~
     //*lower                                                       //~va11I~
         int styleUnder=RuleSetting.getStyleHiddenDora();       //~va11R~
-        boolean swReach=AG.aPlayers.getReachStatus(PLAYER_YOU)==REACH_DONE;//~va11I~
+//      boolean swReach=AG.aPlayers.getReachStatus(PLAYER_YOU)==REACH_DONE;//~va11I~//+va60R~
+        boolean swReach=AG.aPlayers.getReachStatus(player)==REACH_DONE;//+va60I~
         if (swReach)                                               //~va11I~
         {                                                          //~va11I~
             type=dora[2]; num=dora[3];                             //~va11R~
@@ -513,6 +538,11 @@ public class UARonDataTree                                         //~va11R~
                 {                                                  //~va11I~
 	     	    	num=getNextDora(styleKanUpper==DORA_KANDORA_NEXT,type,num);//~va11I~
         			ctrKanUp+=dupCtrAll[type][num];                  //~va11I~
+                    if (itsDoraOpen!=null)                         //~va60I~
+                    {                                              //~va60I~
+                        itsDoraOpen[ctrDoraOpen++]=type;           //~va60I~
+                        itsDoraOpen[ctrDoraOpen++]=num;            //~va60I~
+                    }                                              //~va60I~
                 }                                                  //~va11I~
             }                                                      //~va11I~
 	        if (swReach)                                           //~va11I~
@@ -532,8 +562,65 @@ public class UARonDataTree                                         //~va11R~
 			addYakuOtherWithCtr(RYAKU_CTR_DORA,rc);                //~va11I~
         if (Dump.Y) Dump.println("UARonDataTree.chkDora style under="+styleUnder+",kanUp="+styleKanUpper+",kanLower="+styleKanLower);//~va11R~
         if (Dump.Y) Dump.println("UARonDataTree.chkDora ctr="+rc+",ctrUp="+ctrUp+",ctrDown="+ctrDown+",ctrKanUp="+ctrKanUp+",ctrKanDown="+ctrKanDown);//~va11R~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDora itsDoraOpen="+Arrays.toString(itsDoraOpen));//+va60I~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
+	//*************************************************************************//~va60I~
+    private int chkDoraOpen(int[] PitsDoraOpen,int PctrDoraOpen)    //~va60I~
+    {                                                              //~va60I~
+        //**********************************                       //~va60I~
+        int ctrUp=0,type,num;                                               //~va60I~
+    	int[] dora=PitsDoraOpen;                                   //~va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDoraOpen dora="+Utils.toString(dora,-1,PctrDoraOpen*2));//~va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDora dupCtrAll="+Utils.toString(dupCtrAll));//~va60I~
+    	for (int ii=0;ii<PctrDoraOpen;ii++)                        //~va60I~
+        {                                                          //~va60I~
+    	    type=dora[ii+ii]; num=dora[ii+ii+1];                   //~va60I~
+        	ctrUp+=dupCtrAll[type][num];  //ron tile is containd   //~va60I~
+        }                                                          //~va60I~
+        int rc=ctrUp;                                              //~va60I~
+        rc+=chkRedTile();                                          //~va60I~
+        if (rc!=0)                                                 //~va60I~
+			addYakuOtherWithCtr(RYAKU_CTR_DORA,rc);                //~va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDoraOpen rc="+rc);//~va60I~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
+	//*************************************************************************//~va60M~
+	//*from RoundStat,get exposed dora                             //~va60M~
+	//*output:[type,num],retrn dora ctr                            //~va60I~
+	//*************************************************************************//~va60M~
+    public  int getDoraOpen(int[] PitsDoraOpen/*max 2*(1+4) entry*/)//~va60I~
+    {                                                              //~va60I~
+    	int type,num;                                              //~va60I~
+        //**********************************                       //~va60I~
+        ctrDoraOpen=0;                                             //~va60I~
+    	int[] dora= CompDlgDora.getDoraTiles();	//{upper.type,upper.number,lower.type,lower.number}//~va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen dora="+Arrays.toString(dora));//~va60R~
+        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen dupCtrAll="+Utils.toString(dupCtrAll));//~va60R~
+    //*upper                                                       //~va60I~
+        type=dora[0]; num=dora[1];                                 //~va60I~
+        num=getNextDora(RuleSetting.isDoraNext(),type,num);        //~va60I~
+        PitsDoraOpen[ctrDoraOpen++]=type;                          //~va60I~
+        PitsDoraOpen[ctrDoraOpen++]=num;                           //~va60I~
+    //*kan                                                         //~va60I~
+        int styleKanUpper=RuleSetting.getStyleKanDora();           //~va60I~
+    	for (int ii=4;ii<dora.length;ii+=4)                        //~va60I~
+        {                                                          //~va60I~
+        	if (styleKanUpper!=DORA_KANDORA_NO)                    //~va60I~
+            {                                                      //~va60I~
+	        	type=dora[ii]; num=dora[ii+1];                     //~va60I~
+                if (type>=0)                                       //~va60I~
+                {                                                  //~va60I~
+	     	    	num=getNextDora(styleKanUpper==DORA_KANDORA_NEXT,type,num);//~va60I~
+                    PitsDoraOpen[ctrDoraOpen++]=type;              //~va60I~
+                    PitsDoraOpen[ctrDoraOpen++]=num;               //~va60I~
+                }                                                  //~va60I~
+            }                                                      //~va60I~
+        }                                                          //~va60I~
+        int rc=ctrDoraOpen/2;                                      //~va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen rc="+rc);//~va60R~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
 	//*************************************************************************//~va11I~
     private int getNextDora(boolean PswNext,int Ptype,int Pnum)    //~va11I~
     {                                                              //~va11I~

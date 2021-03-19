@@ -1,21 +1,22 @@
-//*CID://+DATER~:                             update#=  703;       //~v@@@R~//~9211R~
+//*CID://+va66R~:                             update#=  714;       //~va6bR~//~va66R~
 //*****************************************************************//~v101I~
+//2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
 import android.graphics.Rect;
-import android.os.Message;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.btmtest.R;
 import com.btmtest.TestOption;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.GConst;
+import com.btmtest.game.RA.RAUtils;
+import com.btmtest.game.RA.RoundStat;
 import com.btmtest.game.Status;
 import com.btmtest.game.UA.UAEndGame;
 import com.btmtest.game.gv.GameViewHandler;
@@ -29,6 +30,7 @@ import com.btmtest.utils.Utils;
 import static com.btmtest.StaticVars.AG;                           //~9303I~
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.UA.UAEndGame.*;
 
 public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~//~9220R~//~9302R~//~9307R~
@@ -190,6 +192,7 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
 //      	rbDrawnManganPend.setEnabled(false);                   //~9413M~//~9422R~
         	cbDrawnMangan.setEnabled(false);                       //~9422I~
         }                                                          //~9413M~
+        RuleSettingYaku.setKeiten(PView,true/*swFixed*/);          //~va6bR~
     }                                                              //~9413I~
     //******************************************                   //~v@@@I~//~9220R~
     protected void setTitle()                                        //~v@@@I~//~9220R~//~9303R~
@@ -215,8 +218,10 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
         if (Dump.Y) Dump.println("DrawnReqDlgLast.setRadioGroup");                 //~9303I~//~9307R~//~9308R~
 //      rgDrawnType  = new URadioGroup(PView,R.id.rgDrawnType,0);   //~9303R~//~9422R~
         rgDrawnType  = new URadioGroup(PView,R.id.rgDrawnType,0,rbIDs);//~9422I~
-        int pending=AG.aPlayers.getPosReach(PLAYER_YOU)<0 ? 0/*no pending*/ : 1;//+0329I~
-        rgDrawnType.setCheckedID(pending,false/*swFixed*/);                          //~9303I~//~9422R~//+0329R~
+        int pending=AG.aPlayers.getPosReach(PLAYER_YOU)<0 ? 0/*no pending*/ : 1;//~0329I~
+        if (pending==0) //not reach issued                         //~va66I~
+            pending=isTenpai(currentEswn) ? 1 : 0;                 //~va66I~
+        rgDrawnType.setCheckedID(pending,false/*swFixed*/);                          //~9303I~//~9422R~//~0329R~
     }                                                              //~9302I~
     //*******************************************************      //~9303I~
     @Override                                                      //~v@@@I~//~9221M~
@@ -316,34 +321,15 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
         if (Dump.Y) Dump.println("DrawnReqDlgLast.sendMsg reason="+Preason);//~9307R~//~9904R~
         GameViewHandler.sendMsg(GCM_ENDGAME_DRAWN,PLAYER_YOU,ENDGAME_DRAWN_LAST_RESPONSE,Preason);//~9307I~
     }                                                              //~9307I~
-//    //*******************************************************      //~9304I~//~9307R~
-//    public void setResponseOnServer(int Preason)                   //~9304I~//~9307R~
-//    {                                                              //~9304I~//~9307R~
-//        if (Dump.Y) Dump.println("DrawnReqDlgLast.setResponseOnServer reason="+Preason);//~9304I~//~9307R~
-//        GameViewHandler.sendMsg(GCM_ENDGAME_DRAWN,PLAYER_YOU,ENDGAME_DRAWN_RESPONSE,Preason);//~9304R~//~9307R~
-//    }                                                              //~9304I~//~9307R~
-//    //*******************************************************    //~9303R~
-//    protected static void repaint(DrawnReqDlgLast Pdlg)              //~9303R~//~9307R~
-//    {                                                            //~9303R~
-//        if (Pdlg!=null)                                          //~9303R~
-//            new EventCB(ECB_COMPDLG_RESP,EventCB.newBundle(Pstat.completeEswn)).postEvent();//~9303R~
-//        if (Dump.Y) Dump.println("DrawnReqDlgLast.repaint Pdlg=null ? "+(dlg==null));//~9303R~//~9307R~
-//    }                                                            //~9303R~
-//    //*******************************************************    //~9303R~
-//    //*from MainActivity on UIThread                             //~9303R~
-//    //*******************************************************    //~9303R~
-//    public static void repaintUI(EventCB PeventCB)               //~9303R~
-//    {                                                            //~9303R~
-//        try                                                      //~9303R~
-//        {                                                        //~9303R~
-//            int eswn=PeventCB.getParmInt1();                     //~9303R~
-//            if (Dump.Y) Dump.println("DrawnReqDlgLast.repaintUI eswn="+eswn);//~9303R~//~9307R~
-//            if (dlg!=null)                                       //~9303R~
-//                dlg.setReplyText();                              //~9303R~
-//        }                                                        //~9303R~
-//        catch(Exception e)                                       //~9303R~
-//        {                                                        //~9303R~
-//            Dump.println(e,"DrawnReqDlgLast:repaintUI");             //~9303R~//~9307R~
-//        }                                                        //~9303R~
-//    }                                                            //~9303R~
+    //*******************************************************      //~9304I~//~9307R~//~va66R~
+    private boolean isTenpai(int Peswn)                            //~va66I~
+    {                                                              //~va66I~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn);//~va66I~
+        int[] itsHand=new int[CTR_TILETYPE];            //for Shanten calc//~va66R~
+        int ctrHand=RAUtils.setItsHand(PLAYER_YOU,itsHand);        //~va66R~
+        int shanten=AG.aShanten.getShantenMin(itsHand,ctrHand); //~va66R~
+        boolean rc=shanten==0;                                     //~va66R~
+	    if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn+",return rc="+rc+",shanten="+shanten);//~va66R~
+        return rc;                                                 //~va66R~
+    }                                                              //~va66I~
 }//class                                                           //~v@@@R~

@@ -1,5 +1,6 @@
-//*CID://+va46R~:                             update#= 291;        //~va46R~
+//*CID://+va66R~:                             update#= 301;        //~va66R~
 //**********************************************************************//~v@@@I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //**********************************************************************//~va46I~
 package com.btmtest.BT;                                            //~v@@@R~
@@ -12,6 +13,7 @@ import static com.btmtest.game.GConst.*;
 import com.btmtest.MainView;
 import com.btmtest.R;
 import com.btmtest.game.Accounts;
+import com.btmtest.game.GConst;
 import com.btmtest.game.Robot;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
@@ -27,6 +29,7 @@ public class Members                                                      //~v@@
     public static final int MS_SERVER=0x02; //server for client OR server itself with MS_LOCAL//~v@@@R~
     public static final int MS_CLIENT=0x04; //client with MS_LOCAL //~v@@@R~
     public static final int MS_REMOTECLIENT=0x08; //all client for server,other client for client//~v@@@I~
+    public static final int MS_PLAYALONE   =0x10; //training mode  //~va66I~
                                                                    //~v@@@I~
     public static final int MS_SETUPEND=0x100;//setup end          //~v@@@I~
     public static final int MS_IOERR=0x200;                        //~v@@@I~
@@ -38,6 +41,9 @@ public class Members                                                      //~v@@
     public static final int SS_OK=1;                               //~v@@@I~
     public static final int SS_NG=2;                               //~v@@@I~
                                                                    //~v@@@I~
+//  public static final String YOURNAME_TRAINING="--Me--";         //+va66R~
+    public static final String YOURNAME_TRAINING= GConst.robotYourNameDefault[0];//+va66I~
+                                                                   //~va66I~
     public MemberData[] MD;                                        //~v@@@R~
     private int maxMember;                                                 //~v@@@I~
     private String dummyName="";                                   //~v@@@I~
@@ -1046,7 +1052,7 @@ public class Members                                                      //~v@@
         	MD[idx].name=Pname;                                    //~va46I~
         	MD[idx].yourname=Pyourname;                            //~va46I~
             setRuleSyncDateBTIO(idx,PsyncDate);                    //~va46I~
-	    	if (Dump.Y) Dump.println("Members.updateReconnect idx="+idx+",member="+MD[idx].toString());//+va46R~
+	    	if (Dump.Y) Dump.println("Members.updateReconnect idx="+idx+",member="+MD[idx].toString());//~va46R~
         }                                                          //~va46I~
     	if (Dump.Y) Dump.println("Members.updateReconnect rc="+idx);//~va46I~
         return idx;                                                //~va46I~
@@ -1313,6 +1319,17 @@ public class Members                                                      //~v@@
     	if (Dump.Y) Dump.println("Members.update idxLocal="+idxLocal+",idxServer="+idxServer);//~v@@@I~
         return idx;                                                //~v@@@I~
     }                                                              //~v@@@I~
+    //*************************************************************//~va66I~
+    public void setTrainingMode(String PlocalDeviceName)           //~va66R~
+	{                                                              //~va66I~
+    	if (Dump.Y) Dump.println("Members.setTrainingMode");        //~va66I~
+        MD[0].name=PlocalDeviceName;                               //~va66R~
+        MD[0].yourname=(AG.YourName==null || AG.YourName.equals("")) ? YOURNAME_TRAINING :AG.YourName;//~va66R~
+        MD[0].status=MS_SERVER|Members.MS_LOCAL|Members.MS_PLAYALONE;//~va66R~
+		setIndexSL(0);	//idxServer and idxLocal                   //~va66I~
+        setRuleSyncDateBTIO(0/*idx*/,AG.ruleSyncDate);             //~va66R~
+    	if (Dump.Y) Dump.println("Members.setTrainingMode exit");  //~va66I~
+    }                                                              //~va66I~
     //*************************************************************//~v@@@I~
     public int update(String Pname,String PsyncDate)               //~v@@@I~
 	{                                                              //~v@@@I~
@@ -1352,6 +1369,7 @@ public class Members                                                      //~v@@
 		if (BTMulti.isServerDevice())                              //~v@@@I~
         {                                                          //~v@@@I~
 //  		resetSyncDate(true/*PswRemoteOnly*/);                  //~v@@@R~
+          if (!AG.swTrainingMode)                                  //~va66I~
             AG.aMainView.drawMsg(R.string.Info_ResyncRuleServerChanged);//~v@@@I~
         }                                                          //~v@@@I~
         return rc;                                                 //~v@@@R~
@@ -1434,7 +1452,8 @@ public class Members                                                      //~v@@
 	{                                                              //~v@@@I~
     //******************************                               //~v@@@I~
         for (int ii=0;ii<maxMember;ii++)                           //~v@@@I~
-        	if (MD[ii].name.equals(dummyName))                     //~v@@@R~
+//      	if (MD[ii].name.equals(dummyName))                     //~v@@@R~//~va66R~
+        	if (MD[ii].name.equals(dummyName) || (MD[ii].status & MS_PLAYALONE)!=0)//~va66I~
             {                                                      //~v@@@I~
             	MD[ii]=new MemberData(Pname,Paddr,Psocket);        //~v@@@R~
     			if (Dump.Y) Dump.println("Members.add idx="+ii+",name="+Pname);//~v@@@I~
@@ -1522,7 +1541,7 @@ public class Members                                                      //~v@@
 	{                                                              //~v@@@I~
     	StringBuffer sb=new StringBuffer();                        //~v@@@I~
         for (int ii=0;ii<maxMember;ii++)                           //~v@@@I~
-        	sb.append("MD["+ii+"]="+MD[ii].toString()+"\n");        //~v@@@I~
+        	sb.append("\n"+"MD["+ii+"]="+MD[ii].toString());        //~v@@@I~//~va66R~
         return sb.toString();                                      //~v@@@I~
     }                                                              //~v@@@I~
     //*************************************************************//~9B25I~

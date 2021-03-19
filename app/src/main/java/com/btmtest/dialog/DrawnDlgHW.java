@@ -1,6 +1,7 @@
-//*CID://+va40R~:                             update#=  879;       //+va40R~
+//*CID://+va66R~:                             update#=  883;       //~va40R~//~va66R~
 //*****************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -54,10 +55,10 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     private static final int COLOR_RESPNG=Color.argb(0xff,0xff,0x66,0x00);//orange//~9305I~
     private static final int COLOR_RESPBOT=Color.argb(0xff,0xc0,0xc0,0xc0);//~9228I~//~9305I~
     private static final int COLOR_YOU=Color.argb(0xff,0x00,0xbf,0xff); //deep sky blue//~9305I~
-//	private static final int COLOR_REQUESTER=AG.resource.getColor(R.color.yellow);//+va40R~
-//	private static final int COLOR_NON_REQUESTER=AG.resource.getColor(R.color.bg_dialog);//+va40R~
-  	private static final int COLOR_REQUESTER=AG.getColor(R.color.yellow);//+va40I~
-  	private static final int COLOR_NON_REQUESTER=AG.getColor(R.color.bg_dialog);//+va40I~
+//	private static final int COLOR_REQUESTER=AG.resource.getColor(R.color.yellow);//~va40R~
+//	private static final int COLOR_NON_REQUESTER=AG.resource.getColor(R.color.bg_dialog);//~va40R~
+  	private static final int COLOR_REQUESTER=AG.getColor(R.color.yellow);//~va40I~
+  	private static final int COLOR_NON_REQUESTER=AG.getColor(R.color.bg_dialog);//~va40I~
                                                                    //~9426I~
 	public static final int NEXTGAME_UNKNOWN=-1;                   //~9306I~
     public  static final int[] rbIDsNGTP={R.id.rbContinue,                          //~9305I~//~9705R~//~9706R~//~9708R~
@@ -690,9 +691,11 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     @Override                                                      //~9306I~
     public void setButton()                                        //~9221I~//~9303R~//~9306R~
     {                                                              //~9221I~//~9303R~//~9306R~
+        if (Dump.Y) Dump.println("DrawDlgHW.setButton swTrainingMode="+AG.swTrainingMode);//+va66I~
         btnNextGame = UButton.bind(layoutView,R.id.ShowTotal,this); //~9311I~//~9609M~
         if (swRequester)                                           //~9306I~
         {                                                          //~9306I~
+          if (!AG.swTrainingMode)                                  //~va66I~
 	        btnOK.setText(strSend);                                 //~9306R~
 	        btnCancel.setVisibility(View.GONE);                    //~9306I~
         	btnNextGame.setVisibility(View.VISIBLE);               //~9609I~
@@ -824,6 +827,13 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
         }                                                          //~0306I~
         saveStatus();                                              //~9426I~
 //        updateResponse(reason);                                    //~9305I~//~9306M~//~9311R~
+        if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+    		enableFixButton(true);                                 //~va66R~
+            reasonSent=reason;                                     //~va66I~
+            CMP.swSent=true;                                       //~va66I~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
 		if (swRequester)                                           //~9311I~
         {                                                          //~9708I~
 //  		fixRGNextGame(true/*PswFix*/);                          //~9A14I~//~9B13R~

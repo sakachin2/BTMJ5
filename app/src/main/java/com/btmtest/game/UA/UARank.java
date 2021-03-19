@@ -1,6 +1,7 @@
-//*CID://+va26R~: update#= 809;                                    //+va26R~
+//*CID://+va26R~: update#= 810;                                    //~va26R~
 //**********************************************************************//~v101I~
-//2020/11/02 va26 (BUG)Pinfu check err;missing check notnum        //+va26I~
+//2021/03/09 va6d (BUG)mixFlush allows other color pillow          //+va26I~
+//2020/11/02 va26 (BUG)Pinfu check err;missing check notnum        //~va26I~
 //2020/11/02 va25 (BUG)Straight check error                        //~va25R~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
@@ -82,7 +83,7 @@ public class UARank                                                //~va11R~
 //      dupCtrAll=PdupCtrAll;                                      //~va11R~
         swTanyao=UARDT.swTanyao;                                   //~va11I~
 //      rankTanyao=UARDT.rankTanyao;                               //~va11R~
-        swHonor=UARDT.swHonor;	//yakuhai including pillow         //+va26R~
+        swHonor=UARDT.swHonor;	//yakuhai including pillow         //~va26R~
         statusPillow=UARD.statusPillow;                            //~va11R~
         typePillow=UARD.typePillow;                                //~va11I~
         numberPillow=UARD.numberPillow;                            //~va11I~
@@ -191,9 +192,9 @@ public class UARank                                                //~va11R~
         else                                                       //~va11I~
         if (swHonor)  //true also if pillow is honor               //~va11R~
         	rc=false;                                              //~va11I~
-        else                                                       //+va26I~
-     	if (ctrPairNotNum!=0)                                      //+va26I~
-        	rc=false;                                              //+va26I~
+        else                                                       //~va26I~
+     	if (ctrPairNotNum!=0)                                      //~va26I~
+        	rc=false;                                              //~va26I~
         else                                                       //~va11I~
         {                                                          //~va11I~
             boolean swSide=false;                                  //~va11I~
@@ -221,7 +222,7 @@ public class UARank                                                //~va11R~
             	rc=false;                                          //~va11I~
             }                                                      //~va11I~
         }                                                          //~va11I~
-        if (Dump.Y) Dump.println("UARank.isPinfu intNoAllHand="+intNotAllHand+",ctrPairNotNum="+ctrPairNotNum+",swHonor="+swHonor+",rc="+rc+",pairNumS="+Pair.toString(pairNumS));//+va26R~
+        if (Dump.Y) Dump.println("UARank.isPinfu intNoAllHand="+intNotAllHand+",ctrPairNotNum="+ctrPairNotNum+",swHonor="+swHonor+",rc="+rc+",pairNumS="+Pair.toString(pairNumS));//~va26R~
         return rc;                                                 //~va11M~
     }                                                              //~va11I~
     //******************************************************************//~va11I~
@@ -599,7 +600,12 @@ public class UARank                                                //~va11R~
     	boolean rc=true;                                           //~va11I~
         int type;                                                  //~va11R~
         if (PswMix)                                                //~va11I~
-        	type=-1;                                               //~va11I~
+        {                                                          //+va26I~
+        	if (typePillow==TT_JI)                                 //+va26I~
+	        	type=-1;                                               //~va11I~//+va26R~
+            else                                                   //+va26I~
+	        	type=typePillow;                                   //+va26I~
+        }                                                          //+va26I~
         else                                                       //~va11I~
         	type=typePillow;                                       //~va11I~
         for (Pair pair:pairNumS)                                   //~va11R~

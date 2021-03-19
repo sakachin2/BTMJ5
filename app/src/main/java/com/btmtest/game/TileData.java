@@ -1,5 +1,7 @@
-//*CID://+v@@6R~: update#= 379;                                    //~v@@@R~//~v@@6R~
+//*CID://+va6aR~: update#= 389;                                    //~va6aR~
 //**********************************************************************//~v101I~
+//2021/02/12 va6a (BUG)TDF_LAST was not set to last discard(Haitei was valid but Hotei was not)//~va6aI~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //reset tile to new game                                           //~v@@@R~
 //**********************************************************************//~1107I~
@@ -13,6 +15,7 @@ import java.util.Comparator;
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.game.Tiles.*;                        //~v@@@I~
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.StaticVars.AG;                           //+va6aI~
 //*************************                                        //~v@@@I~
 public class TileData                                              //~v@@@R~
 {                                                                  //~v@@@R~
@@ -33,8 +36,8 @@ public class TileData                                              //~v@@@R~
     public static final int TDF_RON             =0x80;             //~v@@6R~
     public static final int TDF_KAN_TAKEN       =0x0100;//pair by KAN_TAKEN//~v@@@R~//~v@@6R~
     public static final int TDF_KAN_RIVER       =0x0200;//pair by RIVER taken//~v@@@R~
-    public static final int TDF_KAN_ADD         =0x0400;//pair by add KAN on Pon pair//~v@@@R~
-    public static final int TDF_KAN_ADDED_TILE  =0x0800;//         //~v@@@R~
+    public static final int TDF_KAN_ADD         =0x0400;//set all in the pair//~va60R~
+    public static final int TDF_KAN_ADDED_TILE  =0x0800;//set added tile only         //~v@@@R~//~va60R~
     public static final int TDF_KAN_FACEDOWN    =0x1000;//         //~v@@@R~
     public static final int TDF_REACH           =0x2000;//tile at reach//~v@@@R~
 //  public static final int TDF_SELECTED        =0x4000;//touch selection//~v@@@I~//~v@@6R~
@@ -42,6 +45,8 @@ public class TileData                                              //~v@@@R~
 //  public static final int TDF_CHII_DECLARED   =0x010000;  //declared,executed after some delay if if not intercepted Pon,Kan,Ron//~v@@6R~
     public static final int TDF_KAN_RINSHAN     =0x010000;  //taken from wanpai at kan//~v@@6I~
     public static final int TDF_LOCKED_PONKAN   =0x020000;         //~v@@6I~
+    public static final int TDF_DORA            =0x040000;         //~va60I~
+    public static final int TDF_ROBOT_SELECTION =0x080000;         //~va60I~
                                                                    //~v@@@I~
     public static final int TDF_INTERCEPTED=(TDF_PON | TDF_CHII | TDF_RON | TDF_KAN_RIVER);//~v@@@I~
                                                                    //~v@@@I~
@@ -86,7 +91,7 @@ public class TileData                                              //~v@@@R~
         this(Pintp[Ppos]/*type*/,Pintp[Ppos+1]/*number*/,Pintp[Ppos+2]/*flag*/,Pintp[Ppos+3]/*ctrRemain*/,Pintp[Ppos+4]/*eswn*/);//~v@@6I~
         if (PswEswnToPlayer)                                       //~v@@6I~
         	player=Accounts.eswnToPlayer(eswn);                    //~v@@6I~
-        if (Dump.Y) Dump.println("TileData constructor by int[] pos="+Ppos+",swEswnToPlayer="+PswEswnToPlayer+"td:"+toString());//~v@@6R~
+        if (Dump.Y) Dump.println("TileData constructor by int[] pos="+Ppos+",swEswnToPlayer="+PswEswnToPlayer+",td:"+toString());//~v@@6R~//~va60R~
     }                                                              //~v@@@I~
     //*****************************************************        //~v@@@I~
     public TileData(int[] Pintp/*type,num,red5*/,int Ppos/*type pos*/,boolean Pdora)//~v@@@I~
@@ -195,10 +200,22 @@ public class TileData                                              //~v@@@R~
        	return (flag & TDF_RED5)!=0;                               //~v@@@I~
      }                                                             //~v@@@I~
     //*****************************************************        //~v@@@I~
-    public int setDora()                                           //~v@@@R~
+    //*for not Red5;                                               //~va60I~
+    //*****************************************************        //~va60I~
+//  public int setDora()                                           //~v@@@R~//~va60R~
+    public boolean setDora()
     {                                                              //~v@@@R~
-        dora++;                                                    //~v@@@R~
-        return dora;                                               //~v@@@R~
+//      dora++;                                                    //~va60I~
+		boolean rc=false;                                          //~va60I~
+    	if ((flag & TDF_DORA)==0)                                   //~va60I~
+        {                                                          //~va60I~
+	    	flag|=TDF_DORA;                                        //~va60I~
+        	dora=1+(isRed5()?1:0);                                       //~v@@@R~//~va60R~
+            rc=true;                                               //~va60I~
+        }                                                          //~va60I~
+        if (Dump.Y) Dump.println("TileData.setDora rc="+rc+",dora="+dora+",frag="+Integer.toHexString(flag));//~va60I~
+//      return dora;                                               //~v@@@R~//~va60R~
+        return rc;                                                 //~va60I~
     }                                                              //~v@@@R~
     //*****************************************************        //~v@@@I~
     //* taken from stock                                           //~v@@@R~
@@ -275,6 +292,12 @@ public class TileData                                              //~v@@@R~
        	flag|=TDF_TAKEN_RIVER;                                      //~v@@@I~
         if (Dump.Y) Dump.println("TileData.setTakenRiver td:"+toString());//~v@@6R~
      }                                                             //~v@@@I~
+     public boolean isTakenRiver()                                 //~va60I~
+     {                                                             //~va60I~
+       	boolean rc=(flag & TDF_TAKEN_RIVER)!=0;                    //~va60I~
+        if (Dump.Y) Dump.println("TileData.isTakenRiver tc="+rc+",td:"+toString());//~va60I~
+        return rc;
+     }                                                             //~va60I~
     //*************************************************************************//~v@@@I~
     public static void setTakenRiver(TileData[] Ptds)              //~v@@@I~
     {                                                              //~v@@@I~
@@ -292,6 +315,8 @@ public class TileData                                              //~v@@@R~
      {                                                             //~v@@@I~
         flag|=TDF_DISCARDED;                                       //~v@@@R~
         flag &= ~(TDF_TAKEN | TDF_KAN_RINSHAN);                     //~v@@6I~
+		if (AG.aTiles.chkLast())                                   //~va6aI~
+            addFlag(TDF_LAST);                                     //~va6aI~
         setLock(true);        		//take available after some delayed  //~v@@@R~//~v@@6R~
         setLockPonKan(true);        //Pon available after some delayed//~v@@6I~
         if (Dump.Y) Dump.println("TileData.setDiscarded yd:"+toString());//~v@@6R~
@@ -322,6 +347,20 @@ public class TileData                                              //~v@@@R~
         if (Dump.Y) Dump.println("TileData.isRon rc="+rc+",td:"+toString());//~v@@6I~
         return rc;                                                 //~v@@6I~
      }                                                             //~v@@6I~
+    //*****************************************************        //~va60I~
+    //*for the case multiple candidate                             //~va60I~
+    //*****************************************************        //~va60I~
+     public boolean isRobotSelection()                             //~va60I~
+     {                                                             //~va60I~
+        boolean rc=(flag & TDF_ROBOT_SELECTION)!=0;                //~va60I~
+        if (Dump.Y) Dump.println("TileData.isRobotSelection rc="+rc+",td:"+toString());//~va60I~
+        return rc;                                                 //~va60I~
+     }                                                             //~va60I~
+     public void setRobotSelection()                               //~va60I~
+     {                                                             //~va60I~
+        flag |= TDF_ROBOT_SELECTION;                               //~va60I~
+        if (Dump.Y) Dump.println("TileData.setRobotSelection td="+this.toString());//~va60I~
+     }                                                             //~va60I~
     //*****************************************************        //~v@@@I~
     //*block take/chii                                             //~v@@6I~
     //*****************************************************        //~v@@6I~
@@ -394,6 +433,7 @@ public class TileData                                              //~v@@@R~
     public void addFlag(int Pflag)                                     //~v@@@I~
     {                                                              //~v@@@I~
         flag|=Pflag;                                               //~v@@@I~
+        if (Dump.Y) Dump.println("TileData.addFlag flag="+Integer.toHexString(Pflag)+",td="+toString());//~va60I~
     }                                                              //~v@@@I~
     //*****************************************************        //~v@@@I~
     public void setPlayer(int Pplayer)                             //~v@@@I~
@@ -466,9 +506,9 @@ public class TileData                                              //~v@@@R~
 	    return TDCompare(Ptd1,Ptd2,false/*PswCtr*/);              //~v@@@I~//~v@@6R~
     }                                                              //~v@@@I~
     //*****************************************************        //~v@@@I~
-    //*compare type and number only                                //+v@@6I~
-    //*rc:true:match                                               //+v@@6I~
-    //*****************************************************        //+v@@6I~
+    //*compare type and number only                                //~v@@6I~
+    //*rc:true:match                                               //~v@@6I~
+    //*****************************************************        //~v@@6I~
     public static boolean  TDCompareTN(TileData Ptd1,TileData Ptd2)     //~v@@@I~
     {                                                              //~v@@@I~
         boolean rc=(Ptd1.type==Ptd2.type) && (Ptd1.number==Ptd2.number);//~v@@@I~

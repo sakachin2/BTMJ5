@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 622;                                    //~9B30R~
+//*CID://+va60R~: update#= 624;                                    //~9B30R~//+va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
@@ -403,11 +404,11 @@ public class UAChii                                                //~v@@@R~
     	UA.UAP.drawLightToDiscard(Pplayer);                 //~9C06I~
 //      GMsg.showHL(0,GCM_CHII);                                   //~9C02I~//~0401R~
         GMsg.showHL(0,GCM_CHII,Pplayer);                           //~0401I~
-    	Sound.play(SOUNDID_CHII,false/*not change to beep when beeponly option is on*/);//+0408I~
+    	Sound.play(SOUNDID_CHII,false/*not change to beep when beeponly option is on*/);//~0408I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
-    private boolean isLocked(int Pplayer)                          //~v@@@I~
+    public boolean isLocked(int Pplayer)                          //~v@@@I~//~1128R~
     {                                                              //~v@@@I~
         boolean rc=false;                                          //~v@@@I~
 	    TileData td=PLS.getLastDiscarded();                        //~v@@@I~
@@ -417,11 +418,11 @@ public class UAChii                                                //~v@@@R~
 	        UserAction.sendErr(0,Pplayer,R.string.Info_WaitDiscardTimeout);//~v@@@I~
             rc=true;                                               //~v@@@I~
         }                                                          //~v@@@I~
-	    if (Dump.Y) Dump.println("UATake.isLocked rc="+rc);        //~v@@@I~
+	    if (Dump.Y) Dump.println("UAChii.isLocked rc="+rc);        //~v@@@I~//~1128R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
-    private  String makeMsgDataToServer(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@R~
+    public   String makeMsgDataToServer(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@R~//+va60R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("UAChii.makeMsgDataToServer ctr="+Pctr);//~v@@@R~
 ////      int eswn=AG.aAccounts.playerToEswn(Pplayer);             //~v@@@R~

@@ -4,7 +4,6 @@
 //*************************************************************************//~va40I~
 package com.btmtest.wifi;                                               //~v@@@I~//~9719I~//~1Ac4I~
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,7 +23,7 @@ import android.net.wifi.p2p.WifiP2pDeviceList;                     //~0113I~
 //~0113I~
 import android.content.IntentFilter;                               //~0113I~
 import android.os.Looper;                                          //~0113I~
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 //~1A65I~
 import com.btmtest.BT.Members;
 import com.btmtest.R;

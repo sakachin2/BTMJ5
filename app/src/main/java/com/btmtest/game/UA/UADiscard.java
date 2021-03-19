@@ -1,6 +1,8 @@
-//*CID://+va28R~: update#= 602;                                    //+va28R~
+//*CID://+va60R~: update#= 624;                                    //~va60R~
 //**********************************************************************//~v101I~
-//2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//+va28I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va60I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//~va28I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/10/13 va15 Add chk kuikae                                   //~va15I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
@@ -27,13 +29,16 @@ import com.btmtest.game.gv.River;
 import com.btmtest.game.gv.Stock;
 import com.btmtest.game.UserAction;                                //~v@@@I~
 import com.btmtest.utils.Dump;
+import com.btmtest.utils.Utils;
 import com.btmtest.utils.sound.Sound;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
+import static com.btmtest.TestOption.*;
 import static com.btmtest.dialog.RuleSettingEnum.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;                           //~v@@@I~
 import static com.btmtest.game.Players.*;
+import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.UserAction.*;                       //~v@@@I~
                                                                    //~v@@@I~
@@ -48,6 +53,8 @@ public class UADiscard                                             //~v@@@R~
     private River river;                                           //~v@@@R~
     private TileData infoSelectedTD;                               //~v@@@I~
    private boolean swCheckReach;                                    //~va27I~
+    private boolean swManualRobot;   //take by button in training mode//~va66R~
+    private int typeSameMeld;                                          //~va60I~
 //*************************                                        //~v@@@I~
 	public UADiscard(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
@@ -71,6 +78,9 @@ public class UADiscard                                             //~v@@@R~
 //      delayPonKan=OperationSetting.getDelayPonKan();             //~v@@6R~
 //      timeout=RuleSetting.getTimeoutTake();                      //~v@@6R~
     	swCheckReach= RuleSettingOperation.isCheckReach();         //~va27I~
+        typeSameMeld=RuleSetting.getSameMeld();                    //~va60I~
+        if (AG.swTrainingMode)                                     //~va66I~
+	    	swManualRobot=RuleSettingOperation.isAllowRobotAllButton();//~va66R~
         if (Dump.Y) Dump.println("UADiscard init");//~v@@@R~       //~v@@6R~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
@@ -112,22 +122,32 @@ public class UADiscard                                             //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public boolean selectInfo(boolean PswServer,int Pplayer)      //~v@@@R~//~v@@6R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UADiscard.selectInfo");         //~v@@@R~//~v@@6R~
+        if (Dump.Y) Dump.println("UADiscard.selectInfo swServer="+PswServer+",player="+Pplayer);         //~v@@@R~//~v@@6R~//~va66R~
         if ((TestOption.option2 & TestOption.TO2_SUSPEND)!=0)                 //~9819I~//~9820I~//~v@@6I~
         {                                                          //~9820I~//~v@@6I~
         	if (Dump.Y) Dump.println("UADiscard.selectInfo TO2_SUSPEND discardedCtr="+AG.aPlayers.getDiscardedCtr(PLAYER_YOU));//~v@@6R~
             if (AG.aPlayers.getDiscardedCtr(PLAYER_YOU)==0)        //~v@@6I~
 	            AG.aGC.suspendGame(true/*suspend*/,-1/*useraction*/);//by TestOption //~9820R~//~v@@6I~//~0307R~
         }                                                          //~9820I~//~v@@6I~
+		if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0)    //~va66I~
+            if (!PswServer && Pplayer!=PLAYER_YOU)  //robot discard is allowed server only with testoption//~va66I~
+            {                                                      //~va66I~
+                GMsg.drawMsgbar(R.string.AE_TestRobotDiscardButtonServerOnly);//~va66I~
+                return false;                                      //~va66I~
+            }                                                      //~va66I~
         AG.aHandsTouch.enableMultiSelectionMode(false);            //~v@@6I~
-        TileData td=selectTile(PLAYER_YOU);                        //~v@@@I~
+//      TileData td=selectTile(PLAYER_YOU);                        //~v@@@I~//~va66R~
+        TileData td=selectTile(Pplayer);                           //~va66I~
         if (td==null)                                              //~v@@@I~
         {                                                          //~v@@@I~
         	GC.actionError(0,Pplayer,R.string.AE_NoTileSelected);  //~v@@6R~
         	return false;                                          //~v@@@I~
         }                                                          //~v@@@I~
+//TODO  if (AG.aTiles.chkLast())    //set to discarded for hotei ron//~va6aR~
+//TEST  	td.addFlag(TDF_LAST);                                  //~va6aR~
         if (Dump.Y) Dump.println("UADiscard.selectInfo td="+td.type+":"+td.number+":"+td.flag);//~v@@@R~//~v@@6R~
-		if (!chkTenpai(td))                                        //~va27I~
+//  	if (!chkTenpai(td))                                        //~va27I~//~va66R~
+    	if (!chkTenpai(td,Pplayer))                                //~va66I~
 			return false;                                          //~va27I~
     	if (isSameMeld(td))                                        //~va15I~
         	return false;                                          //~va15I~
@@ -138,26 +158,32 @@ public class UADiscard                                             //~v@@@R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va27I~
-    private boolean chkTenpai(TileData PtdDiscard)                 //~va27I~
+//  private boolean chkTenpai(TileData PtdDiscard)                 //~va27I~//~va66R~
+    private boolean chkTenpai(TileData PtdDiscard,int Pplayer)     //~va66I~
     {                                                              //~va27I~
     	boolean rc=true;                                           //~va27I~
         if (Dump.Y) Dump.println("UADiscard.chkTenpai");           //~va27I~
-		int statReachOld=PLS.getReachStatus(PLAYER_YOU);           //~va27I~
+//  	int statReachOld=PLS.getReachStatus(PLAYER_YOU);           //~va27I~//~va66R~
+    	int statReachOld=PLS.getReachStatus(Pplayer);              //~va66I~
         if (statReachOld==REACH_BEFORE_DISCARD)                    //~va27I~
         {                                                          //~va27I~
-            int actionID=PLS.getReachAction();                     //~va27I~
+//          int actionID=PLS.getReachAction();                     //~va27I~//~va66R~
+            int actionID=PLS.getReachAction(Pplayer);              //~va66I~
             if (actionID==GCM_REACH||actionID==GCM_REACH_OPEN)     //~va27I~
-                if (swCheckReach)                                  //~va27R~
+            {                                                      //~va66I~
+//              if (swCheckReach)                                  //~va27R~//~va66R~
+                if (swCheckReach && Pplayer==PLAYER_YOU)	//no chk for robot//~va66I~
                 {                                                  //~va27R~
                     if (!AG.aUAReachChk.chkReach(PLAYER_YOU,PtdDiscard))//~va27R~
                     {                                              //~va27R~
                         GMsg.drawMsgbar(R.string.Err_ReachNoten);  //~va27R~
-//                      AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//+va28R~
+//                      AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//~va28R~
                         return false;                              //~va27R~
                     }                                              //~va27R~
                 }                                                  //~va27R~
+            }                                                      //~va66I~
         }                                                          //~va27I~
-        if (Dump.Y) Dump.println("UADiscard.chkTenpai rc="+rc);    //~va27I~
+        if (Dump.Y) Dump.println("UADiscard.chkTenpai player="+Pplayer+",rc="+rc+",statReachOld="+statReachOld+",swChkReach="+swCheckReach);    //~va27I~//~va66R~
         return rc;                                                 //~va27I~
     }                                                              //~va27I~
 	//*************************************************************************//~v@@@I~
@@ -175,23 +201,11 @@ public class UADiscard                                             //~v@@@R~
         if (PswServer)                                             //~v@@@I~
         {                                                          //~v@@@I~
         	swKan=PLS.isLastActionIsKan();                         //~v@@@R~
-//            if (accounts.isDummyPlayer(Pplayer))                 //~v@@@I~
-//                td=Robot.getTaken(Pplayer);                      //~v@@@I~
-//            else                                                 //~v@@@I~
-//            {                                                    //~v@@@I~
-//                td=selectTile(Pplayer);                          //~v@@@I~
-//                if (td==null)                                    //~v@@@I~
-//                {                                                //~v@@@I~
-//                    GC.actionError(0,"No tile Selected");        //~v@@@I~
-//                    return false;                                //~v@@@I~
-//                }                                                //~v@@@I~
 				if (!PswReceived)                                   //~v@@@I~
                 	td=infoSelectedTD;                             //~v@@@I~
                 else                                               //~v@@@I~
 		        	td=new TileData(true/*swEswnToPlayer*/,PintParm,PARMPOS_TD);          //~v@@@I~
-//            }                                                    //~v@@@I~
-//          PLS.discard(Pplayer,td);	//shift currentPlayer      //~v@@@R~
-//          PLS.discard(false/*PswLight*/,Pplayer,td);	//shift currentPlayer//~v@@@R~
+                                                                   //~va66I~
 			statReachOld=PLS.getReachStatus(Pplayer);              //~v@@6I~
             PLS.discard(Pplayer,td);	//shift currentPlayer      //~v@@@R~
 			statReachNew=PLS.getReachStatus(Pplayer);              //~v@@6I~
@@ -348,8 +362,8 @@ public class UADiscard                                             //~v@@@R~
 	    	UA.msgDataToClient=UserAction.makeMsgDataToClient(Pplayer);//~v@@6I~
         else                                                       //~v@@6I~
     		UA.setNoMsgToServer();                                 //~v@@6I~
-        if (AG.aTiles.chkLast())                                   //~v@@6I~
-        	return true;                                           //~v@@6I~
+//      if (AG.aTiles.chkLast())                                   //~v@@6I~//+va60R~
+//      	return true;                                           //~v@@6I~//+va60R~
         TileData td=PLS.getLastDiscarded();                        //~v@@6I~
         td.setLockPonKan(false);                                   //~v@@6I~
 	    AG.aDiceBox.drawLightDiscardRonTimeout(Pplayer);            //~v@@6I~//~9B23I~
@@ -360,6 +374,8 @@ public class UADiscard                                             //~v@@@R~
 //  		UA.setNoMsgToServer();                                 //~v@@6R~
         UADL.setRonable(false);     	//for dup ron availability //~9B28I~
 		UA.UADL.timeoutPonKan(PswServer);	//for client,save delayedAction//~v@@6I~
+        if (PswServer)                                             //~va60R~
+		    AG.aRoundStat.timeoutPonKan(Pplayer,td);               //~va60R~
         return true;                                               //~v@@6I~
     }                                                              //~v@@6I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
@@ -374,9 +390,10 @@ public class UADiscard                                             //~v@@@R~
 	//*************************************************************************//~v@@6I~
 	//*next player take in the time                                //~v@@6I~
 	//*************************************************************************//~v@@6I~
-    public void setTimeout(boolean PswServer,int Pplayer/*nextPlayer*/)//~v@@6R~
+    private void setTimeout(boolean PswServer,int Pplayer/*nextPlayer*/)//~v@@6R~//~va60R~
     {                                                              //~v@@6I~
         if (Dump.Y) Dump.println("UADiscard.setTimeout swServer="+PswServer+",player="+Pplayer+",ctrTakenAll="+PLS.ctrTakenAll);//~v@@6R~
+        if (Dump.Y) Dump.println("UADiscard.setTimeout swTrainingMode="+AG.swTrainingMode+",swManualRobot="+swManualRobot);//~va66I~
 //      if (timeout==0)                                            //~v@@6R~
 //      	return;                                                //~v@@6R~
 //      if (Pplayer!=PLAYER_YOU)                                   //~v@@6R~
@@ -387,6 +404,18 @@ public class UADiscard                                             //~v@@@R~
 //      	return;                                                //~v@@6R~
 //  	if (!UA.UADL.isWaitableAuto(Pplayer))                      //~v@@6I~
 //      	return;                                                //~v@@6I~
+        if (swManualRobot) //in training mode                      //~va66R~
+        {                                                          //~va66R~
+            if (Dump.Y) Dump.println("UADiscard.setTimeout return by manualRobot");//~va66R~
+            if (PswServer)                                         //~va66I~
+            {                                                      //~va66I~
+	        	if (AG.aAccounts.isDummyPlayer(Pplayer))           //~va66I~
+    	        	Robot.nextPlayerManual(Pplayer);//issue chii   //~va66R~
+//  			if (AG.aTiles.chkLast())                                 //~9225I~//~va66R~
+//  		        UA.UADL.postDelayedAutoTake(PswServer,Pplayer,PLS.ctrTakenAll);	//to show DrawnReqDlgLast//~va66R~
+            }                                                      //~va66I~
+            return;                                                //~va66R~
+        }                                                          //~va66R~
         UA.UADL.postDelayedAutoTake(PswServer,Pplayer,PLS.ctrTakenAll);//~v@@6R~
     }                                                              //~v@@6I~
 	//*************************************************************************//~v@@6I~
@@ -434,7 +463,7 @@ public class UADiscard                                             //~v@@@R~
     {                                                              //~va15I~
     	boolean rc=false;                                          //~va15I~
 	    if (Dump.Y) Dump.println("UADiscard.isSameMeld Discard tile="+TileData.toString(PtileSelected));//~va15I~
-        int typeSameMeld= RuleSetting.getSameMeld();                //~va15I~
+//      int typeSameMeld= RuleSetting.getSameMeld();                //~va15I~//~va60R~
         if (typeSameMeld==EATCHANGE_ALLOK)                         //~va15I~
         {                                                          //~va15I~
 	        if (Dump.Y) Dump.println("UADiscard.isSameMeld false by RuleSetting");//~va15I~
@@ -508,4 +537,76 @@ public class UADiscard                                             //~v@@@R~
         if (Dump.Y) Dump.println("UADiscard.isSameMeld rc="+rc);   //~va15I~
         return rc;                                                 //~va15I~
     }                                                              //~va15I~
+	//*************************************************************************//~va60I~
+	//*from RADSmart.setNonDiscardable                             //~va60I~
+	//*rc:ctr non discardable tile                                 //~va60I~
+	//*************************************************************************//~va60I~
+    public int getSameMeldTile(int Pplayer,int[] PposNotDiscardable)//~va60I~
+    {                                                              //~va60I~
+    	int rc;                                                //~va60I~
+	    TileData tdDiscarded=PLS.getLastDiscarded();                //~va60I~
+	    if (Dump.Y) Dump.println("UADiscard.getSameMeldTile player="+Pplayer+",lastDiscarded="+TileData.toString(tdDiscarded));//~va60I~
+        if (typeSameMeld==EATCHANGE_ALLOK)                         //~va60I~
+        {                                                          //~va60I~
+	        if (Dump.Y) Dump.println("UADiscard.getSameMeldTile false by RuleSetting");//~va60I~
+        	return 0;                                              //~va60I~
+        }                                                          //~va60I~
+        int action=PLS.getLastActionID(Pplayer);                   //~va60I~
+        PposNotDiscardable[0]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number;//~va60I~
+        if (typeSameMeld==EATCHANGE_EXCEPTIT || action==GCM_PON)   //~va60I~
+        {                                                          //~va60I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld OK by prohibit itself only");//~va60I~
+        	return 1;                                              //~va60I~
+        }                                                          //~va60I~
+        TileData[][] earth=PLS.getEarth(Pplayer);                  //~va60I~
+	    if (Dump.Y) Dump.println("UADiscard.getSameMeldTile earth="+TileData.toString(earth));//~va60I~
+		int ctrPair=PLS.getCtrPair(Pplayer);                       //~va60I~
+        if (ctrPair==0)                                            //~va60I~
+        {                                                          //~va60I~
+	        if (Dump.Y) Dump.println("UADiscard.getSameMeld @@@@err ctrPair=0");//~va60I~
+        	return 1;                                              //~va60I~
+        }                                                          //~va60I~
+        TileData[] lastPair=earth[ctrPair-1];                      //~va60I~
+        TileData tdRiver=null;                                     //~va60I~
+        int posRiver=0;                                            //~va60I~
+        for (TileData td:lastPair)                                 //~va60I~
+        {                                                          //~va60I~
+	        if ((td.flag & TDF_TAKEN_RIVER)!=0)                    //~va60I~
+            {                                                      //~va60I~
+            	tdRiver=td;                                        //~va60I~
+                break;                                             //~va60I~
+            }                                                      //~va60I~
+            posRiver++;                                            //~va60I~
+        }                                                          //~va60I~
+        if (tdRiver==null                                          //~va60I~
+        ||  tdDiscarded.type!=tdRiver.type || tdDiscarded.number!=tdRiver.number//~va60I~
+        ||  (tdRiver.flag & TDF_CHII)==0
+        )//~va60I~
+        {                                                          //~va60I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld same tile");//~va60I~
+            return 1;                                              //~va60I~
+        }                                                          //~va60I~
+        rc=1;                                                      //~va60I~
+        if (posRiver==0)    //left side eat                        //~va60I~
+        {                                                          //~va60I~
+            if (tdDiscarded.number<=TN6)                           //~va60I~
+            {                                                      //~va60I~
+                if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit right");//~va60I~
+		        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number+3;//~va60I~
+                rc++;                                              //~va60I~
+            }                                                      //~va60I~
+        }                                                          //~va60I~
+        else                                                       //~va60I~
+        if (posRiver==2)    //right side eat                       //~va60I~
+        {                                                          //~va60I~
+            if (tdDiscarded.number>=TN4)                           //~va60I~
+            {                                                      //~va60I~
+                if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit left");//~va60I~
+		        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number-3;//~va60I~
+                rc++;                                              //~va60I~
+            }                                                      //~va60I~
+        }                                                          //~va60I~
+        if (Dump.Y) Dump.println("UADiscard.isSameMeld rc="+rc+",PposNotDiscardable"+ Utils.toStringMax(PposNotDiscardable,rc));//~va60I~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
 }//class                                                           //~v@@@R~

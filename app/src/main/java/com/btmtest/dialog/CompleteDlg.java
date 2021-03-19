@@ -1,6 +1,7 @@
-//*CID://+va40R~:                             update#= 1102;       //+va40R~
+//*CID://+va66R~:                             update#= 1110;       //~va66R~
 //*****************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va03I~
 //2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
@@ -467,6 +468,14 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     {                                                              //~9316I~
         if (Dump.Y) Dump.println("CompleteDlg.setButton swRequester="+swRequester);//~9708I~
     	super.setButton();                                         //~9316I~
+        if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+            btnOK.setVisibility(View.VISIBLE);                     //~va66I~
+	        btnCancel.setVisibility(View.VISIBLE);                 //~va66I~
+	        btnClose.setVisibility(View.GONE);                     //~va66I~
+		    disableFixGame(false/*PswResetResponse*/);             //~va66I~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
         if (swRequester)                                           //~9316I~
 	        btnTotal.setEnabled(swAllOK);                          //~9316R~
         else                                                       //~9316I~
@@ -477,6 +486,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     {                                                              //~9708I~
         if (Dump.Y) Dump.println("CompleteDlg.disableFixGame swResetResponse="+PswResetResponse);//~9708I~
 		btnTotal.setEnabled(false);                                //~9708I~
+        if (AG.swTrainingMode)                                     //+va66I~
+	        btnOK.setEnabled(true);                                //+va66I~
         if (PswResetResponse)                                      //~9708I~
         {                                                          //~9708I~
 		    Arrays.fill(respStat,EGDR_NONE);                       //~9708R~
@@ -660,56 +671,57 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     //******************************************                   //~0322I~
     private void setupValueTest()                                  //~9409I~
     {                                                              //~9409I~
-    	PLS=new Players();                                         //~9409I~
-//      new Rule();                                                //~9409I~
-//  	new Accounts();                                            //~9409I~
-//      new Tiles();                                               //~9409I~
-//      AG.aTiles.shuffle();                                       //~9409I~
-//      AG.aTiles.setInitialDeal();                                //~9409I~
-                                                                   //~9228I~
-    	accountNames=new String[]{"あいうえ","かきくけ","さしすせそ","たちつてとなにぬねのまみむめもはひふへほらりるれろわいうえお"};//~9212R~//~9213R~
-		accountEswn=new int[]{3,1,0,2};                            //~9212I~
-		currentEswn=accountEswn[0];                                //~9225I~
-        idxPoint=2;                                                //~9212I~
-        idxRank=2;                                                 //~9212R~
-    //*                                                            //~9212I~
-        gameField=2;                                               //~9212I~
-        gameSeq=3;                                                 //~9212I~
-//      gameDup=2;                                                 //~9212I~//~9223R~
-//      gameReach=3;                                               //~9212I~//~9223R~
-    //*                                                            //~9212I~
-        new Status();                                              //~9223I~
-        Status.setGameSeq(false,true,false);    //TestOption                               //~9223I~//~9509R~//~9526R~//~0307R~
-        Status.setGameSeq(false,true,false);    //TestOption                               //~9223I~//~9509R~//~9526R~//~0307R~
-        Status.addReach();                                         //~9223I~
-        Status.addReach();                                         //~9223I~
-        Status.addReach();                                         //~9223I~
-        CMP=new Complete();                                            //~9223I~//~9228R~
-//      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_TAKEN,1/*eswn*/,0/*looser*/,null,null);//~9223R~
-//      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_ADD,2/*eswn*/,0/*looser*/,null,null);//~9223I~
-//      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_TAKEN_OTHER,2/*eswn*/,0/*looser*/,null,null);//~9223I~
-//      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_TAKEN,2/*eswn*/,0/*looser*/,null,null);//~9223I~
-//      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_RIVER,0/*eswn*/,1/*looser*/,null,null);//~9223I~
-        Complete.Status compStat=AG.aComplete.new Status(COMPLETE_RIVER,0/*eswn*/,1/*looser*/,null,null);//~9223I~//~9224R~
-//      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_TAKEN,0/*eswn*/,1/*looser*/,null,null);//~9224R~
-        Complete.Status compStat2=AG.aComplete.new Status(COMPLETE_RIVER,2/*eswn*/,1/*looser*/,null,null);//~9223I~//~9224R~
-//      Complete.Status compStat3=AG.aComplete.new Status(COMPLETE_RIVER,3/*eswn*/,1/*looser*/,null,null);//~9223I~//~9224R~
-        Status.setCompleteStatus(compStat);                        //~9223I~
-        Status.setCompleteStatus(compStat2);                       //~9223I~//~9224R~
-//      Status.setCompleteStatus(compStat3);                       //~9223I~//~9224R~
-//      int[] amt1=new int[]{8000,7700,2000,1000,2,2};             //~9223R~//~9224R~
-        int[] amt1=new int[]{48000,48000,24000,12000,7,10};        //~9224R~
-        int[] amt2=new int[]{32000,32000,16000, 8000,5/*point*/,8/*rank*/};//~9223I~//~9224R~
-//      int[] amt3=new int[]{64000,64000,32000,16000,6/*point*/,9/*rank*/};//~9223I~//~9224R~
-        compStat.setAmmount(amt1);                                 //~9223I~
-        compStat2.setAmmount(amt2);                                //~9223I~//~9224R~
-//      compStat3.setAmmount(amt3);                                //~9223I~//~9224R~
-        compStat.setOK(-1,true);                                    //~9223I~
-        compStat2.setOK(-1,true);                                   //~9223I~//~9224R~
-//      compStat2.setErr(true);                                    //~9223I~//~9224R~
-//      compStat3.setOK(-1,true);                                  //~9223I~//~9224R~
-		PLS.setReachDone(1);                                       //~9228I~
-		PLS.setReachDone(3);                                       //~9228I~
+//        PLS=new Players();                                         //~9409I~//~va66R~
+////      new Rule();                                                //~9409I~//~va66R~
+////      new Accounts();                                            //~9409I~//~va66R~
+////      new Tiles();                                               //~9409I~//~va66R~
+////      AG.aTiles.shuffle();                                       //~9409I~//~va66R~
+////      AG.aTiles.setInitialDeal();                                //~9409I~//~va66R~
+//                                                                   //~9228I~//~va66R~
+//        accountNames=new String[]{"あいうえ","かきくけ","さしすせそ","たちつてとなにぬねのまみむめもはひふへほらりるれろわいうえお"};//~9212R~//~9213R~//~va66R~
+//        accountEswn=new int[]{3,1,0,2};                            //~9212I~//~va66R~
+//        currentEswn=accountEswn[0];                                //~9225I~//~va66R~
+//        idxPoint=2;                                                //~9212I~//~va66R~
+//        idxRank=2;                                                 //~9212R~//~va66R~
+//    //*                                                            //~9212I~//~va66R~
+//        gameField=2;                                               //~9212I~//~va66R~
+//        gameSeq=3;                                                 //~9212I~//~va66R~
+////      gameDup=2;                                                 //~9212I~//~9223R~//~va66R~
+////      gameReach=3;                                               //~9212I~//~9223R~//~va66R~
+//    //*                                                            //~9212I~//~va66R~
+//        new Status();                                              //~9223I~//~va66R~
+//        Status.setGameSeq(false,true,false);    //TestOption                               //~9223I~//~9509R~//~9526R~//~0307R~//~va66R~
+//        Status.setGameSeq(false,true,false);    //TestOption                               //~9223I~//~9509R~//~9526R~//~0307R~//~va66R~
+//        Status.addReach();                                         //~9223I~//~va66R~
+//        Status.addReach();                                         //~9223I~//~va66R~
+//        Status.addReach();                                         //~9223I~//~va66R~
+//        CMP=new Complete();                                            //~9223I~//~9228R~//~va66R~
+////      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_TAKEN,1/*eswn*/,0/*looser*/,null,null);//~9223R~//~va66R~
+////      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_ADD,2/*eswn*/,0/*looser*/,null,null);//~9223I~//~va66R~
+////      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_TAKEN_OTHER,2/*eswn*/,0/*looser*/,null,null);//~9223I~//~va66R~
+////      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_TAKEN,2/*eswn*/,0/*looser*/,null,null);//~9223I~//~va66R~
+////      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_KAN_RIVER,0/*eswn*/,1/*looser*/,null,null);//~9223I~//~va66R~
+//        Complete.Status compStat=AG.aComplete.new Status(COMPLETE_RIVER,0/*eswn*/,1/*looser*/,null,null);//~9223I~//~9224R~//~va66R~
+////      Complete.Status compStat=AG.aComplete.new Status(COMPLETE_TAKEN,0/*eswn*/,1/*looser*/,null,null);//~9224R~//~va66R~
+//        Complete.Status compStat2=AG.aComplete.new Status(COMPLETE_RIVER,2/*eswn*/,1/*looser*/,null,null);//~9223I~//~9224R~//~va66R~
+////      Complete.Status compStat3=AG.aComplete.new Status(COMPLETE_RIVER,3/*eswn*/,1/*looser*/,null,null);//~9223I~//~9224R~//~va66R~
+//        Status.setCompleteStatus(compStat);                        //~9223I~//~va66R~
+//        Status.setCompleteStatus(compStat2);                       //~9223I~//~9224R~//~va66R~
+////      Status.setCompleteStatus(compStat3);                       //~9223I~//~9224R~//~va66R~
+////      int[] amt1=new int[]{8000,7700,2000,1000,2,2};             //~9223R~//~9224R~//~va66R~
+//        int[] amt1=new int[]{48000,48000,24000,12000,7,10};        //~9224R~//~va66R~
+//        int[] amt2=new int[]{32000,32000,16000, 8000,5/*point*/,8/*rank*/};//~9223I~//~9224R~//~va66R~
+////      int[] amt3=new int[]{64000,64000,32000,16000,6/*point*/,9/*rank*/};//~9223I~//~9224R~//~va66R~
+//        compStat.setAmmount(amt1);                                 //~9223I~//~va66R~
+//        compStat2.setAmmount(amt2);                                //~9223I~//~9224R~//~va66R~
+////      compStat3.setAmmount(amt3);                                //~9223I~//~9224R~//~va66R~
+//        compStat.setOK(-1,true);                                    //~9223I~//~va66R~
+//        compStat2.setOK(-1,true);                                   //~9223I~//~9224R~//~va66R~
+////      compStat2.setErr(true);                                    //~9223I~//~9224R~//~va66R~
+////      compStat3.setOK(-1,true);                                  //~9223I~//~9224R~//~va66R~
+//        PLS.setReachDone(1);                                       //~9228I~//~va66R~
+//        PLS.setReachDone(3);                                       //~9228I~//~va66R~
+    	if (Dump.Y) Dump.println("CompleteDlg.setupValueTest NOP");//~va66I~
     }                                                              //~9212I~
     //******************************************                   //~v@@@I~
     private void setTitle()                                        //~v@@@I~
@@ -717,15 +729,15 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //      String s=Utils.getStr(TITLEID)+":"+GConst.nameESWN[gameField]+GConst.gameSeq[gameSeq];    //~v@@@I~//~9212R~//~9224R~//~9306R~
         Spanned s=Status.getSpannedGameTitle(Utils.getStr(swRequester?TITLEID_REQ:TITLEID_RESP));//~9306I~//~9314R~
         title=s;                                                   //~9219I~//~9306R~
-    	if (Dump.Y) Dump.println("CompleteDlg.seTitle title="+title);//~9306I~
+    	if (Dump.Y) Dump.println("CompleteDlg.setTitle title="+title);//~9306I~//~va66R~
         androidDlg.setTitle(s);                                    //~v@@@R~//~9306R~
     }                                                              //~v@@@I~
     //******************************************                   //~9223I~
     private void setTitle(String Pcmt)                             //~9223I~
     {                                                              //~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.seTitle cmt="+Pcmt+",title="+title);//~9306I~
-//  	Spanned s=Html.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//+va40R~
-    	Spanned s=Utils.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//+va40I~
+//  	Spanned s=Html.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//~va40R~
+    	Spanned s=Utils.fromHtml(AG.resource.getString(R.string.Info_TitleCompType,title,Pcmt));//~va40I~
         androidDlg.setTitle(s);                                    //~9223I~
     }                                                              //~9223I~
     //******************************************                   //~9223I~
@@ -755,8 +767,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         Complete.Status stat=sortedStatus[0];                      //~9223I~
         if (!stat.swTake)                                          //~9223I~
         	sb.append(Utils.getStr(R.string.Info_CompTypeLooser,GConst.nameESWN[stat.completeEswnLooser]));//~9223I~
-//      spannedText=Html.fromHtml(sb.toString());                  //+va40R~
-        spannedText=Utils.fromHtml(sb.toString());                 //+va40I~
+//      spannedText=Html.fromHtml(sb.toString());                  //~va40R~
+        spannedText=Utils.fromHtml(sb.toString());                 //~va40I~
         tvCompType.setText(spannedText);                           //~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.setCompType  sb="+sb.toString());//~9223I~
     }                                                              //~9223I~
@@ -2161,8 +2173,16 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         	if (typeNextGame==NGTP_NEXTPLAYER)                     //~9A12I~
             	if (!continueToNextPlayer(false/*swFixed*/))//~9A12R~//~9A13R~
                 	return;                                        //~9A12I~
+          if (AG.swTrainingMode)                                   //~va66I~
+          {                                                        //+va66I~
+	        btnTotal.setEnabled(true/*PswAllOK*/);                 //~va66I~
+	        btnOK.setEnabled(false);                               //+va66I~
+          }                                                        //+va66I~
+          else                                                     //~va66I~
+          {                                                        //~va66I~
         	sendRequest();                                         //~9315I~
     		disableFixGame(true);                                  //~9708I~
+          }                                                        //~va66I~
             CMP.swSent=true;                                       //~0314I~
         }                                                          //~9707I~
         else                                                       //~9315I~
@@ -2663,7 +2683,9 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     //*******************************************************      //~9315I~
     public void sendRequest()                                      //~9315I~
     {                                                              //~9315I~
-        if (Dump.Y) Dump.println("CompleteDlg.sendRequest");       //~9315I~
+        if (Dump.Y) Dump.println("CompleteDlg.sendRequest swTrainigMode="+AG.swTrainingMode);       //~9315I~//~va66R~
+        if (AG.swTrainingMode)                                     //~va66I~
+        	return;                                                //~va66I~
         String msg=makeReqMsg();                                   //~9315I~
         ACC.sendToAll(GCM_COMPRESULT_REQ,msg);                     //~9315I~
     }                                                              //~9315I~
@@ -2901,6 +2923,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     protected void updateOKNGAdditional(int PctrNone,int PctrNG,int PctrDisconnected,boolean PswAllOK)//~0119I~
     {                                                              //~9316I~
         if (Dump.Y) Dump.println("CompleteDlg.updateOKNGAdditional ctrNG="+PctrNG+",ctrNone="+PctrNone+",swAllOK="+PswAllOK);//~9316I~
+      if (!AG.swTrainingMode)                                      //~va66I~
         btnTotal.setEnabled(PswAllOK);                             //~9316R~
         if (PctrNone==0 && PctrNG!=0) //all responsed, someone replyed NG//~9608I~
         {                                                          //~9608I~
@@ -3020,7 +3043,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //        try                                                        //~9227I~//~9313I~
 //        {                                                          //~9227I~//~9313I~
 //            int eswn=PeventCB.getParmInt1();                       //~9227I~//~9313I~
-//            if (Dump.Y) Dump.println("CompLeteDlg.repaintUI eswn="+eswn);//~9227I~//~9313I~
+//            if (Dump.Y) Dump.println("CompleteDlg.repaintUI eswn="+eswn);//~9227I~//~9313I~//~va66R~
 //            CompleteDlg dlg=AG.aCompleteDlg;                       //~9227I~//~9313I~
 //            if (dlg!=null)                                         //~9227I~//~9313I~
 //                dlg.repaintResultReply();                                //~9227I~//~9228R~//~9313I~
@@ -3058,7 +3081,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //    //*******************************************************      //~9313I~//~9314R~
 //    public  void repaintUI(int Peswn)                        //~9313I~//~9314R~
 //    {                                                              //~9313I~//~9314R~
-//        if (Dump.Y) Dump.println("CompLeteDlg.repaintUI eswn="+Peswn);//~9313I~//~9314R~
+//        if (Dump.Y) Dump.println("CompleteDlg.repaintUI eswn="+Peswn);//~9313I~//~9314R~//~va66R~
 //        repaintResultReply();                                      //~9313I~//~9314R~
 //    }                                                              //~9313I~//~9314R~
 	//************************************************             //~9316I~
@@ -3070,7 +3093,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         if (Dump.Y) Dump.println("CompleteDlg.showTotal idx="+idx+",comptype="+tp+",total="+Arrays.toString(amtTotal));//~9318I~
 //      int typeNextGame=(tp==COMPTYPE_TAKE || tp==COMPTYPE_RIVER) ? NGTP_CONTINUE :NGTP_NEXT;//~9318I~//~9707R~
     	getSettingNextGame();	//set typeNextGame from radiogroup //~9707I~
-        if (Dump.Y) Dump.println("CompLeteDlg.showTotal typeNextGame="+typeNextGame+",amt="+Arrays.toString(amtTotal));//~9318I~
+        if (Dump.Y) Dump.println("CompleteDlg.showTotal typeNextGame="+typeNextGame+",amt="+Arrays.toString(amtTotal));//~9318I~//~va66R~
         if (typeNextGame==NGTP_NEXTPLAYER)                         //~9A12I~
             continueToNextPlayer(true/*swFixed*/);   //~9A12R~     //~9A13R~
         else                                                       //~9A12I~
@@ -3084,7 +3107,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //    //************************************************           //~0302R~
 //    private void setStatus()                                     //~0302R~
 //    {                                                            //~0302R~
-//        if (Dump.Y) Dump.println("CompLeteDlg.setStatus swsErrLooser="+Arrays.toString(swsErrLooser)+",swsInvalid="+Arrays.toString(swsInvalid));//~0302R~
+//        if (Dump.Y) Dump.println("CompleteDlg.setStatus swsErrLooser="+Arrays.toString(swsErrLooser)+",swsInvalid="+Arrays.toString(swsInvalid));//~0302R~//~va66R~
 //        Complete.Status[] sorted=getSortedCompStat();            //~0302R~
 //        for (int ii=0;ii<sorted.length;ii++)                     //~0302R~
 //        {                                                        //~0302R~
@@ -3097,13 +3120,13 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 	//************************************************             //~9417I~
     private void showRule()                                        //~9417I~
     {                                                              //~9417I~
-        if (Dump.Y) Dump.println("CompLeteDlg.showRule");          //~9417I~
+        if (Dump.Y) Dump.println("CompleteDlg.showRule");          //~9417I~//~va66R~
         RuleSetting.showRuleInGame();                              //~9408R~//~9417I~
     }                                                              //~9417I~
 	//************************************************             //~9403I~
     public static boolean  showDismissed()                             //~9403I~
     {                                                              //~9403I~
-        if (Dump.Y) Dump.println("CompLeteDlg.showDismissed");     //~9403I~
+        if (Dump.Y) Dump.println("CompleteDlg.showDismissed");     //~9403I~//~va66R~
         boolean rc=false;	//no dismiss menudialog                //~9904I~
         if (chkComplete()==0)                                      //~9403I~
         {                                                          //~9904I~
@@ -3139,7 +3162,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
             UView.showToast(R.string.Err_CompReqNotShowable);      //~9B11I~
         else               //all replyedAll                        //~9B11R~
             rc=true;                                               //~9B11I~
-        if (Dump.Y) Dump.println("CompLeteDlg.chkCompReqReplayAll rc="+rc);//~9B11I~
+        if (Dump.Y) Dump.println("CompleteDlg.chkCompReqReplayAll rc="+rc);//~9B11I~//~va66R~
         return rc;                                                 //~9B11I~
     }                                                              //~9B11I~
     //*******************************************************************//~9403I~

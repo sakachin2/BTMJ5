@@ -30,42 +30,87 @@
             android:gravity="center_vertical"
         />
     </LinearLayout>  <!--line1-->
+    <!--LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <CheckBox
+            android:id="@+id/cbAllowRobotAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_AllowRobotAll"
+            android:gravity="center_vertical"
+        >
+        <CheckBox
+            android:id="@+id/cbAllowRobotAllButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_AllowRobotAllButton"
+            android:gravity="center_vertical"
+        />
+    </LinearLayout-->
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
-    >  <!--line2-->
+    >
         <CheckBox
-            android:id="@+id/cbMinusRobot"
-            android:text="@string/Label_MinusRobot"
+            android:id="@+id/cbThinkRobot"
+            android:text="@string/Label_ThinkRobot"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
         />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_RobotPay"
-            android:layout_marginLeft="20dp"
-        />
-        <RadioGroup
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:id="@+id/rgRobotPay"
-            android:layout_width="fill_parent"
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
         >
-            <RadioButton
-                android:id="@+id/rbRobotPaySprit"
-                android:text="@string/Label_RobotPaySprit"
+            <CheckBox
+                android:id="@+id/cbMinusRobot"
+                android:text="@string/Label_MinusRobot"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
-            <RadioButton
-                android:id="@+id/rbRobotPayDependingScore"
-                android:text="@string/Label_RobotPayDependingScore"
-                android:layout_height="wrap_content"
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+            <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_RobotPay"
+                android:layout_marginLeft="20dp"
             />
-        </RadioGroup>
-    </LinearLayout>  <!--line2-->
+            <RadioGroup
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:id="@+id/rgRobotPay"
+                android:layout_width="fill_parent"
+            >
+                <RadioButton
+                    android:id="@+id/rbRobotPaySprit"
+                    android:text="@string/Label_RobotPaySprit"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                />
+                <RadioButton
+                    android:id="@+id/rbRobotPayDependingScore"
+                    android:text="@string/Label_RobotPayDependingScore"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                />
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

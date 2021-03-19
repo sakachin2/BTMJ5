@@ -21,24 +21,6 @@
             android:text="@string/Ron2"
             android:textSize="@dimen/textview_middle"
         />
-        <!--CheckBox
-            android:id="@+id/cbMultiRonYes"
-            android:text="@string/Label_Yes"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-        /-->
-        <!--CheckBox
-            android:id="@+id/cbMultiRon3Drawn"
-            android:text="@string/Label_MultiRon3Drawn"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-        /-->
-        <!--CheckBox
-            android:id="@+id/cbMultiRonStickAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_MultiRonStickAll"
-        /-->
         <RadioGroup
             android:orientation="horizontal"
             android:layout_height="wrap_content"

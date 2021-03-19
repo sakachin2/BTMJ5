@@ -101,6 +101,7 @@
                 android:visibility="gone"
                  android:textAllCaps="false"
             />
+        <!--  duplicated
              <Button
                         android:id="@+id/UserAction_EndScore"
                         android:layout_width="@dimen/gvbtn_left_small"
@@ -110,6 +111,7 @@
                 android:visibility="gone"
                  android:textAllCaps="false"
             />
+        -->
              <Button
                         android:id="@+id/UserAction_DrawnGame"
                         android:layout_width="@dimen/gvbtn_left_small"

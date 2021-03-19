@@ -1,4 +1,4 @@
-//*CID://+v@21R~: update#= 346;                                    //~v@21R~
+//*CID://+v@21R~: update#= 350;                                    //~v@21R~//~va60R~//~v@21R~
 //**********************************************************************
 //v@21  imageview                                                  //~v@21I~
 //utility around screen
@@ -7,9 +7,8 @@ package com.btmtest.game.gv;
 
 import android.content.Context;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.graphics.Canvas;
@@ -57,7 +56,8 @@ public class GameView extends AppCompatImageView                   //~v@21R~
 //    }                                                              //~v@@@I~//~v@21R~
 
     //*************************
-    private void init(Context Pcontext)                            //~v@@@R~
+//  private void init(Context Pcontext)                            //~v@@@R~//+v@21R~
+    protected void init(Context Pcontext)	//protected for IT override//+v@21I~
     {
     	AG.aGameView=this;                                         //~v@@@R~
 //        AG.svContext=Pcontext;                                   //~v@21R~
@@ -228,18 +228,18 @@ public class GameView extends AppCompatImageView                   //~v@21R~
     	int action=Pevent.getAction();                             //~v@@@I~
         int x=(int)Pevent.getX();                                       //~v@@@I~
         int y=(int)Pevent.getY();                                       //~v@@@I~
-        if (Dump.Y) Dump.println("GameView.onTouchEvent action="+action+",x="+x+",y="+y);//~v@@@I~//+v@21R~
+        if (Dump.Y) Dump.println("GameView.onTouchEvent action="+action+",x="+x+",y="+y);//~v@@@I~//~v@21R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
             switch(action)                                         //~v@@@R~
             {                                                      //~v@@@R~
-            case MotionEvent.ACTION_DOWN:                          //~v@@@R~
+            case MotionEvent.ACTION_DOWN:       //0                   //~v@@@R~
             	xTouchDown=x;                                      //~v@21I~
             	yTouchDown=y;                                      //~v@21I~
                 swMove=false;                                      //~v@21I~
                 rc=true;    //need to callback by ACTION_UP        //~v@@@R~
                 break;                                             //~v@@@R~
-            case MotionEvent.ACTION_UP:                            //~v@@@R~
+            case MotionEvent.ACTION_UP:         //1                   //~v@@@R~
             	if (!swMove)	                                   //~v@21I~
                 {                                                  //~v@21I~
 	            	xTouchDown=0;                                  //~v@21I~
@@ -250,7 +250,7 @@ public class GameView extends AppCompatImageView                   //~v@21R~
             	xTouchDown=0;                                      //~v@21I~
             	yTouchDown=0;                                      //~v@21I~
                 break;                                             //~v@@@R~
-            case MotionEvent.ACTION_MOVE:                          //~v@21I~
+            case MotionEvent.ACTION_MOVE:       //2                //~v@21I~
                 swMove=true;                                       //~v@21I~
                 break;                                             //~v@21I~
             }                                                      //~v@@@R~

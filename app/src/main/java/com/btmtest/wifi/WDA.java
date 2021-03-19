@@ -1,5 +1,6 @@
-//*CID://+va40R~:                             update#=  236;       //~va40R~
+//*CID://+va66R~:                             update#=  237;       //+va66R~
 //*************************************************************************//~1A65I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
 //1Ad2 2015/07/17 HelpDialog by helptext                           //~1Ad2I~
@@ -1043,8 +1044,8 @@ public class WDA extends AxeDlg                                    //~9720I~
     	aWDActivity.cancelDiscovery();                              //~0124I~
         aWDActivity.unregisterReceiver();                          //~1A65I~//~9725M~
         IPC.dismissWDA();                                          //~1A67I~//~9725M~
-        boolean enable=(swOwner)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~
-	    AG.aMainView.enableStartGame(enable);                      //~9724I~
+//      boolean enable=(swOwner)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~//+va66R~
+//      AG.aMainView.enableStartGame(enable);                      //~9724I~//+va66R~
         AG.aWDA=null;                                              //~9724M~
         WDI.dismissedWDA();                                         //~0113R~
 	}                                                              //~9724I~

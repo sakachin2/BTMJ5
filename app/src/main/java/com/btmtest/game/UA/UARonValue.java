@@ -1,5 +1,6 @@
-//*CID://+va24R~: update#= 896;                                    //~va24R~
+//*CID://+va60R~: update#= 911;                                    //~va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/02 va24 chkCompleteSub may cause stackoverflow           //~va24I~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
 //2020/10/20 va20 use Junit for UARonchk                           //~va20I~
@@ -14,6 +15,8 @@ import com.btmtest.TestOption;
 import com.btmtest.dialog.CompReqDlg;
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingYaku;
+import com.btmtest.game.RA.RAUtils;
+import com.btmtest.game.RA.RoundStat;
 import com.btmtest.game.TileData;
 import com.btmtest.game.Tiles;
 import com.btmtest.utils.Dump;
@@ -51,7 +54,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private boolean sw7Pair50,sw7Pair30,swAllGreenNoDragon;       //~va24I~
     public boolean sw4WindDouble,sw9GateDouble;                    //~va24R~
     private boolean sw9GateManOnly,swRankMUp;                      //~va24R~
-    private UARonDataTree UARDT;                                   //~va11I~
+    public  UARonDataTree UARDT;                                   //~va11I~//~va24R~
     public  TileData[][] tdssEarth;                                //~va11R~
     public  TileData[] tdsHand;                                    //~va11I~
 //  public  int player;                                            //~va11R~
@@ -68,10 +71,15 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     public Pair[] pairEarth;                                       //~va11I~
     private boolean swRonnable;                                    //~va11I~
     private boolean swYakuOtherEnvironment;                        //~va11I~
+    public boolean swRobot;                                               //~1130I~//~1217R~
+    public boolean swEmulation;                                    //+va60I~
+    public int[] itsDoraOpen;                                      //~1217I~
+    public int    ctrDoraOpen;                                      //~1217I~
     //*************************                                        //~v@@@I~
 	public UARonValue()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9C11R~//~0925R~//~va11R~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("UARonValue Constructor");         //~1506R~//~@@@@R~//~v@@@R~//~9C11R~//~0925R~
+    	UARDT=new UARonDataTree(this);                             //~va60R~
     }                                                              //~0914I~
 //    public UARonValue(CompReqDlg PcompReqDlg)                    //~va11R~
 //    {                                                            //~va11R~
@@ -93,6 +101,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     	sw9GateDouble=RuleSettingYaku.is9GateDouble();             //~va11I~
     	swRankMUp=RuleSetting.isRankMUp();   //kiriage mangan      //~va11I~
 //      subUARV=new UARonValueSub(this);                           //~va11R~
+//      UARDT=new UARonDataTree(this);	//chk dora                 //~va60R~
     }                                                              //~v@@@I~
     //*************************************************************************//~va11I~
     //*rc=-1:not ronnable,1:1han constraint,0 ok                   //~va11R~
@@ -128,10 +137,13 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         swRonnable=true;                                           //~va11I~
 //      compReqDlg=PcompReqDlg;                                    //~va11R~
         if (Dump.Y) Dump.println("UARonValue.getValue player="+Pplayer+",swTaken="+swTaken);//~va11R~
-    	swAllInHand=isAllInHand();	//UARonChk, earth is ankan only //~va11I~//~va1aR~
+        player=Pplayer; //UARonChk.isAllInhand use setting of player; but for safety pass as parameter//~va60I~
+//  	swAllInHand=isAllInHand();	//UARonChk, earth is ankan only //~va11I~//~va1aR~//~va60R~
+    	swAllInHand=isAllInHand(player);	//UARonChk, earth is ankan only//~va60I~
         sw1stTake=CompReqDlg.chk1stTake();	//parent 1st take or child 1st take//~va11R~
 //      swTaken=compReqDlg.swTake;                                 //~va11R~
-        player=Pplayer;                                            //~va11I~
+//      player=Pplayer;                                            //~va11I~//~va60R~
+        swRobot=player!=PLAYER_YOU;                                //~1209I~
 		ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //including Ron tile//~va11I~
         TileData[] tds=AG.aPlayers.getHands(Pplayer);       //including Ron tile//~va11I~
         tdsHand=tds;                                               //~va11I~
@@ -172,6 +184,70 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         if (Dump.Y) Dump.println("UARonValue.getValue rc="+rc+",ronvalue="+ronResult.toString());//~va11R~
         return ronResult;                                          //~va11R~
     }                                                              //~va11I~
+    //*************************************************************************//~va60I~
+    //*from RARon to get value of emulated take                    //~va60I~//~1130R~
+    //*************************************************************************//~va60I~
+    public RonResult getValue(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~1130I~
+    {                                                              //~1130I~
+    	swRobot=true;                                              //~1130I~
+    	swEmulation=true;                                          //+va60I~
+        itsDoraOpen=AG.aRADSmart.itsDoraOpen;  //for UARonDataTree for robot emulation//~1217I~
+        ctrDoraOpen=AG.aRADSmart.ctrDoraOpen;                     //~1217I~
+    	RonResult r=getValueRobot(PswTake,Pplayer,PitsHand/*34entry*/,PtdRon);//~1130I~
+    	swRobot=false;                                             //~1130I~
+    	swEmulation=false;                                         //+va60I~
+        itsDoraOpen=null;                                          //~1217I~
+        return r;                                                  //~1130I~
+    }                                                              //~1130I~
+    private RonResult getValueRobot(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~va60R~//~1130R~//~va60R~
+    {                                                              //~va60I~
+//      swRonnable=true;                                           //~va60I~//~1130R~
+        if (Dump.Y) Dump.println("UARonValue.getValueRobot player="+Pplayer+",swTaken="+swTaken+",PtdRon="+TileData.toString(PtdRon));//~va60I~//~1130R~//~1206R~
+//  	swAllInHand=isAllInHand();	//UARonChk, earth is ankan only//~va60R~
+    	swAllInHand=isAllInHand(Pplayer);	//UARonChk, earth is ankan only//~va60I~
+//      sw1stTake=CompReqDlg.chk1stTake();	//parent 1st take or child 1st take//~va60R~
+        sw1stTake=AG.aPlayers.is1stTake();                         //~va60R~
+        player=Pplayer;                                            //~va60I~
+		ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //ctr of PairOPnEarth//~va60I~
+        TileData[] tds=AG.aPlayers.getHands(Pplayer);       //including Ron tile//~va60I~
+        tdsHand=tds;	//not including PtdEmulated but may not required because it is not red5; checked at UARonDataTree.chkRedTile//~va60R~
+        tdssEarth=AG.aPlayers.getEarth(Pplayer);                   //~va60I~
+        if (Dump.Y) Dump.println("UARonValue.getValue hand="+TileData.toString(tds));//~va60I~
+        if (Dump.Y) Dump.println("UARonValue.getValue earth="+TileData.toString(tdssEarth));//~va60I~
+//      tdRonLast=AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va60I~
+        tdRonLast=PtdRon;                                          //~va60R~
+        ronType=tdRonLast.type;                                    //~va60I~
+        ronNumber=tdRonLast.number;                                //~va60I~
+//      if (!Tiles.isTakenStatus(tds.length))                      //~va60I~
+//      {                                                          //~va60I~
+//          tdRonRiver=tdRonLast;                                  //~va60R~
+//  		swTaken=false;               //calc han as Ron(not include Yaku:tsumo)//~va60R~
+//      }                                                          //~va60I~
+//      else                                                       //~va60I~
+//      {                                                          //~va60I~
+//          tdRonRiver=null;                                       //~va60I~
+//  		swTaken=true;	//emulate takeOne                      //~va60I~
+//      }                                                          //~va60I~
+        swTaken=PswTake;                                            //~va60I~
+        if (!swTaken)                                               //~va60I~
+        {                                                          //~va60I~
+          	tdRonRiver=tdRonLast;                                  //~va60I~
+        }                                                          //~va60I~
+        else                                                       //~va60I~
+        {                                                          //~va60I~
+            tdRonRiver=null;                                       //~va60I~
+        }                                                          //~va60I~
+        if (Dump.Y) Dump.println("UARonValue.getValue testOption2="+Integer.toHexString(TestOption.option2));//~va60I~
+//      sortTiles(tds,tdRonRiver);                                 //~va60I~
+        RAUtils.countTile(PitsHand,dupCtr);	//copy PitsHand to dupCtr//~va60I~
+        if (!swTaken)                                              //~1205I~
+	        dupCtr[PtdRon.type][PtdRon.number]++;                      //~1130I~//~1205R~
+        addEarth();                                                //~va60I~
+        getPairEarth();                                            //~va60I~
+        boolean rc=chkRonValueSub();                               //~va60I~
+        if (Dump.Y) Dump.println("UARonValueRobot.getValue rc="+rc+",ronvalue="+ronResult.toString());//~va60I~//~1205R~
+        return ronResult;                                          //~va60I~
+    }                                                              //~va60I~
 	//*************************************************************************//~va11I~
 	//*TODO test                                                   //~va11I~
 	//*************************************************************************//~va11I~
@@ -237,7 +313,9 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //            swRonnable=chkRonnable();                            //~va11R~
 //            if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swRonnable="+swRonnable);//~va24R~
 //        }                                                        //~va11R~
-        UARDT=new UARonDataTree(this,player,dupCtr);	//chk dora //~va11R~
+//      UARDT=new UARonDataTree(this,player,dupCtr);	//TODO     //~va11R~//~va60R~
+        UARDT=new UARonDataTree(this);	//TODO                     //~va60I~
+        UARDT.initInstance(player,dupCtr);	//chk dora  //TODO     //~va60R~
         if (chk13NoPair())  //13/14 avoid dup with tenho,chiiho    //~va11R~
         {                                                          //~va11R~
             UARDT.setResultYakuman(ronResult);                     //~va11R~
@@ -247,6 +325,9 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //      {                                                          //~va11R~
 //      	if (!swCheckRonable)   //ronchk not done               //~va11I~//~va1aR~
 //          {                                                      //~va11I~//~va1aR~
+            if (swRobot)                                           //~1130I~
+                swRonnable=true;                                   //~1130I~
+            else                                                   //~1130I~
                 swRonnable=chkRonnable();                          //~va11I~
                 if (Dump.Y) Dump.println("UARonValue.chkRonValueSub swChkRank="+swChkRank+",swRonnable="+swRonnable);//~va24R~
                 if (!swRonnable)                                   //~va11I~
@@ -515,7 +596,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 	//*************************************************************************//~va11M~
     private boolean makePairing()                                  //~va11M~
     {                                                              //~va11M~
-        if (Dump.Y) Dump.println("UARonValue.makeParing");         //~va11M~
+        if (Dump.Y) Dump.println("UARonValue.makePairing");         //~va11M~//~1205R~
         boolean rc=false;                                          //~va11M~
         posPillow=new Point(0,0);                                  //~va11M~
         for(;;)                                                    //~va11M~
@@ -773,7 +854,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 		    	addYakuman(RYAKU_9GATE2,true/*double*/);           //~va11I~
             else                                                   //~va11I~
 	    		addYakuman(RYAKU_9GATE,false/*double*/);             //~va11R~
-        if (Dump.Y) Dump.println("UARonValue.chk9Gate rc="+rc+",sw9GateDouble="+sw9GateDouble+",sw9GateManOnly="+sw9GateManOnly);//+va24R~
+        if (Dump.Y) Dump.println("UARonValue.chk9Gate rc="+rc+",sw9GateDouble="+sw9GateDouble+",sw9GateManOnly="+sw9GateManOnly);//~va24R~
         return rc!=0;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************
@@ -889,15 +970,18 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     {                                                              //~va11I~
 	    swYakuOtherEnvironment=false;                              //~va11I~
 //  	AG.aUARon.chkEnvironmentYaku(swAllInHand);                 //~va11R~
+      if (swRobot)                                                 //~1130I~
+    	AG.aUARon.chkEnvironmentYaku(swAllInHand,tdRonLast,swTaken,player);//~1130R~
+      else                                                         //~1130I~
     	AG.aUARon.chkEnvironmentYaku(swAllInHand,tdRonLast);       //~va11I~
 		if (Dump.Y) Dump.println("UARonValue.chkEnvironmentYaku return swYakuOtherEnvironment="+swYakuOtherEnvironment);//~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
-	//*callback from CompReqDlg.chkTimingYakuman                   //~va11R~
+	//*UARon chkEnvironmentYaku-->chkTimingyakuman                 //~1130R~
 	//*************************************************************************//~va11I~
 	public void addTimingYakuman(int Pyakuman,int Prank,int Pamt) //~va11R~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonDataValue.addTimingYakuman Pyakuman="+Pyakuman+",rank="+Prank+",amt="+Pamt);//~va11I~
+        if (Dump.Y) Dump.println("UARonValue.addTimingYakuman Pyakuman="+Pyakuman+",rank="+Prank+",amt="+Pamt);//~va11I~//~1130R~
     	if (Pyakuman==RYAKU_CHILDRON)                              //~va11I~
         {                                                          //~va11I~
 //            if (Pamt==0)    //yakuman                            //~va11R~

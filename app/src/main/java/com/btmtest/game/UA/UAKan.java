@@ -1,15 +1,19 @@
-//*CID://+DATER~: update#= 676;                                    //~9209R~
+//*CID://+va66R~: update#= 688;                                    //~va66R~
 //**********************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.UA;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
 
 import com.btmtest.TestOption;
+import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Players;
+import com.btmtest.game.Robot;
 import com.btmtest.game.TileData;
 import com.btmtest.game.Tiles;
 import com.btmtest.game.UADelayed2;
@@ -56,6 +60,7 @@ public class UAKan                                                 //~v@@@R~//~v
     private boolean swSelectRequested;                             //~v@@6I~
 //    private int timeout;                                           //~9623I~
     private boolean swAnkanRon;                                            //~0405I~
+    private boolean swManualRobot;    //take by button in training mode//+va66R~
 //*************************                                        //~v@@@I~
 	public UAKan(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~v@@6R~
     {                                                              //~0914I~
@@ -80,6 +85,8 @@ public class UAKan                                                 //~v@@@R~//~v
 //      delayTake=OperationSetting.getDelayKanTake();              //~v@@6I~//~9209R~
 //        timeout=RuleSetting.getTimeoutTakeKan();                   //~9623I~
         swAnkanRon= RuleSettingYaku.isAvailableAnkanRon();          //~0405I~
+        if (AG.swTrainingMode)                                     //+va66I~
+	    	swManualRobot= RuleSettingOperation.isAllowRobotAllButton();//+va66R~
         if (Dump.Y) Dump.println("UAKan init isServer="+isServer); //~v@@@R~//~v@@6R~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@6R~
@@ -168,8 +175,8 @@ public class UAKan                                                 //~v@@@R~//~v
             	swSelectRequested=false;                        //~v@@6I~
         }                                                          //~v@@6I~
         if (Dump.Y) Dump.println("UAKan.selectInfo swSelectionRequested="+swSelectRequested+",testoption="+Integer.toHexString(TestOption.option));//~v@@6I~//~9B23R~//~0401R~
-//      if ((TestOption.option & TestOption.TO_KAN_TEST)!=0) //TODO           //~v@@@I~//~v@@6R~//+0A09R~
-        if ((TestOption.option & (TestOption.TO_KAN_TEST|TestOption.TO_KAN_CHANKAN))!=0) //TODO//+0A09I~
+//      if ((TestOption.option & TestOption.TO_KAN_TEST)!=0) //TODO           //~v@@@I~//~v@@6R~//~0A09R~
+        if ((TestOption.option & (TestOption.TO_KAN_TEST|TestOption.TO_KAN_CHANKAN))!=0) //TODO//~0A09I~
         {                                                          //~9B30I~
             rc=selectInfoTest(Pplayer);                             //~v@@@I~//~v@@6R~
         	if (!UADL.chkSelectInfo2Touch(PswServer,GCM_KAN,Pplayer,PintParm))//~9B30I~
@@ -483,7 +490,7 @@ public class UAKan                                                 //~v@@@R~//~v
         int rc;                                                    //~v@@6I~
 //        boolean swAdjustOpen=false;                                //~9301I~//~9302R~
     //***********************                                      //~v@@@I~
-        if (Dump.Y) Dump.println("UAKan.takeKan swServer="+PswServer+",player="+Pplayer+",swReceived="+PswReceived);//~v@@@R~//~v@@6R~//~0406R~
+        if (Dump.Y) Dump.println("UAKan.takeKan swServer="+PswServer+",player="+Pplayer+",swReceived="+PswReceived+",intp="+Arrays.toString(PintParm));//~v@@@R~//~v@@6R~//~0406R~//~1124R~
 //      AG.aUADelayed.actionDone(GCM_KAN,PswServer,PswReceived,Pplayer);//~9B23I~//~9B27R~
         if (!PswReceived)                                          //~v@@@I~
         {                                                          //~v@@@I~
@@ -550,7 +557,7 @@ public class UAKan                                                 //~v@@@R~//~v
 //      setTimeout(PswServer,Pplayer);    //timeout to take wanpai //~9623I~//~0403R~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_KAN)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
-        if (Dump.Y) Dump.println("UAKan.takeKan kanType="+PLS.getKanType());//~0402I~
+        if (Dump.Y) Dump.println("UAKan.takeKan kanType="+PLS.getKanType()+",swAnkanRon="+swAnkanRon);//~0402I~//~va60R~
 //      if (!tds[0].isKanRiver())                                  //~0403I~//~0405R~
         if (tds[0].isKanAdd()                                      //~0405I~
         ||  (tds[0].isKanTaken() && swAnkanRon)                    //~0405R~
@@ -694,10 +701,15 @@ public class UAKan                                                 //~v@@@R~//~v
 	//*************************************************************************//~9623I~
 	//*On Server; minkan or ron time timeout of ankan,chankan, schedule auto take timeout//~0403R~
 	//*************************************************************************//~9623I~
-    public void setTimeout(boolean PswTimeout,boolean PswServer,int Pplayer)          //~9623I~//~0403R~
+    private void setTimeout(boolean PswTimeout,boolean PswServer,int Pplayer)          //~9623I~//~0403R~//~va60R~
     {                                                              //~9623I~
         if (Dump.Y) Dump.println("UAKan.setTimeout swTimeout="+PswTimeout+",swServer="+PswServer+",player="+Pplayer+",ctrTakenAll="+PLS.ctrTakenAll);//~9623R~//~9624R~//~0403R~
         setTakable(true/*swTakable*/,Pplayer);                     //~0403I~
+        if (swManualRobot)                                         //+va66R~
+        {                                                          //+va66R~
+            if (Dump.Y) Dump.println("UAKan.setTimeout return by manualRobot in training mode");//+va66R~
+            return;                                                //+va66R~
+        }                                                          //+va66R~
 	    UA.UADL.postDelayedAutoTakeKan(PswServer,Pplayer,PLS.ctrTakenAll,PLS.ctrDiscardedAll);//~9623R~//~9627R~//~0403R~//~0406R~
         if (PswTimeout)	//!minkan	                               //~0403I~
         {                                                          //~0403I~
@@ -724,6 +736,18 @@ public class UAKan                                                 //~v@@@R~//~v
 	    UA.UADL.postDelayedAutoTakeKan(false/*PswServer*/,Pplayer,ctrTaken,ctrDiscarded);//~0403I~//~0406R~
         return rc;                                                 //~0403I~
     }                                                              //~0403I~
+	//*************************************************************************//~va60I~
+    public void timeoutRinshanTakable(int Pplayer)                 //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UAKan.timeoutRinshanTakable player="+Pplayer);//~va60I~
+        if (AG.aRoundStat.timeoutRinshanTakable(Pplayer))    //issued chankan Ron//~va60R~
+        {                                                          //~va60R~
+            if (Dump.Y) Dump.println("UAKan.timeoutRinshanTakable issued chankan player="+Pplayer);//~va60R~
+            return;                                                //~va60R~
+        }                                                          //~va60R~
+//      UA.UAK.timeoutRinshanTakable(Pplayer);	//issue autotake timeout//~va60R~
+        setTimeout(true/*timeout*/,true/*swServer*/,Pplayer);	//autotake timeout//~va60I~
+    }                                                              //~va60I~
 	//*************************************************************************//~9627I~
     public boolean isActiveTakeKanTimeout(int Pplayer,int PctrTakenAll,int PctrDiscarded)//~9627R~//~0406R~
     {                                                              //~9627I~
@@ -746,7 +770,12 @@ public class UAKan                                                 //~v@@@R~//~v
 		if (Pplayer==PLAYER_YOU)                                   //~9627I~
         	AG.aGC.sendMsg(GCM_TAKE,Pplayer);		//simulate take button//~9627I~
         else                                                       //~9B23I~
+        {                                                          //~va60R~
+          if (AG.aAccounts.isDummyPlayer(Pplayer))                 //~va60R~
+           	Robot.autoTakeTimeoutKan(Pplayer);                     //~va60R~
+          else                                                     //~va60R~
 			UA.UADL.sendMsgEmulatedToClient(GCM_TAKE,Pplayer);	//simulate take button//~9B23I~
+        }                                                          //~va60R~
     }                                                              //~9623I~
 	//*************************************************************************//~9627I~
 	//*on Client,by GCM_WAITOFF at waitingAutoTakeKan              //~9627I~

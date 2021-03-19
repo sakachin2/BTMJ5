@@ -156,12 +156,8 @@
                     android:background="#ffffffff"
                             android:id="@+id/llRelatedRule"
                 >
-                        <LinearLayout
-                             android:layout_width="fill_parent"
-                             android:layout_height="2px"
-                                    android:background="@color/separater"
-
-                        />
+                    <include layout="@layout/setting_rule_opt_keiten"
+                    />
                     <include layout="@layout/setting_rule_opt_pending_cont"
                     />
                     <LinearLayout

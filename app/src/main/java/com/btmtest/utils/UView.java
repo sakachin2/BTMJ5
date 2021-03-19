@@ -18,9 +18,9 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -28,7 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 //import android.app.DialogFragment;                               //+va40R~
-import android.support.v4.app.DialogFragment;                      //+va40I~
+import androidx.fragment.app.DialogFragment;                      //+va40I~
 import android.widget.LinearLayout;
 
 import java.util.EmptyStackException;

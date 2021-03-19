@@ -1,5 +1,10 @@
-//*CID://+DATER~: update#= 797;                                    //~v@@@R~//~v@@5R~//~9306R~
+//*CID://+va6gR~: update#= 818;                                    //+va6gR~
 //**********************************************************************//~v101I~
+//2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//+va6gI~
+//2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
+//2021/02/10 va68 change robot name                                //~va68I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -116,7 +121,8 @@ public class Accounts                                              //~v@@@R~
         return id;                                                 //~9A19I~
     }                                                              //~9A19I~
     //*****************************************************    //~v@@@I~//~9824I~
-    public static int isRobotName(String Pname)                //~9824I~//~9828R~
+//  public static int isRobotName(String Pname)                //~9824I~//~9828R~//~va68R~
+    public static int isRobotName_Old(String Pname)                //~va68I~
     {                                                              //~9824I~
         int rc=0;                                                  //~9828R~
         String botname=Utils.getStr(R.string.YournameRobot);       //~9824I~
@@ -128,9 +134,28 @@ public class Accounts                                              //~v@@@R~
             if (suffix>=1 && suffix<=3)                            //~0304I~
                 rc=suffix;                                         //~9824I~//~9828R~
         }                                                          //~9824I~
-        if (Dump.Y) Dump.println("Account.isRobotName rc="+rc+",Pname="+Pname);//~9824I~
+        if (Dump.Y) Dump.println("Account.isRobotNameOld rc="+rc+",Pname="+Pname);//~9824I~//~va68R~
         return rc;                                                 //~9824I~
     }                                                              //~9824I~
+    //*****************************************************        //~va68I~
+    public static int isRobotName(String Pname)                    //~va68I~
+    {                                                              //~va68I~
+        int rc=0;                                                  //~va68I~
+//      for (int ii=1;ii<PLAYERS;ii++)                                 //~va68I~//~va6eR~
+        for (int ii=1;ii<GConst.robotYourNameDefaultConst.length;ii++)//~va6eI~
+        {                                                          //~va68I~
+//      	if (Pname.equals(GConst.robotYourNameDefault[ii]))     //~va68I~//~va6eR~
+        	if (Pname.equals(GConst.robotYourNameDefaultConst[ii]))//~va6eI~
+            {	                                                   //~va68I~
+            	rc=ii;                                             //~va68I~
+                break;                                             //~va68I~
+            }                                                      //~va68I~
+        }                                                          //~va68I~
+        if (rc==0)                                                 //~va68I~
+        	rc=isRobotName_Old(Pname);                             //~va68I~
+        if (Dump.Y) Dump.println("Account.isRobotName rc="+rc+",Pname="+Pname);//~va68I~
+        return rc;                                                 //~va68I~
+    }                                                              //~va68I~
 //    //*****************************************************      //~0204R~
 //    public static static getRobotName(boolean PswDefault)        //~0204R~
 //    {                                                            //~0204R~
@@ -178,7 +203,9 @@ public class Accounts                                              //~v@@@R~
     {                                                              //~v@@@M~
 //  	boolean rc=AG.aAccounts.idxLocal==AG.aAccounts.idxServer;  //~v@@@M~//~0113R~
     	boolean rc=AG.aAccounts!=null && AG.aAccounts.idxLocal==AG.aAccounts.idxServer;//~0113I~
-        if (Dump.Y) Dump.println("Accounts.isServer="+rc);         //~v@@@M~
+      	if (AG.swTrainingMode)                                     //~va66I~
+        	rc=true;                                               //~va66I~
+        if (Dump.Y) Dump.println("Accounts.isServer swTrainingMode="+AG.swTrainingMode+",rc="+rc);         //~v@@@M~//~va66R~
         return rc;                                                 //~v@@@M~
     }                                                              //~v@@@M~
     //**************************************************           //~v@@@I~
@@ -191,7 +218,7 @@ public class Accounts                                              //~v@@@R~
     }                                                              //~v@@@I~
     //**************************************************           //~v@@@I~
     //*mapping on account[]                                        //~v@@@R~
-    //before positioning                                           //~9306I~
+    //!! Use only before positioning moved                                           //~9306I~//~va60R~
     //select next nonDymmy account                                 //~9B25R~
     //**************************************************           //~v@@@I~
     public static int mapDummy(int Pplayer/*idxAccount*/)                        //~v@@@I~//~9306R~
@@ -203,12 +230,26 @@ public class Accounts                                              //~v@@@R~
         {                                                          //~v@@@I~
             player=Players.nextPlayer(Pplayer);                    //~v@@@I~
             if (isDummy(player))                                   //~v@@@I~
+            {                                                      //~va66I~
 //              player=Players.prevPlayer(Pplayer);                //~v@@@R~//~9B25R~
                 player=Players.nextPlayer(player);                 //~9B25I~
+            	if (isDummy(player))    //for the case training mode(3 robots)//~va66I~
+	                player=Players.nextPlayer(player);             //~va66I~
+            }                                                      //~va66I~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("Accounts.mapDummy "+Pplayer+"-->"+player);//~v@@@I~
         return player;                                             //~v@@@I~
     }                                                              //~v@@@I~
+//    //**************************************************         //~va60R~
+//    public static int mapDummyByEswn(int Peswn)                  //~va60R~
+//    {                                                            //~va60R~
+//        if (Dump.Y) Dump.println("Accounts.mapDummyByEswn Peswn="+Peswn);//~va60R~
+//        int player=eswnToPlayer(Peswn);                          //~va60R~
+//        int robot=mapDummy(player);                              //~va60R~
+//        int eswn=playerToEswn(robot);                            //~va60R~
+//        if (Dump.Y) Dump.println("Accounts.mapDummyByEswn eswn="+eswn);//~va60R~
+//        return eswn;                                             //~va60R~
+//    }                                                            //~va60R~
     //**************************************************           //~v@@5I~//~9306M~
     public boolean isDummyByCurrentEswn(int Peswn)                 //~v@@5I~//~9306M~
     {                                                              //~v@@5I~//~9306M~
@@ -387,8 +428,11 @@ public class Accounts                                              //~v@@@R~
 //        }                                                          //~v@@@I~//~0118R~
         idxServer=Pmembers.idxServer;                              //~0118I~
         idxLocal=Pmembers.idxLocal;                                //~0118I~
+      if (!AG.swTrainingMode)                                      //~va66I~
+      {                                                            //~va66I~
         if (idxServer==-1 || idxLocal==-1)                         //~v@@@R~
         	return false;                                          //~v@@@I~
+      }                                                            //~va66I~
 //      if (Dump.Y) Dump.println("Accounts.init server="+memberServer.getYourName()+",dev="+memberServer.getName());//~v@@@I~//~0118R~
         boolean swServer=isServer(); //idxLocal==idxServer;        //~0118I~
         if (Dump.Y) Dump.println("Accounts.init idxServer="+idxServer+",idxLocal="+idxLocal+",isServer="+swServer);//~0118I~
@@ -416,6 +460,13 @@ public class Accounts                                              //~v@@@R~
         if (Dump.Y) Dump.println("Accounts.init rc="+rc+",memberctr="+activeMembers);//~v@@@R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@M~
+//******************************************************************************//~va60I~
+//*for instrumented Test                                           //~va60I~
+//******************************************************************************//~va60I~
+	public Account newAccount(int Pidx)                            //~va60R~
+    {                                                              //~va60I~
+    	return new Account(Pidx);                                  //~va60R~
+    }                                                              //~va60I~
 //******************************************************************************//~0217I~
 	private boolean chkDupYourname()                               //~0217I~
     {                                                              //~0217I~
@@ -887,6 +938,52 @@ public class Accounts                                              //~v@@@R~
         if (Dump.Y) Dump.println("Accounts.isDummyPlayer player="+Pplayer+",idxAccount="+idxAccount+",rc="+rc);//~v@@@R~
 		return rc;                                                 //~v@@@R~
     }                                                              //~v@@@I~
+    //**************************************************************           //~va60I~
+    //*get real player of dealer if player is robot,else return -1 //~va60I~
+    //**************************************************************           //~va60I~
+    public int/*player*/ getRealDealerForRobot(int Pplayer)        //~va60I~
+    {                                                              //~va60I~
+    	int player=-1;                                             //~va60I~
+    	if (isDummyPlayer(Pplayer))                                //~va60I~
+        {                                                          //~va60I~
+		    player=getCurrentDealerReal();                          //~va60I~
+        }                                                          //~va60I~
+        if (Dump.Y) Dump.println("Accounts.getRealDealerForRobot Pplayer="+Pplayer+",player="+player);//~va60R~
+		return player;                                             //~va60I~
+    }                                                              //~va60I~
+    //**************************************************************//~va60I~
+    public int/*eswn*/ getRealDealerEswnForRobot(int Pplayer)      //~va60I~
+    {                                                              //~va60I~
+    	int eswn=-1;                                               //~va60I~
+    	if (isDummyPlayer(Pplayer))                                //~va60I~
+        {                                                          //~va60I~
+		    int player=getCurrentDealerReal();                     //~va60I~
+            eswn=playerToEswn(player);                             //~va60I~
+        }                                                          //~va60I~
+        if (Dump.Y) Dump.println("Accounts.getRealDealerEswnForRobot Pplayer="+Pplayer+",eswn="+eswn);//~va60I~
+		return eswn;                                               //~va60I~
+    }                                                              //~va60I~
+    //**************************************************************//~va60I~
+    //*get real dealer eswn for robot eswn,-1 if not robot         //~va60I~
+    //**************************************************************//~va60I~
+    public int/*eswn*/ getRealDealerEswnForRobotEswn(int Peswn)    //~va60I~
+    {                                                              //~va60I~
+    	int player=eswnToPlayer(Peswn);                            //~va60I~
+        int eswn=getRealDealerEswnForRobot(player);                //~va60I~
+        if (Dump.Y) Dump.println("Accounts.getRealDealerEswnForRobotEswn Peswn="+Peswn+",eswn="+eswn);//~va60I~
+		return eswn;                                               //~va60I~
+    }                                                              //~va60I~
+    //**************************************************           //~va60I~
+    //*sender is current dealer for robot, else itself             //~va60I~
+    //**************************************************           //~va60I~
+    public int/*eswn*/ getRealSenderEswn(int Peswn)                //~va60I~
+    {                                                              //~va60I~
+        int eswn=getRealDealerEswnForRobotEswn(Peswn);             //~va60I~
+        if (eswn==-1)	//not robot                                //~va60I~
+        	eswn=Peswn;                                            //~va60I~
+        if (Dump.Y) Dump.println("Accounts.getRealSenderEswn Peswn="+Peswn+",eswn="+eswn);//~va60I~
+		return eswn;                                               //~va60I~
+    }                                                              //~va60I~
     //**************************************************           //~v@@@I~
     //*get Robot of the player position                            //~v@@@I~
     //**************************************************           //~v@@@I~
@@ -957,8 +1054,8 @@ public class Accounts                                              //~v@@@R~
         accountsByESWN=sortAccounts();	//by initial position      //~9901I~
 //      int ctrGame=Phd.scores[HDPOS_SCORES_GAMESEQ][POS_GAMESEQ_CTRGAME];//~9902I~//~0309R~
     	Rect r=setGameSeqResume(Phd);  //set gameCtr               //~0309I~
-        int ctrGame=r.top;                                         //~0309I~
-	    currentAccountsByESWN=setCurrentAccountsByESWN(ctrGame);         //~9901I~//~9902R~
+//      int ctrGame=r.top;                                         //~0309I~//~va60R~
+//      currentAccountsByESWN=setCurrentAccountsByESWN(ctrGame); //do in Status.setGameSeqRusume to use currentAccountsByEswn in RoundStat.newGame from resetForNewGame         //~9901I~//~9902R~//~va60R~
         accountsLocal=accountsByYourESWN();   //ESWN->membersIdx   //~9901I~
 		AG.aNamePlate.showPlate();      //like as showFirstDiceShooter//~9902I~
         showNamePlate();                                           //~9901I~
@@ -1041,7 +1138,7 @@ public class Accounts                                              //~v@@@R~
 //      Status.setGameSeqResume(gameSeq,nextgameType==NGTP_CONTINUE,false/*nextRound*/); //TODO nextround//~9901I~//~9904R~
 //      Status.setGameSeqResume(gameSeq,nextgameType,false/*nextRound*/); //TODO nextround//~9904I~//~0308R~
 //      Status.setGameSeqResume(gameSeq,endgameType,nextgameType,false/*nextRound*/); //TODO nextround//~0308I~//~0309R~
-        Rect r=Status.setGameSeqResume(gameSeq,endgameType,nextgameType,false/*nextRound*/); //nextround//~0309I~//+0322R~
+        Rect r=Status.setGameSeqResume(gameSeq,endgameType,nextgameType,false/*nextRound*/); //nextround//~0309I~//~0322R~
         if (Dump.Y) Dump.println("Accounts.setGameSeqResume return="+r.toString());//~0309I~
         return r;                                                  //~0309I~
     }                                                              //~9901I~
@@ -1056,7 +1153,7 @@ public class Accounts                                              //~v@@@R~
         if (Status.isGameOver())                                   //~9502R~
         {                                                          //~9519I~
         	gameOver();                                            //~9519I~
-            return;                                          //~9502R~//+0322R~
+            return;                                          //~9502R~//~0322R~
         }                                                          //~9519I~
         AG.aComplete.savePendingReach();                           //~9521I~
         if (AG.aLastGame.chkFinalGame(PendgameType,PnextgameType)) //FinalGameDlg shown//~9817R~
@@ -1139,7 +1236,7 @@ public class Accounts                                              //~v@@@R~
     //**************************************************           //~9904I~
     //*from suspendDlg.doContinue                                  //~9904I~
     //**************************************************           //~9904I~
-    public  void resetGameWithoutSuspended()                       //~9904I~
+    private void resetGameWithoutSuspended()                       //~9904I~//~va60R~
     {                                                              //~9904I~
         Status.resetGame();	//reset for newgame                    //~9904I~
 //      AG.aACATouch.showReadyToStartNextGame();                   //~9904I~//~0307R~
@@ -1160,8 +1257,8 @@ public class Accounts                                              //~v@@@R~
         }                                                          //~9902I~
     }                                                              //~9522I~
     //**************************************************           //~9526I~
-    //finalGameTest() TODO test by  if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)//+0322I~
-    //**************************************************           //+0322I~
+    //finalGameTest() TODO test by  if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)//~0322I~
+    //**************************************************           //~0322I~
     public  void finalGameTest() //TODO test                       //~9526R~
     {                                                              //~9526I~
         if (Dump.Y) Dump.println("Accounts.finalGameTest ctrGame="+AG.aStatus.gameCtrGame);//~9526I~
@@ -1179,6 +1276,8 @@ public class Accounts                                              //~v@@@R~
             if (Dump.Y) Dump.println("Accounts.finalGameTest enableDiceRelative starter="+starter+",gameCtr="+AG.aStatus.gameCtrGame);//~9922I~//~9923I~
             if (Dump.Y) Dump.println("Accounts.finalGameTest currentAccountsByESWN="+Arrays.toString(currentAccountsByESWN));//~9923I~//~0222R~
 	        enableDiceRelative(starter);                           //~9922R~//~9923M~
+    	AG.aRoundStat.newGame(false/*Psw1st*/,TestOption.finalGameCtrSet,TestOption.finalGameCtrGame,0/*dupctr*/);//~va60R~
+        if (Dump.Y) Dump.println("Accounts.finalGameTest exit");   //~va60I~
     }                                                              //~9526I~
     //**************************************************           //~9519I~
     private void gameOver()                                        //~9519I~
@@ -1836,7 +1935,10 @@ public class Accounts                                              //~v@@@R~
     {                                                              //~9522I~
         if (Dump.Y) Dump.println("Accounts.savePendingReach swRon="+PswRon+",before ctrPendingReach="+Arrays.toString(intsCtrPendingReach));//~9522I~
         if (PswRon)                                                //~9522I~
+        {                                                          //+va6gI~
 		    Arrays.fill(intsCtrPendingReach,0);                    //~9522I~
+            AG.aPlayers.clearReachAll();                           //+va6gI~
+        }                                                          //+va6gI~
         else                                                       //~9522I~
         {                                                          //~9522I~
 			if (PswsReach!=null)                                   //~9522I~
@@ -1875,13 +1977,15 @@ public class Accounts                                              //~v@@@R~
     	public String name;                                        //~v@@@I~
 //  	private BTIOThread thread;                                 //~v@@@R~//~9A24R~
     	public  Members.MemberData memberData;                     //~v@@@I~//~9A21R~
-    	private Robot robot;                                       //~v@@@R~
+//  	private Robot robot;                                       //~v@@@R~//~va60R~
+    	public  Robot robot;    //public for IT                    //~va60I~
         //*****************************************************    //~v@@@R~
         public Account(int PidxMembers)                            //~v@@@R~
         {                                                          //~v@@@R~
             idxMembers=PidxMembers;                                //~v@@@R~
 //          name=Utils.getStr(R.string.YournameRobot)+PidxMembers; //~v@@@R~//~9605R~
-            name=Utils.getStr(R.string.YournameRobot)+(PLAYERS-PidxMembers);//~9605I~
+//          name=Utils.getStr(R.string.YournameRobot)+(PLAYERS-PidxMembers);//~9605I~//~va68R~
+            name=GConst.robotYourNameDefault[PidxMembers];         //~va68I~
         }                                                          //~v@@@R~
         //*****************************************************    //~9824I~
         private boolean setMember(Members.MemberData PmemberData)   //~v@@@I~//~9B11R~
@@ -1928,7 +2032,8 @@ public class Accounts                                              //~v@@@R~
                 {                                                  //~9630I~
 		        	robot=Robot.createNewInstance(this);           //~v@@@R~
                     this.robot=robot;                              //~9630I~
-		            name=Utils.getStr(R.string.YournameRobot)+(PLAYERS-idxMembers);	//reset when disconnected case//~9B30I~
+//  	            name=Utils.getStr(R.string.YournameRobot)+(PLAYERS-idxMembers);	//reset when disconnected case//~9B30I~//~va68R~
+    	            name=GConst.robotYourNameDefault[idxMembers];	//reset when disconnected case//~va68I~
                 }                                                  //~9630I~
             }
 	        if (Dump.Y) Dump.println("Account.setMember rc="+rc+",type="+type);//~v@@@R~
@@ -1976,7 +2081,7 @@ public class Accounts                                              //~v@@@R~
         //*****************************************************    //~v@@@I~
         public boolean isDummy()                                   //~v@@@I~
         {                                                          //~v@@@I~
-	        if (Dump.Y) Dump.println("Account.isDummy rc="+(type==AT_DUMMY));//~v@@@I~
+	        if (Dump.Y) Dump.println("Account.isDummy initialESWN="+ESWN+",idxMember="+idxMembers+",rc="+(type==AT_DUMMY));//~v@@@I~//~va60R~
         	return (type==AT_DUMMY);                               //~v@@@I~
         }                                                          //~v@@@I~
         //*****************************************************    //~9501I~

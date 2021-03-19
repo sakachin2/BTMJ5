@@ -25,6 +25,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
+                android:gravity="center_vertical"
     >
         <CheckBox
             android:id="@+id/cbMinusStop"
@@ -38,10 +39,16 @@
                 android:text="@string/Label_MinusGain"
                 android:layout_marginLeft="20dp"
         />
-        <include layout="@layout/spinbutton"
-            android:id="@+id/llSBMinusPrize"
-             android:layout_marginLeft="10px"
-        />
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton"
+                android:id="@+id/llSBMinusPrize"
+            />
+        </LinearLayout>
         <TextView
              android:layout_height="wrap_content"
              android:layout_width="wrap_content"

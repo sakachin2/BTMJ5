@@ -113,10 +113,10 @@
         android:orientation="horizontal"
     >
             <TextView
-                android:id="@+id/rbS2P_Floor"
                 android:text="@string/Label_S2P_Zero"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
+            <!--    android:id="@+id/rbS2P_Floor" -->
     </LinearLayout>    <!--line3-->
 </LinearLayout>

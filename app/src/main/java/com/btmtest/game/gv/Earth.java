@@ -1,12 +1,13 @@
-//*CID://+v@@@R~: update#= 699;                                    //~v@@@R~
+//*CID://+va65R~: update#= 702;                                    //~va65R~
 //**********************************************************************//~v101I~
+//2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
+//**********************************************************************//~va65I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
 
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -19,12 +20,11 @@ import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
 
-import static com.btmtest.game.Complete.*;
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.TileData.*;                         //~v@@@R~
 import static com.btmtest.game.GConst.*;                           //~v@@@R~
 import static com.btmtest.game.gv.MJTable.*;//~v@@@I~
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
-
 
 public class Earth                                                 //~v@@@R~
 {                                                                  //~0914I~
@@ -87,11 +87,11 @@ public class Earth                                                 //~v@@@R~
             }                                                      //~v@@@R~
         }                                                          //~v@@@R~
         if (Dump.Y) Dump.println("Earth.getRiverTilePos rc="+rc);  //~v@@@R~
-//            if ((TestOption.option & TestOption.TO_KAN_CHANKAN)!=0)//+v@@@R~
-//            {                                                    //+v@@@R~
-//                if (Dump.Y) Dump.println("Player.getRiverTilePos rc="+rc+",@@@@reset to 0 by testoption");//+v@@@R~
-//                rc=0;                                            //+v@@@R~
-//            }                                                    //+v@@@R~
+//            if ((TestOption.option & TestOption.TO_KAN_CHANKAN)!=0)//~v@@@R~
+//            {                                                    //~v@@@R~
+//                if (Dump.Y) Dump.println("Player.getRiverTilePos rc="+rc+",@@@@reset to 0 by testoption");//~v@@@R~
+//                rc=0;                                            //~v@@@R~
+//            }                                                    //~v@@@R~
         return rc;                                                 //~v@@@R~
     }                                                              //~v@@@R~
     //*******************************************************************//~v@@@R~
@@ -296,6 +296,10 @@ public class Earth                                                 //~v@@@R~
 	    	openRects=table.getOpenRect();                         //~v@@@R~
         if (players.isOpen(Pplayer))                               //~v@@@I~
         	hands.clearOpenRect(Pplayer);                                //~v@@@I~
+        else                                                       //~va65I~
+//      if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
+        if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+        	hands.clearOpenRect(Pplayer);                          //~va65I~
         tds=sortPairTile(tds,Pplayer);                             //~v@@@R~
         Rect rectPair=getRectPair(Pplayer,tds);                    //~v@@@R~
 //        canvas=Graphics.lockCanvas(rectPair);                    //~v@@@R~
@@ -335,6 +339,10 @@ public class Earth                                                 //~v@@@R~
         savedRectPair[Pplayer][savedPairCtr[Pplayer]++]=rectPair;  //~v@@@I~
         if (players.isOpen(Pplayer))                               //~v@@@I~
 	        hands.drawOpen(Pplayer,null/*taken tile*/);                  //~v@@@I~
+        else                                                       //~va65I~
+//      if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
+        if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+	        hands.drawOpen(Pplayer,null/*taken tile*/);            //~va65I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
 	public void drawEarthYou(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~

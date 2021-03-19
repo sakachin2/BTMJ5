@@ -1,7 +1,11 @@
-//*CID://+va49R~: update#= 671;                                    //~va49R~
+//*CID://+va6iR~: update#= 689;                                    //+va6iR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
-//**********************************************************************//~1107I~
+//**********************************************************************//~va60I~
+//2021/03/15 va6i add BGM of eburishou kouka                       //~va6iI~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va6iI~
+//2021/01/23 va61 (BUG)abend  when bgm=off                         //~va61I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~//~va6iM~
 //2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -27,6 +31,7 @@ import com.btmtest.dialog.ScoreDlg;
 import com.btmtest.dialog.TestLayout;
 import com.btmtest.game.UA.UARestart;
 import com.btmtest.game.UA.UARon;
+import com.btmtest.game.RA.RoundStat;                              //~va60I~
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Alert;
@@ -55,6 +60,7 @@ import static com.btmtest.utils.Alert.*;
 import static com.btmtest.game.UAD2Touch.*;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.view.Gravity;
@@ -155,6 +161,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //    private boolean swReconnect;                                 //~0411R~
 	private int connectionCtrAtStartGame;                          //~va02I~
 //*************************                                        //~v@@@I~
+	public GC()                             //for IT override      //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("GC.default Constructor");        //~va60I~
+    }                                                              //~va60I~
 	public GC(View Pframe)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("GC Constructor");         //~1506R~//~@@@@R~//~v@@@R~
@@ -181,6 +191,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //          new Status();                                          //~v@@@R~
             new Rule();                                            //~v@@@I~//~9C01R~
             new Players();                                         //~v@@@I~
+            new RoundStat();                                       //~va60I~
             new Tiles();                                           //~v@@@I~
             new Complete();                                        //~v@@@I~
             new LastGame();                                        //~9504I~
@@ -250,6 +261,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //                            }                                    //~v@@@R~
 //                        }                                        //~v@@@R~
 //                   )).start();                                   //~v@@@R~
+        if (AG.swTrainingMode)                                     //~va60I~
+        {                                                          //~va60I~
+            AG.aBTMulti.startGameTrainingMode();                   //~va60I~
+        }                                                          //~va60I~
+        else                                                       //~va60I~
 		if (BTMulti.isServerDevice())                              //~9621I~
         {                                                          //~9B30I~
 //	        AG.aBTMulti.startGameSendName();    //for the case anyone connected/disconnected//~9B30R~
@@ -699,9 +715,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		return UARestart.isIOExceptionRestarting();                //~9A29I~
     }                                                              //~9A29I~
 	//**************************************************************//~v@@@M~
-	//*from Handler                                                //~v@@@R~
+	//*from Handler (For test only,no caller)                      //~va49R~
 	//**************************************************************//~v@@@M~
-	public boolean diceCasted(Message Pmsg)                        //~v@@@M~
+	private boolean diceCasted(Message Pmsg)                        //~v@@@M~
     {                                                              //~v@@@M~
     	boolean rc=true;   //no need call draw                     //~v@@@M~
         int[] intp=GameViewHandler.getMsgIntData(Pmsg);                            //~v@@@M~
@@ -755,7 +771,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public static void actionError(int Popt,int Pplayer,int Pmsgid)//~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("@@@@ GC.actionError opt="+Popt+",player="+Pplayer+",msgid=+"+Integer.toHexString(Pmsgid));//~v@@@I~//~0304R~
+        if (Dump.Y) Dump.println("@@@@ GC.actionError opt="+Popt+",player="+Pplayer+",msgid=+"+Integer.toHexString(Pmsgid)+"="+Utils.getStr(Pmsgid));//~v@@@I~//~0304R~//~va60R~
 //      actionError(Popt,Pplayer,Utils.getStr(Pmsgid));            //~v@@@R~//~0304R~
         UserAction.sendErr(Popt,Pplayer,Pmsgid);                   //~0304I~
     }                                                              //~v@@@I~
@@ -803,6 +819,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //    }                                                            //~v@@@R~
 	//**************************************************************//~v@@@I~
 	//*from Handler                                                //~v@@@R~
+	//*GCM_REMOTE_DICE is for test only from ActionMenuDlg         //~va49I~
 	//**************************************************************//~v@@@I~
 	public boolean diceCastedRemote(Message Pmsg)                  //~v@@@I~
     {                                                              //~v@@@I~
@@ -831,7 +848,6 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //          DiceBox.enable(true);                                  //~v@@@R~
         	AG.aDiceBox.setWaitingDice(playerTempStarter);         //~v@@@R~
             Status.setGameStatus(GS_POSITIONING);                  //~v@@@I~
-//          AG.aGMsg.drawMsg("場所決め、仮東がサイコロを振ってください");	//TDO test//~v@@@R~
         	AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositioning);  //~v@@@I~
         	break;                                                 //~v@@@I~
         case GS_POSITIONING:                                       //~v@@@I~
@@ -842,12 +858,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             AG.aDiceBox.setWaitingResponse(player1stPicker);   //waiting lamp//~v@@@R~
 //          AG.aDiceBox.setWaitingResponseAll();   //waiting lamp  //~v@@@R~
             Status.setGameStatus(GS_POSITION_ACCEPTING);           //~v@@@I~
-//          AG.aGMsg.drawMsg("場所決め、順番にランプをタッチしてください"); //TDO test//~v@@@R~
             AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositionAccepting); //TDO test//~v@@@I~
 //            AG.aNamePlate.show(playerTempStarter,spot);          //~v@@@R~
 //            Status.setGameStatus(GS_POSITION_ACCEPTING);         //~v@@@R~
 //            AG.aDiceBox.setWaitingResponse();   //wait all players//~v@@@R~
-//            AG.aGMsg.drawMsg("場所決め、了解したらランプをタッチしてください"); //TDO test//~v@@@R~
         	break;                                                 //~v@@@I~
         case GS_START_GAME:                                        //~v@@@M~
             Status.setGameStatus(GS_GAME_STARTED);                 //~v@@@M~
@@ -962,6 +976,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        return mn;                                                 //~v@@@I~//~0305R~
 //    }                                                              //~v@@@I~//~0305R~
     //*******************************************************************//~v@@@I~
+	//*GCM_REMOTE_DICE is for test only from ActionMenuDlg         //~va49I~
+    //*******************************************************************//~va49I~
     private void deal(int Pplayer,int Pspot)                        //~v@@@I~
     {                                                              //~v@@@I~
 		if (Dump.Y) Dump.println("GC.deal player="+Pplayer+",spot="+Pspot);//~v@@@I~
@@ -1063,7 +1079,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.showDlgComp");                //~v@@@I~
 //        if (chkComplete(true)==0)                                  //~v@@@I~//~9403R~
 //            UView.showToast(R.string.Err_NoneCompleted);           //~v@@@I~//~9403R~
-	    highlightCompReq(false/*PswOn*/);                           //+va49I~
+	    highlightCompReq(false/*PswOn*/);                           //~va49I~
     	CompReqDlg.showDismissed();                                //~9403I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
@@ -1507,6 +1523,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.exitOnGameView");             //~0411I~
     	if (isGameOver())                                          //~va02I~
         {                                                          //~va02I~
+	        if (AG.swTrainingMode)                                 //~va66R~
+        		UView.showToast(R.string.Info_GameEnded);          //~va66R~
+            else                                                   //~va66R~
 			if (BTMulti.isServerDevice())                          //~va02I~
         		UView.showToast(R.string.Info_GameEnded);          //~va02R~
             else                                                   //~va02I~
@@ -1515,6 +1534,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~va02I~
 		if (Status.isGameSuspended())                              //~va02I~
         {                                                          //~va02I~
+	        if (AG.swTrainingMode)                                 //~va66R~
+        		UView.showToast(R.string.Info_GameEnded);          //~va66R~
+            else                                                   //~va66R~
 			if (BTMulti.isServerDevice())                          //~va02I~
         		UView.showToast(R.string.Info_GameEnded);          //~va02I~
             else                                                   //~va02I~
@@ -1523,6 +1545,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~va02I~
         if (!Status.isGamingForMenuInGameAndInterRound())	//before deal//~va02I~
         {                                                          //~va02M~
+	        if (AG.swTrainingMode)                                 //~va66R~
+			    confirmEndGameReturn(R.string.Err_ConfirmReturn);  //~va66R~
+            else                                                   //~va66R~
 			if (BTMulti.isServerDevice())                          //~va02I~
 			    confirmEndGameReturn(R.string.Err_ConfirmReturn);  //~va02R~
             else                                                   //~va02I~
@@ -1550,6 +1575,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        {                                                        //~0411R~
 //            UView.showToast(R.string.Err_GamingNow);             //~0411R~
 //        }                                                        //~0411R~
+	    if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+			confirmEndGameReturn(R.string.Err_ConfirmReturn_TrainingMode);//~va66I~
+            return;                                                //~va66I~
+        }                                                          //~va66I~
         UView.showToast(R.string.Err_GamingNow);                   //~0411I~
     }                                                              //~0411I~
     //*******************************************************************//~va02I~
@@ -1645,6 +1675,17 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         default:                                                   //~va06I~
         	soundID=SOUNDID_BGM_TOP;                               //~va06I~
         }                                                          //~va06I~
+        if (typeBGM!=PS_BGM_NO)                                    //+va6iI~
+        {                                                          //+va6iI~
+            Rect r=Status.getGameSeq();                        //~va06I~//+va6iR~
+            int  gameCtrSet=r.left;                                //+va6iR~
+            if (Status.isFinalGame())                              //+va6iR~
+                soundID=SOUNDID_BGM_MIZUCHUKOUKA;                  //+va6iR~
+            else                                                   //+va6iR~
+            if (gameCtrSet==1 && PctrGame==0)  //1st round of sounth rotation//+va6iR~
+                soundID=SOUNDID_BGM_EBURISHOU;                     //+va6iR~
+        }                                                          //+va6iI~
+      if (soundID!=-1)                                             //~va61I~
         Sound.playBGM(soundID);                                    //~va06I~
     }                                                              //~va06I~
     //*******************************************************************//~va49I~

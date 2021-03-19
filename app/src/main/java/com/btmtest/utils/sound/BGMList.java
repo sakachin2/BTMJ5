@@ -1,5 +1,7 @@
-//*CID://+va06R~:                             update#=  107;       //~va06R~
+//*CID://+va6iR~:                             update#=  110;       //~va6iR~
 //*************************************************************************//~v106I~
+//2021/03/15 va6i add BGM of eburishou kouka                       //~va6iI~
+//2021/03/15 va6h (BUG)BGM not stop iby MenuInGame                 //~va6hI~
 //2020/04/27 va06:BGM                                              //~va06I~
 //*************************************************************************//~va06I~
 package com.btmtest.utils.sound;                                         //~9C01I~//~9C03R~
@@ -35,6 +37,8 @@ public class BGMList                                               //~va06I~
     				new Tables(SOUNDID_BGM_GAME3FAST,         R.raw.bgm_in_game_aki_fast),//use MediaPlayer for BGM(long audio)//~va06I~
     				new Tables(SOUNDID_BGM_GAME4SLOW,         R.raw.bgm_in_game_fuyu_slow),//use MediaPlayer for BGM(long audio)//~va06I~
     				new Tables(SOUNDID_BGM_GAME4FAST,         R.raw.bgm_in_game_fuyu_fast),//use MediaPlayer for BGM(long audio)//~va06I~
+    				new Tables(SOUNDID_BGM_EBURISHOU,         R.raw.bgm_eburisho_kouka),//~va6iI~
+    				new Tables(SOUNDID_BGM_MIZUCHUKOUKA,      R.raw.bgm_mizuchu_kouka),//+va6iI~
                     };                                             //~1A08I~
     private static final int MAX_ERRCTR=4;                         //~1A3bI~//~9C02M~
 //  boolean Busy;                                                  //~va06R~
@@ -46,16 +50,16 @@ public class BGMList                                               //~va06I~
 //  String Name,Queued;                                            //~va06R~
     private MediaPlayer currentPlayer;                             //~va06R~
     private int currentID;                                         //~va06R~
-    private float levelVolume=(float)0.0; //0--1.0                      //~1327I~//~9C02R~//+va06R~
-//  private boolean[] swLevelChanged=new boolean[Ssoundtbl.length]; //~9C02R~//+va06R~
+    private float levelVolume=(float)0.0; //0--1.0                      //~1327I~//~9C02R~//~va06R~
+//  private boolean[] swLevelChanged=new boolean[Ssoundtbl.length]; //~9C02R~//~va06R~
 	private boolean[] swPrepared=new boolean[Ssoundtbl.length];    //~9C03I~
 	private int typeBGM;                                           //~va06I~
-	private boolean swVolChanged;                                  //+va06R~
-    //*****************************************************************//~9C03I~//+va06R~
+	private boolean swVolChanged;                                  //~va06R~
+    //*****************************************************************//~9C03I~//~va06R~
 	public BGMList()                                               //~va06R~
 	{                                                              //~1327R~
         if (Dump.Y) Dump.println("BGMList constructor");           //~va06I~
-//  	Arrays.fill(swLevelChanged,true);                          //~9C02I~//+va06R~
+//  	Arrays.fill(swLevelChanged,true);                          //~9C02I~//~va06R~
     	resetOption();                                             //~va06I~
 	}
     //******************************************************************//~va06I~
@@ -67,21 +71,23 @@ public class BGMList                                               //~va06I~
         float v=PrefSetting.getBGMVolume();                              //~va06R~
         swVolChanged=v!=levelVolume;                               //~va06I~
         levelVolume=v;                                             //~va06I~
+        if (swNoSound)                                             //~va6hI~
+    		stopAll();                                             //~va6hI~
     	if (Dump.Y) Dump.println("BGMList.resetOption swNoSound="+swNoSound+",volume="+levelVolume+",oldVol="+v);//~va06R~
     }                                                              //~va06I~
-//    //******************************************************************//+va06R~
-//    public void setVolume(float Plevel)                            //~9C02R~//+va06R~
-//    {                                                              //~9C02I~//+va06R~
-//        if (Dump.Y) Dump.println("BGMList setVolume level="+Plevel);//~9C02I~//+va06R~
-////      playCtr=0;      //for newGame after endgameReturn by F1    //~9C02I~//+va06R~
-////      releaseCtr=0;                                              //~9C02I~//+va06R~
-////      Busy=false;                                                //~9C02R~//~9C03M~//+va06R~
-//        if (levelVolume!=Plevel)                                   //~9C02I~//+va06R~
-//        {                                                          //~9C02I~//+va06R~
-//            levelVolume=Plevel;                                    //~9C02I~//+va06R~
-//            Arrays.fill(swLevelChanged,true);                                   //~9C02I~//+va06R~
-//        }                                                          //~9C02I~//+va06R~
-//    }                                                              //~9C02I~//+va06R~
+//    //******************************************************************//~va06R~
+//    public void setVolume(float Plevel)                            //~9C02R~//~va06R~
+//    {                                                              //~9C02I~//~va06R~
+//        if (Dump.Y) Dump.println("BGMList setVolume level="+Plevel);//~9C02I~//~va06R~
+////      playCtr=0;      //for newGame after endgameReturn by F1    //~9C02I~//~va06R~
+////      releaseCtr=0;                                              //~9C02I~//~va06R~
+////      Busy=false;                                                //~9C02R~//~9C03M~//~va06R~
+//        if (levelVolume!=Plevel)                                   //~9C02I~//~va06R~
+//        {                                                          //~9C02I~//~va06R~
+//            levelVolume=Plevel;                                    //~9C02I~//~va06R~
+//            Arrays.fill(swLevelChanged,true);                                   //~9C02I~//~va06R~
+//        }                                                          //~9C02I~//~va06R~
+//    }                                                              //~9C02I~//~va06R~
 //***************************                                      //~9C03I~
 //	public synchronized void play(String name)                     //~va06R~
   	public synchronized void play(int Psoundid)                    //~va06I~
@@ -159,17 +165,17 @@ public class BGMList                                               //~va06I~
          {                                                         //~1A08I~
         	player=MediaPlayer.create(AG.context,id);              //~1327I~
             Ssoundtbl[idx].setObject(player);                      //~9C03I~
-//          swLevelChanged[idx]=true;   //setVolume                //~9C03I~//+va06R~
-            swVolChanged=true;                                     //+va06I~
+//          swLevelChanged[idx]=true;   //setVolume                //~9C03I~//~va06R~
+            swVolChanged=true;                                     //~va06I~
             swPrepared[idx]=true;                                  //~9C03R~
         	if (Dump.Y) Dump.println("Sound.playSound create player="+Utils.toString(player));//~9C02I~//~9C03M~
          }                                                         //~1A08I~
         if (Dump.Y) Dump.println("Sound.playSound player="+Utils.toString(player));//~9C02I~
-//      if (Dump.Y) Dump.println("Sound.playSound idx="+idx+",swLevelChanged="+Arrays.toString(swLevelChanged));//~9C02I~//+va06R~
-//      if (swLevelChanged[idx])                                   //~9C03I~//+va06R~
-        if (swVolChanged)                                          //+va06I~
+//      if (Dump.Y) Dump.println("Sound.playSound idx="+idx+",swLevelChanged="+Arrays.toString(swLevelChanged));//~9C02I~//~va06R~
+//      if (swLevelChanged[idx])                                   //~9C03I~//~va06R~
+        if (swVolChanged)                                          //~va06I~
         {                                                          //~9C02R~
-//       	swLevelChanged[idx]=false;                             //~9C03I~//+va06R~
+//       	swLevelChanged[idx]=false;                             //~9C03I~//~va06R~
             player.setVolume(levelVolume,levelVolume);	//left and right volume//~9C02I~
         	if (Dump.Y) Dump.println("Sound.playSound setVolume level="+levelVolume);//~9C02I~
         }                                                          //~9C02R~

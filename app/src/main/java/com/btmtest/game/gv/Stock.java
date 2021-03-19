@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 566;                                    //~v@@@R~//~v@11R~//~9214R~
+//*CID://+va60R~: update#= 570;                                    //~v@@@R~//~v@11R~//~9214R~//+va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -74,6 +75,10 @@ public class Stock                                                 //~v@@@R~
     private Rect[] rectCompleteDora=new Rect[MAXCTR_DORA];         //~0328I~
     private int ctrDoraComplete;                                   //~9503I~
 //*************************                                        //~v@@@I~
+	public Stock()	//for IT                                       //+va60I~
+    {                                                              //+va60I~
+        if (Dump.Y) Dump.println("Stock.default Constructor");     //+va60I~
+    }                                                              //+va60I~
 	public Stock(GCanvas Pgcanvas)                                 //~v@@@R~
     {                                                              //~0914I~
     	AG.aStock=this;                                            //~v@@@I~
@@ -127,7 +132,7 @@ public class Stock                                                 //~v@@@R~
         	Graphics.drawRect(r,COLOR_BG_TABLE);                   //~9503I~
         }                                                          //~9503I~
 	    ctrDoraComplete=0;                                         //~9503I~
-    	ctrKanDrawn=0;                                             //+0409I~
+    	ctrKanDrawn=0;                                             //~0409I~
     }                                                              //~9503I~
 	//*********************************************************    //~v@@@M~
 	//*set background rect shifted                                 //~v@@@R~
@@ -571,7 +576,9 @@ public class Stock                                                 //~v@@@R~
         default:                                                   //~v@@@I~
 	        drawLeftDora(Ppos,Ptd);                                //~v@@@R~
         }                                                          //~v@@@I~
-        Ptd.setDora();                                              //~v@@@I~
+//      Ptd.setDora();                                              //~v@@@I~//~1109R~
+        if (Ptd.setDora()) //flag was set                          //~1109I~
+	        AG.aRoundStat.drawDora(Ptd);                           //~1109I~
 //      drawnRectDora[ctrDrawDora]=lastRectDora;                   //~9214R~//~9217R~
 //      drawnPlayerDora[ctrDrawDora]=Pplayer;                      //~9214R~//~9217R~
 //      ctrDrawDora++;                                             //~9214I~//~9217R~

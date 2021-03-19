@@ -33,6 +33,18 @@
                     android:text="Dump to SDCard"
                 />
                 <CheckBox
+                    android:id="@+id/cbOpenHand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Open Robot Hand(for onlytraining mode)"
+                />
+                <CheckBox
+                    android:id="@+id/cbRobotDiscardButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Robot discards by Servers Discard Button"
+                />
+                <CheckBox
                     android:id="@+id/cbCloseOnConnect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

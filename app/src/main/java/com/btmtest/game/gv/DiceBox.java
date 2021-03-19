@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 576;                                    //~v@@@R~//~v@21R~//~v@11R~//~0331R~
+//*CID://+va60R~: update#= 581;                                    //~va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
@@ -38,6 +39,7 @@ public class DiceBox extends Thread                                //~v@@@R~
 	private static final int COLOR_BG_CASTING=Color.argb(0xff,0xff,0x45,0x00);//~v@@@M~
 //  public  static final int COLOR_FG_DISABLE=Color.argb(0xa0,0x80,0x80,0x80);//~v@@@R~//~v@11R~
     public  static final int COLOR_FG_DISABLE=Color.argb(0xc0,0x80,0x80,0x80);//~v@11I~
+    public  static final int COLOR_FG_DISABLE_NOP=Color.argb(0x00,0x00,0x00,0x00);//~va60I~
 	private static final int COLOR_EDGE=Color.argb(0xff,0xff,0xff,0x00);//~v@@@I~
 //    private static final int COLOR_LIGHT_OFF=Color.argb(0xff,0x00,0x33,0x00);//dark green//~v@@@R~
 //  private static final int COLOR_LIGHT_DISABLE=Color.argb(0xff,0x1d,0x20,0x88); //dark blue//~v@@@R~//~v@21R~
@@ -154,7 +156,13 @@ public class DiceBox extends Thread                                //~v@@@R~
     private int currentStarter,radiusStarterMark=RADIUS_STARTER_CIRCLE;//~v@11R~
     private int posDrawnStarterMark=-1;                            //~v@11I~
     private int radiusLight;                                       //~v@11I~
+    private int colorShadowLamp=COLOR_FG_DISABLE;                  //+va60R~
     // *************************                                        //~v@@@I~
+	public DiceBox() //default constructor for IT Mocking          //~va60I~
+	{                                                              //~va60I~
+        colorShadowLamp=AG.swTrainingMode ? COLOR_FG_DISABLE_NOP : COLOR_FG_DISABLE;//~va60I~
+    	if (Dump.Y) Dump.println("DiceBox default trainingMode="+AG.swTrainingMode+", colorShadowLamp="+Integer.toHexString(colorShadowLamp));//~va60I~
+    }                                                              //~va60I~
 	public DiceBox(GCanvas Pgcanvas)                               //~v@@@R~
     {                                                              //~0914I~
 //  	diceBox=this;                                              //~v@@@I~//~v@21R~
@@ -465,11 +473,12 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@21I~
     private void drawLightShadow(int Pplayer,int Pstat)            //~v@21I~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("DiceBox.DrawLight stat="+Pstat+",player="+Pplayer);//~v@21I~
+        if (Dump.Y) Dump.println("DiceBox.DrawLightShadow stat="+Pstat+",player="+Pplayer+",colorShadowLamp="+Integer.toHexString(colorShadowLamp));//+va60R~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],startAngleLight[Pplayer],Pstat);//~v@21I~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat,(long)COLOR_FG_DISABLE);//~v@21R~//~v@11R~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat); //no shadow, look at PLAYER_YOU of each//~v@11R~
-        drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat,(long)COLOR_FG_DISABLE);//~v@11I~
+//      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat,(long)COLOR_FG_DISABLE);//~v@11I~//~va60R~
+        drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat,(long)colorShadowLamp);//~va60I~
         statusLight[Pplayer]=Pstat|LST_SHADOW;                     //~v@21R~
     }                                                              //~v@21I~
     //*********************************************************    //~v@@@I~
@@ -817,7 +826,7 @@ public class DiceBox extends Thread                                //~v@@@R~
                 bgColor=COLOR_BG_CASTING;                          //~v@11R~
                 drawDice(roll1,roll2,0/*fgcolor*/);                //~v@11I~
                 AG.aGameView.paint();                              //~v@11I~
-	   			Sound.play(SOUNDID_DICE_FIX,false/*not change to beep when beeponly option is on*/);//+0410I~
+	   			Sound.play(SOUNDID_DICE_FIX,false/*not change to beep when beeponly option is on*/);//~0410I~
                 Utils.sleep(sleepTime);                            //~v@11M~
                 if (enableDiceAfter)                       //~v@@@I~//~v@21R~
                 {                                          //~v@@@I~//~v@21R~

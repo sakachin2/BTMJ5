@@ -1,6 +1,7 @@
-//*CID://+va27R~: update#= 418;                                    //~v@21R~//+va27R~
+//*CID://+va60R~: update#= 422;                                    //~v@21R~//~va27R~//~va60R~
 //**********************************************************************//~v101I~
-//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
@@ -73,6 +74,16 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
 	        AG.aHandlerThread=null;                                //~v@11I~
         }                                                          //~v@11I~
     }                                                              //~v@11I~
+//*********************************************************************************//~va60I~
+//* for IT, skip GCanvas                                           //+va60R~
+//*********************************************************************************//~va60I~
+    public GameViewHandler(Looper Plooper,GameView Pgv)            //+va60R~
+    {                                                              //~va60I~
+        super(Plooper);                                            //~va60I~
+        gameView=Pgv;                                              //+va60I~
+        AG.aGameViewHandler=this;                              //~1123I~//+va60I~
+        if (Dump.Y) Dump.println("GameViewHandler Constructor parm=super only");//~va60I~
+    }                                                              //~va60I~
 //*********************************************************************************//~v@11I~
 //  public GameViewHandler(GameView Pgameview,Looper Plooper,SurfaceHolder Pholder)//~v@11I~
     public GameViewHandler(GameView Pgameview,Looper Plooper)      //~v@11I~
@@ -426,8 +437,8 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         	case GCM_REACH_OPEN:                                   //~v@11I~
         	case GCM_REACH_RESET:                                  //~v@11I~
         	case GCM_REACH_OPEN_RESET:                             //~v@11I~
-        	case GCM_FORCE_REACH:                                  //+va27I~
-        	case GCM_FORCE_REACH_OPEN:                             //+va27I~
+        	case GCM_FORCE_REACH:                                  //~va27I~
+        	case GCM_FORCE_REACH_OPEN:                             //~va27I~
         	case GCM_RON:                                          //~v@@@I~
         	case GCM_RON_ANYWAY:                                   //~v@11I~
         	case GCM_DISCARD:                                      //~v@@@I~
@@ -501,15 +512,15 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         if (Dump.Y) Dump.println("GameViewHandler.touchEvent action="+action+",x="+xx+",y="+yy+",xxDown="+xxDown+",yyDown="+yyDown);//~v@@@I~//~v@11R~
         switch(action)                                             //~v@@@I~
         {                                                          //~v@@@I~
-        case MotionEvent.ACTION_DOWN:                              //~v@@@I~
+        case MotionEvent.ACTION_DOWN:          //0                 //~v@@@I~
             break;                                                 //~v@@@I~
-        case MotionEvent.ACTION_UP:                                //~v@@@I~
+        case MotionEvent.ACTION_UP:            //1                 //~v@@@I~
 //            if (gCanvas.diceBox.isTouched(xx,yy))                //~v@@@R~
 //                gCanvas.drawDiceCasting(false); //TODO           //~v@@@R~
 //  		touchEvent(xx,yy);                                     //~v@@@I~//~v@11R~
     		touchEvent(xx,yy,xxDown,yyDown);                       //~v@11I~
             break;                                                 //~v@@@I~
-        case MotionEvent.ACTION_MOVE:                              //~v@@@I~
+        case MotionEvent.ACTION_MOVE:          //2                 //~v@@@I~
             break;                                                 //~v@@@I~
         case MotionEvent.ACTION_CANCEL:                            //~v@@@I~
             break;                                                 //~v@@@I~
@@ -614,8 +625,9 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
 //    }                                                              //~v@@@I~//~v@21R~
 	//**************************************************************//~v@@@I~
 	//*simulate dice casted at remote                              //~v@@@I~
+	//*GCM_REMOTE_DICE is for test only from ActionMenuDlg         //~va27I~
 	//**************************************************************//~v@@@I~
-	public boolean diceCastedRemote(Message Pmsg)                  //~v@@@I~
+	private boolean diceCastedRemote(Message Pmsg)                  //~v@@@I~
     {                                                              //~v@@@I~
         boolean rc=true;   //no need call draw                     //~v@@@I~
     	AG.aGC.diceCastedRemote(Pmsg);                             //~v@@@I~

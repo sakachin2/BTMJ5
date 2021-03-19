@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.09</string>
+    <string name="app_version">v1.10</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -66,7 +66,7 @@
     <string name="BTDisConnect">切断</string>
     <string name="BTUnpair">ペア解除</string>
     <!--string name="InfoDisconnectRequested">%1$s 切断を要求しました</string-->
-    <string name="InfoDisconnected">\"%1$s\"が,切断されました。</string>
+    <string name="InfoDisconnected">\"%1$s\" が切断されました。</string>
     <string name="InfoDisconnectedClose">\"%1$s\"が接続を閉じました</string>
     <string name="InfoDisconnectedSomeDevice">通信の切断が発生しました</string>
     <string name="LabelDeviceList">デバイスのリスト：</string>
@@ -189,6 +189,7 @@
     <string name="Err_ReloadNotInterrupted">\"再開\"の場合は\"中断\"ゲームを選択してください</string>
     <string name="Err_ReloadNooneConnected">未接続状態です</string>
     <string name="Err_HistoryNotSameMembers">接続メンバーと履歴のメンバーが全員一致ではありません</string>
+    <string name="Err_HistoryIsTrainingMode">履歴は一人遊びです、再開する場合は接続を切断してください</string>
     <string name="Err_ReloadDataErr">データにエラーがあります</string>
     <string name="Err_ReloadDataErrReceived">%1$s から送られた履歴データにエラーがあります</string>
     <string name="Err_AlreadyFileExists">既存です、保存できません。\
@@ -742,7 +743,9 @@
     <string name="Msg_DiceForNewGame">親がサイコロを振ってください</string>
     <!--string name="Msg_AcceptComplete">上がりに同意したらランプをタッチしてください</string-->
     <string name="Err_LackingMember">メンバーが揃っていません、ルール設定でロボットを加えた対戦もできます</string>
-    <string name="Err_LackingMemberNoConnection">メンバーが揃っていません（接続がありません）</string>
+    <!--string name="Err_LackingMemberNoConnection">メンバーが揃っていません（接続がありません）</string-->
+    <string name="Err_LackingMemberNoConnection">接続がありません。一人で練習する場合は\nルール設定、ロボット対戦を設定してください。</string>
+    <string name="Err_LackingMemberNoConnectionTraining">接続がありません。一人練習モードにしますか？</string>
     <string name="Err_LackingMemberAllowRobotYes">メンバーが %1$d 人足りません。\nボットを入れて対戦しますか？</string>
     <string name="Err_LackingMemberAllowRobotNo">メンバーが %1$d 人足りません。\nルール設定でボットを加えた対戦もできます。</string>
     <!--string name="Err_GameFromNotServer">サーバーから対局開始してください</string-->
@@ -753,10 +756,13 @@
     <string name="Err_DupYourname">名前の重複があります(%1$s).</string>
     <string name="AE_NotYourTurn">あなたの番ではありません</string>
     <string name="AE_DiscardTaken">打牌してください</string>
+    <string name="AE_DiscardTakenRobot">%1$s:打牌してください</string>
     <string name="AE_NoTileSelected">打牌を選択してください</string>
     <string name="AE_NoTileSelectedAtReach">打牌を選択してからリーチしてください</string>
     <string name="AE_YouHaveToTake">自摸番です</string>
+    <string name="AE_NextHaveToTakeRobot">%1$s:自摸番です</string>
     <string name="AE_TakeKanAdditional">槓したので、嶺上牌を自模ってください</string>
+    <string name="AE_TakeKanAdditionalRobot">%1$s:嶺上牌を自模ってください</string>
     <string name="AE_CouldNotReach">リーチできません</string>
     <string name="AE_ShortScoreForReach">リーチ棒が出せません、トビありです</string>
     <string name="AE_CouldNotGetLast">海底はポン,カン,チーできません</string>
@@ -768,6 +774,7 @@
     <string name="AE_KanAfterReach">設定でリーチ中の暗槓は不可です</string>
     <string name="AE_AnkanRonNG">国士の暗カンロンは\"設定\"で不可になっています</string>
     <string name="AE_DupRonDelayed">遅ロンです</string>
+    <string name="AE_DupRonDelayedRobot">%1$s:遅ロンです</string>
     <string name="AE_DupActionRon">ロンは受付済です</string>
     <string name="AE_ContinueAsNotRonable">和了放棄しています</string>
     <string name="AE_PendingHW">途中流局の申請中です</string>
@@ -829,6 +836,7 @@
     <string name="Err_SuspendDlgNotServer">中断確認画面はサーバーからのみ開くことができます</string>
     <string name="Err_SuspendDlgNoSuspendRequest">中断要求は出ていません</string>
     <string name="Err_GamingNow">ゲーム中です</string>
+    <string name="Err_ConfirmReturn_TrainingMode">ゲーム途中です。中断しますか</string>
     <string name="Err_NotGamingNow">ゲームが終了しています（%1$sの操作）</string>
     <string name="Info_SuspendRequested">中断要求がありました。%1$s 人目</string>
     <string name="Info_SuspendRequestedDup">中断要求しましたが、すでに中断要求済です</string>
@@ -897,6 +905,7 @@
     <string name="Info_PleaseWaitWithReasonOther">他家の\"ち待\"中です</string>
     <string name="ActionWaitOther">他家待ち</string>
     <string name="ActionBlockedThisAction">他家の鳴きで\"ちょっと待った\"状態です</string>
+    <string name="ActionBlockedByHumanForRobot">プレーヤー優先のためロボットのアクションはブロックされました</string>
     <string name="ActionBlockedYouAreNotTop">他家が先に鳴きを入れ、待ったをいれています</string>
     <string name="ActionBlockedYouAreNotTopWaitSelectModeWithTimeout">他家が副露牌を選択中（時間切れ有り）</string>
     <string name="ActionBlockedYouAreNotTopWaitSelectModeWithNoTimeout">他家が副露牌を選択中（時間切れ無し）</string>
@@ -978,7 +987,8 @@
     <string name="Label_DelayDiscard">自動打牌。自模るとランプは青になり、この時間が経過すると、緑枠の牌を自動で打牌、０は制限なし。</string>
     <string name="Label_Delay2Touch">経過すると待った解消</string>
     <string name="Label_TimeoutTake">自動自摸。経過すると下家は自動で自摸る、０は制限なし。槓の嶺上ツモにも適用</string>
-    <string name="Label_TimeoutTakeRobot">自動自摸-ボット用。１秒以上。上の自動自摸が０の時有効、０でないときはボットもそれに従う。</string>
+    <string name="Label_TimeoutTakeRobot">自動自摸-ボット用。１秒以上。上の自動自摸が０の時有効、０でないときはボットもそれに従う。但し、一人遊びの時はボタン操作も可能。</string>
+    <!--string name="Label_TimeoutTakeRobot">自動自摸-ボット用。上の自動自摸が０の時有効。一人練習の時の自摸は手動にもできます(\"ロボット\"の項)</string-->
     <string name="Label_RuleWait">ちょっと待った</string>
     <string name="Label_Positioning">場所決め</string>
     <string name="Label_Positioning_Skip">簡略化</string>
@@ -1066,12 +1076,15 @@
     <string name="Label_BeepOnly">ビープ音</string>
     <string name="Label_SoundVolume">音量</string>
     <string name="Label_Robot">ロボット</string>
-    <string name="Label_MinusRobot">ボットもトブ</string>
-    <string name="Label_RobotPay">ボット分の負担</string>
+    <string name="Label_MinusRobot">トビありなら、ボットもトブ</string>
+    <string name="Label_ThinkRobot">ボットも和了を目指す。オフならツモ切り</string>
+    <string name="Label_RobotPay">一人遊びでないときのボット分の負担</string>
     <string name="Label_RobotPaySprit">均等割り</string>
     <string name="Label_RobotPayDependingScore">ラス者との点数差に比例</string>
     <!--string name="Label_RobotDescription">４人揃わないときツモ切りオンリーのボットを加えて対戦できます</string-->
-    <string name="Label_AllowRobot">４人揃わない時ツモ切りボットを加え、対戦する</string>
+    <string name="Label_AllowRobot">４人揃わない時ボットを加え対戦する、あるいは一人遊びする</string>
+    <!--string name="Label_AllowRobotAll">練習モードあり</string-->
+    <string name="Label_AllowRobotAllButton">一人遊びのときは自摸はタイムアウトではなくボタンで操作</string>
 
     <string name="Label_GameSet">試合</string>
     <string name="Label_GameSetInterrupted">迄 終了、次は</string>
@@ -1423,5 +1436,14 @@
     <string name="AE_SameMeld">喰い変え違反です、他の牌を選択してください</string>
     <string name="AE_RankFix1">一飜縛違反</string>
     <string name="Label_Anyway">とに和</string>
-    <string name="Warn_BlockedNeedRonAnyway">\"和了\"ぼたんではなく、\"とにかく和了\"してください</string>
+    <string name="Warn_BlockedNeedRonAnyway">\"和了\"ボタンではなく、\"とにかく和了\"してください</string>
+    <string name="AE_TestRobotDiscardButtonServerOnly">テスト用ボット用の打牌ボタン使用はサーバーのみです</string>
+	<string-array name="Default_YourNameRobot"> 
+		<item>" S それがし "</item>
+		<item>" A あきらくん "</item>
+		<item>" T てるちゃん "</item>
+		<item>" M まあちゃん "</item>
+		<item>" K けんちゃん "</item>
+	</string-array>
+    <string name="Warn_TrainingModeWithNotThinkRobot">ボットの設定がツモ切りです。\"ボットも和了を目指す\"で楽しんでください</string>
 </resources>

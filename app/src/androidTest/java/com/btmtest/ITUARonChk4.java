@@ -1,11 +1,11 @@
 package com.btmtest;
 
 //***********************************                              //~0A31I~
-//*success without static method mockking                          //+0B01I~
-//***********************************                              //+0B01I~
+//*success without static method mockking                          //~0B01I~
+//***********************************                              //~0B01I~
 //import androidx.test.filters.InstrumentationRegistry;            //~0A31R~
-import android.support.test.InstrumentationRegistry;               //~0A31R~
-import android.support.test.runner.AndroidJUnit4;                  //~0A31I~
+import androidx.test.platform.app.InstrumentationRegistry;               //~0A31R~
+import androidx.test.ext.junit.runners.AndroidJUnit4;                  //~0A31I~
 //import androidx.test.platform.app.InstrumentationRegistry;       //~0A31R~
 //import androidx.test.ext.junit.runners.AndroidJUnit4;            //~0A31R~
 //import androidx.test.runners.AndroidJUnit4;                      //~0A31I~
@@ -14,19 +14,16 @@ import android.support.test.runner.AndroidJUnit4;                  //~0A31I~
 //import androidx.test.ext.junit.runners.AndroidJUnit4;            //~0A31I~
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 //***********************************                              //~0A31R~
-import android.content.Context;                                    //~0A31M~
-                                                                   //~0A31I~
+//~0A31I~
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Players;
 import com.btmtest.game.Status;
-import com.btmtest.game.UA.UARonChk;                               //~0A31M~
 import com.btmtest.utils.Dump;                                     //~0A31M~
                                                                    //~0A31M~
-import static com.btmtest.game.GConst.*;                           //~0A31R~
+
 
 //+0A31I~
 
@@ -46,7 +43,9 @@ public class ITUARonChk4                                           //~0B01R~
         StaticVars.AG=AG;                                          //~0B01I~
     	AG.appName="ｅ雀";                                         //~0B01I~
     	AG.appNameE="eMahJong";                                    //~0B01I~
-        AG.context=InstrumentationRegistry.getTargetContext();     //~0B01I~
+//      AG.context=InstrumentationRegistry.getTargetContext();     //~0B01I~//~1108R~
+//      AG.context=InstrumentationRegistry.getInstrumentation().getContext();     //~0B01I~//~1108I~//+1111R~
+        AG.context=InstrumentationRegistry.getInstrumentation().getTargetContext();//+1111I~
         AG.resource=AG.context.getResources();                     //~0B01I~
         AG.dirSep="/";                                             //~0B01I~
                                                                    //~0B01I~

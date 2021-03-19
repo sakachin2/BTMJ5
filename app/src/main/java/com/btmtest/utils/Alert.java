@@ -9,7 +9,7 @@ import com.btmtest.R;                                                 //~@@@@R~/
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@003I~
 
 //import android.app.DialogFragment;                               //~va40R~
-import android.support.v4.app.DialogFragment;                      //~va40I~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;

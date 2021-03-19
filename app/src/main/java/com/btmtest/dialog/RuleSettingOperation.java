@@ -1,6 +1,6 @@
-//*CID://+va27R~:                             update#=  487;       //+va27R~
+//*CID://+va27R~:                             update#=  488;       //~va27R~
 //*****************************************************************//~v101I~
-//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
@@ -29,7 +29,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
-	private static final int DEFAULT_CHK_REACH=1;                  //+va27I~
+	private static final int DEFAULT_CHK_REACH=1;                  //~va27I~
 	private static final int DEFAULT_FIX1=1;
     //**********************************************************   //~v@@@I~
     private static final int UNIT_SEC=10;                          //~9622I~//~v@@@M~
@@ -50,8 +50,9 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     private UCheckBox cb2TouchCancelableRon;                       //~9C10I~
 //  private UCheckBox cb2CheckRonable;                             //~0205I~//~va1aR~
     private UCheckBox cb2CheckRonValue;                            //~0928I~
-    private UCheckBox cb2CheckReach;                               //+va27I~
+    private UCheckBox cb2CheckReach;                               //~va27I~
     private UCheckBox  cbYakuFix1;                                 //~0A15I~
+    private UCheckBox cbAllowRobotAllButton;                       //+va27I~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
     private Prop curProp;                                          //~v@@@I~
@@ -110,6 +111,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	sbTimeoutTake=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKE_MIN,DEFAULT_TIMEOUT_TAKE_MAX,DEFAULT_TIMEOUT_TAKE_INC,DEFAULT_TIMEOUT_TAKE);//~v@@@I~
     	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBTimeoutTakeRobot);//~v@@@I~
     	sbTimeoutTakeRobot=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKEROBOT_MIN,DEFAULT_TIMEOUT_TAKEROBOT_MAX,DEFAULT_TIMEOUT_TAKEROBOT_INC,DEFAULT_TIMEOUT_TAKEROBOT);//~v@@@I~
+        cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//+va27I~
 //  	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBTimeoutTakeKan);//~v@@@R~
 //  	sbTimeoutTakeKan=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKEKAN_MIN,DEFAULT_TIMEOUT_TAKEKAN_MAX,DEFAULT_TIMEOUT_TAKEKAN_INC,DEFAULT_TIMEOUT_TAKEKAN);//~v@@@R~
         //*2touch                                                  //~v@@@I~//~9C03R~
@@ -128,7 +130,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //      cb2CheckRonable=new UCheckBox(PView,R.id.cbCheckRonable);    //2touchMode//~0205I~//~va1aR~
                                                                    //~0A15I~
         cb2CheckRonValue=new UCheckBox(PView,R.id.cbCheckRonValue);    //2touchMode//~0928I~
-        cb2CheckReach=new UCheckBox(PView,R.id.cbCheckReach);    //2touchMode//+va27I~
+        cb2CheckReach=new UCheckBox(PView,R.id.cbCheckReach);    //2touchMode//~va27I~
     //*YakuFix1                                                    //~0A15I~
     	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~0A15I~
         cb2TouchTimeout=new UCheckBox(PView,R.id.cb2TouchTimeout);    //2touchMode//~9C09R~
@@ -176,6 +178,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         sbTimeoutTake.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKE),DEFAULT_TIMEOUT_TAKE),swFixed);//~v@@@I~
         sbTimeoutTakeRobot.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEROBOT),DEFAULT_TIMEOUT_TAKEROBOT),swFixed);//~v@@@I~
 //      sbTimeoutTakeKan.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEKAN),DEFAULT_TIMEOUT_TAKEKAN),swFixed);//~v@@@R~
+        cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//+va27I~
     //*2Touch                                                        //~v@@@I~//~9C03R~
 //      cbRuleWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_RULEWAIT),0/*default false*/),swFixed);//~v@@@I~//~9C03R~
 //      cb2TouchTO.setStateInt(Pprop.getParameter(getKeyRS(RSID_DELAY_2TOUCH_TO_PON),0/*default false*/),swFixed);//~9C03R~//~9C07R~
@@ -192,7 +195,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     //*YakuFix1                                                    //~0A15I~
     	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),DEFAULT_FIX1),swFixed);//~0A15I~
         cb2CheckRonValue.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_RONVALUE),DEFAULT_RONVALUE/*default false*/),swFixed);//~0928I~
-        cb2CheckReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_REACH),DEFAULT_CHK_REACH/*default false*/),swFixed);//+va27I~
+        cb2CheckReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_REACH),DEFAULT_CHK_REACH/*default false*/),swFixed);//~va27I~
         cb2TouchTimeout.setStateInt(Pprop.getParameter(getKeyRS(RSID_2TOUCH_TIMEOUT),0/*default false*/),swFixed);//~9C09I~
     //*positioning                                                 //~v@@@I~
         cbPositioning.setStateInt(Pprop.getParameter(getKeyRS(RSID_POSITIONING),0/*default false*/),swFixed);//~v@@@I~
@@ -215,6 +218,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKE),sbTimeoutTake.getVal());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKEROBOT),sbTimeoutTakeRobot.getVal());//~v@@@I~
 //      changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKEKAN),sbTimeoutTakeKan.getVal());//~v@@@R~
+        changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//+va27I~
     //*2Touch                                                      //~9C03R~
 //      changed+=updateProp(getKeyRS(RSID_RULEWAIT),cbRuleWait.getStateInt());//~v@@@I~//~9C03R~
 //      changed+=updateProp(getKeyRS(RSID_DELAY_2TOUCH_TO_PON),cb2TouchTO.getStateInt());//~9C03R~//~9C07R~
@@ -231,7 +235,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     //*YakuFix1                                                    //~0A15I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~0A15I~
         changed+=updateProp(getKeyRS(RSID_CHECK_RONVALUE),cb2CheckRonValue.getStateInt());//~0928I~
-        changed+=updateProp(getKeyRS(RSID_CHECK_REACH),cb2CheckReach.getStateInt());//+va27I~
+        changed+=updateProp(getKeyRS(RSID_CHECK_REACH),cb2CheckReach.getStateInt());//~va27I~
         changed+=updateProp(getKeyRS(RSID_2TOUCH_TIMEOUT),cb2TouchTimeout.getStateInt());//~9C09I~
     //*positioning                                                 //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_POSITIONING),cbPositioning.getStateInt());//~v@@@I~
@@ -484,14 +488,14 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isCheckRonValue rc="+rc);//~0928I~
         return rc;                                                 //~0928I~
     }                                                              //~0928I~
-    //**************************************                       //+va27I~
-    public static boolean isCheckReach()                           //+va27I~
-    {                                                              //+va27I~
-        int def=DEFAULT_CHK_REACH;  //false                        //+va27I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHECK_REACH),def)!=0;//+va27I~
-        if (Dump.Y) Dump.println("RuleSetting.isCheckReach rc="+rc);//+va27I~
-        return rc;                                                 //+va27I~
-    }                                                              //+va27I~
+    //**************************************                       //~va27I~
+    public static boolean isCheckReach()                           //~va27I~
+    {                                                              //~va27I~
+        int def=DEFAULT_CHK_REACH;  //false                        //~va27I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHECK_REACH),def)!=0;//~va27I~
+        if (Dump.Y) Dump.println("RuleSetting.isCheckReach rc="+rc);//~va27I~
+        return rc;                                                 //~va27I~
+    }                                                              //~va27I~
     //**************************************                       //~v@@@I~
 	public static boolean isPositioningSkip()                      //~v@@@I~
     {                                                              //~v@@@I~
@@ -554,4 +558,12 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isYakuFix1 rc="+rc); //~0A15I~
         return rc;                                                 //~0A15I~
     }                                                              //~0A15I~
+    //**************************************                       //+va27I~
+	public static boolean isAllowRobotAllButton()                  //+va27I~
+    {                                                              //+va27I~
+		int def=0;	//false                                        //+va27I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//+va27I~
+        if (Dump.Y) Dump.println("RuleSetting.isAllowRobotAllButton rc="+rc);//+va27I~
+        return rc;                                                 //+va27I~
+    }                                                              //+va27I~
 }//class                                                           //~v@@@R~

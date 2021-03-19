@@ -1,5 +1,8 @@
-//*CID://+va27R~: update#= 758;                                    //~va27R~
+//*CID://+va66R~: update#= 790;                                    //~va66R~
 //**********************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/23 va62 no need to send to robot; GCM_PON,GCM_CHII,GCM_KAN(Rovbot ignores it but)//~va62I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //v@@7 190130 isyourtturn                                          //~v@@7I~
 //utility around screen                                            //~v@@@I~
@@ -9,6 +12,7 @@ package com.btmtest.game;                                         //~1107R~  //~
 import android.os.Message;
 
 import com.btmtest.R;
+import com.btmtest.TestOption;
 import com.btmtest.dialog.AccountsDlg;
 import com.btmtest.dialog.ScoreDlg;
 import com.btmtest.dialog.SuspendDlg;
@@ -38,6 +42,7 @@ import static com.btmtest.game.GCMsgID.*;                          //~v@@@M~
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GConst.*;                           //~v@@@I~
 import static com.btmtest.game.gv.GMsg.*;
+import static com.btmtest.TestOption.*;                         //~va60I~
 
 //~v@@@I~
 public class UserAction       //~v@@@R~
@@ -55,27 +60,27 @@ public class UserAction       //~v@@@R~
 //  private int actionID;                                          //~v@@@R~
 	private int prevActionID;                                      //~v@@@I~
 	private Accounts accounts;                                     //~v@@@I~
-	private ACAction acaction;
+    private ACAction acaction;                                     //~va60R~
 //  private TileData tempTD;                                       //~v@@@R~
 //    private TileData infoSelectedTD;                             //~v@@@R~
     public boolean isServer;                                       //~v@@7R~
     public  String msgDataToClient;                                //~v@@@R~
     public  String msgDataToServer;                                //~v@@@R~
     private String msgNoData=new String("<NoResponse>");           //~v@@7R~
-    private boolean swSendAll;                                     //~v@@@R~
-    private boolean swRobot;                                       //~v@@@R~
+    protected boolean swSendAll; //protected for IT Mock                                     //~v@@@R~//~va60R~
+    protected boolean swRobot;	//protected for IT Mock                                       //~v@@@R~//~va60R~
     private boolean swKeepPrevActionID;                                 //~v@@@I~//~v@@7R~
-    private boolean swReceived;	//action by received Msg           //~v@@@I~
+    protected boolean swReceived;	//action by received Msg  protected for IT Mock         //~v@@@I~//~va60R~
     private int ctrResponse,ctrRequest;                            //~v@@@I~
 //  public UADelayed UADL;                                    //~v@@@R~//~9B17R~
     public UADelayed2 UADL;                                        //~9B17I~
     public  UATake    UAT;                                         //~v@@@I~//~9622R~
     public  UADiscard UAD;                                         //~v@@@I~//~v@@7R~
     public  UAPon     UAP;                                         //~v@@@I~//~9629R~
-    private UAChii  UAC;                                         //~v@@@I~//~v@@7R~
+    public  UAChii  UAC;     //public for ITMock                 //~v@@@I~//~v@@7R~//~va60R~//~va62R~
     public  UAKan   UAK;                                           //~v@@7R~//~9623R~
-    private UAReach UARE;                                          //~v@@7I~
-    private UARon UAR;                                           //~v@@7I~
+    public  UAReach UARE;   //public for IT Mock                      //~v@@7I~//~va60R~//+va66R~
+    protected  UARon UAR;      //publc for IT Mock                  //~v@@7I~//~va60R~
     private UAEndGame UAEG;                                        //~v@@7I~
     public int currentActionID;                                    //~9623R~
 //*************************                                        //~v@@@I~
@@ -119,9 +124,20 @@ public class UserAction       //~v@@@R~
         UAR=new UARon(this);                                       //~v@@7I~
         UARE=new UAReach(this);                                    //~v@@7I~
         UAEG=new UAEndGame();                                             //~v@@@I~//~v@@7I~
+      if ((TestOption.option2 & TO2_IT)==0) //instrumented test            //~1112M~//~va60R~
+      {                                                            //~va60I~
         new UARestart(this);                                       //~9A28R~
+      }                                                            //~va60I~
         if (Dump.Y) Dump.println("UserAction init isServer="+isServer);//~v@@@I~
     }                                                              //~v@@@I~
+	//*************************************************************************//~va66I~
+    public void newGame()                                          //~va66I~
+    {                                                              //~va66I~
+        if (Dump.Y) Dump.println("UserAction.newGame");            //~va66I~
+    	prevActionID=0;                                            //~va66I~
+    	currentActionID=0;                                         //~va66I~
+    	ctrResponse=0; ctrRequest=0;                               //~va66I~
+    }                                                              //~va66I~
 	//*************************************************************************//~v@@@I~
     private int addCtrRequest()                                    //~v@@@I~
     {                                                              //~v@@@I~
@@ -415,6 +431,17 @@ public class UserAction       //~v@@@R~
         {                                                          //~v@@@I~
         	ACAction.showErrmsg(Popt,Pmsg);                        //~v@@@R~
         }                                                          //~v@@@I~
+        else                                                       //~va66I~
+        if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+//            int eswn=Accounts.playerToEswn(Pplayer);                   //~9830I~//~va66R~
+//            String strEswn=GConst.nameESWN[eswn];                //~va66R~
+//            if (Pmsg.startsWith(strEswn))                        //~va66R~
+//                ACAction.showErrmsg(Popt,Pmsg);                  //~va66R~
+//            else                                                 //~va66R~
+//	        	ACAction.showErrmsg(Popt,strEswn+":"+Pmsg);        //~va66I~
+            ACAction.showErrmsg(Popt,Pmsg);                        //~v@@@R~
+        }                                                          //~va66I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
 //      	AG.aUserAction.sendToTheClient(Pplayer,GCM_ERRMSG,Pmsg);//~v@@@R~
@@ -424,12 +451,17 @@ public class UserAction       //~v@@@R~
 	//*************************************************************************//~v@@7I~
     public static void sendErr(int Popt,int Pplayer,int Pmsgid)    //~v@@7I~
     {                                                              //~v@@7I~
-        if (Dump.Y) Dump.println("UserAction.sendErr player="+Pplayer+",msgid="+Integer.toHexString(Pmsgid));//~0215I~
+        if (Dump.Y) Dump.println("UserAction.sendErr player="+Pplayer+",msgid="+Integer.toHexString(Pmsgid)+"="+Utils.getStr(Pmsgid));//~va62R~
 //  	sendErr(Popt,Pplayer,Utils.getStr(Pmsgid));                //~v@@7I~//~0215R~
         if (Pplayer==PLAYER_YOU)                                   //~0215I~
         {                                                          //~0215I~
 			sendErr(Popt,Pplayer,Utils.getStr(Pmsgid)); //showErrmsg           //~0215I~//~0224R~
         }                                                          //~0215I~
+        else                                                       //~va66I~
+        if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+			sendErr(Popt,Pplayer,Utils.getStr(Pmsgid)); //showErrmsg//~va66I~
+        }                                                          //~va66I~
         else                                                       //~0215I~
         {                                                          //~0215I~
         	String msg=GMsg.makeSendMsg(Popt,Pmsgid);              //~0224I~
@@ -768,6 +800,51 @@ public class UserAction       //~v@@@R~
         	showDelayedGMsg();                                     //~9627M~
         }                                                          //~9627M~
     }                                                              //~v@@@I~
+    //*************************************************************************//~va66I~
+    //*return robot player if currentPlayer is robot in trainingMode//~va66I~
+    //*************************************************************************//~va66I~
+    private int chkRobotTakenInTrainingMode(int PprevActionID)     //~va66R~
+    {                                                              //~va66I~
+    	int rc=-1;                                                 //~va66I~
+    	if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+        	int cp=AG.aPlayers.getCurrentPlayer();                 //~va66I~
+	        int np;                                                //~va66R~
+	        if (PprevActionID==GCM_KAN)                            //~va66R~
+	        	np=cp;                                             //~va66I~
+            else                                                   //~va66I~
+	        if (PprevActionID==GCM_TAKE)                           //~va66R~
+	        	np=cp;                                             //~va66I~
+            else                                                   //~va66I~
+	        if (PprevActionID==0)   //1st parent take              //~va66I~
+	        	np=cp;                                             //~va66I~
+            else                                                   //~va66I~
+	        	np=Players.nextPlayer(cp);                         //~va66R~
+            if (np>=0 && AG.aAccounts.isRobotPlayer(np))           //~va66R~
+                rc=np;                                             //~va66R~
+        }                                                          //~va66I~
+        if (Dump.Y) Dump.println("UserAction.chkRobotTakenInTrainingMode swTrainingMode="+AG.swTrainingMode+",PprevActionID="+PprevActionID+",rc="+rc);//~va66R~
+        return rc;                                                 //~va66I~
+    }                                                              //~va66I~
+    //*************************************************************************//~va66I~
+    //*player is not always PLAYER_YOU                             //~va66R~
+    //*return robot player if currentPlayer is robot in TEST option of ROBOT_DISCARD_BUTTON//~va66I~
+    //*************************************************************************//~va66I~
+    private int chkRobotDiscardTestOption()                        //~va66I~
+    {                                                              //~va66I~
+    	int rc=-1;                                                 //~va66I~
+    	if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0)    //~va66I~
+        {                                                          //~va66I~
+        	int cp=AG.aPlayers.getCurrentPlayer();                 //~va66I~
+            if (AG.aAccounts.isRobotPlayer(cp))                    //~va66I~
+            {                                                      //~va66I~
+		        if (Dump.Y) Dump.println("UserAction.chkRobotTakenTestOption Test mode rc=currentPlayerRobot="+cp);//~va66R~
+                rc=cp;                                             //~va66I~
+            }                                                      //~va66I~
+        }                                                          //~va66I~
+		if (Dump.Y) Dump.println("UserAction.chkRobotTakenTestOption Test mode rc="+rc);//~va66I~
+        return rc;                                                 //~va66I~
+    }                                                              //~va66I~
     //*************************************************************************//~v@@@R~
     //*On Server/Clinet, get info when button pushed                //~v@@@R~//~v@@7R~
     //*************************************************************************//~v@@@R~
@@ -775,6 +852,7 @@ public class UserAction       //~v@@@R~
     public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm)//~9426I~
     {                                                              //~v@@@R~
         boolean rc=true;                                           //~v@@@R~
+        int playerTakeDiscardRobot=-1;                             //~va66R~
         if (Dump.Y) Dump.println("UserAction.getActionInfo id="+PactionID+"="+GCMsgID.getEnum(PactionID)+",player="+Pplayer+",intparm="+Arrays.toString(PintParm)+",strParm="+Arrays.toString(PstrParm));//~v@@@R~//~9426I~//~9B16I~//~9B17R~
         switch(PactionID)                                          //~9629I~
         {                                                          //~9629I~
@@ -782,12 +860,32 @@ public class UserAction       //~v@@@R~
         case GCM_PON:                                              //~9629I~
         case GCM_CHII:                                             //~9629I~
         case GCM_KAN:                                              //~9629I~
+            if (PactionID==GCM_TAKE)                               //~va66I~
+                playerTakeDiscardRobot=chkRobotTakenInTrainingMode(prevActionID);//~va66R~
+            if (playerTakeDiscardRobot>=0)                         //~va66R~
+            {                                                      //~va66R~
+                if (isWaitingOtherThanYou(PactionID,playerTakeDiscardRobot))//~va66R~
+                    return false;                                  //~va66R~
+                PintParm[PARMPOS_PLAYER]=playerTakeDiscardRobot;   //~va66R~
+                break;                                             //~va66R~
+            }                                                      //~va66R~
         	if (isWaitingOtherThanYou(PactionID,Pplayer))          //~9629I~
             	return false;                                      //~9629I~
             break;                                                 //~9629I~
+        case GCM_DISCARD:                                          //~va66I~
+          	playerTakeDiscardRobot=chkRobotDiscardTestOption();    //~va66I~
+            break;                                                 //~va66I~
 //        case GCM_PON_C:                                          //~9B16R~//~9B17M~//~9B18R~
 //            break;                                                 //~9B17I~//~9B18R~
         }                                                          //~9629I~
+        if (playerTakeDiscardRobot>=0)                                   //~va66I~
+        {                                                          //~va66I~
+            if (!players.isYourTurn(PactionID,playerTakeDiscardRobot,prevActionID))//~va66I~
+            {                                                      //~va66I~
+                return false;                                      //~va66I~
+            }                                                      //~va66I~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
         if (!players.isYourTurn(PactionID,Pplayer,prevActionID)) //~v@@@R~//~v@@7R~
         {                                                        //~v@@@R~//~v@@7R~
             return false;                                        //~v@@@R~//~v@@7R~
@@ -795,9 +893,17 @@ public class UserAction       //~v@@@R~
         switch(PactionID)                                           //~v@@@R~
         {                                                          //~v@@@R~
         case GCM_TAKE:                                             //~v@@@R~
+        	if (playerTakeDiscardRobot>=0)                               //~va66I~
+            {                                                      //~va66I~
+            	rc=UAT.selectInfo(isServer,playerTakeDiscardRobot);      //~va66I~
+            	break;                                             //~va66I~
+            }                                                      //~va66I~
             rc=UAT.selectInfo(isServer,Pplayer);                   //~v@@7I~
             break;                                                 //~v@@@R~
         case GCM_DISCARD:                                          //~v@@@R~
+          if (playerTakeDiscardRobot>=0)                           //~va66I~
+            rc=UAD.selectInfo(isServer,playerTakeDiscardRobot);    //~va66I~
+          else                                                     //~va66I~
             rc=UAD.selectInfo(isServer,Pplayer);                  //~v@@@R~//~9B23R~
             if (rc)                                                //~9A30R~//~9A31R~
     		    updateButtonStatusReach(0/*back to default*/);//~9A30R~//~9A31R~
@@ -822,8 +928,8 @@ public class UserAction       //~v@@@R~
         case GCM_REACH_OPEN:                                       //~v@@7I~
         case GCM_FORCE_REACH:                                      //~va27I~
         case GCM_FORCE_REACH_OPEN:                                 //~va27I~
-//          rc=UARE.selectInfo(isServer,Pplayer,);                 //+va27R~
-            rc=UARE.selectInfo(isServer,Pplayer,PactionID);        //+va27I~
+//          rc=UARE.selectInfo(isServer,Pplayer,);                 //~va27R~
+            rc=UARE.selectInfo(isServer,Pplayer,PactionID);        //~va27I~
             if (rc)                                                //~9A30R~//~9A31R~
     		    updateButtonStatusReach(PactionID);         //~9A30R~//~9A31R~
             break;                                                 //~v@@@R~//~v@@7R~
@@ -950,9 +1056,24 @@ public class UserAction       //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public boolean action(boolean PswServer,int PactionID,int Pplayer/*relative pos on the device*/,int[] PintParm,String[] PstrParm)//~v@@@R~//~v@@7R~
     {                                                              //~v@@@I~
+        int playerTakeDiscardRobot=-1;                             //~va66R~
         if (Dump.Y) Dump.println("UserAction.action actionID="+PactionID+"="+GCMsgID.getEnum(PactionID)+",player="+Pplayer);//~v@@@R~
         if (Dump.Y) Dump.println("UserAction.action intParm="+Arrays.toString(PintParm));//~v@@7I~
         if (Dump.Y) Dump.println("UserAction.action strParm="+Arrays.toString(PstrParm));//~9826I~
+	 	if (PactionID==GCM_TAKE)                              //~va66I~
+            playerTakeDiscardRobot=chkRobotTakenInTrainingMode(prevActionID);//~va66R~
+        else                                                       //~va66I~
+        if (PactionID==GCM_DISCARD)                                //~va66I~
+        	playerTakeDiscardRobot=chkRobotDiscardTestOption();    //~va66I~
+        if (playerTakeDiscardRobot>=0)                             //~va66R~
+        {                                                          //~va66I~
+	        if (!players.isYourTurn(PactionID,playerTakeDiscardRobot,prevActionID))//~va66R~
+    	    {                                                      //~va66I~
+        	    return false;                                      //~va66I~
+        	}                                                      //~va66I~
+            PintParm[PARMPOS_PLAYER]=playerTakeDiscardRobot;       //~va66R~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
         if (!players.isYourTurn(PactionID,Pplayer,prevActionID))   //~v@@7I~
         {                                                          //~v@@7I~
             return false;                                          //~v@@7I~
@@ -965,12 +1086,18 @@ public class UserAction       //~v@@@R~
         {                                                          //~v@@@I~
 	 	case GCM_TAKE:                                             //~v@@@I~
 	        currentActionID=PactionID;                             //~9623I~
+          if (playerTakeDiscardRobot>=0)                                 //~va66I~
+            rc=UAT.takeOne(PswServer,swReceived,playerTakeDiscardRobot,PintParm);//~va66I~
+          else                                                     //~va66I~
             rc=UAT.takeOne(PswServer,swReceived,Pplayer,PintParm); //~v@@@R~
 	        swRobot=false;                                         //~0229I~
         	break;                                                 //~v@@@I~
 	 	case GCM_DISCARD:                                          //~v@@@M~
 	        currentActionID=PactionID;                             //~9623I~
         	swRobot=false;                                         //~v@@@I~
+          if (playerTakeDiscardRobot>=0)                           //~va66I~
+            rc=UAD.discard(PswServer,swReceived,playerTakeDiscardRobot,PintParm);//~va66I~
+          else                                                     //~va66I~
             rc=UAD.discard(PswServer,swReceived,Pplayer,PintParm); //~v@@@R~
         	break;                                                 //~v@@@M~
 	 	case GCM_NEXT_PLAYER:	//client only                      //~v@@@R~
@@ -986,6 +1113,7 @@ public class UserAction       //~v@@@R~
             rc=UAD.nextPlayerPonKan(PswServer,Pplayer);   //UADiscard//~v@@7R~
         	break;                                                 //~v@@7I~
 	 	case GCM_PON:                                              //~v@@@I~
+        	swRobot=false;                                         //~va62R~
 	        currentActionID=PactionID;                             //~9623I~
             rc=UAP.takePon(PswServer,swReceived,Pplayer,PintParm);//~v@@@R~
         	break;                                                 //~v@@@I~
@@ -994,11 +1122,13 @@ public class UserAction       //~v@@@R~
 //            rc=UADL.action2Touch(PactionID,PswServer,swReceived,Pplayer,PintParm);//~9B17R~//~9B18R~
 //            break;                                                 //~9B17I~//~9B18R~
 	 	case GCM_CHII:                                             //~v@@@I~
+        	swRobot=false;                                         //~va62R~
 	        currentActionID=PactionID;                             //~9623I~
 //          rc=takeChii(Pplayer);                                  //~v@@@R~
             rc=UAC.takeChii(PswServer,swReceived,Pplayer,PintParm);//~v@@@I~
         	break;                                                 //~v@@@I~
 	 	case GCM_KAN:                                              //~v@@@I~
+        	swRobot=false;                                         //~va62R~
 	        currentActionID=PactionID;                             //~9623I~
 //          rc=takeKan(Pplayer);                                   //~v@@@R~//~v@@7R~
             rc=UAK.takeKan(PswServer,swReceived,Pplayer,PintParm); //~v@@7I~

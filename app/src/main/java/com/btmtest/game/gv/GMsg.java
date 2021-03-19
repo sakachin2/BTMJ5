@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 629;                                    //~v@@@R~//~9C02R~
+//*CID://+va66R~: update#= 636;                                    //~va66R~
 //**********************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -48,7 +50,7 @@ public class GMsg                                                  //~v@@@R~
     private static final double TEXT_MARGIN=0.2;
     private static final int TEXT_MARGIN_SIDE=10;               //~v@@@I~
     private static final double MSGH_ALLOWANCE=0.95;  //avoid overflow 90% shrink//~v@@@R~
-//  private static final double STROKE_WIDTH=1.5;                  //~v@@@R~//+0401R~
+//  private static final double STROKE_WIDTH=1.5;                  //~v@@@R~//~0401R~
     private static final int ADJUSTVJ=4;                           //~0216I~
 	private static final Tables[] StblAction={                     //~v@@@I~
 					new Tables(Utils.getStr(R.string.UserAction_Pon),GCM_PON),//~v@@@I~
@@ -57,6 +59,7 @@ public class GMsg                                                  //~v@@@R~
 					new Tables(Utils.getStr(R.string.Label_Ron),GCM_RON),//~v@@@I~
 					new Tables(Utils.getStr(R.string.Label_Take),GCM_TAKE),//~v@@@I~
 					new Tables(Utils.getStr(R.string.UserAction_Reach),GCM_REACH),	//last is longest text //~v@@@I~//~9C02I~
+					new Tables(Utils.getStr(R.string.UserAction_Reach_Open),GCM_REACH_OPEN),	//last is longest text//+va66I~
                     };                                             //~1A08I~//~v@@@I~
     private static final String SHIFTCHAR="。、";                              //~0215R~//~0216I~
     private static final String SHIFTUP=".,";                      //~0216I~
@@ -84,6 +87,10 @@ public class GMsg                                                  //~v@@@R~
 //  private String SshiftCharSbcs="\",.";                          //~0216R~
 //  private double pxToSp;                                         //~v@@@R~
 //*************************                                        //~v@@@I~
+	public GMsg()   //for IT override                              //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("GMsg.defaultConstructor");       //~va60I~
+    }                                                              //~va60I~
 	public GMsg(GCanvas Pgcanvas)                                  //~v@@@R~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("GMsg.constructor");              //~0217I~
@@ -295,19 +302,37 @@ public class GMsg                                                  //~v@@@R~
     //********************************************                 //~0218I~
     private void drawHLName(int Popt,int PactionID,int Pplayer)    //~0218I~
     {                                                              //~0218I~
-        if (Dump.Y) Dump.println("GMsg.drawHL actionid="+PactionID+",player="+Pplayer);//~0218I~
-    	int idx=Tables.find(StblAction,PactionID);                 //~0218I~
-        if (idx==-1)                                               //~0218I~
-        {                                                          //~0218I~
-        	UView.showToast("Gmsg action not Found id="+PactionID);//~0218I~
-            return;                                                //~0218I~
-        }                                                          //~0218I~
-        Tables tb=StblAction[idx];                                 //~0218I~
-    	int eswn= Accounts.playerToEswn(Pplayer);                  //~0218I~
-		String yn=AG.aAccounts.currentEswnToAccountName(eswn);     //~0218I~
-        String msg=AG.resource.getString(R.string.Info_ActionEswnWithName, GConst.nameESWN[eswn],tb.name,yn);//~0218I~
+        if (Dump.Y) Dump.println("GMsg.drawHLName actionid="+PactionID+",player="+Pplayer);//~0218I~//~va66R~
+//        int idx=Tables.find(StblAction,PactionID);                 //~0218I~//~va66R~
+//        if (idx==-1)                                               //~0218I~//~va66R~
+//        {                                                          //~0218I~//~va66R~
+//            UView.showToast("Gmsg action not Found id="+PactionID);//~0218I~//~va66R~
+//            return;                                                //~0218I~//~va66R~
+//        }                                                          //~0218I~//~va66R~
+//        Tables tb=StblAction[idx];                                 //~0218I~//~va66R~
+//        int eswn= Accounts.playerToEswn(Pplayer);                  //~0218I~//~va66R~
+//        String yn=AG.aAccounts.currentEswnToAccountName(eswn);     //~0218I~//~va66R~
+//        String msg=AG.resource.getString(R.string.Info_ActionEswnWithName, GConst.nameESWN[eswn],tb.name,yn);//~0218I~//~va66R~
+        String msg=getHLName(Popt,PactionID,Pplayer);              //~va66I~
 	    drawHL(Popt,msg);                                          //~0218I~
     }                                                              //~0218I~
+    //********************************************                 //~va66I~
+    public String getHLName(int Popt,int PactionID,int Pplayer)    //~va66I~
+    {                                                              //~va66I~
+        if (Dump.Y) Dump.println("GMsg.getHLName actionid="+PactionID+",player="+Pplayer);//~va66I~
+    	int idx=Tables.find(StblAction,PactionID);                 //~va66I~
+        if (idx==-1)                                               //~va66I~
+        {                                                          //~va66I~
+        	UView.showToast("Gmsg action not Found id="+PactionID);//~va66I~
+            return "UnknownAction";                                                //~va66I~
+        }                                                          //~va66I~
+        Tables tb=StblAction[idx];                                 //~va66I~
+    	int eswn= Accounts.playerToEswn(Pplayer);                  //~va66I~
+		String yn=AG.aAccounts.currentEswnToAccountName(eswn);     //~va66I~
+        String msg=AG.resource.getString(R.string.Info_ActionEswnWithName, GConst.nameESWN[eswn],tb.name,yn);//~va66I~
+        if (Dump.Y) Dump.println("GMsg.getHLName msg="+msg);       //~va66I~
+        return msg;                                                //~va66I~
+    }                                                              //~va66I~
     //********************************************                 //~9C02M~
     public static void showHL(int Popt,String Pmsg)                //~9C02M~
     {                                                              //~9C02M~
@@ -317,6 +342,8 @@ public class GMsg                                                  //~v@@@R~
     private void drawHL(int Popt,String Pmsg)                      //~9C02R~
     {                                                              //~9C02I~
         if (Dump.Y) Dump.println("GMsg.drawHL msg="+Pmsg);         //~9C02I~//~9C10R~
+        if (table==null)    //Instrumetation test                  //~va60R~
+        	return;                                                //~va60I~
         Rect r;                                                    //~9C02I~
         if (swPortrait)                                            //~9C02R~
         {                                                          //~9C02I~
@@ -345,14 +372,14 @@ public class GMsg                                                  //~v@@@R~
           }                                                        //~0215I~
         }                                                          //~9C02I~
     }                                                              //~9C02I~
-//    //********************************************               //~v@@@I~
-//    public static void showHLEswn(int Popt,int Pplayer,String Pmsg)//~v@@@I~
-//    {                                                            //~v@@@I~
-//        int eswn=Accounts.playerToEswn(Pplayer);                 //~v@@@I~
-//        if (Dump.Y) Dump.println("GMsg.showHLEswn player="+Pplayer+"eswn="+eswn+",msg="+Pmsg);//~v@@@I~
-//        String msg=AG.resource.getString(R.string.Info_ActionESWN,GConst.nameESWN[eswn],Pmsg);//~v@@@I~
-//        showHL(Pmsg);                                            //~v@@@I~
-//    }                                                            //~v@@@I~
+    //********************************************               //~v@@@I~//~va66R~
+    public static String editEswn(int Pmsgid,int Pplayer)//~v@@@I~ //~va66R~
+    {                                                            //~v@@@I~//~va66R~
+        int eswn=Accounts.playerToEswn(Pplayer);                 //~v@@@I~//~va66R~
+        String msg=Utils.getStr(Pmsgid,GConst.nameESWN[eswn]);//~v@@@I~//~va66I~
+        if (Dump.Y) Dump.println("GMsg.editEswn player="+Pplayer+"eswn="+eswn+",msg="+msg);//~v@@@I~//~va66R~
+        return msg;                                                //~va66R~
+    }                                                            //~v@@@I~//~va66R~
 //    //********************************************               //~v@@@R~
 //    //*with colored background                                   //~v@@@R~
 //    //********************************************               //~v@@@R~
@@ -696,7 +723,9 @@ public class GMsg                                                  //~v@@@R~
     //********************************************                 //~v@@@I~
     private void drawTextHL(String Pmsg,float[] Pfpos)             //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("GMsg.drawTextHL");      //~v@@@I~//~0215R~
+        if (Dump.Y) Dump.println("GMsg.drawTextHL msg="+Pmsg);      //~v@@@I~//~0215R~//~va60R~
+        if (table==null)    //Instrumetation test                  //~va60I~
+        	return;                                                //~va60I~
         drawTextHL(Pmsg,Pfpos,paintHL,rectTextHL);                   //~9C02I~
     }                                                              //~v@@@I~
     //********************************************                 //~9C02I~

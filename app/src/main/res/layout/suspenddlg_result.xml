@@ -125,14 +125,15 @@
                     android:orientation="horizontal"
                         android:id="@+id/llSuspendPenalty"
                 />
+               <!--         android:id="@+id/llSuspendPenalty"-->
                 <LinearLayout
                      android:layout_height="wrap_content"
                      android:layout_width="0dp"
                      android:layout_weight="0.4"
                     android:orientation="horizontal"
-                        android:id="@+id/llSuspendPenalty"
                     android:gravity="center_vertical"
                 >
+                   <!--     android:id="@+id/llSuspendPenalty" -->
                     <TextView
                          android:layout_width="fill_parent"
                          android:layout_height="wrap_content"

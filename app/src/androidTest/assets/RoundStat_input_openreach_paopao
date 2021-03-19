@@ -1,0 +1,76 @@
+*func player eswn td(type,num,remain,red5)
+**********case1 openreach
+**deal
+* 5 0 0   0110  0210 0310   1010 1110 1210   2010 2210         3010 3110 3210   3410  3510
+**deal for open reach
+* 5 1 1   0210 0310   1010 1110 1210   2010 2110 2210    3010 3020 3030   3410  3420
+**take        robot
+*11 0 0   0110 1
+**discard
+*17 0 0
+**openreach
+*20 1 1
+**take        robot
+*11 0 0   0410 1
+**discard
+*17 0 0
+**********case2 pao
+*deal
+05 0 0   0110  0210 0310   1010 1110 1210   2010 2210         3030 3130 3230   3430  3530
+*deal 3dragon
+05 1 1   0210 0210 0220   1010   2010 2110 2210  3410 3420   3510 3520  3610 3620
+*deal 4wind
+05 2 2   0210 0220 0230          2010 2020                   3010 3020  3110 3120 3210 3220  3310 3320
+*deal 4kan  
+05 3 3   0800 0810 0820    1800 1810 1820    2700 2710 2720  2800 2810 2820   3000
+*take 
+11 0 0   3530 1
+*discard
+17 0 0  
+*pon 3d       Green
+12 1 1   3510 3520 0000  
+*pon 3d       Red
+12 1 1   3610 3620 3630 
+*take        robot pao White 3d NG 
+11 0 0   3430 1
+*discard    3dNG
+17 0 0
+*take    Gren PAO OK
+11 0 0   3500 1
+*pon 4w   4w East
+12 2 2   3010 3020 3030  
+*pon 4w   4w West
+12 2 2   3110 3120 3130  
+*take     4wPAO OK EW only
+11 0 0   3200 1
+*pon 4w  4w North
+12 2 2   3310 3320 3330 
+*take        robot  4w OK already North
+11 0 0   3300 1
+*take        robot pao 4w West  NG
+11 0 0   3230 1
+11 0 0   3400 1
+****4 kan test
+11 0 0   0830 1  * take/discard
+17 0 0           *discard taken  required because sendtoserver is mock
+14 3 3   0800 0810 0820 0000    **************** kan    
+11 3 3   3010 0  *take kan
+17 3 3           * discard
+*
+11 0 0   1830 1  * take/discard
+17 0 0           *discard taken
+14 3 3   1800 1810 1820 0000    **************** kan    
+11 3 3   3120 0  *take kan
+17 3 3           * discard
+*
+11 0 0   0700 1  * take/discard   no pao
+17 0 0           *discard taken
+*
+11 0 0   2730 1  * take/discard
+17 0 0           *discard taken
+14 3 3   2700 2710 2720 0000    **************** kan    
+11 3 3   3230 0  *take kan
+17 3 3           * discard
+11 0 0   3000 1  *     genbutu
+11 0 0   3100 1  *     genbutu
+11 0 0   3300 1  * not genbutu

@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 580;                                    //~v@@@R~//~v@@6R~//~9225R~
+//*CID://+DATER~: update#= 585;                                    //~v@@@R~//~v@@6R~//~9225R~
 //**********************************************************************//~v101I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
@@ -23,6 +23,8 @@ import com.btmtest.game.gv.River;
 import com.btmtest.game.gv.Stock;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.sound.Sound;
+
+import java.util.Arrays;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GCMsgID.*;
@@ -114,15 +116,15 @@ public class UATake                                                //~v@@@R~
     private boolean isLocked(int Pplayer)                          //~v@@6I~
     {                                                              //~v@@6I~
         boolean rc=false;                                          //~v@@6I~
-//      TileData td=PLS.getLastDiscarded();                        //~v@@6I~//+0404R~
-        TileData td=PLS.getCurrentTile();   //tileLastDiscarded or tileCurrentTaken//+0404I~
+//      TileData td=PLS.getLastDiscarded();                        //~v@@6I~//~0404R~
+        TileData td=PLS.getCurrentTile();   //tileLastDiscarded or tileCurrentTaken//~0404I~
 		if (td!=null && td.isLocked())                             //~v@@6I~
 		{                                                          //~v@@6I~
-	    	if (Dump.Y) Dump.println("UATake.isLocked ignore Take by Locked");//+0404I~
-//        if (!td.isKanRiver())	//waiting Rinshan Take after kan   //~0402I~//+0404R~
-          if (td.isKanTaken()||td.isKanAdd())	//waiting Rinshan Take after kan//+0404I~
-	        UserAction.sendErr(0,Pplayer,R.string.Info_WaitKanTakableTimeout);//+0404I~
-          else                                                     //+0404I~
+	    	if (Dump.Y) Dump.println("UATake.isLocked ignore Take by Locked");//~0404I~
+//        if (!td.isKanRiver())	//waiting Rinshan Take after kan   //~0402I~//~0404R~
+          if (td.isKanTaken()||td.isKanAdd())	//waiting Rinshan Take after kan//~0404I~
+	        UserAction.sendErr(0,Pplayer,R.string.Info_WaitKanTakableTimeout);//~0404I~
+          else                                                     //~0404I~
 	        UserAction.sendErr(0,Pplayer,R.string.Info_WaitDiscardTimeout);//~v@@6I~
             rc=true;                                               //~v@@6I~
         }                                                          //~v@@6I~
@@ -138,7 +140,7 @@ public class UATake                                                //~v@@@R~
         TileData td;                                               //~v@@@R~
 //      int eswn,player;                                                  //~v@@@I~//~v@@6R~
     //***********************                                      //~v@@@I~
-        if (Dump.Y) Dump.println("UATake.takeOne swServer="+PswServer+",swReceive="+PswReceived+",player="+Pplayer);//~v@@@R~
+        if (Dump.Y) Dump.println("UATake.takeOne swServer="+PswServer+",swReceive="+PswReceived+",player="+Pplayer+",intP="+ Arrays.toString(PintParm));//~v@@@R~//~1128R~
         AG.aHandsTouch.enableMultiSelectionMode(false);            //~v@@6I~
 //        Status.setRon(false,0,0,0);                                      //~v@@6I~
         if (!PswReceived)                                          //~v@@@I~
@@ -210,6 +212,7 @@ public class UATake                                                //~v@@@R~
   		swDraw=Pplayer==PLAYER_YOU;                                //~v@@@I~
         if (swDraw)                                                //~v@@@I~
 	    	hands.takeOne(Pplayer,td);  //draw Hands               //~v@@@R~
+        if (Dump.Y) Dump.println("UATake.takeOne TestOption="+Integer.toHexString(TestOption.option));//~1125R~
         if ((TestOption.option & TestOption.TO_TAKEDISCARD)!=0)    //~v@@6I~//~9225I~//~v@@6M~
         {                                                          //~9225I~//~v@@6M~
         	int cpos=AG.aTiles.getCurrentTilePos();                   //~v@@6I~//~9225R~
@@ -232,8 +235,11 @@ public class UATake                                                //~v@@@R~
         }                                                          //~9225I~//~v@@6M~
         if ((TestOption.option & TestOption.TO_TAKEDISCARD)!=0)    //~v@@6I~
             if (Pplayer==PLAYER_YOU)                               //~9225I~
+            {                                                      //~1125I~
+        		if (Dump.Y) Dump.println("UATake.takeOne postDiscard by test option");//~1125R~
 //			    GameViewHandler.sendMsg(GCM_DISCARD,PLAYER_YOU,0,0);   //~v@@6R~//~9225R~
   		    	UADelayed.postDelayedActionMsg(100,GCM_DISCARD,PLAYER_YOU,0,0);//~v@@6I~//~9225R~
+            }                                                      //~1125I~
 //      if (PswServer)                                             //~9622R~
 //          setTimeout(Pplayer,GCM_TAKE);	//swith to next player after delay a moment//~9622R~//~9626R~//~9627R~
 	    river.drawFrameDiscardedTile(GCM_TAKE);	//draw discarded tile frame//~9B23I~
@@ -299,7 +305,13 @@ public class UATake                                                //~v@@@R~
     	if (Pplayer==PLAYER_YOU)                                   //~9627R~
 			AG.aGC.sendMsg(GCM_DISCARD,Pplayer);	//simulate discard button//~9627I~
         else                                                       //~9627I~
+        {                                                          //~1129I~
+          Robot r=AG.aAccounts.getRobot(Pplayer);                    //+1129I~
+          if (r!=null)                                             //+1129R~
+           	r.autoDiscardTimeout(Pplayer);                         //+1129R~
+          else                                                     //~1129I~
 			UA.UADL.sendMsgEmulatedToClient(GCM_DISCARD,Pplayer);	//simulate discard button//~9627I~
+        }                                                          //~1129I~
     }                                                              //~9622I~
 	//*************************************************************************//~9627I~
 	//*on Client,by GCM_WAITOFF at waitingAutoDiscard              //~9627R~

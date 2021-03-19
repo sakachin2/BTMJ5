@@ -4,32 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 >
-<!--
-    <LinearLayout
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-    			android:background="@color/descriptiononly"
-    >
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-                android:text="@string/Label_YakuFix1"
-            android:textSize="@dimen/textview_middle"
-        />
-        <CheckBox
-            android:id="@+id/cbYakuFix1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Label_YakuFix1Yes"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Desc_YakuFix1"
-        />
-    </LinearLayout>
--->
     <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"

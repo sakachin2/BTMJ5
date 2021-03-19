@@ -1,6 +1,6 @@
-//*CID://+DATER~:                             update#= 1117;       //~v@@@R~//~9211R~
+//*CID://+DATER~:                             update#= 1120;       //+1312R~
 //*****************************************************************//~v101I~
-//*****************************************************************//~v101I~
+//*****************************************************************//+1312I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.text.Spanned;
 import android.view.View;
@@ -239,7 +239,7 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
     	swMinusCharge=swMinusStop;                                 //~9423I~
     	pointMinusStop=RuleSetting.getPointMinusStop();           //~9408I~
     	caseMinusStopByErr=RuleSetting.getMinusStopByErr();        //~9414I~
-        if (Dump.Y) Dump.println("ScoreDlg:getRuleSetting swMinusPayGetAllPoint="+swMinusPayGetAllPoint);//~9415I~
+        if (Dump.Y) Dump.println("ScoreDlg:getRuleSetting swMinusPay="+swMinusPay+",swMinusPayGetAllPoint="+swMinusPayGetAllPoint);//~9415I~//~1209R~
     }                                                              //~9320I~
     //******************************************                   //~9309I~
     protected void setupAmmount(View PView)                        //~9309I~
@@ -1178,8 +1178,8 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
             return;                                                 //~9704I~
         }                                                          //~9704I~
         resetGrilledBird(PendgameType);                            //~9501I~//~9503R~
-//      AG.aNamePlate.showScore();                                 //~9320I~//~9503R~//+0324R~
-        AG.aNamePlate.showScoreClearRiver();                       //+0324I~
+//      AG.aNamePlate.showScore();                                 //~9320I~//~9503R~//~0324R~
+        AG.aNamePlate.showScoreClearRiver();                       //~0324I~
 //        Complete.newInstance();                                    //~9320I~//~9502R~//~9503R~
 //        Status.endGame(PendgameType,PnextgameType);                //~9318I~//~9502R~//~9503R~
 //        AG.aStarter.showGameSeq(AG.aAccounts.starterRelativePos);  //~9318I~//~9502R~//~9503R~
@@ -1191,8 +1191,8 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
     {                                                              //~9704I~
         if (Dump.Y) Dump.println("ScoreDlg:resetGame swServer="+PswServer);//~9704I~
 //      resetGrilledBird(PendgameType);                            //~9704I~
-//      AG.aNamePlate.showScore();                                 //~9704I~//+0324R~
-        AG.aNamePlate.showScoreClearRiver();                       //+0324I~
+//      AG.aNamePlate.showScore();                                 //~9704I~//~0324R~
+        AG.aNamePlate.showScoreClearRiver();                       //~0324I~
         AG.aAccounts.resetGame(PswServer);    //touch dice         //~9704I~
     }                                                              //~9704I~
     //**************************************************************************//~9522I~
@@ -1216,8 +1216,8 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
 //      AG.aAccounts.setScore(Ptotal);                             //~9321R~//~9415R~
         AG.aAccounts.setScore(PintssP[0]);                         //~9415I~
   		resetGrilledBird(PendgameType);                            //~9501I~//~9503R~
-//     	AG.aNamePlate.showScore();                                 //~9321I~//+0324R~
-       	AG.aNamePlate.showScoreClearRiver();                       //+0324I~
+//     	AG.aNamePlate.showScore();                                 //~9321I~//~0324R~
+       	AG.aNamePlate.showScoreClearRiver();                       //~0324I~
 //  	Complete.newInstance();                                    //~9321I~
     	Status.endGame(PendgameType,NGTP_GAMEOVER);   //reset ctrGame to 0,affect to getCurrentEswn and OKNGDlg.isdealer()                        //~9321I~//~9401R~//~9605R~
 //  	AG.aStarter.showGameSeq(AG.aAccounts.starterRelativePos);  //~9321I~

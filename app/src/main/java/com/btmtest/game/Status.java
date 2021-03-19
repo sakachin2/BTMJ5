@@ -1,6 +1,9 @@
-//*CID://+va40R~: update#= 537;                                    //+va40R~
+//*CID://+va6fR~: update#= 546;                                    //~va6fR~
 //**********************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/03/11 va6f (BUG)when resume ,1st take occures on player currentEswn!=0//~va6fI~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //**********************************************************************//~va02I~
@@ -154,7 +157,7 @@ public class Status //extends Handler                              //~v@@@R~
 //        return rc;                                               //~v@@@I~
 //    }                                                            //~v@@@I~
 	//*************************************************************************//~v@@@I~
-	//*GC.diceCasted at GS_BEFORE_DEAL                             //~v@@@I~//~0222R~
+	//*GC.diceCasted at GS_BEFORE_DEAL   For Test Only             //~v@@@I~//~0222R~//~va60R~
 	//*************************************************************************//~v@@@I~
 	public static void reset()                                           //~v@@@I~
     {                                                              //~v@@@I~
@@ -280,6 +283,8 @@ public class Status //extends Handler                              //~v@@@R~
         return getGameSeq();                                       //~v@@@I~
     }                                                              //~v@@@I~
     //******************************************************       //~9901I~
+    //*from Accounts.setGameSeqResume                              //~va60I~
+    //******************************************************       //~va60I~
 //  public static Rect setGameSeqResume(int PgameSeq[],boolean Pswdup,boolean PswNextRound)//~9901R~//~9904R~
 //  public static Rect setGameSeqResume(int PgameSeq[],int PnextgameType,boolean PswNextRound)//~9904I~//~0308R~
     public static Rect setGameSeqResume(int PgameSeq[],int PendgameType,int PnextgameType,boolean PswNextRound)//~0308I~
@@ -318,6 +323,7 @@ public class Status //extends Handler                              //~v@@@R~
         {                                                          //~9901I~
     		aStatus.starterCurrent=Players.nextPlayer(aStatus.starterCurrent);//~9901I~
         }                                                          //~9901I~
+        AG.aAccounts.setCurrentAccountsByESWN();    //RoundsStat.newGame from resetForNewGame needs this//~va60I~
         aStatus.resetForNewGame();                                 //~9901I~
         return getGameSeq();                                       //~9901I~
     }                                                              //~9901I~
@@ -451,9 +457,11 @@ public class Status //extends Handler                              //~v@@@R~
 	        AG.aUAEndGame.newGame();                               //~v@@@I~
 //        if (AG.aPlayers!=null)                                   //~v@@@I~
 //            AG.aPlayers.resetDiscardedCtr();                     //~v@@@I~
+        AG.aUserAction.newGame();                                  //~va66I~
 	    clearTable();                                              //~v@@@M~
         AG.aTiles.newGame();                                       //~v@@@R~
         AG.aPlayers.newGame(false/*sw1st*/,aStatus.starterCurrent);//~v@@@I~
+        AG.aRoundStat.newGame(false/*sw1st*/,aStatus.gameCtrSet,aStatus.gameCtrGame,aStatus.gameCtrDup);//~va60R~
 		if (isFinalGame())                                         //~9520I~
 	        AG.aGMsg.drawMsgbar(Utils.getStr(R.string.Info_FinalGame,Status.getStringGameSeq()));//~9520I~
         else                                                       //~9520I~
@@ -487,17 +495,28 @@ public class Status //extends Handler                              //~v@@@R~
     	aStatus.starterCurrent=Pplayer;                            //~v@@@I~
 //  	aStatus.gameStatus=GS_START_GAME;                          //~v@@@R~
         AG.aPlayers.newGame(true/*sw1st*/,Pplayer);                //~v@@@R~
+        AG.aRoundStat.newGame(true/*sw1st*/,aStatus.gameCtrSet,aStatus.gameCtrGame,aStatus.gameCtrDup);//~va60R~
         AG.aAccounts.setInitialScore(RuleSetting.getInitialScore());//~v@@@I~
         if (Dump.Y) Dump.println("Status.setGameStatusNewSet status="+aStatus.gameStatus+",player="+Pplayer);//~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~9901I~
+	//* fromAccounts.positionMovedResume                           //~va6fI~
+	//*************************************************************************//~va6fI~
     public static void setGameStatusNewSetResume(int Pplayer/*accountIndex*/,int[] Pscore)//~9901I~
     {                                                              //~9901I~
     	aStatus.starterGameSets=Pplayer;                           //~9901I~
-    	aStatus.starterCurrent=Pplayer;                            //~9901I~
-        AG.aPlayers.newGame(true/*sw1st*/,Pplayer);                //~9901I~
+//      if (true) //TODO test                                      //+va6fR~
+//      {                                                          //+va6fR~
+//        aStatus.starterCurrent=Pplayer;                            //~9901I~//+va6fR~
+//        AG.aPlayers.newGame(true/*sw1st*/,Pplayer);                //~9901I~//+va6fR~
+//      }                                                          //+va6fR~
+//      else                                                       //+va6fR~
+//      {                                                          //+va6fR~
+    	aStatus.starterCurrent=Accounts.eswnToPlayer(ESWN_E);      //~va6fI~
+        AG.aPlayers.newGame(true/*sw1st*/,aStatus.starterCurrent); //~va6fI~
+//      }                                                          //+va6fR~
         AG.aAccounts.setInitialScoreResume(RuleSetting.getInitialScore(),Pscore);//~9901I~
-        if (Dump.Y) Dump.println("Status.setGameStatusNewSetResume status="+aStatus.gameStatus+",player="+Pplayer+",score="+Arrays.toString(Pscore));//~9901I~
+        if (Dump.Y) Dump.println("Status.setGameStatusNewSetResume status="+aStatus.gameStatus+",Pplayer="+Pplayer+",starterGameSets="+aStatus.starterGameSets+",starterCurrent="+aStatus.starterCurrent+",score="+Arrays.toString(Pscore));//~9901I~//~va6fR~
     }                                                              //~9901I~
 //    //*************************************************************************//~v@@@R~
 //    public static int setGameStatusGameComplete()                //~v@@@R~
@@ -716,16 +735,16 @@ public class Status //extends Handler                              //~v@@@R~
     {                                                              //~v@@@I~
         String s=getStringGameSeq();                               //~v@@@R~
         if (Dump.Y) Dump.println("Status.getSpannedGameTitle parm="+Ptitle+",s="+s);//~v@@@I~
-//		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//~9223I~//+va40R~
-  		return Utils.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//+va40I~
+//		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//~9223I~//~va40R~
+  		return Utils.fromHtml(AG.resource.getString(R.string.Info_GameTitle,s,Ptitle));//~va40I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~0218I~
     public static Spanned getSpannedGameTitleWithName(String Ptitle,String Pname)//~0218I~
     {                                                              //~0218I~
         String s=getStringGameSeq();                               //~0218I~
         if (Dump.Y) Dump.println("Status.getSpannedGameTitle parm="+Ptitle+",s="+s+",name="+Pname);//~0218I~
-//		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//+va40R~
-  		return Utils.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//+va40I~
+//		return Html.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//~va40R~
+  		return Utils.fromHtml(AG.resource.getString(R.string.Info_GameTitleWithName,s,Ptitle,Pname));//~va40I~
     }                                                              //~0218I~
 	//*************************************************************************//~v@@@I~
     public static String getStringGameSeq()                        //~v@@@I~

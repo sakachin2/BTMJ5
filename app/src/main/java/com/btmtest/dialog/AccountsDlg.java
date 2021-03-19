@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1118;       //~v@@@R~//~9211R~
+//*CID://+va66R~:                             update#= 1119;       //+va66R~
 //*****************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
@@ -315,7 +316,7 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     //******************************************                   //~9309I~
     protected void showAmmount()                                     //~9309I~//~9819R~
     {                                                              //~9309I~
-//    	testPrize();	//TODO test                                //~9401I~//~9402R~//~9407R~//+0322R~
+//    	testPrize();	//TODO test                                //~9401I~//~9402R~//~9407R~//~0322R~
        	getOrder(lastScore);                                       //~9322I~
        	setPrize(lastScore);                                                //~9322I~
         for (int ii=0;ii<PLAYERS;ii++)     //account sequence      //~9309I~
@@ -391,7 +392,9 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     //********************************************************     //~9429I~
     protected void adjustByRobotScore(int [] PfinalScore)            //~9429I~//~9821R~
     {                                                              //~9429I~
-    	if (Dump.Y) Dump.println("AccountsDlg.adjustByRobotScore payType="+robotPayType+",finalScore="+Arrays.toString(PfinalScore));//~9429R~
+    	if (Dump.Y) Dump.println("AccountsDlg.adjustByRobotScore swTrainingMode="+AG.swTrainingMode+",payType="+robotPayType+",finalScore="+Arrays.toString(PfinalScore));//~9429R~//+va66R~
+        if (AG.swTrainingMode)                                     //+va66I~
+        	return;                                                //+va66I~
     	Accounts.Account act;
         int[] forRobot=new int[PLAYERS];                           //~9429I~
         int robotPay=0;                                            //~9429I~

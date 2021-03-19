@@ -1,6 +1,7 @@
-//*CID://+va40R~:                             update#=  572;       //~v@@@R~//+va40R~
+//*CID://+va66R~:                             update#=  581;       //~va66R~
 //*****************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
@@ -125,8 +126,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     {                                                              //~0114I~
     	String path=swSD ? workDirSD : pathDataDir;                //~0114I~
         if (Dump.Y) Dump.println("HistoryDlg:setTitle path="+path);//~0114I~
-//      Spanned s= Html.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//+va40R~
-        Spanned s=Utils.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//+va40I~
+//      Spanned s= Html.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//~va40R~
+        Spanned s=Utils.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//~va40I~
         getDialog().setTitle(s);                                               //~0114I~
     }                                                              //~0114I~
     //******************************************                   //~9823I~
@@ -270,17 +271,17 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         int role=-1;                                               //~9825I~
         if (members!=null)                                         //~9825I~
  			role=members.getMemberRole();                          //~9825I~
-        if (role==-1)                                              //~9825I~
-        {                                                          //~9825I~
-        	UView.showToast(R.string.Err_ReloadNooneConnected);    //~9825I~
-            return null;                                           //~9825R~
-        }                                                          //~9825I~
+//        if (role==-1)                                              //~9825I~//~va66R~
+//        {                                                          //~9825I~//~va66R~
+//            UView.showToast(R.string.Err_ReloadNooneConnected);    //~9825I~//~va66R~
+//            return null;                                           //~9825R~//~va66R~
+//        }                                                          //~9825I~//~va66R~
 //        if (role!=MS_SERVER)                                     //~9825I~
 //        {                                                        //~9825I~
 //            UView.showToast(R.string.Err_ReloadNotServer);       //~9825I~
 //            return;                                              //~9825I~
 //        }                                                        //~9825I~
-        swServer=(role==MS_SERVER);                                //~9825R~
+        swServer=(role==MS_SERVER);                                //~9825R~//~va66R~
         int ctr=multipleSelected.length;                           //~9825I~
     	if (ctr!=1)                                                //~9825I~
         {                                                          //~9825I~
@@ -304,8 +305,14 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
                     UView.showToast(R.string.Err_ReloadNotInterrupted);//~9825R~
                     return null;                                        //~9825R~
                 }                                                  //~9825R~
+			int role2=chkMemberTrainingMode(hd,role);              //~va66R~
+            if (role2==-1)               //unmatch member          //~va66R~
+            	return null;                                       //~va66R~
+          if (role2==0)     //history is not training mode         //~va66R~
+          {                                                        //~va66I~
 			if (!chkMember(hd))                                    //~9825I~
             	return null;                                      //~9825I~
+          }                                                        //~va66I~
         }                                                          //~9825I~
         catch (Exception e)                                        //~9825I~
         {                                                          //~9825I~
@@ -513,9 +520,57 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         if (Dump.Y) Dump.println("HistoryDlg.isInterrupted rc="+rc+",integtp="+integtp+",hdr="+Arrays.toString(hdr));//~9824I~//~9825R~
         return rc;                                                 //~9824I~//~9825R~
     }                                                              //~9824I~//~9825R~
-    //***********************************************              //~9824I~
-    private boolean chkMember(HistoryData Phds)                    //~9824I~
-    {                                                              //~9824I~
+    //***********************************************              //~va66I~
+    private int chkMemberTrainingMode(HistoryData Phds,int Prole)  //~va66I~
+    {                                                              //~va66I~
+    	int rc=0;                                                  //~va66I~
+        if (Dump.Y) Dump.println("HistoryDlg.chkMemberTrainingMode role="+Prole);//~va66R~
+        int role=Prole;                                            //~va66I~
+        if (Prole!=-1)                                             //~va66I~
+	        if (AG.aBTMulti.BTGroup.getConnectedCtr()==0)//~va66I~
+            	role=-1;	//no session                           //~va66I~
+        String[] names=Phds.HD[HDPOS_MEMBER];                      //~va66I~
+        int ctrRobot=0;                                            //~va66I~
+        int ctrFound=0;                                            //~va66I~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~va66I~
+        {                                                          //~va66I~
+            boolean swFound=false;                                 //~va66I~
+            String name=names[ii];                                 //~va66I~
+            if (name.compareTo(AG.YourName)==0)                    //~va66I~
+            	ctrFound++;                                        //~va66I~
+            else                                                   //~va66I~
+            if (Accounts.isRobotName(name)>0)                      //~va66I~
+                ctrRobot++;                                        //~va66I~
+        }                                                          //~va66I~
+        if (ctrFound==1 && ctrRobot==PLAYERS-1)	//trainingMode     //~va66I~
+		{                                                          //~va66I~
+        	if (role!=-1)	//have connection                      //~va66R~
+            {                                                      //~va66I~
+	            UView.showToastLong(R.string.Err_HistoryIsTrainingMode);//~va66I~
+                rc=-1;                                             //~va66I~
+            }                                                      //~va66I~
+            else                                                   //~va66I~
+            {                                                      //~va66I~
+            	AG.swTrainingMode=true;                            //~va66I~
+		        AG.aBTMulti.setTrainingMode();                     //~va66I~
+                swServer=true;                                     //+va66I~
+        		rc=MS_SERVER;                                      //~va66I~
+            }                                                      //~va66I~
+        }                                                          //~va66I~
+        else         //not training mode                           //~va66I~
+        {                                                          //~va66I~
+        	if (role==-1)	//have connection                      //~va66R~
+            {                                                      //~va66I~
+				UView.showToast(R.string.Err_ReloadNooneConnected);//~va66I~
+            	rc=-1;     //err                                   //~va66I~
+            }                                                      //~va66I~
+        }                                                          //~va66I~
+		if (Dump.Y) Dump.println("HistoryDlg.chkMemberTrainingMode rc="+rc+",ctrRobot="+ctrRobot+",ctrFound="+ctrFound);//~va66I~
+        return rc;                                                 //~va66I~
+    }                                                              //~va66I~
+    //***********************************************              //~va66I~
+    private boolean chkMember(HistoryData Phds)                    //~va66I~
+    {                                                              //~va66I~
     	boolean rc=false;                                          //~9824I~
         if (Dump.Y) Dump.println("HistoryDlg.chkMember");          //~9824I~
         String[] names=Phds.HD[HDPOS_MEMBER];                      //~9824R~
@@ -563,7 +618,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         &&  ctrFound+ctrRobot==PLAYERS)                            //~9824I~
         	rc=true;                                               //~9824I~
         if (!rc)                                                   //~9824I~
-            UView.showToastLong(R.string.Err_HistoryNotSameMembers);    //~9824I~//~9825R~//~0212R~
+	    	UView.showToastLong(R.string.Err_HistoryNotSameMembers);    //~9824I~//~9825R~//~0212R~//~va66R~
 		if (Dump.Y) Dump.println("HistoryDlg.chkMember rc="+rc+",ctrRobot="+ctrRobot+",ctrRobotNow="+ctrRobotNow+",ctrFound="+ctrFound);//~9824R~
         return rc;                                                 //~9824R~
     }                                                              //~9824I~

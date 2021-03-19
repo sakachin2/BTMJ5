@@ -1,7 +1,8 @@
-//*CID://+va40R~:                             update#=  109;       //+va40R~
+//*CID://+va60R~:                             update#=  110;       //~va40R~//+va60R~
 //*************************************************************************//~v106I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
-//*************************************************************************//+va40I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
+//*************************************************************************//~va40I~
 package com.btmtest.utils.sound;                                         //~9C01I~//~9C03R~
 
                                                                    //~9C01I~
@@ -50,6 +51,11 @@ public class SPList                                                //~9C03R~
     private boolean swNoSound,swBeep;                              //~9C03I~
     private SoundPool pool;//~9C03I~
     private int currentStreamID;                                   //~va06I~
+    //******************************************************************//+va60I~
+	public SPList() //for IT                                       //+va60I~
+	{                                                              //+va60I~
+        if (Dump.Y) Dump.println("SPList.default constructor");    //+va60I~
+	}                                                              //+va60I~
     //******************************************************************//~9C03I~
 	public SPList (Sound Psound)                                   //~9C03I~
 	{                                                              //~9C03I~
@@ -57,18 +63,18 @@ public class SPList                                                //~9C03R~
     	SOUND=Psound;                                              //~9C03I~
     	init();                                                    //~9C03I~
 	}                                                              //~9C03I~
-    //******************************************************************//+va40I~
-	@SuppressWarnings("deprecation")                               //+va40I~
-    private SoundPool SoundPool_Bellow21()                         //+va40I~
-    {                                                              //+va40I~
-		return new SoundPool(Ssoundtbl.length,AudioManager.STREAM_MUSIC,0/*srcQuality*/);//+va40I~
-	}                                                              //+va40I~
-    //******************************************************************//+va40I~
+    //******************************************************************//~va40I~
+	@SuppressWarnings("deprecation")                               //~va40I~
+    private SoundPool SoundPool_Bellow21()                         //~va40I~
+    {                                                              //~va40I~
+		return new SoundPool(Ssoundtbl.length,AudioManager.STREAM_MUSIC,0/*srcQuality*/);//~va40I~
+	}                                                              //~va40I~
+    //******************************************************************//~va40I~
 	public void init()                                             //~9C03R~
 	{                                                              //~1327R~
         if (Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP)   //~9C03I~
-//          pool=new SoundPool(Ssoundtbl.length,AudioManager.STREAM_MUSIC,0/*srcQuality*/);//~9C03I~//+va40R~
-            pool=SoundPool_Bellow21();                             //+va40I~
+//          pool=new SoundPool(Ssoundtbl.length,AudioManager.STREAM_MUSIC,0/*srcQuality*/);//~9C03I~//~va40R~
+            pool=SoundPool_Bellow21();                             //~va40I~
         else                                                       //~9C03I~
         {                                                          //~9C03I~
     		AudioAttributes.Builder abuilder=new AudioAttributes.Builder();//~9C03R~

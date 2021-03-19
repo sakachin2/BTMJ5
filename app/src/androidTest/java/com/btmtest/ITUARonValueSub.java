@@ -1,4 +1,4 @@
-//*CID://+va23R~: update#= 866;                                    //~va23R~
+//*CID://+va23R~: update#= 869;                                    //~va23R~
 //**********************************************************************//~v101I~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
 //**********************************************************************//~1107I~
@@ -132,8 +132,8 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 	public RonResult ronTestValue()                                //~va11R~
 	{//~va11I~
 	//*************************************************************************//~9C12I~
-        if ((TestOption.option2 & TestOption.TO2_CHKRANK)==0)      //~va23M~
-	        UView.showToastLong("ITUARonValueSub.Start testCase="+testCase);                 //~0A11R~//~va23I~
+//      if ((TestOption.option2 & TestOption.TO2_CHKRANK)==0)      //~va23R~
+//          UView.showToastLong("ITUARonValueSub.Start testCase="+testCase);                 //~0A11R~//~va23R~
 	    RonResult rc=null;                                              //~va11R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTestValue");              //~9C12I~//~0B02R~
 //        if (testCase>=255010 && testCase<255999)                   //~0A11I~//~va23R~
@@ -734,6 +734,63 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 	    rc=ronTestSub(dupCtr,0/*ronType*/,4/*ronNumber*/);         //~0B02R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23203 fu? rc="+rc.toString());//~0B02R~
         if (!swTestAll) break;                                     //~va23R~
+//*********                                                        //~va23I~
+    case 23204:                                                    //~va23I~
+        dupCtr=new int[][]{                                        //~va23I~
+        	{0,3,3, 0,0,0, 0,0,0},                                 //+va23R~
+        	{0,0,0, 0,0,0, 2,0,0},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23I~
+        dupCtrAll=new int[][]{                                     //~va23I~
+        	{0,3,3, 0,0,0, 0,0,0},                                 //+va23R~
+        	{0,0,0, 0,0,0, 2,0,0},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,0,0,0,  0,3,3, 0,0} };                         //7 //~va23I~
+        pairEarth=new Pair[]{                                      //~va23I~
+				new Pair(PT_NUMSAME,3/*type*/,5/*number*/,3/*ctr*/,0            ),//~va23I~
+    			new Pair(PT_NUMSAME,3/*type*/,6/*number*/,3/*ctr*/,0            ),//~va23I~
+        };                                                         //~va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,0/*ronType*/,1/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//~va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23204  honitus ="+rc.toString());//~va23I~
+        if (!swTestAll) break;                                     //~va23I~
+//*********                                                        //+va23I~
+    case 23205:                                                    //+va23I~
+        dupCtr=new int[][]{                                        //+va23I~
+        	{0,3,3, 0,0,0, 0,0,0},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+    	    { 2,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
+        dupCtrAll=new int[][]{                                     //+va23I~
+        	{0,3,3, 0,0,0, 0,0,0},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+    	    { 2,0,0,0,  0,3,3, 0,0} };                         //7 //+va23I~
+        pairEarth=new Pair[]{                                      //+va23I~
+				new Pair(PT_NUMSAME,3/*type*/,5/*number*/,3/*ctr*/,0            ),//+va23I~
+    			new Pair(PT_NUMSAME,3/*type*/,6/*number*/,3/*ctr*/,0            ),//+va23I~
+        };                                                         //+va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,0/*ronType*/,1/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//+va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23205  honitus ="+rc.toString());//+va23I~
+        if (!swTestAll) break;                                     //+va23I~
+//*********                                                        //+va23I~
+    case 23206:                                                    //+va23I~
+        dupCtr=new int[][]{                                        //+va23I~
+        	{0,3,3, 0,0,0, 0,0,2},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
+        dupCtrAll=new int[][]{                                     //+va23I~
+        	{0,3,3, 0,0,0, 0,0,2},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+    	    { 0,0,0,0,  0,3,3, 0,0} };                         //7 //+va23I~
+        pairEarth=new Pair[]{                                      //+va23I~
+				new Pair(PT_NUMSAME,3/*type*/,5/*number*/,3/*ctr*/,0            ),//+va23I~
+    			new Pair(PT_NUMSAME,3/*type*/,6/*number*/,3/*ctr*/,0            ),//+va23I~
+        };                                                         //+va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,0/*ronType*/,1/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//+va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23205  honitus ="+rc.toString());//+va23I~
+        if (!swTestAll) break;                                     //+va23I~
 //*********                                                        //~va11I~
     case 2321:                                                     //~va11I~
         dupCtr=new int[][]{                                        //~va11I~
@@ -3914,7 +3971,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,1);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,1);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-100 1              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3924,7 +3981,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,2);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,2);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-101 2              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3934,7 +3991,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,3);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,3);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-102 3              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3944,7 +4001,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,4);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,4);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-103 4              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3955,7 +4012,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,5);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,5);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-104 1              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3965,7 +4022,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,6);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,6);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-105 2              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3975,7 +4032,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,7);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,7);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-106 3              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -3985,7 +4042,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,8);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,8);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-107 4              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4004,8 +4061,8 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,1,2, 2,1,1, 4,1,2},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23R~
-	    rc=ronTestSub(dupCtr,0,1);                                 //+va23R~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23R~
+	    rc=ronTestSub(dupCtr,0,1);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-109 6              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4026,7 +4083,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,1);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,1);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-111 2              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4036,7 +4093,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,2);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,2);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-112 3              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4046,7 +4103,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,3);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,3);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-113 4              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4057,7 +4114,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,4);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,4);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-114 1              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4067,7 +4124,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,5);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,5);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-115 2              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4077,7 +4134,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,6);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,6);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-116 3              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4087,7 +4144,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,7);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,7);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-117 4              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4097,7 +4154,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,1);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,1);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-118 5              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4108,7 +4165,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,2);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,2);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-119 1              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4118,7 +4175,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,3);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,3);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-120 2              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4128,7 +4185,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,4);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,4);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-121 3              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4138,7 +4195,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,5);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,5);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-122 4              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
 //*********                                                        //~0A17I~
@@ -4148,7 +4205,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
         	{0,0,0, 0,0,0, 0,0,0},                                 //~0A17I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~0A17I~
-	    rc=ronTestSub(dupCtr,0,6);                                 //+va23R~
+	    rc=ronTestSub(dupCtr,0,6);                                 //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-123 5              rc="+rc);//~va23R~
         if (!swTestAll) break;                                     //~va23R~
     default:       //value3                                        //~va23R~

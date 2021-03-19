@@ -1,5 +1,6 @@
-//*CID://+va27R~: update#= 737;                                    //~va27R~
+//*CID://+va60R~: update#= 742;                                    //~va27R~//~va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/11/01 va22 (BUG)is13NoPair is checking after drop pillow    //~va22I~
 //2020/10/20 va20 use Junit for UARonchk                           //~va20I~
@@ -63,45 +64,47 @@ public class UARonChk                                                //~v@@@R~//
 //      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~0205R~//~va1aR~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va11I~
-    protected boolean isAllInHand()                                //~va11R~
+//  protected boolean isAllInHand()                                //~va11R~//+va60R~
+    protected boolean isAllInHand(int Pplayer)                     //+va60I~
     {                                                              //~va11I~
 //  	boolean rc=ctrPair==0;                                     //~va11R~
-		boolean rc=AG.aPlayers.isClosedHand(player);               //~va11I~
-        if (Dump.Y) Dump.println("UARonChk.isAllInHand rc="+rc+",ctrPair="+ctrPair);//~va11R~
+//  	boolean rc=AG.aPlayers.isClosedHand(player);               //~va11I~//+va60R~
+    	boolean rc=AG.aPlayers.isClosedHand(Pplayer);              //+va60I~
+        if (Dump.Y) Dump.println("UARonChk.isAllInHand rc="+rc+",ctrPair="+ctrPair+",player="+Pplayer);//~va11R~//+va60R~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
-	//*************************************************************************//~9C11I~
-	//*                                                            //~va11R~
-	//*************************************************************************//~9C11I~
-    public boolean chkComplete(int Pplayer)                     //~9C11R~
-    {                                                              //~9C11I~
-    	boolean rc;                                                //~9C11I~
-        player=Pplayer;                                            //~va11I~
-        swAllInHand=isAllInHand();                                 //~va11I~
-		ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //including Ron tile//~va11I~
-        if (Dump.Y) Dump.println("UARonChk.chkComplete player="+Pplayer+",ctrPair="+ctrPair);//~9C11I~//~0205R~//~va11R~//~va1aR~
-        TileData[] tds=AG.aPlayers.getHands(Pplayer);		//including Ron tile//~9C11R~
-        TileData tdRon=null;                                       //~9C11I~
-        if (!Tiles.isTakenStatus(tds.length))                      //~9C11I~
-        	tdRon=AG.aPlayers.getTileCompleteSelectInfoRon();              //~9C11I~
-//        if ((TestOption.option2 & TestOption.TO2_RON_TEST)!=0) //TODO//~9C12M~//~va11R~
-//        {                                                          //~9C12M~//~va11R~
-////          ronTest();                                             //~9C12M~//~9C13R~//~va11R~
-//            return true;                                           //~9C12M~//~va11R~
-//        }                                                          //~9C12M~//~va11R~
-//      if (!swCheckRonable)                                       //~0205I~//~va1aR~
-//  		return true;                                           //~0205I~//~va1aR~
-        sw1stTake=CompReqDlg.chk1stTake();                         //~va11I~
-        sortTiles(tds,tdRon);                                      //~9C11R~
-        if ((TestOption.option2 & TestOption.TO2_RON_TEST)!=0) //TODO//~va11I~
-        {                                                          //~va11I~
-          	int[][] testHand=UARonValue.getTestHandRonChk();   //by testcase//~va11I~
-            if (testHand!=null)                                    //~va11I~
-            	dupCtr=testHand;                                   //~va11I~
-        }                                                          //~va11I~
-	    rc=chkCompleteSub();
-        return rc;//~9C12I~
-    }                                                              //~9C12I~
+//    //*************************************************************************//~9C11I~//~va60R~
+//    //*No User                                                   //~va60R~
+//    //*************************************************************************//~9C11I~//~va60R~
+//    public boolean chkComplete(int Pplayer)                     //~9C11R~//~va60R~
+//    {                                                              //~9C11I~//~va60R~
+//        boolean rc;                                                //~9C11I~//~va60R~
+//        player=Pplayer;                                            //~va11I~//~va60R~
+//        swAllInHand=isAllInHand();                                 //~va11I~//~va60R~
+//        ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //including Ron tile//~va11I~//~va60R~
+//        if (Dump.Y) Dump.println("UARonChk.chkComplete player="+Pplayer+",ctrPair="+ctrPair);//~9C11I~//~0205R~//~va11R~//~va1aR~//~va60R~
+//        TileData[] tds=AG.aPlayers.getHands(Pplayer);       //including Ron tile//~9C11R~//~va60R~
+//        TileData tdRon=null;                                       //~9C11I~//~va60R~
+//        if (!Tiles.isTakenStatus(tds.length))                      //~9C11I~//~va60R~
+//            tdRon=AG.aPlayers.getTileCompleteSelectInfoRon();              //~9C11I~//~va60R~
+////        if ((TestOption.option2 & TestOption.TO2_RON_TEST)!=0) //TODO//~9C12M~//~va11R~//~va60R~
+////        {                                                          //~9C12M~//~va11R~//~va60R~
+//////          ronTest();                                             //~9C12M~//~9C13R~//~va11R~//~va60R~
+////            return true;                                           //~9C12M~//~va11R~//~va60R~
+////        }                                                          //~9C12M~//~va11R~//~va60R~
+////      if (!swCheckRonable)                                       //~0205I~//~va1aR~//~va60R~
+////          return true;                                           //~0205I~//~va1aR~//~va60R~
+//        sw1stTake=CompReqDlg.chk1stTake();                         //~va11I~//~va60R~
+//        sortTiles(tds,tdRon);                                      //~9C11R~//~va60R~
+//        if ((TestOption.option2 & TestOption.TO2_RON_TEST)!=0) //TODO//~va11I~//~va60R~
+//        {                                                          //~va11I~//~va60R~
+//            int[][] testHand=UARonValue.getTestHandRonChk();   //by testcase//~va11I~//~va60R~
+//            if (testHand!=null)                                    //~va11I~//~va60R~
+//                dupCtr=testHand;                                   //~va11I~//~va60R~
+//        }                                                          //~va11I~//~va60R~
+//        rc=chkCompleteSub();                                     //~va60R~
+//        return rc;//~9C12I~                                      //~va60R~
+//    }                                                              //~9C12I~//~va60R~
 	//*************************************************************************//~9C12I~
 //  private boolean chkCompleteSub()                               //~va20R~
     protected boolean chkCompleteSub()                             //~va20I~
@@ -125,6 +128,13 @@ public class UARonChk                                                //~v@@@R~//
         if (Dump.Y) Dump.println("UARonChk.chkCompleteSub rc="+rc+",13_14NoPair="+sw13_14NoPair);     //~9C11I~//~9C12R~//~va11R~
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
+	//*************************************************************************//~va60I~
+    public int[][] setDupCtr(TileData[] Ptds,TileData PtdRon)      //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UARonChk.setDupCtr");            //~va60I~
+	    sortTiles(Ptds,PtdRon);                                    //~va60I~
+        return dupCtr;                                             //~va60I~
+    }                                                              //~va60I~
 	//*************************************************************************//~9C11I~
 	//*get ctr of each suit                                        //~9C11I~
 	//*************************************************************************//~9C11I~
@@ -170,7 +180,7 @@ public class UARonChk                                                //~v@@@R~//
     private boolean isStandardPairing()                            //~9C11I~
     {                                                              //~9C11I~
     	boolean rc=false;                                          //~9C11I~
-        if (Dump.Y) Dump.println("UARonChk.isStandardPairng");      //~9C11I~
+        if (Dump.Y) Dump.println("UARonChk.isStandardPairing");      //~9C11I~//~va60R~
         posPillow=new Point(0,0);                                  //~9C11I~
         for(;;)                                                    //~9C11I~
         {                                                          //~9C11I~
@@ -310,7 +320,7 @@ public class UARonChk                                                //~v@@@R~//
             if (num!=0 && num!=PAIRCTR)                            //~va11I~
             {                                                      //~va11I~
             	rc=false;                                          //~va11I~
-		        if (Dump.Y) Dump.println("UARonChk.makePairingNotNum @@@@err dupCtr="+num);//~va11I~
+//  	        if (Dump.Y) Dump.println("UARonChk.makePairingNotNum @@@@err dupCtr="+num);//~va11I~//~va60R~
             	break;                                             //~va11I~
             }                                                      //~va11I~
             if (num!=0)                                            //~va11I~

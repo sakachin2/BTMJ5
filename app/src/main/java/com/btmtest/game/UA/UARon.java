@@ -1,6 +1,8 @@
-//*CID://+va49R~: update#= 672;                                    //+va49R~
+//*CID://+va6dR~: update#= 678;                                    //~va60R~//+va6dR~
 //**********************************************************************//~v101I~
-//2020/11/21 va49 highlight compreqdlg button when Ron             //+va49I~
+//2021/03/10 va6d (BUG)RYAKU_REACH was lost when ron for discarde calling reach//+va6dI~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
 //2020/11/04 va29 (BUG)missing to add 1han of OpenReach            //~va29I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/18 va19 warning use anywan if blocked topn               //~va19I~
@@ -260,7 +262,7 @@ public class UARon                                                 //~v@@@R~//~v
             AG.aNamePlate.complete(false/*reset*/,Pplayer);        //~0303M~
             AG.aPointStick.complete(Pplayer);   //erase point stick if just reached//~v@@6R~
 //          AG.aAccounts.resetReachDonePay(Pplayer);   //back 1000 //~v@@6R~
-            AG.aPlayers.resetReachDone(Pplayer);                   //~v@@6I~
+//          AG.aPlayers.resetReachDone(Pplayer);                   //~v@@6I~//+va6dR~
 //            if ((typeComplete & COMPLETE_KAN_TAKEN_OTHER)!=0)       //~v@@6I~
 //            {                                                      //~v@@6I~
 //            	if (AG.aStock.completeResetDora())                 //~v@@6R~
@@ -272,6 +274,7 @@ public class UARon                                                 //~v@@@R~//~v
             if ((typeComplete & COMPLETE_KAN_RIVER)!=0)                  //~v@@6I~
             	tdCompKanTake=PLS.getCurrentTaken();                   //~v@@6I~
 			int eswnLooser=td.eswn;                                //~v@@6I~
+            AG.aPlayers.resetReachDone(Accounts.eswnToPlayer(eswnLooser));//+va6dI~
 //          Status.setRon(true,Accounts.playerToEswn(Pplayer),typeComplete,td.eswn/*looser*/);//~v@@6R~
             Complete.Status compStat=AG.aComplete.new Status(typeComplete,Accounts.playerToEswn(Pplayer),eswnLooser,td,tdCompKanTake);//~v@@6R~
             Status.setCompleteStatus(compStat);                          //~v@@6I~
@@ -311,10 +314,12 @@ public class UARon                                                 //~v@@@R~//~v
         }                                                          //~v@@6I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_RON)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
-        if (Pplayer==PLAYER_YOU)                                   //+va49R~
-        {                                                          //+va49R~
-        	AG.aGC.highlightCompReq(true/*swOn*/);                 //+va49R~
-        }                                                          //+va49R~
+//      if (Pplayer==PLAYER_YOU)                                   //~va49R~//~va60R~
+        int supporterPlayer=AG.aAccounts.getRealDealerForRobot(Pplayer);//dealer when robot ron//~va60R~
+        if (Pplayer==PLAYER_YOU || supporterPlayer==PLAYER_YOU)    //~va60R~
+        {                                                          //~va49R~
+        	AG.aGC.highlightCompReq(true/*swOn*/);                 //~va49R~
+        }                                                          //~va49R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va08I~
@@ -497,15 +502,38 @@ public class UARon                                                 //~v@@@R~//~v
         if (Dump.Y) Dump.println("UARon.chkComplete currentEswn="+currentEswn+",swTake="+swTake+",completeType="+Integer.toHexString(completeType)+",tdRon="+TileData.toString(completeTD));//~va11I~
     	if (chkTimingYakuman())                                    //~va11I~
         	return;                                                //~va11I~
-        chkReach();  //reach, double-reach, open-reach and taken jasut after reach//~va11I~
+//      chkReach();  //reach, double-reach, open-reach and taken jasut after reach//~va11I~//~va49R~
+        chkReach(PLAYER_YOU);  //reach, double-reach, open-reach and taken jasut after reach//~va49I~
         chkTaken(PswAllInHand);  //tsumo                           //~va11I~
         chkLastTile();	//hitei hotei                              //~va11I~
         chkKan();    //chankan                                     //~va11I~
     }                                                              //~va11I~
+    //*************************************************************************//~va49I~
+    //*From UARonnValue, for Robot player to evaluate ronValue     //~va49I~
+    //*************************************************************************//~va49I~
+    public void chkEnvironmentYaku(boolean PswAllInHand,TileData PtdRonLast,boolean PswTaken,int Pplayer)//~va49I~
+    {                                                              //~va49I~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku player="+Pplayer+",swAllInHand="+PswAllInHand+",ptdLast="+TileData.toString(PtdRonLast));//~va49I~
+        completeTD=PtdRonLast;                                     //~va49I~
+//      currentEswn=ACC.getCurrentEswn();                          //~va49I~
+        currentEswn=Accounts.playerToEswn(Pplayer);                //~va49I~
+//      completeType=PLS.getCompleteFlag(PLAYER_YOU);              //~va49I~
+//      swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~va49I~
+        completeType=0;                                            //~va49I~
+        swTake=PswTaken;                                           //~va49I~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku currentEswn="+currentEswn+",swTake="+swTake+",tdRon="+TileData.toString(completeTD));//~va49R~
+    	if (chkTimingYakuman())                                    //~va49I~
+        	return;                                                //~va49I~
+//      chkReach();  //reach, double-reach, open-reach and taken jasut after reach//~va49I~
+        chkReach(Pplayer);  //reach, double-reach, open-reach and taken jasut after reach//~va49I~
+        chkTaken(PswAllInHand);  //tsumo                           //~va49I~
+//      chkLastTile();	//hitei hotei                              //~va49I~
+//      chkKan();    //chankan                                     //~va49I~
+    }                                                              //~va49I~
     //*************************************************************************//~va11I~
     private boolean chkTimingYakuman()                             //~va11I~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARon.chkTimingYakuman");        //~va11R~
+        if (Dump.Y) Dump.println("UARon.chkTimingYakuman currentEswn="+currentEswn);        //~va11R~//~va49R~
         boolean rc=false;                                          //~va11I~
 //      chk1stTake();           //1st taken availability of 13nopair and 14no pair//~va11R~
         if (chk1stParentTake())     //tenho                        //~va11I~
@@ -583,16 +611,20 @@ public class UARon                                                 //~v@@@R~//~v
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
     //*************************************************************************//~va11I~
-    private void chkReach()  //reach, double-reach, open-reach and taken jasut after reach//~va11I~
+//  private void chkReach()  //reach, double-reach, open-reach and taken jasut after reach//~va11I~//~va49R~
+    private void chkReach(int Pplayer)  //reach, double-reach, open-reach and taken jasut after reach//~va49I~
     {                                                              //~va11I~
-	    if (Dump.Y) Dump.println("UARon.chkReach");                //~va11R~
-        if (PLS.getReachStatus(PLAYER_YOU)==REACH_DONE)            //~va11R~
+	    if (Dump.Y) Dump.println("UARon.chkReach player="+Pplayer);                //~va11R~//~va49R~
+//      if (PLS.getReachStatus(PLAYER_YOU)==REACH_DONE)            //~va11R~//~va49R~
+        if (PLS.getReachStatus(Pplayer)==REACH_DONE)               //~va49I~
         {                                                          //~va11I~
-        	if (PLS.isOpen(PLAYER_YOU))                         //~va11R~
+//      	if (PLS.isOpen(PLAYER_YOU))                         //~va11R~//~va49R~
+        	if (PLS.isOpen(Pplayer))                               //~va49I~
 	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~va11I~
         	int ctrTaken=PLS.ctrTakenAll;                          //~va11R~
         	int ctrDiscarded=PLS.ctrDiscardedAll;                  //~va11R~
-	        Point p=PLS.getCtrReachDone(PLAYER_YOU);               //~va11R~
+//          Point p=PLS.getCtrReachDone(PLAYER_YOU);               //~va11R~//~va49R~
+            Point p=PLS.getCtrReachDone(Pplayer);                  //~va49I~
             int ctrTakenReach=p.x;                                 //~va11I~
     	    int ctrDiscardedReach=p.y;                             //~va11I~
             int diffTaken=ctrTaken-ctrTakenReach;                  //~va11I~
@@ -602,7 +634,8 @@ public class UARon                                                 //~v@@@R~//~v
 	        	UARV.addOtherYaku(RYAKU_REACH_DOUBLE,RANK_REACH_DOUBLE);//~va11I~
             else                                                   //~va11I~
 	        	UARV.addOtherYaku(RYAKU_REACH,RANK_REACH);         //~va11I~
-            if (PLS.isOpenReach(PLAYER_YOU))                       //~va29I~
+//          if (PLS.isOpenReach(PLAYER_YOU))                       //~va29I~//~va49R~
+            if (PLS.isOpenReach(Pplayer))                          //~va49I~
 	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~va29I~
     	  if (RuleSettingYaku.isReachOneShot())                    //~va11I~
             if (swTake)	//                                         //~va11I~

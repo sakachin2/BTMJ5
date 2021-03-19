@@ -1,6 +1,9 @@
-//*CID://+va03R~:                             update#= 1065;       //+va03R~
+//*CID://+va66R~:                             update#= 1088;       //~va6bR~//~va66R~
 //*****************************************************************//~v101I~
-//2020/04/16 va03:alert suspendrequested                           //+va03I~
+//2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
+//2021/02/10 va67 (Bug) isDummy paramerr; minsustop chk st drawnLast invalid robot chk//~va67I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2020/04/16 va03:alert suspendrequested                           //~va03I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
@@ -20,6 +23,7 @@ import com.btmtest.game.Accounts;
 import com.btmtest.game.Complete;
 import com.btmtest.game.GConst;
 import com.btmtest.game.Players;
+import com.btmtest.game.RA.RoundStat;
 import com.btmtest.game.Status;
 import com.btmtest.game.UA.UAEndGame;
 import com.btmtest.game.gv.GameViewHandler;
@@ -36,6 +40,7 @@ import java.util.Arrays;
 import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.RA.RAConst.*;                       //~va66R~
 import static com.btmtest.game.UA.UAEndGame.*;
 import static com.btmtest.utils.Alert.*;
 import static com.btmtest.dialog.DrawnDlgHW.*;                      //~9708I~
@@ -284,6 +289,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
             else                                                   //~9520R~
                 ((LinearLayout)UView.findViewById(PView,R.id.llRuleMultiRon)).setVisibility(View.GONE);//~9520R~
 //      }                                                          //~9520I~//~9708R~
+        RuleSettingYaku.setKeiten(PView,true/*swFixed*/);          //~va6bR~
     	if (!swDrawnManganAsRon)                                   //~9604I~
         	((LinearLayout)UView.findViewById(PView,R.id.llPointStick)).setVisibility(View.GONE);//~9604I~
                                                                    //~9604I~
@@ -329,6 +335,11 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         int ctrM=0;                                                //~9520I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9311I~
         {                                                          //~9311I~
+//  		if (AG.aAccounts.isRobotPlayer(Accounts.eswnToPlayer(ii)))//~va66R~
+//          {                                                      //~va66R~
+//  	        if (Dump.Y) Dump.println("DrawnDlgLast.setByReasonResp skip eswn="+ii+" is Robot");//~va66R~
+//              continue;                                          //~va66R~
+//          }                                                      //~va66R~
         	switch(reasonResponse[ii])                                 //~9311I~
             {                                                      //~9311I~
             case EGDR_PENDING:                                     //~9311I~
@@ -477,13 +488,16 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
     @Override                                                      //~9306I~//~9307R~//~9308R~
     public void setButton()                                        //~9221I~//~9303R~//~9306R~//~9307R~//~9308R~
     {                                                              //~9221I~//~9303R~//~9306R~//~9307R~//~9308R~
-        if (Dump.Y) Dump.println("DrawnDlgLast.setButton");        //~9709I~
+        if (Dump.Y) Dump.println("DrawnDlgLast.setButton swTrainingMode="+AG.swTrainingMode);        //~9709I~//~va66R~
         btnTotal = UButton.bind(layoutView,R.id.ShowTotal,this);      //~9311I~//~9318R~//~9610M~
         if (swRequester)                                           //~9306I~//~9307R~//~9308R~
         {                                                          //~9306I~//~9307R~//~9308R~
+          if (!AG.swTrainingMode)                                  //~va66I~
             btnOK.setText(strSend);                                 //~9306R~//~9307R~//~9308R~
             btnCancel.setVisibility(View.GONE);                    //~9306I~//~9307R~//~9308R~
         	btnTotal.setVisibility(View.VISIBLE);               //~9610I~
+          	if (AG.swTrainingMode)                                 //~va66I~
+			    enableFixButton(false);                            //~va66I~
         }                                                          //~9306I~//~9307R~//~9308R~
         else                                                       //~9306I~//~9307R~//~9308R~
         {                                                          //~9306I~//~9307R~//~9308R~
@@ -579,8 +593,8 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 //      setCheckNextGame();                                        //~9708I~//~9709R~
 		cbSuspend=new UCheckBox(PView,R.id.cbSuspend);             //~0308I~
 		cbSuspend.setState(swSuspend,!swRequester);                //~0308I~
-        if (swSuspend && !swRequester)                             //+va03R~
-        	CompleteDlg.alertSuspended();                          //+va03R~
+        if (swSuspend && !swRequester)                             //~va03R~
+        	CompleteDlg.alertSuspended();                          //~va03R~
         cbSuspend.setListener(this,UCBP_SUSPEND);                  //~0308I~
     }                                                              //~9308I~
     //*******************************************************      //~9308I~
@@ -722,13 +736,21 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
     @Override                                                      //~v@@@I~//~9221M~//~9303R~//~9304R~//~9305R~
     public void onClickOK()                                       //~v@@@R~//~9221M~//~9303R~//~9304R~//~9305R~
     {                                                              //~1602M~//~v@@@I~//~9221M~//~9303R~//~9304R~//~9305R~
-        if (Dump.Y) Dump.println("DrawnDlgLast.onClickOK SendOK");                     //~v@@@I~//~9221M~//~9302R~//~9303R~//~9304R~//~9305R~//~0309R~
+        if (Dump.Y) Dump.println("DrawnDlgLast.onClickOK SendOK swTrainingMode="+AG.swTrainingMode);                     //~v@@@I~//~9221M~//~9302R~//~9303R~//~9304R~//~9305R~//~0309R~//~va66R~
         if (!getSetting())                                              //~9303R~//~9304R~//~9305R~//~9306R~
         {                                                          //~9306R~
             UView.showToast(R.string.ErrSelectNextGame);           //~9306R~
             return;                                                //~9306R~
         }                                                          //~9306R~
 //        updateResponse(reason);                                    //~9305I~//~9306M~//~9311R~
+        if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+    		if (confirmSuspend())	//issued Alert                 //~va66I~
+            	return;                                            //~va66I~
+    		enableFixButton(true);                                 //~va66R~
+            CMP.swSent=true;                                       //~va66I~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
         if (swRequester)                                           //~9310I~
         {                                                          //~9708I~
     		if (confirmSuspend())	//issued Alert                 //~0308I~
@@ -891,6 +913,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         if (swRequester)                                           //~9610I~
         {                                                          //~9611I~
 //  		btnTotal.setEnabled(chkRespAllOK());                   //~9610I~//~9708R~
+          if (!AG.swTrainingMode)                                  //+va66I~
     		enableFixButton(chkRespAllOK());                       //~9708I~
 		    if (chkRespAllWithNG())                                //~9611I~
     	    	alertToForceOK(TITLEID,R.string.Alert_DrawnLastNGForceOK);//~9611I~
@@ -1198,8 +1221,15 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
             {                                                      //~9309I~
 //          	cbsPending[ii].setState(swsPending[ii]);           //~9309I~//~9311R~//~9504R~
 //          	cbsPending[ii].setState(swsPending[ii]||swsReach[ii]);//~9311I~//~9423R~//~9504R~//~9522R~//~9709R~
+//      	  if (AG.swTrainingMode)                               //~va66R~
+              if (AG.aRoundStat.swThinkRobot && AG.aAccounts.isDummyByCurrentEswn(ii))//~va66I~
+              {                                                    //~va66I~
+            	cbsPending[ii].setState(swsPending[ii]||swsReach[ii],false/*swFixed*/);//~va66I~
+		        cbsPending[ii].setListener(this,UCBP_PENDING);     //~va66I~
+              }                                                    //~va66I~
+              else                                                 //~va66I~
             	cbsPending[ii].setState(swsPending[ii]||swsReach[ii],swFixed);//~9709I~
-        		if (Dump.Y) Dump.println("DrawnDlgLast.showPendingTile set swRequester="+swRequester+",swFixed="+swFixed+",cbsPending ii="+ii+",state="+(swsPending[ii]||swsReach[ii]));//~9709R~//~0217R~
+        		if (Dump.Y) Dump.println("DrawnDlgLast.showPendingTile set swThinkRobot="+AG.aRoundStat.swThinkRobot+".swRequester="+swRequester+",swFixed="+swFixed+",cbsPending ii="+ii+",state="+(swsPending[ii]||swsReach[ii]));//~9709R~//~0217R~//~va66R~
             }                                                      //~9309I~
     }                                                              //~9307I~//~9309R~
 //    //******************************************                   //~9309I~//~9311R~
@@ -1794,15 +1824,18 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         return true;//~9421I~
     }                                                              //~9421I~
     //**********************************************               //~9421M~
-    private boolean chkMinusStop(int[] Pamt,boolean[] PswsStop)    //~9421M~
+    private boolean chkMinusStop(int[] Pamt,boolean[] PswsStop/*currentEswn seq*/)    //~9421M~//~va03R~
     {                                                              //~9421M~
     	boolean swStop=false;                                      //~9421M~
+	    if (Dump.Y) Dump.println("DrawnDlgLast:chkMinusStop Pamt="+Arrays.toString(Pamt));//~va03I~
         for (int eswn=0;eswn<PLAYERS;eswn++)                       //~9421M~
         {                                                          //~9421M~
             int amt=Pamt[eswn];                                    //~9421M~
+	    	if (Dump.Y) Dump.println("DrawnDlgLast:chkMinusStop eswn="+eswn+",amt="+amt+",isDummyByCurrentEswn="+ACC.isDummyByCurrentEswn(eswn));//~va67R~
             if (amt<0 || (amt==0 && swMinus0))                     //~9421M~
             {                                                      //~9421M~
-                if (!swMinusRobot && Accounts.isDummy(eswn))       //~9421M~
+//              if (!swMinusRobot && Accounts.isDummy(eswn))       //~9421M~//~va67R~
+                if (!swMinusRobot && ACC.isDummyByCurrentEswn(eswn))//~va67R~
                 {                                                  //~9421M~
 //                  UView.showToast(R.string.Info_NoMinusStopRobot);//~9421M~
                     continue;                                      //~9421M~
@@ -1811,6 +1844,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
                 PswsStop[eswn]=true;                               //~9421M~
             }                                                      //~9421M~
         }                                                          //~9421M~
+	    if (Dump.Y) Dump.println("DrawnDlgLast:chkMinusStop swStop="+swStop+",PswsStop="+Arrays.toString(PswsStop));//~va03I~
         return swStop;                                             //~9421M~
     }                                                              //~9421M~
     //***************************************                      //~9421I~

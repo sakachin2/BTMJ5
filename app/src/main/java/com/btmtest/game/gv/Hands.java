@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 758;                                    //~v@@@R~//~v@@5R~//~9A12R~
+//*CID://+va65R~: update#= 771;                                    //~v@@@R~//~v@@5R~//~9A12R~//~va60R~//~va65R~
 //**********************************************************************//~v101I~
+//2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -10,12 +12,14 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import com.btmtest.TestOption;
 import com.btmtest.game.Players;
 import com.btmtest.game.Tiles;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GConst.*;                           //~v@@@R~
 import static com.btmtest.game.gv.Pieces.*;
@@ -68,8 +72,12 @@ public class Hands                                                 //~v@@@R~
 //	private int shiftOpen;                                         //~0328I~//~0329R~
 	private Rect[] openRectShiftS=new Rect[PLAYERS];
 //  private Rect openRectShift;//~0328I~                           //~0329R~
-    public int complete_stroke_width_hand;                         //+0401R~
+    public int complete_stroke_width_hand;                         //~0401R~
 //*************************                                        //~v@@@I~
+	public Hands()  //for IT                                       //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("Hands.default constructor");     //~va60I~
+    }                                                              //~va60I~
 	public Hands(GCanvas Pgcanvas)                                 //~v@@@R~
     {                                                              //~0914I~
     	AG.aHands=this;                                            //~v@@@R~
@@ -531,6 +539,15 @@ public class Hands                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Hands.takePon player="+Pplayer); //~v@@@I~
         if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
 	        drawHands(false/*not takeone*/,true/*intercept*/);     //~v@@@R~
+        else                                                       //~va65I~
+        {                                                          //~va65I~
+//      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
+        	if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+            {                                                      //~va65I~
+		        if (Dump.Y) Dump.println("Hands.takePon robot & open");//~va65I~
+	    		drawOpenPonKanChiiRobot(Pplayer);                  //~va65R~
+            }                                                      //~va65I~
+        }                                                          //~va65I~
         earth.drawEarth(Pplayer);                                        //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
@@ -545,6 +562,15 @@ public class Hands                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Hands.takeKan player="+Pplayer+",kantype="+Pkantype);//~v@@@R~
         if (Pplayer==PLAYER_YOU)                                   //~v@@@I~
 	        drawHands(false/*not yet taken from wanpai*/,Pkantype==KAN_RIVER/*intercept*/);//~v@@@R~
+        else                                                       //~va65I~
+        {                                                          //~va65I~
+//      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
+        	if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+            {                                                      //~va65I~
+		        if (Dump.Y) Dump.println("Hands.takeKan robot & open");//~va65I~
+	    		drawOpenPonKanChiiRobot(Pplayer);                  //~va65R~
+            }                                                      //~va65I~
+        }                                                          //~va65I~
         if (Pkantype==KAN_ADD)	//update pon pair on earth         //~v@@@I~
 	        earth.drawEarthAddKan(Pplayer);                              //~v@@@I~
         else                                                       //~v@@@I~
@@ -880,4 +906,28 @@ public class Hands                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Hands.getHandsLeftYou pos="+pos+",rectHands0="+Utils.toString(rectHands0)+",rectHands="+Utils.toString(rectHands));//~v@@5I~//~0326R~
         return pos;                                                //~v@@5I~
     }                                                              //~v@@5I~
+	//*********************************************************    //~va65I~
+	//*for Test,from RoundStat.discard                             //~va65R~
+	//*********************************************************    //~va65I~
+    public void drawOpenDiscardRobot(int Pplayer,int Peswn,TileData PtdDiscarded)//~va65I~
+    {                                                              //~va65I~
+        if (Dump.Y) Dump.println("Hands.drawOpenDiscardRobot player="+Pplayer+",eswn="+Peswn+",PtdDiscarded="+TileData.toString(PtdDiscarded));//~va65I~
+        clearOpenRect(Pplayer);     //take may shift out leftmost tile//~va65I~
+	    drawOpen(Pplayer,null);                                    //~va65I~
+    }                                                              //~va65I~
+	//*********************************************************    //~va65I~
+	//*for Test,from RoundStat.takeOne                             //~va65I~
+	//*********************************************************    //~va65I~
+    public void drawOpenTakeOneRobot(int Pplayer,int Peswn,TileData PtdTaken)//~va65I~
+    {                                                              //~va65I~
+        if (Dump.Y) Dump.println("Hands.drawOpenTakeOneRobot player="+Pplayer+",eswn="+Peswn+",PtdTaken="+TileData.toString(PtdTaken));//~va65I~
+	    drawOpen(Pplayer,PtdTaken);                                //~va65I~
+    }                                                              //~va65I~
+	//*********************************************************    //~va65I~
+    public void drawOpenPonKanChiiRobot(int Pplayer)               //~va65I~
+    {                                                              //~va65I~
+        if (Dump.Y) Dump.println("Hands.drawOpenPonKanChiiRobot player="+Pplayer);//~va65I~
+//      clearOpenRect(Pplayer);                                    //~va65R~
+	    drawOpen(Pplayer,null);                                    //~va65I~
+    }                                                              //~va65I~
 }//class Hands                                                 //~dataR~//~@@@@R~//~v@@@R~

@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  780;       //~v@@@R~//~9211R~
+//*CID://+va66R~:                             update#=  786;       //~va66R~
 //*****************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import static com.btmtest.StaticVars.AG;                           //~9305I~
 import com.btmtest.R;
 import com.btmtest.game.Accounts;
+import com.btmtest.game.GConst;
 import com.btmtest.gui.URadioGroup;
 import com.btmtest.utils.Alert;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
@@ -378,6 +380,12 @@ public class OKNGDlg extends UFDlg implements Alert.AlertI                      
     //*******************************************************      //~9314I~
     public void setButton()                                        //~9314I~
     {                                                              //~9314I~
+        if (AG.swTrainingMode)                                 //~1207I~//~va66I~
+        {                                                          //~va66I~
+            btnOK.setVisibility(View.GONE);                        //~va66I~
+            btnCancel.setText(GConst.strCancel);                   //+va66I~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
         if (swRequester)                                           //~9314I~
         {                                                          //~9314I~
             btnOK.setText(strSend);                                //~9314I~
@@ -387,7 +395,7 @@ public class OKNGDlg extends UFDlg implements Alert.AlertI                      
         {                                                          //~9314I~
             btnOK.setText(strOK);                                  //~9314I~
         }                                                          //~9314I~
-        if (Dump.Y) Dump.println("OKNGDlg.setButton swRequester="+swRequester);//~9315I~
+        if (Dump.Y) Dump.println("OKNGDlg.setButton swRequester="+swRequester+",swTrainingMode="+AG.swTrainingMode);//~9315I~//~va66R~
     }                                                              //~9314I~
     //*******************************************************      //~9314I~
     public void repaintOKNG(int PeswnSender,boolean PswOK)         //~9314I~
@@ -446,7 +454,7 @@ public class OKNGDlg extends UFDlg implements Alert.AlertI                      
     @Override    //AlertI                                          //~9608I~//~9828R~
 	public int alertButtonAction(int Pbuttonid,int Prc)       //~v@@@R~//~9608I~
     {                                                              //~9608I~
-        if (Dump.Y) Dump.println("OKNGDlg.alerButtonAction buttonID="+Pbuttonid+",rc="+Prc+",swIgnore="+swIgnoreAlertResponse);//~9608R~//+0225R~
+        if (Dump.Y) Dump.println("OKNGDlg.alerButtonAction buttonID="+Pbuttonid+",rc="+Prc+",swIgnore="+swIgnoreAlertResponse);//~9608R~//~0225R~
         if (!swIgnoreAlertResponse)                                //~9608I~
 	        alertActionReceived(Pbuttonid,Prc);                    //~9608R~
         return 0;

@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 671;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~
+//*CID://+va66R~: update#= 675;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~
 //**********************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //v@@7 20190131 del GCM_DORA msg exchange(deal msg contains wanpai)//~v@@7R~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@7I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -563,7 +564,10 @@ public class ACAction                                              //~v@@@R~
         {                                                          //~v@@@I~
 	        AG.aDiceBox.setWaitingDice(Pplayer);                   //~v@@@I~
 	        if (Pplayer>accounts.activeMembers)                    //~v@@@I~
+            {                                                      //~va66I~
+              if (!AG.swTrainingMode)                              //~va66I~
 				UView.showToastLong(R.string.Warning_DiceForDummy);//~v@@@I~
+            }                                                      //~va66I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
 	        AG.aDiceBox.setWaitingDiceOther(Pplayer);              //~v@@@I~
@@ -580,7 +584,10 @@ public class ACAction                                              //~v@@@R~
         else                                                       //~v@@@I~
 	        AG.aDiceBox.setWaitingDiceOther(Pplayer);              //~v@@@I~
         if (PswDummy)                                              //~v@@@I~
+        {                                                          //~va66I~
+          if (!AG.swTrainingMode)                                  //~va66I~
 			UView.showToastLong(R.string.Warning_DiceForDummy);    //~v@@@I~
+        }                                                          //~va66I~
     }                                                              //~v@@@I~
 	//**************************************************************//~v@@@I~
 	public  void touchDice()                                       //~v@@@R~
@@ -728,7 +735,7 @@ public class ACAction                                              //~v@@@R~
     //**************************************************           //~v@@@I~
     private void diceCastedAll_TempStarterDice()                   //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("ACAction.diceCastedAll_TempStarter tempstarter="+accounts.tempStarter+",roll1="+diceRoll1+",roll2="+diceRoll2);//~v@@@I~
+        if (Dump.Y) Dump.println("ACAction.diceCastedAll_TempStarterDice tempstarter="+accounts.tempStarter+",roll1="+diceRoll1+",roll2="+diceRoll2);//~v@@@I~//~va66R~
         int starter=accounts.tempStarter;                          //~v@@@I~
         int spot=diceRoll1+diceRoll2;                              //~v@@@I~
         positioning1stPicker=AG.aRiver.get1stPicker(starter,spot); //~v@@@R~
@@ -781,8 +788,9 @@ public class ACAction                                              //~v@@@R~
 //      showWaitingDiceLight(Ppicker);                             //~v@@@R~
 //      acatouch.enableLight(Ppicker,true);                             //~v@@@I~//~v@@6R~
         Status.setGameStatus(GS_POSITION_ACCEPTING);               //~v@@@I~
+        AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositionAccepting); //before enableLight because enableLight loops until next=1stPicker when isPositioningSkip mode//~va66I~
         acatouch.enableLight(Ppicker,true);                        //~v@@6R~
-        AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositionAccepting); //~v@@@I~//+0322R~
+//      AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositionAccepting); //~v@@@I~//~0322R~//~va66R~
     }                                                              //~v@@@I~
     //**************************************************           //~v@@@I~
     public  static int[] parseAppData(String Pdata)                        //~v@@@I~
@@ -852,7 +860,7 @@ public class ACAction                                              //~v@@@R~
         AG.aGMsg.reset();                                          //~9626I~
         int spot=diceRoll1+diceRoll2;                              //~9502I~
 	    int player=accounts.getCurrentStarter();             //~9502I~
-        if (Dump.Y) Dump.println("ACAction.diceCastedAll_StartGameNext starterRelative="+accounts.starterRelativePos+",roll1="+diceRoll1+",roll2="+diceRoll2+",spot="+spot);//~9502I~
+        if (Dump.Y) Dump.println("ACAction.diceCastedAll_StartGameNext player="+player+",starterRelative="+accounts.starterRelativePos+",roll1="+diceRoll1+",roll2="+diceRoll2+",spot="+spot);//~9502I~//+va66R~
         deal(player,spot);                                         //~9502I~
     }                                                              //~9502I~
 //    //**************************************************         //~v@@@R~
@@ -905,6 +913,9 @@ public class ACAction                                              //~v@@@R~
         AG.aGCanvas.drawStock(Pplayer,Pspot);                      //~v@@@R~
         AG.aTiles.setInitialDeal();                                //~v@@@I~
         AG.aHands.drawHands(false/*not takeone*/,false/*not intercept*/);//~v@@@I~
+      if (AG.swTrainingMode)                                       //~va66I~
+		user_Action_FirstTake();                                   //~va66I~
+      else                                                         //~va66I~
         sendDeal(Pspot);                                           //~v@@@R~
 //      sendMsg(GCM_TAKE,null);                                    //~v@@@I~
 	}                                                              //~v@@@I~
@@ -1174,6 +1185,7 @@ public class ACAction                                              //~v@@@R~
 		Status.setGameStatus(GS_GAME_STARTED);                     //~v@@@I~
         AG.aACATouch.sendStatusChange(GS_GAME_STARTED);                         //~v@@@I~
         int player=accounts.getCurrentStarterPos();                //~v@@@R~
+		if (Dump.Y) Dump.println("ACAction.user_Action_FirstTake currentStarter="+player);//~va66I~
         if (player==PLAYER_YOU)                                    //~v@@@I~
 	        GameViewHandler.sendMsg(GCM_TAKE,player,0,0);          //~v@@@R~
         else                                                       //~v@@@I~

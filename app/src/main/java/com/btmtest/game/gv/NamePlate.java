@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 637;                                    //~v@@@R~//~v@21R~//~9317R~
+//*CID://+va60R~: update#= 638;                                    //~v@@@R~//~v@21R~//~9317R~//+va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//**********************************************************************//+va60I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -36,7 +38,7 @@ public class NamePlate                                             //~v@@@R~
     private static final int TEXT_COLOR_SCORE_BG_UNDER_BASE=Color.argb(0xff,0xff,0xcc,0x99);    //orange//~9415I~
     private static final int TEXT_COLOR_SCORE_FG=Color.argb(0xff,0x00,0x00,0x00);//~9317I~
     private static final int TEXT_COLOR_DISABLE=Color.argb(0x80,0x00,0x59,0x00);//~v@@@I~
-    private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//+0408R~
+    private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//~0408R~
     private static final int PLATE_EDGE_WIDTH=2;                  //~v@@@R~//~9317R~//~0407R~
 //  private static final int PLATE_EDGE_WIDTH=4; //TODO            //~0407R~
     private static final int TEXT_MARGIN_SIDE=10;                  //~v@@@I~
@@ -70,8 +72,13 @@ public class NamePlate                                             //~v@@@R~
     private boolean swNPLLand=false;                               //~9806I~
     private int[] newPosition;                                     //~0324I~
 //*************************                                        //~v@@@I~
-	public NamePlate(GCanvas Pgcanvas)                             //~v@@@R~
+	public NamePlate()            //for IT Mock                    //+va60R~
     {                                                              //~0914I~
+    	if (Dump.Y) Dump.println("NamePlate.default constructor"); //+va60I~
+    }                                                              //+va60I~
+//*************************                                        //+va60I~
+	public NamePlate(GCanvas Pgcanvas)                             //+va60I~
+    {                                                              //+va60I~
     	if (Dump.Y) Dump.println("NamePlate.constructor");         //~0217I~
 	    recycle(AG.aNamePlate);                                    //~0217I~
     	AG.aNamePlate=this;                                        //~v@@@R~

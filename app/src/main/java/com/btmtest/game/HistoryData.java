@@ -1,5 +1,6 @@
-//*CID://+v@01R~:                             update#=  497;       //~v@@@R~//~9404R~//~v@01R~
+//*CID://+va6eR~:                             update#=  498;       //+va6eR~
 //*****************************************************************//~v101I~
+//2021/03/11 va6e add robot name over 3 robot                      //+va6eI~
 //*****************************************************************//~v101I~
 package com.btmtest.game;                                        //~v@@@R~//~9615R~
 
@@ -122,8 +123,9 @@ public class HistoryData                                              //~9614I~/
         {                                                          //~9828I~
         	String name=names[ii];                   //~;9828R~   //~9828I~
         	int idx;                                               //~9828I~
-			int idxRobot=Accounts.isRobotName(name);                   //~9828I~
-            if (idxRobot>0)                                        //~9828I~
+//  		int idxRobot=Accounts.isRobotName(name);                   //~9828I~//+va6eR~
+//          if (idxRobot>0)                                        //~9828I~//+va6eR~
+    		if (Accounts.isRobotName(name)>0)                      //+va6eI~
             {                                                      //~9828I~
 //              idx=PLAYERS-idxRobot;   //by naming at Account constructot  4,3,2,1 on Members//~9828I~//~v@01R~
         		idx=memb.searchRobot(ctrRobot++);                  //~v@01I~
@@ -225,7 +227,7 @@ public class HistoryData                                              //~9614I~/
     	String old=HD[HDPOS_HDR][POS_ENDGAMETYPE];                 //~v@01I~
 		if (Dump.Y) Dump.println("HistoryData.isInterruptedResume old="+old);//~v@01I~
         boolean rc=Utils.parseInt(old,SAVE_EGTP_INTERRUPTED_RESUME)==SAVE_EGTP_INTERRUPTED_RESUME;//~v@01R~
-		if (Dump.Y) Dump.println("HistoryData.isInterruptedRsume old="+old+",rc="+rc);//+v@01R~
+		if (Dump.Y) Dump.println("HistoryData.isInterruptedRsume old="+old+",rc="+rc);//~v@01R~
         return rc;                                                 //~v@01I~
     }                                                              //~v@01I~
 	//************************************************************ //~v@01I~

@@ -1,6 +1,6 @@
-//*CID://+va40R~:                                   update#=   50; //+va40R~
+//*CID://+va40R~:                                   update#=   53; //~va40R~
 //***********************************************                  //~@@@1I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1Ad8 2015/07/21 (Asgts)//1A4h 2014/12/03 catch OutOfMemory(Ajagot1w)//1B0g//~1Ad8I~
 //1Ab9 2015/05/09 Dump byte[]                                      //~1Ab9I~
 //1A6A 2015/02/20 Another Trace option if (Dump.C) for canvas drawing//~1A6AI~
@@ -67,6 +67,15 @@ public class Dump
     	swSD=PswSD;                                                //~1Ad8I~
 		open(Pfile);                                               //~1Ad8I~
     }                                                              //~1Ad8I~
+    //**************************************************************//~va40I~
+    //*for UnitTest                                                //~va40I~
+    //**************************************************************//~va40I~
+	public static void open(PrintWriter Ppw)                       //~va40I~
+	{                                                              //~va40I~
+		Out=Ppw;                                                   //~va40I~
+        Terminal=false;                                            //+va40I~
+		Y = true; //call Dump                                      //+va40I~
+    }                                                              //~va40I~
     //**************************************************************//~1Ad8I~
 	public static void open(String file)                           //~1Ad8R~
 	{                                                              //~1329R~
@@ -92,11 +101,14 @@ public class Dump
 			try                                                        //~1329I~//~1Ad8I~
 			{                                                          //~1227R~//~1Ad8I~
                 FileOutputStream out;
+                if (file.startsWith("/sdcard"))                    //~va40I~
+    				out = openOutputData(file);                    //~va40I~
+                else                                               //~va40I~
 			    if (swSD)                                          //~1Ad8I~
 					out = UFile.openOutputSD("",file); // /sdcard//~1Ad8I~
                 else                                               //~1Ad8I~
-//  				out = UFile.openOutputData(file, Context.MODE_WORLD_READABLE); // ../files//~1Ad8R~//+va40R~
-    				out = openOutputData(file);                    //+va40I~
+//  				out = UFile.openOutputData(file, Context.MODE_WORLD_READABLE); // ../files//~1Ad8R~//~va40R~
+    				out = openOutputData(file);                    //~va40I~
 				if (out != null)                                     //~1Ad8R~
 				{//~1313R~                                         //~1Ad8R~
 					Out = new PrintWriter(new OutputStreamWriter(out, "UTF-8"), true/*autoFlash*/);//~1227I~//~1309R~//~1Ad8R~
@@ -112,22 +124,22 @@ public class Dump
 			}                                                      //~1Ad8I~
 		}
 	}
-    //**************************************************************//+va40I~
-    private static FileOutputStream openOutputData(String Pfnm)           //+va40I~
-    {                                                              //+va40I~
-    	FileOutputStream os;                                       //+va40I~
-		if (Build.VERSION.SDK_INT>=17) //api17 android4.2:JellyBean MR1//+va40I~
-			os=UFile.openOutputData(Pfnm); // MODE_PRIVATE         //+va40I~
-        else                                                       //+va40I~
-		    os=openOutputData_Bellow17(Pfnm);                //+va40I~
-        return os;                                                 //+va40I~
-    }                                                              //+va40I~
-	@SuppressWarnings("deprecation")                               //+va40I~
-    //**************************************************************//+va40I~
-    private static FileOutputStream openOutputData_Bellow17(String Pfnm)         //+va40I~
-    {                                                              //+va40I~
-		return  UFile.openOutputData(Pfnm, Context.MODE_WORLD_READABLE); // ../files//+va40I~
-    }                                                              //+va40I~
+    //**************************************************************//~va40I~
+    private static FileOutputStream openOutputData(String Pfnm)           //~va40I~
+    {                                                              //~va40I~
+    	FileOutputStream os;                                       //~va40I~
+		if (Build.VERSION.SDK_INT>=17) //api17 android4.2:JellyBean MR1//~va40I~
+			os=UFile.openOutputData(Pfnm); // MODE_PRIVATE         //~va40I~
+        else                                                       //~va40I~
+		    os=openOutputData_Bellow17(Pfnm);                //~va40I~
+        return os;                                                 //~va40I~
+    }                                                              //~va40I~
+	@SuppressWarnings("deprecation")                               //~va40I~
+    //**************************************************************//~va40I~
+    private static FileOutputStream openOutputData_Bellow17(String Pfnm)         //~va40I~
+    {                                                              //~va40I~
+		return  UFile.openOutputData(Pfnm, Context.MODE_WORLD_READABLE); // ../files//~va40I~
+    }                                                              //~va40I~
     //**************************************************************//~1Ad8I~
 	public synchronized static void println (String s)             //~1305R~
 	{                                                              //~1228R~

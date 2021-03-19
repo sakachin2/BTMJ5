@@ -1,4 +1,4 @@
-//*CID://+va11R~: update#= 794;                                    //~va11R~
+//*CID://+va11R~: update#= 795;                                    //~va11R~
 //**********************************************************************//~v101I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
@@ -70,8 +70,8 @@ public class UAPair                                                //~va11R~
     {                                                              //~va11I~
     	StringBuffer sb=new StringBuffer();                        //~va11I~
         sb.append("toStringPairAll "+toString()+"\n");             //~va11R~
-        sb.append("notNum\n");                                     //+va11I~
-        sb.append(Pair.toString(pairNotNum)+"\n");                 //+va11I~
+        sb.append("notNum\n");                                     //~va11I~
+        sb.append(Pair.toString(pairNotNum)+"\n");                 //~va11I~
 //      if (typePair==PT_DUMMY_TOP)                                //~va11R~
 //      {                                                          //~va11R~
         	for (int ii=0;ii<PIECE_NUMBERTYPECTR;ii++)             //~va11I~
@@ -146,7 +146,7 @@ public class UAPair                                                //~va11R~
     }                                                              //~va11I~
     public Pair add(Pair Pparent,int PtypePair,int Ptype,int Pnumber,boolean PswHand)//~va11I~
     {                                                              //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.add parent="+Pair.toString(Pparent));//~va11I~
+    	if (Dump.Y) Dump.println("UAPair.add typePair="+PtypePair+",type="+type+",number="+Pnumber+",swHand="+PswHand+",parent="+Pair.toString(Pparent));//+va11R~
         if (Pparent==null)                                         //~va11I~
         	return add(PtypePair,Ptype,Pnumber,PswHand);           //~va11R~
 	    Pair pair=new Pair(PtypePair,Ptype,Pnumber,PswHand);       //~va11I~

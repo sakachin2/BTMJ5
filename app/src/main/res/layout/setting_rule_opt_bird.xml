@@ -25,6 +25,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
+                    android:gravity="center_vertical"
     >
         <CheckBox
             android:id="@+id/cbBird"
@@ -33,11 +34,17 @@
             android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
         />
-        <include layout="@layout/spinbutton"
-            android:id="@+id/llSBBird"
-             android:layout_marginLeft="10px"
-                android:layout_gravity="center_vertical"
-        />
+	    <LinearLayout
+    	     android:layout_width="wrap_content"
+        	 android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+                    android:gravity="center_vertical"
+    	>
+            <include layout="@layout/spinbutton"
+                android:id="@+id/llSBBird"
+            />
+	    </LinearLayout>
         <!--TextView
              android:layout_height="wrap_content"
              android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
-//*CID://+va28R~: update#= 581;                                    //+va28R~
+//*CID://+va60R~: update#= 593;                                    //~va28R~//~va60R~
 //**********************************************************************//~v101I~
-//2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//+va28I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//~va28I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
@@ -116,7 +117,7 @@ public class UAReach                                                //~v@@@R~//~
                 if (!UARC.chkReach(PLAYER_YOU,td))                 //~va27R~
                 {                                                  //~va27R~
                     GMsg.drawMsgbar(R.string.Err_ReachNoten);      //~va27R~
-//                  AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//+va28R~
+//                  AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//~va28R~
                     return false;                                  //~va27R~
                 }                                                  //~va27R~
             }                                                      //~va27R~
@@ -160,12 +161,14 @@ public class UAReach                                                //~v@@@R~//~
 //      UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9830I~//~9A30R~
 //		swDraw=Pplayer==PLAYER_YOU;                                //~v@@@I~//~v@@6R~
         river.reach(Pplayer);                                      //~v@@6I~
-  	    if (Pplayer==PLAYER_YOU)                                   //~9A30I~
-        {                                                          //~va27I~
-	        ACAction.showErrmsg(0,R.string.UserAction_Reach);	//show requester only//~9A30I~
-        	PLS.setReachAction(actionID);	//chk at Discard       //~va27I~
-        }                                                          //~va27I~
-        GMsg.showHL(0,GCM_REACH);                                  //~9C02I~
+//	    if (Pplayer==PLAYER_YOU)                                   //~9A30I~//~va60R~
+//      {                                                          //~va27I~//~va60R~
+//          ACAction.showErrmsg(0,R.string.UserAction_Reach);	//show requester only//~9A30I~//~va60R~
+//      	PLS.setReachAction(actionID);	//chk at Discard       //~va27I~//~va60R~
+        	PLS.setReachAction(actionID,Pplayer);	//chk at Discard//~va60I~
+//      }                                                          //~va27I~//~va60R~
+//      GMsg.showHL(0,GCM_REACH);                                  //~9C02I~//~va60R~
+        GMsg.showHLName(0,GCM_REACH,Pplayer);                      //~va60I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@6I~
@@ -195,14 +198,16 @@ public class UAReach                                                //~v@@@R~//~
     	    PLS.reachOpen(Pplayer);    //insert into Hands         //~v@@6I~
         }                                                          //~v@@6I~
         river.reach(Pplayer);                                      //~v@@6I~
-  	    if (Pplayer==PLAYER_YOU)                                   //~9A30R~
-        {                                                          //~va27I~
-	        ACAction.showErrmsg(0,R.string.UserAction_Reach_Open);	//show requester only//~9A30I~
-        	PLS.setReachAction(actionID);	//chk at Discard       //~va27I~
-        }                                                          //~va27I~
+//	    if (Pplayer==PLAYER_YOU)                                   //~9A30R~//~va60R~
+//      {                                                          //~va27I~//~va60R~
+//          ACAction.showErrmsg(0,R.string.UserAction_Reach_Open);	//show requester only//~9A30I~//~va60R~
+//      	PLS.setReachAction(actionID);	//chk at Discard       //~va27I~//~va60R~
+        	PLS.setReachAction(actionID,Pplayer);	//chk at Discard//~va60I~
+//      }                                                          //~va27I~//~va60R~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_OPEN)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
-        GMsg.showHL(0,GCM_REACH);                                  //~9C02I~
+//      GMsg.showHL(0,GCM_REACH);  //requester only,at discard for other      //~9C02I~//~va60R~
+        GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);                 //+va60R~
         return true;                                               //~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~9A30I~
@@ -269,10 +274,18 @@ public class UAReach                                                //~v@@@R~//~
                 if (optOpen==OPT_OPEN_ONLY99)                      //~9519I~
 	            	AG.aHands.open(Pplayer);                       //~9519I~
                 if (optOpen==OPT_OPEN_OPEN)                        //~9A30I~
-		            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~
+                {                                                  //~va60I~
+                    AG.aRoundStat.reachOpen(Pplayer);              //~va60R~
+//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~//~va60R~
+        			GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);     //~va60I~
+                }                                                  //~va60I~
                 else                                               //~9A30I~
 				if (optOpen==OPT_OPEN_SAVE) //reach not open       //~9A30I~
-		            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~
+                {                                                  //~va60I~
+                    AG.aRoundStat.reach(Pplayer);                  //~va60I~
+//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~//~va60R~
+        			GMsg.showHLName(0,GCM_REACH,Pplayer);          //~va60I~
+                }                                                  //~va60I~
         }                                                          //~v@@6I~
         else                                                       //~v@@6I~
         {                                                          //~v@@6I~
@@ -332,10 +345,12 @@ public class UAReach                                                //~v@@@R~//~
                   }//open                                          //~v@@6I~
                 }                                                  //~v@@6I~
                 if (optOpen==OPT_OPEN_OPEN)                        //~9A30I~
-		            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~
+//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~//+va60R~
+        			GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);     //+va60I~
                 else                                               //~9A30I~
 				if (optOpen==OPT_OPEN_SAVE) //reach not open       //~9A30I~
-		            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~
+//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~//+va60R~
+        			GMsg.showHLName(0,GCM_REACH,Pplayer);          //+va60I~
             }                                                      //~v@@6I~
         }                                                          //~v@@6I~
         return true;                                               //~v@@6I~
@@ -360,7 +375,7 @@ public class UAReach                                                //~v@@@R~//~
         return sb.toString();                                                              //~v@@@I~//~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~9309I~
-    public  String makeMsgDataToClientOpenLastReach(int Pplayer,int Poption)//~9309I~
+    private String makeMsgDataToClientOpenLastReach(int Pplayer,int Poption)//~9309I~//~va60R~
     {                                                              //~9309I~
 		int eswn=Accounts.playerToEswn(Pplayer);                   //~9309I~
         String s=eswn+MSG_SEPAPP2+Poption;                        //~9309I~
@@ -375,11 +390,11 @@ public class UAReach                                                //~v@@@R~//~
         return tds;                                                //~v@@6I~
     }                                                              //~v@@6I~
     //*************************************************************************//~v@@6M~
-    //*on Server                                                   //~v@@6M~
+    //*on Server    from UADiscard                                               //~v@@6M~//~va60R~
     //*************************************************************************//~v@@6M~
     public static void postOpenReach(int Pplayer,boolean PswOpen)  //~v@@6I~
     {                                                              //~v@@6M~
-        if (Dump.Y) Dump.println("UADiscard.postOpenReach player="+Pplayer+",swOpen="+PswOpen);//~v@@6M~
+        if (Dump.Y) Dump.println("UAReach.postOpenReach player="+Pplayer+",swOpen="+PswOpen);//~v@@6M~//~va60R~
         GameViewHandler.sendMsg(GCM_OPEN,Pplayer,(PswOpen ? OPT_OPEN_OPEN : OPT_OPEN_SAVE),0);//~v@@6M~
     }                                                              //~v@@6M~
     //*************************************************************************//~v@@6I~

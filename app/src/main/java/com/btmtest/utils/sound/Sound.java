@@ -1,5 +1,6 @@
-//*CID://+va06R~:                             update#=   46;       //~va06R~
+//*CID://+va60R~:                             update#=   47;       //~va06R~//+va60R~
 //****************************************************************************//~1A0aI~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //****************************************************************************//~va06I~
 package com.btmtest.utils.sound;                                         //~9C01I~//~9C03R~
@@ -27,6 +28,10 @@ public class Sound                                                 //~9C01R~
     public Sound()                                                 //~9C01I~
     {                                                              //~9C01I~
         AG.aSound=this;                                            //~9C01I~
+        init();                                                    //+va60I~
+    }                                                              //+va60I~
+    public void init()                                                  //+va60I~
+    {                                                              //+va60I~
         if (swSoundPool)                                           //~9C03I~
         {                                                          //~9C03I~
         	SPL=new SPList(this);                                  //~9C03I~
@@ -107,8 +112,16 @@ public class Sound                                                 //~9C01R~
 //********************************************************         //~9C03I~
     static public void play (int Psoundid,boolean Pbeep)           //~9C03I~
     {                                                              //~9C03I~
-        AG.aSound.SPL.play(Psoundid,Pbeep);                         //~9C03I~
+//        AG.aSound.SPL.play(Psoundid,Pbeep);                         //~9C03I~//+va60R~
+          AG.aSound.playSPL(Psoundid,Pbeep);                       //+va60I~
     }                                                              //~9C03I~
+//********************************************************         //+va60I~
+//  not static method to override by IT Mock                       //+va60I~
+//********************************************************         //+va60I~
+    public void playSPL (int Psoundid,boolean Pbeep)               //+va60I~
+    {                                                              //+va60I~
+        SPL.play(Psoundid,Pbeep);                                  //+va60I~
+    }                                                              //+va60I~
 //********************************************************         //~va06I~
 //    public static void playDelayed(int PdelayTime/*ms*/,int Psoundid,boolean Pbeep)//~va06R~
 //    {                                                              //~v@@@I~//~va06R~
@@ -135,32 +148,32 @@ public class Sound                                                 //~9C01R~
 //                                  );                               //~v@@@I~//~va06R~
 //                                                                   //~v@@@I~//~va06R~
 //    }                                                              //~v@@@I~//~va06R~
-//********************************************************         //+va06I~
-    public static void playDelayed(int PdelayTime/*ms*/,int Psoundid,boolean Pbeep)//+va06I~
-    {                                                              //+va06I~
-        if (Dump.Y) Dump.println("Sound.playDelayed delayTime="+PdelayTime+",soundid="+Psoundid);//+va06I~
-        final int soundid=Psoundid;                                //+va06I~
-        final boolean beep=Pbeep;                                  //+va06I~
-        //*****                                                    //+va06I~
-        final Runnable runnable=new Runnable()                      //+va06I~
-        {                                                          //+va06I~
-        	@Override                                              //+va06I~
-            public void run()                                      //+va06I~
-            {                                                      //+va06I~
-                try                                                //+va06I~
-                {                                                  //+va06I~
-                    if (Dump.Y) Dump.println("Sound.playDelayed run");//+va06I~
-                    play(soundid,beep);                            //+va06I~
-                }                                                  //+va06I~
-                catch(Exception e)                                 //+va06I~
-                {                                                  //+va06I~
-                    Dump.println(e,"Sound.playDelayed run");       //+va06I~
-                }                                                  //+va06I~
-            }                                                      //+va06I~
-        };                                                          //+va06I~
-        final Handler handler=new Handler();                       //+va06I~
-        handler.postDelayed(runnable,PdelayTime);                  //+va06I~
-    }                                                              //+va06I~
+//********************************************************         //~va06I~
+    public static void playDelayed(int PdelayTime/*ms*/,int Psoundid,boolean Pbeep)//~va06I~
+    {                                                              //~va06I~
+        if (Dump.Y) Dump.println("Sound.playDelayed delayTime="+PdelayTime+",soundid="+Psoundid);//~va06I~
+        final int soundid=Psoundid;                                //~va06I~
+        final boolean beep=Pbeep;                                  //~va06I~
+        //*****                                                    //~va06I~
+        final Runnable runnable=new Runnable()                      //~va06I~
+        {                                                          //~va06I~
+        	@Override                                              //~va06I~
+            public void run()                                      //~va06I~
+            {                                                      //~va06I~
+                try                                                //~va06I~
+                {                                                  //~va06I~
+                    if (Dump.Y) Dump.println("Sound.playDelayed run");//~va06I~
+                    play(soundid,beep);                            //~va06I~
+                }                                                  //~va06I~
+                catch(Exception e)                                 //~va06I~
+                {                                                  //~va06I~
+                    Dump.println(e,"Sound.playDelayed run");       //~va06I~
+                }                                                  //~va06I~
+            }                                                      //~va06I~
+        };                                                          //~va06I~
+        final Handler handler=new Handler();                       //~va06I~
+        handler.postDelayed(runnable,PdelayTime);                  //~va06I~
+    }                                                              //~va06I~
 //********************************************************         //~va06I~
     static public void playBGM(int Psoundid)                       //~va06I~
     {                                                              //~va06I~

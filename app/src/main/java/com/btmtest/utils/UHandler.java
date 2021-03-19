@@ -1,10 +1,12 @@
-//*CID://+@@02R~: update#= 156;
+//*CID://+va60R~: update#= 161;                                    //~va60R~
 //**********************************************************************
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //@@02 20181106 UHandler on subthread
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
 //**********************************************************************
 package com.btmtest.utils;
 
+import com.btmtest.TestOption;
 import com.btmtest.utils.Dump;                                     //~@003R~
 import com.btmtest.R;
 
@@ -14,6 +16,8 @@ import android.os.Looper;
 import android.os.Message;                                         //~@003I~
 
 import java.util.ArrayList;
+
+import static com.btmtest.TestOption.*;                            //+va60R~
 
 //*****************************************                        //~@003I~
 ////usage                                                          //~@003I~
@@ -49,7 +53,7 @@ public abstract class UHandler extends Handler                            //~@00
 //**********************************                               //~@@02I~
     public final void onResume(Activity Pactivity)                 //~@003R~
     {                                                              //~@003R~
-        if (Dump.Y) Dump.println("UHandler.onResume Qctr="+MQ.size()+",activity="+Pactivity.toString());//~@003R~
+        if (Dump.Y) Dump.println("UHandler.onResume Qctr="+MQ.size()+",activity="+Pactivity);//~@003R~//~@@02R~
         activity=Pactivity;                                        //~@003I~
         paused=false;                                              //~@003R~
         while (MQ.size()>0)                                        //~@003I~
@@ -76,7 +80,7 @@ public abstract class UHandler extends Handler                            //~@00
     @Override                                                      //~@003I~
     final public void handleMessage(Message Pmsg)                  //~@003I~
     {                                                              //~@003I~
-        if (Dump.Y) Dump.println("UHandler.handleMessage paused="+paused);//+@@02I~
+        if (Dump.Y) Dump.println("UHandler.handleMessage paused="+paused+",activity="+activity);//~@@02R~
         if (paused)                                                //~@003I~
         {                                                          //~@003I~
             if (storeMsg(Pmsg)) //save for restore                 //~@003I~//~@@02R~
@@ -89,6 +93,11 @@ public abstract class UHandler extends Handler                            //~@00
         }                                                          //~@003I~
         else                                                       //~@003I~
         {                                                          //~@003I~
+	        if ((TestOption.option2 & TO2_IT)!=0) //instrumented test            //~1112M~//~va60I~
+            {                                                      //~va60I~
+	            handleMsg(Pmsg);                                   //~va60I~
+            }                                                      //~va60I~
+            else                                                   //~va60I~
         	if (activity!=null)                                     //~@003I~
 	            handleMsg(Pmsg);                                   //~@003R~
         }                                                          //~@003I~

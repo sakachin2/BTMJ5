@@ -1,11 +1,12 @@
-//*CID://+va40R~:                             update#=  703;       //+va40R~
+//*CID://+va66R~:                             update#=  710;       //~va66R~
 //*****************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/13 va15 Add chk kuikae                                   //~va15I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~//~9412R~
 import android.content.DialogInterface;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 import com.btmtest.game.Status;                                    //~9412I~
 
-import static com.btmtest.TestOption.*;
+import static com.btmtest.AG.*;
 import static com.btmtest.dialog.RuleSettingEnum.*;                  //~9404I~//~9412R~
 //~v@@@I~
 import java.sql.Timestamp;
@@ -76,6 +77,9 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //  private UCheckBox cbKuitan;                                    //~v@@@I~//~9515R~
     private UCheckBox cbMinusStop,cbMinus0,cbMinusRobot;           //~9403I~
     private UCheckBox cbBird,cbAllowRobot;                                      //~9430I~//~9607R~
+//  private UCheckBox cbAllowRobotAll;                             //~va66R~
+//  private UCheckBox cbAllowRobotAllButton;                       //~va66R~
+    private UCheckBox cbThinkRobot;                         //~va60I~
     private URadioGroup rgMinusPay,rgMinusStopByErr;               //~9414R~
     private URadioGroup rgBirdPayType;                             //~9602I~
     private URadioGroup rgRobotPay;                                //~9429I~
@@ -396,8 +400,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.setTitle swReceived="+swReceived);//~9405I~//~9412R~
         if (!swReceived)                                           //~9405I~
         	return;                                                //~9405I~
-//		Spanned st=Html.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//~9223I~//~v@@@I~//+va40R~
-  		Spanned st=Utils.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//+va40I~
+//		Spanned st=Html.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//~9223I~//~v@@@I~//~va40R~
+  		Spanned st=Utils.fromHtml(AG.resource.getString(R.string.Title_RuleSettingReceived,Utils.getStr(TITLEID),senderYourName));//~va40I~
         getDialog().setTitle(st);                                              //~9405I~
     }                                                              //~9405I~
 	//*****************                                            //~9403I~
@@ -494,6 +498,9 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //        cbMissingReach=new UCheckBox(PView,R.id.cbMissingReach);   //~9427I~//~9517R~
     //*robot                                                       //~9429I~
         cbAllowRobot=new UCheckBox(PView,R.id.cbAllowRobot);       //~9403R~//~9429I~//~9607R~
+//      cbAllowRobotAll=new UCheckBox(PView,R.id.cbAllowRobotAll); //~va66R~
+//      cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//~va66R~
+        cbThinkRobot=new UCheckBox(PView,R.id.cbThinkRobot);       //~va60I~
         cbMinusRobot=new UCheckBox(PView,R.id.cbMinusRobot);       //~9607I~
         rgRobotPay=new URadioGroup(PView,R.id.rgRobotPay,0,rbIDRobotPay);//~9429I~
     //*bird                                                        //~9430I~
@@ -620,6 +627,9 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //        cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~9427I~//~9517R~
     //*robot                                                       //~9429I~
         cbAllowRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT),0/*default:false*/),swFixed);//~9607I~
+//      cbAllowRobotAll.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL),0/*default:false*/),swFixed);//~va66R~
+//      cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~va66R~
+        cbThinkRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_THINK_ROBOT),DEFAULT_THINK_ROBOT/*default:true*/),swFixed);//~va60I~//+va66R~
         cbMinusRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_MINUSSTOP_ROBOT),0),swFixed);//~9429I~
         rgRobotPay.setCheckedID(Pprop.getParameter(getKeyRS(RSID_ROBOT_PAY),0),swFixed);//~9429I~
     //*bird                                                        //~9430I~
@@ -734,6 +744,9 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //        changed+=updateProp(getKeyRS(RSID_REACH_MISSING),cbMissingReach.getStateInt());//~9427I~//~9517R~
     //*robot                                                       //~9429I~
         changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT),cbAllowRobot.getStateInt());//~9607I~
+//      changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT_ALL),cbAllowRobotAll.getStateInt());//~va66R~
+//      changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//~va66R~
+        changed+=updateProp(getKeyRS(RSID_THINK_ROBOT),cbThinkRobot.getStateInt());//~va60I~
         changed+=updateProp(getKeyRS(RSID_MINUSSTOP_ROBOT),cbMinusRobot.getStateInt());//~9404I~//~9429M~
         changed+=updateProp(getKeyRS(RSID_ROBOT_PAY),rgRobotPay.getCheckedID());//~9429I~
     //*bird                                                        //~9430I~
@@ -905,6 +918,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         updateProp(getKeyRS(RSID_SYNCDATE),syncDate);                    //~9404I~//~9405R~
         updateProp(getKeyRS(RSID_SYNCDATE_FORMATTED),sdf);         //~9405I~
         tvSyncDate.setText(sdf);//~9405I~
+	    if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))            //~va66I~
+        	AG.ruleSyncDate=curProp.getParameter(getKeyRS(RSID_SYNCDATE),PROP_INIT_SYNCDATE);//~va66I~
     	if (Dump.Y) Dump.println("RuleSetting.saveSyncDate syncDate="+syncDate+",formatted="+sdf);//~9404I~//~9405R~
     }                                                              //~9404I~
     //**************************************                       //~9826I~
@@ -1728,6 +1743,29 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isAllowRobot rc="+rc);//~9607I~
         return rc;                                                 //~9607I~
     }                                                              //~9607I~
+//    //**************************************                     //~va66R~
+//    public static boolean isAllowRobotAll()                      //~va66R~
+//    {                                                            //~va66R~
+//        int def=0;  //false                                      //~va66R~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL),def)!=0;//~va66R~
+//        if (Dump.Y) Dump.println("RuleSetting.isAllowRobotAll rc="+rc);//~va66R~
+//        return rc;                                               //~va66R~
+//    }                                                            //~va66R~
+//    //**************************************   moved to operation//~va66R~
+//    public static boolean isAllowRobotAllButton()                //~va66R~
+//    {                                                            //~va66R~
+//        int def=0;  //false                                      //~va66R~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//~va66R~
+//        if (Dump.Y) Dump.println("RuleSetting.isAllowRobotAllButton rc="+rc);//~va66R~
+//        return rc;                                               //~va66R~
+//    }                                                            //~va66R~
+	public static boolean isThinkRobot()                           //~va60I~
+    {                                                              //~va60I~
+		int def=DEFAULT_THINK_ROBOT;	//false                                        //~va60I~//+va66R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_THINK_ROBOT),def)!=0;//~va60I~
+        if (Dump.Y) Dump.println("RuleSetting.isThinkRobot rc="+rc);//~va60I~
+        return rc;                                                 //~va60I~
+    }                                                              //~va60I~
 	public static boolean isMinusStopRobot()                       //~v@@@R~//~9429M~
     {                                                              //~v@@@I~//~9429M~
 //      boolean rc=swMinusStopRobot;                               //~v@@@I~//~9404R~//~9429M~
@@ -2039,10 +2077,16 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     public static void setRobotOption(View PView,boolean PswFixed) //~9823I~
     {                                                              //~9823I~
         UCheckBox cbAllowRobot=new UCheckBox(PView,R.id.cbAllowRobot);//~9823I~
+//      UCheckBox cbAllowRobotAll=new UCheckBox(PView,R.id.cbAllowRobotAll);//~va66R~
+//      UCheckBox cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//~va66R~
+        UCheckBox cbThinkRobot=new UCheckBox(PView,R.id.cbThinkRobot);//~va60I~
         UCheckBox cbMinusRobot=new UCheckBox(PView,R.id.cbMinusRobot);//~9823I~
         URadioGroup rgRobotPay=new URadioGroup(PView,R.id.rgRobotPay,0,rbIDRobotPay);//~9823I~
                                                                    //~9823I~
         cbAllowRobot.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT),0/*default:false*/),PswFixed);//~9823I~
+//      cbAllowRobotAll.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL),0/*default:false*/),PswFixed);//~va66R~
+//      cbAllowRobotAllButton.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),PswFixed);//~va66R~
+        cbThinkRobot.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_THINK_ROBOT),DEFAULT_THINK_ROBOT/*default:true*/),PswFixed);//~va60I~//+va66R~
         cbMinusRobot.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_MINUSSTOP_ROBOT),0),PswFixed);//~9823I~
         rgRobotPay.setCheckedID(AG.ruleProp.getParameter(getKeyRS(RSID_ROBOT_PAY),0),PswFixed);//~9823I~
         if (Dump.Y) Dump.println("RuleSetting.setRobotOption");    //~9823I~

@@ -1,5 +1,6 @@
-//*CID://+va46R~:                             update#=  481;       //~va46R~
+//*CID://+va66R~:                             update#=  490;       //~va46R~//~va66R~
 //********************************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
 //2020/10/14 va17 chk server for "Game" button click(stop start process if start game from client)//~va02I~
@@ -52,6 +53,8 @@ public class BTMulti                                               //~1AebR~
     private static final int MSG_NAMEQ_POS_RECONNECT=2;            //~0107I~
     private static final int MSG_NAMER_POS_RECONNECT=3;            //~0107I~
 	                                                               //~1AebI~
+    public static final String DEVICENAME_TRAINING="#This#";       //~va66I~
+                                                                   //~va66I~
     private Boolean swSecureConnect=true;
     private boolean swAlertAction;                 //~1Ac5I~       //~1AebI~
     public static int maxClient;                                   //~1AebI~
@@ -133,7 +136,7 @@ public class BTMulti                                               //~1AebR~
     //*******************************************************      //~va46I~
     //*at reconnect search by macaddr                              //~va46I~
     //*******************************************************      //~va46I~
-    public boolean updateMember(String Pname,String Pyourname,String PmacAddr,String PsyncDate,boolean PswNotify)//+va46R~
+    public boolean updateMember(String Pname,String Pyourname,String PmacAddr,String PsyncDate,boolean PswNotify)//~va46R~
 	{                                                              //~va46I~
     	if (Dump.Y) Dump.println("BTMulti.updateMember name="+Pname+",yourname="+Pyourname+",macAddr="+PmacAddr+",syncData="+PsyncDate);//~va46I~
     	int rc=BTGroup.updateReconnect(PmacAddr,Pname,Pyourname,PsyncDate);//~va46I~
@@ -141,8 +144,8 @@ public class BTMulti                                               //~1AebR~
         {                                                          //~va46I~
         	return false;                                          //~va46I~
         }                                                          //~va46I~
-        if (PswNotify)                                             //+va46I~
-	        notifyToMembers(true/*connected*/,Pname,Pyourname);    //+va46R~
+        if (PswNotify)                                             //~va46I~
+	        notifyToMembers(true/*connected*/,Pname,Pyourname);    //~va46R~
         return true;                                               //~va46I~
     }                                                              //~va46I~
     //*******************************************************      //~1AebI~
@@ -256,7 +259,7 @@ public class BTMulti                                               //~1AebR~
     //*******************************************************      //~9406I~
     public void setRuleSettingSynchedAll(boolean PswOK,String PsyncDate)//~9406I~
 	{                                                              //~9406I~
-    	if (Dump.Y) Dump.println("BTMulti.setRuleSettingSynchedAll sw="+PswOK+",syncDate="+PsyncDate+",swWaitingSyncDate="+swWaitingSyncDate);//~9406I~//~0112R~
+    	if (Dump.Y) Dump.println("BTMulti.setRuleSettingSynchedAll PswOK="+PswOK+",syncDate="+PsyncDate+",swWaitingSyncDate="+swWaitingSyncDate);//~9406I~//~0112R~//~va66R~
 //      swRuleSettingSynchedAll=PswOK;                             //~9406I~//~9621R~
         syncDateRuleSettingSynchedAll=PsyncDate;                   //~9406I~
     	if (swWaitingSyncDate)                                     //~9621I~
@@ -270,6 +273,16 @@ public class BTMulti                                               //~1AebR~
             }                                                      //~9621I~
         }                                                          //~9621I~
     }                                                              //~9406I~
+    //*******************************************************      //~va66I~
+    //*from GC.startGame                                           //~va66I~
+    //*******************************************************      //~va66I~
+    public void startGameTrainingMode()                            //~va66I~
+	{                                                              //~va66I~
+    	if (Dump.Y) Dump.println("BTMulti.startGameTrainigMode swWaitingSyncdate="+swWaitingSyncDate);//~va66I~
+        syncDateRuleSettingSynchedAll=AG.ruleSyncDate;             //~va66I~
+        swWaitingSyncDate=false;                                   //~va66I~
+        AG.aGC.startGameGo();                                      //~va66I~
+    }                                                              //~va66I~
     //*******************************************************      //~9812I~
     public void endgameIfDisconnectedAtRuleSettingSynch()          //~9812I~
 	{                                                              //~9812I~
@@ -437,6 +450,19 @@ public class BTMulti                                               //~1AebR~
         BTCDialog.onConnected(Premotedevicename,addr,Pswclient);   //~va02R~
 //      BTRDialog.onConnectedAfterThreadCreated(Pswclient,Premotedevicename);//~9A24R~
     }                                                              //~1AebI~
+    //*******************************************************      //~va66I~
+    //*set local and server for [0]                                //~va66I~
+    //*******************************************************      //~va66I~
+    public void setTrainingMode()                                  //~va66R~
+    {                                                              //~va66I~
+    	if (Dump.Y) Dump.println("BTMulti:setTrainingMode");       //~va66I~
+//      int role=ROLE_SERVER;                                      //+va66R~
+        int role=ROLE_UNDEFINED;                                   //+va66I~
+	    localDeviceName=DEVICENAME_TRAINING;                       //~va66I~
+        memberRole=role;                                           //~va66I~
+        serverDeviceName=localDeviceName;                          //~va66I~
+        BTGroup.setTrainingMode(localDeviceName);                  //~va66I~
+    }                                                              //~va66I~
     //************************************************************ //~1AebI~
 	public void onConnectionFailed(int Pflag,String Pdevicename)                      //~1AebR~
     {                                                              //~1AebI~
@@ -899,7 +925,7 @@ public class BTMulti                                               //~1AebR~
         	sendMsgToServer(Pswapp,Pmsgid,Pmsg);                   //~1AebI~
     }                                                              //~1AebI~
 //***************************************************************************//~9621I~
-	public void sendStartGame(String PsyncDate)                    //~9621I~
+	private void sendStartGame(String PsyncDate)                    //~9621I~//~va66R~
     {                                                              //~9621I~
         if (Dump.Y) Dump.println("BTMulti.sendStartGame");         //~9621I~
         sendMsgToAllClient(true/*Pswapp*/,GCM_SETTING_NOTIFY_SYNCOK,PsyncDate);//~9621I~
@@ -1274,10 +1300,18 @@ public class BTMulti                                               //~1AebR~
         if (members==null)                                         //~0119I~
         	return 0;                                              //~0119I~
         if (Dump.Y) Dump.println("BTMulti.resetMemberDisconnected before="+members.toString());//~0119I~
+//      if (AG.swTrainingMode)                                     //+va66R~
+//      	btm.setTrainingMode();                                 //+va66R~
         int ctrMember=members.MD.length;                           //~0119I~
         int ctrInActive=0;                                         //~0119I~
         for (int ii=0;ii<ctrMember;ii++)                           //~0119I~
         {                                                          //~0119I~
+	        if (!AG.swTrainingMode && (members.MD[ii].status & MS_PLAYALONE)!=0)//~va66I~
+            {                                                      //~va66I~
+			    members.remove(ii);                                //~va66I~
+            	ctrInActive++;                                     //~va66I~
+            }                                                      //~va66I~
+            else                                                   //~va66I~
             if (members.MD[ii].getThread()==null && (members.MD[ii].status & MS_LOCAL)==0)//~0119R~
             {                                                      //~0119I~
 			    members.remove(ii);                                 //~0119I~

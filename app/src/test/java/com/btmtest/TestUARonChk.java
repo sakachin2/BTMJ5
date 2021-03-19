@@ -1,4 +1,4 @@
-//*CID://+va1aR~: update#= 739;                                    //~va1aR~
+//*CID://+va1aR~: update#= 741;                                    //~va1aR~
 //**********************************************************************//~v101I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/10 va14 (BUG)7pairwith Kan is err even optio allow it    //~va14I~
@@ -23,11 +23,11 @@ public class TestUARonChk                                          //~va1aR~
     private UARonChk2 UARC2;                                       //~va1aR~
     private void initEnv()                                         //~va1aR~
     {                                                              //~va1aI~
-        StaticVars.AG=new AG();                                     //+va1aI~
-    	StaticVars.AG.appName="TestUARonChjk";                      //+va1aR~
+        StaticVars.AG=new AG();                                     //~va1aI~
+    	StaticVars.AG.appName="TestUARonChjk";                      //~va1aR~
         Dump.openExOnlyTerminal();	//write exception only to Terminal//~va1aI~
 //      new StaticVars(null);	//new AG().init(this);             //~va1aR~
-        Dump.open("");	//write all to Terminal log,not exception only//~va1aI~
+        Dump.open("");	//write all to Terminal log,not exception only//+va1aR~
         if (Dump.Y) Dump.println("TestUARonChk.constructor");      //~va1aI~
     }                                                              //~va1aI~
     //*************************************************************************//~va1aR~

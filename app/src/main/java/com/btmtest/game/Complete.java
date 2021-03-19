@@ -1,6 +1,7 @@
-//*CID://+va1cR~: update#= 466;                                    //~va11R~//+va1cR~
+//*CID://+va60R~: update#= 481;                                    //~va60R~
 //**********************************************************************//~v101I~
-//2020/10/20 va1c send net point to show setYaku on CompReqDlg     //+va1cI~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//2020/10/20 va1c send net point to show setYaku on CompReqDlg     //~va1cI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -35,9 +36,9 @@ public class Complete                            //~v@@@R~
     public  static final int CALC_AMT_RANKHIGH =7; //longRank int high//~va11I~
     public  static final int CALC_AMT_RANKLOW  =8; //low           //~va11I~
     public  static final int CALC_AMT_HAN      =9; //low           //~va11I~
-//  public  static final int CALC_AMT_MAXCTR   =10;                //~va11R~//+va1cR~
-    public  static final int CALC_AMT_NETPOINT =10; //low          //+va1cI~
-    public  static final int CALC_AMT_MAXCTR   =11;                //+va1cI~
+//  public  static final int CALC_AMT_MAXCTR   =10;                //~va11R~//~va1cR~
+    public  static final int CALC_AMT_NETPOINT =10; //low          //~va1cI~
+    public  static final int CALC_AMT_MAXCTR   =11;                //~va1cI~
                                                                    //~v@@@I~
     public  static final int CALC_AMT_POS   =1;      //OK/NG+ammount values//~v@@@I~
                                                                    //~v@@@I~
@@ -204,7 +205,7 @@ public class Complete                            //~v@@@R~
 	        if (statusS[ii]!=null)                                 //~9320I~
             {                                                      //~9320I~
             	ctrComp++;                                         //~9320I~
-		        if (Dump.Y) Dump.println("Complete.chkCompReqReplyAll ii="+ii+",swReplayAll="+statusS[ii].swReplyAll);//~9320I~
+		        if (Dump.Y) Dump.println("Complete.chkCompReqReplyAll ii="+ii+",swReplyAll="+statusS[ii].swReplyAll);//~9320I~//~va60R~
                 if (statusS[ii].swReplyAll)                        //~9320I~
                 	ctrReply++;                                     //~9320I~
             }                                                      //~9320I~
@@ -449,20 +450,27 @@ public class Complete                            //~v@@@R~
         public  boolean swTake;                                    //~v@@@R~
 	    public CompReqDlg compReqDlg;                              //~v@@@I~
 	    private boolean swSetAmmount;                              //~v@@@R~
+	    public int supporterEswn;                                  //~va60R~
         //*******************************************************************************************//~v@@@I~
         public Status(int PcompType,int Peswn,int PeswnLooser,TileData Ptd,TileData PtdCompKanTake)//~v@@@R~
         {                                                          //~v@@@I~
 	    	completeEswn=Peswn; completeType=PcompType; completeTD=Ptd;//~v@@@I~
 	    	completeKanTakenTD=PtdCompKanTake;                      //~v@@@I~
             completeEswnLooser=PeswnLooser;                        //~v@@@I~
+//          supporterEswn=Accounts.mapDummyByEswn(completeEswn);   //~va60R~
+            if (AG.aAccounts.isDummyByCurrentEswn(completeEswn))	//robot//~va60I~
+//  			supporterEswn=Accounts.mapDummyByEswn(ESWN_E);     //~va60R~
+		        supporterEswn=AG.aAccounts.getRealDealerEswnForRobotEswn(completeEswn);//dealer when robot ron//~va60I~
+            else                                                   //~va60I~
+            	supporterEswn=completeEswn;                        //~va60I~
 	        swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~v@@@I~
             Arrays.fill(replyOK,COMPREPLY_BEFORESEND);             //~v@@@R~
-            if (Dump.Y) Dump.println("Complete.Status constructor "+toString());//~v@@@I~
+            if (Dump.Y) Dump.println("Complete.Status constructor "+toString());//~v@@@I~//~va60R~
         }                                                          //~v@@@I~
         //****************************************                 //~v@@@I~
         public String toString()                                   //~v@@@I~
         {                                                          //~v@@@I~
-            return "Complete.Status type="+completeType+",completeEswn="+completeEswn+",eswnLooser="+completeEswnLooser+",swErr="+swErr+",swInvalid="+swInvalid+",swInvalidByEswn="+swInvalidByEswn+",td:"+TileData.toString(completeTD)+",kantaken="+TileData.toString(completeKanTakenTD);//~v@@@R~//~0227R~
+            return "Complete.Status type="+completeType+",completeEswn="+completeEswn+",eswnLooser="+completeEswnLooser+",supporterEswn="+supporterEswn+",swReplyAll="+swReplyAll+",swErr="+swErr+",swInvalid="+swInvalid+",swInvalidByEswn="+swInvalidByEswn+",td:"+TileData.toString(completeTD)+",kantaken="+TileData.toString(completeKanTakenTD)+",ammount="+Utils.toString(ammount);//~v@@@R~//~0227R~//+va60R~
         }                                                          //~v@@@I~
         //****************************************                 //~v@@@I~
         public String toSendText()                                 //~v@@@I~
@@ -509,6 +517,17 @@ public class Complete                            //~v@@@R~
             if (Dump.Y) Dump.println("Complete.Status.isShowable rc="+rc+",swInvalid="+swInvalid+",completeEswn="+completeEswn+",swSetAmmount="+swSetAmmount);//~v@@@I~//~9402R~
             return rc;                                             //~v@@@I~
         }                                                          //~v@@@I~
+        //***********************************************************//~va60I~
+        //*show robot completion by next human player              //~va60I~
+        //***********************************************************//~va60I~
+        public boolean isShowableRobot(int PcurEswn)               //~va60I~
+        {                                                          //~va60I~
+            boolean rc=supporterEswn==PcurEswn || swSetAmmount;    //~va60R~
+            if (swInvalid)                                         //~va60I~
+            	rc=false;                                          //~va60I~
+            if (Dump.Y) Dump.println("Complete.Status.isShowableRobot PcurEswn="+PcurEswn+",supporterEswn="+supporterEswn+",rc="+rc+",swInvalid="+swInvalid+",completeEswn="+completeEswn+",swSetAmmount="+swSetAmmount);//~va60R~
+            return rc;                                             //~va60I~
+        }                                                          //~va60I~
         //*************************************************************************//~v@@@I~
         public boolean setOK(int Peswn,boolean PswOK)              //~v@@@I~
         {                                                          //~v@@@I~
@@ -588,6 +607,14 @@ public class Complete                            //~v@@@R~
                 {                                                  //~v@@@I~
             		if (!AG.aAccounts.isDummyByCurrentEswn(ii))                 //~v@@@I~
                     {                                              //~v@@@I~
+                        if (ii==supporterEswn)                      //~va60I~
+                        {                                          //~va60I~
+      	              		if (replyOK[ii]!=COMPREPLY_OK)         //~va60I~
+                            {                                      //~va60I~
+                    			ctrReply++;	//for robot,RealDealer send CompReqDlg,assume replyed OK//~va60R~
+      	              			replyOK[ii]=COMPREPLY_OK;          //~va60R~
+                            }                                      //~va60I~
+                        }                                          //~va60I~
                     	ctrResponsible++;                          //~v@@@I~
                     	int reply=replyOK[ii];                     //~v@@@I~
                     	if (reply==COMPREPLY_OK)                   //~v@@@R~
@@ -610,14 +637,16 @@ public class Complete                            //~v@@@R~
             swReplyAll=ctrResponsible==ctrReply;                   //~v@@@I~
             boolean rc=(swReplyAll && ctrNG==0);                  //~v@@@R~
             swNG=swReplyAll && !rc;                               //~v@@@I~
-            if (Dump.Y) Dump.println("Complete.Status.chkOK rc="+rc+",swReplyAll="+swReplyAll+",ctrResponsible="+ctrResponsible+",ctrReply="+ctrReply+",ctrNG="+ctrNG);//~v@@@I~//~9315R~//~9320R~
+            if (Dump.Y) Dump.println("Complete.Status.chkOK rc="+rc+",swReplyAll="+swReplyAll+",ctrResponsible="+ctrResponsible+",ctrReply="+ctrReply+",ctrNG="+ctrNG+",supporterEswn="+supporterEswn);//~v@@@I~//~9315R~//~9320R~//~va60R~
             return rc;                                             //~v@@@I~
         }                                                          //~v@@@I~
         //*************************************************************************//~v@@@I~
-        public String getAmmountMsgText()                          //~v@@@I~
+//      public String getAmmountMsgText()                          //~v@@@I~//~va60R~
+        public String getAmmountMsgText(int PcompleteEswn)         //~va60I~
         {                                                          //~v@@@I~
         	StringBuffer sb=new StringBuffer();                    //~v@@@I~
-            sb.append(Accounts.getCurrentEswn());                   //~v@@@R~
+//          sb.append(Accounts.getCurrentEswn());                   //~v@@@R~//~va60R~
+            sb.append(PcompleteEswn);                              //~va60I~
             int ii=0;                                              //~v@@@I~
             for (;ii<CALC_AMT_MAXCTR;ii++)                         //~v@@@R~
             	sb.append(MSG_SEPAPP3+ammount[ii]);                //~v@@@R~

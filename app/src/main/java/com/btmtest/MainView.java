@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 405;                                    //~v@21R~//~9411R~
+//*CID://+va66R~: update#= 406;                                    //~v@21R~//~9411R~//+va66R~
 //**********************************************************************
+//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
+//**********************************************************************//+va66I~
 package com.btmtest;                                               //~v@21R~
 
 import android.graphics.Bitmap;
@@ -37,7 +39,7 @@ public class MainView                                   //~v@21R~  //~9620R~
     private TextView  topMsgBar;                                       //~9619I~
     private Button btnSettings,btnConnect,btnHelp,btnStartGame;    //~v@21I~//~0119R~
     private Button btnTest1;              //TODO test              //~v@21I~
-    private Button btnHistory;                                     //+0322R~
+    private Button btnHistory;                                     //~0322R~
 //  private static Bitmap bmpTop;                                  //~v@21R~
     private        Bitmap bmpTop;                                  //~v@21I~
     private ImageView imageView;                                   //~v@21I~
@@ -77,10 +79,10 @@ public class MainView                                   //~v@21R~  //~9620R~
 //      addMsgBar();                                              //~v@21I~//~9619R~//~9620R~
         addButtons();                                              //~9619I~
         bindButtons();                                             //~v@21I~
-        if ((TestOption.option & TestOption.TO_CONNECTED)!=0)	//TODO test//~v@21I~
+//      if ((TestOption.option & TestOption.TO_CONNECTED)!=0)	//TODO test//~v@21I~//+va66R~
         	setButtonStatus(true);                                 //~v@21I~
-        else                                                       //~v@21I~
-        	setButtonStatus(false);                                //~v@21I~
+//      else                                                       //~v@21I~//+va66R~
+//      	setButtonStatus(false);                                //~v@21I~//+va66R~
     }                                                              //~v@21I~
 	//*****************************************************************//~v@21R~
     private void setImage()                                        //~v@21I~
@@ -406,9 +408,9 @@ public class MainView                                   //~v@21R~  //~9620R~
 //          else                                                   //~v@21R~
 //          {                                                      //~v@21R~
 //            frameLayout.addView(btnsMain,-1/*last*/);            //~v@21R~
-//      if (false)           //TODO test                           //~v@21R~//+0322R~
-//          frameLayout.addView(btnsMain);                         //~v@21I~//+0322R~
-//      else                                                       //~v@21R~//+0322R~
+//      if (false)           //TODO test                           //~v@21R~//~0322R~
+//          frameLayout.addView(btnsMain);                         //~v@21I~//~0322R~
+//      else                                                       //~v@21R~//~0322R~
         {                                                          //~v@21I~
 //  		addButtons2();                                         //~v@21R~
 //  		addButtons();                                          //~v@21I~

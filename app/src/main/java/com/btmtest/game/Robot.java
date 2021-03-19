@@ -1,5 +1,8 @@
-//*CID://+DATER~:                                   update#=  229; //~@002R~//~9209R~
+//*CID://+va66R~:                                   update#=  261; //~va66R~
 //*************************************************************************//~@002R~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
+//*************************************************************************//~va60I~
 //*Dummy client msg processing                                     //~@002R~
 //*************************************************************************//~@002I~
 package com.btmtest.game;                                            //~1AecR~//~@002R~
@@ -11,6 +14,7 @@ import com.btmtest.utils.Utils;
 //~@002I~
 import java.util.Arrays;
 
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GCMsgID.*;                          //~@002I~
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.StaticVars.AG;
@@ -27,9 +31,12 @@ public class Robot                                                 //~@002I~
 //  private static final int delayRobot=5200;//TODO test //miliseconds,after this sendmsg to after process//~0228R~
 //  private String remoteDeviceName;                               //~@002R~
 //  private String localDeviceName;                                //~1AecI~//~@002R~
-    private Accounts.Account account;                                                               //~1AecI~//~@002R~
+//  private Accounts.Account account;                                                               //~1AecI~//~@002R~//~va60R~
+    protected Accounts.Account account;	//protected for IT_Mock    //~va60I~
     private Accounts accounts;                                     //~@002I~
     private TileData tdTaken;                                      //~@002I~
+    private TileData tdSelectedDiscard;                            //~va66I~
+    private int ctrSelectedDiscardTaken=-1;                        //~va66I~
 //    private int delay;                                           //~@002R~
     private int initialEswn;                                       //~@002I~
     private int yourEswn=-1;                                       //~@002I~
@@ -71,7 +78,7 @@ public class Robot                                                 //~@002I~
         return eswn;                                               //~@002I~
     }                                                              //~@002I~
 	//**************************************************************//~@002I~
-	//*thru senToClient on Server                                  //~@002R~
+	//*thru sendToClient on Server                                  //~@002R~//~va60R~
 	//**************************************************************//~@002I~
 	public boolean action(int PactionID,String PmsgData)            //~@002I~
     {                                                              //~@002I~
@@ -80,7 +87,7 @@ public class Robot                                                 //~@002I~
         int eswn=ints[0];                                          //~@002I~
         if (eswn!=getCurrentEswnRobot())	//not msg to me                //~@002I~
         {                                                          //~@002I~
-	        if (Dump.Y) Dump.println("Robot.action @@@@ skip by current eswn="+eswn+",current="+getCurrentEswnRobot()+",action="+PactionID);//~@002R~//~0222R~//+0229R~
+	        if (Dump.Y) Dump.println("Robot.action @@@@ skip by current eswn="+eswn+",current="+getCurrentEswnRobot()+",action="+PactionID);//~@002R~//~0222R~//~0229R~
         	return false;                                          //~@002I~
         }                                                          //~@002I~
         boolean rc=false;                                                //~@002I~
@@ -157,27 +164,74 @@ public class Robot                                                 //~@002I~
         return true;                                               //~@002I~
     }                                                              //~@002I~
 	//**************************************************************//~0229I~
-	//*from UATake on Server                                       //~0229I~
+	//*from UATake.takeOne on Server to discard for Robot                                       //~0229I~//~va60R~
 	//**************************************************************//~0229I~
     public void takeOne(int Pplayer,TileData Ptd)                  //~0229R~
     {                                                              //~0229I~
 		if (Dump.Y) Dump.println("Robot.TakeOne player="+Pplayer+",td="+Ptd.toString());//~0229I~
         tdTaken=Ptd;                                                //~0229I~
+      if (!Ptd.isRon())  //no discard id robot Ron                 //~va60I~
         afterTakeOne();	//send msg to discard                      //~0229I~
     }                                                              //~0229I~
+	//**************************************************************//~va60I~
+	//*from UAPon on server, send DISCARD                          //~va60R~
+	//**************************************************************//~va60I~
+    public void takePon(int Pplayer)                               //~va60R~
+    {                                                              //~va60I~
+		if (Dump.Y) Dump.println("Robot.takePon player="+Pplayer); //~va60R~
+		int eswn=getCurrentEswnRobot();	//not msg to me            //~va60I~
+		TileData tdDiscard=AG.aRADiscard.selectDiscard(eswn,null); //~va60R~
+        String data=ACAction.strTD(tdDiscard);                     //~va60I~
+        sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~va60I~
+    }                                                              //~va60I~
 	//**************************************************************//~@002I~
 	//*discard just after taken;send taken data to be discarded    //~@002R~
 	//**************************************************************//~@002I~
     private void afterTakeOne()                                    //~@002I~
     {                                                              //~@002I~
-		if (Dump.Y) Dump.println("Robot.afterTakeOne");            //~@002I~
+		if (Dump.Y) Dump.println("Robot.afterTakeOne");             //~va66R~
 		int eswn=getCurrentEswnRobot();	//not msg to me            //~@002R~
-//      String data=UserAction.makeMsgDataToServer(tdTaken);       //~@002R~
-        String data=ACAction.strTD(tdTaken);                       //~@002I~
+//      String data=UserAction.makeMsgDataToServer(tdTaken);       //~va60R~
+//      String data=ACAction.strTD(tdTaken);                       //~va60R~
+		                                                           //~va66I~
+//  	TileData tdDiscard=AG.aRADiscard.selectDiscard(eswn,tdTaken);//~va60R~//~va66R~
+    	TileData tdDiscard=null;                                   //~va66I~
+        boolean sw2ndCall=false;                                   //~va66I~
+        if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0)    //~va66I~
+        {	                                                       //~va66I~
+		    if (ctrSelectedDiscardTaken==AG.aPlayers.ctrTakenAll)	//2nd call//~va66I~
+            {                                                      //~va66I~
+            	tdDiscard=tdSelectedDiscard;                       //~va66I~
+                sw2ndCall=true;                                    //~va66I~
+            }                                                      //~va66I~
+        }                                                          //~va66I~
+        if (tdDiscard==null)	//1st call                         //~va66I~
+        {                                                          //~va66I~
+			tdDiscard=AG.aRADiscard.selectDiscard(eswn,tdTaken);   //~va66I~
+		    ctrSelectedDiscardTaken=AG.aPlayers.ctrTakenAll;	   //~va66I~
+        }                                                          //~va66I~
+      if (tdDiscard==null)	//Kan Called                           //~va60R~
+        calledKanAtTake();                                         //~va60I~
+      else                                                         //~va60I~
+      {                                                            //~va60I~
+        int player=accounts.eswnToPlayer(eswn);                    //~va66I~
+        AG.aPlayers.setTileSelected(player,tdDiscard);                    //~1204I~//~va66I~
+        if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0 && !sw2ndCall)//~va66I~
+        {                                                          //~va66M~
+			if (Dump.Y) Dump.println("Robot.afterTakeOne return by TO2_ROBOT_DISCARD_BY_BUTTON");//~va66M~
+        	return;                                                //~va66M~
+        }                                                          //~va66M~
+        String data=ACAction.strTD(tdDiscard);                     //~va60R~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_ROBOTTAKE)//~9A28I~//~9A30I~
           	TestOption.disableBT();                                //~9A28I~//~9A30I~
         sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~@002R~
+      }                                                            //~va60I~
     }                                                              //~@002I~
+	//**************************************************************//~va60I~
+    protected void calledKanAtTake()                               //~va60I~
+    {                                                              //~va60I~
+		if (Dump.Y) Dump.println("Robot.calledKanAtTake");         //~va60I~
+    }                                                              //~va60I~
 	//**************************************************************//~0228I~
 	//*from DrawnReqdlgHW.setDelayedTimeout at continue game to nextplayer//~0229R~
 	//*discard just after taken;send taken data to be discarded    //~0229I~
@@ -220,14 +274,57 @@ public class Robot                                                 //~@002I~
 ////      if (timeoutAutoTake==0)                                    //~9630I~//~9B27R~//~0222R~
 ////          sendTake(Peswn);                                            //~@002R~//~9630R~//~9B27R~//~0222R~
 //    }                                                              //~@002R~//~0222R~
+    //**************************************************************//+va66I~
+    //*from UADiscard at GCM_NEXT_PLAYER at manual mode(not auto take)//+va66I~
+    //**************************************************************//+va66I~
+    public static void nextPlayerManual(int Pplayer)               //+va66I~
+    {                                                              //+va66I~
+        Robot r=AG.aAccounts.getRobot(Pplayer);                    //+va66I~
+        int eswn=r.getCurrentEswnRobot(); //not msg to me          //+va66I~
+        if (Dump.Y) Dump.println("Robot.nextPlayerManual player="+Pplayer+",eswn="+eswn);//+va66I~
+        AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //+va66I~
+        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit");   //+va66I~
+    }                                                              //+va66I~
     //**************************************************************//~9630I~
-    public static void autoTakeTimeout(int Pplayer)                     //~9630I~
+    //*from UATake.autoDiscardTimeout                              //~va60I~
+    //*  issue Chii(Discard will be done by UAT.setAutoDiscardTimeout)//~va60I~
+    //*  ir sendTake                                               //~va60I~
+    //**************************************************************//~va60I~
+    public static void autoTakeTimeout(int Pplayer)                     //~9630I~//+va66R~
     {                                                              //~9630I~
+		if (Dump.Y) Dump.println("Robot.autoTakeTimeout player="+Pplayer);//~va60I~
         Robot r=AG.aAccounts.getRobot(Pplayer);                    //~9630I~
         int eswn=r.getCurrentEswnRobot(); //not msg to me          //~9630I~
         if (Dump.Y) Dump.println("Robot.autoTakeTimeout player="+Pplayer+",eswn="+eswn);//~9630I~
+        if (AG.aRoundStat.autoTakeTimeout(eswn))	//issued Chii  //~va60R~
+        {                                                          //~va60I~
+			if (Dump.Y) Dump.println("Robot.autoTakeTimeout skip send by issueChii");//~va60I~
+        	return;                                                //~va60I~
+        }                                                          //~va60I~
         r.sendTake(eswn);                                          //~9630R~
     }                                                              //~9630I~
+    //**************************************************************//~va60I~
+    //*from UAKan                                                  //~va60I~
+    //**************************************************************//~va60I~
+    public static void autoTakeTimeoutKan(int Pplayer)             //~va60I~
+    {                                                              //~va60I~
+		if (Dump.Y) Dump.println("Robot.autoTakeTimeoutKan player="+Pplayer);//~va60I~
+        Robot r=AG.aAccounts.getRobot(Pplayer);                    //~va60I~
+        int eswn=r.getCurrentEswnRobot(); //msg to me              //~va60I~
+        r.sendTake(eswn);                                          //~va60I~
+    }                                                              //~va60I~
+    //**************************************************************//~va60I~
+    //*From UATake.autoDiscardTimeout                              //~va60I~
+    //**************************************************************//~va60I~
+    public void autoDiscardTimeout(int Pplayer)                    //~va60R~
+    {                                                              //~va60I~
+        int eswn=getCurrentEswnRobot(); //not msg to me          //~va60I~
+        if (Dump.Y) Dump.println("Robot.autoDiscardTimeout player="+Pplayer+",eswn="+eswn);//~va60I~
+		TileData tdDiscard=AG.aRADiscard.selectDiscard(eswn,null); //~va60R~
+        String data=ACAction.strTD(tdDiscard);                     //~va60I~
+        sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~va60I~
+        if (Dump.Y) Dump.println("Robot.autoDiscardTimeout exit"); //~va60I~
+    }                                                              //~va60I~
     //**************************************************************//~@002I~
     //*take after prev player discarded with some delay            //~@002I~
     //**************************************************************//~@002I~
@@ -263,7 +360,7 @@ public class Robot                                                 //~@002I~
 	//*************************************************************************//~v@@@I~//~@002I~
     public  void sendToServer(boolean PswWaiterBlock,int PactionID,int Peswn,String Pdata)//~v@@@R~//~@002R~
     {                                                              //~v@@@I~//~@002I~
-        if (Dump.Y) Dump.println("Robot.sendToServer actionid="+PactionID+"="+GCMsgID.getEnum(PactionID)+",eswn="+Peswn+",msgDataToServer="+Pdata);//~@002I~
+        if (Dump.Y) Dump.println("Robot.sendToServer actionid="+PactionID+"="+GCMsgID.getEnum(PactionID)+",eswn="+Peswn+",initialEswn="+initialEswn+",msgDataToServer="+Pdata);//~@002I~//~va60R~
         String msg=Peswn+MSG_SEPAPP2+Pdata;//~v@@@I~               //~@002R~
 //      AG.aUserAction.actionReceived(PactionID,msg);              //~@002R~
 //      AG.aUserAction.UADL.postDelayed(delayRobot,PactionID,msg);	//after current action process returned//~@002R~

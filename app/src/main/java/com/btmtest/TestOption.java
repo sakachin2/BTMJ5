@@ -1,10 +1,14 @@
-//*CID://+v@@@R~: update#= 480;                                    //~v@@@I~
+//*CID://+va66R~: update#= 488;                                    //~va66R~
 //**********************************************************************//~v@@@I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//**********************************************************************//~va60I~
 //TestOption                                                       //~v@@@I~
 //***********************                                          //~v@@@I~
 //TestChankan                                                      //~v@@@I~
-//  set CHANKAN_DEAL reset Kan with Any tile                       //+v@@@R~
-//                   set long of robot autotake time               //+v@@@I~
+//  set CHANKAN_DEAL reset Kan with Any tile                       //~v@@@R~
+//                   set long of robot autotake time               //~v@@@I~
 //  set Final game to N2N(when 2 player mach, another player :east)//~v@@@I~
 //     amother player Pon 1man and later take 1man and do chankan  //~v@@@I~
 //     you declare ron                                             //~v@@@I~
@@ -71,6 +75,11 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO2_DUMP_SDCARD    =         0x00004000;//~v@@@I~
     public static final int TO2_SETDORA        =         0x00008000;//~v@@@I~
     public static final int TO2_CHKRANK        =         0x00010000;//~v@@@I~
+    public static final int TO2_IT             =         0x00020000;    //Instrument Test//~va60R~
+    public static final int TO2_OPENHAND       =         0x00040000;//~va65I~
+    public static final int TO2_ROBOT_DISCARD_BUTTON=    0x00080000;//~va66I~
+    public static final int TO2_ROBOT_TOAST    =         0x00100000;//~va66I~
+    public static final int TO2_ROBOT_SKIP_REACH =       0x00200000;//~va66I~
     public static int option2;                                     //~v@@@I~
     public static int firstDealer;                                 //~v@@@I~
     public static int finalGameCtrSet,finalGameCtrGame;            //~v@@@I~
@@ -113,7 +122,7 @@ public class TestOption //extends Handler                          //~v@@@I~
 //  	option|=TO_COMPREQDLG_LAYOUT;//  =0x0200;                  //~v@@@R~
 //  	option|=TO_COMPREQDLG_LAYOUT_SHOW;//  =0x0200;             //~v@@@R~
       	option|=TO_DRAWNREQDLG_LAYOUT;//  =0x0200;                 //~v@@@R~
-      	option|=TO_TAKEDISCARD;//        = 0x8000;	//tsumogiri    //~v@@@R~
+//    	option|=TO_TAKEDISCARD;//        = 0x8000;	//tsumogiri    //~v@@@R~//~va60R~
 //    	option|=TO_DRAWNREQDLGHW_LAYOUT;                           //~v@@@R~
       	option|=TO_DRAWNDLGHW_LAYOUT;                              //~v@@@I~
     	option|=TO_SKIPDICE            ;                           //~v@@@R~
@@ -127,6 +136,8 @@ public class TestOption //extends Handler                          //~v@@@I~
     	option|=TO_BIRD_WITH_ROBOT;                                //~v@@@I~
                                                                    //~v@@@I~
     	option2|=TO2_UNIT_MILISEC;                                 //~v@@@I~
+    	option2|=TO2_ROBOT_TOAST;                                  //~va66I~
+//  	option2|=TO2_ROBOT_SKIP_REACH;	//TODO test                //+va66R~
         Dump.println("TestOption.static sst="+sst);                      //~v@@@I~
         sst2="sst2";                                               //~v@@@I~
     }                                                              //~v@@@I~

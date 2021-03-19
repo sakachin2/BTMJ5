@@ -13,12 +13,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 //import android.app.ProgressDialog;                               //+va40R~
 //import android.app.DialogFragment;                               //~va40R~
-import android.support.v4.app.DialogFragment;                      //~va40I~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 //**********************************************************************//~1107I~
 public class ProgDlg extends DialogFragment                        //~v@@@R~

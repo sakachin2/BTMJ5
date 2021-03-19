@@ -1,6 +1,8 @@
-//*CID://+va27R~: update#= 490;                                    //+va27R~
+//*CID://+va66R~: update#= 495;                                    //~va60R~//~va66R~
 //**********************************************************************//~v101I~
-//2020/11/03 va27 Tenpai chk at Reach                              //+va27I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2021/01/07 va60 CalcShanten                                      //~va60I~
+//2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/09/25 va12:add option:2han-30fu for 7pair                   //~va12I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -214,6 +216,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int 	DEFAULT_BIRD_MAX=30000;            //~9430I~
     public static final int 	DEFAULT_BIRD_INC=1000;             //~9430I~
     public static final int 	DEFAULT_BIRD=0;                    //~9430I~
+                                                                   //+va66I~
+    public static final int 	DEFAULT_THINK_ROBOT=1;             //+va66I~
                                                                    //~9413I~
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
     public static final String[] rankDrawnMangan=AG.resource.getStringArray(R.array.DrawnManganRank);//~9413I~
@@ -295,6 +299,9 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_MINUSSTOP_ROBOT       =170;     //~9404I~//~9429I~
     public static final int    RSID_ROBOT_PAY             =171;    //~9429I~
     public static final int    RSID_ALLOW_ROBOT           =172;    //~9607I~
+    public static final int    RSID_THINK_ROBOT           =173;    //~va60I~
+//  public static final int    RSID_ALLOW_ROBOT_ALL       =174;    //~va66R~
+    public static final int    RSID_ALLOW_ROBOT_ALL_BTN   =175;    //~va66I~
                                                                    //~9414I~
     public static final int    RSID_BIRD                  =180;    //~9430I~
     public static final int    RSID_BIRD_PAY              =181;    //~9430I~
@@ -317,7 +324,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_2TOUCH_TIMEOUT        =202;    //~9C09I~
 //  public static final int    RSID_CHECK_RONABLE         =203;    //~0205I~//~va1aR~
     public static final int    RSID_CHECK_RONVALUE        =204;    //~va11I~
-    public static final int    RSID_CHECK_REACH           =205;    //+va27I~
+    public static final int    RSID_CHECK_REACH           =205;    //~va27I~
 //Yaku                                                                   //~9501I~//~9516R~
     public static final int    RSID_8CONTINUE             =300;    //~9516I~
     public static final int    RSID_8CONT_NONEEDYAKU      =301;    //~9516I~
@@ -433,7 +440,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_2TOUCH_CANCELABLE_RON,"2TouchCancelableRon"    ),//~9C10I~
 //  				new RSEnumPair(RSID_CHECK_RONABLE        ,"CheckRonable"           ),//~0205I~//~va1aR~
     				new RSEnumPair(RSID_CHECK_RONVALUE       ,"CheckRonValue"          ),//~va11I~
-    				new RSEnumPair(RSID_CHECK_REACH          ,"CheckReach"             ),//+va27I~
+    				new RSEnumPair(RSID_CHECK_REACH          ,"CheckReach"             ),//~va27I~
     				new RSEnumPair(RSID_2TOUCH_TIMEOUT       ,"2TouchTimeout"        ),//~9C09I~//~9C10R~
     				new RSEnumPair(RSID_TIMEOUT_TAKE         ,"TimeoutTake"          ),//~9622R~
     				new RSEnumPair(RSID_TIMEOUT_TAKEROBOT    ,"TimeoutTakeRobot"     ),//~9701I~
@@ -460,6 +467,9 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_MINUSSTOP_ROBOT      ,"MinusStopRobot"       ),//~9404I~//~9429M~
     				new RSEnumPair(RSID_ROBOT_PAY            ,"RobotPay"             ),//~9429I~
     				new RSEnumPair(RSID_ALLOW_ROBOT          ,"RobotPlayer"          ),//~9607I~
+    				new RSEnumPair(RSID_THINK_ROBOT          ,"ThinkRobot"           ),//~va60I~
+//  				new RSEnumPair(RSID_ALLOW_ROBOT_ALL      ,"RobotPlayerAll"       ),//~va66R~
+    				new RSEnumPair(RSID_ALLOW_ROBOT_ALL_BTN  ,"RobotPlayerAllBtn"    ),//~va66I~
                                                                    //~9429I~
     				new RSEnumPair(RSID_BIRD                 ,"Bird"                 ),//~9430I~
     				new RSEnumPair(RSID_BIRD_PAY             ,"BirdPay"              ),//~9430I~

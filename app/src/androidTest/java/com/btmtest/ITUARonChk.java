@@ -2,8 +2,8 @@ package com.btmtest;
 
 //***********************************                              //~0A31I~
 //import androidx.test.filters.InstrumentationRegistry;            //~0A31R~
-import android.support.test.InstrumentationRegistry;               //~0A31R~
-import android.support.test.runner.AndroidJUnit4;                  //~0A31I~
+import androidx.test.platform.app.InstrumentationRegistry;               //~0A31R~
+import androidx.test.ext.junit.runners.AndroidJUnit4;                  //~0A31I~
 //import androidx.test.platform.app.InstrumentationRegistry;       //~0A31R~
 //import androidx.test.ext.junit.runners.AndroidJUnit4;            //~0A31R~
 //import androidx.test.runners.AndroidJUnit4;                      //~0A31I~
@@ -33,18 +33,19 @@ import static com.btmtest.game.GConst.*;                           //~0A31R~
 @RunWith(AndroidJUnit4.class)
 public class ITUARonChk                                            //~0A31R~
 {                                                                  //~0A31I~
-                                                                   //+0A31I~
-    private MainActivity mActivity;                                //+0A31I~
-//*****************                                                //+0A31I~
-    Context appContext = InstrumentationRegistry.getTargetContext();//~0A31I~
+                                                                   //~0A31I~
+    private MainActivity mActivity;                                //~0A31I~
+//*****************                                                //~0A31I~
+//  Context appContext = InstrumentationRegistry.getTargetContext();//~0A31I~//+1108R~
+    Context appContext = InstrumentationRegistry.getInstrumentation().getContext();//+1108I~
 	UARonChk2 UARC2;                                               //~0A31I~
-                                                                   //+0A31I~
+                                                                   //~0A31I~
     //*************************************************************************//~0A31M~
-    @Rule                                                          //+0A31R~
-//    public ActivityTestRule<MainActivity> mRule=                   //+0A31I~
-//            new ActivityTestRule<>(MainActivity.class);            //+0A31I~
-    //*************************************************************************//+0A31I~
-    @Before                                                        //+0A31I~
+    @Rule                                                          //~0A31R~
+//    public ActivityTestRule<MainActivity> mRule=                   //~0A31I~
+//            new ActivityTestRule<>(MainActivity.class);            //~0A31I~
+    //*************************************************************************//~0A31I~
+    @Before                                                        //~0A31I~
     public void setUp() throws Exception                           //~0A31M~
     {                                                              //~0A31M~
         initMain();                                                //~0A31M~
@@ -54,9 +55,9 @@ public class ITUARonChk                                            //~0A31R~
     private void initMain()                                        //~0A31I~
     {                                                              //~0A31I~
 //      MainActivity ma=new MainActivity();                        //~0A31R~
-//        mActivity=mRule.getActivity();                             //+0A31I~
+//        mActivity=mRule.getActivity();                             //~0A31I~
         Dump.openExOnlyTerminal();	//write exception only to Terminal//~0A31I~
-        new StaticVars(mActivity);	//new AG().init(this);         //+0A31R~
+        new StaticVars(mActivity);	//new AG().init(this);         //~0A31R~
         Dump.open("");	//write all to Terminal log,not exception only//~0A31I~
         if (Dump.Y) Dump.println("TestUARonChk.constructor");      //~0A31I~
     }                                                              //~0A31I~

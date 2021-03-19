@@ -1,8 +1,10 @@
-//*CID://+va40R~:                             update#=  502;       //+va40R~
+//*CID://+va69R~:                             update#=  504;       //+va69R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/02/12 va69 (BUG)BTCDialog;disconnect button is disable at connection failed even another connection is active//+va69I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
 //2020/10/05 va13:remember device selected                         //~va13I~
 //2020/06/02 va10:BTCDialog search contains bug for null value; delete the function which is never called//~va10I~
@@ -875,8 +877,8 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         showWaitingMsg();                                          //~v@@@R~
     	if (Dump.Y) Dump.println("BTCDialog afterDismiss return connectionType="+connectionType);//~3207I~//~v@@@R~//~va13I~
         AG.aBTCDialog=null;                                     //~1A6kI~//~v@@@R~
-        boolean enable=(connectionType!=ROLE_CLIENT)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~
-	    AG.aMainView.enableStartGame(enable); //~9620R~            //~9724R~
+//      boolean enable=(connectionType!=ROLE_CLIENT)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~//~va66R~
+//      AG.aMainView.enableStartGame(enable); //enable even connectCtr=0 for play alone//~va66R~
     }                                                              //~3201I~
     //******************************************                   //~v@@@I~
 	public void showWaitingMsg()                                   //~v@@@R~
@@ -1626,16 +1628,16 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 //      if (PmemberCtr!=0) //disable when connected to anyone      //~9928R~//~9A23R~
         if (PmemberCtr!=0 || isReconnecting()) //disable when connected to anyone//~9A23I~
         {                                                          //~v@@@I~
-//      	int colorEditableDisabled=AG.resource.getColor(COLOR_EDITABLE_DISABLED);//+va40R~
-        	int colorEditableDisabled=AG.getColor(COLOR_EDITABLE_DISABLED);//+va40I~
+//      	int colorEditableDisabled=AG.resource.getColor(COLOR_EDITABLE_DISABLED);//~va40R~
+        	int colorEditableDisabled=AG.getColor(COLOR_EDITABLE_DISABLED);//~va40I~
 	        PetYourName.editText.setBackgroundColor(colorEditableDisabled);//~v@@@R~//~9722R~
 	        PetYourName.editText.setEnabled(false);                          //~v@@@I~//~9722R~
 	        PetYourName.editText.setTextColor(Color.BLACK);         //~v@@@I~//~9722R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
-//      	int colorEditable=AG.resource.getColor(COLOR_EDITABLE);        //~v@@@I~//+va40R~
-        	int colorEditable=AG.getColor(COLOR_EDITABLE);         //+va40I~
+//      	int colorEditable=AG.resource.getColor(COLOR_EDITABLE);        //~v@@@I~//~va40R~
+        	int colorEditable=AG.getColor(COLOR_EDITABLE);         //~va40I~
 	        PetYourName.editText.setBackgroundColor(colorEditable);  //~v@@@R~//~9722R~
 	        PetYourName.editText.setEnabled(true);                           //~v@@@I~//~9722R~
         }                                                          //~v@@@I~
@@ -1692,6 +1694,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
                 btnAccept.setEnabled(true);                            //~v@@@I~//~@002R~
                 btnStopAccept.setEnabled(false);                       //~v@@@I~//~@002R~
                 btnConnect.setEnabled(true);                           //~v@@@I~//~@002R~
+              if (connectedCtr==0)                                 //+va69I~
                 btnDisconnect.setEnabled(false);                       //~v@@@I~//~@002R~
                 break;                                                 //~v@@@I~//~@002R~
             case CS_DISCONNECTED://server & client action              //~v@@@I~//~@002R~

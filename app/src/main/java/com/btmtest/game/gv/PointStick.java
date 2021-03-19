@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 572;                                    //~v@@@R~//~9506R~
+//*CID://+va60R~: update#= 574;                                    //~v@@@R~//~9506R~//~va60R~
 //**********************************************************************//~v101I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -53,6 +54,10 @@ public class PointStick                                            //~v@@@R~
     private Players PLS;                                           //~v@@@I~
     private boolean swShowReachLying=true;                         //~9510I~
 //*************************                                        //~v@@@I~
+	public PointStick() //default constructor for ITMock           //~va60I~
+    {                                                              //~va60I~
+    	AG.aPointStick=this;                                       //+va60I~
+    }                                                              //~va60I~
 	public PointStick(GCanvas Pgcanvas)                            //~v@@@R~
     {                                                              //~0914I~
     	AG.aPointStick=this;                                       //~v@@@R~
@@ -525,8 +530,8 @@ public class PointStick                                            //~v@@@R~
         int textSize=Phh;                                          //~9510I~
         paintCtr.setTextSize(textSize);                            //~9510I~
         Rect r=Prect;                                              //~9510I~
-//      Bitmap bm=Bitmap.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//~9510I~//+0216R~
-        Bitmap bm=Graphics.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//+0216I~
+//      Bitmap bm=Bitmap.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//~9510I~//~0216R~
+        Bitmap bm=Graphics.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//~0216I~
         Canvas cc=new Canvas(bm);                                  //~9510I~
         Graphics.drawText(cc,Integer.toString(PreachCtr),0,Phh-BASELINE_REACH,paintCtr);//~9510R~
 		Bitmap  bmr=rotateByPosition(bm,Pplayer);                  //~9510I~
@@ -543,8 +548,8 @@ public class PointStick                                            //~v@@@R~
         int textSize=Phh;                                          //~9509I~
         paintCtr.setTextSize(textSize);                               //~9509I~
         Rect r=Prect;                                              //~9506I~
-//      Bitmap bm=Bitmap.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//~9506R~//+0216R~
-        Bitmap bm=Graphics.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//+0216I~
+//      Bitmap bm=Bitmap.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//~9506R~//~0216R~
+        Bitmap bm=Graphics.createBitmap(Pww,Phh,Bitmap.Config.ARGB_8888);//~0216I~
         Canvas cc=new Canvas(bm);                                  //~9506I~
         Graphics.drawRect(cc,new Rect(0,0,Pww,Phh),COLOR_BG_TABLE);                    //~9506I~//~9509R~
 //      Graphics.drawText(cc,Integer.toString(PreachCtr),0,0,paintCtr);            //~9506I~//~9509R~
@@ -583,8 +588,8 @@ public class PointStick                                            //~v@@@R~
             int ww=bm.getWidth();                                  //~9506I~
             int hh=bm.getHeight();                                 //~9506I~
             matrix.setRotate(degree,ww/2,hh/2);                    //~9506I~
-//      	bm=Bitmap.createBitmap(bm,0,0,ww,hh,matrix,true);      //~9506I~//+0216R~
-        	bm=Graphics.createBitmap(bm,0,0,ww,hh,matrix,true);    //+0216I~
+//      	bm=Bitmap.createBitmap(bm,0,0,ww,hh,matrix,true);      //~9506I~//~0216R~
+        	bm=Graphics.createBitmap(bm,0,0,ww,hh,matrix,true);    //~0216I~
 	        if (Dump.Y) Dump.println("NamePlate.rotateByPosition rotate degree="+degree+",ww="+ww+",hh="+hh);//~9506I~
         }                                                          //~9506I~
         return bm;                                                 //~9506I~

@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 606;                                    //~v@@@R~//~9818R~
+//*CID://+va66R~: update#= 610;                                    //~va66R~
 //**********************************************************************//~v101I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
                                                                    //~v@@@I~
@@ -165,11 +166,11 @@ public class ACATouch                                              //~v@@@R~
 //***************************************************************************//~v@@@I~
 //*on Server by GCM_LIGHT_ENABLE msg                               //~v@@@R~
 //***************************************************************************//~v@@@I~
-	public void light_Enable(int Pplayer)                          //~v@@@R~
-    {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("ACATouch.light_enable player="+Pplayer);//~v@@@I~
-    	enableLight(Pplayer,true/*swResetAll*/);                   //~v@@@R~
-    }                                                              //~v@@@I~
+//    public void light_Enable(int Pplayer)                          //~v@@@R~//+va66R~
+//    {                                                              //~v@@@I~//+va66R~
+//        if (Dump.Y) Dump.println("ACATouch.light_enable player="+Pplayer);//~v@@@I~//+va66R~
+//        enableLight(Pplayer,true/*swResetAll*/);                   //~v@@@R~//+va66R~
+//    }                                                              //~v@@@I~//+va66R~
 //***************************************************************************//~v@@@R~
 //*on Server by GCM_LIGHT_TOUCHED_RESP msg                         //~v@@@R~
 //***************************************************************************//~v@@@R~
@@ -315,9 +316,14 @@ public class ACATouch                                              //~v@@@R~
 //***************************************************************************//~v@@@I~
 	private void positionAcceptedAll()                             //~v@@@R~
     {                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("ACATouch.positionTile isServer="+isServer+",tempStarter="+accounts.tempStarter+",idxLocal="+accounts.idxLocal);//~v@@@R~
+        if (Dump.Y) Dump.println("ACATouch.positionAcceptedAll isServer="+isServer+",tempStarter="+accounts.tempStarter+",idxLocal="+accounts.idxLocal);//~v@@@R~//~va66R~
 //        showReadyToMove();                                       //~v@@@R~
 //        sendMoveData();                                          //~v@@@R~
+		if (AG.swTrainingMode)                                     //~va66I~
+        {                                                          //~va66I~
+            showReadyToMove();                                     //~va66I~
+        }                                                          //~va66I~
+        else                                                       //~va66I~
 		if (isServer)                                              //~v@@@I~
         {                                                          //~v@@@I~
     		resetCtrResponsed();                                   //~v@@@I~
@@ -340,7 +346,8 @@ public class ACATouch                                              //~v@@@R~
         boolean swShadow=accounts.tempStarter==accounts.idxLocal;          //~v@@@I~
       if (isServer)                                                //~0222I~
         sendStatusChange(GS_POSITION_ACCEPTED);                    //~v@@@I~
-	    enableLight(accounts.tempStarter,swShadow);                //~v@@@M~
+//	    enableLight(accounts.tempStarter,swShadow);                //~v@@@M~//~va66R~
+  	    enableLight(accounts.tempStarter,true/*swResetAll*/);      //~va66I~
 	}                                                              //~v@@@I~
 //***************************************************************************//~v@@@I~
 	private void sendMoveData()                                    //~v@@@R~
@@ -396,7 +403,7 @@ public class ACATouch                                              //~v@@@R~
 //            if (Status.isSuspendGame()) //SuspendDlg Opened      //~0307R~
 //                accounts.nextGameWithoutSuspended();                   //~9830R~//~9905R~//~0307R~
 //          if (Pstatus==GS_READY_TO_NEXTGAME_CONTINUE)            //~0307I~//~0308R~
-        	if (Status.isSuspendRequested())                       //+0308R~
+        	if (Status.isSuspendRequested())                       //~0308R~
                 accounts.nextGameWithoutSuspended();               //~0307I~
             break;                                                 //~v@@@I~
 //        case GS_SUSPENDGAME:    //cliend                         //~v@@@R~
@@ -611,6 +618,12 @@ public class ACATouch                                              //~v@@@R~
 //  		addCtrResponsed();  //of server, sendTouched will +1   //~v@@@R~
         	accounts.positionMove();                               //~v@@@I~
         }                                                          //~v@@@I~
+	  if (AG.swTrainingMode)    //assume all responsed positionmoved//~va66I~
+      {                                                            //~va66I~
+        if (Dump.Y) Dump.println("ACATouch.touchLightPositionMove trainingmode goto showReadyToStartGame");//~va66I~
+    	showReadyToStartGame();                                    //~va66I~
+      }                                                            //~va66I~
+      else                                                         //~va66I~
         sendTouched(accounts.tempStarter);	//send GCM_LIGHT_TOUCHED//~v@@@R~
     }                                                              //~v@@@I~
 ////***************************************************************************//~v@@@R~

@@ -1,7 +1,8 @@
-//*CID://+va05R~: update#= 582;                                    //+va05R~
+//*CID://+va60R~: update#= 583;                                    //~va05R~//+va60R~
 //**********************************************************************//~v101I~
-//2020/04/26 va05:sound effect at positioning tile get             //+va05I~
-//**********************************************************************//+va05I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2020/04/26 va05:sound effect at positioning tile get             //~va05I~
+//**********************************************************************//~va05I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                       //~0303R~
@@ -73,6 +74,9 @@ public class River                                                 //~v@@@R~
     private boolean swRiverCleared;                                //~0324I~
     public int stroke_width_river;                                 //~0401I~
 //*************************                                        //~v@@@I~
+	public River()  //for IT extends                               //+va60I~
+    {                                                              //+va60I~
+    }                                                              //+va60I~
 	public River(GCanvas Pgcanvas)                                 //~v@@@R~
     {                                                              //~0914I~
     	AG.aRiver=this;                                             //~v@@@I~
@@ -907,7 +911,7 @@ public class River                                                 //~v@@@R~
 //        }                                                        //~v@@@R~
 //        Graphics.unlockCanvas(canvas);                           //~v@@@R~
         Graphics.drawBitmap(rect,bm);                          //~v@@@I~
-   		Sound.play(SOUNDID_TAKE,false/*not change to beep when beeponly option is on*/);//+va05I~
+   		Sound.play(SOUNDID_TAKE,false/*not change to beep when beeponly option is on*/);//~va05I~
         return ctrSelected==PLAYERS;                               //~v@@@R~
     }                                                              //~v@@@I~
     //******************************************************       //~v@@@I~

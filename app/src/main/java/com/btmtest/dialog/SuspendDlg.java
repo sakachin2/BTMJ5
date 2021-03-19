@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#= 1243;       //~9A21R~
+//*CID://+DATER~:                             update#= 1244;       //~9A21R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -813,7 +813,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
 //                }                                                  //~9321I~//~9822R~
                 if (UAEndGame.isUpdateAfterSendServer())           //~0314R~
                 {                                                  //~0314I~
-                    if (Dump.Y) Dump.println("SuspendDlg.onReceivedRequest COMPRESULT RESP updateAfterSend");//+0314R~
+                    if (Dump.Y) Dump.println("SuspendDlg.onReceivedRequest COMPRESULT RESP updateAfterSend");//~0314R~
                     break;                                         //~0314I~
                 }                                                  //~0314I~
                 int replyEswn=PintParm[POS_REPLAY_ESWN];           //~9822I~
@@ -990,12 +990,12 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
     //**************************************************************************//~9824I~
     protected void suspendGameSuspend()                              //~9824R~//~v@01R~
     {                                                              //~9824I~
-        if (Dump.Y) Dump.println("SuspendDlg.suspendGameSuspend type="+endgameType);//~9824R~
 //      AG.aAccounts.setScore(PnewTotal);                          //~9824I~
 //  	AG.aNamePlate.showScore();      //show AG.aAccounts.score  //~9824R~
 //  	Status.endGame(endgameType,NGTP_GAMEOVER);   //reset ctrGame to 0,affect to getCurrentEswn and OKNGDlg.isdealer()//~9824I~
 		Rect r=Status.getGameSeq();                                //~9824I~
 	    r.bottom+=AG.aPlayers.ctrReach; //reachctr is not yet set(it will be set at Status.setGameSeq//~9829I~
+        if (Dump.Y) Dump.println("SuspendDlg.suspendGameSuspend type="+endgameType+",ctrReach="+AG.aPlayers.ctrReach+",gameSeqReach="+r.bottom);//~9824R~//+1312I~
         int[] gameSeq=new int[]{r.left/*wind*/,r.top/*gamectr*/,r.right/*dupctr*/,r.bottom/*reach ctr*/};//~9824I~
                                                                    //~9829I~
     	int[] score=AG.aAccounts.score;                            //~9824I~

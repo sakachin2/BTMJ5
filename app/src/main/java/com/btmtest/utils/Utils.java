@@ -1,5 +1,6 @@
-//*CID://+va40R~: update#= 269;                                    //~1Ac0R~//~v@@@R~//~@@01R~//~va40R~
+//*CID://+va60R~: update#= 285;                                    //~va60R~
 //**********************************************************************//~1107I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //@@01 20181105 for BTMJ3                                            //~@@01I~
@@ -31,11 +32,11 @@ import android.net.Uri;
 import android.graphics.Color;                                     //~v@@@I~
 //import android.app.DialogFragment;                               //~va40R~
 import android.os.Build;
-import android.support.v4.app.DialogFragment;                      //~va40I~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.text.Html;
 import android.text.Spanned;
 
-import static android.support.v4.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
+import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.AG.*;//~v@21I~//~@@01I~
 
@@ -696,6 +697,129 @@ public class Utils                                            //~1309R~//~@@@@R~
         if (Dump.Y) Dump.println("Utils.toString(String[][]) out="+s);//~@@01R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
+    //*************************************************            //~va60I~
+    public static String toString(int[] Psa2)                      //~va60I~
+    {                                                              //~va60I~
+        if (Psa2==null)                                            //~va60I~
+        	return "null";                                         //~va60I~
+        return Arrays.toString(Psa2);                              //~va60I~
+    }                                                              //~va60I~
+    //*************************************************            //~va40I~
+    public static String toString(int[] Psa2,int PctrSplit)        //~va40I~
+    {                                                              //~va40I~
+    	return toString(Psa2,PctrSplit,Psa2.length);               //~va40I~
+    }                                                              //~va40I~
+    //*************************************************            //~va60I~
+    public static String toHexString(int[] Psa2)                   //~va60I~
+    {                                                              //~va60I~
+        StringBuffer sb=new StringBuffer();                        //~va60I~
+        sb.append("[");                                            //~va60I~
+        if (Psa2==null)                                            //~va60I~
+	        sb.append("null");                                     //~va60I~
+        else                                                       //~va60I~
+        {                                                          //~va60I~
+        	int ctrMax=Psa2.length;                                    //~va60I~
+            for (int ii=0;ii<ctrMax;ii++)     //account sequence   //~va60I~
+            {                                                      //~va60I~
+                sb.append(Integer.toHexString(Psa2[ii]));          //~va60I~
+                if (ii!=ctrMax-1)                                  //~va60I~
+                	sb.append(",");                                //~va60I~
+            }                                                      //~va60I~
+        }                                                          //~va60I~
+        sb.append("]");                                            //~va60I~
+        String s=sb.toString();                                    //~va60I~
+        return s;                                                  //~va60I~
+    }                                                              //~va60I~
+    //*************************************************            //~va60I~
+    public static String toStringMax(int[] Psa2,int PctrMax)       //~va60I~
+    {                                                              //~va60I~
+		return toString(Psa2,-1,PctrMax);                          //~va60I~
+    }                                                              //~va60I~
+    //*************************************************            //~va40I~
+    //*splitctr: 0=all,-1=up to max ctr                            //~va60I~
+    //*************************************************            //~va60I~
+    public static String toString(int[] Psa2,int PctrSplit,int PctrMax)//~va40I~
+    {                                                              //~va40I~
+        if (Psa2==null)                                            //~va60I~
+        	return "null";                                         //~va60I~
+    	if (PctrSplit==0)                                          //~va40I~
+        {                                                          //~va40I~
+        	return Arrays.toString(Psa2);                          //~va40I~
+        }                                                          //~va40I~
+        int ctrMax=Math.min(PctrMax,Psa2.length);                 //~va40I~
+        StringBuffer sb=new StringBuffer();                        //~va40I~
+        sb.append("[");                                            //~va40I~
+        if (Psa2==null)                                            //~va40I~
+	        sb.append("null");                                     //~va40I~
+        else                                                       //~va40I~
+        for (int ii=0;ii<ctrMax;ii++)     //account sequence       //~va40I~
+        {                                                          //~va40I~
+        	if (ii!=0)                                             //~va40I~
+                if (PctrSplit<0)                                   //~va60R~
+    	        	sb.append(",");                                //~va60I~
+                else                                               //~va60I~
+            	if (ii%PctrSplit==0)                               //~va40I~
+                {                                                  //~va40I~
+	    	        sb.append("]");                                //~va40I~
+//                  if (ii+1<ctrMax)                               //~va40I~//+va60R~
+                    if (ii<ctrMax)                                 //+va60I~
+		    	        sb.append("[");                            //~va40I~
+                }                                                  //~va40I~
+                else                                               //~va40I~
+    	        	sb.append(",");                                //~va40I~
+            sb.append(Integer.toString(Psa2[ii]));                 //~va40I~
+        }                                                          //~va40I~
+        sb.append("]");                                            //~va40I~
+        String s=sb.toString();                                    //~va40I~
+//      if (Dump.Y) Dump.println("Utils.toString(int[][]) out="+s);//~va40I~
+        return s;                                                  //~va40I~
+    }                                                              //~va40I~
+    //*************************************************            //~va60I~
+    public static String toString(boolean[] Psa2,int PctrSplit)    //~va60I~
+    {                                                              //~va60I~
+    	if (Psa2==null)                                            //~va60I~
+        	return "null";                                         //~va60I~
+    	return toString(Psa2,PctrSplit,Psa2.length);               //~va60I~
+    }                                                              //~va60I~
+    //*************************************************            //~va60I~
+    public static String toStringMax(boolean[] Psa2,int PctrMax)   //~va60I~
+    {                                                              //~va60I~
+		return toString(Psa2,-1,PctrMax);                          //~va60I~
+    }                                                              //~va60I~
+    //*************************************************            //~va60I~
+    public static String toString(boolean[] Psa2,int PctrSplit,int PctrMax)//~va60I~
+    {                                                              //~va60I~
+        if (Psa2==null)                                            //~va60I~
+        	return "null";                                         //~va60I~
+    	if (PctrSplit==0)                                          //~va60I~
+        {                                                          //~va60I~
+        	return Arrays.toString(Psa2);                          //~va60I~
+        }                                                          //~va60I~
+        int ctrMax=Math.min(PctrMax,Psa2.length);                  //~va60I~
+        StringBuffer sb=new StringBuffer();                        //~va60I~
+        sb.append("[");                                            //~va60I~
+        if (Psa2==null)                                            //~va60I~
+	        sb.append("null");                                     //~va60I~
+        else                                                       //~va60I~
+        for (int ii=0;ii<ctrMax;ii++)     //account sequence       //~va60I~
+        {                                                          //~va60I~
+        	if (ii!=0)                                             //~va60I~
+            	if (ii%PctrSplit==0)                               //~va60I~
+                {                                                  //~va60I~
+	    	        sb.append("]");                                //~va60I~
+//                  if (ii+1<ctrMax)                               //+va60R~
+                    if (ii<ctrMax)                                 //+va60I~
+		    	        sb.append("[");                            //~va60I~
+                }                                                  //~va60I~
+                else                                               //~va60I~
+    	        	sb.append(",");                                //~va60I~
+            sb.append(Psa2[ii]?"T":"-");                           //~va60R~
+        }                                                          //~va60I~
+        sb.append("]");                                            //~va60I~
+        String s=sb.toString();                                    //~va60I~
+//      if (Dump.Y) Dump.println("Utils.toString(int[][]) out="+s);//~va60I~
+        return s;                                                  //~va60I~
+    }                                                              //~va60I~
     //*************************************************            //~@@01I~
     public static String toString(int[][] Psa2)                    //~@@01I~
     {                                                              //~@@01I~
@@ -712,7 +836,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         }                                                          //~@@01I~
         sb.append("]");                                            //~@@01I~
         String s=sb.toString();                                    //~@@01I~
-        if (Dump.Y) Dump.println("Utils.toString(int[][]) out="+s);//~@@01I~
+//      if (Dump.Y) Dump.println("Utils.toString(int[][]) out="+s);//~@@01I~//~va40R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
     //*************************************************            //~@@01I~
@@ -731,7 +855,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         }                                                          //~@@01I~
         sb.append("]");                                            //~@@01I~
         String s=sb.toString();                                    //~@@01I~
-        if (Dump.Y) Dump.println("Utils.toString(boolean[][]) out="+s);//~@@01I~
+//      if (Dump.Y) Dump.println("Utils.toString(boolean[][]) out="+s);//~@@01I~//~va40R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
     //*************************************************            //~@@01I~
@@ -750,7 +874,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         }                                                          //~@@01I~
         sb.append("]");                                            //~@@01I~
         String s=sb.toString();                                    //~@@01I~
-        if (Dump.Y) Dump.println("Utils.toString(Rect[]) out="+s); //~@@01I~
+//      if (Dump.Y) Dump.println("Utils.toString(Rect[]) out="+s); //~@@01I~//~va40R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
     //*************************************************            //~@@01I~
@@ -769,7 +893,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         }                                                          //~@@01I~
         sb.append("]");                                            //~@@01I~
         String s=sb.toString();                                    //~@@01I~
-        if (Dump.Y) Dump.println("Utils.toString(Rect[][]) out="+s);//~@@01I~
+//      if (Dump.Y) Dump.println("Utils.toString(Rect[][]) out="+s);//~@@01I~//~va40R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
     //*************************************************            //~@@01I~
@@ -932,7 +1056,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         	task.moveToFront();                                    //~@@01R~
         }                                                          //~@@01I~
     }                                                              //~@@01I~
-	@SuppressWarnings("deprecation")                               //+va40I~
+	@SuppressWarnings("deprecation")                               //~va40I~
     //*******************************************************************//~@@01I~
     public static int getAppID_Under_LOLLIPOP(String Ppkgname)     //~@@01I~
     {                                                              //~@@01I~
