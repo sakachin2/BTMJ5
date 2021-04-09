@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 287;
+//*CID://+va79R~: update#= 290;                                    //~va79R~
 //**********************************************************************
+//2021/04/05 va79 (Bug)hung when ron at take without ronable       //~va79I~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -156,7 +157,7 @@ public class RADSmart
             {                                                      //~1206I~
         		if (callRonTaken(itsHand,PtdTaken))                //~1206I~
             	{                                                  //~1206I~
-		        	if (Dump.Y) Dump.println("RADSmart.selectSmartTaken under reach return null after Ron declared tdTaken="+PtdTaken.toString());//~1206I~
+		        	if (Dump.Y) Dump.println("RADSmart.selectSmartTaken under reach return null after Ron issued tdTaken="+PtdTaken.toString());//~1206I~//~va79R~
             		return null;                                   //~1206I~
             	}                                                  //~1206I~
             }                                                      //~1206I~
@@ -173,7 +174,7 @@ public class RADSmart
         {                                                          //~1126I~
         	if (callRonTaken(itsHand,PtdTaken))                    //~1126I~
             {                                                      //~1126I~
-		        if (Dump.Y) Dump.println("RADSmart.selectSmartTaken return null after Ron declared tdTaken="+PtdTaken.toString());//~1126I~
+		        if (Dump.Y) Dump.println("RADSmart.selectSmartTaken return null after Ron issued tdTaken="+PtdTaken.toString());//~1126I~//~1405R~
             	return null;                                       //~1126I~
             }                                                      //~1126I~
         }                                                          //~1126I~
@@ -262,8 +263,11 @@ public class RADSmart
     private boolean callRonTaken(int[] PitsHand,TileData PtdTaken)
     {
         if (Dump.Y) Dump.println("RADSmart.callRonTaken tdTaken="+PtdTaken.toString());
-        AG.aRARon.callRonTaken(playerDiscard,eswnDiscard,PitsHand,PtdTaken);
-        return true;
+//      AG.aRARon.callRonTaken(playerDiscard,eswnDiscard,PitsHand,PtdTaken);//~va79R~
+//      return true;                                               //~va79R~
+        boolean rc=AG.aRARon.callRonTaken(playerDiscard,eswnDiscard,PitsHand,PtdTaken);//~va79R~
+        if (Dump.Y) Dump.println("RADSmart.callRonTaken rc="+rc);  //+va79I~
+        return rc;                                                 //~va79R~
     }
     //***********************************************************************
     public int getShanten(boolean PswSetIntent,int PctrHand)       //~1121R~
@@ -559,28 +563,28 @@ public class RADSmart
     public int getCtrDoraInEarch()                                 //~1313I~
     {                                                              //~1313I~
 		int rc=getCtrDoraEarth(eswnDiscard);                      //~1313I~
-        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInEarth eswn="+eswnDiscard+",rc="+rc);//+1313R~
+        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInEarth eswn="+eswnDiscard+",rc="+rc);//~1313R~
         return rc;                                                 //~1313I~
     }                                                              //~1313I~
     //***********************************************************************//~1313I~
     public int getCtrDoraInEarth(int Peswn)                        //~1313I~
     {                                                              //~1313I~
 		int rc=getCtrDoraEarth(Peswn);                             //~1313I~
-        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInEarth eswn="+Peswn+",rc="+rc);//+1313R~
+        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInEarth eswn="+Peswn+",rc="+rc);//~1313R~
         return rc;                                                 //~1313I~
     }                                                              //~1313I~
     //***********************************************************************//~1313I~
     public int getCtrDoraInHandAndEarch()                          //~1313I~
     {                                                              //~1313I~
 		int rc=getCtrDoraInHandAndEarth(eswnDiscard);             //~1313I~
-        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInHandAndEarth eswn="+eswnDiscard+",rc="+rc);//+1313R~
+        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInHandAndEarth eswn="+eswnDiscard+",rc="+rc);//~1313R~
         return rc;                                                 //~1313I~
     }                                                              //~1313I~
     //***********************************************************************//~1313I~
     public int getCtrDoraInHandAndEarth(int Peswn)                 //~1313I~
     {                                                              //~1313I~
 		int rc=getCtrDoraInHand(Peswn)+getCtrDoraInEarth(Peswn);    //~1313I~
-        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInHandAndEarth eswn="+Peswn+",rc="+rc);//+1313R~
+        if (Dump.Y) Dump.println("RADSmart.getCtrDoraInHandAndEarth eswn="+Peswn+",rc="+rc);//~1313R~
         return rc;                                                 //~1313I~
     }                                                              //~1313I~
     //***********************************************************************//~1221I~

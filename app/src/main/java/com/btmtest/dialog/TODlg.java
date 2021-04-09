@@ -1,6 +1,6 @@
-//*CID://+va66R~:                             update#=  484;       //+va66R~
+//*CID://+va66R~:                             update#=  492;       //~va66R~
 //*****************************************************************//~v101I~
-//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
@@ -82,7 +82,15 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String WAITSELECT_PON="WaitSelectPon";    //~v@@@R~
     private static final String WAITSELECT_CHII="WaitSelectChii";  //~v@@@I~
     private static final String OPENHAND       ="OpenHand";        //~va65I~
-    private static final String ROBOT_DISCARD_BUTTON="RobotDiscardButton";//+va66I~
+    private static final String ROBOT_DISCARD_BUTTON="RobotDiscardButton";//~va66I~
+    private static final String DEAL_MULTIRON="DealMultiRon";      //~va66I~
+    private static final String DEAL_SINGLERON="DealSingleRon";    //~va66I~
+    private static final String PONDEAL="PonDeal";                 //~va66I~
+    private static final String CHIIDEAL="ChiiDeal";               //~va66I~
+    private static final String PONCHIIDEAL="PonChiiDeal";         //~va66I~
+    private static final String DOUBLERONDEAL="DoubleRonReal";     //~va66I~
+    private static final String KANAFTERREACHDEAL="KanAfterReach"; //~va66I~
+    private static final String CALL1ST="Call1st";                 //~va66I~
                                                                    //~v@@@I~
     private static final int[] rbIDFirstDealer=new int[]{R.id.rbFirstDealer0,R.id.rbFirstDealer1,R.id.rbFirstDealer2,R.id.rbFirstDealer3,R.id.rbFirstDealer4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrSet=new int[]{R.id.rbFinalSet1,R.id.rbFinalSet2,R.id.rbFinalSet3,R.id.rbFinalSet4};//~v@@@I~
@@ -109,9 +117,14 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbSuspend;                                   //~v@@@I~
     private UCheckBox cbBTIOErr;                                   //~v@@@I~
     private UCheckBox cbKanDeal,cbWaitSelectPon,cbWaitSelectChii;  //~v@@@R~
+    private UCheckBox cbPonDeal;                                   //~va66I~
+    private UCheckBox cbChiiDeal;                                  //~va66I~
+    private UCheckBox cbPonChiiDeal,cbDoubleRonDeal,cbKanAfterReachDeal;   //~va66R~
+    private UCheckBox cbCall1st;                                   //~va66I~
     private UCheckBox cbKanDealAnkan,cbKanDealChankan;                             //~0406I~//~0407R~
     private UCheckBox cbOpenHand;                                  //~va65I~
-    private UCheckBox cbRobotDiscardButton;                        //+va66I~
+    private UCheckBox cbRobotDiscardButton;                        //~va66I~
+    private UCheckBox cbDealMultiRon,cbDealSingleRon;              //~va66I~
     private Prop prop;                                             //~v@@@I~
     private boolean swChanged;                                     //~v@@@I~
     private URadioGroup rgFirstDealer;                             //~v@@@I~
@@ -177,10 +190,18 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbRuleNoSync=new UCheckBox(PView,R.id.cbRuleNoSync);       //~v@@@I~
     	cbSuspend   =new UCheckBox(PView,R.id.cbSuspend);          //~v@@@I~
     	cbKanDeal   =new UCheckBox(PView,R.id.cbKanDeal);          //~v@@@I~
+    	cbPonDeal   =new UCheckBox(PView,R.id.cbPonDeal);          //~va66I~
+    	cbChiiDeal   =new UCheckBox(PView,R.id.cbChiiDeal);        //~va66I~
+    	cbPonChiiDeal   =new UCheckBox(PView,R.id.cbPonChiiDeal);  //~va66I~
+    	cbDoubleRonDeal   =new UCheckBox(PView,R.id.cbDoubleRonDeal);  //~va66I~
+    	cbKanAfterReachDeal=new UCheckBox(PView,R.id.cbKanAfterReachDeal);//~va66I~
+    	cbCall1st   =new UCheckBox(PView,R.id.cbCall1st);          //~va66I~
     	cbKanDealAnkan   =new UCheckBox(PView,R.id.cbKanDealAnkan);//~0406I~//~0407R~
     	cbKanDealChankan   =new UCheckBox(PView,R.id.cbKanDealChankan);//~0407I~
     	cbOpenHand         =new UCheckBox(PView,R.id.cbOpenHand);  //~va65I~
-    	cbRobotDiscardButton=new UCheckBox(PView,R.id.cbRobotDiscardButton);//+va66I~
+    	cbRobotDiscardButton=new UCheckBox(PView,R.id.cbRobotDiscardButton);//~va66I~
+    	cbDealMultiRon      =new UCheckBox(PView,R.id.cbDealMultiRon);//~va66I~
+    	cbDealSingleRon     =new UCheckBox(PView,R.id.cbDealSingleRon);//~va66I~
     	cbBTIOErr   =new UCheckBox(PView,R.id.cbBTIOErr);          //~v@@@I~
         rgBTIOErr   =new URadioGroup(PView,R.id.rgBTIOErr,0,rbIDBTIOErr);//~v@@@I~
     	cbWaitSelectPon=new UCheckBox(PView,R.id.cbWaitSelectPon); //~v@@@R~
@@ -259,10 +280,18 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbSuspend.setStateInt(Pprop.getParameter(RULE_SUSPEND,0)); //~v@@@I~
     	cbBTIOErr.setStateInt(Pprop.getParameter(DISABLEBT,0));    //~v@@@I~
     	cbKanDeal.setStateInt(Pprop.getParameter(KANDEAL,0));      //~v@@@I~
+    	cbPonDeal.setStateInt(Pprop.getParameter(PONDEAL,0));      //~va66I~
+    	cbChiiDeal.setStateInt(Pprop.getParameter(CHIIDEAL,0));    //~va66I~
+    	cbPonChiiDeal.setStateInt(Pprop.getParameter(PONCHIIDEAL,0));//~va66I~
+    	cbDoubleRonDeal.setStateInt(Pprop.getParameter(DOUBLERONDEAL,0));//~va66I~
+    	cbKanAfterReachDeal.setStateInt(Pprop.getParameter(KANAFTERREACHDEAL,0));//~va66I~
+    	cbCall1st.setStateInt(Pprop.getParameter(CALL1ST,0));     //~va66I~
     	cbKanDealAnkan.setStateInt(Pprop.getParameter(KANDEAL_ANKAN,0));//~0406I~//~0407R~
     	cbKanDealChankan.setStateInt(Pprop.getParameter(KANDEAL_CHANKAN,0));//~0407I~
     	cbOpenHand.setStateInt(Pprop.getParameter(OPENHAND,0));    //~va65I~
-    	cbRobotDiscardButton.setStateInt(Pprop.getParameter(ROBOT_DISCARD_BUTTON,0));//+va66I~
+    	cbRobotDiscardButton.setStateInt(Pprop.getParameter(ROBOT_DISCARD_BUTTON,0));//~va66I~
+    	cbDealMultiRon.setStateInt(Pprop.getParameter(DEAL_MULTIRON,0));//~va66I~
+    	cbDealSingleRon.setStateInt(Pprop.getParameter(DEAL_SINGLERON,0));//~va66I~
         rgBTIOErr.setCheckedID(Pprop.getParameter(DISABLEBT_TIMING,0),false);//~v@@@I~
     	setEswnCB(llIOErr,Pprop.getParameter(SUSPEND_IOERR,0));    //~v@@@I~
     	cbWaitSelectPon.setStateInt(Pprop.getParameter(WAITSELECT_PON,0));//~v@@@R~
@@ -356,10 +385,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_OPENHAND;                      //~va65I~
         else                                                       //~va65I~
 			TestOption.option2&=~TO2_OPENHAND;                     //~va65R~
-        if (Pprop.getParameter(ROBOT_DISCARD_BUTTON,0)!=0)         //+va66I~
-			TestOption.option2|=TO2_ROBOT_DISCARD_BUTTON;          //+va66I~
-        else                                                       //+va66I~
-			TestOption.option2&=~TO2_ROBOT_DISCARD_BUTTON;         //+va66I~
+        if (Pprop.getParameter(ROBOT_DISCARD_BUTTON,0)!=0)         //~va66I~
+			TestOption.option2|=TO2_ROBOT_DISCARD_BUTTON;          //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_ROBOT_DISCARD_BUTTON;         //~va66I~
                                                                    //~va65I~
 		TestOption.testCaseRonValue=Pprop.getParameter(RONVALUE_CASE,0);//~0A07I~
 		TestOption.testDoraDownType=Pprop.getParameter(DORA_DOWNTYPE,0);//~0A12I~
@@ -451,6 +480,42 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_WAITSELECT_CHII;               //~v@@@I~
         else                                                       //~v@@@I~
 			TestOption.option2&=~TO2_WAITSELECT_CHII;              //~v@@@I~
+        if (Pprop.getParameter(DEAL_MULTIRON,0)!=0)                //~va66I~
+			TestOption.option2|=TO2_DEAL_MULTIRON;                 //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_MULTIRON;                //~va66I~
+        if (Pprop.getParameter(DEAL_SINGLERON,0)!=0)               //~va66I~
+			TestOption.option2|=TO2_DEAL_SINGLERON;                //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_SINGLERON;               //~va66I~
+                                                                   //~va66I~
+        if (Pprop.getParameter(PONDEAL,0)!=0)                      //~va66I~
+			TestOption.option2|=TO2_DEAL_PON;                      //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_PON;                     //~va66I~
+        if (Pprop.getParameter(CHIIDEAL,0)!=0)                     //~va66I~
+			TestOption.option2|=TO2_DEAL_CHII;                     //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_CHII;                    //~va66I~
+                                                                   //~va66I~
+        if (Pprop.getParameter(PONCHIIDEAL,0)!=0)                  //~va66I~
+			TestOption.option2|=TO2_DEAL_PONCHII;                  //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_PONCHII;                 //~va66I~
+        if (Pprop.getParameter(DOUBLERONDEAL,0)!=0)                //~va66I~
+			TestOption.option2|=TO2_DEAL_DOUBLERON;                //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_DOUBLERON;               //~va66I~
+        if (Pprop.getParameter(KANAFTERREACHDEAL,0)!=0)            //~va66I~
+			TestOption.option2|=TO2_DEAL_KANAFTERREACH;            //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_DEAL_KANAFTERREACH;           //~va66I~
+                                                                   //~va66I~
+        if (Pprop.getParameter(CALL1ST,0)!=0)                      //~va66I~
+			TestOption.option2|=TO2_CALL1ST;                       //~va66I~
+        else                                                       //~va66I~
+			TestOption.option2&=~TO2_CALL1ST;                      //~va66I~
+                                                                   //~va66I~
         TestOption.ioerr=Pprop.getParameter(SUSPEND_IOERR,0);      //~v@@@I~
                                                                    //~v@@@I~
         int rgFirstDealerID=Pprop.getParameter(FIRSTDEALER,0);//~v@@@I~
@@ -524,10 +589,18 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(RULE_SUSPEND,cbSuspend.getStateInt()); //~v@@@I~
         changed+=updateProp(DISABLEBT,cbBTIOErr.getStateInt());    //~v@@@I~
         changed+=updateProp(KANDEAL,cbKanDeal.getStateInt());      //~v@@@I~
+        changed+=updateProp(PONDEAL,cbPonDeal.getStateInt());      //~va66I~
+        changed+=updateProp(CHIIDEAL,cbChiiDeal.getStateInt());    //~va66I~
+        changed+=updateProp(PONCHIIDEAL,cbPonChiiDeal.getStateInt());//~va66I~
+        changed+=updateProp(DOUBLERONDEAL,cbDoubleRonDeal.getStateInt());//+va66I~
+        changed+=updateProp(KANAFTERREACHDEAL,cbKanAfterReachDeal.getStateInt());//+va66I~
+        changed+=updateProp(CALL1ST,cbCall1st.getStateInt());      //~va66I~
         changed+=updateProp(KANDEAL_ANKAN,cbKanDealAnkan.getStateInt());//~0406I~//~0407R~
         changed+=updateProp(KANDEAL_CHANKAN,cbKanDealChankan.getStateInt());//~0407I~
         changed+=updateProp(OPENHAND,cbOpenHand.getStateInt());    //~va65I~
-        changed+=updateProp(ROBOT_DISCARD_BUTTON,cbRobotDiscardButton.getStateInt());//+va66I~
+        changed+=updateProp(ROBOT_DISCARD_BUTTON,cbRobotDiscardButton.getStateInt());//~va66I~
+        changed+=updateProp(DEAL_MULTIRON,cbDealMultiRon.getStateInt());//~va66I~
+        changed+=updateProp(DEAL_SINGLERON,cbDealSingleRon.getStateInt());//~va66I~
         changed+=updateProp(DISABLEBT_TIMING,rgBTIOErr.getCheckedID());//~v@@@I~
         changed+=updateProp(SUSPEND_IOERR,getEswnCB(llIOErr));      //~v@@@I~
         changed+=updateProp(WAITSELECT_PON,cbWaitSelectPon.getStateInt());//~v@@@R~

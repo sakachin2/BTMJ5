@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 124;                                    //~1120R~
+//*CID://+va70R~: update#= 128;                                    //~va70R~
 //**********************************************************************
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -86,14 +87,14 @@ public class RAReach
         	return 0;                                              //~1122M~
         }                                                          //~1122M~
         swDoReach=true;                                            //~1122I~
-        swSkipReach=false;                                         //+1311M~
-//        int remain=RAUtils.getCtrRemain();                         //~1122I~//+1311R~
-//        if (remain<HV_AVOID_REACH_BY_REMAINING_CTR)    //<3*4 remaining tile            //~1122I~//~1216R~//+1311R~
-//        {                                                          //~1122I~//+1311R~
-////          swDoReach=false;    //yet select discard               //~1122I~//~1309R~//+1311R~
-//            swSkipReach=true;   //yet select discard               //~1309I~//+1311R~
-//            if (Dump.Y) Dump.println("RAReach.callReach swSkipReach=true by remain="+remain);//~1122I~//+1311R~
-//        }                                                          //~1122I~//+1311R~
+        swSkipReach=false;                                         //~1311M~
+//        int remain=RAUtils.getCtrRemain();                         //~1122I~//~1311R~
+//        if (remain<HV_AVOID_REACH_BY_REMAINING_CTR)    //<3*4 remaining tile            //~1122I~//~1216R~//~1311R~
+//        {                                                          //~1122I~//~1311R~
+////          swDoReach=false;    //yet select discard               //~1122I~//~1309R~//~1311R~
+//            swSkipReach=true;   //yet select discard               //~1309I~//~1311R~
+//            if (Dump.Y) Dump.println("RAReach.callReach swSkipReach=true by remain="+remain);//~1122I~//~1311R~
+//        }                                                          //~1122I~//~1311R~
         hanAdd=AG.aPlayers.is1stTake() ? 2 : 1;		//dounble reach 2 han and reach 1 han//~1122I~
         hanRequired=RS.swFix2 ? 2 : 1;                             //~1122I~
                                                                    //~1122I~
@@ -128,12 +129,12 @@ public class RAReach
     private int selectDiscard()                                    //~1122R~
     {
         if (Dump.Y) Dump.println("RAReach.selectDiscard playerEswn="+playerEswn+",ctrHand="+ctrHand+",itsHand="+Utils.toString(itsHand,9));
-        int remain=RAUtils.getCtrRemain();                         //+1311I~
-        if (remain<HV_AVOID_REACH_BY_REMAINING_CTR)    //<3*4 remaining tile//+1311I~
-        {                                                          //+1311I~
-            swSkipReach=true;   //yet select discard               //+1311I~
-            if (Dump.Y) Dump.println("RAReach.selectDiscard swSkipReach=true by remain="+remain);//+1311I~
-        }                                                          //+1311I~
+        int remain=RAUtils.getCtrRemain();                         //~1311I~
+        if (remain<HV_AVOID_REACH_BY_REMAINING_CTR)    //<3*4 remaining tile//~1311I~
+        {                                                          //~1311I~
+            swSkipReach=true;   //yet select discard               //~1311I~
+            if (Dump.Y) Dump.println("RAReach.selectDiscard swSkipReach=true by remain="+remain);//~1311I~
+        }                                                          //~1311I~
         int hanMaxMax=0;                                           //~1122I~
         boolean swDiscardableAll=RS.isDiscardableAll();            //~1126I~
         int posOld=-1;                                             //~1216I~
@@ -156,6 +157,7 @@ public class RAReach
                 {                                                  //~1122I~
         			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach pos="+pos+",v="+v+",old itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~
 	                itsHandValue[ii]+=DV_REACH+v;	//		         = 3000000;		//discard for reach//~1122R~//~1216R~//~1218R~
+	                itsHandValue[ii]+=AG.aRADSEval.adjustByTileForReach(playerEswn,pos,ii,itsHand,ctrHand);	   //		//discard for reach//+va70R~
         			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach new pos="+pos+",itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~
                     itsReachPos[ctrReachPos++]=pos;                //~1122R~
                     if (hanMaxMax<hanMax)                          //~1122I~
@@ -180,7 +182,7 @@ public class RAReach
         return hanMaxMax;                                          //~1122R~
     }
     //*****************************************************************
-    //*return max Han, by minus ifskip reach by furiten or Fix2
+    //*return max Han, by minus if skip reach by furiten or Fix2   //~1328R~
     //*****************************************************************
     private int evaluateWinList(int PplayerEswn,int PposTryDiscard,int[] PitsHand/*dropped Discard*/,int PctrHand)
     {

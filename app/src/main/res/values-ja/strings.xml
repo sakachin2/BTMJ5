@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.10</string>
+    <string name="app_version">v1.11</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -164,6 +164,7 @@
     <string name="Title_RuleFileDlg">設定ファイル</string>
     <string name="Title_RuleFileDlgFolder">設定ファイル %1$s &lt;font color=\"#000000\"&gt;(%2$s)</string>
     <string name="Title_HistoryDlg">履歴</string>
+    <string name="Title_HistoryBSDlg">貸借対照表</string>
     <string name="Title_HistoryDlgFolder">履歴 &lt;font color=\"#000000\"&gt;(%1$s)</string>
     <string name="Title_RuleSetting">ルール設定</string>
     <string name="Title_PrefSetting">個人設定</string>
@@ -1084,7 +1085,9 @@
     <!--string name="Label_RobotDescription">４人揃わないときツモ切りオンリーのボットを加えて対戦できます</string-->
     <string name="Label_AllowRobot">４人揃わない時ボットを加え対戦する、あるいは一人遊びする</string>
     <!--string name="Label_AllowRobotAll">練習モードあり</string-->
-    <string name="Label_AllowRobotAllButton">一人遊びのときは自摸はタイムアウトではなくボタンで操作</string>
+    <string name="Label_AllowRobotAllButton">一人遊びのときボットの自摸はタイムアウトではなくボタンで操作</string>
+    <string name="Label_PlayAloneNotify">一人遊びのときはロン、ポン、カン、チーを通知</string>
+    <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる）</string>
 
     <string name="Label_GameSet">試合</string>
     <string name="Label_GameSetInterrupted">迄 終了、次は</string>
@@ -1446,4 +1449,18 @@
 		<item>" K けんちゃん "</item>
 	</string-array>
     <string name="Warn_TrainingModeWithNotThinkRobot">ボットの設定がツモ切りです。\"ボットも和了を目指す\"で楽しんでください</string>
+    <string name="Label_btnHistoryBS">貸借</string>
+    <string name="Label_BSline_Name">プレーヤー</string>
+    <string name="Label_BSline_Point">ポイント</string>
+    <string name="Label_BSline_CtrSeq">順位別ゲーム数</string>
+    <string name="Label_BSline_CtrGame">計</string>
+<!--
+    <string name="BS_ctrGame">ゲーム数</string>
+    <string name="BS_ctrGameAlone">一人遊び</string>
+    <string name="BS_ctrGameMatch">対局</string>
+    <string name="BS_ctrGamePending">中断</string>
+-->
+    <string name="Desc_BS_Summary">
+    	ゲーム数：一人遊び＝%1$d、対局＝%2$d、中断＝%3$d　（%4$s から）
+		</string>
 </resources>

@@ -51,6 +51,24 @@
                     android:text="Close On Connect"
                 />
                 <CheckBox
+                    android:id="@+id/cbDealMultiRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal MultiRon"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSingleRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal SingleRon"
+                />
+                <CheckBox
+                    android:id="@+id/cbCall1st"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Robot call at 1st if callable"
+                />
+                <CheckBox
                     android:id="@+id/cbRon_Test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -281,6 +299,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Skip Rule Sync"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Pon(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbChiiDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Chii(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonChiiDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Pon and Chii(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDoubleRonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Double Ron"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanAfterReachDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Ankan after Reach"
                 />
                 <CheckBox
                     android:id="@+id/cbKanDeal"

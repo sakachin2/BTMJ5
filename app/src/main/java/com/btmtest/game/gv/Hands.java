@@ -1,5 +1,6 @@
-//*CID://+va65R~: update#= 771;                                    //~v@@@R~//~v@@5R~//~9A12R~//~va60R~//~va65R~
+//*CID://+va76R~: update#= 773;                                    //+va76R~
 //**********************************************************************//~v101I~
+//2021/04/04 va76 open test;robot hand corrupted display           //+va76I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -541,8 +542,8 @@ public class Hands                                                 //~v@@@R~
 	        drawHands(false/*not takeone*/,true/*intercept*/);     //~v@@@R~
         else                                                       //~va65I~
         {                                                          //~va65I~
-//      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
-        	if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+//      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//~va65R~
+        	if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//~va65I~
             {                                                      //~va65I~
 		        if (Dump.Y) Dump.println("Hands.takePon robot & open");//~va65I~
 	    		drawOpenPonKanChiiRobot(Pplayer);                  //~va65R~
@@ -564,8 +565,8 @@ public class Hands                                                 //~v@@@R~
 	        drawHands(false/*not yet taken from wanpai*/,Pkantype==KAN_RIVER/*intercept*/);//~v@@@R~
         else                                                       //~va65I~
         {                                                          //~va65I~
-//      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
-        	if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+//      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//~va65R~
+        	if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//~va65I~
             {                                                      //~va65I~
 		        if (Dump.Y) Dump.println("Hands.takeKan robot & open");//~va65I~
 	    		drawOpenPonKanChiiRobot(Pplayer);                  //~va65R~
@@ -928,6 +929,7 @@ public class Hands                                                 //~v@@@R~
     {                                                              //~va65I~
         if (Dump.Y) Dump.println("Hands.drawOpenPonKanChiiRobot player="+Pplayer);//~va65I~
 //      clearOpenRect(Pplayer);                                    //~va65R~
+        clearOpenRect(Pplayer);                                    //+va76R~
 	    drawOpen(Pplayer,null);                                    //~va65I~
     }                                                              //~va65I~
 }//class Hands                                                 //~dataR~//~@@@@R~//~v@@@R~

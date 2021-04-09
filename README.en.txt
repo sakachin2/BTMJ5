@@ -19,6 +19,22 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.11 : 2021/04/09
+        .Add option of notify mode at playing alone(notify availablity of calling Ron, Pon, Kan, Chii) for quick robot action.
+        .Add function of showing point summarized by each players.
+        .Bug fixes.
+*********************************************************************************************
+V1.11 : 2021/04/09
+        .Add option of notify mode at playing alone(notify availablity of calling Ron, Pon, Kan, Chii) for quick robot action.
+        .Allow Double-Ron of Human and Robot at playing alone (At match game, human's Ron intervenes robot's Ron)
+        .Add function of showing point summarized by each players.
+        .Bug fixes.
+         -When Double-Ron for tile calling Riichi, it shows standing and lying ovrrupped and loose Ron-color on nameplate. 
+         -When Double-Ron of human and robot at playing alone, only one win call dialog is shown. 
+         -Hung when robot's hand is not ronable at take by 1 han constrint.
+         -Open Riichi Robot option is ignored on Yaku setting dilaog.
+         -Misjudgement of 3shiki(3 color straight) when including 1 identical sequence.
+         -Loose Yaku:reach for Ron for tile other players discarded with reach call.
 V1.10 : 2021/03/20
         .Robots aim to win.
         .Play alone mode was added.
@@ -28,7 +44,6 @@ V1.10 : 2021/03/20
          -Could not call Ron for last tile on river.
          -Misjudgement of Tobi(Bunkrupt) for game with robots.
          -Loose Yaku:reach for Ron for tile other players discarded with reach call.
-*********************************************************************************************
 V1.09 : 2020/11/21
         .Handle Android10 deprecation.
         .Fix bugs about connection failure handling.

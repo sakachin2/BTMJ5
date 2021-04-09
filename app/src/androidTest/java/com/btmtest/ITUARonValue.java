@@ -79,17 +79,21 @@ public class ITUARonValue                                          //~0B02R~
         UARVS.sw4WindDouble=true;                                  //~0B02I~
         UARVS.sw9GateDouble=true;                                  //~0B02I~
         if (Dump.Y) Dump.println("ITUARonValuse.setUp");           //~0B02R~
-//      UARVS.setTestAll(true);                                    //~0B02I~//+1310R~
-        UARVS.setTestAll(false);                                   //+1310I~
+//      UARVS.setTestAll(true);                                    //~0B02I~//~1310R~
+        UARVS.setTestAll(false);                                   //~1310I~
     }                                                              //~0A31M~
     @Test                                                          //~0B01I~
     public void testChkComplete()                                  //~0B01I~
     {                                                              //~0B01I~
         setUpEnv();                                                //~0B01I~
-//      UARVS.ronTestValue(255041/*0*//*case#*/);                  //~0B02R~//+1310R~
-        UARVS.ronTestValue(23204/*case#*/);                        //+1310I~
-        UARVS.ronTestValue(23205/*case#*/);                        //+1310I~
-        UARVS.ronTestValue(23206/*case#*/);                        //+1310I~
+//      UARVS.ronTestValue(255041/*0*//*case#*/);                  //~0B02R~//~1310R~
+//      UARVS.ronTestValue(23204/*case#*/);                        //~1310I~//~1407R~
+//      UARVS.ronTestValue(23205/*case#*/);                        //~1310I~//~1407R~
+//      UARVS.ronTestValue(23206/*case#*/);                        //~1310I~//~1407R~
+//      UARVS.ronTestValue(20102/*case#*/);                        //~1407I~//+1408R~
+//      UARVS.ronTestValue(20103/*case#*/);                        //~1407I~//+1408R~
+//      UARVS.ronTestValue(20104/*case#*/);                        //+1408R~
+        UARVS.ronTestValue(28722/*case#*/);                        //+1408I~
     }                                                              //~0B01I~
     private void setUpEnv()                                             //~0B01I~
     {                                                              //~0B01I~

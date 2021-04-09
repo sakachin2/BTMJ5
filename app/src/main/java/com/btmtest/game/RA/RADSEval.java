@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 311;
+//*CID://+va70R~: update#= 318;                                    //~va70R~
 //**********************************************************************
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -80,6 +81,25 @@ public class RADSEval
         tdsHand=null;                                              //~1121I~//~1122R~
         itsHandPos=null;                                           //~1122I~
     }
+    //***********************************************************************//~va70R~
+    //*from RAReach.selectDiscard for same HandValue               //~va70R~
+    //***********************************************************************//~va70R~
+    public int adjustByTileForReach(int Peswn,int Ppos,int Pidx,int[] PitsHand,int PctrHand)//+va70R~
+    {                                                              //~va70R~
+    	int v;                                                     //~va70M~
+        itsHand=PitsHand; ctrHand=PctrHand;                        //+va70I~
+        if (Dump.Y) Dump.println("RADEval.adjustByTileForReach itsHand="+Utils.toString(PitsHand,9,PctrHand));//+va70I~
+    	TileData td=RADS.tdsHand[Pidx];   //evaluateHand is not called//~va70R~
+        RSP=RS.RSP[Peswn];                                         //~va70I~
+        if (Ppos>=OFFS_WORDTILE)   //WGR+ESWN                      //~va70R~
+           	v=evaluateTileWord(Ppos);                              //~va70R~
+        else                                                       //~va70R~
+           	v=RADSEN.evaluateForReach(Ppos,RSP.getIntent(),td);    //~va70R~
+        if (RADS.isDoraOpen(td))                                   //~va70R~
+        	v+=DV_DORA;                                            //~va70R~
+        if (Dump.Y) Dump.println("RADEval.adjustByTileForReach idx="+Pidx+",pos="+Ppos+",v="+v+",td="+td.toString());//~va70R~
+        return v;                                                  //~va70R~
+    }                                                              //~va70R~
     //***********************************************************************
     private void evaluateTile(int PmyShanten)                      //~1127R~
     {
@@ -95,8 +115,8 @@ public class RADSEval
 //  	chkNumberStat();                                           //~1214R~
 //  	chkNumberMeld();                                           //~1214R~
 //  	RADSEN.chkNumberMeld2();                                          //~1214I~//~1225R~
-        boolean skipStandard=((intent & INTENT_7PAIR)!=0) || ((intent & INTENT_7PAIR)!=0 && PmyShanten==1);//+1314I~
-        if (!skipStandard)                                         //+1314I~
+        boolean skipStandard=((intent & INTENT_7PAIR)!=0) || ((intent & INTENT_7PAIR)!=0 && PmyShanten==1);//~1314I~
+        if (!skipStandard)                                         //~1314I~
 	    	RADSEN.chkNumberMeld2(eswnDiscard,intent,itsHand,itsHandPos,itsHandValue,ctrHand);//~1225R~//~1302R~//~1313R~
     	hanMax=0;
         int posOld=-1;                                             //~1220R~
@@ -116,7 +136,7 @@ public class RADSEval
 //                chkShantenAtDiscard(PmyShanten,ii,pos);            //~1127I~//~1309R~
 //            }                                                      //~1127I~//~1309R~
         	evaluateIntent(ii,pos);                                //~1307I~
-          if (!skipStandard)                                       //+1314I~
+          if (!skipStandard)                                       //~1314I~
           {                                                        //~1313I~
             if (pos>=OFFS_WORDTILE)   //WGR+ESWN
             {

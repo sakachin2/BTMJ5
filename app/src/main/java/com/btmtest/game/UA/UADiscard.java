@@ -1,5 +1,9 @@
-//*CID://+va60R~: update#= 624;                                    //~va60R~
+//*CID://+va78R~: update#= 638;                                    //~va77R~//~va78R~
 //**********************************************************************//~v101I~
+//2021/04/05 va78 (Bug)PlayAlone notifymode; next player is not blocked by pending on//~va78I~
+//2021/04/04 va77 (Bug)when manual robot(autotake) mode,chii is not notified because autotake timeout is not set//~va77I~
+//2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va60I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//~va28I~
@@ -55,6 +59,7 @@ public class UADiscard                                             //~v@@@R~
    private boolean swCheckReach;                                    //~va27I~
     private boolean swManualRobot;   //take by button in training mode//~va66R~
     private int typeSameMeld;                                          //~va60I~
+//  private TileData tdPlayAlone;                                  //~va70R~
 //*************************                                        //~v@@@I~
 	public UADiscard(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
@@ -90,33 +95,33 @@ public class UADiscard                                             //~v@@@R~
         TileData td=PLS.getTileSelected(Pplayer);                  //~v@@@R~
         return td;                                                 //~v@@@I~
     }                                                              //~v@@@I~
-	//*************************************************************************//~v@@@I~
-    public boolean discard(int Pplayer)                            //~v@@@I~
-    {                                                              //~v@@@I~
-//        if (PLS.isTakeAvailable())                               //~v@@@R~
-//        {                                                        //~v@@@I~
-//            if (Dump.Y) Dump.println("UserAction.discard Dup Discard or not take 1st");//~v@@@I~
-//            return;                                              //~v@@@I~
-//        }                                                        //~v@@@I~
-        if (Dump.Y) Dump.println("UADiscard.discard");             //~v@@@R~
-//        if (!PLS.isYourTurn(actionID,Pplayer))                   //~v@@@R~
-//            return;                                              //~v@@@I~
-        int player=PLS.getCurrentPlayer();                         //~v@@@R~
-        TileData td=selectTile(player);                            //~v@@@I~
-        if (td==null)                                              //~v@@@I~
-        {                                                          //~v@@@I~
-        	GC.actionError(0,player,R.string.AE_NoTileSelected);           //~v@@@I~//~v@@6R~
-        	return false;                                          //~v@@@I~
-        }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("UADiscard.discard player="+player+",tile type="+td.type+",num="+td.number);//~v@@@R~
-	    TileData tdDiscarded=river.eraseTaken();	//erased lastdiscarded//~v@@@I~
-	    if (tdDiscarded!=null)	//erased lastdiscarded             //~v@@@I~
-	    	PLS.takenDiscarded(tdDiscarded.player);	//erased lastdiscarded//~v@@@R~
-        PLS.discard(player,td);	//shift currentPlayer              //~v@@@R~
-        hands.discard(player,td);                                  //~v@@@I~
-	    river.drawDiscarded();                                     //~v@@@I~
-        return true;                                               //~v@@@I~
-    }                                                              //~v@@@I~
+//    //*************************************************************************//~v@@@I~//~va70R~
+//    public boolean discard(int Pplayer) //No user                            //~v@@@I~//~va70R~
+//    {                                                              //~v@@@I~//~va70R~
+////        if (PLS.isTakeAvailable())                               //~v@@@R~//~va70R~
+////        {                                                        //~v@@@I~//~va70R~
+////            if (Dump.Y) Dump.println("UserAction.discard Dup Discard or not take 1st");//~v@@@I~//~va70R~
+////            return;                                              //~v@@@I~//~va70R~
+////        }                                                        //~v@@@I~//~va70R~
+//        if (Dump.Y) Dump.println("UADiscard.discard");             //~v@@@R~//~va70R~
+////        if (!PLS.isYourTurn(actionID,Pplayer))                   //~v@@@R~//~va70R~
+////            return;                                              //~v@@@I~//~va70R~
+//        int player=PLS.getCurrentPlayer();                         //~v@@@R~//~va70R~
+//        TileData td=selectTile(player);                            //~v@@@I~//~va70R~
+//        if (td==null)                                              //~v@@@I~//~va70R~
+//        {                                                          //~v@@@I~//~va70R~
+//            GC.actionError(0,player,R.string.AE_NoTileSelected);           //~v@@@I~//~v@@6R~//~va70R~
+//            return false;                                          //~v@@@I~//~va70R~
+//        }                                                          //~v@@@I~//~va70R~
+//        if (Dump.Y) Dump.println("UADiscard.discard player="+player+",tile type="+td.type+",num="+td.number);//~v@@@R~//~va70R~
+//        TileData tdDiscarded=river.eraseTaken();    //erased lastdiscarded//~v@@@I~//~va70R~
+//        if (tdDiscarded!=null)  //erased lastdiscarded             //~v@@@I~//~va70R~
+//            PLS.takenDiscarded(tdDiscarded.player); //erased lastdiscarded//~v@@@R~//~va70R~
+//        PLS.discard(player,td); //shift currentPlayer              //~v@@@R~//~va70R~
+//        hands.discard(player,td);                                  //~v@@@I~//~va70R~
+//        river.drawDiscarded();                                     //~v@@@I~//~va70R~
+//        return true;                                               //~v@@@I~//~va70R~
+//    }                                                              //~v@@@I~//~va70R~
 	//*************************************************************************//~v@@@I~
 	//*by button action                                            //~v@@@I~
 	//*************************************************************************//~v@@@I~
@@ -271,7 +276,16 @@ public class UADiscard                                             //~v@@@R~
 //                PLS.takenDiscarded(tdDiscarded.player); //erased lastdiscarded//~v@@@R~
 //      }                                                          //~v@@@R~
         if (PswServer)                                             //~v@@@I~
+        {                                                          //~va70I~
+          if (AG.aGC.getStatusPlayAlone()==GCM_RON)  //PLS.discard ==>RACall.otherDiscard, it may highlighten Ron button and set statusRon//~va70R~
+          {                                                        //~va70I~
+			if (Dump.Y) Dump.println("UADiscard.discard already Notified RON");//+va78I~
+//        	tdPlayAlone=td;                                        //~va70R~
+          	;                                                      //~va70I~
+          }                                                        //~va70I~
+          else                                                     //~va70I~
         	postNextPlayerPonKan(Pplayer,td);	//swith to next player after delay a moment//~v@@@I~//~v@@6R~
+        }                                                          //~va70I~
         UADL.setRonable(true);     	//for dup ron availability     //~9B28I~
         if (swReach)                                               //~v@@6I~
         {                                                          //~9C01I~
@@ -309,7 +323,8 @@ public class UADiscard                                             //~v@@@R~
 //      UA.UADL.postDelayed(delayPonKan,GCM_NEXT_PLAYER_PONKAN,player,Ptd);//~v@@@R~//~v@@6R~
 //      UA.UADL.postDelayed(delayTake,GCM_NEXT_PLAYER,player,Ptd); //~v@@6R~
 //      UA.UADL.postDelayedDiscard(player,Ptd);                    //~v@@6R~
-        UA.UADL.postDelayedPonKan(player,Ptd);                     //~v@@6I~
+//      UA.UADL.postDelayedPonKan(player,Ptd);                     //~v@@6I~//~va70R~
+        UA.UADL.postDelayedPonKan(player);                         //~va70I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
 	// server;from UADelayed.delayedNextPlayer thru GVH,UserAction after pon/kan/chii time delayed//~v@@6R~
@@ -318,6 +333,12 @@ public class UADiscard                                             //~v@@@R~
     public boolean nextPlayer(boolean PswServer,int Pplayer/*nextPlayer*/)       //~v@@@I~//~v@@6R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("UADiscard.nextPlayer swServer="+PswServer+",player="+Pplayer);//~v@@@I~//~v@@6R~
+        if (AG.aGC.getStatusPlayAlone()!=0)  //PLS.discard ==>RACall.otherDiscard, it may highlighten Ron button and set statusRon//~va78I~
+        {                                                          //~va78I~
+	        if (Dump.Y) Dump.println("UADiscard.nextPlayer@@@@ ignore next player by statusplayalone");//~va78I~
+    		UA.setNoMsgToServer();                                 //~va78I~
+        	return true;                                           //~va78I~
+        }                                                          //~va78I~
         if (PswServer)                                             //~v@@6I~
 	    	UA.msgDataToClient=UserAction.makeMsgDataToClient(Pplayer);//~v@@6I~
         else                                                       //~v@@6I~
@@ -362,18 +383,20 @@ public class UADiscard                                             //~v@@@R~
 	    	UA.msgDataToClient=UserAction.makeMsgDataToClient(Pplayer);//~v@@6I~
         else                                                       //~v@@6I~
     		UA.setNoMsgToServer();                                 //~v@@6I~
-//      if (AG.aTiles.chkLast())                                   //~v@@6I~//+va60R~
-//      	return true;                                           //~v@@6I~//+va60R~
+//      if (AG.aTiles.chkLast())                                   //~v@@6I~//~va60R~
+//      	return true;                                           //~v@@6I~//~va60R~
         TileData td=PLS.getLastDiscarded();                        //~v@@6I~
-        td.setLockPonKan(false);                                   //~v@@6I~
+//      td.setLockPonKan(false);                                   //~v@@6I~//~va70R~
 	    AG.aDiceBox.drawLightDiscardRonTimeout(Pplayer);            //~v@@6I~//~9B23I~
 	    river.drawFrameDiscardedTile(GCM_NEXT_PLAYER_PONKAN);	//draw discarded tile frame//~v@@6R~//~9B23I~
 //      if (PswServer)                                             //~v@@6R~
 //      	UA.msgDataToClient=UserAction.makeMsgDataToClient(Pplayer);//~v@@6R~
 //      else                                                       //~v@@6R~
 //  		UA.setNoMsgToServer();                                 //~v@@6R~
-        UADL.setRonable(false);     	//for dup ron availability //~9B28I~
+//      UADL.setRonable(false);     	//for dup ron availability //~9B28I~//~va70R~
 		UA.UADL.timeoutPonKan(PswServer);	//for client,save delayedAction//~v@@6I~
+        td.setLockPonKan(false);	//after Robot ron chk for playalone mode//~va70I~
+        UADL.setRonable(false);     //for dup ron availability, after robot ron chk for playalone mode//~va70I~
         if (PswServer)                                             //~va60R~
 		    AG.aRoundStat.timeoutPonKan(Pplayer,td);               //~va60R~
         return true;                                               //~v@@6I~
@@ -387,10 +410,12 @@ public class UADiscard                                             //~v@@@R~
 //        Ptd.eswn=Accounts.playerToEswn(player);                    //~v@@@I~//~v@@6R~
 //        if (Dump.Y) Dump.println("UADiscard.setDiscardedPlayer out:"+Ptd.toString());//~v@@@R~//~v@@6R~
 //    }                                                              //~v@@@I~//~v@@6R~
-	//*************************************************************************//~v@@6I~
+	//*************************************************************************//~v@@6I~//~va70R~
 	//*next player take in the time                                //~v@@6I~
+	//*public for GC.actionPlayALone                               //~va70I~
 	//*************************************************************************//~v@@6I~
-    private void setTimeout(boolean PswServer,int Pplayer/*nextPlayer*/)//~v@@6R~//~va60R~
+//  private void setTimeout(boolean PswServer,int Pplayer/*nextPlayer*/)//~v@@6R~//~va60R~//~va70R~
+    public  void setTimeout(boolean PswServer,int Pplayer/*nextPlayer*/)//~va70I~
     {                                                              //~v@@6I~
         if (Dump.Y) Dump.println("UADiscard.setTimeout swServer="+PswServer+",player="+Pplayer+",ctrTakenAll="+PLS.ctrTakenAll);//~v@@6R~
         if (Dump.Y) Dump.println("UADiscard.setTimeout swTrainingMode="+AG.swTrainingMode+",swManualRobot="+swManualRobot);//~va66I~
@@ -406,15 +431,18 @@ public class UADiscard                                             //~v@@@R~
 //      	return;                                                //~v@@6I~
         if (swManualRobot) //in training mode                      //~va66R~
         {                                                          //~va66R~
-            if (Dump.Y) Dump.println("UADiscard.setTimeout return by manualRobot");//~va66R~
+            if (Dump.Y) Dump.println("UADiscard.setTimeout manualRobot");//~va66R~//~va78R~
             if (PswServer)                                         //~va66I~
             {                                                      //~va66I~
 	        	if (AG.aAccounts.isDummyPlayer(Pplayer))           //~va66I~
+                {                                                  //~va77I~
     	        	Robot.nextPlayerManual(Pplayer);//issue chii   //~va66R~
+        		    return;                                        //~va77I~
+                }                                                  //~va77I~
 //  			if (AG.aTiles.chkLast())                                 //~9225I~//~va66R~
 //  		        UA.UADL.postDelayedAutoTake(PswServer,Pplayer,PLS.ctrTakenAll);	//to show DrawnReqDlgLast//~va66R~
             }                                                      //~va66I~
-            return;                                                //~va66R~
+//          return;                                                //~va66R~//~va77R~
         }                                                          //~va66R~
         UA.UADL.postDelayedAutoTake(PswServer,Pplayer,PLS.ctrTakenAll);//~v@@6R~
     }                                                              //~v@@6I~
@@ -431,7 +459,12 @@ public class UADiscard                                             //~v@@@R~
         if (Dump.Y) Dump.println("UADiscard.autoTakeTimeout player="+Pplayer+",currentActionID="+AG.aUserAction.currentActionID+",PctrTakenAll="+PctrTakenAll+",ctrTakenAll="+PLS.ctrTakenAll);//~v@@6R~
 //      if (Pplayer==Players.nextPlayer(PLS.getCurrentPlayer()) && PctrTakenAll==PLS.ctrTakenAll && AG.aUserAction.currentActionID==GCM_DISCARD)//~v@@6R~
 		if (Pplayer==PLAYER_YOU)                                   //~v@@6I~
+        {                                                          //~va75I~
+          	if (AG.swPlayAloneNotify)                              //~va75I~
+    			if (autoTakeTimeoutPlayAloneNotify())               //~va75I~
+            		return;                                        //~va75I~
 	    	AG.aGC.sendMsg(GCM_TAKE,Pplayer);	//simulate take button//~v@@6R~
+        }                                                          //~va75I~
         else                                                       //~v@@6R~
         {                                                          //~v@@6I~
         	if (AG.aAccounts.isDummyPlayer(Pplayer))               //~v@@6R~
@@ -441,6 +474,18 @@ public class UADiscard                                             //~v@@@R~
 			UA.UADL.sendMsgEmulatedToClient(GCM_TAKE,Pplayer);	//simulate take button//~v@@6R~
         }                                                          //~v@@6I~
     }                                                              //~v@@6I~
+	//*************************************************************************//~va75I~
+    private boolean autoTakeTimeoutPlayAloneNotify()                //~va75I~
+    {                                                              //~va75I~
+    	boolean rc=false;                                          //~va75I~
+        if (Dump.Y) Dump.println("UADiscard.autoTakeTimeoutPlayAloneNotify");//~va75I~
+        int eswnPlayer=Accounts.playerToEswn(PLAYER_YOU);          //~va75R~
+        int playerDiscarded= Players.prevPlayer(PLAYER_YOU);       //~va75I~
+        int eswnDiscarded=Accounts.playerToEswn(playerDiscarded);  //~va75I~
+        TileData tdDiscarded=AG.aPlayers.getLastDiscarded();       //~va75I~
+	    rc=AG.aRACall.autoTakeTimeoutPlayAloneNotify(eswnPlayer,playerDiscarded,eswnDiscarded,tdDiscarded);//~va75R~
+        return rc;                                                 //~va75I~
+    }                                                              //~va75I~
 	//*************************************************************************//~v@@6I~
 	//*on Client,by GCM_WAITOFF at waitingAutoTake                 //~v@@6I~
 	//*************************************************************************//~v@@6I~
@@ -609,4 +654,25 @@ public class UADiscard                                             //~v@@@R~
         if (Dump.Y) Dump.println("UADiscard.isSameMeld rc="+rc+",PposNotDiscardable"+ Utils.toStringMax(PposNotDiscardable,rc));//~va60I~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~
+//    //*************************************************************************//~va70R~
+//    //*from GC                                                   //~va70R~
+//    //*call(Ron/Pon/Kan/Chii) canceled,start timer               //~va70R~
+//    //*************************************************************************//~va70R~
+//    public void resetCallPlayAlone(int PmsgID)                   //~va70R~
+//    {                                                            //~va70R~
+//        if (Dump.Y) Dump.println("UADiscard.resetCallPlayAlone nsgID="+PmsgID);//~va70R~
+//        switch(PmsgID)                                           //~va70R~
+//        {                                                        //~va70R~
+//        case GCM_RON:                                            //~va70R~
+//            postNextPlayerPonKan(PLAYER_YOU,tdPlayAlone);   //robot's ronability//~va70R~
+//            tdPlayAlone=null;                                    //~va70R~
+//            break;                                               //~va70R~
+//        case GCM_PON:                                            //~va70R~
+//            break;                                               //~va70R~
+//        case GCM_KAN:                                            //~va70R~
+//            break;                                               //~va70R~
+//        case GCM_CHII:                                           //~va70R~
+//            break;                                               //~va70R~
+//        }                                                        //~va70R~
+//    }                                                            //~va70R~
 }//class                                                           //~v@@@R~

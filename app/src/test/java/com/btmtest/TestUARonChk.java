@@ -1,4 +1,4 @@
-//*CID://+va1aR~: update#= 741;                                    //~va1aR~
+//*CID://+va1aR~: update#= 742;                                    //~va1aR~
 //**********************************************************************//~v101I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/10 va14 (BUG)7pairwith Kan is err even optio allow it    //~va14I~
@@ -27,7 +27,7 @@ public class TestUARonChk                                          //~va1aR~
     	StaticVars.AG.appName="TestUARonChjk";                      //~va1aR~
         Dump.openExOnlyTerminal();	//write exception only to Terminal//~va1aI~
 //      new StaticVars(null);	//new AG().init(this);             //~va1aR~
-        Dump.open("");	//write all to Terminal log,not exception only//+va1aR~
+        Dump.open("");	//write all to Terminal log,not exception only//~va1aR~
         if (Dump.Y) Dump.println("TestUARonChk.constructor");      //~va1aI~
     }                                                              //~va1aI~
     //*************************************************************************//~va1aR~
@@ -82,6 +82,15 @@ class UARonChk2 extends UARonChk                                   //~va1aI~
     {                                                              //~9C12I~
 	    boolean rc;
         if (Dump.Y) Dump.println("UARonChk.ronTest");              //~9C12I~
+                                                                   //+va1aI~
+		ctrTileAll=HANDCTR_TAKEN;                                  //+va1aI~
+        dupCtr=new int[][]{   //4 anko                             //+va1aI~
+        	{0,0,0, 0,1,1, 1,0,0},                                 //+va1aI~
+        	{0,1,1, 1,2,2, 2,0,0},                                 //+va1aI~
+        	{0,0,0, 0,2,0, 0,0,0},                                 //+va1aI~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va1aI~
+	    rc=chkCompleteSub();                                       //+va1aI~
+        if (Dump.Y) Dump.println("UARonChk.ronTest-0 shiki err test rc="+rc);//+va1aI~
 		ctrTileAll=HANDCTR_TAKEN;                                  //~9C12I~
         dupCtr=new int[][]{   //4 anko                             //~9C12R~
         	{3,3,0, 0,0,0, 0,0,0},                                 //~9C12R~

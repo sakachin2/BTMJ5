@@ -1,4 +1,4 @@
-//*CID://+va66R~:                             update#= 1110;       //~va66R~
+//*CID://+va66R~:                             update#= 1111;       //~va66R~
 //*****************************************************************//~v101I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -486,8 +486,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     {                                                              //~9708I~
         if (Dump.Y) Dump.println("CompleteDlg.disableFixGame swResetResponse="+PswResetResponse);//~9708I~
 		btnTotal.setEnabled(false);                                //~9708I~
-        if (AG.swTrainingMode)                                     //+va66I~
-	        btnOK.setEnabled(true);                                //+va66I~
+        if (AG.swTrainingMode)                                     //~va66I~
+	        btnOK.setEnabled(true);                                //~va66I~
         if (PswResetResponse)                                      //~9708I~
         {                                                          //~9708I~
 		    Arrays.fill(respStat,EGDR_NONE);                       //~9708R~
@@ -2174,10 +2174,10 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
             	if (!continueToNextPlayer(false/*swFixed*/))//~9A12R~//~9A13R~
                 	return;                                        //~9A12I~
           if (AG.swTrainingMode)                                   //~va66I~
-          {                                                        //+va66I~
+          {                                                        //~va66I~
 	        btnTotal.setEnabled(true/*PswAllOK*/);                 //~va66I~
-	        btnOK.setEnabled(false);                               //+va66I~
-          }                                                        //+va66I~
+	        btnOK.setEnabled(false);                               //~va66I~
+          }                                                        //~va66I~
           else                                                     //~va66I~
           {                                                        //~va66I~
         	sendRequest();                                         //~9315I~
@@ -3162,7 +3162,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
             UView.showToast(R.string.Err_CompReqNotShowable);      //~9B11I~
         else               //all replyedAll                        //~9B11R~
             rc=true;                                               //~9B11I~
-        if (Dump.Y) Dump.println("CompleteDlg.chkCompReqReplayAll rc="+rc);//~9B11I~//~va66R~
+        if (Dump.Y) Dump.println("CompleteDlg.chkCompReqReplyAll rc="+rc);//~9B11I~//+va66R~
         return rc;                                                 //~9B11I~
     }                                                              //~9B11I~
     //*******************************************************************//~9403I~

@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 285;                                    //~va60R~
+//*CID://+va7bR~: update#= 288;                                    //~va7bR~
 //**********************************************************************//~1107I~
+//2021/04/06 va7b (Bug)HistryData setScore exception (out of bound)//~va7bI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -649,6 +650,77 @@ public class Utils                                            //~1309R~//~@@@@R~
         if (Dump.Y) Dump.println("Utils.parseInt Pstr="+Arrays.toString(Pstr)+",pos="+Ppos+",ctr="+Pctr+",default="+Pdefault+",out="+Arrays.toString(Pint));//~@@01I~
         return rc;                                                 //~@@01I~
     }                                                              //~@@01I~
+    //*************************************************            //~va7bI~
+    //*return err ctr                                              //~va7bI~
+    //*************************************************            //~va7bI~
+    public static int parseDouble(String[] Pstr,double Pdefault,double[] Pdouble)//~va7bR~
+    {                                                              //~va7bI~
+	    return parseDouble(Pstr,0,Pstr.length,Pdefault,Pdouble);   //~va7bI~
+    }                                                              //~va7bI~
+    //*************************************************            //~va7bI~
+    //*get int from double by cut flagment                         //~va7bI~
+    //*************************************************            //~va7bI~
+    public static int parseDoubleToInt(String[] Pstr,int Punit1,int Punit2,int[] Pint)//~va7bI~
+    {                                                              //~va7bI~
+    	int err=0;                                                 //~va7bI~
+    	for (int ii=0;ii<Pstr.length;ii++)                         //~va7bI~
+        {                                                          //~va7bI~
+	    	Pint[ii]=parseDoubleToInt(Pstr[ii],Punit1,Punit2);     //~va7bI~
+	    	if (Pint[ii]==Integer.MAX_VALUE)                       //~va7bI~
+            	err++;                                             //~va7bI~
+        }                                                          //~va7bI~
+        if (Dump.Y) Dump.println("Utils.parseDoubleToInt err="+err+",str="+Arrays.toString(Pstr)+",unit1="+Punit1+"unit2="+Punit2+",ints="+Arrays.toString(Pint));//~va7bI~
+        return err;                                                //~va7bI~
+    }                                                              //~va7bI~
+    public static int parseDoubleToInt(String Pstr,int Punit1,int Punit2)//~va7bI~
+    {                                                              //~va7bI~
+    	double dbl;                                                //~va7bI~
+        int pi;                                                     //~va7bI~
+        try                                                        //~va7bI~
+        {                                                          //~va7bI~
+            dbl=Double.parseDouble(Pstr);                          //~va7bI~
+            double tmp=dbl*Punit1+(dbl<0 ? -(Punit2-1) : (Punit2-1));//+va7bR~
+            pi=(((int)tmp)/Punit2)*Punit2;                         //+va7bR~
+            if (Dump.Y) Dump.println("Utils.parseDoubleToInt str="+Pstr+",dbl="+dbl+",tmp="+tmp+",pi="+pi);//+va7bR~
+        }                                                          //~va7bI~
+        catch(Exception e)                                         //~va7bI~
+        {                                                          //~va7bI~
+            if (Dump.Y) Dump.println("Utils.parseDouble str="+Pstr+"e="+e.toString());//~va7bI~
+            pi=Integer.MAX_VALUE;                                  //~va7bI~
+        }                                                          //~va7bI~
+        return pi;                                                 //~va7bI~
+    }                                                              //~va7bI~
+    //*************************************************            //~va7bI~
+    //*return err ctr                                              //~va7bI~
+    //*************************************************            //~va7bI~
+    public static int parseDouble(String[] Pstr,int Ppos,int Pctr,double Pdefault,double[] Pdouble)//~va7bI~
+    {                                                              //~va7bI~
+    	int rc=0;                                                  //~va7bI~
+    	for (int ii=0,pos=Ppos;ii<Pctr;ii++,pos++)                 //~va7bI~
+        {                                                          //~va7bI~
+    		double pi;                                            //~va7bI~
+            if (pos>=Pstr.length)                                  //~va7bI~
+            {                                                      //~va7bI~
+            	pi=Pdefault;                                       //~va7bI~
+                rc++;                                              //~va7bI~
+            }                                                      //~va7bI~
+            else                                                   //~va7bI~
+                try                                                //~va7bI~
+                {                                                  //~va7bI~
+                    pi=Double.parseDouble(Pstr[pos]);              //~va7bI~
+                }                                                  //~va7bI~
+                catch(Exception e)                                 //~va7bI~
+                {                                                  //~va7bI~
+                    if (Dump.Y) Dump.println("Utils.parseDouble str="+Pstr[ii]+"e="+e.toString());//~va7bI~
+                    pi=Pdefault;                                   //~va7bI~
+                    rc++;                                          //~va7bI~
+                }                                                  //~va7bI~
+            Pdouble[ii]=pi;                                        //~va7bI~
+        }                                                          //~va7bI~
+        if (Dump.Y) Dump.println("Utils.parseDouble rc="+rc);      //~va7bI~
+        if (Dump.Y) Dump.println("Utils.parseDouble Pstr="+Arrays.toString(Pstr)+",pos="+Ppos+",ctr="+Pctr+",default="+Pdefault+",out="+Arrays.toString(Pdouble));//~va7bI~
+        return rc;                                                 //~va7bI~
+    }                                                              //~va7bI~
     //*************************************************            //~@@01I~
     public static int roundUp(int Pval,int Punit)                  //~@@01I~
     {                                                              //~@@01I~
@@ -761,8 +833,8 @@ public class Utils                                            //~1309R~//~@@@@R~
             	if (ii%PctrSplit==0)                               //~va40I~
                 {                                                  //~va40I~
 	    	        sb.append("]");                                //~va40I~
-//                  if (ii+1<ctrMax)                               //~va40I~//+va60R~
-                    if (ii<ctrMax)                                 //+va60I~
+//                  if (ii+1<ctrMax)                               //~va40I~//~va60R~
+                    if (ii<ctrMax)                                 //~va60I~
 		    	        sb.append("[");                            //~va40I~
                 }                                                  //~va40I~
                 else                                               //~va40I~
@@ -807,8 +879,8 @@ public class Utils                                            //~1309R~//~@@@@R~
             	if (ii%PctrSplit==0)                               //~va60I~
                 {                                                  //~va60I~
 	    	        sb.append("]");                                //~va60I~
-//                  if (ii+1<ctrMax)                               //+va60R~
-                    if (ii<ctrMax)                                 //+va60I~
+//                  if (ii+1<ctrMax)                               //~va60R~
+                    if (ii<ctrMax)                                 //~va60I~
 		    	        sb.append("[");                            //~va60I~
                 }                                                  //~va60I~
                 else                                               //~va60I~

@@ -1,6 +1,7 @@
-//*CID://+va6gR~: update#= 838;                                    //+va6gR~
+//*CID://+va70R~: update#= 841;                                    //~va70R~
 //**********************************************************************//~v101I~
-//2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//+va6gI~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
+//2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//~va6gI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -524,7 +525,7 @@ public class Players                                               //~v@@@R~
         {                                                          //~v@@@R~
             case GCM_TAKE:                                         //~v@@@M~
             	typeAction=AT_STD;                                 //~9B14R~
-                emsg=AG.aUADelayed.isYourTune(PactionID,Pplayer);  //~9C06R~
+                emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C06R~
                 if (emsg!=0)                                       //~9C06R~
                 {                                                  //~9C06I~
                 	errmsgid=emsg;                                 //~9C06I~
@@ -578,7 +579,7 @@ public class Players                                               //~v@@@R~
             case GCM_PON:                                          //~v@@@I~
 //          case GCM_PON_C:                                      //~9B16R~//~9B17R~//~9B18R~
             	typeAction=AT_STD;                                 //~9B14R~
-                emsg=AG.aUADelayed.isYourTune(PactionID,Pplayer);  //~9C07I~
+                emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C07I~
                 if (emsg!=0)                                       //~9C07I~
                 {                                                  //~9C07I~
                 	errmsgid=emsg;                                 //~9C07I~
@@ -623,7 +624,7 @@ public class Players                                               //~v@@@R~
                 break;                                             //~v@@@I~
             case GCM_CHII:                                         //~v@@@I~
             	typeAction=AT_STD;                                 //~9B14R~
-                emsg=AG.aUADelayed.isYourTune(PactionID,Pplayer);  //~9C06R~
+                emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C06R~
                 if (emsg!=0)                                       //~9C06R~
                 {                                                  //~9C06I~
                 	errmsgid=emsg;                                 //~9C06I~
@@ -669,7 +670,7 @@ public class Players                                               //~v@@@R~
                 break;                                             //~v@@@I~
             case GCM_KAN:                                          //~v@@@I~
             	typeAction=AT_STD;                                 //~9B14R~
-                emsg=AG.aUADelayed.isYourTune(PactionID,Pplayer);  //~9C06I~
+                emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C06I~
                 if (emsg!=0)                                       //~9C06I~
                 {                                                  //~9C06I~
                 	errmsgid=emsg;                                 //~9C06I~
@@ -736,7 +737,7 @@ public class Players                                               //~v@@@R~
                 break;                                             //~v@@@I~
             case GCM_DISCARD:                                      //~v@@@M~
             	typeAction=AT_STD;                                 //~9B14R~
-                emsg=AG.aUADelayed.isYourTune(PactionID,Pplayer);//~9C06R~
+                emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);//~9C06R~
                 if (emsg!=0)                                       //~9C06R~
                 {                                                  //~9C06I~
                 	errmsgid=emsg;                                 //~9C06I~
@@ -807,7 +808,7 @@ public class Players                                               //~v@@@R~
                 break;                                             //~v@@@R~
             case GCM_RON:                                          //~v@@@R~
             	typeAction=AT_STD;                                 //~9B14I~
-                emsg=AG.aUADelayed.isYourTune(PactionID,Pplayer);  //~9C06I~
+                emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C06I~
                 if (emsg!=0)                                       //~9C06I~
                 {                                                  //~9C06I~
                 	errmsgid=emsg;                                 //~9C06I~
@@ -986,6 +987,11 @@ public class Players                                               //~v@@@R~
                         }                                          //~0404I~
                     }                                              //~0401I~
                     else                                           //~9302I~//~0404R~
+                    if (AG.swTrainingMode &&  AG.aAccounts.isRobotPlayer(Pplayer))//~va70I~
+                    {                                              //~va70I~
+                        chkDupRonRobotPlayAlone(Pplayer,tileComplete);//~va70I~
+                    }                                              //~va70I~
+                    else                                           //~va70I~
         		    if (!AG.aUADelayed.isDupRonOK2Touch(Pplayer))//swRonnable!=true  //~9B29I~//~0404R~
                     {                                              //~9B29I~
                     	if (!AG.aUADelayed.isDupRonOK(Pplayer,tileComplete))//~9226R~//~9B29R~
@@ -1022,6 +1028,18 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.isRonAvailable Pplayer="+Pplayer+",errmsgid="+Integer.toHexString(errmsgid)+",lastActionID="+lastActionID+",playerCurrent="+playerCurrent+",kanType=="+kanType);//~9208R~//~9218R~//~9226R~
         return errmsgid;                                           //~9208R~
     }                                                              //~9208I~
+    //*********************************************************************//~va70I~
+    private boolean chkDupRonRobotPlayAlone(int Pplayer,TileData PtdComplete)//~va70I~
+    {                                                              //~va70I~
+    	boolean rc=true;                                           //~va70I~
+        if (Dump.Y) Dump.println("Players.chkDupRonRobotPlayAlone Pplayer="+Pplayer+",td="+PtdComplete.toString()+",msgPlayAlone="+AG.aGC.getStatusPlayAlone());//~va70I~
+        if (AG.aGC.getStatusPlayAlone()==GCM_RON)	//blocked by human player//~va70I~
+        {                                                          //~va70I~
+	        if (Dump.Y) Dump.println("Players.chkDupRonRobotPlayAlone protect robot ron by human Ron");//~va70I~
+        	rc=false;                                              //~va70I~
+        }                                                          //~va70I~
+        return rc;                                                 //~va70I~
+    }                                                              //~va70I~
     //*********************************************************************//~va66I~
     //*robot dup ron, re-show other winner                         //~va66R~
     //*********************************************************************//~va66I~
@@ -1692,15 +1710,15 @@ public class Players                                               //~v@@@R~
 	        players[player].resetReachAll();                      //~9704I~
         if (Dump.Y) Dump.println("Players.resetReachAll after ctrReach="+ctrReach);//~9904I~
     }                                                              //~9704I~
-    //*********************************************************************//+va6gI~
-    public void clearReachAll()                                    //+va6gI~
-    {                                                              //+va6gI~
-        if (Dump.Y) Dump.println("Players.clearReachAll before ctrReach="+ctrReach);//+va6gI~
-        for (int player=0;player<PLAYERS;player++)                 //+va6gI~
-	        players[player].clearReachAll();                       //+va6gI~
-        ctrReach=0;                                                //+va6gI~
-        if (Dump.Y) Dump.println("Players.clearReachAll after ctrReach="+ctrReach);//+va6gI~
-    }                                                              //+va6gI~
+    //*********************************************************************//~va6gI~
+    public void clearReachAll()                                    //~va6gI~
+    {                                                              //~va6gI~
+        if (Dump.Y) Dump.println("Players.clearReachAll before ctrReach="+ctrReach);//~va6gI~
+        for (int player=0;player<PLAYERS;player++)                 //~va6gI~
+	        players[player].clearReachAll();                       //~va6gI~
+        ctrReach=0;                                                //~va6gI~
+        if (Dump.Y) Dump.println("Players.clearReachAll after ctrReach="+ctrReach);//~va6gI~
+    }                                                              //~va6gI~
     //*********************************************************************//~va11I~
     public boolean isClosedHand(int Pplayer)                          //~va11I~
     {                                                              //~va11I~
@@ -2126,7 +2144,7 @@ public class Players                                               //~v@@@R~
         //*****************************************************************************//~va66R~
         public void resetReachDone()                               //~9511R~
         {                                                          //~9511I~
-            if (Dump.Y) Dump.println("Player.resetReachDone player Discarded="+player+",swLastActionIsDiscard="+swLastActionIsDiscard+",tileLastDiscarded="+ Utils.toString(tileLastDiscarded));//~9B12R~//~va66R~
+            if (Dump.Y) Dump.println("Player.resetReachDone player Discarded player="+player+",swLastActionIsDiscard="+swLastActionIsDiscard+",tileLastDiscarded="+ Utils.toString(tileLastDiscarded));//~9B12R~//~va66R~//+va70R~
 //			if (tileLastDiscarded==null || !tileLastDiscarded.isReached())//~9706I~//~9B12R~
   			if (!swLastActionIsDiscard  || !tileLastDiscarded.isReached())//~9B12I~
             {                                                      //~9706I~
@@ -2160,15 +2178,15 @@ public class Players                                               //~v@@@R~
 	            AG.aAccounts.resetReachAll(player); //back ptrReach               //~9704I~//~9904R~
             }                                                      //~9704I~
         }                                                          //~9704I~
-        //*********************************************************************//+va6gI~
-        public void clearReachAll()                                //+va6gI~
-        {                                                          //+va6gI~
-            if ((status & (STF_REACH | STF_OPEN))!=0)              //+va6gI~
-            {                                                      //+va6gI~
-	            if (Dump.Y) Dump.println("Player.clearReachAll reachFlag on player="+player+",ctrReach="+ctrReach+",status="+Integer.toHexString(status));//+va6gI~
-            	status&=~(STF_REACH | STF_OPEN);                   //+va6gI~
-            }                                                      //+va6gI~
-        }                                                          //+va6gI~
+        //*********************************************************************//~va6gI~
+        public void clearReachAll()                                //~va6gI~
+        {                                                          //~va6gI~
+            if ((status & (STF_REACH | STF_OPEN))!=0)              //~va6gI~
+            {                                                      //~va6gI~
+	            if (Dump.Y) Dump.println("Player.clearReachAll reachFlag on player="+player+",ctrReach="+ctrReach+",status="+Integer.toHexString(status));//~va6gI~
+            	status&=~(STF_REACH | STF_OPEN);                   //~va6gI~
+            }                                                      //~va6gI~
+        }                                                          //~va6gI~
         //*********************************************************************//~v@@@I~
         //*-1 if not reached                                       //~v@@@I~
         //*********************************************************************//~v@@@I~

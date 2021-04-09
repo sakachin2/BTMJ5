@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 437;
+//*CID://+va70R~: update#= 440;                                    //+va70R~
 //**********************************************************************
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//+va70I~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -123,6 +124,26 @@ public class RADSENum                                              //~1225R~
         if (Dump.Y) Dump.println("RADSENum.evaluateTileNumberMeld intent="+Integer.toHexString(Pintent)+",idx="+Pidx+",type="+Ptd.type+",num="+num+",v="+v+",itsHandValueMeld="+itsHandValueMeld[Pidx]);//~1214I~//~1225R~
         return v;                                                  //~1214I~
     }                                                              //~1214I~
+    //***********************************************************************//+va70R~
+    //*from RADSEval.evaluateTile                                  //+va70R~
+    //***********************************************************************//+va70R~
+    public int evaluateForReach(int Ppos,int Pintent,TileData PtdDiscard)//+va70R~
+    {                                                              //+va70R~
+    	int v=0;                                                   //+va70R~
+        if (PtdDiscard.isRed5())                                   //+va70R~
+        {                                                          //+va70R~
+            v+=DV_DORA;                                            //+va70R~
+	        if (Dump.Y) Dump.println("RADSENum.evaluateTileForReach Red5 by red5="+v);//+va70R~
+        }                                                          //+va70R~
+        int num=PtdDiscard.number;                                 //+va70R~
+        if ((Pintent & INTENT_CHANTA)!=0)                          //+va70R~
+	        v+=DVS_NUMBER_WEIGHT_CHANTA[num];                      //+va70R~
+        else                                                       //+va70R~
+	        v+=DVS_NUMBER_WEIGHT[num];                             //+va70R~
+        v+=Utils.getRandom(DV_WORD_RANDOM_MAX);   //add 0->9 randomly//+va70R~
+        if (Dump.Y) Dump.println("RADSENum.evaluateTileForReach intent="+Integer.toHexString(Pintent)+",type="+PtdDiscard.type+",num="+num+",v="+v);//+va70R~
+        return v;                                                  //+va70R~
+    }                                                              //+va70R~
     //***********************************************************************//~1216I~
     //*insert take into itsHandPos                                 //~1216I~
     //***********************************************************************//~1216I~
@@ -489,7 +510,7 @@ public class RADSENum                                              //~1225R~
 	            addByNearDoraSub(pos-2,DV_DORA_NEAR2);             //~1309I~
             if (num<=TN8 && itsHand[pos+1]!=0)                      //~1309I~
 	            addByNearDoraSub(pos+1,DV_DORA_NEAR1);             //~1309I~
-            if (num<=TN7 && itsHand[pos+2]!=0)                      //~1309I~//+1310R~
+            if (num<=TN7 && itsHand[pos+2]!=0)                      //~1309I~//~1310R~
 	            addByNearDoraSub(pos+2,DV_DORA_NEAR2);             //~1309I~
         }                                                          //~1309I~
         if (Dump.Y) Dump.println("RADSENum.addByNearDora exit eswn="+eswnDiscard+",itsHandValue="+Utils.toStringMax(itsHandValue,ctrHand));//~1309I~

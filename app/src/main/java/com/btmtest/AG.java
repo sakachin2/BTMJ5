@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#=  448;       //~va66R~
+//*CID://+va70R~:                             update#=  449;       //+va70R~
 //******************************************************************************************************************//~v101R~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//+va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -102,7 +103,7 @@ import com.btmtest.game.RA.Shanten;                                //~va60I~
 import com.btmtest.game.RA.RoundStat;                              //~va60I~
 import com.btmtest.game.RA.RADiscard;                              //~va60I~
 import com.btmtest.game.RA.RADSmart;                               //~va60I~
-import com.btmtest.game.RA.RADSEval;                               //+va66I~
+import com.btmtest.game.RA.RADSEval;                               //~va66I~
 import com.btmtest.game.RA.RACall;                                 //~va60I~
 import com.btmtest.game.RA.RARon;                                  //~va60I~
 import com.btmtest.game.RA.RAReach;                                //~va60I~
@@ -369,7 +370,7 @@ public class AG                                                    //~1107R~
     public  RoundStat aRoundStat;                                  //~va60R~
     public  RADiscard aRADiscard;                                  //~va60I~
     public  RADSmart  aRADSmart;                                   //~va60I~
-    public  RADSEval  aRADSEval;                                   //+va66I~
+    public  RADSEval  aRADSEval;                                   //~va66I~
     public  RACall    aRACall;                                     //~va60I~
     public  RAReach   aRAReach;                                    //~va60I~
     public  RARon     aRARon;                                      //~va60R~
@@ -411,6 +412,7 @@ public class AG                                                    //~1107R~
     private int[] msgSeqNoEach=new int[PLAYERS];                   //~@@01I~
     private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~
     public boolean swTrainingMode;                                 //~va66R~
+    public boolean swPlayAloneNotify;                              //+va70I~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
 //************************************                             //~@@01I~

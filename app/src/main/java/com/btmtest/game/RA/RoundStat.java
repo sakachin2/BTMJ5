@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 211;                                    //~va27R~//~1108R~//~1111R~
+//*CID://+va74R~: update#= 219;                                    //~va70R~//+va74R~
 //**********************************************************************//~v101I~
+//2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//+va74I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.RA;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -196,7 +198,7 @@ public class RoundStat                                               //~v@@@R~//
     //*********************************************************    //~1112I~
     public void discard(int Pplayer,TileData Ptd)                  //~va60I~
     {                                                              //~va60M~
-        if (Dump.Y) Dump.println("RoundStat.discard swServer="+swServer+",player="+Pplayer+",td="+Ptd.toString());//~va60I~
+        if (Dump.Y) Dump.println("RoundStat.discard swThinkRobot="+swThinkRobot+",swServer="+swServer+",player="+Pplayer+",td="+Ptd.toString());//~va60I~//~va70R~
     	if (!swServer)                                             //~va60I~
         	return;                                                //~va60I~
     	int eswn=Accounts.playerToEswn(Pplayer);                   //~va60R~
@@ -502,7 +504,7 @@ public class RoundStat                                               //~v@@@R~//
             if ((RSP[ii].callStatus & CALLSTAT_REACH)!=0)               //~1310I~
             	ctr++;                                             //~1310I~
         }                                                          //~1310I~
-        if (Dump.Y) Dump.println("RoundStat.getCtrOtherReach ctr="+ctr);//~1310I~//+1314R~
+        if (Dump.Y) Dump.println("RoundStat.getCtrOtherReach ctr="+ctr);//~1310I~//~1314R~
         return ctr;                                                //~1310I~
     }                                                              //~1310I~
     //*********************************************************    //~1311I~
@@ -585,7 +587,10 @@ public class RoundStat                                               //~v@@@R~//
         {                                                          //~va60I~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.deal swRobot="+swRobot+",eswn="+eswn+",Ptds="+TileData.toString(Ptds));//~va60R~//~1201R~
             if (!swRobot)                                          //~1201I~
+            {                                                      //~va70I~
+        		setShantenYou();                                   //~va70I~
             	return;                                            //~1201I~
+            }                                                      //~va70I~
             swAllInHand=true;                                      //~1120I~
         	for (TileData td:Ptds)                                 //~va60I~
             {                                                      //~va60I~
@@ -738,7 +743,12 @@ public class RoundStat                                               //~v@@@R~//
 //      	ctrDiscarded++;                                        //~1114I~//~1201M~//~1223M~//~1311R~
 	   		itsDiscardedSelf[ctrDiscarded++]=Ppos; //players discarded in the seq of discard,to chk furiten from reach/my discarded//~1311I~
             if (!swRobot)                                          //~1201I~
+            {                                                      //~va70I~
+//          	if (AG.swPlayAloneNotify)                          //~va70I~//+va74R~
+            	if (AG.swTrainingMode)                             //+va74I~
+                	setShantenYou();                               //~va70I~
             	return;                                             //~1201I~
+            }                                                      //~va70I~
 		    removeHandTile(Ppos,Ptd);                              //~va60R~
 //      	if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode)//~1205I~//~1220R~//~1224M~
         	if ((TestOption.option2 & TO2_OPENHAND)!=0                     )//~1220I~//~1224M~
@@ -1280,5 +1290,20 @@ public class RoundStat                                               //~v@@@R~//
             if (Dump.Y) Dump.println("RoundStat.getCtrValueWordDup rc="+ctr+",eswn="+eswn);//~1223I~
             return ctr;                                             //~1223I~
         }                                                          //~1223I~
+        //***********************************************************************//~va70I~
+	    //*set shanten of human player when PlayAloneNotify mode   //~va70I~
+	    //*at deal and discard                                     //~va70I~
+        //***********************************************************************//~va70I~
+        public void setShantenYou()                                 //~va70I~
+        {                                                          //~va70I~
+	        if (!isReachCalled())                                  //~va70I~
+            {                                                      //~va70I~
+                TileData[] tdsHand=AG.aPlayers.getHands(PLAYER_YOU);//~va70R~
+                ctrHand=tdsHand.length;                            //~va70R~
+                RAUtils.countTile(tdsHand,itsHand);                //~va70R~
+                currentShanten=getShanten(itsHand,ctrHand);        //~va70R~
+            }                                                      //~va70I~
+            if (Dump.Y) Dump.println("RoundStat setShantenYou eswn="+eswn+",player="+player+",currentShanten="+currentShanten);//~va70I~
+        }                                                          //~va70I~
 	}//class RSPlayer                                              //~va60M~
 }//class RoundStat                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~

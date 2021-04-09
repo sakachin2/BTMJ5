@@ -1,5 +1,6 @@
-//*CID://+va66R~: update#= 790;                                    //~va66R~
+//*CID://+va70R~: update#= 792;                                    //~va66R~//~va70R~
 //**********************************************************************//~v101I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/23 va62 no need to send to robot; GCM_PON,GCM_CHII,GCM_KAN(Rovbot ignores it but)//~va62I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -79,7 +80,7 @@ public class UserAction       //~v@@@R~
     public  UAPon     UAP;                                         //~v@@@I~//~9629R~
     public  UAChii  UAC;     //public for ITMock                 //~v@@@I~//~v@@7R~//~va60R~//~va62R~
     public  UAKan   UAK;                                           //~v@@7R~//~9623R~
-    public  UAReach UARE;   //public for IT Mock                      //~v@@7I~//~va60R~//+va66R~
+    public  UAReach UARE;   //public for IT Mock                      //~v@@7I~//~va60R~//~va66R~
     protected  UARon UAR;      //publc for IT Mock                  //~v@@7I~//~va60R~
     private UAEndGame UAEG;                                        //~v@@7I~
     public int currentActionID;                                    //~9623R~
@@ -137,6 +138,7 @@ public class UserAction       //~v@@@R~
     	prevActionID=0;                                            //~va66I~
     	currentActionID=0;                                         //~va66I~
     	ctrResponse=0; ctrRequest=0;                               //~va66I~
+        AG.aGC.newGame();                                     //~va70I~
     }                                                              //~va66I~
 	//*************************************************************************//~v@@@I~
     private int addCtrRequest()                                    //~v@@@I~
@@ -835,6 +837,11 @@ public class UserAction       //~v@@@R~
     	int rc=-1;                                                 //~va66I~
     	if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0)    //~va66I~
         {                                                          //~va66I~
+        	if (AG.aGC.getStatusPlayAlone()!=0)                        //+va70I~
+            {                                                      //+va70I~
+		        if (Dump.Y) Dump.println("UserAction.chkRobotTakenTestOption Test mode rc=-1 by playalone status");//+va70I~
+            	return rc;                                         //+va70I~
+            }                                                      //+va70I~
         	int cp=AG.aPlayers.getCurrentPlayer();                 //~va66I~
             if (AG.aAccounts.isRobotPlayer(cp))                    //~va66I~
             {                                                      //~va66I~

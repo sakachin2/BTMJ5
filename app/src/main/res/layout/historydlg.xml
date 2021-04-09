@@ -126,6 +126,13 @@
                         android:text="@string/DeSelectAll"
                     /> <!--1Ah8-->
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btnHistoryBS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/Label_btnHistoryBS"
+                /> 
             </LinearLayout>
 	</LinearLayout>
     <LinearLayout

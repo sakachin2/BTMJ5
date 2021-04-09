@@ -1,4 +1,4 @@
-//*CID://+va66R~:                             update#=  879;       //~va60R~//~va66R~
+//*CID://+va66R~:                             update#=  880;       //~va60R~//~va66R~
 //*****************************************************************//~v101I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -1080,10 +1080,10 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         if (compStat.swReplyAll)                                   //~9410I~
 	    	 CompleteDlg.showResult(compStat.completeEswn);        //~9410R~
 	    sendOpen();                                                //~0329I~
-        if (AG.swTrainingMode)                                     //+va66M~
-        {                                                          //+va66M~
-	        compStat.setAmmount(calcOut);  //for CompleteDlg       //+va66M~
-        }                                                          //+va66M~
+        if (AG.swTrainingMode)                                     //~va66M~
+        {                                                          //~va66M~
+	        compStat.setAmmount(calcOut);  //for CompleteDlg       //~va66M~
+        }                                                          //~va66M~
         dismiss();                                                 //~9221I~
     }                                                              //~1602M~//~v@@@I~//~9221M~
     //******************************************                   //~9221I~
@@ -1241,7 +1241,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                                                                    //~9306I~
     }                                                              //~9306I~
     //*******************************************************************//~9221I~
-    public  void setReplyText()                                    //~9221I~
+    private void setReplyText()                                    //~9221I~
     {                                                              //~9221I~
         if (Dump.Y) Dump.println("CompReqDlg.setReplyText");       //~9221I~
         compStat.chkOK();                                          //~9221I~
@@ -1400,7 +1400,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                 UView.showToast(R.string.Err_CompReqMultipleRon);  //~0106I~
                                                                    //~0106I~
         }                                                          //~0106I~
-		if (Dump.Y) Dump.println("CompReqDlg.shwComplete ctr="+ctr+",rc="+rc);//~9403I~//~9903R~//~0106R~
+		if (Dump.Y) Dump.println("CompReqDlg.showComplete ctr="+ctr+",rc="+rc);//~9403I~//~9903R~//~0106R~//+va66R~
         return rc;                                                //~9403I~//~9903R~
     }                                                              //~9403I~
     //*************************************************************************//~0329I~

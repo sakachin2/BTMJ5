@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#=  581;       //~va66R~
+//*CID://+va7aR~:                             update#=  586;       //~va7aR~
 //*****************************************************************//~v101I~
+//2021/04/06 va7a add function of show balance sheet               //~va7aI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v101I~
@@ -102,6 +103,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         UButton.bind(Playoutview,R.id.DeSelectAll,this);           //~9824I~
         UButton.bind(Playoutview,R.id.Reload,this);                //~9824I~
         UButton.bind(Playoutview,R.id.Delete,this);                //~9824I~
+        UButton.bind(Playoutview,R.id.btnHistoryBS,this);          //+va7aI~
         containerFilename=UView.findViewById(Playoutview,R.id.FileNameContainer);//~v@@@I~//~9614I~
 //      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_MULTIPLE);//~v@@@R~//~9614I~//~0114R~
         lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_SINGLE);//~0114I~
@@ -135,7 +137,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     protected int getDialogWidth()                                 //~9823I~
     {                                                              //~9823I~
     	int ww=getDialogWidthSmallDevicePortraitFixedRate();       //~9823I~
-    	if (Dump.Y) Dump.println("HistrryDlg.getDialogWidth swSmallDevice="+AG.swSmallDevice+",ww="+ww);//~9823I~
+    	if (Dump.Y) Dump.println("HistoryDlg.getDialogWidth swSmallDevice="+AG.swSmallDevice+",ww="+ww);//~9823I~//~va7aR~
         return ww;                                                 //~9823I~
     }                                                              //~9823I~
 	//************************************                         //~v@@@I~//~9614I~
@@ -175,6 +177,9 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             case R.id.DeSelectAll:                                 //~v@@@M~//~9614I~
                 onClickDeSelectAll();                                         //~1Ah8I~//~v@@@M~//~9614I~
                 break;                                             //~v@@@M~//~9614I~
+            case R.id.btnHistoryBS:                                //~va7aI~
+                onClickHistoryBS();                                //~va7aI~
+                break;                                             //~va7aI~
             case R.id.Reload:        //Re-Start                          //~v@@@I~//~9614I~//~9615R~//~9824R~//~0111R~
                 onClickReload();                                     //~v@@@R~//~9614I~//~9615R~//~9824R~
                 break;                                                 //~v@@@I~//~9614I~//~9615R~//~9824R~
@@ -553,7 +558,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             {                                                      //~va66I~
             	AG.swTrainingMode=true;                            //~va66I~
 		        AG.aBTMulti.setTrainingMode();                     //~va66I~
-                swServer=true;                                     //+va66I~
+                swServer=true;                                     //~va66I~
         		rc=MS_SERVER;                                      //~va66I~
             }                                                      //~va66I~
         }                                                          //~va66I~
@@ -946,4 +951,10 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             return 0;                                              //~0112I~
         }                                                          //~0112I~
     }                                                              //~0112I~
+    //****************************************************************************//~va7aI~
+    public void onClickHistoryBS()                                 //~va7aI~
+    {                                                              //~va7aI~
+        if (Dump.Y) Dump.println("HistoryDlg.onClickHistoryBS");   //~va7aI~
+	    HistoryBSDlg.newInstance().show();                         //~va7aR~
+    }                                                              //~va7aI~
 }//class                                                           //~v@@@R~

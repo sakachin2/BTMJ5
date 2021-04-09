@@ -1,5 +1,8 @@
-//*CID://+va66R~: update#= 495;                                    //~va60R~//~va66R~
+//*CID://+va7eR~: update#= 501;                                    //+va7eR~
 //**********************************************************************//~v101I~
+//2021/04/07 va7e change default to On for allow_robot_all         //+va7eI~
+//2021/04/07 va7c (Bug)option OpenReachRobot change is not saved and not effective(not sended)//~va7cI~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -149,7 +152,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int OPENREACH_CHOMBO=1;                    //~0329I~
     public static final int OPENREACH_DEFAULT=OPENREACH_YAKUMAN;   //~0329I~
                                                                    //~0329I~
-    public static final int[] rbsOpenReachRobot=new int[]{R.id.rbOpenReachRobotNone,R.id.rbOpenReachRobotSkip};//~0329R~
+//  public static final int[] rbsOpenReachRobot=new int[]{R.id.rbOpenReachRobotNone,R.id.rbOpenReachRobotSkip};//~0329R~//~va7cR~
+    public static final int[] rbsOpenReachRobot=new int[]{R.id.rbOpenReachRobotNone,R.id.rbOpenReachRobotSkip,R.id.rbOpenReachRobotNormal};//~va7cI~
     public static final int OPENREACH_ROBOT_NONE=0;                //~0329I~
     public static final int OPENREACH_ROBOT_SKIP=1;                //~0329I~
     public static final int OPENREACH_ROBOT_DEFAULT=OPENREACH_ROBOT_NONE;//~0329I~
@@ -172,6 +176,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int 	DEFAULT_ORDERPRIZE=1;	//5-10     //~9819I~
                                                                    //~9819I~
     public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~9412R~
+    public static final int 	DEFAULT_DELAY_PONKAN_NOTIFYMODE=200;		//msec//~va70I~
     public static final int 	DEFAULT_DELAY_TAKE=2  ;		//sec  //~9412I~
     public static final int 	DEFAULT_DELAY_LAST=2;	//sec      //~9412R~
     public static final int 	DEFAULT_DELAY_DISCARD=0;           //~9622I~
@@ -216,8 +221,10 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int 	DEFAULT_BIRD_MAX=30000;            //~9430I~
     public static final int 	DEFAULT_BIRD_INC=1000;             //~9430I~
     public static final int 	DEFAULT_BIRD=0;                    //~9430I~
-                                                                   //+va66I~
-    public static final int 	DEFAULT_THINK_ROBOT=1;             //+va66I~
+                                                                   //~va66I~
+    public static final int 	DEFAULT_THINK_ROBOT=1;             //~va66I~
+    public static final int 	DEFAULT_ALLOW_ROBOT_ALL=1;         //+va7eR~
+    public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~
                                                                    //~9413I~
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
     public static final String[] rankDrawnMangan=AG.resource.getStringArray(R.array.DrawnManganRank);//~9413I~
@@ -302,6 +309,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_THINK_ROBOT           =173;    //~va60I~
 //  public static final int    RSID_ALLOW_ROBOT_ALL       =174;    //~va66R~
     public static final int    RSID_ALLOW_ROBOT_ALL_BTN   =175;    //~va66I~
+    public static final int    RSID_PLAY_ALONE_NOTIFY     =176;    //~va70I~
                                                                    //~9414I~
     public static final int    RSID_BIRD                  =180;    //~9430I~
     public static final int    RSID_BIRD_PAY              =181;    //~9430I~
@@ -470,6 +478,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_THINK_ROBOT          ,"ThinkRobot"           ),//~va60I~
 //  				new RSEnumPair(RSID_ALLOW_ROBOT_ALL      ,"RobotPlayerAll"       ),//~va66R~
     				new RSEnumPair(RSID_ALLOW_ROBOT_ALL_BTN  ,"RobotPlayerAllBtn"    ),//~va66I~
+    				new RSEnumPair(RSID_PLAY_ALONE_NOTIFY    ,"PlayAloneNotify"      ),//~va70I~
                                                                    //~9429I~
     				new RSEnumPair(RSID_BIRD                 ,"Bird"                 ),//~9430I~
     				new RSEnumPair(RSID_BIRD_PAY             ,"BirdPay"              ),//~9430I~

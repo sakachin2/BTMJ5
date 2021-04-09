@@ -1,5 +1,8 @@
-//*CID://+va60R~: update#= 890;                                    //~va60R~//~va63R~//~va60R~
+//*CID://+va75R~: update#= 898;                                    //~va70R~//~va75R~
 //**********************************************************************//~v101I~
+//2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
+//2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//~va74I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/23 va63 send GCM_NEXT_PLAYER_PONKAN then GCM_TIMEOUT_TO TAKE//~va60I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //utility around screen                                            //~v@@@I~
@@ -84,6 +87,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
     protected int delayedAction;    //actionID of scheduled delayed msg//~9B17I~
 //    private boolean swOldWaitingStatus;                          //~v@@@R~
     private int delayTake,delayPonKan,delayLast;                             //~v@@@R~
+    private int delayPonKanNotifyMode;                             //~va70I~
     protected Message msgWaiting;//~v@@@I~                         //~9B18R~
 //  protected int currentEswn;                                       //~v@@@I~//~9B24R~
 	protected int timeoutAutoDiscard;                                //~9702R~//~9B18R~
@@ -117,6 +121,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         swStop=false;                                              //~v@@@I~
         swServer=Accounts.isServer();                              //~9B20I~
 		delayPonKan=RuleSettingOperation.getDelayPonKan();                  //~v@@@I~//~9624R~
+		delayPonKanNotifyMode=RuleSettingOperation.getDelayPonKanNotifyMode();//~va70I~
   		delayTake=RuleSettingOperation.getDelayTake();                      //~v@@@I~//~9624R~
 		delayLast=RuleSettingOperation.getDelayLast();                      //~v@@@I~//~9624R~
 //      currentEswn=Accounts.getCurrentEswn();                     //~v@@@I~//~9624R~//~9B24R~
@@ -208,20 +213,24 @@ public class UADelayed //implements Runnable                            //~v@@@R
     //*from UADiscard.discard()                                    //~9B16R~
     //*Server only after Discard,schedule delayed msg TIMEOUT_TO_PONKAN if exausted pon/kan is available//~9B16I~
     //***********************************************************************//~9623I~
-	public void postDelayedPonKan(int Pplayer,TileData Ptd)        //~9623I~
+//  public void postDelayedPonKan(int Pplayer,TileData Ptd)        //~9623I~//~va70R~
+    public void postDelayedPonKan(int Pplayer)                     //~va70I~
     {                                                              //~9623I~
     	if (swStop)                                                //~9B20I~
         {                                                          //~9B20I~
 	    	if (Dump.Y) Dump.println("UADelayed.postDelayedPonKan return by swStop");//~9B20I~
         	return;                                                //~9B20I~
         }                                                          //~9B20I~
-        if (Dump.Y) Dump.println("UADelayed postDelayedPonKan player="+Pplayer+",Ptd:"+Ptd.toString());//~9623I~
+        if (Dump.Y) Dump.println("UADelayed postDelayedPonKan player="+Pplayer);//~9623I~
 //      String strTD=ACAction.strTD(Ptd);            //~9623I~     //~9624R~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_PONKAN,Pplayer,AG.aPlayers.ctrTakenAll,0,strTD);//~9623I~//~9624R~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_PONKAN,Pplayer,0,0,strTD);//~9624R~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_PONKAN,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~9624I~//~9625R~
         Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_PONKAN,delayPonKan,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~9625I~
 //      GameViewHandler.sendMsgDelayed(msg,delayPonKan);	//callback to timeoutToPonKan//~9623I~//~9624R~//~9626R~
+	  if (AG.swPlayAloneNotify)	                                   //~va70I~
+        sendMsgDelayed(msg,delayPonKanNotifyMode);	//callback to timeoutToPonKan//~va70I~
+      else                                                         //~va70I~
         sendMsgDelayed(msg,delayPonKan);	//callback to timeoutToPonKan//~9626I~
     }                                                              //~9623I~
     //***********************************************************************//~9623I~//~9624M~
@@ -280,6 +289,17 @@ public class UADelayed //implements Runnable                            //~v@@@R
     //***********************************************************************//~9623I~
     public void timeoutToPonKan(Message Pmsg)                      //~9623I~
     {                                                              //~9623I~
+        if (Dump.Y) Dump.println("UADelay.timeoutToPonkan swTrainingMode="+AG.swTrainingMode+",swPlayAloneNotify="+AG.swPlayAloneNotify);//~va70I~//~va74R~
+//  	if (AG.swPlayAloneNotify)                                  //~va70I~//~va74R~
+    	if (AG.swTrainingMode)                                     //~va74I~
+        {                                                          //~va70I~
+//      	if (AG.aGC.getStatusPlayAloneNotify()==GCM_RON)	//waiting human Ron button push)//~va70I~//~va74R~
+        	if (AG.aGC.getStatusPlayAlone()==GCM_RON)	//waiting human Ron button push)//~va74I~
+            {                                                      //~va70I~
+        		if (Dump.Y) Dump.println("UADelay.timeoutToPonkan@@@@ ignore timeoutPonKan by statusPlayAlone=GCM_RON");//~va70I~//~va74R~
+            	return;                                            //~va70I~
+            }                                                      //~va70I~
+        }                                                          //~va70I~
 //      int[][] intss=getMsgDataTD(Pmsg);                          //~9624R~
 //      int pl=intss[0][0];                                            //~9623I~//~9624R~
 //      int ctrTaken=intss[0][1];                                  //~9624I~
@@ -391,7 +411,9 @@ public class UADelayed //implements Runnable                            //~v@@@R
         int timeout=timeoutAutoTake;                               //~9701I~
         if (AG.aAccounts.isDummyPlayer(Pplayer))               //~v@@6R~//~9701I~
 	        timeout=timeoutAutoTakeRobot;                          //~9701I~
-        if (Dump.Y) Dump.println("UADelayed postDelayedAutoTake swServer="+PswServer+",timeout="+timeout+",autotake="+timeoutAutoTake+",autotakeRobot="+timeoutAutoTakeRobot+",player="+Pplayer+",ctraTakenAll="+PctrTaken);//~9622R~//~9624R~//~9627R~//~9701I~
+	  	if (AG.swPlayAloneNotify)                                  //~va75I~
+        	timeout=delayPonKanNotifyMode;	//callback to autitakeTimeout//~va75I~
+        if (Dump.Y) Dump.println("UADelayed postDelayedAutoTake swServer="+PswServer+",swPlayAloneNotify="+AG.swPlayAloneNotify+",timeout="+timeout+",autotake="+timeoutAutoTake+",autotakeRobot="+timeoutAutoTakeRobot+",player="+Pplayer+",ctraTakenAll="+PctrTaken);//~9622R~//~9624R~//~9627R~//~9701I~//~va75R~
         if (timeout==0)                                    //~9628I~//~9701R~
         {                                                          //~9628I~
 	        delayedAction=GCM_TIMEOUT_AUTOTAKE0;                   //~9630I~
@@ -496,10 +518,19 @@ public class UADelayed //implements Runnable                            //~v@@@R
     }                                                              //~v@@@I~//~9625M~
     //***********************************************************************//~9622I~
     //*on Server                                                   //~9628I~
-    //*from GVH,timeup to auto take                                //~9628I~
+    //*from GVH by GCM_TIMEOUT_AUTOTAKE,timeup to auto take                                //~9628I~//+va75R~
     //***********************************************************************//~9628I~
 	public void autoTakeTimeout(Message Pmsg)                   //~9622I~//~9625R~
     {                                                              //~9622I~
+    	if (AG.swTrainingMode)                                     //~va70I~
+        {                                                          //~va70I~
+        	int stat=AG.aGC.getStatusPlayAlone();                  //~va70I~
+        	if (stat!=0)	//waiting human Call(Ron/Pon/Kan?Chii) button push//~va70I~
+            {                                                      //~va70I~
+        		if (Dump.Y) Dump.println("UADelay.autoTakeTimeout@@@@ ignore timeout by statusPlayAlone="+stat);//~va70I~
+            	return;                                            //~va70I~
+            }                                                      //~va70I~
+        }                                                          //~va70I~
 		autoTakeTimeout(Pmsg,false/*PswIgnoreWaiting*/);   //~9628I~
     }                                                              //~9628I~
     //***********************************************************************//~9628I~
@@ -1150,8 +1181,8 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //        UA.sendToClient(true/*PswSendAll*/,true/*PswRobot*/,GCM_NEXT_PLAYER,player,data);//~v@@@R~//~9624M~
 //        GameViewHandler.sendMsg(GCM_NEXT_PLAYER,player,0,0);	//on server//~v@@@R~//~9624M~
           GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(Pplayer),0,0);	//on server,to UADiscard.nextPlayer()//~v@@@I~//~9624M~//~9628R~
-//      TileData lastTD=AG.aPlayers.tileLastDiscarded;               //~v@@@I~//~9624M~//+va60R~
-        TileData lastTD=AG.aPlayers.getLastDiscarded();            //+va60I~
+//      TileData lastTD=AG.aPlayers.tileLastDiscarded;               //~v@@@I~//~9624M~//~va60R~
+        TileData lastTD=AG.aPlayers.getLastDiscarded();            //~va60I~
 //      if ((TD.flag & TDF_LAST)!=0)                               //~9623I~//~9624M~
         if (lastTD!=null && (lastTD.flag & TDF_LAST)!=0)           //~9624R~
         {                                                          //~9623I~//~9624M~

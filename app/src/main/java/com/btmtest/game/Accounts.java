@@ -1,6 +1,7 @@
-//*CID://+va6gR~: update#= 818;                                    //+va6gR~
+//*CID://+va72R~: update#= 821;                                    //~va72R~
 //**********************************************************************//~v101I~
-//2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//+va6gI~
+//2021/03/30 va72 (Bug)when multiron for reach tile,nemaplate win color shadow was lost by showscore from resetReachDone//~va72I~
+//2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//~va6gI~
 //2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
 //2021/02/10 va68 change robot name                                //~va68I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -1378,6 +1379,7 @@ public class Accounts                                              //~v@@@R~
     //**************************************************           //~9818I~
     private void prepareNextGame()                                 //~9818R~
     {                                                              //~9818I~
+        if (Dump.Y) Dump.println("Accounts.prepareNextGame");      //~va6gI~
         Complete.newInstance();                                    //~9818I~
         AG.aStarter.showGameSeq(AG.aAccounts.starterRelativePos);  //~9818I~
         int dealerPos=getCurrentStarter();                         //~9818I~
@@ -1737,7 +1739,7 @@ public class Accounts                                              //~v@@@R~
         int pos=playerToPosition(Pplayer);                         //~9511R~
         score[pos]+=POINT_REACH;                                   //~9511I~
         if (Dump.Y) Dump.println("Accounts.resetReachDonePay lastReach="+Pplayer+",pos="+pos+",score="+Arrays.toString(score));//~9511R~
-        AG.aNamePlate.showScore();                                 //~9511I~
+//      AG.aNamePlate.showScore(); //showScore will be called later at endgame/nextgame from scoreDlg                                 //~9511I~//+va72R~
     }                                                              //~9511I~
     //**************************************************           //~9704I~
     //*at ResetGame by Chombo etc                                  //~9704I~
@@ -1935,10 +1937,10 @@ public class Accounts                                              //~v@@@R~
     {                                                              //~9522I~
         if (Dump.Y) Dump.println("Accounts.savePendingReach swRon="+PswRon+",before ctrPendingReach="+Arrays.toString(intsCtrPendingReach));//~9522I~
         if (PswRon)                                                //~9522I~
-        {                                                          //+va6gI~
+        {                                                          //~va6gI~
 		    Arrays.fill(intsCtrPendingReach,0);                    //~9522I~
-            AG.aPlayers.clearReachAll();                           //+va6gI~
-        }                                                          //+va6gI~
+            AG.aPlayers.clearReachAll();                           //~va6gI~
+        }                                                          //~va6gI~
         else                                                       //~9522I~
         {                                                          //~9522I~
 			if (PswsReach!=null)                                   //~9522I~

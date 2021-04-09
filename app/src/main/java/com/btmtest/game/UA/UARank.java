@@ -1,6 +1,7 @@
-//*CID://+va26R~: update#= 810;                                    //~va26R~
+//*CID://+va7dR~: update#= 813;                                    //~va7dR~
 //**********************************************************************//~v101I~
-//2021/03/09 va6d (BUG)mixFlush allows other color pillow          //+va26I~
+//2021/04/07 va7d (Bug)misjudge 3shiki for 234 man 234234(pin 1peiko)//~va7dI~
+//2021/03/09 va6d (BUG)mixFlush allows other color pillow          //~va26I~
 //2020/11/02 va26 (BUG)Pinfu check err;missing check notnum        //~va26I~
 //2020/11/02 va25 (BUG)Straight check error                        //~va25R~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -260,18 +261,32 @@ public class UARank                                                //~va11R~
     private int chk3SameSeq()        //3shiki                      //~va11R~
     {                                                              //~va11I~
         int rc=0;                                                  //~va11I~
-        for (int ii=0;ii<sizePairSeqS;ii++)                        //~va11R~
+//      for (int ii=0;ii<sizePairSeqS;ii++)                        //~va11R~//~va7dR~
+        for (int ii=0;ii<sizePairSeqS && ii<2;ii++)                //~va7dI~
         {                                                          //~va11I~
         	Pair pair1,pair2;                                      //~va11R~
             pair1=pairNumS[ii];                                    //~va11R~
         	if (pair1.typePair==PT_NUMSEQ)                         //~va11I~
             {                                                      //~va11I~
 		        int ctr=0;                                         //~va11I~
+                int pair2type=-1,pair2number=-1;                   //~va7dI~
 	  	    	for (int jj=ii+1;jj<sizePairSeqS;jj++)             //~va11R~
                 {                                                  //~va11I~
 		            pair2=pairNumS[jj];                            //~va11R~
 		        	if (pair2.typePair==PT_NUMSEQ && pair2.type!=pair1.type && pair2.number==pair1.number)//~va11I~
-                    	ctr++;                                     //~va11I~
+                    {                                              //~va7dI~
+//                  	ctr++;                                     //~va11I~//~va7dR~
+                        if (ctr==0)                                //~va7dI~
+                        {                                          //~va7dI~
+                            ctr=1;                                 //~va7dI~
+                            pair2type=pair2.type; pair2number=pair2.number;//~va7dI~
+                        }                                          //~va7dI~
+                        else                                       //~va7dI~
+		        	    if (pair2.typePair==PT_NUMSEQ && pair2.type!=pair2type && pair2.number==pair2number)//~va7dI~
+                        {                                          //~va7dI~
+                            ctr=2;                                 //~va7dI~
+                        }                                          //~va7dI~
+                    }                                              //~va7dI~
                 }                                                  //~va11I~
         		if (ctr==2)                                        //~va11I~
                 {                                                  //~va11I~
@@ -295,7 +310,8 @@ public class UARank                                                //~va11R~
         	return 0;                                              //~va11I~
         }                                                          //~va11I~
         int rc=0;                                                  //~va11I~
-        for (int ii=0;ii<sizePairSeqS;ii++)                        //~va11R~
+//      for (int ii=0;ii<sizePairSeqS;ii++)                        //~va11R~//+va7dR~
+        for (int ii=0;ii<sizePairSeqS && ii<2;ii++)                //+va7dI~
         {                                                          //~va11I~
         	Pair pair1,pair2;                                      //~va11R~
             pair1=pairNumS[ii];                                    //~va11R~
@@ -600,12 +616,12 @@ public class UARank                                                //~va11R~
     	boolean rc=true;                                           //~va11I~
         int type;                                                  //~va11R~
         if (PswMix)                                                //~va11I~
-        {                                                          //+va26I~
-        	if (typePillow==TT_JI)                                 //+va26I~
-	        	type=-1;                                               //~va11I~//+va26R~
-            else                                                   //+va26I~
-	        	type=typePillow;                                   //+va26I~
-        }                                                          //+va26I~
+        {                                                          //~va26I~
+        	if (typePillow==TT_JI)                                 //~va26I~
+	        	type=-1;                                               //~va11I~//~va26R~
+            else                                                   //~va26I~
+	        	type=typePillow;                                   //~va26I~
+        }                                                          //~va26I~
         else                                                       //~va11I~
         	type=typePillow;                                       //~va11I~
         for (Pair pair:pairNumS)                                   //~va11R~

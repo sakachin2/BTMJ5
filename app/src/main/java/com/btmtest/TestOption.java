@@ -1,4 +1,4 @@
-//*CID://+va66R~: update#= 488;                                    //~va66R~
+//*CID://+va66R~: update#= 494;                                    //~va66R~
 //**********************************************************************//~v@@@I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
@@ -80,6 +80,14 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO2_ROBOT_DISCARD_BUTTON=    0x00080000;//~va66I~
     public static final int TO2_ROBOT_TOAST    =         0x00100000;//~va66I~
     public static final int TO2_ROBOT_SKIP_REACH =       0x00200000;//~va66I~
+    public static final int TO2_DEAL_MULTIRON    =       0x00400000;//~va66I~
+    public static final int TO2_DEAL_SINGLERON   =       0x00800000;//~va66I~
+    public static final int TO2_DEAL_PON         =       0x01000000;//~va66I~
+    public static final int TO2_DEAL_CHII        =       0x02000000;//~va66I~
+    public static final int TO2_CALL1ST          =       0x04000000;//~va66I~
+    public static final int TO2_DEAL_PONCHII     =       0x08000000;//~va66I~
+    public static final int TO2_DEAL_DOUBLERON   =       0x10000000;//+va66I~
+    public static final int TO2_DEAL_KANAFTERREACH=      0x20000000;//+va66I~
     public static int option2;                                     //~v@@@I~
     public static int firstDealer;                                 //~v@@@I~
     public static int finalGameCtrSet,finalGameCtrGame;            //~v@@@I~
@@ -137,7 +145,7 @@ public class TestOption //extends Handler                          //~v@@@I~
                                                                    //~v@@@I~
     	option2|=TO2_UNIT_MILISEC;                                 //~v@@@I~
     	option2|=TO2_ROBOT_TOAST;                                  //~va66I~
-//  	option2|=TO2_ROBOT_SKIP_REACH;	//TODO test                //+va66R~
+//  	option2|=TO2_ROBOT_SKIP_REACH;	//TODO test                //~va66R~
         Dump.println("TestOption.static sst="+sst);                      //~v@@@I~
         sst2="sst2";                                               //~v@@@I~
     }                                                              //~v@@@I~

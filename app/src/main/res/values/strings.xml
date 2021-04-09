@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.10</string>
+    <string name="app_version">v1.11</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -161,6 +161,7 @@
     <string name="Title_RuleFileDlg">RuleFile</string>
     <string name="Title_RuleFileDlgFolder">RuleFile %1$s &lt;font color=\"#000000\"&gt;(%2$s)</string>
     <string name="Title_HistoryDlg">Records</string>
+    <string name="Title_HistoryBSDlg">Balance Sheet</string>
     <string name="Title_HistoryDlgFolder">Record &lt;font color=\"#000000\"&gt;(%1$s)</string>
     <string name="Title_RuleSetting">RuleSettings</string>
     <string name="Title_PrefSetting">Preference</string>
@@ -1077,7 +1078,9 @@
     <string name="Label_RobotPayDependingScore">In proportion by score(See Help).</string>
     <string name="Label_AllowRobot">Allow match include robot when less than 4 players, or play alone.</string>
     <!--string name="Label_AllowRobotAll">Allow Training Mode</string-->
-    <string name="Label_AllowRobotAllButton">When playing alone, \"Take\" is not by timeout but by using button.</string>
+    <string name="Label_AllowRobotAllButton">When playing alone, Robot\'s \"Draw\" is by button.</string>
+    <string name="Label_PlayAloneNotify">Notify availability of Ron,Pon,Kan,Chii when playing alone.</string>
+    <string name="Desc_PlayAloneNotify">(Quick Robot Action)</string>
 
     <string name="Label_GameSet">Rounds</string>
     <string name="Label_GameSetInterrupted">Comp. Next is</string>
@@ -1449,4 +1452,18 @@
 		<item>" K けんちゃん "</item>
 	</string-array>
     <string name="Warn_TrainingModeWithNotThinkRobot">Robot setting is \"Simply discard the taken\",\nEnjoy by setting of \"Novices\".</string>
+    <string name="Label_btnHistoryBS">B/S</string>
+    <string name="Label_BSline_Name">Player</string>
+    <string name="Label_BSline_Point">Points</string>
+    <string name="Label_BSline_CtrSeq">Game counter by Order</string>
+    <string name="Label_BSline_CtrGame">Total</string>
+<!--
+    <string name="BS_ctrGame">Game count</string>
+    <string name="BS_ctrGameAlone">PlayA lone</string>
+    <string name="BS_ctrGameMatch">Match</string>
+    <string name="BS_ctrGamePending">Suspended</string>
+-->
+    <string name="Desc_BS_Summary">
+    	Game count : PlayAlone = %1$d, Match = %2$d, Suspended = %3$d  ( From %4$s )
+		</string>
 </resources>

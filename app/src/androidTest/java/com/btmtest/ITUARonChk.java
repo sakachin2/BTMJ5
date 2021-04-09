@@ -36,8 +36,8 @@ public class ITUARonChk                                            //~0A31R~
                                                                    //~0A31I~
     private MainActivity mActivity;                                //~0A31I~
 //*****************                                                //~0A31I~
-//  Context appContext = InstrumentationRegistry.getTargetContext();//~0A31I~//+1108R~
-    Context appContext = InstrumentationRegistry.getInstrumentation().getContext();//+1108I~
+//  Context appContext = InstrumentationRegistry.getTargetContext();//~0A31I~//~1108R~
+    Context appContext = InstrumentationRegistry.getInstrumentation().getContext();//~1108I~
 	UARonChk2 UARC2;                                               //~0A31I~
                                                                    //~0A31I~
     //*************************************************************************//~0A31M~
@@ -103,6 +103,7 @@ public class ITUARonChk                                            //~0A31R~
         {                                                          //~0A31R~
             boolean rc;                                            //~0A31R~
             if (Dump.Y) Dump.println("UARonChk.ronTest");          //~0A31R~
+                                                                   //+1407I~
             ctrTileAll=HANDCTR_TAKEN;                              //~0A31R~
             dupCtr=new int[][]{   //4 anko                         //~0A31R~
                 {3,3,0, 0,0,0, 0,0,0},                             //~0A31R~
@@ -111,6 +112,15 @@ public class ITUARonChk                                            //~0A31R~
                 { 3,3,0,0,  2,0,0, 0,0} };                         //7//~0A31R~
             rc=chkCompleteSub();                                   //~0A31R~
             if (Dump.Y) Dump.println("UARonChk.ronTest-1 4Anko rc="+rc);//~0A31R~
+                                                                   //+1407I~
+            ctrTileAll=HANDCTR_TAKEN;                              //+1407I~
+            dupCtr=new int[][]{   //4 anko                         //+1407I~
+                {0,0,0, 0,1,1, 1,0,0},                             //+1407I~
+                {0,1,1, 1,2,2, 2,0,0},                             //+1407I~
+                {0,0,0, 0,2,0, 0,0,0},                             //+1407I~
+                { 0,0,0,0,  0,0,0, 0,0} };                         //7//+1407I~
+            rc=chkCompleteSub();                                   //+1407I~
+            if (Dump.Y) Dump.println("UARonChk.ronTest-1-2 3shiki errr rc="+rc);//+1407I~
                                                                    //~0A31R~
             dupCtr=new int[][]{           //7 pair                 //~0A31R~
                 {2,2,0, 0,0,0, 0,0,0},                             //~0A31R~

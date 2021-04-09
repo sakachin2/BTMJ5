@@ -1,5 +1,6 @@
-//*CID://+va27R~: update#= 391;                                    //~va27R~
+//*CID://+va70R~: update#= 392;                                    //+va70R~
 //**********************************************************************//~v101I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//+va70I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //**********************************************************************//~va27I~
 package com.btmtest.game;                                          //~@@@@R~
@@ -63,14 +64,15 @@ public enum GCMsgID                                                //~@@@@R~
     public static final int    GCM_REACH        =15;               //~@@@@I~
     public static final int    GCM_RON          =16;               //~@@@@I~
     public static final int    GCM_DISCARD      =17;               //~@@@@I~
+    public static final int    GCM_KAN_OR_PON   =18;  //used wjen playaloneNotify mode to highlight btn both Kan and Pon//+va70I~
     public static final int    GCM_REACH_OPEN   =20;               //~9301I~
     public static final int    GCM_OPEN         =21;               //~@@@@I~//~9301I~
     public static final int    GCM_RON_ANYWAY   =24;               //~0205I~
     public static final int    GCM_REACH_RESET  =25;               //~9A30I~
     public static final int    GCM_REACH_OPEN_RESET=26;            //~9A30I~
     public static final int    GCM_FORCE_REACH         =27;        //~va27I~
-    public static final int    GCM_FORCE_REACH_OPEN    =28;        //+va27I~
-    public static final int    GCM_FORCE_REACH_ENABLE  =29;        //+va27R~
+    public static final int    GCM_FORCE_REACH_OPEN    =28;        //~va27I~
+    public static final int    GCM_FORCE_REACH_ENABLE  =29;        //~va27R~
     public static final int    GCM_2TOUCH         =30;             //~9B18I~
 //    public static final int    GCM_PON_C        =32;             //~9B16R~//~9B17R~//~9B18R~
 //    public static final int    GCM_CHII_C       =33;             //~9B16R~//~9B17R~//~9B18R~

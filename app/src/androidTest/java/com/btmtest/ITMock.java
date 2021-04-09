@@ -1,4 +1,4 @@
-//*CID://+dateR~:                             update#=  123;       //~1108I~
+//*CID://+dateR~:                             update#=  124;       //~1108I~
 //******************************************************************//~0B03I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //******************************************************************//~0B03I~
@@ -671,12 +671,12 @@ public class ITMock                                          //~0B03R~//~1108R~/
         {                                                          //~1123I~
         	AG.aUADelayed=this;                                    //~1123I~
         }                                                          //~1123I~
-    	@Override                                                  //~1123I~
+    	//@Override                                                  //~1123I~
         public void postDelayedPonKan(int Pplayer,TileData Ptd)    //~1123I~
         {                                                          //~1123I~
             if (Dump.Y) Dump.println("Mock_Delayed2 postDelayedPonKan");//~1123I~
         }                                                          //~1123I~
-    	@Override                                                  //~1123I~
+    	//@Override                                                  //~1123I~
     	public int isYourTune(int PactionID,int Pplayer)               //~9C06R~//~1123I~
         {                                                          //~1123I~
             if (Dump.Y) Dump.println("Mock_Delayed2 isYourTurn");  //~1123I~
@@ -798,10 +798,10 @@ public class ITMock                                          //~0B03R~//~1108R~/
             AG.aGC=this;                                           //~1123I~
             gv=new Mock_GameView(AG.context);	                   //~1123R~
        }                                                          //~1123I~
-	   public void highlightCompReq(boolean PswOn)                    //~va49I~//+1201I~
-       {                                                           //+1201I~
-            if (Dump.Y) Dump.println("Mock_GC.highlightCompReq");  //+1201I~
-       }                                                           //+1201I~
+	   public void highlightCompReq(boolean PswOn)                    //~va49I~//~1201I~
+       {                                                           //~1201I~
+            if (Dump.Y) Dump.println("Mock_GC.highlightCompReq");  //~1201I~
+       }                                                           //~1201I~
     }                                                              //~1123I~
     //******************************************************************//~1131I~
     class Mock_NamePlate extends NamePlate                         //~1131I~

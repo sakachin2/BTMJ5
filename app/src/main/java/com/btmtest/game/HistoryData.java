@@ -1,6 +1,8 @@
-//*CID://+va6eR~:                             update#=  498;       //+va6eR~
+//*CID://+va7bR~:                             update#=  510;       //~va7bR~
 //*****************************************************************//~v101I~
-//2021/03/11 va6e add robot name over 3 robot                      //+va6eI~
+//2021/04/06 va7b (Bug)HistryData setScore exception (out of bound)//~va7bI~
+//2021/04/06 va7a add function of show balance sheet               //~va7aI~
+//2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
 //*****************************************************************//~v101I~
 package com.btmtest.game;                                        //~v@@@R~//~9615R~
 
@@ -61,10 +63,12 @@ public class HistoryData                                              //~9614I~/
 	public int posServer;                                          //~9828I~
 	public int gamesetType=-1;                                     //~9829I~
 	public Prop ruleProp;                                          //~9829I~
+	public boolean swComplete;                                     //~va7bI~
     //****************************************                     //~9828I~
     public HistoryData(String[][] PhistoryData)                    //~9615R~
     {                                                          //~9614I~//~9615R~
         HD=PhistoryData;                                           //~9615R~
+    	swComplete=HD.length==HDPOS_SCORES+1;                      //~va7bM~
         if (Dump.Y) Dump.println("HistoryData constructor HD="+Utils.toString(HD));//~9615R~
     }                                                          //~9614I~//~9615R~
     //****************************************                     //~9828I~
@@ -75,9 +79,10 @@ public class HistoryData                                              //~9614I~/
         return scores;                                             //~9828I~
     }                                                              //~9828I~
 	//************************************************************ //~9828M~
-    public int[][] getIntValue()                                   //~9828I~
+//  public int[][] getIntValue()                                   //~9828I~//~va7aR~
+    private int[][] getIntValue()                                  //~va7aI~
     {                                                              //~9828M~
-		if (Dump.Y) Dump.println("HistoryData.getIntValue HD="+Utils.toString(HD));//~9828I~
+		if (Dump.Y) Dump.println("HistoryData.getIntValue swComplete="+swComplete+",HD="+Utils.toString(HD));//~9828I~//~va7bR~
         int[][] scores=null;                                       //~9828M~
         try                                                        //~9828M~
         {                                                          //~9828M~
@@ -87,13 +92,18 @@ public class HistoryData                                              //~9614I~/
             int[] gameSeq=new int[PLAYERS];                        //~9828M~
             int[] other=new int[PLAYERS];                          //~v@01I~
             String[] strScore=HD[HDPOS_SCORE];                     //~9828I~
+//          err+=Utils.parseInt(strScore,-1,score);                //~va7bR~
+            err+=parseScore(swComplete,strScore,score);            //+va7bR~
+          if (!swComplete)   //pending game                        //~va7bR~
+          {                                                        //~va7bI~
 	        String[] strReach=HD[HDPOS_REACH];                     //~9828I~
 	        String[] strGameSeq=HD[HDPOS_GAMESEQ];                 //~9828I~
 	        String[] strOther=HD[HDPOS_OTHER];                     //~v@01I~
-            err+=Utils.parseInt(strScore,-1,score);                //~9828M~
+//          err+=Utils.parseInt(strScore,-1,score);                //~9828M~//~va7bR~
             err+=Utils.parseInt(strReach,-1,ctrReach);             //~9828M~
             err+=Utils.parseInt(strGameSeq,-1,gameSeq);            //~9828M~
             err+=Utils.parseInt(strOther,-1,other);                //~v@01I~
+          }                                                        //~va7bI~
 //          scores=new int[][]{score,ctrReach,gameSeq};            //~9828M~//~v@01R~
             scores=new int[][]{score,ctrReach,gameSeq,other};      //~v@01I~
 			if (Dump.Y) Dump.println("HistoryData.getIntValue scores="+Utils.toString(scores));//~9828I~
@@ -102,11 +112,22 @@ public class HistoryData                                              //~9614I~/
         }                                                          //~9828M~
         catch (Exception e)                                        //~9828M~
         {                                                          //~9828M~
-            Dump.println("HistoryData:getIntValue exception");     //~9828I~
+            Dump.println("HistoryData:getIntValue exception");     //~9828I~//~va7aR~
+            if (Dump.Y) Dump.println("HistoryData:getIntValue exception e="+e.toString()+"\n"+Utils.toString(e.getStackTrace()));//~va7aR~
         }                                                          //~9828M~
 		if (Dump.Y) Dump.println("HistoryData.getIntValue scores="+Utils.toString(scores));//~9828I~
         return scores;                                             //~9828M~
     }                                                              //~9828M~
+	//************************************************************ //~va7bI~
+    private int parseScore(boolean PswComplete,String[] PstrScore,int[] Pscore)//+va7bR~
+    {                                                              //~va7bI~
+    	int err;                                                   //~va7bI~
+    	if (!PswComplete)
+			err=Utils.parseInt(PstrScore,-1,Pscore);               //~va7bI~
+        else                                                       //~va7bR~
+			err=Utils.parseDoubleToInt(PstrScore,1000,100,Pscore); //+va7bR~
+        return err;                                                //~va7bI~
+    }                                                              //~va7bI~
 	//************************************************************ //~9828I~
 	//*pointer to Interrupted Game member table to current member  //~v@01I~
 	//************************************************************ //~v@01I~
@@ -123,9 +144,9 @@ public class HistoryData                                              //~9614I~/
         {                                                          //~9828I~
         	String name=names[ii];                   //~;9828R~   //~9828I~
         	int idx;                                               //~9828I~
-//  		int idxRobot=Accounts.isRobotName(name);                   //~9828I~//+va6eR~
-//          if (idxRobot>0)                                        //~9828I~//+va6eR~
-    		if (Accounts.isRobotName(name)>0)                      //+va6eI~
+//  		int idxRobot=Accounts.isRobotName(name);                   //~9828I~//~va6eR~
+//          if (idxRobot>0)                                        //~9828I~//~va6eR~
+    		if (Accounts.isRobotName(name)>0)                      //~va6eI~
             {                                                      //~9828I~
 //              idx=PLAYERS-idxRobot;   //by naming at Account constructot  4,3,2,1 on Members//~9828I~//~v@01R~
         		idx=memb.searchRobot(ctrRobot++);                  //~v@01I~

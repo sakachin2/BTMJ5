@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 415;                                    //~v@@@R~//~v@@5R~//~9218R~
+//*CID://+DATER~: update#= 452;                                    //~v@@@R~//~v@@5R~//~9218R~
 //**********************************************************************//~v101I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //reset tile to new game                                           //~v@@@R~
@@ -15,6 +15,7 @@ import com.btmtest.dialog.RuleSetting;                             //~9412I~
                                                                    //~9412I~
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GConst.*;                                  //~v@@@I~//~9412M~
+import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.gv.Pieces.*;                        //~v@@@I~//~9412M~
 import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.gv.Stock.*;//~9412M~
@@ -206,10 +207,24 @@ public class Tiles                                 //~v@@@R~
         if (Dump.Y) Dump.println("Tiles.shuffle testOption 1="+Integer.toHexString(TestOption.option)+",2="+Integer.toHexString(TestOption.option2));//~1204I~
         if ((TestOption.option & TestOption.TO_KAN_ADDDEAL)!=0)               //~v@@5I~
         {	shuffleKanAdd(); return;}                               //~v@@5I~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_PON)!=0)      //~1401I~//~1402R~
+        {	shufflePonTest(); return;}                             //~1401I~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_CHII)!=0)    //~1403I~
+        {	shuffleChiiTest(); return;}                            //~1403I~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_PONCHII)!=0) //~1405I~
+        {	shufflePonChiiTest(1); return;}                         //~1405I~//+1407R~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_DOUBLERON)!=0)//+1407I~
+        {	shufflePonChiiTest(2); return;}                        //+1407I~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_KANAFTERREACH)!=0)//+1407I~
+        {	shufflePonChiiTest(3); return;}                        //+1407I~
         if ((TestOption.option2 & TestOption.TO2_ANKAN_DEAL)!=0)   //~0406I~//~0407R~
         {	shuffleMinkanTest(); return;}                          //~0406I~
         if ((TestOption.option2 & TestOption.TO2_CHANKAN_DEAL)!=0) //~0407I~
         {	shuffleChankanTest(); return;}                         //~0407I~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_MULTIRON)!=0)     //~1328I~
+        {	shuffleMultiRonTest(true); return;}                    //~1328I~
+        if ((TestOption.option2 & TestOption.TO2_DEAL_SINGLERON)!=0)    //~1328I~
+        {	shuffleMultiRonTest(false); return;}                   //~1328I~
         synchronized (baseTileData)                                 //~v@@@I~
         {                                                          //~v@@@I~
             ArrayList<TileData> al = deepCopyToArrayList();	//copy of baseTileData(34 entry)           //~v@@@R~//~9C01R~
@@ -418,6 +433,428 @@ public class Tiles                                 //~v@@@R~
             shuffledTileData = out;                                //~0406I~
         if (Dump.Y) Dump.println("shuffleMinkanTest "+TileData.toString(shuffledTileData));//~0406R~
     }                                                              //~0406I~
+    //*****************************************************************//~1401I~
+    //*for test Pon                                                //~1401I~
+    //*****************************************************************//~1401I~
+    public void shufflePonTest()                                   //~1401I~
+    {                                                              //~1401I~
+            ArrayList<TileData> al = deepCopyToArrayList();        //~1401I~
+            TileData[] out = getNewAllTile();                      //~1401I~
+            int outctr = 0;                                        //~1401I~
+            int typectr = 0;                                       //~1401I~
+            int tc=PIECE_TYPECTR-1;                                //~1401I~
+            TileData td,tdnew;                                     //~1401I~
+        //*wanpai 14                                               //~1401I~
+		    outctr=setTestWanpai(out,outctr,al);                   //~1402I~
+        //*hands 4 player                                          //~1401I~
+            for (;;)                                               //~1401I~
+            {                                                      //~1401I~
+                td = al.get(typectr);                          //~1401I~//~1402R~
+                td.ctrRemain--;                                //~1401I~//~1402R~
+                tdnew = TileData.newInstance(td);              //~1401I~//~1402R~
+                out[outctr++] = tdnew;                         //~1401M~//~1402R~
+                td = al.get(typectr);                              //~1402I~
+                td.ctrRemain--;                                    //~1402I~
+                tdnew = TileData.newInstance(td);                  //~1402I~
+                out[outctr++] = tdnew;                             //~1402I~
+                if (outctr>=14+8*4)                               //~1401I~//~1402R~
+                    break;                                         //~1401I~
+                typectr++;                                         //~1402I~
+            }                                                      //~1401I~
+        //*remaining on stock                                      //~1401I~
+		    setTestRemainRandom(out,outctr,al);                    //~1402R~
+            shuffledTileData = out;                                //~1401I~
+        if (Dump.Y) Dump.println("shufflePonTest "+TileData.toString(shuffledTileData));//~1401I~//~1402R~
+    }                                                              //~1401I~
+    //*****************************************************************//~1403I~
+    //*for test Chii                                               //~1403I~
+    //*****************************************************************//~1403I~
+    public void shuffleChiiTest()                                   //~1403I~
+    {                                                              //~1403I~
+            ArrayList<TileData> al = deepCopyToArrayList();        //~1403I~
+            TileData[] out = getNewAllTile();                      //~1403I~
+            int outctr = 0;                                        //~1403I~
+            int typectr = 0;                                       //~1403I~
+            int tc=PIECE_TYPECTR-1;                                //~1403I~
+            TileData td,tdnew;                                     //~1403I~
+        //*wanpai 14                                               //~1403I~
+		    outctr=setTestWanpai(out,outctr,al);                   //~1403I~
+        //*hands 4 player                                          //~1403I~
+//            int[][] itsDeal={                                   //~1403I~//~1405R~
+//                                    {23,24,25,  4, 5, 6, 10,11,28, 19,19,28 },//~1403R~//~1405R~
+//                                    {23,24,25,  4, 5,29,  6,11,12, 20,20,29 },//~1403R~//~1405R~
+//                                    {22,23,24,  4, 5, 6, 10,11,12, 21,21,30 },//~1403R~//~1405R~
+//                                    {22,23,22,  4, 6, 7, 10,11,12, 22,26,27 },//~1403R~//~1405R~
+//                                };                                  //~1403I~//~1405R~
+//            outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1403I~//~1405R~
+//            int[] itsDealTake={ 8, 8, 8, 8};                       //~1403R~//~1405R~
+//            outctr=setTestTake(out,outctr,al,itsDealTake);         //~1403I~//~1405R~
+//            itsDealTake=new int[]{ 6,25,24,11};                    //~1403R~//~1405R~
+//            outctr=setTestTake(out,outctr,al,itsDealTake);         //~1403I~//~1405R~
+        	int[][] itsDeal={                                      //~1405I~
+            						{23,24,25,  2, 3, 4, 10,15,16, 28,28, 8 },//~1405I~
+            						{23,24,25,  2, 3, 4,  9,11,16, 29,29, 8 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,11,12, 27,27, 8 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,11,12, 30,30, 8 },//~1405I~
+            					};                                 //~1405I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1405I~
+        	int[] itsDealTake={28,29,27,30};                       //~1405I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        	itsDealTake=new int[]{ 7, 7, 7, 7};                    //~1405I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        //*remaining on stock                                      //~1403I~
+		    setTestRemainRandom(out,outctr,al);                    //~1403I~
+            shuffledTileData = out;                                //~1403I~
+        if (Dump.Y) Dump.println("shuffleChiiTest "+TileData.toString(shuffledTileData));//~1403R~
+    }                                                              //~1403I~
+    //*****************************************************************//~1405I~
+    //*for test Pon and Chii                                       //~1405I~
+    //*****************************************************************//~1405I~
+    public void shufflePonChiiTest(int Pcase)                               //~1405I~//+1407R~
+    {                                                              //~1405I~
+        	int[][] itsDeal;                                       //~1405I~
+        	int[] itsDealTake;                                     //~1405I~
+            ArrayList<TileData> al = deepCopyToArrayList();        //~1405I~
+            TileData[] out = getNewAllTile();                      //~1405I~
+            int outctr = 0;                                        //~1405I~
+            int typectr = 0;                                       //~1405I~
+            int tc=PIECE_TYPECTR-1;                                //~1405I~
+            TileData td,tdnew;                                     //~1405I~
+        //*wanpai 14                                               //~1405I~
+		    outctr=setTestWanpai(out,outctr,al);                   //~1405I~
+        //*hands 4 player                                          //~1405I~
+        if (Pcase==3)                                                  //~1405I~//+1407R~
+        {                //kan after reach                         //~1405I~
+        	itsDeal=new int[][]{                                   //~1405I~
+            						{23,24,25,  2, 3, 4, 15,15,15, 28,28, 5 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,13,16, 29,29, 6 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,13,16, 27,27, 7 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,13,16, 26,26, 8 },//~1405I~
+            					};                                 //~1405I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1405I~
+        	itsDealTake=new int[]{28,29,27,26};                             //~1405I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        	itsDealTake=new int[]{ 0, 0, 0, 0};                    //~1405I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        	itsDealTake=new int[]{15, 6, 7, 8};                    //~1405R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        }                                                          //~1405I~
+        else                                                       //~1405I~
+        if (Pcase==1)                                                 //~1405I~//+1407R~
+        {                //pon and chii by 2pin                    //~1405R~
+        	itsDeal=new int[][]{                                   //~1405R~
+            						{23,24,25,  2, 3, 4, 10,15,16, 28,28, 8 },//~1405I~
+            						{23,24,25,  2, 3, 4,  9,11,16, 29,29, 8 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,10,12, 27,27, 8 },//~1405I~
+            						{23,24,25,  2, 3, 4, 10,11,12, 26,26, 8 },//~1405R~
+            					};                                 //~1405I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1405I~
+        	itsDealTake=new int[]{28,29,27,26};                             //~1405R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        	itsDealTake=new int[]{ 7, 7, 7, 7};                    //~1405I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        }                                                          //~1405I~
+        else  //double ron test                                    //~1405I~
+        if (Pcase==2)                                              //+1407I~
+        {                                                          //~1405I~
+        	itsDeal=new int[][]{                                   //~1405I~
+            						{23,24,25,  2, 3, 4,  9,11,16, 29,29, 8 },//~1405M~
+            						{23,24,25,  2, 3, 4, 11,12,17, 27,27, 8 },//~1405M~
+            						{23,24,25,  2, 3, 4, 10,15,16, 28,28,16 },//~1405R~
+            						{23,24,25,  2, 3, 4, 10,15,17, 26,26,17 },//~1405R~
+            					};                                 //~1405I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1405I~
+        	itsDealTake=new int[]{29,27,28,26};                             //~1405R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        	itsDealTake=new int[]{16,17,16,17};                    //~1405R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1405I~
+        }                                                          //~1405I~
+        //*remaining on stock                                      //~1405I~
+		    setTestRemainRandom(out,outctr,al);                    //~1405I~
+            shuffledTileData = out;                                //~1405I~
+        if (Dump.Y) Dump.println("shufflePonChiiTest "+TileData.toString(shuffledTileData));//~1405I~
+    }                                                              //~1405I~
+    //*****************************************************************//~1403I~
+    private int setTestDeal12(TileData[] out,int outctr,ArrayList<TileData> al,int[][] PitsDeal)//~1403I~
+    {                                                              //~1403I~
+    	for (int ii=0;ii<4;ii++)                                   //~1403I~
+        {                                                          //~1403I~
+        	for (int jj=0;jj<12;jj++)                              //~1403I~
+            {                                                      //~1403I~
+            	int grp=jj/4;                                      //~1403I~
+                int outpos=ii*4+grp*16+jj%4+outctr;                //~1403R~
+                int tc=PitsDeal[ii][jj];                           //~1403I~
+  		        if (Dump.Y) Dump.println("setTestDeal12 ii="+ii+",jj="+jj+",tc="+tc+",outpos="+outpos);//~1403I~
+                TileData td = al.get(tc);                          //~1403I~
+                td.ctrRemain--;                                    //~1403I~
+  		        if (Dump.Y) Dump.println("setTestDeal12 ii="+ii+",jj="+jj+",tc="+tc+",ctrRemain="+td.ctrRemain+",outpos="+outpos);//~1403R~
+                if (td.ctrRemain>=0)                               //~1403I~
+                {                                                  //~1403I~
+                    TileData tdnew = TileData.newInstance(td);     //~1403I~
+	                if (td.number==TN5)                            //~1403R~
+    		            tdnew.setRed5(td.ctrRemain==3||td.ctrRemain==2);//~1403R~
+                    out[outpos] = tdnew;                           //~1403I~
+                }                                                  //~1403I~
+                else                                               //~1403I~
+                {                                                  //~1403I~
+                    al.remove(tc);                                 //~1403I~
+                }                                                  //~1403I~
+            }                                                      //~1403I~
+        }                                                          //~1403I~
+        return outctr+48;                                          //~1403I~
+    }                                                              //~1403I~
+    //*****************************************************************//~1403I~
+    private int setTestTake(TileData[] out,int outctr,ArrayList<TileData> al,int[] PitsDeal)//~1403I~
+    {                                                              //~1403I~
+    	for (int ii=0;ii<4;ii++)                                   //~1403I~
+        {                                                          //~1403I~
+                int tc=PitsDeal[ii];                               //~1403I~
+                TileData td = al.get(tc);                          //~1403I~
+                td.ctrRemain--;                                    //~1403I~
+  		        if (Dump.Y) Dump.println("setTestDeal12 ii="+ii+",tc="+tc+",ctrRemain="+td.ctrRemain+",outctr="+outctr);//~1405I~
+                if (td.ctrRemain>=0)                               //~1403I~
+                {                                                  //~1403I~
+                    TileData tdnew = TileData.newInstance(td);     //~1403I~
+    	            if (td.number==TN5)                            //~1403R~
+    		            tdnew.setRed5(td.ctrRemain==3||td.ctrRemain==2);//~1403I~
+                    out[outctr++] = tdnew;                         //~1403I~
+                }                                                  //~1403I~
+                else                                               //~1403I~
+                {                                                  //~1403I~
+                    al.remove(tc);                                 //~1403I~
+                }                                                  //~1403I~
+        }                                                          //~1403I~
+        return outctr;                                             //~1403I~
+    }                                                              //~1403I~
+    private int setTestWanpai(TileData[] out,int outctr,ArrayList<TileData> al)//~1402I~
+    {                                                              //~1402I~
+            int tc=PIECE_TYPECTR-1;                                //~1402I~
+            for (;;)                                               //~1402I~
+            {                                                      //~1402I~
+                for (int jj=0;jj<4;jj++)                           //~1402I~
+                {                                                  //~1402I~
+                    TileData td = al.get(tc);                      //~1402R~
+                    td.ctrRemain--;                                //~1402I~
+                    if (td.ctrRemain>=0)                           //~1402I~
+                    {                                              //~1402I~
+                    	TileData tdnew = TileData.newInstance(td); //~1402R~
+                    	out[outctr++] = tdnew;                     //~1402I~
+                    }                                              //~1402I~
+                    else                                           //~1402I~
+                    {                                              //~1402I~
+                    	al.remove(tc);                             //~1402I~
+                    	tc--;                                      //~1402I~
+                    }                                              //~1402I~
+                    if (outctr>=14)                                //~1402I~
+                        break;                                     //~1402I~
+                }                                                  //~1402I~
+                if (outctr>=14)                                    //~1402I~
+                	break;                                         //~1402I~
+            }                                                      //~1402I~
+        return 14;                                                 //~1402I~
+    }                                                              //~1402I~
+    private void setTestRemainRandom(TileData[] out,int outctr,ArrayList<TileData> al)//~1402R~
+    {                                                              //~1402I~
+    		int typectr=al.size()-1;                               //~1402R~
+            for (;;)                                               //~1402I~
+            {                                                      //~1402I~
+                int jj = Utils.getRandom(typectr);   //max 34-1    //~1402I~
+                TileData td = al.get(jj);                          //~1402I~
+                td.ctrRemain--;                                    //~1402I~
+                if (td.ctrRemain >= 0)                             //~1402I~
+                {                                                  //~1402I~
+                    TileData tdnew = TileData.newInstance(td);     //~1402I~
+                    out[outctr++] = tdnew;                         //~1402I~
+                }                                                  //~1402I~
+                else                                               //~1402I~
+                {                                                  //~1402I~
+                    al.remove(jj);                                 //~1402I~
+                    typectr--;                                     //~1402I~
+                    if (typectr==0)                                //~1402I~
+                        break;                                     //~1402I~
+                }                                                  //~1402I~
+                if (outctr>=PIECE_TILECTR)                         //~1402I~
+                	break;                                         //~1402I~
+            }                                                      //~1402I~
+    }                                                              //~1402I~
+    //*****************************************************************//~1328I~
+    public void shuffleMultiRonTest(boolean PswMulti)              //~1328I~
+    {                                                              //~1328I~
+        if (Dump.Y) Dump.println("shuffleMultiRonTest swMulti="+PswMulti);//~1328I~
+            ArrayList<TileData> al = deepCopyToArrayList();        //~1328I~
+            TileData[] out = getNewAllTile();                      //~1328I~
+            int outctr = 0,tc;                                     //~1328I~
+            TileData td,tdnew;                         //~1328I~
+        //*wanpai 14                                               //~1328I~
+        tc=3*9+4;     //TT_JI                                        //~1328I~//~1401R~
+        for (;;)                                                   //~1328I~
+        {                                                          //~1328I~
+            for (int jj=0;jj<4;jj++)                               //~1328I~
+            {                                                      //~1328I~
+                td = al.get(tc);                                   //~1328I~
+                td.ctrRemain--;                                    //~1328I~
+                tdnew = TileData.newInstance(td);                  //~1328I~
+                out[outctr++] = tdnew;                             //~1328I~
+                if (td.ctrRemain==0)                               //~1328I~
+                {                                                  //~1401I~
+                    tc++;                                          //~1328R~//~1401R~
+                    if (tc>=3*9+7)                                 //~1401I~
+                    	tc=3*9-1;                                  //~1401I~
+                }                                                  //~1401I~
+                if (outctr>=14)                                    //~1328I~
+                    break;                                         //~1328I~
+            }                                                      //~1328I~
+            if (outctr>=14)                                        //~1328I~
+                break;                                             //~1328I~
+        }                                                          //~1328I~
+        //*hands 4 player                                          //~1328I~
+        int outpos=outctr;                                         //~1328I~
+        for (int ii=0;ii<4;ii++)                                       //~1328I~
+        {                                                          //~1328I~
+//      	if (PswMulti)                                          //~1328I~//~1331R~
+		        tc=ii==3 ? 1 : 0;                                  //~1328R~
+//          else                                                   //~1328I~//~1331R~
+//  	        tc=ii;                                             //~1328I~//~1331R~
+            for (int kk=0;kk<12;kk++)                              //~1328I~
+            {                                                      //~1328I~
+            	td = al.get(tc+kk);                                //~1328I~
+                td.ctrRemain--;                                    //~1328I~
+                tdnew = TileData.newInstance(td);      //seq*4     //~1328I~
+                int grp=kk/4;                                      //~1328I~
+                int posin4=kk%4;                                   //~1328I~
+                outpos=outctr+grp*16+ii*4+posin4;                  //~1328R~
+                out[outpos] = tdnew;                               //~1328I~
+            }                                                      //~1328I~
+        }                                                          //~1328I~
+        outctr+=4*12;                                              //~1328I~
+        //*hands 4 player pillow and draw                          //~1328I~
+        //double reach                                             //~1331I~
+            tc=28;            //pillow 1/2 for plkayer 1, 2        //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            tc=29;                                                 //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=30;                                                 //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=27;                                                 //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+                                                                   //~1331I~
+        if (PswMulti)                                              //~1331I~
+        {                                                          //~1331I~
+            tc=22;            //pillow 1/2 for plkayer 1, 2        //~1328R~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328R~
+            tc=18;                                                 //~1328I~
+            out[outctr++] = tdnew;                                 //~1328I~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328R~
+            out[outctr++] = tdnew;                                 //~1328I~
+            tc=18;                                                 //~1328I~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328R~
+            out[outctr++] = tdnew;                                 //~1328I~
+            tc=18;                                                 //~1328I~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328R~
+            out[outctr++] = tdnew;                                 //~1328I~
+                                                                   //~1328I~
+            tc=18;            //discard this ron tile              //~1328R~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328I~
+            out[outctr++] = tdnew;                                 //~1328I~
+            tc=18;            //pillow 1/2 for plkayer 3, 4        //~1328I~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328I~
+            out[outctr++] = tdnew;                                 //~1328I~
+            tc=18;            //pillow 1/2 for plkayer 3, 4        //~1328R~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328I~
+            out[outctr++] = tdnew;                                 //~1328I~
+            tc=18;            //pillow 1/2 for plkayer 3, 4        //~1328I~
+            td = al.get(tc);                                       //~1328I~
+            td.ctrRemain--;                                        //~1328I~
+            tdnew = TileData.newInstance(td);                      //~1328I~
+            out[outctr++] = tdnew;                                 //~1328I~
+        }                                                          //~1331I~
+        else    //single                                           //~1331I~
+        {                                                          //~1331I~
+            tc=22;            //5sou                               //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            tc=18;            //1so                                //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=19;           //2s                                  //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=20;           //3s                                  //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+                                                                   //~1331I~
+            tc=18;            //discard this ron tile              //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=19;            //pillow 1/2 for plkayer 3, 4        //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=20;            //pillow 1/2 for plkayer 3, 4        //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+            tc=21;            //pillow 1/2 for plkayer 3, 4        //~1331I~
+            td = al.get(tc);                                       //~1331I~
+            td.ctrRemain--;                                        //~1331I~
+            tdnew = TileData.newInstance(td);                      //~1331I~
+            out[outctr++] = tdnew;                                 //~1331I~
+        }                                                          //~1331I~
+        //*remaining on stock                                      //~1328I~
+        	int typectr=0;                                             //~1328I~
+            for (int ii = outctr; ii < PIECE_TILECTR; ii++)        //~1328R~
+            {                                                      //~1328I~
+                td = al.get(typectr);                              //~1328R~
+                if (td.ctrRemain==0)                               //~1328I~
+                {                                                  //~1328I~
+                	typectr++;                                     //~1328I~
+                    continue;                                      //~1328I~
+                }                                                  //~1328I~
+                td.ctrRemain--;                                    //~1328I~
+                tdnew = TileData.newInstance(td);                  //~1328I~
+                out[outctr++] = tdnew;                             //~1328I~
+            }                                                      //~1328I~
+            shuffledTileData = out;                                //~1328I~
+        if (Dump.Y) Dump.println("shuffleMultiRonTest "+TileData.toString(shuffledTileData));//~1328I~
+    }                                                              //~1328I~
     //*****************************************************************//~0407I~
     //*for test Minkan                                             //~0407I~
     //*****************************************************************//~0407I~

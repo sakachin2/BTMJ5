@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#=  77;                                    //~1111R~
+//*CID://+DATER~: update#=  79;                                    //~1111R~
 //**********************************************************************//~v101I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //**********************************************************************//~1107I~
@@ -48,7 +48,7 @@ public class RARon                                               //~v@@@R~//~va6
     //*********************************************************    //~1118I~
     public  boolean callRonTaken(int PplayerDiscard,int PeswnDiscard,int[] PitsHand,TileData PtdTaken)//~1117R~//~1118R~//~1120R~
     {                                                              //~1117I~
-        if (Dump.Y) Dump.println("RARon.callRon player="+PplayerDiscard+",eswnDiscard="+PeswnDiscard+",tdTaken="+PtdTaken.toString());//~1117I~//~1120R~
+        if (Dump.Y) Dump.println("RARon.callRonTaken player="+PplayerDiscard+",eswnDiscard="+PeswnDiscard+",tdTaken="+PtdTaken.toString());//~1117I~//~1120R~//+1405R~
         RonResult r=getRonValue(true/*PswTake*/,PplayerDiscard,PitsHand,PtdTaken);//~1117R~//~1118R~//~1120R~
         boolean rc=isRonable(r);                                           //~1117I~
         if (rc)                                                    //~1117I~
@@ -56,7 +56,7 @@ public class RARon                                               //~v@@@R~//~va6
         return rc;                                                 //~1117I~
     }                                                              //~1117I~
     //*********************************************************    //~1118I~
-    //*from RACall.discarded                                       //~1120I~
+    //*from RACall.nextPlayerPonKan                                //~1331R~
     //*chk shanten=-1 and issue ron                                //~1118I~//~1120R~
     //*********************************************************    //~1118I~
     public  boolean callRonRiver(int PeswnOther,TileData PtdDiscarded)//~1118I~//~1120R~//~1130R~
@@ -211,9 +211,9 @@ public class RARon                                               //~v@@@R~//~va6
     //*********************************************************    //~1213I~
     private boolean isFuriten(int PeswnOther,int[] PitsHand,int PctrHand)//~1213I~
     {                                                              //~1213I~
-        if (Dump.Y) Dump.println("RARon.isFuriten eswnOther="+PeswnOther+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9,PctrHand));//~1213I~//+1306R~
+        if (Dump.Y) Dump.println("RARon.isFuriten eswnOther="+PeswnOther+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9,PctrHand));//~1213I~//~1306R~
         boolean rc=AG.aRADSmart.chkFuriten(PeswnOther,PitsHand,PctrHand);//~1213I~
-        if (Dump.Y) Dump.println("RARon.isFuriten rc="+rc);        //~1213I~//+1306R~
+        if (Dump.Y) Dump.println("RARon.isFuriten rc="+rc);        //~1213I~//~1306R~
         return rc;                                              //~1213I~//~1305R~
     }                                                              //~1213I~
 }//class RARon                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~//~1111R~

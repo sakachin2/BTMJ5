@@ -1,6 +1,8 @@
-//*CID://+va6dR~: update#= 678;                                    //~va60R~//+va6dR~
+//*CID://+va70R~: update#= 684;                                    //~va71R~//~va70R~
 //**********************************************************************//~v101I~
-//2021/03/10 va6d (BUG)RYAKU_REACH was lost when ron for discarde calling reach//+va6dI~
+//2021/03/30 va71 (Bug)when multi ron called for reach tile,river tile is drawn by stand and lying.//~va71I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
+//2021/03/10 va6d (BUG)RYAKU_REACH was lost when ron for discarde calling reach//~va6dI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
 //2020/11/04 va29 (BUG)missing to add 1han of OpenReach            //~va29I~
@@ -155,10 +157,37 @@ public class UARon                                                 //~v@@@R~//~v
             }                                                      //~va19I~
         	return false;                                          //~9C11R~
         }                                                          //~9C12I~
+      if (AG.swPlayAloneNotify)                                    //+va70I~
+      {                                                            //+va70I~
+        if (Dump.Y) Dump.println("UARon.selectInfo playAloneNotify mode not cancelable, rc=true");//+va70I~
+      }                                                            //+va70I~
+      else                                                         //+va70I~
+      {                                                            //+va70I~
         if (!UADL.chkSelectInfo2Touch(PswServer,GCM_RON,Pplayer,PintParm))	//actionAlert optionally//~9B23I~
             return false;                                          //~9B23I~
+      }                                                            //+va70I~
         return true;                                               //~9B23I~
     }                                                              //~9B23I~
+	//*************************************************************************//~va70I~
+	//* from RACall in PlayAloneNotifyMode for human player        //~va70I~
+	//*************************************************************************//~va70I~
+    public boolean selectInfoPlayAloneNotify()                     //~va70R~
+    {                                                              //~va70I~
+        if (Dump.Y) Dump.println("UARon.selectInfoPlayAloneNotify");//~va70R~
+//    if (PactionID==GCM_RON)   //!GCM_RON_ANYWAY                  //~va70I~
+        if (!chkComplete(PLAYER_YOU))                                 //~va70I~
+        {                                                          //~va70I~
+//          if (UADL.isBlockedTop())                               //~va70I~
+//          {                                                      //~va70I~
+//          	UView.showToastLong(R.string.Warn_BlockedNeedRonAnyway);//~va70I~
+//          }                                                      //~va70I~
+        	return false;                                          //~va70I~
+        }
+//      int[] intp=new int[]{0,0,0,0,0};                           //~va70R~
+//      if (!UADL.chkSelectInfo2Touch(true/*PswServer*/,GCM_RON,PLAYER_YOU,intp))	//actionAlert optionally//~va70R~
+        UADL.notify2TouchPlayAloneNotify(GCM_RON);	//update GC btn//~va70I~
+        return true;                                               //~va70I~
+    }                                                              //~va70I~
 	//*************************************************************************//~9C11I~
     private boolean chkComplete(int Pplayer)                       //~9C11I~
     {                                                              //~9C11I~
@@ -189,6 +218,7 @@ public class UARon                                                 //~v@@@R~//~v
                 }                                                  //~va11I~
             }                                                      //~va11I~
         }                                                          //~va11R~
+        if (Dump.Y) Dump.println("UARon.chkComplete rc="+rc);      //~va70I~
 		return rc;                                          //~9C11I~
 	}                                                              //~9C11I~
 //    //*************************************************************************//~va11R~
@@ -258,11 +288,12 @@ public class UARon                                                 //~v@@@R~//~v
 	        UADL.resetWait2Touch(PswServer,GCM_RON,Pplayer);	//actionDone() to release wait//~9B29R~
             if (Dump.Y) Dump.println("UARon.complete typeComplete="+Integer.toHexString(typeComplete));//~v@@6R~
             hands.complete(Pplayer,typeComplete);  //draw discarded tile when river taken//~v@@6R~
+          if (!Status.isIssuedRon())	//dupRon skip 2nd drwa because resetReach called at 1st ron//~va71I~
             river.complete(Pplayer,typeComplete);  //draw discarded tile when river taken//~v@@6R~
             AG.aNamePlate.complete(false/*reset*/,Pplayer);        //~0303M~
             AG.aPointStick.complete(Pplayer);   //erase point stick if just reached//~v@@6R~
 //          AG.aAccounts.resetReachDonePay(Pplayer);   //back 1000 //~v@@6R~
-//          AG.aPlayers.resetReachDone(Pplayer);                   //~v@@6I~//+va6dR~
+//          AG.aPlayers.resetReachDone(Pplayer);                   //~v@@6I~//~va6dR~
 //            if ((typeComplete & COMPLETE_KAN_TAKEN_OTHER)!=0)       //~v@@6I~
 //            {                                                      //~v@@6I~
 //            	if (AG.aStock.completeResetDora())                 //~v@@6R~
@@ -274,7 +305,7 @@ public class UARon                                                 //~v@@@R~//~v
             if ((typeComplete & COMPLETE_KAN_RIVER)!=0)                  //~v@@6I~
             	tdCompKanTake=PLS.getCurrentTaken();                   //~v@@6I~
 			int eswnLooser=td.eswn;                                //~v@@6I~
-            AG.aPlayers.resetReachDone(Accounts.eswnToPlayer(eswnLooser));//+va6dI~
+            AG.aPlayers.resetReachDone(Accounts.eswnToPlayer(eswnLooser));//~va6dI~
 //          Status.setRon(true,Accounts.playerToEswn(Pplayer),typeComplete,td.eswn/*looser*/);//~v@@6R~
             Complete.Status compStat=AG.aComplete.new Status(typeComplete,Accounts.playerToEswn(Pplayer),eswnLooser,td,tdCompKanTake);//~v@@6R~
             Status.setCompleteStatus(compStat);                          //~v@@6I~
