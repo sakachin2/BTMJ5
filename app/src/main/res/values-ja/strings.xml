@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.11</string>
+    <string name="app_version">v1.12</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -315,6 +315,7 @@
     <string name="Title_CompleteDlgResp">局の終了確認 応答</string>
     <string name="Title_CompReqDlg">和了 申告</string>
     <string name="Title_DrawnReqDlgLast">流局 申告</string>
+    <string name="Desc_DrawnReqDlgLast">テンパイのラジオボタンは形式テンパイ/二飜縛りの設定オプションを考慮していません。関連設定を確認して、必要ならノーテンをにしてください</string>
     <string name="Title_DrawnReqDlgHW">途中流局 申告</string>
     <string name="Title_DrawnDlgHW">途中流局承認 要求</string>
     <string name="Title_DrawnDlgLast">流局承認 要求</string>
@@ -1034,7 +1035,7 @@
                                 詳細はヘルプを参照。
 						</string>
     <string name="Desc_CheckRonable">振りテンのチェックはしない。</string>
-    <string name="Desc_CheckRonValue">ダイアログで修正可能</string>
+    <string name="Desc_CheckRonValue">但しダイアログで得点を修正できます</string>
     <string name="Desc_CheckReach">立直のとき聴牌チェック、フリテンは考慮しない</string>
     <string name="Label_S2P">端数調整</string>
     <string name="Label_RankMUp">切り上げ満貫あり</string>
@@ -1073,7 +1074,8 @@
     <string name="Label_BGMSame">共通</string>
     <string name="Label_BGM4Seasons">春夏秋冬</string>
     <string name="Label_BGM4SeasonsFast">〃(速い)</string>
-    <string name="Desc_BGM">ゲーム中のBGMを変える場合は共通以外を設定する</string>
+    <!--string name="Desc_BGM">ゲーム中のBGMを変える場合は共通以外を設定する</string-->
+    <string name="Desc_BGM">オーラスはBGMが変わります</string>
     <string name="Label_BeepOnly">ビープ音</string>
     <string name="Label_SoundVolume">音量</string>
     <string name="Label_Robot">ロボット</string>
@@ -1087,7 +1089,7 @@
     <!--string name="Label_AllowRobotAll">練習モードあり</string-->
     <string name="Label_AllowRobotAllButton">一人遊びのときボットの自摸はタイムアウトではなくボタンで操作</string>
     <string name="Label_PlayAloneNotify">一人遊びのときはロン、ポン、カン、チーを通知</string>
-    <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる）</string>
+    <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる。ヘルプ参照）</string>
 
     <string name="Label_GameSet">試合</string>
     <string name="Label_GameSetInterrupted">迄 終了、次は</string>
@@ -1126,14 +1128,17 @@
     <string name="Label_YakuFixFirst">先付け</string>
     <string name="Label_YakuFixLast">後付けあり</string>
     <string name="Label_YakuFixMiddle">中付けあり</string>
-    <string name="Label_YakuFixMultiwaitOK">片上がりOK</string>
-    <string name="Label_YakuFixMultiwaitDrawOK">片上がりツモはOK</string>
+    <string name="Label_YakuFixMultiwaitOK">後付けありのとき片上がりOK</string>
+    <string name="Label_YakuFixMultiwaitDrawOK">後付け無しでも片上がりツモはOK</string>
     <string name="Desc_YakuFix">後付けあり：上がったときに役があればよい。
 		中付けあり：中付けも先付とみなす。
 		先付け：最初の副露が役に関連しているか手牌中で役があるか片上がりでなく役がある。\n
+		（自摸の場合は片上がり・フリテンは常にOK）
+        </string>
+<!--
 		片上がりOK：後付けありのときに片上がりを認める。一巡フリテンには注意。\n
 		片上がりツモはOK：中付け、先付のとき片上がりはNGだがツモの時はOKとする。
-        </string>
+-->
     <string name="Label_YakuFix1">１飜縛り</string>
     <string name="Label_YakuFix1Yes">チェックする</string>
     <string name="Desc_YakuFix1">（しない場合、役無し誤ロンを生じさせられます）</string>
@@ -1141,7 +1146,9 @@
     <string name="Label_YakuFix2Stick4">４本場から</string>
     <string name="Label_YakuFix2Stick5">５本場から</string>
     <string name="Label_YakuFix2Last">後付けあり</string>
-    <string name="Desc_YakuFix2">後付けなしの場合、立直ツモはOKだが確定２飜でなければならない（立直・一発、立直・河底など偶然役は認められない。後付けありならOK。）</string>
+    <string name="Desc_YakuFix2">\"一飜縛り\"をチェックするとした場合のみ有効です。\n
+					後付けなしの場合、偶然役の立直・一発、海底、河底、槍槓、嶺上開花は含めない。後付けありならOK。
+					いずれの場合も\"フリテン立直あり\"にかかわらず、立直・自摸のみは不可</string>
     <string name="Label_EatChange">食い変え</string>
     <string name="Label_EatChangeNo">不可</string>
     <string name="Label_EatChangeExceptIt">現物のみ不可</string>
@@ -1437,7 +1444,9 @@
     <string name="Label_Fu">符</string>
     <string name="Label_OneShot">一発あり</string>
     <string name="AE_SameMeld">喰い変え違反です、他の牌を選択してください</string>
-    <string name="AE_RankFix1">一飜縛違反</string>
+    <string name="AE_RankFix1">一飜縛り違反</string>
+    <string name="AE_RankFix2">二飜縛り違反</string>
+    <string name="AE_RankFix2MultiWait">二飜縛りまたは片上がり違反</string>
     <string name="Label_Anyway">とに和</string>
     <string name="Warn_BlockedNeedRonAnyway">\"和了\"ボタンではなく、\"とにかく和了\"してください</string>
     <string name="AE_TestRobotDiscardButtonServerOnly">テスト用ボット用の打牌ボタン使用はサーバーのみです</string>
@@ -1463,4 +1472,12 @@
     <string name="Desc_BS_Summary">
     	ゲーム数：一人遊び＝%1$d、対局＝%2$d、中断＝%3$d　（%4$s から）
 		</string>
+    <string name="Desc_BS_Summary_selected">
+    	メンバー＝%1$s、ゲーム数＝%2$d　（%3$s から）
+		</string>
+    <string name="Label_ShowAnywayBtn">\"とに和\"(とにかく和了)ボタン表示</string>
+    <string name="Desc_ShowAnywayBtn">--七対子、国士 以外の変則形を上がるときに必要</string>
+    <string name="Err_BS_NotCompleteSelected">終了したゲームを選択してください</string>
+    <string name="Err_BSMultipleSelected">ゲームの選択は１行にしてください</string>
+    <string name="AE_FuritenReach">フリテン立直</string>
 </resources>

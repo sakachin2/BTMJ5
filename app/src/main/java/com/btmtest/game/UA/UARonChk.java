@@ -1,5 +1,7 @@
-//*CID://+va60R~: update#= 742;                                    //~va27R~//~va60R~
+//*CID://+va83R~: update#= 749;                                    //~va83R~
 //**********************************************************************//~v101I~
+//2021/04/12 va83 (Bug)13/14 NoPair was not notified(Decided to Robot will not Ron by 13/14 NoPair)//~va83I~
+//2021/04/12 va82 (Bug)issue "not ronnable" for 1st take Ron(tenho/chiiho) request if multiple pillow candidate exist//~va82I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/11/01 va22 (BUG)is13NoPair is checking after drop pillow    //~va22I~
@@ -47,6 +49,7 @@ public class UARonChk                                                //~v@@@R~//
     public  int player;                                            //~va11I~
     private boolean sw13_14NoPair,sw1stTake;                       //~va11R~
     public boolean swAllInHand;                           //~va11I~
+    private boolean swNoPairPlayAlone;                             //~va83I~
 //*************************                                        //~v@@@I~
 	public UARonChk()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~va1aR~
     {                                                              //~0914I~
@@ -64,13 +67,13 @@ public class UARonChk                                                //~v@@@R~//
 //      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~0205R~//~va1aR~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va11I~
-//  protected boolean isAllInHand()                                //~va11R~//+va60R~
-    protected boolean isAllInHand(int Pplayer)                     //+va60I~
+//  protected boolean isAllInHand()                                //~va11R~//~va60R~
+    protected boolean isAllInHand(int Pplayer)                     //~va60I~
     {                                                              //~va11I~
 //  	boolean rc=ctrPair==0;                                     //~va11R~
-//  	boolean rc=AG.aPlayers.isClosedHand(player);               //~va11I~//+va60R~
-    	boolean rc=AG.aPlayers.isClosedHand(Pplayer);              //+va60I~
-        if (Dump.Y) Dump.println("UARonChk.isAllInHand rc="+rc+",ctrPair="+ctrPair+",player="+Pplayer);//~va11R~//+va60R~
+//  	boolean rc=AG.aPlayers.isClosedHand(player);               //~va11I~//~va60R~
+    	boolean rc=AG.aPlayers.isClosedHand(Pplayer);              //~va60I~
+        if (Dump.Y) Dump.println("UARonChk.isAllInHand rc="+rc+",ctrPair="+ctrPair+",player="+Pplayer);//~va11R~//~va60R~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
 //    //*************************************************************************//~9C11I~//~va60R~
@@ -107,7 +110,8 @@ public class UARonChk                                                //~v@@@R~//
 //    }                                                              //~9C12I~//~va60R~
 	//*************************************************************************//~9C12I~
 //  private boolean chkCompleteSub()                               //~va20R~
-    protected boolean chkCompleteSub()                             //~va20I~
+//  protected boolean chkCompleteSub()                             //~va20I~//~va83R~
+    private   boolean chkCompleteSub()                             //~va83I~
     {                                                              //~9C12I~
         boolean rc=isStandardPairing();                                     //~9C11I~//~9C12R~
         sw13_14NoPair=false;                                       //~va11I~
@@ -142,7 +146,7 @@ public class UARonChk                                                //~v@@@R~//
     {                                                              //~9C11I~
     	int type,num;                                              //~9C11I~
     //*******************************                              //~9C11I~
-        if (Dump.Y) Dump.println("UARonChk.sortTiles tds="+TileData.toString(Ptds)+",tdRon="+Utils.toString(PtdRon));//~9C11R~
+        if (Dump.Y) Dump.println("UARonChk.sortTiles tds="+TileData.toString(Ptds)+",tdRonRiver="+Utils.toString(PtdRon));//~9C11R~//+va83R~
         for (int ii=0;ii<PIECE_TYPECTR_ALL;ii++)                   //~9C12I~
             Arrays.fill(dupCtr[ii],0);                             //~9C12I~
         ctrTileAll=Ptds.length;                                    //~9C12I~
@@ -264,9 +268,10 @@ public class UARonChk                                                //~v@@@R~//
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
-	//*from CompReqDlg when tenho/chiho                            //~va11I~
+	//*from UARonValue.chkRonValueSub to chk tenho/chiiho for Human player                            //~va11I~//~va83R~
 	//*************************************************************************//~va11I~
-    public boolean chkRonnable()                                   //~va11R~
+//  public boolean chkRonnable()                                   //~va11R~//~va83R~
+    protected boolean chkRonnable()                                //~va83I~
     {                                                              //~va11I~
         sw1stTake=CompReqDlg.chk1stTake();                         //~va11I~
         if (Dump.Y) Dump.println("UARonChk.chkRonnable sw1stTake="+sw1stTake);//~va11R~//~va14R~
@@ -583,14 +588,40 @@ public class UARonChk                                                //~v@@@R~//
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
 	//*************************************************************************//~9C11I~
-    protected boolean is13NoPair()                                   //~9C11I~//~va11R~
+    protected boolean is13NoPair()                                 //~va83I~
+    {                                                              //~va83I~
+        sw1stTake= CompReqDlg.chk1stTake();                        //~va83I~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair sw1stTake="+sw1stTake);//~va83I~
+		if (!sw1stTake)                                            //~va83I~
+            return false;                                          //~va83I~
+        boolean rc=is13NoPair1stTake();                             //~va83I~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc);    //~va83I~
+        return rc;
+    }                                                              //~va83I~
+	//*************************************************************************//~va83I~
+    protected boolean is13NoPair(int Pplayer)                      //~va83I~
+    {                                                              //~va83I~
+        sw1stTake= UARonValue.chk1stTake(Pplayer);                 //~va83I~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair player="+Pplayer+",sw1stTake="+sw1stTake);//~va83I~
+		if (!sw1stTake)                                            //~va83I~
+            return false;                                          //~va83I~
+        boolean rc=is13NoPair1stTake();                             //~va83I~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc);    //~va83I~
+        return rc;
+    }                                                              //~va83I~
+	//*************************************************************************//~va83I~
+//  protected boolean is13NoPair()                                   //~9C11I~//~va11R~//~va83R~
+    private boolean is13NoPair1stTake()                            //~va83I~
     {                                                              //~9C11I~
-        sw1stTake= CompReqDlg.chk1stTake();                         //~va11I~
-        if (Dump.Y) Dump.println("UARonChk.is13NoPair sw1stTake="+sw1stTake+",ctrTileAll="+ctrTileAll+",sw13Nopair="+sw13NoPair+",sw14NoPair="+sw14NoPair);//~9C11R~//~9C12R~//~va11R~
+//    if (swNoPairPlayAlone)                                       //~va83R~
+//      sw1stTake=true;                                            //~va83R~
+//    else                                                         //~va83R~
+//      sw1stTake= CompReqDlg.chk1stTake();                         //~va11I~//~va83R~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair1stTake swNoPairPlayAlone="+swNoPairPlayAlone+",sw1stTake="+sw1stTake+",ctrTileAll="+ctrTileAll+",sw13Nopair="+sw13NoPair+",sw14NoPair="+sw14NoPair);//~9C11R~//~9C12R~//~va11R~//~va83R~
     	swIs14NoPair=false;                                        //~va11I~
     	boolean rc=true;                                           //~9C11I~
-		if (!sw1stTake)                                            //~va11I~
-            return false;                                          //~va11I~
+//  	if (!sw1stTake)                                            //~va11I~//~va83R~
+//          return false;                                          //~va11I~//~va83R~
 		if (!sw13NoPair && !sw14NoPair)                            //~9C12I~
             return false;                                          //~9C12I~
 //      if (ctrTileAll!=HANDCTR_TAKEN)                             //~9C12I~//~va11I~
@@ -598,8 +629,11 @@ public class UARonChk                                                //~v@@@R~//
 //          if (Dump.Y) Dump.println("UARonChk.is13NoPair return false not No Earth");//~9C12I~//~va11I~
 //          return false;                                          //~9C12I~//~va11I~
 //      }                                                          //~9C12I~//~va11I~
+      if (!swNoPairPlayAlone)                                      //~va83I~
+      {                                                            //~va83I~
         if (!swAllInHand)                                          //~va11R~
         	return false;                                          //~va11I~
+      }                                                            //~va83I~
         posPillow=new Point(0,0);                                  //~9C11I~
         Point p=selectPillow();	//type and number                  //~9C11I~
         if (p==null)                                               //~9C11R~
@@ -615,7 +649,7 @@ public class UARonChk                                                //~v@@@R~//
             if (p2!=null)          //2 pillow                      //~va22I~
             {                                                      //~va22I~
             	rc=false;                                          //~va22I~
-            	restorePillow(p2);                                 //~va22I~
+//          	restorePillow(p2);                                 //~va22I~//~va82R~
             }                                                      //~va22I~
 			if (!sw13NoPair)                                       //~9C11I~
 	            rc=false;                                          //~9C11I~
@@ -633,6 +667,21 @@ public class UARonChk                                                //~v@@@R~//
         if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc+",wIs14NoPair="+swIs14NoPair);//~va22R~
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
+	//*************************************************************************//~va83I~
+	//*from RACall at human raken in playAlonNotfy mode  at 1stTake//~va83R~
+	//*************************************************************************//~va83I~
+    public boolean isNoPairPlayAlone(int[][] PdupCtr)              //~va83I~
+    {                                                              //~va83I~
+        if (Dump.Y) Dump.println("UARonChk.isNoPair dupCtr="+Utils.toString(PdupCtr));//~va83I~
+        int[][] dupCtrSave=dupCtr;                                         //~va83I~
+        dupCtr=PdupCtr;                                           //~va83I~
+        swNoPairPlayAlone=true;                                    //~va83I~
+//      boolean rc=is13NoPair();                                   //~va83R~
+        boolean rc=is13NoPair1stTake();                            //~va83I~
+        swNoPairPlayAlone=false;                                   //~va83I~
+        dupCtr=dupCtrSave;                                         //~va83I~
+        return rc;                                                 //~va83I~
+    }                                                              //~va83I~
 	//*************************************************************************//~9C11I~
     private boolean chkNoPairingNotNum()                            //~9C11I~
     {                                                              //~9C11I~

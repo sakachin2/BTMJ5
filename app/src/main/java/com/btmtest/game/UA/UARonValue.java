@@ -1,5 +1,12 @@
-//*CID://+va60R~: update#= 911;                                    //~va60R~
+//*CID://+va8kR~: update#= 938;                                    //~va8kR~
 //**********************************************************************//~v101I~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
+//2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
+//2021/04/20 va8i KataAgari chk for also Robot Take                //~va8iI~
+//2021/04/18 va8f KataAgari chk                                    //~va8fI~
+//2021/04/17 va8e fix2 constraint chk for human;igniore accidental Yaku//~va8eI~
+//2021/04/14 va88 chk constraint for TakeRon in notify mode(avoid dump)//~va88R~
+//2021/04/13 va84 try Robot also ron by 13/14 NoPair               //~va84I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/02 va24 chkCompleteSub may cause stackoverflow           //~va24I~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
@@ -22,6 +29,8 @@ import com.btmtest.game.Tiles;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
+
+import java.util.Arrays;
 
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.TileData.*;
@@ -72,9 +81,12 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private boolean swRonnable;                                    //~va11I~
     private boolean swYakuOtherEnvironment;                        //~va11I~
     public boolean swRobot;                                               //~1130I~//~1217R~
-    public boolean swEmulation;                                    //+va60I~
+    public boolean swEmulation;                                    //~va60I~
     public int[] itsDoraOpen;                                      //~1217I~
     public int    ctrDoraOpen;                                      //~1217I~
+    private TileData tdChkRankTaken;                               //~va88I~
+	public boolean swYakuFixLast;                                  //~va8eI~
+    public boolean swYakuFixMultiwaitOK/*,swYakuFixMultiwaitDrawOK*/;  //~va8fM~//~va8kR~
     //*************************                                        //~v@@@I~
 	public UARonValue()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9C11R~//~0925R~//~va11R~
     {                                                              //~0914I~
@@ -102,28 +114,83 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     	swRankMUp=RuleSetting.isRankMUp();   //kiriage mangan      //~va11I~
 //      subUARV=new UARonValueSub(this);                           //~va11R~
 //      UARDT=new UARonDataTree(this);	//chk dora                 //~va60R~
+		swYakuFixLast=RuleSettingYaku.isYakuFixLast();             //~va8eI~
+        swYakuFixMultiwaitOK=RuleSettingYaku.isYakuFixMultiwaitOK();//~va8fM~
+//      swYakuFixMultiwaitDrawOK=RuleSettingYaku.isYakuFixMultiwaitDrawOK();//~va8fM~//~va8kR~
     }                                                              //~v@@@I~
     //*************************************************************************//~va11I~
-    //*rc=-1:not ronnable,1:1han constraint,0 ok                   //~va11R~
+    //*from UARon.chkComplete when human take in match mode        //~va88I~
+    //*rc=-1:not ronnable,1:1han constraint, 2:2han constrint, 0 ok//~va88R~
     //*************************************************************************//~va11I~
-    public int chkRank(UARon Puaron,int Pplayer)                   //~va11R~
+//  public int chkRank(UARon Puaron,int Pplayer)                   //~va11R~//~va88R~
+    public int chkRank(UARon Puaron,int Pplayer,boolean PswCheckFix2)//~va88I~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.chkRank player="+Pplayer);//~va11I~
+        if (Dump.Y) Dump.println("UARonValue.chkRank player="+Pplayer+",swCheckFix2="+PswCheckFix2);//~va11I~//~va88R~
         int rc=0;                                                  //~va11I~
         swChkRank=true;                                            //~va11R~
-	    getValue(Pplayer);                                         //~va11R~
+//      getValue(Pplayer);                                         //~va11R~//~va88R~
+        RonResult result=getValue(Pplayer);                        //~va88I~
         if (!swRonnable)                                           //~va11I~
         	rc=-1;                                                 //~va11I~
         else                                                       //~va11I~
-    		if (ronResult.han==0)                                  //~va11R~
-            	rc=1;                                              //~va11I~
-            else                                                   //~va1aI~
-        		if (ronResult.longRank.getDora()!=0 && !ronResult.longRank.isContainsAnyYakuExceptDora())//han is dora only,all 0 is valid(widthout setting longRank)
-                	rc=1;                                          //~va1aI~
+        {                                                          //~va88I~
+//  		if (ronResult.han==0)                                  //~va11R~//~va88R~
+//          	rc=1;                                              //~va11I~//~va88R~
+//          else                                                   //~va1aI~//~va88R~
+//      		if (ronResult.longRank.getDora()!=0 && !ronResult.longRank.isContainsAnyYakuExceptDora())//han is dora only,all 0 is valid(widthout setting longRank)//~va88R~
+//              	rc=1;                                          //~va1aI~//~va88R~
+//  		int han=result.getHanExceptDora();             //~va88R~//~va8eR~
+    		int han=getHanExceptDoraConstraint(result,PswCheckFix2);//~va8eI~
+            if (PswCheckFix2)                                      //~va88I~
+            {                                                      //~va88I~
+            	if (han<2)                                         //~va88I~
+//              	rc=1;                                          //~va88R~
+                	rc=2;                                          //~va88I~
+            }                                                      //~va88I~
+            else                                                   //~va88I~
+            {                                                      //~va88I~
+            	if (han<1)                                         //~va88I~
+                	rc=1;                                          //~va88I~
+            }                                                      //~va88I~
+        }                                                          //~va88I~
         swChkRank=false;                                           //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.chkRank rc="+rc+",han="+ronResult.han+",swRonnable="+swRonnable);//~va11R~
+        if (Dump.Y) Dump.println("UARonValue.chkRank rc="+rc+",han="+ronResult.han+",swRonnable="+swRonnable+",swCheckFix2="+PswCheckFix2);//~va11R~//~va88R~
         return rc;
     }                                                              //~va11I~
+    //*************************************************************************//~va8jI~
+    //*from RAReach.chkMultiWait to chk kataagari; dupCtr was already setup//~va8jR~
+    //*rc=-1:not ronnable,1:1han constraint, 2:2han constrint, 0 ok//~va8jI~
+    //*************************************************************************//~va8jI~
+    public int chkRankReachExceptDora(int Pplayer,TileData PtdWin,boolean PswCheckFix2,int[] PitsHand)//~va8jR~
+    {                                                              //~va8jI~
+        if (Dump.Y) Dump.println("UARonValue.chkRankReachExceptDora player="+Pplayer+",tdWin="+PtdWin.toString()+",dupCtr="+ Arrays.toString(dupCtr));//~va8jR~
+        int rc;                                                    //~va8jR~
+        swChkRank=true;                                            //~va8jI~
+        itsDoraOpen=AG.aRADSmart.itsDoraOpen;  //for UARonDataTree for robot emulation//~va8jI~
+        ctrDoraOpen=AG.aRADSmart.ctrDoraOpen;                      //~va8jI~
+        RonResult result=getValueReach(Pplayer,PtdWin,PitsHand);   //~va8jR~
+        itsDoraOpen=null;                                          //~va8jI~
+        if (!swRonnable)                                           //~va8jI~
+        	rc=-1;                                                 //~va8jI~
+        else                                                       //~va8jI~
+        {                                                          //~va8jI~
+    		rc=getHanExceptDoraConstraint(result,PswCheckFix2);    //~va8jI~
+        }                                                          //~va8jI~
+        swChkRank=false;                                           //~va8jI~
+        if (Dump.Y) Dump.println("UARonValue.chkRankReachExceptDora rc="+rc+",han="+ronResult.han+",swRonnable="+swRonnable+",swCheckFix2="+PswCheckFix2+",ronResult="+ronResult.toString());//~va8jR~
+        return rc;                                                 //~va8jI~
+    }                                                              //~va8jI~
+    //*************************************************************************//~va88I~
+    //*from UARon.chkComplete when human take in PlayAloneNotify mode//~va88I~
+    //*************************************************************************//~va88I~
+    public int chkRank(UARon Puaron,int Pplayer,TileData PtdTaken,boolean PswCheckFix2) //~va88I~
+    {                                                              //~va88I~
+        if (Dump.Y) Dump.println("UARonValue.chkRank player="+Pplayer+",tdTaken="+PtdTaken.toString());//~va88I~
+        tdChkRankTaken=PtdTaken;                                   //~va88I~
+    	int rc=chkRank(Puaron,Pplayer,PswCheckFix2);                            //~va88I~
+        tdChkRankTaken=null;                                       //~va88I~
+        return rc;                                                 //~va88I~
+    }                                                              //~va88I~
     //*************************************************************************//~va11I~
     public RonResult getValue(int Pplayer)                         //~va11R~
 //  public RonResult getValue(CompReqDlg PcompReqDlg,int Pplayer)  //~va11R~
@@ -140,7 +207,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         player=Pplayer; //UARonChk.isAllInhand use setting of player; but for safety pass as parameter//~va60I~
 //  	swAllInHand=isAllInHand();	//UARonChk, earth is ankan only //~va11I~//~va1aR~//~va60R~
     	swAllInHand=isAllInHand(player);	//UARonChk, earth is ankan only//~va60I~
-        sw1stTake=CompReqDlg.chk1stTake();	//parent 1st take or child 1st take//~va11R~
+//      sw1stTake=CompReqDlg.chk1stTake();	//parent 1st take or child 1st take//~va11R~//~va84R~
+        sw1stTake=chk1stTake(player);	//parent 1st take or child 1st take,player:not only PLAYER_YOU for robot//~va84I~
 //      swTaken=compReqDlg.swTake;                                 //~va11R~
 //      player=Pplayer;                                            //~va11I~//~va60R~
         swRobot=player!=PLAYER_YOU;                                //~1209I~
@@ -150,6 +218,9 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         tdssEarth=AG.aPlayers.getEarth(Pplayer);                   //~va11I~
         if (Dump.Y) Dump.println("UARonValue.getValue hand="+TileData.toString(tds));//~va11R~
         if (Dump.Y) Dump.println("UARonValue.getValue earth="+TileData.toString(tdssEarth));//~va11I~
+      if (tdChkRankTaken!=null)                                    //~va88I~
+        tdRonLast=tdChkRankTaken;                                  //~va88I~
+      else                                                         //~va88I~
         tdRonLast=AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va11I~
         ronType=tdRonLast.type;                                    //~va11I~
         ronNumber=tdRonLast.number;                                //~va11I~
@@ -190,19 +261,19 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     public RonResult getValue(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~1130I~
     {                                                              //~1130I~
     	swRobot=true;                                              //~1130I~
-    	swEmulation=true;                                          //+va60I~
+    	swEmulation=true;                                          //~va60I~
         itsDoraOpen=AG.aRADSmart.itsDoraOpen;  //for UARonDataTree for robot emulation//~1217I~
         ctrDoraOpen=AG.aRADSmart.ctrDoraOpen;                     //~1217I~
     	RonResult r=getValueRobot(PswTake,Pplayer,PitsHand/*34entry*/,PtdRon);//~1130I~
     	swRobot=false;                                             //~1130I~
-    	swEmulation=false;                                         //+va60I~
+    	swEmulation=false;                                         //~va60I~
         itsDoraOpen=null;                                          //~1217I~
         return r;                                                  //~1130I~
     }                                                              //~1130I~
     private RonResult getValueRobot(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~va60R~//~1130R~//~va60R~
     {                                                              //~va60I~
 //      swRonnable=true;                                           //~va60I~//~1130R~
-        if (Dump.Y) Dump.println("UARonValue.getValueRobot player="+Pplayer+",swTaken="+swTaken+",PtdRon="+TileData.toString(PtdRon));//~va60I~//~1130R~//~1206R~
+        if (Dump.Y) Dump.println("UARonValue.getValueRobot player="+Pplayer+",swTaken="+PswTake+",PtdRon="+TileData.toString(PtdRon));//~va60I~//~1130R~//~1206R~//~va8fR~//~va8jR~//+va8kR~
 //  	swAllInHand=isAllInHand();	//UARonChk, earth is ankan only//~va60R~
     	swAllInHand=isAllInHand(Pplayer);	//UARonChk, earth is ankan only//~va60I~
 //      sw1stTake=CompReqDlg.chk1stTake();	//parent 1st take or child 1st take//~va60R~
@@ -246,6 +317,46 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         getPairEarth();                                            //~va60I~
         boolean rc=chkRonValueSub();                               //~va60I~
         if (Dump.Y) Dump.println("UARonValueRobot.getValue rc="+rc+",ronvalue="+ronResult.toString());//~va60I~//~1205R~
+        return ronResult;                                          //~va60I~
+    }                                                              //~va60I~
+    //*************************************************************************//~va8jI~
+    //*for Human Reach at TrainingMode                             //~va8jI~
+    //*************************************************************************//~va8jI~
+    private RonResult getValueReach(int Pplayer,TileData PtdRon,int[] PitsHand)//~va8jR~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("UARonValue.getValueReach player="+Pplayer+",PtdRon="+TileData.toString(PtdRon)+",itsHand="+Utils.toString(PitsHand,9));//~va60I~//~1130R~//~1206R~//~va8fR~//~va8jR~
+    	swEmulation=true;                                          //~va8jI~
+    	swAllInHand=isAllInHand(Pplayer);	//UARonChk, earth is ankan only//~va60I~
+//      sw1stTake=AG.aPlayers.is1stTake();                         //~va60R~//~va8jR~
+        sw1stTake=false;                                           //~va8jI~
+        player=Pplayer;                                            //~va60I~
+		ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //ctr of PairOPnEarth//~va60I~
+//      TileData[] tds=AG.aPlayers.getHands(Pplayer);       //including Ron tile//~va60I~//~va8jR~
+//      tdsHand=tds;	//not including PtdEmulated but may not required because it is not red5; checked at UARonDataTree.chkRedTile//~va60R~
+        tdssEarth=AG.aPlayers.getEarth(Pplayer);                   //~va60I~
+//      if (Dump.Y) Dump.println("UARonValue.getValueReach hand="+TileData.toString(tds));//~va60I~//~va8jR~
+        if (Dump.Y) Dump.println("UARonValue.getValueReach earth="+TileData.toString(tdssEarth));//~va60I~//~va8jR~
+        tdRonLast=PtdRon;                                          //~va60R~
+        ronType=tdRonLast.type;                                    //~va60I~
+        ronNumber=tdRonLast.number;                                //~va60I~
+//      swTaken=PswTake;                                            //~va60I~//~va8jR~
+        swTaken=false;                                              //~va8jI~
+//      if (!swTaken)                                               //~va60I~//~va8jR~
+//      {                                                          //~va60I~//~va8jR~
+          	tdRonRiver=tdRonLast;                                  //~va60I~
+//      }                                                          //~va60I~//~va8jR~
+//      else                                                       //~va60I~//~va8jR~
+//      {                                                          //~va60I~//~va8jR~
+//          tdRonRiver=null;                                       //~va60I~//~va8jR~
+//      }                                                          //~va60I~//~va8jR~
+        RAUtils.countTile(PitsHand,dupCtr);	//copy PitsHand to dupCtr//~va60I~//~va8jR~
+        if (!swTaken)                                              //~1205I~
+	        dupCtr[PtdRon.type][PtdRon.number]++;                      //~1130I~//~1205R~
+        addEarth();                                                //~va60I~
+        getPairEarth();                                            //~va60I~
+        boolean rc=chkRonValueSub();                               //~va60I~
+    	swEmulation=false;                                         //~va8jI~
+        if (Dump.Y) Dump.println("UARonValueRobot.getValueReach rc="+rc+",ronvalue="+ronResult.toString());//~va60I~//~1205R~//~va8jR~
         return ronResult;                                          //~va60I~
     }                                                              //~va60I~
 	//*************************************************************************//~va11I~
@@ -344,9 +455,14 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         {                                                          //~va11I~
             if (swChkRank)  //1han constraint chk                  //~va11R~
             {                                                      //~va11R~
-                if (Dump.Y) Dump.println("UARonValue.chkRonValueSub Chkrank rc=true by swYakuOtherEnvironment longRankOther="+UARDT.longRankOther.toStringName());//~va24R~
-                ronResult.han=1;    //at least                     //~va11R~
+       		  if (swYakuman)             //no need to chk rank for 1/2 constraint//~va88R~
+              {                                                    //~va88I~
+                ronResult.han=MIN_RANK_YAKUMAN;    //alternative of yakuman//~va88I~
+//            else                                                 //~va88R~
+//              ronResult.han=1;    //at least                     //~va11R~//~va88R~
+                if (Dump.Y) Dump.println("UARonValue.chkRonValueSub chkRank rc=true by swYakuman="+swYakuman+",longRankOther="+UARDT.longRankOther.toStringName());//~va24R~//~va88I~
                 return true;                                       //~va11R~
+              }                                                    //~va88I~
             }                                                      //~va11R~
         }                                                          //~va11I~
 //      if (!swCheckRonable)   //ronchk not done                   //~va11R~
@@ -565,7 +681,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         	return false;                                          //~va11I~
         if (swTanyao)                                              //~va11I~
         	return false;                                          //~va11I~
-        boolean rc=super.is13NoPair();                             //~va11M~
+//      boolean rc=super.is13NoPair();                             //~va11M~//~va84R~
+        boolean rc=super.is13NoPair(player); 	//also for robot   //~va84I~
         if (rc)                                                    //~va11M~
         {                                                          //~va11I~
 	        if (super.is13All())	//kokusi can be mixed tenho/chiho//~va11R~
@@ -1039,4 +1156,21 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 	    swGetTestHand=false;                                       //~va11I~
         return testHand;                                           //~va11I~
     }                                                              //~va11I~
+    public static boolean chk1stTake(int Pplayer)                  //~va84I~
+    {                                                              //~va84I~
+        boolean rc=AG.aPlayers.chk1stTakeRon(Pplayer);            //~va84I~
+        if (Dump.Y) Dump.println("UARonValue.chk1stTake player="+Pplayer+",rc="+rc);//~va84I~
+        return rc;                                                 //~va84I~
+    }                                                              //~va84I~
+    //*********************************************************    //~va8eI~
+    //*for ron chk for human player                                //~va8eI~
+    //*********************************************************    //~va8eI~
+    private int getHanExceptDoraConstraint(RonResult PronResult,boolean PswFix2)//~va8eI~
+    {                                                              //~va8eI~
+        if (Dump.Y) Dump.println("UARonValue.getHanExceptDoraConstraint RonResult="+PronResult.toString()+",swFix2="+PswFix2+",swYakuFixLast="+swYakuFixLast);//~va8eI~
+        boolean swIgnoreAccidental=PswFix2 && !swYakuFixLast;	//ignore accidental YAKU(one shot,haitei,rinshan)//~va8eI~
+//      int han=PronResult.getHanExceptDoraConstraint(swIgnoreAccidental);//~va8eI~//~va8iR~
+        int han=PronResult.getHanExceptDoraConstraint(swIgnoreAccidental,PswFix2);//~va8iI~
+        return han;                                                //~va8eI~
+    }                                                              //~va8eI~
 }//class                                                           //~v@@@R~

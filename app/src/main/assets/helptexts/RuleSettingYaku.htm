@@ -1,10 +1,10 @@
 Rules about <B>Yaku</B>(define pattern of winning hand and its value).
 <BR>
  To check whether winning hand is complete or not, set "Do check" on topic <B>1-han constraint</B> of <B>Oper</B> Setting.
- Even if the check is set on, "Win" can be claimed for any hand by menu:<B>Win anyway</B> or "Win-A" button.
+ Even if the check is set on, "Win" can be claimed for any hand by menu:<B>Win anyway</B> or <B>Win-A</B> button.
 <BR>
-After you called "Win", open <B>Win Claim</B> dialog by <B>Score</B> button and claim your hand's value by count of han and fu.
- (You can set <B>Evaluate Point by APP</B> of <B>Oper</B> settings.)
+After you called "Win", open <B>Win Claim</B> dialog by <B>Score</B> button. Then claim your hand's value by count of han and fu.
+ (You may set ON to <B>Evaluate Point by APP</B> of <B>Oper</B> settings.)
 <BR>
  "Win Claim" is sent to the other players, after all player responded <B>OK</B> or <B>NG</B>,
  <B>End-of-Hand</B> dialog opens on the dealer which displays winning tiles.
@@ -14,17 +14,22 @@ The dealer checks validity of the win call, then send the dialog to the other pl
 After receiving "OK" from the other players, <B>Fix</B> the game to complete "End-of-Hand".
 <BR>
 If dealer found "Chombo"("Furiten", "Noten", "Noten Riichi", "Constraint by han" etc),
-dealer can set <B>Invalid</B>(without penalty), or <B>Chombo</B>(with penalty).
+dealer can set <B>Invalid</B>(without penalty) or <B>Chombo</B>(with penalty).
 In that case dealer can select "Gameover" or "Continue" with "DeadHand" of "Chombo" players.
 DeadHand player continues to play just discarding drawn tile and can not do any call.
 <BR>
 <BR>
+<BIG><B>Show Win-A</B></BIG>：
+This button is used to call win for irregular winning pattern of local rule.
+Menu item<B>Win anyway</B> dose the same function but you may loose the opportunity.
+<BR>
+<BR>
 <BIG><B>Psuedo-Tenpai</BIG></B>
 <BR>
-This (by Japanese "Keishiki-Tenpai) means the hand is in the status of waiting winning tile,
+This (by Japanese "Keishiki-Tenpai") means the hand is in the status of waiting winning tile,
  but unable to call win by some reason.
 At ExhaustiveDraw, if your-hand is not status of Tenpai(waiting winning tile) with Yaku, you have to pay penalty of NoTen(Not Tenpai).
- This agreement allows to assume some format of hands as Tenpai.
+ This agreement allows to assume some pattern of hands as Tenpai.
  <BR>
  <B>None all</B>:not allow any Psuedo-Tenpai. 
  <BR>
@@ -48,10 +53,10 @@ Some rule prohibit Ron by multiple winning tiles wait.
 <BR>
 It may exist some variation for "First only", make agreement among players beforehand.
 <BR>
-<BIG><B>Riichi</BIG></B>
-<B>For Robot game</B>:Select from "Disable OpenRiichi", "Ignore Robot's discard" or "Pay normal(Robot pays the normal score with 1-han of "Open" added).
 <BR>
-This app. applies <B>14 Broken</B> only to at the state of 1st Take.
+<BIG><B>Riichi</BIG></B>
+<BR>
+<B>Open for Robot game</B>:Select from "Disable OpenRiichi", "Ignore Robot's discard" or "Pay normal(Robot pays the normal score with 1-han of "Open" added).
 <BR>
 <BR>
 <SMALL>RuleSettingYaku 2020/02/11</SMALL>

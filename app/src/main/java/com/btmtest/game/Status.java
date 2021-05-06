@@ -1,4 +1,4 @@
-//*CID://+va6fR~: update#= 546;                                    //~va6fR~
+//*CID://+va6fR~: update#= 548;                                    //~va6fR~
 //**********************************************************************//~v101I~
 //2021/03/11 va6f (BUG)when resume ,1st take occures on player currentEswn!=0//~va6fI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -228,6 +228,8 @@ public class Status //extends Handler                              //~v@@@R~
 //        if (Dump.Y) Dump.println("Status.resetDiscardedCtr");    //~v@@@R~
 //    }                                                            //~v@@@R~
     //******************************************************       //~v@@@I~
+    //*Rect:(left,top,right,bottom)                                //+va6fI~
+    //******************************************************       //+va6fI~
     public static Rect getGameSeq()                                //~v@@@I~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Status.getGameSeq set="+aStatus.gameCtrSet+",game="+aStatus.gameCtrGame+",dup="+aStatus.gameCtrDup+",reach="+aStatus.gameCtrReachStick);//~v@@@R~
@@ -435,6 +437,11 @@ public class Status //extends Handler                              //~v@@@R~
 //              AG.aAccounts.finalGameTest();                      //~9527R~
 //          }                                                      //~9527I~
         }                                                          //~9527I~
+        if ((TestOption.option3 & TO3_SET_DUPCTR)!=0)              //~va6fI~
+        {                                                          //~va6fI~
+    		aStatus.gameCtrDup=5;                                  //~va6fI~
+        	if (Dump.Y) Dump.println("Status.resetForNewGameSets test set DupCtr set="+aStatus.gameCtrSet+",game="+aStatus.gameCtrGame+",dupctr="+aStatus.gameCtrDup);//~va6fI~
+        }                                                          //~va6fI~
         if (AG.aUADelayed!=null)                                   //~9704I~
 //        	AG.aUADelayed.resetWaitAll(false/*swRon*/);            //~9704R~//~0226R~
           	AG.aUADelayed.resetWaitAllNewGame();                   //~0226I~
@@ -505,16 +512,16 @@ public class Status //extends Handler                              //~v@@@R~
     public static void setGameStatusNewSetResume(int Pplayer/*accountIndex*/,int[] Pscore)//~9901I~
     {                                                              //~9901I~
     	aStatus.starterGameSets=Pplayer;                           //~9901I~
-//      if (true) //TODO test                                      //+va6fR~
-//      {                                                          //+va6fR~
-//        aStatus.starterCurrent=Pplayer;                            //~9901I~//+va6fR~
-//        AG.aPlayers.newGame(true/*sw1st*/,Pplayer);                //~9901I~//+va6fR~
-//      }                                                          //+va6fR~
-//      else                                                       //+va6fR~
-//      {                                                          //+va6fR~
+//      if (true) //TODO test                                      //~va6fR~
+//      {                                                          //~va6fR~
+//        aStatus.starterCurrent=Pplayer;                            //~9901I~//~va6fR~
+//        AG.aPlayers.newGame(true/*sw1st*/,Pplayer);                //~9901I~//~va6fR~
+//      }                                                          //~va6fR~
+//      else                                                       //~va6fR~
+//      {                                                          //~va6fR~
     	aStatus.starterCurrent=Accounts.eswnToPlayer(ESWN_E);      //~va6fI~
         AG.aPlayers.newGame(true/*sw1st*/,aStatus.starterCurrent); //~va6fI~
-//      }                                                          //+va6fR~
+//      }                                                          //~va6fR~
         AG.aAccounts.setInitialScoreResume(RuleSetting.getInitialScore(),Pscore);//~9901I~
         if (Dump.Y) Dump.println("Status.setGameStatusNewSetResume status="+aStatus.gameStatus+",Pplayer="+Pplayer+",starterGameSets="+aStatus.starterGameSets+",starterCurrent="+aStatus.starterCurrent+",score="+Arrays.toString(Pscore));//~9901I~//~va6fR~
     }                                                              //~9901I~

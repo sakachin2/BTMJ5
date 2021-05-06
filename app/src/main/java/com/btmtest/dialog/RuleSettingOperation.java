@@ -1,4 +1,4 @@
-//*CID://+va70R~:                             update#=  492;       //~va70R~
+//*CID://+va70R~:                             update#=  494;       //+va70R~
 //*****************************************************************//~v101I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -182,7 +182,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         sbTimeoutTakeRobot.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEROBOT),DEFAULT_TIMEOUT_TAKEROBOT),swFixed);//~v@@@I~
 //      sbTimeoutTakeKan.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEKAN),DEFAULT_TIMEOUT_TAKEKAN),swFixed);//~v@@@R~
         cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~va27I~
-        cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//+va70R~
+        cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//~va70R~
     //*2Touch                                                        //~v@@@I~//~9C03R~
 //      cbRuleWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_RULEWAIT),0/*default false*/),swFixed);//~v@@@I~//~9C03R~
 //      cb2TouchTO.setStateInt(Pprop.getParameter(getKeyRS(RSID_DELAY_2TOUCH_TO_PON),0/*default false*/),swFixed);//~9C03R~//~9C07R~
@@ -581,7 +581,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     //**************************************                       //~va70I~
 	public static boolean isPlayAloneNotify()                      //~va70I~
     {                                                              //~va70I~
-		int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //+va70R~
+		int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~va70R~
         boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),def)!=0;//~va70I~
         if (Dump.Y) Dump.println("RuleSetting.isPlayAloneNotify rc="+rc);//~va70I~
         return rc;                                                 //~va70I~

@@ -1,5 +1,6 @@
-//*CID://+va11R~:                             update#=  797;       //~va11R~
+//*CID://+va8qR~:                             update#=  798;       //~va11R~//+va8qR~
 //*****************************************************************//~v101I~
+//2021/04/26 va8q (Bug)shows "app checkValue option is off" even if option is on;//+va8qI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -124,14 +125,14 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
     {                                                              //~va11I~
         TextView tvDoraDragon=(TextView)    UView.findViewById(Pview,R.id.tvDoraDragon);//~va11I~
     	String txt;                                                //~va11I~
-      if (!RuleSettingOperation.isCheckRonValue())                 //+va11I~
+      if (!RuleSettingOperation.isCheckRonValue())                 //~va11I~
 	  	txt=Utils.getStr(R.string.Info_NoOptionShowValue);        //~va11I~
       else                                                         //~va11I~
       {                                                            //~va11I~
     	int ctrDora=longRank.getDora();                            //~va11R~
     	int ctrDragon=longRank.getWGR();                           //~va11R~
     	txt="";                                                    //~va11I~
-	  	txt+=Utils.getStr(R.string.Info_NoOptionShowValue);        //~va11I~
+//    	txt+=Utils.getStr(R.string.Info_NoOptionShowValue);        //~va11I~//+va8qR~
         if (!longRank.isYakumanExceptByRank()) //except kazoeyakuman//~va11I~
 		    txt+=ronResult.han+" "+Utils.getStr(R.string.Label_Han)+" : ";//~va11I~
     	txt+=Utils.getStr(R.string.Label_Dora)+" = "+ctrDora+" , "+Utils.getStr(R.string.Label_Dragon)+" = "+ctrDragon;//~va11I~

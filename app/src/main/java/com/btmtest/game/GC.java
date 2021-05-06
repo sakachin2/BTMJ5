@@ -1,7 +1,10 @@
-//*CID://+va78R~: update#= 725;                                    //~va78R~
+//*CID://+va8BR~: update#= 737;                                    //~va86R~//+va8BR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2021/05/04 va8B (Bug)when Score(CmpReqDlg) btn is pushed to open CompReqDlg, Pon button size is shorten//+va8BI~
+//2021/04/13 va86 show RonAnyWay button by not preference by operation rule//~va86I~
+//2021/04/11 va80 return to top by back btn when gameoverl         //~va80R~
 //2021/04/05 va78 (Bug)PlayAlone notifymode; next player is not blocked by pending on//~va78I~
 //2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
 //2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//~va74I~
@@ -52,7 +55,8 @@ import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.Status.*;//~v@@@I~
 import com.btmtest.game.gv.GameView;                               //~v@@@I~
 import com.btmtest.game.UA.UAEndGame;                              //~9303I~
-import com.btmtest.dialog.RuleSetting;                             //~9412I~
+import com.btmtest.dialog.RuleSetting;
+import com.btmtest.dialog.RuleSettingYaku;//~9412I~
 import com.btmtest.utils.UiFunc;
 import com.btmtest.utils.Utils;
 import com.btmtest.utils.sound.Sound;
@@ -163,6 +167,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     public  boolean swGameView;                                    //~9B06I~
 //  private int btnBackgroundColor;                                //~9B25R~
     private Drawable btnBackgroundColor;                           //~9B25I~
+    private Drawable btnBackgroundColorCompReqDlg;                 //+va8BI~
 //    private boolean swReconnect;                                 //~0411R~
 	private int connectionCtrAtStartGame;                          //~va02I~
 	public  int statusPlayAlone;                                   //~va70R~
@@ -509,7 +514,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     btnActionCancel=UButton.bind(btns2,BTNID_ACTION_CANCEL,this);  //~9B25I~
 	if (PrefSetting.isNoDiscardButton())                           //~9630R~
 	    btnDiscard.setVisibility(View.GONE);                      //~9630I~
-	if (PrefSetting.isNoAnywayButton())                            //~va06I~
+//  if (PrefSetting.isNoAnywayButton())                            //~va06I~//~va86R~
+    if (RuleSettingYaku.isShowAnywayButton())                      //~va86R~
+	    btnAnyway.setVisibility(View.VISIBLE);                     //~va86I~
+    else                                                           //~va86I~
 	    btnAnyway.setVisibility(View.GONE);                        //~va06I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~9701I~
@@ -524,10 +532,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	    	btnDiscard.setVisibility(View.GONE);                   //~9701I~
         else                                                       //~9701I~
 	    	btnDiscard.setVisibility(View.VISIBLE);                //~9701I~
-		if (PrefSetting.isNoAnywayButton())                        //~va06I~
-	    	btnAnyway.setVisibility(View.GONE);                    //~va06I~
-        else                                                       //~va06I~
-	    	btnAnyway.setVisibility(View.VISIBLE);                 //~va06I~
+//  	if (PrefSetting.isNoAnywayButton())                        //~va06I~//~va86R~
+//      	btnAnyway.setVisibility(View.GONE);                    //~va06I~//~va86R~
+//      else                                                       //~va06I~//~va86R~
+//      	btnAnyway.setVisibility(View.VISIBLE);                 //~va06I~//~va86R~
     }                                                              //~9701I~
 //    //*************************************************************************//~v@@@I~//~9A15R~
 //    public void invalidate()                                       //~v@@@I~//~9A15R~
@@ -688,6 +696,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             	break;                                             //~9A29I~
 //          updateButtonStatusReach(0/*reset*/);                    //~9A30R~//~9A31R~
 //          player=AG.aPlayers.getCurrentPlayer();                 //~v@@@R~
+			resetPendingPlayAloneNotify(GCM_DISCARD);              //~va80I~
         	sendMsg(GCM_DISCARD,PLAYER_YOU);                       //~v@@@R~
             break;                                                 //~v@@@I~
 //        case BTNID_WAITON:                                         //~v@@@I~//~0228R~
@@ -1065,6 +1074,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     }                                                              //~v@@@I~
     //*******************************************************************//~9903I~
     //*from MenuInGame                                             //~9903I~
+    //*and back btn when gameover of playalone                     //~va80I~
     //*return true for dismiss menu                                //~9903I~
     //*******************************************************************//~9903I~
     public  boolean endGameReturn()                                //~9903R~
@@ -1576,7 +1586,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     	if (isGameOver())                                          //~va02I~
         {                                                          //~va02I~
 	        if (AG.swTrainingMode)                                 //~va66R~
-        		UView.showToast(R.string.Info_GameEnded);          //~va66R~
+            {                                                      //~va80I~
+//      		UView.showToast(R.string.Info_GameEnded);          //~va66R~//~va80R~
+				endGameReturn();                                   //~va80I~
+            }                                                      //~va80I~
             else                                                   //~va66R~
 			if (BTMulti.isServerDevice())                          //~va02I~
         		UView.showToast(R.string.Info_GameEnded);          //~va02R~
@@ -1752,12 +1765,14 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (Dump.Y) Dump.println("GC.highlightButton sw="+PswOn);  //~va49I~
     	if (PswOn)                                                 //~va49I~
         {                                                          //~va49I~
+		    btnBackgroundColorCompReqDlg=Pbtn.getBackground();     //+va8BI~
         	int color=AG.getColor(R.color.action_cancel);          //~va49I~
 		    new UiFunc().setBackground(Pbtn,color);                //~va49R~
         }                                                          //~va49I~
         else                                                       //~va49I~
         {                                                          //~va49I~
-		    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColor/*drawable*/);//~va49I~
+//  	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColor/*drawable*/);//~va49I~//+va8BR~
+    	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//+va8BI~
         }                                                          //~va49I~
     }                                                              //~va49I~
 //    //*******************************************************************//~va70R~
@@ -1820,6 +1835,15 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             	return;                                            //~va74I~
         }                                                          //~va74I~
         else                                                       //~va74I~
+        if (PmsgID==GCM_DISCARD)                                   //~va80I~
+        {                                                          //~va80I~
+	        if (statusPlayAlone!=GCM_RON)                          //~va80I~
+            {                                                      //~va80I~
+		        if (Dump.Y) Dump.println("GC.resetPendingPlayAloneNotify ignored by status is not GCM_RON");//~va80I~
+            	return;                                            //~va80I~
+            }                                                      //~va80I~
+        }                                                          //~va80I~
+        else                                                       //~va80I~
         if (PmsgID!=statusPlayAlone)                               //~va70R~
         	return;                                                //~va70I~
         int svStatus=statusPlayAlone;                              //~va74I~
@@ -1865,6 +1889,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         {                                                          //~va78I~
         case GCM_RON:                                       //~va70I~//~va78R~
     		player=AG.aPlayers.getCurrentPlayer();    //for pass chk of PLS.isActionDoneExceptRon//~va70R~
+    	  	if (AG.aPlayers.getCurrentPlayerTaking()==player)      //~va80R~
+            {                                                      //~va80I~
+		        if (Dump.Y) Dump.println("GC.actionPlayAlone skip postDelayedPonKan by currentPlayerTaking player="+player);//~va80R~
+            	break;                                             //~va80I~
+            }                                                      //~va80I~
         	AG.aUADelayed.postDelayedPonKan(player);               //~va70R~
             break;                                                 //~va78I~
         case GCM_CHII:                                             //~va78R~
@@ -1875,7 +1904,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case GCM_KAN:                                              //~va78I~
         case GCM_KAN_OR_PON:                                       //~va78I~
     		player=AG.aPlayers.getCurrentPlayer();    //for pass chk of PLS.isActionDoneExceptRon//~va78I~
-    	    GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(player),0,0);	//on server,to UADiscard.nextPlayer()//+va78I~
+    	    GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(player),0,0);	//on server,to UADiscard.nextPlayer()//~va78I~
             break;                                                 //~va78I~
         default:                                                   //~va78I~
     		player=AG.aPlayers.getNextPlayer();                    //~va70I~

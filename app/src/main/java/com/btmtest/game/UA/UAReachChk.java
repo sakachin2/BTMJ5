@@ -1,4 +1,4 @@
-//*CID://+va60R~: update#= 760;                                    //~va27R~//~va60R~
+//*CID://+va60R~: update#= 761;                                    //~va27R~//~va60R~
 //**********************************************************************//~v101I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -64,8 +64,8 @@ public class UAReachChk                                            //~va27R~
         swListAll=PlistAll;                                        //~va60I~
         UARV=AG.aUARonValue;                                       //~va27I~
         player=Pplayer;                                            //~va11I~
-//      swAllInHand=UARV.isAllInHand();                            //~va27R~//+va60R~
-        swAllInHand=UARV.isAllInHand(player);                      //+va60I~
+//      swAllInHand=UARV.isAllInHand();                            //~va27R~//~va60R~
+        swAllInHand=UARV.isAllInHand(player);                      //~va60I~
 //  	ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //including Ron tile//~va27R~
         if (Dump.Y) Dump.println("UAReachChk.chkReach player="+Pplayer+",swListAll="+PlistAll);//~9C11I~//~0205R~//~va11R~//~va27R~//~va60R~
         TileData[] tds=AG.aPlayers.getHands(Pplayer);		//including Ron tile//~9C11R~
@@ -73,15 +73,15 @@ public class UAReachChk                                            //~va27R~
 	    rc=chkReachSub();                                          //~va27R~
         return rc;//~9C12I~
     }                                                              //~9C12I~
-	//*************************************************************************//~va60I~
-    public boolean getWinTileList(int Pplayer,boolean[] PbtsWin)	//protected for ITReachChk//~va60I~
-    {                                                              //~va60I~
-        if (Dump.Y) Dump.println("UAReachChk.getWinTileList player="+Pplayer+",PbtsWin="+Arrays.toString(PbtsWin));//~va60I~
-        btsWin=PbtsWin;                                            //~va60I~
-		boolean rc=chkReach(Pplayer,null/*PtdDiscard*/,true/*listAll*/);   //~va60R~
-        if (Dump.Y) Dump.println("UAReachChk.getWinTileList rc="+rc+",PbtsWin="+Arrays.toString(PbtsWin));//~va60I~
-        return rc;                                                 //~va60I~
-    }                                                              //~va60I~
+//    //*************************************************************************//+va60R~
+//    public boolean getWinTileList(int Pplayer,boolean[] PbtsWin)    //protected for ITReachChk//+va60R~
+//    {                                                            //+va60R~
+//        if (Dump.Y) Dump.println("UAReachChk.getWinTileList player="+Pplayer+",PbtsWin="+Arrays.toString(PbtsWin));//+va60R~
+//        btsWin=PbtsWin;                                          //+va60R~
+//        boolean rc=chkReach(Pplayer,null/*PtdDiscard*/,true/*listAll*/);//+va60R~
+//        if (Dump.Y) Dump.println("UAReachChk.getWinTileList rc="+rc+",PbtsWin="+Arrays.toString(PbtsWin));//+va60R~
+//        return rc;                                               //+va60R~
+//    }                                                            //+va60R~
 	//*************************************************************************//~va60I~
     private void setList(int Ptype,int Pnumber)                    //~va60I~
     {                                                              //~va60I~

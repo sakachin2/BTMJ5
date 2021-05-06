@@ -1,5 +1,6 @@
-//*CID://+va11R~: update#= 826;                                    //~va11R~
+//*CID://+va8uR~: update#= 836;                                    //~va11R~//~va8uR~
 //**********************************************************************//~v101I~
+//2021/04/29 va8u (Bug)ignore furiten/kataagari Take not AllInHand,chk skazuke condition only//~va8uI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.UA;                                       //~va11R~
@@ -119,6 +120,29 @@ public class Rank                                                  //~va11R~
 	public static final int RANK_3DRAGONSMALL=2; //4 with WGR      //~va11R~
 	public static final int RANK_19SAMEMIX=4;   //honro            //~va11I~
 	public static final int RANK_FLASH    =6;   //chinitu          //~va11I~
+                                                                   //~va8uI~
+	public static final long YAKUID_FIX=(  0L                          //~va8uI~
+//        |  (1L<< RYAKU_7PAIR            )                        //~va8uR~
+          |  (1L<< RYAKU_TANYAO           )   //ON only when rulesetting kuitan:Yes//+va8uR~
+//        |  (1L<< RYAKU_PINFU            )                        //~va8uR~
+//        |  (1L<< RYAKU_RSV1             )                        //~va8uR~
+//        |  (1L<< RYAKU_WIND             )                        //~va8uR~
+//        |  (1L<< RYAKU_ROUND            )                        //~va8uR~
+//        |  (1L<< RYAKU_1SAMESEQ         )         //1peiko       //~va8uR~
+//        |  (1L<< RYAKU_3SAMESEQ         )         //3shiki       //~va8uR~
+//        |  (1L<< RYAKU_3SAMENUM         )         //3tonko       //~va8uR~
+          |  (1L<< RYAKU_3SAMEHAND        )         //3anko        //~va8uR~
+//        |  (1L<< RYAKU_STRAIGHT         )        //itsu          //~va8uR~
+          |  (1L<< RYAKU_ALLSAME          )        //toitoi        //~va8uR~
+          |  (1L<< RYAKU_19SEQMIX         )        //honchan       //~va8uR~
+//        |  (1L<< RYAKU_3KAN             )                        //~va8uR~
+//        |  (1L<< RYAKU_2SAMESEQ         )        //2peiko        //~va8uR~
+          |  (1L<< RYAKU_19SEQ            )        //junchan       //~va8uR~
+          |  (1L<< RYAKU_FLASHMIX         )        //honitu        //~va8uR~
+//        |  (1L<< RYAKU_3DRAGONSMALL     )        //4 with WGR    //~va8uR~
+          |  (1L<< RYAKU_19SAMEMIX        )        //honro         //~va8uR~
+          |  (1L<< RYAKU_FLASH            )        //chinitu       //~va8uR~
+                                     );                            //~va8uI~
                                                                    //~va11I~
 	public static final int RANK_REACH         =1;                 //~va11I~
 	public static final int RANK_REACH_DOUBLE  =2; //daburii       //~va11I~
@@ -417,6 +441,11 @@ public class Rank                                                  //~va11R~
     {                                                              //~va11I~
         return isContains(this,Pyaku);                             //~va11I~
     }                                                              //~va11I~
+    //*************************************************************//~va8uI~
+    public boolean isContainsFixFirst()                            //~va8uI~
+    {                                                              //~va8uI~
+        return isContainsFixFirst(this);                     //~va8uI~
+    }                                                              //~va8uI~
     //*************************************************************//~va11I~
     public boolean isContainsAnyYakuExceptDora()                   //~va11R~
     {                                                              //~va11I~
@@ -431,6 +460,15 @@ public class Rank                                                  //~va11R~
     	if (Dump.Y) Dump.println("Rank.isContains rc="+rc+",yaku="+Pyaku+"="+SyakuNameS[Pyaku]+",rank="+toString(Prank));//~va11R~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
+    //*************************************************************//~va8uI~
+    public static boolean isContainsFixFirst(Rank Prank)           //~va8uR~
+    {                                                              //~va8uI~
+    	boolean rc=isYakuman(Prank);                               //~va8uR~
+    	if (!rc)                                                   //~va8uR~
+			rc=(Prank.rank & YAKUID_FIX)!=0;                         //~va8uI~
+    	if (Dump.Y) Dump.println("Rank.isContainsFixFirst rc="+rc+",Rank="+Prank.toString()+",YAKU_FIX="+rankToString(YAKUID_FIX));//~va8uR~
+        return rc;                                                 //~va8uI~
+    }                                                              //~va8uI~
     //*************************************************************//~va11I~
     public void reset(int Pyaku)                                   //~va11R~
     {                                                              //~va11I~
@@ -502,7 +540,7 @@ public class Rank                                                  //~va11R~
     {                                                              //~va11I~
     	int ctr=(int)(Prank.rank>>WGR_SHIFTIN);                    //~va11I~
         ctr&=WGR_MASK;                                             //~va11I~
-//  	if (Dump.Y) Dump.println("Rank.getWGR rc="+ctr+",rank="+toString(Prank));//+va11R~
+//  	if (Dump.Y) Dump.println("Rank.getWGR rc="+ctr+",rank="+toString(Prank));//~va11R~
         return ctr;                                                //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~

@@ -1,4 +1,4 @@
-//*CID://+va49R~:                             update#=   68;       //~va49R~
+//*CID://+va49R~:                             update#=   71;       //~va49R~
 //**********************************************************************//~v105I~
 //2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
 //**********************************************************************//~v105I~
@@ -98,6 +98,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     }                                                              //~va49I~
     public void setBackgroundDrawableUI(Object Pparm)              //~va49I~
     {                                                              //~va49I~
+    	if (Dump.Y) Dump.println("UiFunc.setBackgroundDrawableUI Pparm=ViewID="+Integer.toHexString(((View)Pparm).getId()));//+va49R~
         ((View)Pparm).setBackground(bgDrawable);              //~va49I~
     }                                                              //~va49I~
     public void setBGFGUI(Object Pparm)                            //~1312I~
@@ -208,10 +209,10 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     {                                                              //~1405I~
     	if (Pparm!=null)                                           //~v108I~
         {                                                          //~v108I~
-	    	if (Dump.Y) Dump.println("Componet.requestFocus view="+Pparm.toString());//~v108I~
+	    	if (Dump.Y) Dump.println("UiFunc.requestFocusUI view="+Pparm.toString());//~v108I~//~va49R~
         	((View)Pparm).requestFocus();                          //~v108I~
         }                                                          //~v108I~
-    	if (Dump.Y) Dump.println("Componet.requestFocus view="+componentView.toString());//~1506R~
+    	if (Dump.Y) Dump.println("UiFunc.requestFocusUI view="+componentView.toString());//~1506R~//~va49R~
         if (Dump.Y) Dump.println("focusable="+componentView.isFocusable()+",touch="+componentView.isFocusableInTouchMode()+",isfocused="+componentView.isFocused());//~1506R~
         componentView.requestFocus();                              //~1405I~
         if (Dump.Y) Dump.println("after focusable="+componentView.isFocusable()+",touch="+componentView.isFocusableInTouchMode()+",isfocused="+componentView.isFocused());//~1506R~
@@ -219,7 +220,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 //****************                                                 //~v108I~
     private void requestFocusFromTouchUI(Object Pparm)                 //~v108I~
     {                                                              //~v108I~
-    	if (Dump.Y) Dump.println("Componet.requestFocusFromTouch view="+componentView.toString());//~v108I~
+    	if (Dump.Y) Dump.println("UiFunc.requestFocusFromTouchUI view="+componentView.toString());//~v108I~//~va49R~
         componentView.requestFocusFromTouch();                     //~v108I~
     }                                                              //~v108I~
 //********************************                                 //~1221I~
@@ -240,7 +241,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 	@Override                                                      //~1221I~
     public void runOnUiThread(Object Pparm)                        //~1221I~//~v@@@R~
     {                                                              //~1221I~
-        if (Dump.Y) Dump.println("UiFunc.runOnUiThread case="+funcid);//~1506R~//~v@@@R~//+va49I~
+        if (Dump.Y) Dump.println("UiFunc.runOnUiThread case="+funcid);//~1506R~//~v@@@R~//~va49I~
         switch(funcid)                                       //~1221I~//~v@@@R~
         {                                                          //~1221I~
         case FUNC_APPEND:                                          //~1221I~//~v@@@R~
@@ -333,7 +334,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 //*****************                                                //~v101I~
     private void appendSpanUI(Object Pparm)                        //~v101I~
     {                                                              //~v101I~
-    	if (Dump.Y)Dump.println("TextComponent appendSpanUI"); 
+    	if (Dump.Y)Dump.println("UiFunc.appendSpanUI");            //~va49R~
     	TextView textview=(TextView)Pparm;                         //~v101I~
         textview.append(spanline);                                 //~v101I~
         if (scrollview!=null)                                      //~v101I~
@@ -355,13 +356,13 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 //*****************                                                //~1221I~
     public void showList(ListView Plistview,int Ppos)            //~1221R~//~@@@@R~
     {                                                              //~1221I~//~@@@@R~
-        if (Dump.Y) Dump.println("Component:showBottom pos="+pos); //~1506R~//~@@@@R~
+        if (Dump.Y) Dump.println("UiFunc.showList pos="+pos); //~1506R~//~@@@@R~//~va49R~
         pos=Ppos;                                                  //~1221I~//~@@@@R~
         runOnUiThread(FUNC_SHOWBOTTOM,Plistview);                  //~1221I~//~@@@@R~//~v@@@R~
     }                                                              //~1221I~//~@@@@R~
     private void showBottomUI(Object Pparm)                        //~1221I~//~@@@@R~
     {                                                              //~1221I~//~@@@@R~
-        if (Dump.Y) Dump.println("Component:showBottomUI pos="+pos);//~1506R~//~@@@@R~
+        if (Dump.Y) Dump.println("UiFunc.showBottomUI pos="+pos);//~1506R~//~@@@@R~//~va49R~
         ListView listview=(ListView)Pparm;                         //~1221I~//~@@@@R~
         ListAdapter adapter=listview.getAdapter();                 //~1221I~//~@@@@R~
         ((BaseAdapter)adapter).notifyDataSetChanged();             //~@@@@R~
@@ -372,14 +373,14 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 //*****************                                                //~v105I~
     public void setItemChecked(ListView Plistview,int Ppos,boolean Pstate)//~v105I~//~@@@@R~
     {                                                              //~v105I~//~@@@@R~
-        if (Dump.Y) Dump.println("Component:setItemChecked pos="+Ppos);//~v105I~//~@@@@R~
+        if (Dump.Y) Dump.println("UiFunc.setItemChecked pos="+Ppos);//~v105I~//~@@@@R~//~va49R~
         pos=Ppos;                                                  //~v105I~//~@@@@R~
         listItemState=Pstate;                                      //~v105I~//~@@@@R~
         runOnUiThread(FUNC_SETITEMCHECKED,Plistview);              //~v105I~//~@@@@R~//~v@@@R~
     }                                                              //~v105I~//~@@@@R~
     private void setItemCheckedUI(Object Pparm)                    //~v105I~//~@@@@R~
     {                                                              //~v105I~//~@@@@R~
-        if (Dump.Y) Dump.println("Component:setItemChecked pos="+pos);//~v105I~//~@@@@R~
+        if (Dump.Y) Dump.println("UiFunc:setItemCheckedUI pos="+pos);//~v105I~//~@@@@R~//~va49R~
         ListView listview=(ListView)Pparm;                         //~v105I~//~@@@@R~
         listview.setItemChecked(pos,listItemState);                //~v105I~//~@@@@R~
     }                                                              //~v105I~//~@@@@R~
@@ -427,7 +428,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
 //*setEnabled requires Mainthread*                                 //~1425I~
     public void setEnabled(Button Pbutton,boolean Pstate)          //~1322I~//~@@@@R~
     {                                                              //~1322I~//~@@@@R~
-        if (Dump.Y) Dump.println("Component setenabled="+Pbutton.toString());//~1506R~//~@@@@R~
+        if (Dump.Y) Dump.println("UiFunc.setEnabled="+Pbutton.toString());//~1506R~//~@@@@R~//~va49R~
         buttonState=Pstate;                                        //~1322I~//~@@@@R~
         runOnUiThread(FUNC_ENABLE,Pbutton);                        //~1425R~//~@@@@R~//~v@@@R~
     }                                                              //~1322I~//~@@@@R~

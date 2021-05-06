@@ -1,6 +1,7 @@
-//*CID://+va74R~: update#=1007;                                    //+va74R~
+//*CID://+va8tR~: update#=1010;                                    //+va8tR~
 //**********************************************************************//~v101I~
-//2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//+va74I~
+//2021/04/28 va8t (Bug)interrace of human and robot RON, 1st human RON becomes DelayedRon.//+va8tI~
+//2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//~va74I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/10/18 va19 warning use anywan if blocked topn               //~va19I~
@@ -90,6 +91,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
     private int actionNewBlocker;                                  //~9B26I~
     private boolean swRonable;                                    //~9B28I~
     private boolean swRobot;                                       //~va60I~
+    private boolean swStopAuto2TouchRobotRon;                      //+va8tR~
 //*************************                                        //~v@@@I~
 	public UADelayed2()   //for IT                                 //~va60I~
     {                                                              //~va60I~
@@ -134,8 +136,8 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 //      swBlockTimeoutPon=RuleSettingOperation.is2TouchTimeoutPonKanChii(); //~9C05I~//~9C09R~
 //      swBlockTimeoutRon=RuleSettingOperation.is2TouchTimeoutRon();          //~9C05I~//~9C09R~
         swBlockTimeout=RuleSettingOperation.is2TouchTimeout();     //~9C09I~
-//      if (AG.swPlayAloneNotify)                                  //~va70I~//+va74R~
-        if (AG.swTrainingMode)                                     //+va74I~
+//      if (AG.swPlayAloneNotify)                                  //~va70I~//~va74R~
+        if (AG.swTrainingMode)                                     //~va74I~
         	swBlockTimeout=false;                                  //~va70I~
         if (Dump.Y) Dump.println("UADelayed2.constructor sw2TouchPon="+sw2TouchPon+",sw2TouchRon"+sw2TouchRon+",delay2Touch="+delay2Touch);//~9C04I~
     }                                                              //~0914I~
@@ -207,6 +209,18 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         if (Dump.Y) Dump.println("UADelayed2.isBlockMode rc="+rc+",actionID="+PactionID);//~9C04R~
         return rc;                                                 //~9C04I~
     }                                                              //~9C04I~
+	//*************************************************************************//+va8tR~
+    private void setBlockRobotRon(boolean Pblock)                  //+va8tR~
+    {                                                              //+va8tR~
+        if (Dump.Y) Dump.println("UADelayed2.setBlockRobotRon Pblock="+Pblock);//+va8tR~
+        swStopAuto2TouchRobotRon=Pblock;                           //+va8tR~
+    }                                                              //+va8tR~
+	//*************************************************************************//+va8tR~
+    private boolean isBlockRobotRon()                              //+va8tR~
+    {                                                              //+va8tR~
+        if (Dump.Y) Dump.println("UADelayed2.isBlockRobotRon rc="+swStopAuto2TouchRobotRon);//+va8tR~
+        return swStopAuto2TouchRobotRon;                           //+va8tR~
+    }                                                              //+va8tR~
 	//*************************************************************************//~va60I~
     private boolean isBlockMode(int PactionID,boolean PswServer,int Pplayer)//~va60I~
     {                                                              //~va60I~
@@ -228,7 +242,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
     }                                                              //~va60I~
 	//*************************************************************************//~9B28I~
 	//*from UA.selectInfo at action device                         //~9B28I~
-	//*For other than Pon/Kan/Chii/Ron, Take and Reach                             //~9B28I~//~9C04R~
+	//*For other than Pon/Kan/Chii/Ron, for Take and Reach                             //~9B28I~//~9C04R~//~va74R~
     //*************************************************************************//~9B28I~
     public boolean chkSelectInfo2TouchOtherAction(boolean PswServer,int PactionID,int Pplayer)//~9B28I~
     {                                                              //~9B28I~
@@ -263,6 +277,11 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 	        		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~
                     return -1;                                     //~va60I~
                 }                                                  //~va60I~
+		        if (PactionID==GCM_RON && isBlockRobotRon())  //blocked//+va8tR~
+                {                                                  //+va8tR~
+	        		UView.showToast(R.string.ActionBlockedByHumanForRobot);//+va8tR~
+                    return -1;                                     //+va8tR~
+                }                                                  //+va8tR~
             }                                                      //~va60I~
         	return msgid;                                          //~9C06I~
         }                                                          //~va60I~
@@ -360,6 +379,9 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         }                                                          //~9B18I~
         else                                                       //~9B17R~
         {                                                          //~9B18I~
+        	if (PactionID==GCM_RON)                                //+va8tR~
+        		if (!AG.aAccounts.isRobotPlayer(Pplayer))	//human request RON//+va8tR~
+				    setBlockRobotRon(true);	//set block before GCM_2TOUCH scheduled//+va8tR~
 //  		sendMsg2Touch(PactionID,Pplayer,STAT_CONFIRM_REQ);//to selectInfo2Touch & actionInfo2Touch ~9B17R~//~9B18R~//~9B26R~
     		sendMsg2Touch(PactionID,Pplayer,STAT_CONFIRM_REQ,eswn,flag);//to selectInfo2Touch & actionInfo2Touch ~9B17R~//~9B26I~//~9B28R~
         }                                                          //~9B18I~
@@ -1055,6 +1077,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 //        }                                                          //~9B18I~//~9B28R~
     	if (!UAD2T.releaseAuto2Touch(PactionID,Pplayer))	//all released//~9B28R~
             swStopAuto2Touch=false;                                //~9B28I~
+	    setBlockRobotRon(false);                                   //+va8tR~
         if (Dump.Y) Dump.println("UADelayed2.releaseAuto2Touch exit swStopauto2Touch="+swStopAuto2Touch);//~9B18I~//~9B19R~//~9B23R~//~9B24R~//~9B26R~//~9B28R~
 //        return rc;                                                 //~9B17I~//~9B28R~
     }                                                              //~9B17I~//~9B28R~
@@ -1071,6 +1094,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 //            blockerCtr=0;                                          //~9B18I~//~9B28R~
 //        }                                                          //~9B18I~//~9B28R~
         swStopAuto2Touch=false;                                  //~v@@@I~//~9B28R~
+	    setBlockRobotRon(false);                                   //+va8tR~
     	UAD2T.resetAuto2Touch();                                   //~9B28R~
     	if (Dump.Y) Dump.println("UADelayed2.resetAuto2Touch after swStopAuto2Touch="+swStopAuto2Touch);//~9B24I~//~9B28R~//~9C11R~
     }                                                              //~9B18I~
@@ -1084,6 +1108,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
     	boolean rc=UAD2T.resetAuto2Touch(PactionID,Pplayer);       //~9B28I~
         if (!rc)	//not multiron available                       //~9B28I~
 	        swStopAuto2Touch=false;                                //~9B28I~
+	    setBlockRobotRon(false);                                   //+va8tR~
     	if (Dump.Y) Dump.println("UADelayed.resetAuto2Touch after rc="+rc+",swStopAuto2Touch="+swStopAuto2Touch);//~9B28I~
         return rc;                                                 //~9B28I~
     }                                                              //~9B28I~

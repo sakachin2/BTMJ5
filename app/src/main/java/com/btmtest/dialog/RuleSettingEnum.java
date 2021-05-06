@@ -1,6 +1,8 @@
-//*CID://+va7eR~: update#= 501;                                    //+va7eR~
+//*CID://+va8kR~: update#= 504;                                    //+va8kR~
 //**********************************************************************//~v101I~
-//2021/04/07 va7e change default to On for allow_robot_all         //+va7eI~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//+va8kI~
+//2021/04/13 va86 show RonAnyWay button by not preference by operation rule//~va86I~
+//2021/04/07 va7e change default to On for allow_robot_all         //~va7eI~
 //2021/04/07 va7c (Bug)option OpenReachRobot change is not saved and not effective(not sended)//~va7cI~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -223,7 +225,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int 	DEFAULT_BIRD=0;                    //~9430I~
                                                                    //~va66I~
     public static final int 	DEFAULT_THINK_ROBOT=1;             //~va66I~
-    public static final int 	DEFAULT_ALLOW_ROBOT_ALL=1;         //+va7eR~
+    public static final int 	DEFAULT_ALLOW_ROBOT_ALL=1;         //~va7eR~
     public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~
                                                                    //~9413I~
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
@@ -343,7 +345,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_YAKUFIX2              =311;    //~9516I~
 //  public static final int    RSID_YAKUFIX2LAST          =312;    //~9516I~//~9B10R~
     public static final int    RSID_YAKUFIX_MULTIWAITOK   =313;    //~0208R~
-    public static final int    RSID_YAKUFIX_MULTIWAITDRAWOK=314;   //~0208I~
+//  public static final int    RSID_YAKUFIX_MULTIWAITDRAWOK=314;   //~0208I~//+va8kR~
     public static final int    RSID_YAKUFIX1              =315;    //~va11I~
                                                                    //~9516I~
     public static final int    RSID_EATCHANGE             =320;    //~9516I~
@@ -358,6 +360,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_PENDING_RANKEMPTY     =336;    //~0330I~
     public static final int    RSID_PENDING_RANKFURITEN   =337;    //~0330I~
     public static final int    RSID_PENDING_RANK2         =338;    //~0330I~
+    public static final int    RSID_SHOW_ANYWAY_BTN       =339;    //~va86I~
                                                                    //~9516I~
     public static final int    RSID_4ANKO1                =340;    //~9517I~
     public static final int    RSID_KOKUSI13              =341;    //~9517I~
@@ -501,7 +504,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_YAKUFIX2             ,"YakuFix2"             ),//~9516I~
 //  				new RSEnumPair(RSID_YAKUFIX2LAST         ,"YakuFix2Last"         ),//~9516I~//~9B10R~
     				new RSEnumPair(RSID_YAKUFIX_MULTIWAITOK  ,"YakuFixMultiWaitOK"   ),//~0208I~
-    				new RSEnumPair(RSID_YAKUFIX_MULTIWAITDRAWOK,"YakuFixMultiWaitDrawOK"),//~0208I~
+//  				new RSEnumPair(RSID_YAKUFIX_MULTIWAITDRAWOK,"YakuFixMultiWaitDrawOK"),//~0208I~//+va8kR~
                                                                    //~9516I~
     				new RSEnumPair(RSID_EATCHANGE            ,"EatChange"            ),//~9516I~
                                                                    //~9517I~
@@ -515,6 +518,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_PENDING_RANKEMPTY    ,"KeiTenEmpty"          ),//~0330I~
     				new RSEnumPair(RSID_PENDING_RANKFURITEN  ,"KeiTenFuriten"        ),//~0330I~
     				new RSEnumPair(RSID_PENDING_RANK2        ,"KeiTenRank2"          ),//~0330I~
+    				new RSEnumPair(RSID_SHOW_ANYWAY_BTN      ,"ShowAnyway"           ),//~va86I~
                                                                    //~9516I~
     				new RSEnumPair(RSID_4ANKO1               ,"Anko4_1"              ),//~9517I~
     				new RSEnumPair(RSID_KOKUSI13             ,"Kokusi13"             ),//~9517I~

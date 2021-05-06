@@ -1,10 +1,11 @@
-//*CID://+va11R~: update#= 798;                                    //~va11R~
+//*CID://+va8rR~: update#= 799;                                    //+va8rR~
 //**********************************************************************//~v101I~
+//2021/04/26 va8r (Bug)Fu is 110 for pinfu tsumo under punfu-tsumo=yes//+va8rI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
-//point Same  1/9/ji==>4/8  2->8==>2/4                             //+va11I~
-//point Kan   1/9/ji:16/32 tanyao:8/16                             //+va11I~
-//**********************************************************************//+va11I~
+//point Same  1/9/ji==>4/8  2->8==>2/4                             //~va11I~
+//point Kan   1/9/ji:16/32 tanyao:8/16                             //~va11I~
+//**********************************************************************//~va11I~
 package com.btmtest.game.UA;                                       //~va11R~
 
 import com.btmtest.TestOption;
@@ -183,9 +184,9 @@ public class UARonData                                             //~va11R~
             	continue;                                          //~va11I~
     		if (longRankS[idxPairNumSS].isContains(RYAKU_PINFU))      //~va11I~
             {                                                      //~va11I~
-            	if (UARDT.swTaken)	//pinfu tsumo:2han             //~va11I~
-		            pointS[idxPairNumSS]=PbasePoint-(POINT_ALLHAND-POINT_NOTALLHAND);//~va11I~
-                else                                               //~va11I~
+//          	if (UARDT.swTaken)	//pinfu tsumo:2han             //~va11I~//+va8rR~
+//  	            pointS[idxPairNumSS]=PbasePoint-(POINT_ALLHAND-POINT_NOTALLHAND);//~va11I~//+va8rR~
+//              else                                               //~va11I~//+va8rR~
 		            pointS[idxPairNumSS]=PbasePoint;               //~va11R~
 //                if ((TestOption.option2 & TestOption.TO2_RONVALUE_TESTSUB)!=0)//~va11R~
 //                    UView.showToastLong("pointNum pinfu="+pointS[idxPairNumSS]);//~va11R~

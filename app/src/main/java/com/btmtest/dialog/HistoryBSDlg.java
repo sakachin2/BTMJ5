@@ -1,5 +1,6 @@
-//*CID://+dateR~:                             update#=   32;
+//*CID://+va87R~:                             update#=   43;       //~va87R~
 //*****************************************************************
+//2021/04/13 va87 show B/S limited to a group                      //~va87I~
 //2021/04/06 va7a add function of show balance sheet
 //*****************************************************************
 package com.btmtest.dialog;
@@ -42,6 +43,11 @@ public class HistoryBSDlg extends UFDlg                                         
     private UListView lvBS;                                        //~1406I~
     private TextView tvSummary;                                    //~1406I~
     private String dateFrom="";                                    //~1408I~
+    private int[] selectedList;                                    //~va87I~
+    private int[] selectedMember;
+    private String[] selectedMemberName=new String[PLAYERS];       //~va87I~
+    private int ctrRobotSelectedGame,ctrSelectedMembers;           //~va87R~
+    private HistoryData hdSelectedGame;//~va87I~
     //******************************************
     public HistoryBSDlg()                                          //~1406R~
     {
@@ -49,11 +55,14 @@ public class HistoryBSDlg extends UFDlg                                         
         HD=AG.aHistoryDlg;                                         //~1406I~
     }
     //******************************************
-    public static HistoryBSDlg newInstance()                       //~1406R~
+//  public static HistoryBSDlg newInstance()                       //~1406R~//~va87R~
+    public static HistoryBSDlg newInstance(int[] PselectedList)    //~va87I~
     {
     	HistoryBSDlg dlg=new HistoryBSDlg();                       //~1406R~
     	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);
+        dlg.selectedList=PselectedList;                            //~va87I~
+        if (Dump.Y) Dump.println("HistoryBSDlg.newInstance slectedLis=length="+PselectedList.length+"="+Utils.toString(PselectedList));//~va87R~
     	return dlg;
     }
     //******************************************************************//~1406I~
@@ -63,7 +72,9 @@ public class HistoryBSDlg extends UFDlg                                         
     public void initLayout(View Playoutview)                       //~1406I~
 	{                                                              //~1406I~
     	super.initLayout(Playoutview);                             //~1406I~
+        ctrSelectedMembers=0;                                      //~va87I~
         getComponent(Playoutview) ;                                //~1406I~
+        setSelectedMember();                                       //~va87I~
         makeBS();                                                  //~1406I~
         setupDialog();                                             //~1406I~
         setSummary();                                              //~1406I~
@@ -93,7 +104,7 @@ public class HistoryBSDlg extends UFDlg                                         
         for (int ii=0;ii<namelist.length;ii++)                     //~1406I~
         {                                                          //~1406I~
     		hd=AG.aHistory.getHistoryData(namelist[ii]);    //get from Map//~1406I~
-            dateFrom=hd.HD[HDPOS_HDR][POS_TIMESTAMP];              //+1408M~
+            dateFrom=hd.HD[HDPOS_HDR][POS_TIMESTAMP];              //~1408M~
 		    if (Dump.Y) Dump.println("HistoryBSDlg:makeBS name="+namelist[ii]+",swPending="+hd.swComplete);//~1406I~
         	if (!hd.swComplete)                                    //~1406R~
             {                                                      //~1406I~
@@ -101,8 +112,14 @@ public class HistoryBSDlg extends UFDlg                                         
 		        if (Dump.Y) Dump.println("HistoryBSDlg:makeBS not gameover ctrPending="+ctrPending+",name="+namelist[ii]);//~1406R~
             	continue;                                          //~1406I~
             }                                                      //~1406I~
+            int ctrRobot=chkRobot(hd);                             //~va87I~
+            if (ctrRobotSelectedGame!=0)	//summary of selected member's game//~va87I~
+            {                                                      //~va87I~
+	            if (!isSelectedGame(hd,ctrRobot,swRobot))          //~va87I~
+    	            continue;                                      //~va87I~
+            }                                                      //~va87I~
             hd.setScores();                                        //~1406M~
-            int ctrRobot=chkRobot(hd);                             //~1406I~
+//          int ctrRobot=chkRobot(hd);                             //~1406I~//~va87R~
             if (ctrRobot==PLAYERS-1)                               //~1406I~
             {                                                      //~1406I~
             	setBSAlone(hd);                                    //~1406I~
@@ -122,7 +139,18 @@ public class HistoryBSDlg extends UFDlg                                         
 //                    +" : "+Utils.getStr(R.string.BS_ctrGameAlone)+" = "+ctrGameAlone//~1406I~//~1408R~
 //                    +" , "+Utils.getStr(R.string.BS_ctrGameMatch)+" = "+ctrGameMatch//~1406I~//~1408R~
 //                    +" , "+Utils.getStr(R.string.BS_ctrGamePending)+" = "+ctrPending;//~1406I~//~1408R~
-        String s=AG.resource.getString(R.string.Desc_BS_Summary,ctrGameAlone,ctrGameMatch,ctrPending,dateFrom);//~1408I~
+        String s;                                                  //~va87I~
+	  if (ctrSelectedMembers!=0)                                      //~va87I~
+      {                                                            //~va87I~
+      	String names="";                                           //~va87I~
+      	for (int ii=0;ii<ctrSelectedMembers;ii++)                  //+va87R~
+            names+=selectedMemberName[ii]+"  ";                    //~va87I~
+        if (ctrSelectedMembers<PLAYERS)                            //+va87R~
+            names+=nameRobot+"("+ctrSelectedMembers+")";           //+va87R~
+        s=AG.resource.getString(R.string.Desc_BS_Summary_selected,names,ctrGameMatch,dateFrom);//~va87I~
+      }                                                            //~va87I~
+      else                                                         //~va87I~
+        s=AG.resource.getString(R.string.Desc_BS_Summary,ctrGameAlone,ctrGameMatch,ctrPending,dateFrom);//~1408I~//~va87R~
         if (Dump.Y) Dump.println("HistoryBSDlg.setSummary desc="+s);       //~1406I~//~1408I~
         tvSummary.setText(s);                                      //~1406I~
     }                                                              //~1406I~
@@ -142,6 +170,79 @@ public class HistoryBSDlg extends UFDlg                                         
         if (Dump.Y) Dump.println("HistoryBSDlg.chkRobot rc="+rc+",swRobot="+Arrays.toString(swRobot));//~1406I~
         return rc;
     }
+    //***********************************************              //~va87I~
+    private void setSelectedMember()                               //~va87I~
+    {                                                              //~va87I~
+        ctrRobotSelectedGame=0;                                    //~va87I~
+        hdSelectedGame=null;                                       //~va87I~
+        int ctr=selectedList.length;                               //~va87I~
+		if (Dump.Y) Dump.println("HistoryBSDlg.setSelectedMember ctrSelected="+ctr);//~va87I~
+        if (ctr>1)                                                 //~va87I~
+        {                                                          //~va87I~
+	        UView.showToast(R.string.Err_BSMultipleSelected);      //~va87I~
+        	return;                                                //~va87I~
+        }                                                          //~va87I~
+        else                                                       //~va87I~
+        if (ctr==0)                                                //~va87R~
+        	return;                                                //~va87I~
+		setSelectedMember(HD.namelist[selectedList[0]]);               //~va87I~
+    }                                                              //~va87I~
+    //***********************************************              //~va87I~
+    private void setSelectedMember(String Pname)                   //~va87I~
+    {                                                              //~va87I~
+		if (Dump.Y) Dump.println("HistoryBSDlg.setSelectedMember name="+Pname);//~va87I~
+    	HistoryData hd=AG.aHistory.getHistoryData(Pname);    //get from Map//~va87I~
+        int ctrRobot=chkRobot(hd);                                 //~va87I~
+//      if (ctrRobot==PLAYERS-1)                                   //~va87R~
+//      {                                                          //~va87R~
+//          UView.showToast(R.string.Err_BSPlayAloneSelected);     //~va87R~
+//          return;                                                //~va87R~
+//      }                                                          //~va87R~
+        if (!hd.swComplete)                                        //~va87I~
+        {                                                          //~va87I~
+          	UView.showToast(R.string.Err_BS_NotCompleteSelected);  //~va87I~
+          	return;                                                //~va87I~
+        }                                                          //~va87I~
+        ctrRobotSelectedGame=ctrRobot;                             //~va87I~
+        hdSelectedGame=hd;                                         //~va87I~
+    }                                                              //~va87I~
+    //***********************************************              //~va87I~
+    private boolean isSelectedGame(HistoryData Phd,int PctrRobot,boolean[] PswRobot)//~va87I~
+    {                                                              //~va87I~
+		if (Dump.Y) Dump.println("HistoryBSDlg.isSelectedGame PctrRobot="+PctrRobot+",ctrRobotSelectedGame="+ctrRobotSelectedGame+",swRobot="+Utils.toString(PswRobot)+",selectedHD="+hdSelectedGame.toString());//~va87I~
+        if (PctrRobot!=ctrRobotSelectedGame)                       //~va87I~
+        	return false;                                          //~va87I~
+        String[] names=Phd.HD[HDPOS_MEMBER];                      //~va87I~
+        int ctrSameMember=0;                                       //~va87I~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~va87I~
+        {                                                          //~va87I~
+            if (PswRobot[ii])	//robot name                       //~va87I~
+            	continue;                                          //~va87I~
+            String name=names[ii];                                 //~va87I~
+            String[] namesSelected=hdSelectedGame.HD[HDPOS_MEMBER];//~va87I~
+	        for (int jj=0;jj<PLAYERS;jj++)                         //~va87I~
+    	    {                                                      //~va87I~
+            	if (name.equals(namesSelected[jj]))                //~va87I~
+                {                                                  //~va87I~
+                	ctrSameMember++;                                //~va87I~
+                    break;                                         //~va87I~
+                }                                                  //~va87I~
+            }                                                      //~va87I~
+        }                                                          //~va87I~
+        boolean rc=ctrSameMember==PLAYERS-PctrRobot;               //~va87I~
+        if (rc && ctrSelectedMembers==0)                           //~va87I~
+        {                                                          //~va87I~
+        	Arrays.fill(selectedMemberName,null);                  //~va87R~
+            for (int ii=0;ii<PLAYERS;ii++)                         //~va87I~
+            {                                                      //~va87I~
+                if (PswRobot[ii])   //robot name                   //~va87I~
+                    continue;                                      //~va87I~
+                selectedMemberName[ctrSelectedMembers++]=names[ii]; //~va87I~
+            }                                                      //~va87I~
+        }                                                          //~va87I~
+		if (Dump.Y) Dump.println("HistoryBSDlg.isSelectedGame rc="+rc+",ctrSameMember="+ctrSameMember+",PctrRobot="+PctrRobot+",selectedMemberName="+Arrays.toString(selectedMemberName));//~va87R~
+        return rc;                                                 //~va87I~
+    }                                                              //~va87I~
     //***********************************************              //~1406I~
     private void setBSAlone(HistoryData Phd)                   //~1406I~
     {                                                              //~1406I~

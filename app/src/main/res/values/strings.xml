@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.11</string>
+    <string name="app_version">v1.12</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -320,6 +320,7 @@
     <string name="Title_CompleteDlgResp">End-of-Hand Response</string>
     <string name="Title_CompReqDlg">Win Claim</string>
     <string name="Title_DrawnReqDlgLast">ExhaustiveDraw Claim</string>
+    <string name="Desc_DrawnReqDlgLast">NoTen or Tenpai radioButton status is set without considering Psude-Tenpai/2-han-constraint setting. Change it if required referencing \"Related\" rules.</string>
     <string name="Title_DrawnReqDlgHW">AbortiveDraw Claim</string>
     <string name="Title_DrawnDlgHW">AbortiveDraw Confirmation</string>
     <string name="Title_DrawnDlgLast">ExhaustiveDraw Confirmation</string>
@@ -393,7 +394,7 @@
     <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
     <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
     <string name="Label_ReachLimitOpenChombo">Continue as Chombo</string>
-    <string name="Label_ReachLimitOpenRobot">For Robot game</string>
+    <string name="Label_ReachLimitOpenRobot">Open for Robot game</string>
     <string name="Label_ReachLimitOpenRobotNone">Disable</string>
     <string name="Label_ReachLimitOpenRobotSkip">Ignore the discard.</string>
     <string name="Label_ReachLimitOpenRobotNormal">Pay normal.</string>
@@ -1028,8 +1029,8 @@
                                 See also Help.
 						</string>
     <string name="Desc_CheckRonable">Furiten not checked.</string>
-    <string name="Desc_CheckRonValue">You can correct it on Dialog.</string>
-    <string name="Desc_CheckReach">At Reach call, Furiten is not checked.</string>
+    <string name="Desc_CheckRonValue">You can correct score on Dialog.</string>
+    <string name="Desc_CheckReach">Chk Tenpai pattern at Riich, FuritenRiich is allowed.</string>
     <string name="Label_S2P">Fraction</string>
     <string name="Label_RankMUp">Rounded Mangan</string>
     <string name="Desc_RankMUp">(30fu4han and 60fu3han is Mangan）</string>
@@ -1067,7 +1068,8 @@
     <string name="Label_BGMSame">Common</string>
     <string name="Label_BGM4Seasons">4 seasons</string>
     <string name="Label_BGM4SeasonsFast">4S fast</string>
-    <string name="Desc_BGM">You can select BGM while playing game.</string>
+    <!--string name="Desc_BGM">You can select BGM while playing game.</string-->
+    <string name="Desc_BGM">It changes at final round.</string>
     <string name="Label_BeepOnly">Beep</string>
     <string name="Label_SoundVolume">Vol.</string>
     <string name="Label_Robot">Robot</string>
@@ -1080,7 +1082,7 @@
     <!--string name="Label_AllowRobotAll">Allow Training Mode</string-->
     <string name="Label_AllowRobotAllButton">When playing alone, Robot\'s \"Draw\" is by button.</string>
     <string name="Label_PlayAloneNotify">Notify availability of Ron,Pon,Kan,Chii when playing alone.</string>
-    <string name="Desc_PlayAloneNotify">(Quick Robot Action)</string>
+    <string name="Desc_PlayAloneNotify">(Quick Robot Action. See \"Help\")</string>
 
     <string name="Label_GameSet">Rounds</string>
     <string name="Label_GameSetInterrupted">Comp. Next is</string>
@@ -1116,14 +1118,15 @@
     <string name="Label_YakuFixFirst">First only</string>
     <string name="Label_YakuFixLast">Finally</string>
     <string name="Label_YakuFixMiddle">Middle OK</string>
-    <string name="Label_YakuFixMultiwaitOK">Mult tile wait Ron</string>
+    <string name="Label_YakuFixMultiwaitOK">Multi tile wait Ron</string>
     <string name="Label_YakuFixMultiwaitDrawOK">Multi tile wait Draw OK</string>
     <string name="Desc_YakuFix">Finally:Accept winning hand if it has Yaku finally.
     							 Middle:Allow also not first calling a tile as first call.
     							 First only:Required first calling a tile is related a Yaku of winning hand
 									 OR tiles in hand has Yaku or fixed by not multiple tile wait at Ron.\n
-                                 Muti tile wait Ron:For Finally only, accept multiple tile wait if winning tile has Yaku. Be careful of temporary furiten.\n     
-                                 Muti tile wait Draw OK:For Middle and First only, accpt multiple tile wait if winning tile drawn has Yaku.     
+                                 Muti tile wait Ron:For \"Finally\" only, accept multiple tile wait if winning tile has Yaku. Be careful of temporary furiten.\n     
+                                 Muti tile wait Draw OK:For \"Middle\" and \"First\" only, accpt multiple tile wait if winning tile drawn has Yaku.
+                                 (OK for Self-Draw regardless of this option and Furiten)
                                  </string>
     <string name="Label_YakuFix1">1-han constraint</string>
     <string name="Label_YakuFix1Yes">Do check</string>
@@ -1132,8 +1135,11 @@
     <string name="Label_YakuFix2Stick4">From 4 CounterSticks</string>
     <string name="Label_YakuFix2Stick5">From 5</string>
     <string name="Label_YakuFix2Last">Allows that Yaku is composed finally</string>
-    <string name="Desc_YakuFix2">Kansaki rule allows Riichi and SelfDraw,
-			 but disallows Riichi and Win before next discard or Riichi and last tile drawn/discarded because those are Yaku by unexpected event.</string>
+    <string name="Desc_YakuFix2">Effective only when \"1-han constraint\" is ON.\n
+			If \"Fix Yaku\" option is NOT \"Finally\", ignore accidental Yaku such as Riichi-OneShot, Final Tile, Chankan, and  RinshanKaiho.
+			If "Fix Yaku is \"Finally\", those are all allowed.
+            Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not allowed
+            </string>
     <string name="Label_EatChange">Call the same Meld</string>
     <string name="Label_EatChangeNo">No</string>
     <string name="Label_EatChangeExceptIt">No if the same tile.</string>
@@ -1433,6 +1439,8 @@
     <string name="Label_OneShot">One-shot</string>
     <string name="AE_SameMeld">Violation of Same-Meld, select the other Tile.</string>
     <string name="AE_RankFix1">Hand required at least 1 han.</string>
+    <string name="AE_RankFix2">Hand required at least 2 han.</string>
+    <string name="AE_RankFix2MultiWait">Some win tiles are 2 han constraint err.</string>
     <string name="Label_Anyway">Win-A</string>
     <string name="Warn_BlockedNeedRonAnyway">Use not \"Win\" but \"Win anyway" to proceed Win.</string>
     <string name="AE_TestRobotDiscardButtonServerOnly">Discard button for Robot Test is sServer only</string>
@@ -1466,4 +1474,12 @@
     <string name="Desc_BS_Summary">
     	Game count : PlayAlone = %1$d, Match = %2$d, Suspended = %3$d  ( From %4$s )
 		</string>
+    <string name="Desc_BS_Summary_selected">
+    	Member = %1$s, Match = %2$d （ From %3$s）
+		</string>
+    <string name="Label_ShowAnywayBtn">Show \"Win-A\"(Win Anyway)</string>
+    <string name="Desc_ShowAnywayBtn">Use to call win for irregular pattern except \"7 pairs\"、\"13 Orphans\".</string>
+    <string name="Err_BS_NotCompleteSelected">Select a game overed.</string>
+    <string name="Err_BSMultipleSelected">Select only one game.</string>
+    <string name="AE_FuritenReach">Furiten Riichi</string>
 </resources>

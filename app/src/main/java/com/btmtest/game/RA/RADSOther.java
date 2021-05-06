@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 199;
+//*CID://+va8nR~: update#= 200;                                    //+va8nR~
 //**********************************************************************
+//2021/04/26 va8n release INTENT_GIVEUP_WEAK when shaten reached to 0//+va8nI~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 //*Smart discard, check other player status
@@ -112,12 +113,19 @@ public class RADSOther
         int remainingTile=RAUtils.getCtrRemain();                  //~1224I~
         if (remainingTile<HV_CTR_UPTO_DRAW)            // 4*4         //~1224I~//~1302R~//~1311R~
         {                                                          //~1224I~
+        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer set giveup before myShanten="+PmyShanten+",remain="+remainingTile+",intent="+Integer.toHexString(intent));//+va8nI~
             if (PmyShanten>1)                                      //~1224I~
     	    	intent|=INTENT_GIVEUP;                             //~1224I~
             else                                                   //~1224I~
             if (PmyShanten==1)                                     //~1224I~
-    	    	intent|=INTENT_GIVEUP_WEAK;                        //~1224I~
-        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer giveup by remainingTile and shanten myShanten="+PmyShanten+",remain="+remainingTile+",intent="+Integer.toHexString(intent));//~1224I~
+            {                                                      //+va8nI~
+    	    	intent&=~INTENT_GIVEUP;                        //~1224I~//+va8nR~
+    	    	intent|=INTENT_GIVEUP_WEAK;                        //+va8nI~
+            }                                                      //+va8nI~
+            else                                                   //+va8nI~
+            if (PmyShanten==0)                                     //+va8nI~
+    	    	intent&=~INTENT_GIVEUP_WEAK;                       //+va8nI~
+        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer@@@@ set giveup by remainingTile and shanten after intent="+Integer.toHexString(intent));//~1224I~//+va8nR~
         }                                                          //~1224I~
         RS.RSP[PeswnDiscard].setIntent(intent);                    //~1224I~
     	Arrays.fill(itsHandValueMarkSumm,0);                      //~1302I~
@@ -309,7 +317,7 @@ public class RADSOther
             ||  PmyShanten==0 && PctrWinTile<HV_MARK_IGNORE_WINTILE     //ignore other player reach if wintile>=4//~1216I~//~1220R~//~1223R~//~1307R~
             ||  PmyShanten>0 && RAUtils.getCtrRemain()<HV_SET_GIVEUP_REMAINING  //     =8;   //giveup at remaining<4 if shanten>0//~1311I~//~1314R~
             ||  PctrOtherReacher>=HV_GIVEUP_BY_MULTIPLE_REACH   //     =2;      //when other reach player>=2 set intent giveup//~1310I~
-            ||  Peswn==ESWN_E || Peswn==cutEswn                   //mark reach if dealer or cutpos//+1315I~
+            ||  Peswn==ESWN_E || Peswn==cutEswn                   //mark reach if dealer or cutpos//~1315I~
             )                                                      //~1307I~
             {                                                          //~1216I~//~1220R~
                                     if ((TestOption.option2 & TO2_ROBOT_TOAST)!=0)//~1216I~//~1220R~

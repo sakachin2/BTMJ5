@@ -1,4 +1,4 @@
-//*CID://+va70R~: update#= 318;                                    //~va70R~
+//*CID://+va70R~: update#= 319;                                    //~va70R~
 //**********************************************************************
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten
@@ -84,11 +84,11 @@ public class RADSEval
     //***********************************************************************//~va70R~
     //*from RAReach.selectDiscard for same HandValue               //~va70R~
     //***********************************************************************//~va70R~
-    public int adjustByTileForReach(int Peswn,int Ppos,int Pidx,int[] PitsHand,int PctrHand)//+va70R~
+    public int adjustByTileForReach(int Peswn,int Ppos,int Pidx,int[] PitsHand,int PctrHand)//~va70R~
     {                                                              //~va70R~
     	int v;                                                     //~va70M~
-        itsHand=PitsHand; ctrHand=PctrHand;                        //+va70I~
-        if (Dump.Y) Dump.println("RADEval.adjustByTileForReach itsHand="+Utils.toString(PitsHand,9,PctrHand));//+va70I~
+        itsHand=PitsHand; ctrHand=PctrHand;                        //~va70I~
+        if (Dump.Y) Dump.println("RADEval.adjustByTileForReach itsHand="+Utils.toString(PitsHand,9,PctrHand));//~va70I~
     	TileData td=RADS.tdsHand[Pidx];   //evaluateHand is not called//~va70R~
         RSP=RS.RSP[Peswn];                                         //~va70I~
         if (Ppos>=OFFS_WORDTILE)   //WGR+ESWN                      //~va70R~
@@ -638,7 +638,7 @@ public class RADSEval
         ctrWinningTileTryNext=ctrWinningTile;                      //~1216I~
         if (ctrTileShantenUp==0 && ctrShantenDownCase>0)           //~1220I~
         {                                                          //~1220I~
-            if (Dump.Y) Dump.println("RADEval.tryNextTake shantenDown pos="+Ppos+",idx="+Pidx+",ctrTileShantenUp="+ctrTileShantenUp+",ctrShantenDowncase="+ctrShantenDownCase+",Pshanten="+Pshanten+",Pshanten="+Pshanten+",old="+itsHandValue[Pidx]);//~1220I~
+            if (Dump.Y) Dump.println("RADEval.tryNextTake shantenDown pos="+Ppos+",idx="+Pidx+",ctrTileShantenUp="+ctrTileShantenUp+",ctrShantenDowncase="+ctrShantenDownCase+",Pshanten="+Pshanten+",old="+itsHandValue[Pidx]);//~1220I~//+va70R~
         	if ((Pintent & INTENT_SAMECOLOR_ANY)==0)               //~1309I~
     	        itsHandValue[Pidx]+=DV_SHANTEN_DOWN;       //-100000  //do not discard//~1220I~//~1309R~
             if (Dump.Y) Dump.println("RADEval.tryNextTake shantenDown intent="+Integer.toHexString(RADS.myIntent)+",idx="+Pidx+",itsHandValue="+itsHandValue[Pidx]);//~1220I~//~1309R~

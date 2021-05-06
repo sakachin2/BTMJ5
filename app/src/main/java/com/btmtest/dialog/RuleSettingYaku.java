@@ -1,5 +1,10 @@
-//*CID://+va6cR~:                             update#=  497;       //~va60R~//~va6cR~
+//*CID://+va8kR~:                             update#=  504;       //+va8kR~
 //*****************************************************************//~v101I~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//+va8kI~
+//2021/04/20 va8j KataAgari chk(No furiten chk) for also Human Take in PlayAloneNotifyMode//~va8jI~
+//2021/04/18 va8f KataAgari chk                                    //~va8fI~
+//2021/04/17 va8c for robot ron,2 hancontraint should ignore rinshan,haitei,one shot//~va8cI~
+//2021/04/13 va86 show RonAnyWay button by not preference by operation rule//~va86I~
 //2021/03/09 va6c change keiten default:allow all                  //~va6cI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/09/25 va12:add option:2han-30fu for 7pair                   //~va12I~
@@ -33,7 +38,7 @@ import static com.btmtest.dialog.RuleSettingEnum.*;                //~v@@@I~
 import static com.btmtest.game.GConst.*;
 
 public class RuleSettingYaku extends UFDlg                         //~v@@@R~
-            implements UCheckBox.UCheckBoxI                        //+va6cI~
+            implements UCheckBox.UCheckBoxI                        //~va6cI~
 {                                                                  //~2C29R~
   	private static final int    TITLEID=R.string.Label_YakuList;   //~v@@@R~
 	private static final int    LAYOUTID=R.layout.setting_rule_yaku;//~v@@@R~
@@ -41,6 +46,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 	private static final String HELPFILE="RuleSettingYaku";        //~v@@@R~
     //**********************************************************   //~v@@@R~
     private UCheckBox cbKuitan,cbPinfuTaken;                       //~v@@@R~
+    private UCheckBox cbShowAnywayBtn;                             //~va86I~
     private UCheckBox cbDoublePillow;                              //~va11I~
     private UCheckBox cb8ContNoNeedYaku,cb8ContReset,cb8ContMulti; //~v@@@R~
     private UCheckBox cbYakuMan2_4Anko,cbYakuMan2_Kokusi13,cbYakuMan2_9Ren9,cbYakuMan2_4Wind;//~v@@@I~
@@ -62,7 +68,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 //  private UCheckBox  cbYakuFix1;                                 //~va11R~
     private UCheckBox  cbOpenReach,cbMissingReach,cbAnkanAfterReach;//~v@@@R~
     private UCheckBox  cbOneShot;                                  //~va11I~
-    private UCheckBox  cbYakuFixMultiwaitOK,cbYakuFixMultiwaitDrawOK;//~0208R~
+    private UCheckBox  cbYakuFixMultiwaitOK/*,cbYakuFixMultiwaitDrawOK*/;//~0208R~//+va8kR~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
     private Prop curProp;                                          //~v@@@I~
@@ -108,6 +114,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         TextView tvStatementOnly=(TextView)  UView.findViewById(PView,R.id.tvYakuStatementOnly);//~va11I~
         tvStatementOnly.setText(Utils.getStrHtml(R.string.Desc_YakuStatementOnly));//~va11I~
         cbKuitan         =          new UCheckBox(PView,R.id.cbKuitan);//~v@@@R~
+        cbShowAnywayBtn  =          new UCheckBox(PView,R.id.cbShowAnywayBtn);//~va86I~
         cbDoublePillow   =          new UCheckBox(PView,R.id.cbDoublePillow);//~va11I~
         cbPinfuTaken     =          new UCheckBox(PView,R.id.cbPinfuTaken);//~v@@@I~
         cbPendingRankNo   =         new UCheckBox(PView,R.id.cbPendingRankNo);//~v@@@I~//~0330R~
@@ -115,7 +122,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         cbPendingRankFuriten=       new UCheckBox(PView,R.id.cbPendingRankFuriten);//~0330I~
         cbPendingRank0OK    =       new UCheckBox(PView,R.id.cbPendingRank0OK);//~0330I~
     	rgPendingRank2=new URadioGroup(PView,R.id.rgPendingRank2,0,rbIDPendingRank2);//~0330I~
-    	setCBListener(cbPendingRankNo,R.id.cbPendingRankNo);       //+va6cI~
+    	setCBListener(cbPendingRankNo,R.id.cbPendingRankNo);       //~va6cI~
     //*drawnMangan                                                 //~v@@@I~
         rgDrawnMangan=new URadioGroup(PView,R.id.rgDrawnMangan,0,rbIDDrawnMangan);//~v@@@I~
         spnDrawnManganRank =new USpinner(PView,R.id.spnDrawnManganRank);//~v@@@I~
@@ -131,7 +138,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     //*YakuFix                                                     //~v@@@I~
         rgYakuFix=new URadioGroup(PView,R.id.rgYakuFix,0,rbsYakuFix);//~v@@@I~
     	cbYakuFixMultiwaitOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitOK);//~0208I~
-    	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~0208I~
+//  	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~0208I~//+va8kR~
     //*YakuFix1                                                    //~va11I~
 //  	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~va11R~
     //*YakuFix2                                                    //~v@@@I~
@@ -193,6 +200,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private void properties2Dialog(Prop Pprop)                     //~v@@@I~
     {                                                              //~v@@@I~
         cbKuitan.setStateInt(Pprop.getParameter(getKeyRS(RSID_KUITAN),0),swFixed);//~v@@@I~
+        cbShowAnywayBtn.setStateInt(Pprop.getParameter(getKeyRS(RSID_SHOW_ANYWAY_BTN),0),swFixed);//~va86I~
         cbDoublePillow.setStateInt(Pprop.getParameter(getKeyRS(RSID_DOUBLE_PILLOW),0),swFixed);//~va11I~
         cbPinfuTaken.setStateInt(Pprop.getParameter(getKeyRS(RSID_PINFUTAKEN),0),swFixed);//~v@@@I~
 //      cbPendingRankNo.setStateInt(Pprop.getParameter(getKeyRS(RSID_PENDING_RANKNO),1),swFixed);//~v@@@I~//~0330R~//~va6cR~
@@ -215,7 +223,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     //*YakuFix                                                     //~v@@@I~
         rgYakuFix.setCheckedID(Pprop.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT),swFixed);//~v@@@I~
     	cbYakuFixMultiwaitOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),0),swFixed);//~0208I~
-    	cbYakuFixMultiwaitDrawOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),swFixed);//~0208I~
+//  	cbYakuFixMultiwaitDrawOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),swFixed);//~0208I~//+va8kR~
     //*YakuFix1                                                    //~va11I~
 //  	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),0),swFixed);//~va11R~
     //*YakuFix2                                                    //~v@@@I~
@@ -257,6 +265,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	int  changed=0;                                            //~v@@@I~
     //*******************                                          //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_KUITAN),cbKuitan.getStateInt());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_SHOW_ANYWAY_BTN),cbShowAnywayBtn.getStateInt());//~va86I~
         changed+=updateProp(getKeyRS(RSID_DOUBLE_PILLOW),cbDoublePillow.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_PINFUTAKEN),cbPinfuTaken.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_PENDING_RANKNO),cbPendingRankNo.getStateInt());//~v@@@I~//~0330R~
@@ -275,7 +284,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     //*YakuFix                                                     //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX),rgYakuFix.getCheckedID());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),cbYakuFixMultiwaitOK.getStateInt());//~0208I~
-        changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),cbYakuFixMultiwaitDrawOK.getStateInt());//~0208I~
+//      changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),cbYakuFixMultiwaitDrawOK.getStateInt());//~0208I~//+va8kR~
     //*YakuFix1                                                    //~va11I~
 //      changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~va11R~
     //*YakuFix2                                                    //~v@@@I~
@@ -642,30 +651,77 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.getYakuFix2Constraint rc="+rc);//~va11R~//~va60R~
         return rc;                                               //~va11R~//~va60R~
     }                                                            //~va11R~//~va60R~
-    //*******************************************************      //+va6cI~
-    private void setCBListener(UCheckBox Pcb,int Pid)              //+va6cI~
-    {                                                              //+va6cI~
-        if (Dump.Y) Dump.println("RuleSettingYaku.setCBListener id="+Pid+",cb="+Integer.toHexString(Pid));//+va6cI~
-        Pcb.setListener(this,Pid);                                 //+va6cI~
-    }                                                              //+va6cI~
-    //*******************************************************      //+va6cI~
-    //*UCheckBoxI                                                  //+va6cI~
-    //*******************************************************      //+va6cI~
-    @Override                                                      //+va6cI~
-    public void onChangedUCB(CompoundButton Pbtn, boolean PisChecked, int Pparm)//+va6cI~
-    {                                                              //+va6cI~
-        if (Dump.Y) Dump.println("RuleSettingYaku.onChangedUCB swChildInitializing="+RSD.swChildInitializing+",isChecked="+PisChecked+",parm="+Integer.toHexString(Pparm));//+va6cI~
-        boolean enable;                                              //+va6cI~
-	    if (RSD.swChildInitializing)                               //+va6cI~
-        	return;                                                //+va6cI~
-        switch(Pparm)                                              //+va6cI~
-        {                                                          //+va6cI~
-            case R.id.cbPendingRankNo:                                //+va6cI~
-        	enable=!PisChecked;                                   //+va6cI~
-        	cbPendingRankEmpty.setState(enable);                   //+va6cI~
-        	cbPendingRankFuriten.setState(enable);                 //+va6cI~
-        	cbPendingRank0OK.setState(enable);                  //+va6cI~
-        	break;                                                 //+va6cI~
-        }                                                          //+va6cI~
-    }                                                              //+va6cI~
+    //**************************************                       //~va8cI~
+    public static int getYakuFix()                                 //~va8cI~
+    {                                                              //~va8cI~
+        int rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT);	//default=NO=0//~va8cI~
+        if (Dump.Y) Dump.println("RuleSetting.getYakuFix rc="+rc); //~va8cI~
+        return rc;                                                 //~va8cI~
+    }                                                              //~va8cI~
+    //**************************************                       //~va8cI~
+    public static boolean isYakuFixLast()                              //~va8cI~
+    {                                                              //~va8cI~
+        int fix=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT);	//default=NO=0//~va8cI~
+	    boolean rc=fix==YAKUFIX_LAST;                              //~va8cI~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuFixLast rc="+rc);//~va8cI~
+        return rc;                                                 //~va8cI~
+    }                                                              //~va8cI~
+    //*******************************************************      //~va6cI~
+    private void setCBListener(UCheckBox Pcb,int Pid)              //~va6cI~
+    {                                                              //~va6cI~
+        if (Dump.Y) Dump.println("RuleSettingYaku.setCBListener id="+Pid+",cb="+Integer.toHexString(Pid));//~va6cI~
+        Pcb.setListener(this,Pid);                                 //~va6cI~
+    }                                                              //~va6cI~
+    //*******************************************************      //~va6cI~
+    //*UCheckBoxI                                                  //~va6cI~
+    //*******************************************************      //~va6cI~
+    @Override                                                      //~va6cI~
+    public void onChangedUCB(CompoundButton Pbtn, boolean PisChecked, int Pparm)//~va6cI~
+    {                                                              //~va6cI~
+        if (Dump.Y) Dump.println("RuleSettingYaku.onChangedUCB swChildInitializing="+RSD.swChildInitializing+",isChecked="+PisChecked+",parm="+Integer.toHexString(Pparm));//~va6cI~
+        boolean enable;                                              //~va6cI~
+	    if (RSD.swChildInitializing)                               //~va6cI~
+        	return;                                                //~va6cI~
+        switch(Pparm)                                              //~va6cI~
+        {                                                          //~va6cI~
+            case R.id.cbPendingRankNo:                                //~va6cI~
+        	enable=!PisChecked;                                   //~va6cI~
+        	cbPendingRankEmpty.setState(enable);                   //~va6cI~
+        	cbPendingRankFuriten.setState(enable);                 //~va6cI~
+        	cbPendingRank0OK.setState(enable);                  //~va6cI~
+        	break;                                                 //~va6cI~
+        }                                                          //~va6cI~
+    }                                                              //~va6cI~
+    //**************************************                       //~va86M~
+    public static boolean isShowAnywayButton()                     //~va86M~
+    {                                                              //~va86M~
+		int def=0;	//false                                        //~va86R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_SHOW_ANYWAY_BTN),def)!=0;//~va86R~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isShowAnywayButton:"+rc);//~va86R~
+        return rc;                                                 //~va86M~
+    }                                                              //~va86M~
+    //**************************************                       //~va8fI~
+    public static boolean isYakuFixMultiwaitOK()                   //~va8fI~
+    {                                                              //~va8fI~
+		int def=0;	//false                                        //~va8fI~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),def)!=0;//~va8fI~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitOK rc="+rc);//~va8fI~
+        return rc;                                                 //~va8fI~
+    }                                                              //~va8fI~
+//    //**************************************                       //~va8fI~//+va8kR~
+//    public static boolean isYakuFixMultiwaitDrawOK()               //~va8fI~//+va8kR~
+//    {                                                              //~va8fI~//+va8kR~
+//        int def=0;  //false                                        //~va8fI~//+va8kR~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),def)!=0;//~va8fI~//+va8kR~
+//        if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitDawOK rc="+rc);//~va8fI~//+va8kR~
+//        return rc;                                                 //~va8fI~//+va8kR~
+//    }                                                              //~va8fI~//+va8kR~
+    //**************************************                       //~va8jI~
+    public static boolean isFuritenReachOK()                       //~va8jI~
+    {                                                              //~va8jI~
+		int def=0;	//false                                        //~va8jI~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_MISSING),def)!=0;//~va8jI~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachOK rc="+rc);//~va8jI~
+        return rc;                                                 //~va8jI~
+    }                                                              //~va8jI~
 }//class                                                           //~v@@@R~

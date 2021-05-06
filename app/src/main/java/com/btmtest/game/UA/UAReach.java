@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 593;                                    //~va28R~//~va60R~
+//*CID://+va8jR~: update#= 596;                                    //~va8jR~
 //**********************************************************************//~v101I~
+//2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//~va28I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -75,17 +76,17 @@ public class UAReach                                                //~v@@@R~//~
         UARC=new UAReachChk();                                     //~va27I~
     	swCheckReach= RuleSettingOperation.isCheckReach();//~va27I~
     }                                                              //~v@@@I~
-	//*************************************************************************//~v@@6I~
-    public boolean reach(int Pplayer)                              //~v@@6I~
-    {                                                              //~v@@6I~
-        if (Dump.Y) Dump.println("UAReach.reach player="+Pplayer); //~v@@6R~
-//        if (!players.isYourTurn(actionID,Pplayer))               //~v@@6I~
-//            return ;                                             //~v@@6I~
-        if (!PLS.reach(Pplayer))                               //~v@@6I~
-			return false;                                          //~v@@6I~
-        river.reach(Pplayer);                                      //~v@@6I~
-        return true;                                               //~v@@6I~
-    }                                                              //~v@@6I~
+//    //*************************************************************************//~v@@6I~//~va60R~
+//    public boolean reach(int Pplayer)                              //~v@@6I~//~va60R~
+//    {                                                              //~v@@6I~//~va60R~
+//        if (Dump.Y) Dump.println("UAReach.reach player="+Pplayer); //~v@@6R~//~va60R~
+////        if (!players.isYourTurn(actionID,Pplayer))               //~v@@6I~//~va60R~
+////            return ;                                             //~v@@6I~//~va60R~
+//        if (!PLS.reach(Pplayer))                               //~v@@6I~//~va60R~
+//            return false;                                          //~v@@6I~//~va60R~
+//        river.reach(Pplayer);                                      //~v@@6I~//~va60R~
+//        return true;                                               //~v@@6I~//~va60R~
+//    }                                                              //~v@@6I~//~va60R~
 	//*************************************************************************//~v@@6I~
 //  public boolean selectInfo(boolean PswServer,int Pplayer)       //~va27R~
     public boolean selectInfo(boolean PswServer,int Pplayer,int PactionID)//~va27I~
@@ -104,7 +105,7 @@ public class UAReach                                                //~v@@@R~//~
     private boolean chkTenpai(int PactionID)                       //~va27R~
     {                                                              //~va27I~
     	boolean rc=true;                                           //~va27I~
-        if (Dump.Y) Dump.println("UAReach.chkTenpai");             //~va27I~
+        if (Dump.Y) Dump.println("UAReach.chkTenpai action="+PactionID+",swCheckReach="+swCheckReach);             //~va27I~//+va8jR~
         if (PactionID==GCM_REACH||PactionID==GCM_REACH_OPEN)	//not FORCE//~va27I~
             if (swCheckReach)                                      //~va27R~
             {                                                      //~va27R~
@@ -120,6 +121,7 @@ public class UAReach                                                //~v@@@R~//~
 //                  AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//~va28R~
                     return false;                                  //~va27R~
                 }                                                  //~va27R~
+                rc=AG.aRAReach.chkFuritenMultiWait(PactionID,td);  //~va8jI~
             }                                                      //~va27R~
         if (Dump.Y) Dump.println("UAReach.chkTenpai rc="+rc);      //~va27I~
         return rc;                                                 //~va27I~
@@ -207,7 +209,7 @@ public class UAReach                                                //~v@@@R~//~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_OPEN)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
 //      GMsg.showHL(0,GCM_REACH);  //requester only,at discard for other      //~9C02I~//~va60R~
-        GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);                 //+va60R~
+        GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);                 //~va60R~
         return true;                                               //~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~9A30I~
@@ -345,12 +347,12 @@ public class UAReach                                                //~v@@@R~//~
                   }//open                                          //~v@@6I~
                 }                                                  //~v@@6I~
                 if (optOpen==OPT_OPEN_OPEN)                        //~9A30I~
-//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~//+va60R~
-        			GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);     //+va60I~
+//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~//~va60R~
+        			GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);     //~va60I~
                 else                                               //~9A30I~
 				if (optOpen==OPT_OPEN_SAVE) //reach not open       //~9A30I~
-//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~//+va60R~
-        			GMsg.showHLName(0,GCM_REACH,Pplayer);          //+va60I~
+//  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~//~va60R~
+        			GMsg.showHLName(0,GCM_REACH,Pplayer);          //~va60I~
             }                                                      //~v@@6I~
         }                                                          //~v@@6I~
         return true;                                               //~v@@6I~

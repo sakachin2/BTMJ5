@@ -158,6 +158,20 @@
                 >
                     <include layout="@layout/setting_rule_opt_keiten"
                     />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <include layout="@layout/setting_rule_yaku_fix"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <include layout="@layout/setting_rule_yaku_fix2"
+                    />
                     <include layout="@layout/setting_rule_opt_pending_cont"
                     />
                     <LinearLayout

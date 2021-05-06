@@ -1,14 +1,18 @@
-//*CID://+va70R~: update#= 128;                                    //~va70R~
+//*CID://+va8jR~: update#= 149;                                    //~va8jR~
 //**********************************************************************
+//2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
+//2021/04/17 va8d (Bug)evaluateWinlist has to consider doubleReach //~va8dI~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
+import com.btmtest.R;
 import com.btmtest.TestOption;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Robot;
 import com.btmtest.game.TileData;
+import com.btmtest.game.gv.GMsg;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 
@@ -157,7 +161,7 @@ public class RAReach
                 {                                                  //~1122I~
         			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach pos="+pos+",v="+v+",old itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~
 	                itsHandValue[ii]+=DV_REACH+v;	//		         = 3000000;		//discard for reach//~1122R~//~1216R~//~1218R~
-	                itsHandValue[ii]+=AG.aRADSEval.adjustByTileForReach(playerEswn,pos,ii,itsHand,ctrHand);	   //		//discard for reach//+va70R~
+	                itsHandValue[ii]+=AG.aRADSEval.adjustByTileForReach(playerEswn,pos,ii,itsHand,ctrHand);	   //		//discard for reach//~va70R~
         			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach new pos="+pos+",itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~
                     itsReachPos[ctrReachPos++]=pos;                //~1122R~
                     if (hanMaxMax<hanMax)                          //~1122I~
@@ -189,7 +193,7 @@ public class RAReach
         int ctrWinTile=0,han;
         //************************
         int intent=RS.RSP[PplayerEswn].intent;                     //~1224M~
-        if (Dump.Y) Dump.println("RAReach.evaluateWinList playerEswn="+PplayerEswn+",intent="+Integer.toHexString(intent)+",posTryDiscard="+PposTryDiscard+",ctrHand="+PctrHand+",itsWinListHand="+Utils.toString(PitsHand,9));//~1206R~//~1224R~
+        if (Dump.Y) Dump.println("RAReach.evaluateWinList playerEswn="+PplayerEswn+",intent="+Integer.toHexString(intent)+",posTryDiscard="+PposTryDiscard+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~1206R~//~1224R~//~va8jR~
         getItsWinList(PitsHand,PctrHand,itsWinWork); //output to itsWinListWork//~1224R~//~1310R~
         if (ctrWinList==0)                                         //~1121I~
         {                                                          //~1121I~
@@ -217,10 +221,12 @@ public class RAReach
             ctrWinTotal+=ctrWinTile;
             han=getValue(PitsHand,PctrHand,pos)+hanAdd;
             valueTotal+=ctrWinTile*han;                            //~1120I~
-	        if (Dump.Y) Dump.println("RAReach.evaluateWinList posWon="+pos+",han="+han+",hanRequired="+hanRequired+",hanExceptDora="+hanExceptDora+",ctrWinTotal="+ctrWinTotal);//~1220I~
+	        if (Dump.Y) Dump.println("RAReach.evaluateWinList posWon="+pos+",han="+han+",hanAdd="+hanAdd+",hanRequired="+hanRequired+",hanExceptDora="+hanExceptDora+",ctrWinTotal="+ctrWinTotal);//~1220I~//~va8dR~
 //          if (han<hanRequired)  //0 if double reach, else 2 if fix2 constraint  else 1//~1219R~
-            if (hanExceptDora+1/*of reach*/<hanRequired)  //0 if double reach, else 2 if fix2 constraint  else 1//~1219I~//~1220R~
+//          if (hanExceptDora+1/*of reach*/<hanRequired)  //0 if double reach, else 2 if fix2 constraint  else 1//~1219I~//~1220R~//~va8dR~
+            if (hanExceptDora+hanAdd/*1 for Reach,2 for double Reach*/<hanRequired)  //hanRequired:2:fix2,1,fix//~va8dI~
             {                                                      //~1220I~
+//*robot dose not expect Reach+Take==2 for fix2 constraint         //~va8dI~//~va8jR~
 		        if (Dump.Y) Dump.println("RAReach.evaluateWinList@@@@ skipReach by hanExceptDora");//~1220I~//~1307R~
             	swSkipReach=true;
             }                                                      //~1220I~
@@ -252,15 +258,29 @@ public class RAReach
         	if (!swWaitingWordTile && ctrWinList==1 && ctrWinTotal<HV_CTRWIN_TO_REACH_ONE_TYPE && ctrTaken<HV_CTR_TO_WAIT_REACH_EARLY) //tanki/kanchan/penshan//~1224I~
         	//**                                       ctrWinTotal<4                           && ctrTaken<8                         ) //tanki/kanchan/penshan//~1224I~
             {                                                      //~1224I~
+        	  if ((TestOption.option2 & TO3_ROBOT_DO_REACH)!=0) //TODO test//~va8dI~
+              {                                                    //~va8dI~
+        		if (Dump.Y) Dump.println("RAReach.evaluateWinList @@@@ skipreach by early take and wintile ctr and winlist=1 BUT force REACH by test option");//~va8dI~
+              }                                                    //~va8dI~
+              else                                                 //~va8dI~
+              {                                                    //~va8dI~
         		if (Dump.Y) Dump.println("RAReach.evaluateWinList @@@@ skipreach by early take and wintile ctr and winlist=1");//~1224I~
 	        	swSkipReach=true;                                  //~1224I~
+              }                                                    //~va8dI~
             }                                                      //~1224I~
             else                                                   //~1224I~
 	        if (ctrWinTotal<HV_CTRWIN_TO_REACH_EARLY && ctrTaken<HV_CTR_TO_WAIT_REACH_EARLY)//winctr<4 & take<8//~1216R~//~1218R~
 	        //**ctrWinTotal<4                        && ctrTaken<8                          //winctr<4 & take<8//~1224I~
             {                                                      //~1216I~
+        	  if ((TestOption.option2 & TO3_ROBOT_DO_REACH)!=0) //TODO test//~va8dI~
+              {                                                    //~va8dI~
+        		if (Dump.Y) Dump.println("RAReach.evaluateWinList @@@@ skipreach by early take and wintile ctr BUT doReach by test option");//~va8dI~
+              }                                                    //~va8dI~
+              else                                                 //~va8dI~
+              {                                                    //~va8dI~
         		if (Dump.Y) Dump.println("RAReach.evaluateWinList @@@@ skipreach by early take and wintile ctr");//~1216I~
 	        	swSkipReach=true;
+              }                                                    //~va8dI~
             }                                                      //~1216I~
             else                                                   //~1215I~
         	if (ctrWinTotal<HV_CTRWIN_TO_REACH_2ND && AG.aPlayers.getCtrReachedPlayer(playerReach)!=0) //wintile<4//~1306I~
@@ -291,6 +311,67 @@ public class RAReach
         if (Dump.Y) Dump.println("RAReach.evaluateWinList posDiscard="+PposTryDiscard+",valueTotal="+valueTotal+",rc="+rc+",hanMax="+hanMax+",ctrWinTotal="+ctrWinTotal+",ctrTake="+ctrTaken+",skipReach="+swSkipReach);//~1122I~//~1124R~//~1215R~//~1216R~
         return rc;                                                 //~1122R~
     }
+    //*****************************************************************//~va8jI~
+    //*return kataagariok                                          //~va8jR~
+    //*****************************************************************//~va8jI~
+    private boolean chkMultiWait(int PplayerEswn,int PposTryDiscard,int PhanReachAdd,int PhanRequired,int[] PitsHand/*excluding dicard*/,int PctrHand)//~va8jI~
+    {                                                              //~va8jI~
+        //************************                                 //~va8jI~
+        if (Dump.Y) Dump.println("RAReach.chkMultiWait playerEswn="+PplayerEswn+",hanReachAdd="+PhanReachAdd+",hanRequired="+PhanRequired+",posTryDiscard="+PposTryDiscard+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~va8jI~
+//        getItsWinList(PitsHand,PctrHand,itsWinWork); //output to itsWinListWork//~va8jR~
+//        if (ctrWinList==0)                                       //~va8jR~
+//        {                                                        //~va8jR~
+//            if (Dump.Y) Dump.println("RAReach.chkMultiWait ctrWinList=0 return 0");//~va8jR~
+//            return false;                                        //~va8jR~
+//        }                                                        //~va8jR~
+        boolean rc=true;                                           //~va8jI~
+        if (PhanReachAdd>=PhanRequired)                            //+va8jI~
+        {                                                          //+va8jI~
+            if (Dump.Y) Dump.println("RAReach.chkMultiWait return true by hanReach="+PhanReachAdd+">="+PhanRequired);//+va8jI~
+            return rc;                                             //+va8jI~
+        }                                                          //+va8jI~
+        for (int ii=0;ii<ctrWinList;ii++)                          //~va8jI~
+        {                                                          //~va8jI~
+            int pos=itsWinWork[ii];                                //~va8jI~
+	        TileData tdWin=new TileData(pos/CTR_NUMBER_TILE,pos%CTR_NUMBER_TILE);   //to give ronType and ronNumber//~va8jI~
+            int han=AG.aUARonValue.chkRankReachExceptDora(PplayerEswn,tdWin,RS.swFix2,PitsHand);//~va8jR~
+	        if (Dump.Y) Dump.println("RAReach.chkMultiWait posWon="+pos+",hanAdd="+PhanReachAdd+",hanRequired="+PhanRequired+",han="+han);//~va8jR~
+            if (han+PhanReachAdd<PhanRequired)  //kataagari        //~va8jR~
+            {                                                      //~va8jI~
+                rc=false;                                          //~va8jI~
+                break;                                             //~va8jI~
+            }                                                      //~va8jI~
+        }                                                          //~va8jI~
+        if (!rc)                                                   //~va8jI~
+            GMsg.drawMsgbar(R.string.AE_RankFix2MultiWait);        //~va8jR~
+        if (Dump.Y) Dump.println("RAReach.chkMultiWait rc="+rc);   //~va8jI~
+        return rc;                                                 //~va8jI~
+    }                                                              //~va8jI~
+    //*****************************************************************//~va8jI~
+    //*for human player in swTrainingMode; return true:errFuriten  //~va8jI~
+    //*****************************************************************//~va8jI~
+    private boolean chkFuritenReach(int PplayerEswn,int[] PitsWin,int PctrWin,int PposDiscard)//~va8jR~
+    {                                                              //~va8jI~
+        //************************                                 //~va8jI~
+        if (Dump.Y) Dump.println("RAReach.chkFuritenReach swFuritenReachOK="+RS.swFuritenReachOK+",playerEswn="+PplayerEswn+",posDiscard="+PposDiscard+",itsWin="+Utils.toStringMax(PitsWin,PctrWin));//~va8jR~
+        boolean rc=false;                                          //~va8jI~
+        if (!RS.swFuritenReachOK)                                  //~va8jI~
+        {                                                          //~va8jI~
+            for (int ii=0;ii<PctrWin;ii++)                         //~va8jR~
+            {                                                      //~va8jR~
+                int pos=itsWinWork[ii];                            //~va8jR~
+                if (pos==PposDiscard || RS.RSP[PplayerEswn].isFuritenSelf(pos))//~va8jR~
+                {                                                  //~va8jR~
+                    rc=true;                                       //~va8jR~
+                    break;                                         //~va8jR~
+                }                                                  //~va8jR~
+            }                                                      //~va8jR~
+        }                                                          //~va8jI~
+        if (rc)                                                    //~va8jI~
+            GMsg.drawMsgbar(R.string.AE_FuritenReach);             //~va8jI~
+        if (Dump.Y) Dump.println("RAReach.chkFuritenReach rc="+rc);//~va8jI~
+        return rc;                                                 //~va8jI~
+    }                                                              //~va8jI~
     //*****************************************************************
     //*to evaluate winlist winList,and 2han constraint chk         //~1219I~
     //*****************************************************************//~1219I~
@@ -534,4 +615,42 @@ public class RAReach
         Robot r=RS.RSP[PplayerEswn].robot;                         //~1125I~
         r.sendToServer(false/*waiterBlock*/,GCM_REACH,PplayerEswn,data);//~1125I~
     }
+    //*********************************************************    //~va8jI~
+    //*from UAReach.chkTenpai                                      //~va8jI~
+    //*no chk fureten for human player                             //~va8jI~
+    //*rc:fals:err ignore Reach button                             //~va8jI~
+    //*********************************************************    //~va8jI~
+    public boolean chkFuritenMultiWait(int PactionID/*Open or Not*/,TileData PtdDiscard)//~va8jI~
+    {                                                              //~va8jI~
+    	boolean rc;                                                //~va8jI~
+        if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait swTrainingMode="+AG.swTrainingMode+",actionID="+PactionID+",PtdDiscard="+PtdDiscard.toString());//~va8jI~
+        if (!AG.swTrainingMode)                                    //~va8jI~
+        	return true;    //do Reach                             //~va8jI~
+        int hanReach=AG.aPlayers.is1stTake() ? 2 : 1;		//dounble reach 2 han and reach 1 han//~va8jI~
+        if (PactionID==GCM_REACH_OPEN)                             //~va8jI~
+        	hanReach++;                                            //~va8jI~
+        int hanRequired=RS.swFix2 ? 2 : 1;                         //~va8jI~
+        int playerEswn=Accounts.playerToEswn(PLAYER_YOU);          //~va8jI~
+        int posDiscard=RAUtils.getPosTile(PtdDiscard);             //~va8jI~
+        int[] itsH=RS.getItsHandEswnYou(playerEswn);               //~va8jR~
+        int ctrH=RS.RSP[playerEswn].ctrHand;                             //~va8jI~
+                                                                   //~va8jI~
+        itsH[posDiscard]--;                                        //~va8jR~
+        int ctrWin=getItsWinList(itsH,ctrH-1,itsWinWork); //output to itsWinListWork//~va8jR~
+        itsH[posDiscard]++;                                        //~va8jR~
+        if (ctrWin==0)                                             //~va8jR~
+        {                                                          //~va8jI~
+        	if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait ctrWin=0 return 0");//~va8jR~
+            return false;                                          //~va8jI~
+        }                                                          //~va8jI~
+                                                                   //~va8jI~
+        itsH[posDiscard]--;                                        //+va8jR~
+        rc=chkMultiWait(playerEswn,posDiscard,hanReach,hanRequired,itsH/*dropped Discard*/,ctrH-1);//+va8jR~
+        itsH[posDiscard]++;                                        //+va8jR~
+                                                                   //+va8jI~
+        if (rc)                                                    //~va8jI~
+	    	rc=!chkFuritenReach(playerEswn,itsWinWork,ctrWin,posDiscard);//~va8jR~
+        if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait rc="+rc);//~va8jI~
+        return rc;
+    }                                                              //~va8jI~
 }//class RAReach

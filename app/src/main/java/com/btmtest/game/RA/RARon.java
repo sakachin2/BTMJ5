@@ -1,5 +1,12 @@
-//*CID://+DATER~: update#=  79;                                    //~1111R~
+//*CID://+va8uR~: update#= 125;                                    //~va8uR~
 //**********************************************************************//~v101I~
+//2021/04/29 va8u (Bug)ignore furiten/kataagari Take not AllInHand,chk sakazuke condition only//~va8uR~
+//2021/04/25 va8m NOT va8m, not for all Draw but Conceild Draw only because YakuLast is not checked now//~va8mI~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
+//2021/04/20 va8j KataAgari chk+furiten chk for also Human Take in PlayAloneNotifyMode//~va8jI~
+//2021/04/20 va8i KataAgari chk for also Robot Take                //~va8iI~
+//2021/04/18 va8f KataAgari chk                                    //~va8fI~
+//2021/04/17 va8c for robot ron,2 hancontraint should ignore rinshan,haitei,one shot//~va8cI~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.RA;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -43,20 +50,34 @@ public class RARon                                               //~v@@@R~//~va6
         if (Dump.Y) Dump.println("RARon.init");//~va60I~//~1111R~  //~1118R~
     }                                                              //~va60I~
     //*********************************************************    //~1117I~
-    //*from RADSmart at to discard                                 //~1120R~
+    //*from RADSmart at to discard for Robot                                //~1120R~//~1417R~
     //*under shanten=-1                                            //~1120I~
     //*********************************************************    //~1118I~
-    public  boolean callRonTaken(int PplayerDiscard,int PeswnDiscard,int[] PitsHand,TileData PtdTaken)//~1117R~//~1118R~//~1120R~
+//  public  boolean callRonTaken(int PplayerDiscard,int PeswnDiscard,int[] PitsHand,TileData PtdTaken)//~1117R~//~1118R~//~1120R~//~va8iR~
+    public  boolean callRonTaken(int PplayerDiscard,int PeswnDiscard,int[] PitsHand,int PctrHand,TileData PtdTaken)//~va8iI~
     {                                                              //~1117I~
-        if (Dump.Y) Dump.println("RARon.callRonTaken player="+PplayerDiscard+",eswnDiscard="+PeswnDiscard+",tdTaken="+PtdTaken.toString());//~1117I~//~1120R~//+1405R~
-        RonResult r=getRonValue(true/*PswTake*/,PplayerDiscard,PitsHand,PtdTaken);//~1117R~//~1118R~//~1120R~
-        boolean rc=isRonable(r);                                           //~1117I~
+        if (Dump.Y) Dump.println("RARon.callRonTaken player="+PplayerDiscard+",eswnDiscard="+PeswnDiscard+",tdTaken="+PtdTaken.toString());//~1117I~//~1120R~//~1405R~
+//      RonResult r=getRonValue(true/*PswTake*/,PplayerDiscard,PitsHand,PtdTaken);//~1117R~//~1118R~//~1120R~//~va8iR~
+//      boolean rc=isRonable(r);                                           //~1117I~//~va8iR~
+        boolean rc=isRonableMultiWait(true/*swTake*/,PplayerDiscard,PeswnDiscard,PitsHand,PctrHand,PtdTaken);//~va8iR~
         if (rc)                                                    //~1117I~
         	issueRon(GCM_TAKE,PplayerDiscard/*player taken=now discard*/,PeswnDiscard);                                            //~1117I~//~1130R~//~1131R~
         return rc;                                                 //~1117I~
     }                                                              //~1117I~
+    //*********************************************************    //~va8jI~
+    //*from RACall at human take in playalone notify mode          //~va8jI~
+    //*under shanten=-1                                            //~va8jI~
+    //*********************************************************    //~va8jI~
+    public  boolean callRonTakenPlayAloneNotify(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,TileData PtdTaken)//~va8jI~
+    {                                                              //~va8jI~
+        if (Dump.Y) Dump.println("RARon.callRonTakenPlayAloneNotify player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdTaken.toString());//~va8jI~
+        if (Dump.Y) Dump.println("RARon.callRonTakenPlayAloneNotify ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~va8jI~
+        boolean rc=isRonableMultiWait(true/*swTake*/,Pplayer,Peswn,PitsHand,PctrHand,PtdTaken);//~va8jI~
+        if (Dump.Y) Dump.println("RARon.callRonTakenPlayAloneNotify@@@@ rc="+rc+",player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdTaken.toString());//~va8jI~
+        return rc;                                                 //~va8jI~
+    }                                                              //~va8jI~
     //*********************************************************    //~1118I~
-    //*from RACall.nextPlayerPonKan                                //~1331R~
+    //*from RACall.nextPlayerPonKan for Robot                               //~1331R~//~1417R~
     //*chk shanten=-1 and issue ron                                //~1118I~//~1120R~
     //*********************************************************    //~1118I~
     public  boolean callRonRiver(int PeswnOther,TileData PtdDiscarded)//~1118I~//~1120R~//~1130R~
@@ -70,11 +91,12 @@ public class RARon                                               //~v@@@R~//~va6
         if (Dump.Y) Dump.println("RARon.callRonRiver player="+player+",eswn="+PeswnOther+",shanten="+shanten+",pos="+pos+",tdDiscarded="+PtdDiscarded.toString());//~1118I~//~1120I~//~1125R~//~1130R~
         if (shanten==-1)                                           //~1118I~
         {                                                          //~1118I~
-          if (!isFuriten(PeswnOther,itsH,ctrH))                    //~1213I~
-          {                                                        //~1213I~
-        	RonResult r=getRonValue(false/*PswTake*/,player,itsH,PtdDiscarded);//~1118I~
-        	rc=isRonable(r);                                       //~1118I~
-          }                                                        //~1213I~
+//          if (!isFuriten(PeswnOther,itsH,ctrH))                    //~1213I~//~va8fR~
+//          {                                                        //~1213I~//~va8fR~
+//            RonResult r=getRonValue(false/*PswTake*/,player,itsH,PtdDiscarded);//~1118I~//~va8fR~
+//            rc=isRonable(r);                                       //~1118I~//~va8fR~
+//          }                                                        //~1213I~//~va8fR~
+            rc=isRonableMultiWait(false/*swTake*/,player,PeswnOther,itsH,ctrH,PtdDiscarded);//~va8fI~
         }                                                          //~1118I~
         if (rc)                                                    //~1130I~
         {                                                          //~1130I~
@@ -85,6 +107,18 @@ public class RARon                                               //~v@@@R~//~va6
         	issueRon(GCM_RON,player,PeswnOther);                                            //~1118I~//~1130R~//~1131R~
         return rc;                                                 //~1118I~
     }                                                              //~1118I~
+    //*********************************************************    //~va8jI~
+    //*from RACall at human Ron in playalone notify mode           //~va8jI~
+    //*under shanten=-1                                            //~va8jI~
+    //*********************************************************    //~va8jI~
+    public  boolean callRonRiverPlayAloneNotify(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,TileData PtdDiscarded)//~va8jI~
+    {                                                              //~va8jI~
+        if (Dump.Y) Dump.println("RARon.callRonRiverPlayAloneNotify player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdDiscarded.toString());//~va8jI~
+        if (Dump.Y) Dump.println("RARon.callRonRiverPlayAloneNotify ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~va8jI~
+        boolean rc=isRonableMultiWait(false/*swTake*/,Pplayer,Peswn,PitsHand,PctrHand,PtdDiscarded);//~va8jI~
+        if (Dump.Y) Dump.println("RARon.callRonRiverPlayAloneNotify@@@@ rc="+rc+",player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdDiscarded.toString());//~va8jI~
+        return rc;                                                 //~va8jI~
+    }                                                              //~va8jI~
     //*********************************************************    //~1116I~
     private RonResult getRonValue(boolean PswTake, int Pplayer, int[] PitsHand, TileData PtdTaken)//~1116R~//~1117R~
     {                                                              //~1116I~
@@ -114,7 +148,8 @@ public class RARon                                               //~v@@@R~//~va6
     }                                                              //~1117I~
     //************************************************************ //~1219R~
     //*from RAReach to evaluate winList(exclude han taken)         //~1219R~
-    //*and set hanExceptDora for constraint chk                    //~1219I~
+    //*accidental Yaku(OnShot,Last,Rinshan because evaluation for Reach)//~va8cI~
+    //*and set hanExceptDora(except self-draw:for Reach chk only) for constraint chk                    //~1219I~//~va8jR~
     //************************************************************ //~1219I~
     public int getRonValueExceptDora(int Pplayer,int[] PitsHand,int Ppos)//~1120I~
     {                                                              //~1120I~
@@ -131,7 +166,8 @@ public class RARon                                               //~v@@@R~//~va6
         else                                                       //~1120I~
         {                                                          //~1219I~
         	han=r.getHanExceptDora();                              //~1120I~
-        	hanExceptDora=r.getHanExceptDora();                    //~1219I~
+//      	hanExceptDora=r.getHanExceptDora();                    //~1219I~//~va8cR~
+        	hanExceptDora=han;                                     //~va8cI~
         	if (hanExceptDora>0)                                   //~1219I~
 	        	hanExceptDora--;	//drop of take                 //~1219I~
         }                                                          //~1219I~
@@ -139,25 +175,28 @@ public class RARon                                               //~v@@@R~//~va6
         return han;                                                //~1120I~
     }                                                              //~1120I~
     //*********************************************************    //~1117I~
-    //*constraint chk                                              //~1213I~
+    //*constraint chk  for robot ron/take                                             //~1213I~//~va8cR~
     //*********************************************************    //~1213I~
     public boolean isRonable(RonResult PronResult)                 //~1117I~
     {                                                              //~1117I~
     	boolean rc=true;                                           //~1117I~
         if (!PronResult.isYakuman())                               //~1117I~
         {                                                          //~1117I~
-        	int han=PronResult.getHanExceptDora();                               //~1117I~
+//      	int han=PronResult.getHanExceptDora();                               //~1117I~//~va8cR~
+        	int han=getHanExceptDoraConstraint(PronResult,RS.swFix2);//~va8cR~
 //          int ctrDup=RS.gameCtrDup;                              //~1117I~//~1119R~
 //          if (ctrDup>=RS.constraintFix2)   //2han constraint from dupctr>=4 or 5//~1118R~//~1119R~
             if (RS.swFix2)   //2han constraint from dupctr>=4 or 5//~1119I~
                 rc=han>=2;                                         //~1117I~
             else                                                   //~1117I~
                 rc=han>=1;                                         //~1117I~
+	        if (Dump.Y) Dump.println("RARon.isRonable not Yakuman han="+han+",swfix2="+RS.swFix2);//~1414I~
         }                                                          //~1117I~
         if (Dump.Y) Dump.println("RARon.isRonable@@@@ rc="+rc);         //~1117I~//~1130R~//~1220R~
         return rc;                                                 //~1117I~
     }                                                              //~1117I~
     //*********************************************************    //~1118I~
+    //*for smart Robot                                             //~1417I~
     //*from RACall.calledKan ankan ron for 13orphan and chankan ron//~1120R~
     //*under shanten=-1                                            //~1118I~
     //*********************************************************    //~1118I~
@@ -211,9 +250,175 @@ public class RARon                                               //~v@@@R~//~va6
     //*********************************************************    //~1213I~
     private boolean isFuriten(int PeswnOther,int[] PitsHand,int PctrHand)//~1213I~
     {                                                              //~1213I~
-        if (Dump.Y) Dump.println("RARon.isFuriten eswnOther="+PeswnOther+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9,PctrHand));//~1213I~//~1306R~
+        if (Dump.Y) Dump.println("RARon.isFuriten eswnOther="+PeswnOther+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~1213I~//~1306R~//~va8jR~
         boolean rc=AG.aRADSmart.chkFuriten(PeswnOther,PitsHand,PctrHand);//~1213I~
         if (Dump.Y) Dump.println("RARon.isFuriten rc="+rc);        //~1213I~//~1306R~
         return rc;                                              //~1213I~//~1305R~
     }                                                              //~1213I~
-}//class RARon                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~//~1111R~
+    //*********************************************************    //~va8cI~
+    private int getHanExceptDoraConstraint(RonResult PronResult,boolean PswFix2)//~va8cR~
+    {                                                              //~va8cI~
+        if (Dump.Y) Dump.println("RARon.getHanExceptDoraConstraint RonResult="+PronResult.toString()+",swFix2="+PswFix2+",swYakuFixLast="+RS.swYakuFixLast);//~va8cR~
+        boolean swIgnoreAccidental=PswFix2 && !RS.swYakuFixLast;	//ignore accidental YAKU(one shot,haitei,rinshan)//~va8cI~
+//      int han=PronResult.getHanExceptDoraConstraint(swIgnoreAccidental);//~va8cR~//~va8iR~
+        int han=PronResult.getHanExceptDoraConstraint(swIgnoreAccidental,PswFix2);//~va8iI~
+        return han;
+    }                                                              //~va8cI~
+    //*********************************************************    //~va8fI~
+    //*for Robot(callRonTaken,callRonRiver)                        //~va8fR~
+    //*for Human in playAloneMode(callRonRiverPlayAloneNotify,callRonTakenPlayAlone)           //~va8fR~//~va8uR~
+    //*chk furiten and ronable(chk kataAgari)                      //~va8fI~
+    //*********************************************************    //~va8fI~
+    private boolean isRonableMultiWait(boolean PswTake,int Pplayer,int Peswn,int[] PitsH,int PctrH,TileData PtdDiscarded)//~va8fI~
+    {                                                              //~va8fI~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ swTake="+PswTake+",player="+Pplayer+",eswn="+Peswn+",tdDiscarded="+PtdDiscarded+toString()+",itsHand="+Utils.toString(PitsH,9));//~va8fI~//~va8iR~
+    	boolean rc;                                                //~va8fR~
+        RonResult r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded);//~va8fI~//~va8iR~
+        rc=isRonable(r);                                           //~va8fI~
+        if (!rc)    //constraint NG                                //~va8fI~
+        {                                                          //~va8fI~
+        	if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ return false by constraint NG ronResult="+r.toString()+",tdDiscarded="+PtdDiscarded.toString());//~va8fR~
+            return false;                                          //~va8fI~
+        }                                                          //~va8fI~
+      if (RS.RSP[Peswn].swAllInHand && PswTake)                               //~va8jI~
+      {                                                            //~va8jI~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ rc=true by AllinHand Taken");//~va8jI~
+        rc=true;                                                   //~va8jI~
+      }                                                            //~va8jI~
+      else                                                         //~va8jI~
+      {                                                            //~va8jI~
+      	if (!RS.RSP[Peswn].swAllInHand)                            //~va8uI~
+        	if (!AG.aUARonValue.swYakuFixLast)	//take and !fixLast//~va8uI~
+            {                                                      //~va8uI~
+            	if (chkYakuFixedFirst(r,Pplayer,Peswn,PitsH,PctrH,PtdDiscarded))//~va8uR~
+                {                                                  //~va8uI~
+                    if (PswTake)                                    //~va8uI~
+                    {                                              //~va8uI~
+    		        	if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ sakiduke OK for Take");//~va8uI~
+        	    		return true;                               //~va8uI~
+                    }                                              //~va8uI~
+                }                                                  //~va8uI~
+                else                                               //~va8uI~
+            	{                                                  //~va8uI~
+    	        	if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ sakiduke err");//~va8uI~
+            		return false;                                  //~va8uI~
+            	}                                                  //~va8uI~
+            }                                                      //~va8uI~
+            else	//FixLast                                      //~va8uI~
+            {                                                      //~va8uI~
+            	if (PswTake)                                       //~va8uI~
+                {                                                  //~va8uI~
+    		        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ atoduke OK by Take");//~va8uI~
+        	    	return true;                                   //~va8uI~
+                }                                                  //~va8uI~
+            }                                                      //~va8uI~
+//  	if (!isChkYakuMultiWait(PswTake))                          //~va8fR~
+    	if (!isChkYakuMultiWait(PswTake,r))                         //~va8fI~
+        {                                                          //~va8fI~
+          if (!PswTake)                                            //+va8uI~
+			if (isFuriten(Peswn,PitsH,PctrH))                      //~va8fR~
+            {                                                      //~va8fI~
+	        	if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ allow Multiwait return false by Furiten");//~va8fR~
+              	return false;                                      //~va8fR~
+            }                                                      //~va8fI~
+	        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ allow multiwait return true by NOT Furiten swTake=+PswTake");//~va8fI~//+va8uR~
+            return true;                                           //~va8fI~
+        }                                                          //~va8fI~
+//      if (PswTake && !AG.aUARonValue.swYakuFixLast)	//take and !fixLast//~va8uR~
+//          if (chkYakuFixedFirst(r,Pplayer,Peswn,PitsH,PctrH,PtdDiscarded))//~va8uR~
+//          {                                                      //~va8uR~
+//  	        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ allow multiwait return true by swTake and fixed1");//~va8uR~
+//          	return true;                                       //~va8uR~
+//          }                                                      //~va8uR~
+        int posTaken=RAUtils.getPosTile(PtdDiscarded);             //~va8iI~
+        int ctrH=PctrH;                                             //~va8iI~
+        if (PswTake)                                               //~va8iI~
+        {                                                          //~va8iI~
+        	PitsH[posTaken]--;	//for getWinList                   //~va8iI~
+            ctrH--;                                                //~va8iI~
+		}                                                          //~va8iI~
+	    rc=!AG.aRADSmart.chkFuritenMultiWait(PswTake,Pplayer,Peswn,PitsH,ctrH,PtdDiscarded);	//callback isRoMultiWaitCB//~va8fR~//~va8iR~
+        if (PswTake)                                               //~va8iI~
+        {                                                          //~va8iI~
+        	PitsH[posTaken]++;                                     //~va8iI~
+		}                                                          //~va8iI~
+      }                                                            //~va8jI~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ rc="+rc+",swAllInHand="+RS.RSP[Peswn].swAllInHand+",swTake="+PswTake+",eswn="+Peswn+",player="+Pplayer+",ctrH="+PctrH+",PitsH="+Utils.toString(PitsH,9));//~va8fR~//~va8jR~
+        return rc;                                                 //~va8fI~
+	}                                                              //~va8fI~//~va8iR~
+    //*********************************************************    //~va8fI~
+    //*for Robot from RADSmart.chkFuritenMultiWait(callback)       //~va8fI~
+    //*chk MultiWait(1/2han constraint)                            //~va8fI~
+    //*********************************************************    //~va8fI~
+    public boolean isRonableMultiWaitCB(int PposTile,boolean PswTake,int Pplayer,int Peswn,int[] PitsH,int PctrH,TileData PtdDiscarded)//~va8fR~
+    {                                                              //~va8fI~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCB posWinTile="+PposTile+",swTake="+PswTake+",eswn="+Peswn+",tdDiscarded="+PtdDiscarded.toString()+",itsHand="+Utils.toString(PitsH,9));//~va8fR~
+        int posDiscarded=RAUtils.getPosTile(PtdDiscarded);         //~va8fI~
+        if (PposTile==posDiscarded)                                    //~va8fI~
+        {                                                          //~va8fI~
+        	if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCB return true by pos is of PtdDiscarded");//~va8fI~
+        	return true;                                           //~va8fI~
+        }                                                          //~va8fI~
+//      PitsH[PposTile]++;                                         //~va8fR~
+        TileData tdRon=new TileData(PposTile/CTR_NUMBER_TILE,PposTile%CTR_NUMBER_TILE);   //to give ronType and ronNumber//~va8fI~
+        RonResult r=getRonValue(false/*PswTake*/,Pplayer,PitsH,tdRon);//~va8fR~
+//      PitsH[PposTile]--;                                         //~va8fR~
+        boolean rc=isRonable(r);                                   //~va8fI~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCB rc="+rc+",swTake="+PswTake+",PposTile="+PposTile+",eswn="+Peswn+",player="+Pplayer+",ctrH="+PctrH+",PitsH="+Utils.toString(PitsH,9));//~va8fR~
+        return rc;                                                 //~va8fI~
+	}                                                              //~va8fI~
+    //*********************************************************    //~va8fI~
+//  private boolean  isChkYakuMultiWait(boolean PswTake)           //~va8fR~
+    private boolean  isChkYakuMultiWait(boolean PswTake,RonResult PronResult)//~va8fI~
+    {                                                              //~va8fI~
+    	boolean rc=true;	//kataagari NG                         //~va8fI~
+//    	if (PswTake)                                               //~va8kI~//~va8mR~
+//        	rc=false;	//allow multiwait                          //~va8kI~//~va8mR~
+//      else                                                       //~va8kI~//~va8mR~
+    	if (AG.aUARonValue.swYakuFixLast)	//allow yaku at last   //~va8fI~
+        {                                                          //~va8fI~
+        	if (AG.aUARonValue.swYakuFixMultiwaitOK)                  //~va8fI~
+            	rc=false;	//allow multiwait                      //~va8fI~
+        }                                                          //~va8fI~
+//      else                                                       //~va8fI~//~va8kR~
+//      {                                                          //~va8fI~//~va8kR~
+//      	if (PronResult.isTakeAllInHand())                      //~va8fI~//~va8kR~
+//          {                                                      //~va8fI~//~va8kR~
+//  	        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait skip multiwait chk by menzen");//~va8fI~//~va8kR~
+//          	rc=false;	//allow multiwait                      //~va8fI~//~va8kR~
+//          }                                                      //~va8fI~//~va8kR~
+//          else                                                   //~va8fI~//~va8kR~
+//      	if (PswTake && AG.aUARonValue.swYakuFixMultiwaitDrawOK)   //~va8fI~//~va8kR~
+//          	rc=false;	//allow multiwait                      //~va8fI~//~va8kR~
+//      }                                                          //~va8fI~//~va8kR~
+        else                                                       //~va8mI~
+        {                                                          //~va8mI~
+        	if (PronResult.isTakeAllInHand())                      //~va8mI~
+            {                                                      //~va8mI~
+    	        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait skip multiwait chk by menzen");//~va8mI~
+            	rc=false;	//allow multiwait                      //~va8mI~
+            }                                                      //~va8mI~
+        }                                                          //~va8mI~
+        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait@@@@ rc="+rc+",swTake="+PswTake+",swYakuFixLast="+AG.aUARonValue.swYakuFixLast+",swYakuMultiwaitOK="+AG.aUARonValue.swYakuFixMultiwaitOK);//~va8fR~//~va8kR~
+        return rc;
+    }                                                              //~va8fI~
+    //*********************************************************************//~va8uI~
+    //*chk Fixed First at take not all in hand                     //~va8uI~
+    //*rc:true:sakiduke OK                                         //~va8uI~
+    //*********************************************************************//~va8uI~
+    private boolean chkYakuFixedFirst(RonResult Presult,int Pplayer,int Peswn,int[] PitsH,int ctrH,TileData PtdTaken)//~va8uR~
+    {                                                              //~va8uI~
+    	boolean rc=false;                                          //~va8uI~
+        if (Dump.Y) Dump.println("RARon.chkYakuFixedFirst player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdTaken.toString()+",RonResult="+Presult.toString());//~va8uR~
+        if (Presult.longRank.isContainsFixFirst())                 //~va8uI~
+        	rc=true;                                               //~va8uI~
+        else                                                       //~va8uI~
+        if (RS.RSP[Peswn].isFixedFirst())     //1/2han already fixed//~va8uI~
+        	rc=true;                                               //~va8uR~
+        else                                                       //~va8uI~
+        if (!RS.RSP[Peswn].swRobot)                                //~va8uR~
+        	rc=true;     //notify mode, notify without FixedFirst check//~va8uI~
+        if (Dump.Y) Dump.println("RARon.chkYakuFixedFirst rc="+rc+",player="+Pplayer+",eswn="+Peswn+",swRobot="+RS.RSP[Peswn].swRobot);//~va8uR~
+        return rc;                                                 //~va8uI~
+    }                                                              //~va8uI~
+}//class RARon                                                     //~va8uR~

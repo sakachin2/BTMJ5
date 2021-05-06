@@ -1,5 +1,7 @@
-//*CID://+va70R~: update#= 684;                                    //~va71R~//~va70R~
+//*CID://+va88R~: update#= 695;                                    //+va88R~
 //**********************************************************************//~v101I~
+//2021/04/14 va88 chk constraint for TakeRon in notify mode(avoid dump)//~va88R~
+//2021/04/13 va85 (Bug)Robot loose envaironment yaku:rinshan,hitei,hotei//~va85I~
 //2021/03/30 va71 (Bug)when multi ron called for reach tile,river tile is drawn by stand and lying.//~va71I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/03/10 va6d (BUG)RYAKU_REACH was lost when ron for discarde calling reach//~va6dI~
@@ -74,9 +76,13 @@ public class UARon                                                 //~v@@@R~//~v
     private UARonValue UARV;                                       //~va11I~
 //  private boolean swCheckRonable;                                //~va11I~//~va1aR~
     private boolean swCheckFix1;                                   //~va11I~
+    private boolean swCheckFix2;                                   //~va88I~
     private int completeType,currentEswn;                          //~va11R~
     private boolean swTake;                                        //~va11I~
     private TileData completeTD;                                   //~va11I~
+    private boolean swChkCompleteTake;                             //~va88I~
+    private TileData tdNotifyTake;                                 //~va88I~
+    private int constraintFix2;                                    //~va88I~
 //*************************                                        //~v@@@I~
 	public UARon(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~v@@6R~
     {                                                              //~0914I~
@@ -107,6 +113,7 @@ public class UARon                                                 //~v@@@R~//~v
     	swMultiRon3Next=RuleSetting.isDrawnHW3R();     //~v@@6I~   //~9B29I~
 //      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~va11I~//~va1aR~
         swCheckFix1= RuleSettingOperation.isYakuFix1();            //~va11R~
+        constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~//~va88I~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
 //    public boolean complete(int Pplayer)                            //~v@@@I~//~v@@6R~
@@ -157,15 +164,15 @@ public class UARon                                                 //~v@@@R~//~v
             }                                                      //~va19I~
         	return false;                                          //~9C11R~
         }                                                          //~9C12I~
-      if (AG.swPlayAloneNotify)                                    //+va70I~
-      {                                                            //+va70I~
-        if (Dump.Y) Dump.println("UARon.selectInfo playAloneNotify mode not cancelable, rc=true");//+va70I~
-      }                                                            //+va70I~
-      else                                                         //+va70I~
-      {                                                            //+va70I~
+      if (AG.swPlayAloneNotify)                                    //~va70I~
+      {                                                            //~va70I~
+        if (Dump.Y) Dump.println("UARon.selectInfo playAloneNotify mode not cancelable, rc=true");//~va70I~
+      }                                                            //~va70I~
+      else                                                         //~va70I~
+      {                                                            //~va70I~
         if (!UADL.chkSelectInfo2Touch(PswServer,GCM_RON,Pplayer,PintParm))	//actionAlert optionally//~9B23I~
             return false;                                          //~9B23I~
-      }                                                            //+va70I~
+      }                                                            //~va70I~
         return true;                                               //~9B23I~
     }                                                              //~9B23I~
 	//*************************************************************************//~va70I~
@@ -188,6 +195,31 @@ public class UARon                                                 //~v@@@R~//~v
         UADL.notify2TouchPlayAloneNotify(GCM_RON);	//update GC btn//~va70I~
         return true;                                               //~va70I~
     }                                                              //~va70I~
+	//*************************************************************************//~va88I~
+	//*when Human taken                                            //~va88I~
+	//*************************************************************************//~va88I~
+    public boolean selectInfoPlayAloneNotifyTake(TileData PtdTaken)//~va88I~
+    {                                                              //~va88I~
+        if (Dump.Y) Dump.println("UARon.selectInfoPlayAloneNotifyTake");//~va88I~
+        tdNotifyTake=PtdTaken;                                     //~va88I~
+        if (!chkCompleteTake(PLAYER_YOU))                          //~va88I~
+        {                                                          //~va88I~
+        	tdNotifyTake=null;                                     //~va88I~
+        	return false;                                          //~va88I~
+        }                                                          //~va88I~
+        tdNotifyTake=null;                                         //~va88I~
+        UADL.notify2TouchPlayAloneNotify(GCM_RON);	//update GC btn//~va88I~
+        return true;                                               //~va88I~
+    }                                                              //~va88I~
+	//*************************************************************************//~va88I~
+    private boolean chkCompleteTake(int Pplayer)                   //~va88I~
+    {                                                              //~va88I~
+        if (Dump.Y) Dump.println("UARon.chkCompleteTake");         //~va88I~
+    	swChkCompleteTake=true;                                    //~va88I~
+	    boolean rc=chkComplete(Pplayer);                           //~va88I~
+    	swChkCompleteTake=false;                                   //~va88I~
+        return rc;                                                 //~va88I~
+    }                                                              //~va88I~
 	//*************************************************************************//~9C11I~
     private boolean chkComplete(int Pplayer)                       //~9C11I~
     {                                                              //~9C11I~
@@ -207,11 +239,22 @@ public class UARon                                                 //~v@@@R~//~v
         {                                                          //~va11R~
             if (swCheckFix1)                                       //~va11R~
             {                                                      //~va11I~
-                int rc2=UARV.chkRank(this,Pplayer);                //~va11R~
+            	swCheckFix2=isCheckFix2();                         //~va88I~
+//              int rc2=UARV.chkRank(this,Pplayer);                //~va11R~//~va88R~
+                int rc2;                                           //~va88I~
+                if (swChkCompleteTake)                             //~va88I~
+    	          	rc2=UARV.chkRank(this,Pplayer,tdNotifyTake,swCheckFix2);//~va88R~
+                else                                               //~va88I~
+    	          	rc2=UARV.chkRank(this,Pplayer,swCheckFix2);    //~va88R~
                 if (rc2!=0)                                        //~va11I~
                 {                                                  //~va11I~
                 	if (rc2>0)                                     //~va11R~
+                    {                                              //~va88I~
+                      if (rc2==1)                                  //~va88I~
 			  			GMsg.drawMsgbar(R.string.AE_RankFix1);     //~va11R~
+                      else                                         //~va88I~
+			  			GMsg.drawMsgbar(R.string.AE_RankFix2);     //~va88I~
+                    }                                              //~va88I~
                 	else                                           //~va11R~
     			  		GMsg.drawMsgbar(R.string.Err_RonChk);      //~va11R~
                 	rc=false;                                      //~va11I~
@@ -221,6 +264,20 @@ public class UARon                                                 //~v@@@R~//~v
         if (Dump.Y) Dump.println("UARon.chkComplete rc="+rc);      //~va70I~
 		return rc;                                          //~9C11I~
 	}                                                              //~9C11I~
+    //*************************************************************************//~va88I~
+    private boolean isCheckFix2()                                  //~va88I~
+    {                                                              //~va88I~
+        boolean rc=false;                                          //~va88I~
+        if (constraintFix2>0)                                      //~va88I~
+        {                                                          //~va88I~
+    		int dupctr=Status.getGameSeq().right;                  //~va88I~
+            if (dupctr>=constraintFix2)                            //~va88I~
+            	rc=true;                                           //~va88I~
+	        if (Dump.Y) Dump.println("UARon.isCheckFix2 dupctr="+dupctr);//~va88I~
+        }                                                          //~va88I~
+        if (Dump.Y) Dump.println("UARon.isCheckFix2 rc="+rc+",constraintFix2="+constraintFix2);//~va88I~
+        return rc;
+    }                                                              //~va88I~
 //    //*************************************************************************//~va11R~
 //    //* set completeType,currentEswn,swTake,completeTD           //~va11R~
 //    //*************************************************************************//~va11R~
@@ -528,9 +585,17 @@ public class UARon                                                 //~v@@@R~//~v
         if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku");      //~va11R~
         completeTD=PtdRonLast;                                     //~va11I~
         currentEswn=ACC.getCurrentEswn();                          //~va11I~
+      if (swChkCompleteTake)	//from selectInfoPlayAloneNotifyTake for human player take in playAloneNotify mode//~va88I~
+      {                                                            //~va88I~
+        swTake=true;                                               //~va88I~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku swChkCompleteTake=true");//~va88I~
+	  }                                                            //~va88I~
+      else                                                         //~va88I~
+      {                                                            //~va88I~
         completeType=PLS.getCompleteFlag(PLAYER_YOU);              //~va11I~
         swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~va11I~
-        if (Dump.Y) Dump.println("UARon.chkComplete currentEswn="+currentEswn+",swTake="+swTake+",completeType="+Integer.toHexString(completeType)+",tdRon="+TileData.toString(completeTD));//~va11I~
+      }                                                            //~va88I~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku currentEswn="+currentEswn+",swTake="+swTake+",completeType="+Integer.toHexString(completeType)+",tdRon="+TileData.toString(completeTD));//~va11I~//~va88R~
     	if (chkTimingYakuman())                                    //~va11I~
         	return;                                                //~va11I~
 //      chkReach();  //reach, double-reach, open-reach and taken jasut after reach//~va11I~//~va49R~
@@ -549,8 +614,9 @@ public class UARon                                                 //~v@@@R~//~v
 //      currentEswn=ACC.getCurrentEswn();                          //~va49I~
         currentEswn=Accounts.playerToEswn(Pplayer);                //~va49I~
 //      completeType=PLS.getCompleteFlag(PLAYER_YOU);              //~va49I~
+        completeType=PLS.getPlayerCompleteFlag(Pplayer);           //~va85I~
 //      swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~va49I~
-        completeType=0;                                            //~va49I~
+//      completeType=0;                                            //~va49I~//~va85R~
         swTake=PswTaken;                                           //~va49I~
         if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku currentEswn="+currentEswn+",swTake="+swTake+",tdRon="+TileData.toString(completeTD));//~va49R~
     	if (chkTimingYakuman())                                    //~va49I~
@@ -558,8 +624,8 @@ public class UARon                                                 //~v@@@R~//~v
 //      chkReach();  //reach, double-reach, open-reach and taken jasut after reach//~va49I~
         chkReach(Pplayer);  //reach, double-reach, open-reach and taken jasut after reach//~va49I~
         chkTaken(PswAllInHand);  //tsumo                           //~va49I~
-//      chkLastTile();	//hitei hotei                              //~va49I~
-//      chkKan();    //chankan                                     //~va49I~
+        chkLastTile();	//hitei hotei                              //~va49I~//~va85R~
+        chkKan();    //chankan                                     //~va49I~//~va85R~
     }                                                              //~va49I~
     //*************************************************************************//~va11I~
     private boolean chkTimingYakuman()                             //~va11I~

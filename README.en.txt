@@ -19,11 +19,40 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
-V1.11 : 2021/04/09
-        .Add option of notify mode at playing alone(notify availablity of calling Ron, Pon, Kan, Chii) for quick robot action.
-        .Add function of showing point summarized by each players.
+V1.12 : 2021/05/06
+        .Move settion of "show RonAnyWay button" from preference to operation rule dialog.
+        .Show B/S also limited to a group.
+        .Stlengthen Robot.
         .Bug fixes.
+         -Error "Not ron-able pattern" may issued at Tenho or Chiho call.
+		 -Robot'win looses yaku:rinshan,hitei,hotei
+         -Msg "Violation of Same-Meld" may be issued at Chii.
 *********************************************************************************************
+V1.12 : 2021/05/06
+        .Return to top panel by back btn when gameover of playing alone.
+        .Move settion of "show RonAnyWay button" from preference to operation rule.
+        .Show B/S also limited to a group.
+		.At human take in PlayAlone notify mode, notify ron-able after chcking 1/2 han constraint.
+		.Check 2 han constraint rule for human in PlayAloneNotify mode and Robot.
+		.Now accidental Yaku such as Reach-OneShot is not counted for 2 han constraint.
+		.Check Multi-Wait rule and Furiten for human in PlayAloneNotify mode and for Robot if not self-pick.
+		.Now disallow that Multi-Wait OK when draw in rule of NOT "Fix Last".
+		.Robot avoids Pon for Yaku Word tile when 2 han constraint mode.
+		.reset Intent:GiveUp when reached to Tenpai.
+		.reset Intent:GiveUp when reached to Tenpai.
+		.Allow to double-don alos by robot.
+        .(BUG)
+         -"Not ron-able pattern" may issued at Tenho or Chiho call.
+		 -Robot looses envaironment yaku:rinshan,hitei,hotei
+         -Robot will not win by "13 broken"/"14 broken".
+         -Robot looses intent of Big(Small) 3 Dragon.
+         -2 han of Double Riichi Robot was not considerfed fr 2 han constraint check.
+         -Robot miss calling Chii when Intent:SameColor.
+         -Point calculation miss for Pinfu+SelfDraw.
+         -Robot miss to call Chii by error of ShantenUp check.
+         -When Double-Ron of Robot and Human, Robot overtook Human Ron process.
+         -Start of furiten check tile is not at draw but at discard.
+         -Msg "Violation of Same-Meld" may be issued at Chii.
 V1.11 : 2021/04/09
         .Add option of notify mode at playing alone(notify availablity of calling Ron, Pon, Kan, Chii) for quick robot action.
         .Allow Double-Ron of Human and Robot at playing alone (At match game, human's Ron intervenes robot's Ron)

@@ -36,7 +36,7 @@
                     android:id="@+id/cbOpenHand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Open Robot Hand(for onlytraining mode)"
+                    android:text="Open Robot Hand(for onlytraining mode=server)"
                 />
                 <CheckBox
                     android:id="@+id/cbRobotDiscardButton"
@@ -51,22 +51,28 @@
                     android:text="Close On Connect"
                 />
                 <CheckBox
-                    android:id="@+id/cbDealMultiRon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal MultiRon"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealSingleRon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal SingleRon"
-                />
-                <CheckBox
                     android:id="@+id/cbCall1st"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Robot call at 1st if callable"
+                />
+                <CheckBox
+                    android:id="@+id/cbRobotDiscardTile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Robot discard specified tile in the sequence"
+                />
+                <CheckBox
+                    android:id="@+id/cbNoReach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Robot skip call Reach"
+                />
+                <CheckBox
+                    android:id="@+id/cbDoReach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Robot DO call Reach"
                 />
                 <CheckBox
                     android:id="@+id/cbRon_Test"
@@ -301,6 +307,108 @@
                     android:text="Skip Rule Sync"
                 />
                 <CheckBox
+                    android:id="@+id/cbDealAnkanFix1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Ankan as Fix1"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSameColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Same Color"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealAtodukeTakeSameColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Atoduke Take Same Color"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSakiduke2hanTake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Sakiduke 2han constraint multi wait"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealAtodukeTakeYakuhai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Atoduke Take Yakuhai"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3shikiChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal 3Shiki after Chii OK"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3shikiChiiTake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal 3Shiki after Chii and Take OK"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3shikiChiiNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal 3Shiki after Chii NG"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal DoubleRun Chii"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunFix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal DoubleRun Kanchan"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunNotFix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal DoubleRun Ryanmen OK"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunNotFixNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal DoubleRun Ryanmen NG"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiWaitWGR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal MultiWait Yaku W+DoubleEast"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiWaitRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal MultiWait Yaku 3shiki NG"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiWaitRonOK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal MultiWait Yaku 3shiki OK"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal MultiRon"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSingleRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal SingleRon"
+                />
+                <CheckBox
                     android:id="@+id/cbPonDeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -331,6 +439,12 @@
                     android:text="Deal for Ankan after Reach"
                 />
                 <CheckBox
+                    android:id="@+id/cbKanRinshanRonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Rinshan Ron"
+                />
+                <CheckBox
                     android:id="@+id/cbKanDeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -347,6 +461,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Deal for Chanken(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealRonTaken1st"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ron by 1st taken"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealRonTaken"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ron by Taken"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealRonTakenDouble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ron by Taken after Double Reach"
+                />
+                <CheckBox
+                    android:id="@+id/cbRonRiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ron for Discarded"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal13NoPair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal 13NoPair"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal14NoPair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal 14NoPair"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3Dragon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal intent 3dragon"
                 />
                 <CheckBox
                     android:id="@+id/cbPon_Test"
@@ -439,6 +595,18 @@
                     android:text="Suspend Requested"
                 />
                 
+                <CheckBox
+                    android:id="@+id/cbSetPosition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="set start position eswn by First Dealer"
+                />
+                <CheckBox
+                    android:id="@+id/cbSetDupCtr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="set dupctr for 2han constraint"
+                />
                 <CheckBox
                     android:id="@+id/cbFinalGame"
                     android:layout_width="wrap_content"

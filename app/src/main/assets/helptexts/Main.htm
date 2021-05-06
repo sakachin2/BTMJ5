@@ -3,21 +3,24 @@
 Japanese style Mahjong game to play among your friends.
 No specific server machine is required.
 <BR>
-You can play alone with biginner level robotos.
+You can also play alone with 3 biginner level robots.
 <BR>
 I suppose you are familiar to rule and operation of Japanese style Mahjong.
- (You may be required to become familiar with some Kanji glyph a bit.) 
+You may be required to become familiar with some Kanji glyph a bit. 
 <BR>
-Evaluation of Value of Hands is option(Default is off on Setting=Operation dialog)
-If you do not agree the result, you can adjust the point.
+Evaluation of Value of Hands is optional(Default is on on Setting:Operation dialog.
+ "dialog" means panel popup to accept your response.）
 <BR>
-Depending on setting of "Check winning hand", <B>Chombo</B> by mistaken Ron may occur.
-Any local <B>Yaku</B>(winning pattern) is acceptable because you can force to declare win.
+If you do not agree the score called, you can adjust the score.
+<BR>
+Depending on setting of <B>Check winning hand</B>, <B>Chombo</B> by mistaken Ron Call may occur.
+<BR>
+Optional <B>Win anyway</B> button allows any irregular local <B>Yaku</B>(winning pattern).
 <BR>
 Rule of <B>Yakitori</B>, <B>Wareme</B> and <B>Tobi</B> is optional
 (See Help of RuleSettings dialog about those terms).
 <BR>
-From 2 to 4 players can play game. Suspend and resume is supported.
+Suspend and resume is supported.
 <BR>
 Device is required portrait width 600 pixels over and 800 pixels is recommended.
 <BR>
@@ -25,7 +28,11 @@ From Android6.0(Marshmallow), you will be asked to allow the permission of "Writ
 Give the permission for saving Rule file and Game-Record file.
 And permission:ACCESS_FINE_LOCTION is required to use WiFi-Direct. Allow it.
 <BR>
+<BR>
+<BIG>
 <BIG><B>Caution! : I do not take any responsibility for loss or damage by using this App.</B></BIG>
+</BIG>
+<BR>
 <BR>
 ----------------------------------------------------------------------------
 <BR>
@@ -42,37 +49,37 @@ On setting dialog, select trigger of robot's action "Draw" by timeout or by "Dra
 <BR>
 ----------------------------------------------------------------------------
 <BR>
-<BIG><B>Connect</B></BIG> : establish connection to the player.
+<BIG><B>Connect</B></BIG> : establish connection among players.
 <BR>
-Someone have to become <BIG><B>Server</B></BIG>, the others(called <BIG><B>Client</B></BIG>）connect to the server.
+Someone has to become <BIG><B>Server</B></BIG>, the others(called <BIG><B>Client</B></BIG>）connect to the server.
  Wireless can reach about 50M, I suppose to play in the distance of analog conversation available,
- which may be frequently required. However, due to various factors, keep distance of 6 feet.
+ which may be frequently required. However, due to various factors, keep social distance.
 <BR><BR>
 <BIG><B>Settings</B></BIG>：RuleSettings and Preference.
 <BR>
 <B>RuleSettings</B>：Set "Rounds" of game, "PlacingPrize", "Yakitori", "Wareme", "Tobi",...
 <BR>
 By child dialog, set rule related to <B>Yaku</B> and <B>Operation</B>.
- (<BIG><B>dialog</B></BIG> means panel popup to accept player's response.）
 <BR>
 After rule was synchronized among all players,<B>Game</B> can be start.
- If rule was changed, "Send" it to all clients to get agreements.
+ If rule was changed, <B>Send</B> it to all clients to obtain O.K.'ing.
  Rule files can be saved/reloaded, select a file suitable for the group each.
 <BR>
-Game advances by claiming and agreeing by dialogs sent and received at each scene.
+Game advances by claiming and O.K.'ing by dialogs sent and received at each scene.
  The player other than claimer may send response "NG".
  The dealer of the hand has authority of final decision regardless of "NG" response.
 <BR>
  e.g. On "End-of-Hand", dealer can set "Chombo" or "Invalid" to the win claimed and can force dealer's decision regardless "NG" response.
- Exceptionally on some dialog, server or dealer at starting game has the authority.
+ On some other dialogs, server or dealer at starting game has the authority.
 <BR>
-Some items of rule is not checked by the App and merely promises, those will be desided after mutual consultation.
+Some items of rule are not checked by the App and are merely promisses, those will be desided after mutual consultation.
 <BR>
 <B>Preference</B> : Screen orientation, Sound etc.
 <BR>
 <BR>
 <BIG><B>Game</B></BIG>：Server only can start game after rule synchronization was done successfully.
- When number of players connected &lt; 4, You can optionally start game with <B>Robot</B>(Dead Hand:just discard drawn tile).
+ When number of players connected &lt; 4, You can optionally start game with <B>Robot</B>
+(select option of Dead Hand:just discard drawn tile or Smart Robot).
  Human players owe Robot's defeat by rule setting.
 <BR>
 <BR>
@@ -85,6 +92,9 @@ To suspend game, select "Request suspend" on menu during game.
  The latter, you can try "Reconnect" and continue the hand if recovery succeeded.
  Otherwise SuspendGame or Gameover are selectable as the current hand was lost.
 <BR>
+You can show Balance Seet of all games or specific members's game from records.
+<BR>
+<BR>
 Note.
   "hand" is used in two way.
 <BR>
@@ -95,4 +105,4 @@ Note.
     1. draw tile:pick up a tile from wall.    2. drawn hand:shot in which no one won.
 <BR>
 <BR>
-<SMALL>Main 2021/03/20</SMALL>
+<SMALL>Main 2021/04/17</SMALL>

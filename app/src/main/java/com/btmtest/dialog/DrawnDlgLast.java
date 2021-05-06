@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#= 1088;       //~va6bR~//~va66R~
+//*CID://+va8bR~:                             update#= 1089;       //~va6bR~//~va66R~//+va8bR~
 //*****************************************************************//~v101I~
+//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //+va8bI~
 //2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
 //2021/02/10 va67 (Bug) isDummy paramerr; minsustop chk st drawnLast invalid robot chk//~va67I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -284,6 +285,8 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 //      {                                                          //~9520I~//~9708R~
             RuleSetting.setPendingCont(PView,true/*swFixed*/);     //~9709I~
             RuleSettingYaku.setDrawnMangan(PView,true/*swFixed*/);         //~9422I~//~9520R~
+            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //+va8bI~
+            RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //+va8bI~
             if (swDrawnManganAvailable)                            //~9520R~
                 RuleSetting.setMultiRon(PView,true/*swFixed*/);    //~9520R~
             else                                                   //~9520R~
@@ -913,7 +916,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         if (swRequester)                                           //~9610I~
         {                                                          //~9611I~
 //  		btnTotal.setEnabled(chkRespAllOK());                   //~9610I~//~9708R~
-          if (!AG.swTrainingMode)                                  //+va66I~
+          if (!AG.swTrainingMode)                                  //~va66I~
     		enableFixButton(chkRespAllOK());                       //~9708I~
 		    if (chkRespAllWithNG())                                //~9611I~
     	    	alertToForceOK(TITLEID,R.string.Alert_DrawnLastNGForceOK);//~9611I~

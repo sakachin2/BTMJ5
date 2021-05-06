@@ -1,5 +1,6 @@
-//*CID://+va6aR~: update#= 389;                                    //~va6aR~
+//*CID://+va8xR~: update#= 391;                                    //~va6aR~//~va8xR~
 //**********************************************************************//~v101I~
+//2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/12 va6a (BUG)TDF_LAST was not set to last discard(Haitei was valid but Hotei was not)//~va6aI~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
@@ -15,7 +16,7 @@ import java.util.Comparator;
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.game.Tiles.*;                        //~v@@@I~
 import static com.btmtest.game.GConst.*;
-import static com.btmtest.StaticVars.AG;                           //+va6aI~
+import static com.btmtest.StaticVars.AG;                           //~va6aI~
 //*************************                                        //~v@@@I~
 public class TileData                                              //~v@@@R~
 {                                                                  //~v@@@R~
@@ -24,6 +25,7 @@ public class TileData                                              //~v@@@R~
     public int dora;    //may be doubled                           //~v@@@R~
     public  int ctrRemain;   //may be doubled                      //~v@@@R~
     public int flag;                                              //~v@@@R~
+    public int testSelectionOrder;  //for test, robot discard selection order//~va8xI~
     public int player;	//taken by(at takeOne and takeKan)         //~v@@@R~
     public int eswn;	//deal and taken                           //~v@@@I~
     public static final int TDF_LAST       =0x01;   //haitei       //~v@@@R~
@@ -117,7 +119,7 @@ public class TileData                                              //~v@@@R~
     //*****************************************************        //~v@@@I~
      public String toString()                                      //~v@@@I~
      {                                                             //~v@@@I~
-        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn);//~v@@@I~//~v@@6R~
+        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder);//~v@@@I~//~v@@6R~//+va8xR~
      }                                                             //~v@@@I~
     //*****************************************************        //~v@@6I~
      public static String toString(TileData Ptd)                   //~v@@6I~
@@ -584,4 +586,17 @@ public class TileData                                              //~v@@@R~
 		if (Dump.Y) Dump.println("TileData.strTD str="+str);       //~v@@6R~
         return str;                                                //~v@@6I~
     }                                                              //~v@@6I~
+    //*********************************************************************//~va8xI~
+	public static void setTestSelectionOrder(TileData Ptd,int Porder)//~va8xI~
+    {                                                              //~va8xI~
+        Ptd.testSelectionOrder=Porder;                             //~va8xI~
+		if (Dump.Y) Dump.println("TileData.setTestSelectionOrder order="+Porder+",tileData="+Ptd.toString());//~va8xI~
+    }                                                              //~va8xI~
+    //*********************************************************************//~va8xI~
+	public static int getTestSelectionOrder(TileData Ptd)          //~va8xI~
+    {                                                              //~va8xI~
+        int rc=Ptd.testSelectionOrder;                             //~va8xI~
+		if (Dump.Y) Dump.println("TileData.getTestSelectionOrder order="+rc+",tileData="+Ptd.toString());//~va8xI~
+        return rc;                                                 //~va8xI~
+    }                                                              //~va8xI~
 }//class TileData                                                  //~v@@@I~

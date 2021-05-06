@@ -1,5 +1,6 @@
-//*CID://+va66R~: update#= 494;                                    //~va66R~
+//*CID://+va8xR~: update#= 523;                                    //~va8xR~
 //**********************************************************************//~v@@@I~
+//2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -86,9 +87,38 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO2_DEAL_CHII        =       0x02000000;//~va66I~
     public static final int TO2_CALL1ST          =       0x04000000;//~va66I~
     public static final int TO2_DEAL_PONCHII     =       0x08000000;//~va66I~
-    public static final int TO2_DEAL_DOUBLERON   =       0x10000000;//+va66I~
-    public static final int TO2_DEAL_KANAFTERREACH=      0x20000000;//+va66I~
+    public static final int TO2_DEAL_DOUBLERON   =       0x10000000;//~va66I~
+    public static final int TO2_DEAL_KANAFTERREACH=      0x20000000;//~va66I~
+    public static final int TO2_DEAL_RINSHANRON   =      0x40000000;//~va66I~
+    public static final int TO2_INITIAL_POSITION  =      0x80000000;    //initialposition//~va66I~
+    public static final int TO3_DEAL_RONTAKEN     =      0x00000001;    //tenho/chiiho//~va66R~
+    public static final int TO3_DEAL_13NOPAIR     =      0x00000002;    //13nopair at 1st take//~va66I~
+    public static final int TO3_DEAL_14NOPAIR     =      0x00000004;    //14nopair at 1st take//~va66I~
+    public static final int TO3_DEAL_RONTAKEN1ST  =      0x00000008;    //tenho/chiiho//~va66I~
+    public static final int TO3_SET_DUPCTR        =      0x00000010;    //tenho/chiiho//~va66I~
+    public static final int TO3_NOREACH           =      0x00000020;    //robot bypass reach//~va66I~
+    public static final int TO3_RON_RIVER         =      0x00000040;    //robot bypass reach//~va66I~
+    public static final int TO3_INTENT_3DRAGON    =      0x00000080;//~va66I~
+    public static final int TO3_DEAL_MULTIWAITRON =      0x00000100;//~va66I~
+    public static final int TO3_DEAL_MULTIWAITRONOK=     0x00000200;//~va66I~
+    public static final int TO3_DEAL_DOUBLERUN_FIX =     0x00000400;//~va66R~
+    public static final int TO3_DEAL_DOUBLERUN_NOTFIX=   0x00000800;//~va66I~
+    public static final int TO3_DEAL_DOUBLERUN_NOTFIXNG= 0x00001000;//~va66I~
+    public static final int TO3_DEAL_DOUBLERUN_CHII    = 0x00002000;//~va66I~
+    public static final int TO3_DEAL_MULTIWAITWGR      = 0x00004000;//~va66I~
+    public static final int TO3_DEAL_3SHIKI_CHII       = 0x00008000;//~va66I~
+    public static final int TO3_DEAL_3SHIKI_CHIING     = 0x00010000;//~va66I~
+    public static final int TO3_DEAL_RONTAKEN_DOUBLEREACH=0x00020000;//~va66I~
+    public static final int TO3_ROBOT_DO_REACH =          0x00040000;//~va66I~
+    public static final int TO3_DEAL_3SHIKI_CHII_TAKE  =  0x00080000;//~va66R~
+    public static final int TO3_DEAL_SAMECOLOR         =  0x00100000;//~va66I~
+    public static final int TO3_DEAL_ATODUKE_TAKE_SAMECOLOR =  0x00200000;//~va66I~
+    public static final int TO3_DEAL_ATODUKE_TAKE_YAKUHAI   =  0x00400000;//~va66I~
+    public static final int TO3_ROBOT_DISCARD_TILE          =  0x00800000;//~va8xI~
+    public static final int TO3_DEAL_ANKAN_FIX1             =  0x01000000;//~va8xI~
+    public static final int TO3_DEAL_SAKIDUKE_2HAN_TAKE     =  0x02000000;//+va8xI~
     public static int option2;                                     //~v@@@I~
+    public static int option3;                                     //~va66I~
     public static int firstDealer;                                 //~v@@@I~
     public static int finalGameCtrSet,finalGameCtrGame;            //~v@@@I~
     public static int ioerr;                                       //~v@@@I~

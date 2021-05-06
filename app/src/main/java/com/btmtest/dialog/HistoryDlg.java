@@ -1,5 +1,6 @@
-//*CID://+va7aR~:                             update#=  586;       //~va7aR~
+//*CID://+va87R~:                             update#=  587;       //+va87R~
 //*****************************************************************//~v101I~
+//2021/04/13 va87 show B/S limited to a group                      //+va87I~
 //2021/04/06 va7a add function of show balance sheet               //~va7aI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -103,7 +104,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         UButton.bind(Playoutview,R.id.DeSelectAll,this);           //~9824I~
         UButton.bind(Playoutview,R.id.Reload,this);                //~9824I~
         UButton.bind(Playoutview,R.id.Delete,this);                //~9824I~
-        UButton.bind(Playoutview,R.id.btnHistoryBS,this);          //+va7aI~
+        UButton.bind(Playoutview,R.id.btnHistoryBS,this);          //~va7aI~
         containerFilename=UView.findViewById(Playoutview,R.id.FileNameContainer);//~v@@@I~//~9614I~
 //      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_MULTIPLE);//~v@@@R~//~9614I~//~0114R~
         lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_SINGLE);//~0114I~
@@ -955,6 +956,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     public void onClickHistoryBS()                                 //~va7aI~
     {                                                              //~va7aI~
         if (Dump.Y) Dump.println("HistoryDlg.onClickHistoryBS");   //~va7aI~
-	    HistoryBSDlg.newInstance().show();                         //~va7aR~
+//	    HistoryBSDlg.newInstance().show();                         //~va7aR~//+va87R~
+  	    HistoryBSDlg.newInstance(multipleSelected).show();         //+va87I~
     }                                                              //~va7aI~
 }//class                                                           //~v@@@R~

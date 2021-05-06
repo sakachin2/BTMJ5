@@ -8,7 +8,7 @@ to use rule file differently depending players group.
 <BR>
 Use <BIG><B>Save</B></BIG>/<BIG><B>Load</B></BIG> button when updated. 
 <BR>
-On the right of <B>ID</B>, <BIG><B>Update</B></BIG> is displayed.
+On the right of <B>ID</B>, timestamp of <BIG><B>Update</B></BIG> is displayed.
  This is key of rule synchronization. Unmatch of this among players prevents start of game even if its contents are same.
  When changed on server <BIG><B>Send</B></BIG> to all clients,
  game can be started when received <BIG><B>Agree</B></BIG> from all clients.
@@ -22,13 +22,13 @@ On the right of <B>ID</B>, <BIG><B>Update</B></BIG> is displayed.
 <BIG><B>Cancel</B></BIG> :  Updates are discarded.
 <BR>
 <BR>
-<BIG><B>InitialScore</B></BIG> : TopPrize(Top players gain)=(30000-InitialScore)*4
+<BIG><B>InitialScore</B></BIG> : TopPrize(Top player's additional gain)=(30000-InitialScore)*4
 <BR>
 <B>Noten</B>:3000: penalty of Noten at ExhaustiveDraw.
  Noten players pay totally 3000, Tenpai player gain 3000. e.g. 1 Noten pay 3000, 3 Tenpai gain 1000 each.
 <BR>
 <B>Counter</B>:value of a counter-stick. Counter-stick(s) are shown on board when the dealer continues to stay as dealer.
- Winner gains additional point of (value of counter-stick)*(counter of counter-stick).
+ Winner gains additional points of (value of counter-stick)*(counter of counter-stick).
 <BR>
 <BR>
 <BIG><B>PlacePrize</B></BIG> : payment by Placing(order).
@@ -82,16 +82,17 @@ Top place player's final score is adjusted to keep zero-sum.
 <B>Yes</B>Allow all player's win. Counter stick is by HeadBump rule.
 <B>Yes also...</B>pay also Counter-Stick to all winners.
 <BR>
-Robot's Ron is ignored if human player called Ron except when playing alone mode.   
+Robot's Ron is ignored regardeless this option if human player called Ron in Red period(for Ron) except when playing alone mode.   
 <BR>
 <BR>
 <BIG><B>Robot</B></BIG>：
 <BR>
 Select Novice or Docile(Simply discard the taken avoiding Pao and Open Reach). 
 <BR>
-Smart robot issues Ron at the yellow period(for Pon/Kan) after Red(for Ron) time elapsed to give way to human winner.
+Smart robot issues Ron at just before entering the yellow period(for Pon/Kan) and gives way to human winner if exists.
+But in Play Alone mode, human player has no priority and Double-Ron rule is appiled.
 <BR>
-When Robot(s) are included, robot's debts are responsible to human players if not playing alone.
+When the game includes Robot(s) except playing alone mode, robot's debts are responsible to human players.
 <BR>
 <B>Divide</B> : divide equally robot's debts total, adjusting fraction by top place player's final score for zero-sum.
 <BR>
@@ -108,4 +109,4 @@ When Robot(s) are included, robot's debts are responsible to human players if no
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;finally  +30600, -400, -30000, 0(Robot)
 <BR>
 <BR>
-<SMALL>RuleSetting 2020/02/11</SMALL>
+<SMALL>RuleSetting 2020/04/12</SMALL>

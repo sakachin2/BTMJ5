@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#=  714;       //~va6bR~//~va66R~
+//*CID://+va8bR~:                             update#=  717;       //~va8bR~
 //*****************************************************************//~v101I~
+//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
@@ -177,6 +178,8 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
 //      {                                                          //~9520I~//~9708R~
             RuleSetting.setPendingCont(PView,true/*swFixed*/);    //~9422I~//~9520R~//~9709R~
             RuleSettingYaku.setDrawnMangan(PView,true/*swFixed*/); //~9709I~
+            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //+va8bI~
+            RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //~va8bI~
             if (swDrawnManganAvailable)                            //~9520R~
                 RuleSetting.setMultiRon(PView,true/*swFixed*/);    //~9520R~
             else                                                   //~9520R~
@@ -322,6 +325,8 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
         GameViewHandler.sendMsg(GCM_ENDGAME_DRAWN,PLAYER_YOU,ENDGAME_DRAWN_LAST_RESPONSE,Preason);//~9307I~
     }                                                              //~9307I~
     //*******************************************************      //~9304I~//~9307R~//~va66R~
+    //*set tenpai without considering keiten,2han constriant       //~va66I~
+    //*******************************************************      //~va66I~
     private boolean isTenpai(int Peswn)                            //~va66I~
     {                                                              //~va66I~
         if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn);//~va66I~

@@ -52,12 +52,14 @@
             android:layout_height="wrap_content"
             android:text="@string/Label_YakuFixMultiwaitOK"
         />
+<!--
         <CheckBox
             android:id="@+id/cbYakuFixMultiwaitDrawOK"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Label_YakuFixMultiwaitDrawOK"
         />
+-->
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
-//*CID://+va76R~: update#= 773;                                    //+va76R~
+//*CID://+va8CR~: update#= 779;                                    //~va8CR~
 //**********************************************************************//~v101I~
-//2021/04/04 va76 open test;robot hand corrupted display           //+va76I~
+//2021/05/06 va8C (Bug)open hand image remains for not PLAYER_YOU after drawn last if called kan(TestOption:openHand)//~va8CI~
+//2021/04/04 va76 open test;robot hand corrupted display           //~va76I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -716,6 +717,8 @@ public class Hands                                                 //~v@@@R~
             r=getOpenShift(Pplayer);                               //~0329I~
             if (r==null)  //no earth                               //~0329R~
 	        	r=openRects0[Pplayer];                             //~0329R~
+//        if (false) //TODO test                                   //+va8CR~
+    		clearOpenRect(Pplayer);     //clear old range          //~va8CI~
 	        openRectShiftS[Pplayer]=r;  //to clear                 //~0329R~
         }                                                          //~0329I~
         else                                                       //~0329I~
@@ -729,6 +732,7 @@ public class Hands                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Hands.getOpenShift player="+Pplayer);//~0328R~
         if (Dump.Y) Dump.println("Hands.getOpenShift openRects0="+Utils.toString(openRects0));//~0328R~
         if (Dump.Y) Dump.println("Hands.getOpenShift openRects="+Utils.toString(openRects));//~0328R~
+        if (Dump.Y) Dump.println("Hands.getOpenShift openRectShiftS="+Utils.toString(openRectShiftS));//~va8CI~
         Rect rlast=AG.aEarth.getLastRectPair(Pplayer);	//last pair Rect//~0328M~
 //      Rect ropen=openRects[Pplayer];                             //~0328R~//~0329R~
         if (rlast==null)	//no earth                             //~0328I~
@@ -828,7 +832,7 @@ public class Hands                                                 //~v@@@R~
 //              if (ii!=pos)                                       //~v@@@R~
 //              {                                                  //~v@@@R~
                     TileData td=tds[ii];                           //~v@@@R~
-                    if (Dump.Y) Dump.println("Hands.drawOpen type="+td.type+",no="+td.number+",td="+td.toString());//~v@@@R~//~0328R~
+                    if (Dump.Y) Dump.println("Hands.drawOpenSub type="+td.type+",no="+td.number+",td="+td.toString());//~v@@@R~//~0328R~//~va8CR~
                     Bitmap bm=pieces.getBitmapRiver(td,Pplayer);   //~v@@@R~
                     Graphics.drawBitmap(bm,xx,yy);                 //~v@@5I~
 //                  if ((ctr==HANDCTR_TAKEN && ii==ctr-1)           //~v@@@I~//~v@@5R~
@@ -925,11 +929,11 @@ public class Hands                                                 //~v@@@R~
 	    drawOpen(Pplayer,PtdTaken);                                //~va65I~
     }                                                              //~va65I~
 	//*********************************************************    //~va65I~
-    public void drawOpenPonKanChiiRobot(int Pplayer)               //~va65I~
+    private void drawOpenPonKanChiiRobot(int Pplayer)               //~va65I~//~va76R~
     {                                                              //~va65I~
         if (Dump.Y) Dump.println("Hands.drawOpenPonKanChiiRobot player="+Pplayer);//~va65I~
 //      clearOpenRect(Pplayer);                                    //~va65R~
-        clearOpenRect(Pplayer);                                    //+va76R~
+        clearOpenRect(Pplayer);                                    //~va76R~
 	    drawOpen(Pplayer,null);                                    //~va65I~
     }                                                              //~va65I~
 }//class Hands                                                 //~dataR~//~@@@@R~//~v@@@R~

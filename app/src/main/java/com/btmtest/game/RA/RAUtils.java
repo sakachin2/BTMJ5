@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 144;                                    //~va27R~//~1108R~//~1111R~
+//*CID://+DATER~: update#= 145;                                    //~va27R~//~1108R~//~1111R~
 //**********************************************************************//~v101I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //**********************************************************************//~1107I~
@@ -291,7 +291,7 @@ public class RAUtils                                               //~v@@@R~//~v
     //***********************************************************************//~1117I~//~1120M~
     public static int getCtrRemain()                                      //~1117I~//~1120I~
     {                                                              //~1117I~//~1120M~
-        int ctr=PIECE_TILECTR-AG.aRoundStat.ctrTakenAll-TILECTR_KEEPLEFT-HANDCTR*PLAYERS;     //~1117I~//~1120I~//+1310R~
+        int ctr=PIECE_TILECTR-AG.aRoundStat.ctrTakenAll-TILECTR_KEEPLEFT-HANDCTR*PLAYERS;     //~1117I~//~1120I~//~1310R~
 		if (Dump.Y) Dump.println("RAUtils.getCtrRemain="+ctr);     //~1206I~
         return ctr;                                                //~1117I~//~1120M~
     }                                                              //~1117I~//~1120M~
@@ -329,7 +329,7 @@ public class RAUtils                                               //~v@@@R~//~v
         default:                                                   //~1220I~
         	rc=PswWord;                                            //~1220I~
         }                                                          //~1220I~
-        if (Dump.Y) Dump.println("RAUtils.isMatchSameColorrc="+rc+",intent="+Pintent+",type="+Ptype);//~1220I~
+        if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",type="+Ptype);//~1220I~//+1427R~
         return rc;                                                 //~1220I~
     }                                                              //~1220I~
 }//class RAUtils                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~//~1119R~

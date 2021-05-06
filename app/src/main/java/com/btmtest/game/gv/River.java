@@ -1,6 +1,7 @@
-//*CID://+va60R~: update#= 583;                                    //~va05R~//+va60R~
+//*CID://+va81R~: update#= 586;                                    //~va81R~
 //**********************************************************************//~v101I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2021/04/11 va81 (Bug)In notify mode,btn si not highlighen when take//~va81I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/04/26 va05:sound effect at positioning tile get             //~va05I~
 //**********************************************************************//~va05I~
 //utility around screen                                            //~v@@@I~
@@ -74,9 +75,9 @@ public class River                                                 //~v@@@R~
     private boolean swRiverCleared;                                //~0324I~
     public int stroke_width_river;                                 //~0401I~
 //*************************                                        //~v@@@I~
-	public River()  //for IT extends                               //+va60I~
-    {                                                              //+va60I~
-    }                                                              //+va60I~
+	public River()  //for IT extends                               //~va60I~
+    {                                                              //~va60I~
+    }                                                              //~va60I~
 	public River(GCanvas Pgcanvas)                                 //~v@@@R~
     {                                                              //~0914I~
     	AG.aRiver=this;                                             //~v@@@I~
@@ -864,8 +865,8 @@ public class River                                                 //~v@@@R~
 	        if (Dump.Y) Dump.println("River.getPlayerPosition player="+p+",pos="+td.number);//~v@@@R~
             p=Players.nextPlayer(p);                               //~v@@@I~
         }                                                          //~v@@@I~
-	    if (Dump.Y) Dump.println("River.getPlayerPosition posPlayer="+Arrays.toString(posPlayer));//~v@@@R~
-        if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)   //~v@@@I~
+	    if (Dump.Y) Dump.println("River.getPlayerPosition testOption2="+Integer.toHexString(TestOption.option2)+",firstDealer="+TestOption.firstDealer+",posPlayer="+Arrays.toString(posPlayer));//~v@@@R~//~va81R~
+        if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)   //~v@@@I~//+va81R~
         if (TestOption.firstDealer!=0)	//swap test dealer vs East //~v@@@I~
         {                                                          //~v@@@I~
         	int testdealer=TestOption.firstDealer-1;    //0:no,1:N1=E,2:N2=E,3:N1=N,4:N2:N//~v@@@R~
@@ -888,6 +889,17 @@ public class River                                                 //~v@@@R~
             }                                                      //~v@@@I~
 	    	if (Dump.Y) Dump.println("River.getPlayerPosition firstDealer="+testdealer+",posPlayer="+Arrays.toString(posPlayer));//~v@@@R~
         }                                                          //~v@@@I~
+        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//+va81I~
+        if (TestOption.firstDealer!=0)	//swap test dealer vs East //+va81I~
+        {                                                          //+va81I~
+        	int eswn=TestOption.firstDealer-1;                     //+va81I~
+        	int eswnPlayer=posPlayer[eswn];                        //+va81I~
+            for (int ii=0;ii<PLAYERS;ii++)   //swap test eswn player and player_YOU//+va81I~
+            	if (posPlayer[ii]==PLAYER_YOU)                     //+va81I~
+                	posPlayer[ii]=eswnPlayer;                      //+va81I~
+            posPlayer[eswn]=PLAYER_YOU;                            //+va81I~
+	    	if (Dump.Y) Dump.println("River.getPlayerPosition eswn="+eswn+",posPlayer="+Arrays.toString(posPlayer));//+va81I~
+        }                                                          //+va81I~
 	    if (Dump.Y) Dump.println("River.getPlayerPosition posPlayer="+Arrays.toString(posPlayer));//~v@@@I~
         return posPlayer;                                          //~v@@@I~
     }                                                              //~v@@@I~

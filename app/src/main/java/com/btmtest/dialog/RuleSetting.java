@@ -1,6 +1,8 @@
-//*CID://+va66R~:                             update#=  711;       //~va66R~
+//*CID://+va8kR~:                             update#=  715;       //~va8kR~
 //*****************************************************************//~v101I~
-//2021/04/07 va7e change default to On for allow_robot_all         //+va66I~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
+//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
+//2021/04/07 va7e change default to On for allow_robot_all         //~va66I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -627,8 +629,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //        cbOpenReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_OPEN),0/*defaultIdx*/),swFixed);//~9427I~//~9517R~
 //        cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~9427I~//~9517R~
     //*robot                                                       //~9429I~
-//      cbAllowRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT),0/*default:false*/),swFixed);//~9607I~//+va66R~
-        cbAllowRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT),DEFAULT_ALLOW_ROBOT_ALL/*default:true*/),swFixed);//+va66I~
+//      cbAllowRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT),0/*default:false*/),swFixed);//~9607I~//~va66R~
+        cbAllowRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT),DEFAULT_ALLOW_ROBOT_ALL/*default:true*/),swFixed);//~va66I~
 //      cbAllowRobotAll.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL),0/*default:false*/),swFixed);//~va66R~
 //      cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~va66R~
         cbThinkRobot.setStateInt(Pprop.getParameter(getKeyRS(RSID_THINK_ROBOT),DEFAULT_THINK_ROBOT/*default:true*/),swFixed);//~va60I~//~va66R~
@@ -1740,8 +1742,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     //**************************************                       //~9607I~
 	public static boolean isAllowRobot()                           //~9607I~
     {                                                              //~9607I~
-//  	int def=0;	//false                                        //~9607I~//+va66R~
-    	int def=DEFAULT_ALLOW_ROBOT_ALL;	//true                 //+va66I~
+//  	int def=0;	//false                                        //~9607I~//~va66R~
+    	int def=DEFAULT_ALLOW_ROBOT_ALL;	//true                 //~va66I~
         boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT),def)!=0;//~9607I~
         if (Dump.Y) Dump.println("RuleSetting.isAllowRobot rc="+rc);//~9607I~
         return rc;                                                 //~9607I~
@@ -1964,6 +1966,28 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         rgMultiRon=new URadioGroup(PView,R.id.rgMultiRon,0/*defaultIdx*/,rbIDMultiRon/*IDs*/);//~9520I~
         rgMultiRon.setCheckedID(AG.ruleProp.getParameter(getKeyRS(RSID_MULTIRON),0/*defaultIdx*/),PswFixed);//~9520I~
     }                                                              //~9520I~
+    //*********************************************************    //~va8bI~
+    public static void setYakuFix(View PView,boolean PswFixed)     //~va8bI~
+    {                                                              //~va8bI~
+        if (Dump.Y) Dump.println("RuleSetting.setYakuFix swFixed="+PswFixed);//~va8bI~
+    	UCheckBox  cbYakuFixMultiwaitOK/*,cbYakuFixMultiwaitDrawOK*/;  //~va8bI~//+va8kR~
+    	cbYakuFixMultiwaitOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitOK);//~va8bI~
+//  	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~va8bI~//~va8kR~
+    	cbYakuFixMultiwaitOK.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),0),PswFixed);//~va8bI~
+//  	cbYakuFixMultiwaitDrawOK.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),PswFixed);//~va8bI~//+va8kR~
+                                                                   //~va8bI~
+	    URadioGroup rgYakuFix;                                     //~va8bI~
+        rgYakuFix=new URadioGroup(PView,R.id.rgYakuFix,0,rbsYakuFix);//~va8bI~
+        rgYakuFix.setCheckedID(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT),PswFixed);//~va8bI~
+    }                                                              //~va8bI~
+    //*********************************************************    //~va8bI~
+    public static void setYakuFix2(View PView,boolean PswFixed)    //~va8bI~
+    {                                                              //~va8bI~
+        if (Dump.Y) Dump.println("RuleSetting.setYakuFix2 swFixed="+PswFixed);//~va8bI~
+	    URadioGroup rgYakuFix2;                                    //~va8bI~
+        rgYakuFix2=new URadioGroup(PView,R.id.rgYakuFix2,0,rbsYakuFix2);//~va8bI~
+        rgYakuFix2.setCheckedID(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX2),YAKUFIX2_DEFAULT),PswFixed);//~va8bI~
+    }                                                              //~va8bI~
     //*********************************************************    //~9520I~
     public static void setMinusStop(View PView,boolean PswFixed)   //~9520I~
     {                                                              //~9520I~

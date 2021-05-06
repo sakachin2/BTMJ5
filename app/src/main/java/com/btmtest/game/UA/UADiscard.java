@@ -1,5 +1,6 @@
-//*CID://+va78R~: update#= 638;                                    //~va77R~//~va78R~
+//*CID://+va8yR~: update#= 639;                                    //+va8yR~
 //**********************************************************************//~v101I~
+//2021/05/02 va8y (Bug)Kuikae err chk should check type also.      //+va8yI~
 //2021/04/05 va78 (Bug)PlayAlone notifymode; next player is not blocked by pending on//~va78I~
 //2021/04/04 va77 (Bug)when manual robot(autotake) mode,chii is not notified because autotake timeout is not set//~va77I~
 //2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
@@ -279,7 +280,7 @@ public class UADiscard                                             //~v@@@R~
         {                                                          //~va70I~
           if (AG.aGC.getStatusPlayAlone()==GCM_RON)  //PLS.discard ==>RACall.otherDiscard, it may highlighten Ron button and set statusRon//~va70R~
           {                                                        //~va70I~
-			if (Dump.Y) Dump.println("UADiscard.discard already Notified RON");//+va78I~
+			if (Dump.Y) Dump.println("UADiscard.discard already Notified RON");//~va78I~
 //        	tdPlayAlone=td;                                        //~va70R~
           	;                                                      //~va70I~
           }                                                        //~va70I~
@@ -559,6 +560,8 @@ public class UADiscard                                             //~v@@@R~
         else                                                       //~va15I~
         if ((tdRiver.flag & TDF_CHII)!=0)                          //~va15I~
         {                                                          //~va15I~
+          if (PtileSelected.type==tdRiver.type)                    //+va8yI~
+          {                                                        //+va8yI~
         	if (posRiver==0)	//left side eat                    //~va15I~
             {                                                      //~va15I~
             	if (PtileSelected.number==tdRiver.number+3)        //~va15I~
@@ -576,6 +579,7 @@ public class UADiscard                                             //~v@@@R~
         		    rc=true;                                       //~va15I~
                 }                                                  //~va15I~
             }                                                      //~va15I~
+          }                                                        //+va8yI~
         }                                                          //~va15I~
     	if (rc)                                                    //~va15I~
         	GC.actionError(0,PLAYER_YOU,R.string.AE_SameMeld);         //~va15I~

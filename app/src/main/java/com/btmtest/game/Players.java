@@ -1,5 +1,7 @@
-//*CID://+va70R~: update#= 841;                                    //~va70R~
+//*CID://+va8AR~: update#= 850;                                    //~va8AR~
 //**********************************************************************//~v101I~
+//2021/05/04 va8A accept dupron for also robot                     //~va8AI~
+//2021/04/13 va84 try Robot also ron by 13/14 NoPair               //~va84I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//~va6gI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -114,6 +116,24 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.chk1stTakeRon rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va21I~//~va60R~
         return rc;                                                 //~va21I~
     }                                                              //~va21I~
+    //*************************************************************************//~va84I~
+    //*at ron declared, chk for also robot                         //~va84I~
+    //*************************************************************************//~va84I~
+    public boolean chk1stTakeRon(int Pplayer)                      //~va84I~
+    {                                                              //~va84I~
+    	boolean rc=false;                                          //~va84I~
+    	int lastAction=actionBeforeRon;                            //~va84I~
+    	boolean swTake=lastAction==GCM_TAKE;                       //~va84I~
+//      int currentEswn=AG.aAccounts.getCurrentEswn();             //~va84I~
+        int currentEswn=AG.aAccounts.playerToEswn(Pplayer);        //~va84I~
+        int ctrTaken=ctrTakenAll;                                  //~va84I~
+        int ctrDiscarded=ctrDiscardedAll;                          //~va84I~
+        boolean swParent=swTake && currentEswn==ESWN_E && ctrTaken==1;//~va84I~
+        boolean swChild=swTake && currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va84I~
+        rc=swParent | swChild;                                     //~va84I~
+        if (Dump.Y) Dump.println("Players.chk1stTakeRon rc="+rc+",swParent="+swParent+",swChild="+swChild+",lastAction="+lastAction+",swTake="+swTake+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va84I~
+        return rc;                                                 //~va84I~
+    }                                                              //~va84I~
     //*************************************************************************//~va60I~
     //*at taken                                                    //~va60I~
     //*************************************************************************//~va60I~
@@ -132,6 +152,20 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.is1stTake rc="+rc+",swParent="+swParent+",swChild="+swChild+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va60I~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~
+    //*************************************************************************//~va84I~
+    public boolean is1stTakeRobot(int Peswn)                       //~va84I~
+    {                                                              //~va84I~
+    	boolean rc=false;                                          //~va84I~
+//      int currentEswn=AG.aAccounts.getCurrentEswn();             //~va84I~
+        int currentEswn=Peswn;                                     //~va84I~
+        int ctrTaken=ctrTakenAll;                                  //~va84I~
+        int ctrDiscarded=ctrDiscardedAll;                          //~va84I~
+        boolean swParent=currentEswn==ESWN_E && ctrTaken==1;       //~va84I~
+        boolean swChild=currentEswn!=ESWN_E && ctrTaken==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va84I~
+        rc=swParent | swChild;                                     //~va84I~
+        if (Dump.Y) Dump.println("Players.is1stTakeRobot rc="+rc+",swParent="+swParent+",swChild="+swChild+",currentEswn="+currentEswn+",ctrTakenAll="+ctrTaken+",ctrDiscardedAll="+ctrDiscarded);//~va84I~
+        return rc;                                                 //~va84I~
+    }                                                              //~va84I~
     //*********************************************************    //~v@@@I~
     public  void newGame(boolean Psw1st,int Pplayer)                        //~v@@@I~//~9503R~
     {                                                              //~v@@@I~
@@ -921,7 +955,7 @@ public class Players                                               //~v@@@R~
     private int isRonAvailable(int Pplayer)                        //~9208R~
     {                                                              //~9208I~
         int errmsgid=0;                                            //~9208R~
-        if (Dump.Y) Dump.println("Players.isRonAvailable Pplayer="+Pplayer+",kanType="+kanType+",swLastActionisDiscard="+swLastActionIsDiscard);//~9226I~//~0401R~//~0404R~//~va60R~
+        if (Dump.Y) Dump.println("Players.isRonAvailable Pplayer="+Pplayer+",playerCurrent="+playerCurrent+",lastActionID="+lastActionID+",kanType="+kanType+",swLastActionisDiscard="+swLastActionIsDiscard);//~9226I~//~0401R~//~0404R~//~va60R~//~va84R~
 //      if (Pplayer!=PLAYER_YOU)                                   //~9208I~//~9226R~
 //      	return 0;                                              //~9208I~//~9226R~
 		if (AG.aComplete.isDrawnDelayLastTimeout())                //~9603I~
@@ -986,12 +1020,24 @@ public class Players                                               //~v@@@R~
                             }                                      //~0404I~
                         }                                          //~0404I~
                     }                                              //~0401I~
-                    else                                           //~9302I~//~0404R~
-                    if (AG.swTrainingMode &&  AG.aAccounts.isRobotPlayer(Pplayer))//~va70I~
-                    {                                              //~va70I~
-                        chkDupRonRobotPlayAlone(Pplayer,tileComplete);//~va70I~
-                    }                                              //~va70I~
-                    else                                           //~va70I~
+//TODO test         else                                           //~9302I~//~0404R~//+va8AR~
+//                  if (AG.swTrainingMode &&  AG.aAccounts.isRobotPlayer(Pplayer))//~va70I~//+va8AR~
+//                  {                                              //~va70I~//+va8AR~
+//                      chkDupRonRobotPlayAlone(Pplayer,tileComplete);//~va70I~//+va8AR~
+//                  }                                              //~va70I~//+va8AR~
+                    else                                           //~va70I~//~va8AR~
+                    if (AG.aAccounts.isRobotPlayer(Pplayer))       //~va8AR~
+                    {                                              //~va8AR~
+//                      if (!AG.aUADelayed.isDupRonOK2Touch(Pplayer))//swRonnable!=true //robot ignore swCancelable and issue ron at RonTime//~va8AR~
+//                          if (!AG.aUADelayed.isDupRonOK(Pplayer,tileComplete)) //robot issueRon at rontime//~va8AR~
+//                          {                                      //~va8AR~
+//                              delayedRonRobotMsg(Pplayer);       //~va8AR~
+//                              errmsgid=-1;    //issued           //~va8AR~
+//                          }                                      //~va8AR~
+                                                                   //~va8AR~
+                        if (Dump.Y) Dump.println("Players.isRonAvailable always accept Robot Ron Pplayer="+Pplayer);//~va8AR~
+                    }                                              //~va8AR~
+                    else                                           //~va8AI~
         		    if (!AG.aUADelayed.isDupRonOK2Touch(Pplayer))//swRonnable!=true  //~9B29I~//~0404R~
                     {                                              //~9B29I~
                     	if (!AG.aUADelayed.isDupRonOK(Pplayer,tileComplete))//~9226R~//~9B29R~
@@ -1045,7 +1091,7 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~va66I~
 	private void delayedRonRobotMsg(int Pplayer)                   //~va66I~
     {                                                              //~va66I~
-        if (Dump.Y) Dump.println("Players.delayedRonRobotMsg @@@@robot dupron ignored player="+Pplayer);//~va66R~
+        if (Dump.Y) Dump.println("Players.delayedRonRobotMsg player="+Pplayer);//~va66R~//~va84R~
         String msg="";                                             //~va66I~
         boolean sw1st=true;                                        //~va66I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~va66I~
@@ -2125,7 +2171,7 @@ public class Players                                               //~v@@@R~
         //*********************************************************************//~v@@@I~
         private void reachDone(TileData Ptd)                       //~v@@@I~
         {                                                          //~v@@@I~
-            if (Dump.Y) Dump.println("Player.reachDone");          //~v@@@I~
+            if (Dump.Y) Dump.println("Player.reachDone player="+player);          //~v@@@I~//~va84R~
 	        reachStatus=REACH_DONE;                                //~v@@@R~
         	setReachDone();	//save ctr for rech just               //~va11I~
             status|=STF_REACH;                                     //~v@@@I~
@@ -2137,14 +2183,14 @@ public class Players                                               //~v@@@R~
             lastReach=player;                                      //~9511I~
             lastReachTD=Ptd;                                       //~9511I~
             ctrReach++;                                            //~9511I~
-            if (Dump.Y) Dump.println("Player.reachDone ctrReach="+ctrReach);//~9706I~
+            if (Dump.Y) Dump.println("Player.reachDone player="+player+",ctrReach="+ctrReach);//~9706I~//~va84R~
         }                                                          //~v@@@I~
         //*****************************************************************************//~va66R~
         //*from UARon reset reach when called ron for the tile discarded calling reach//~va66R~
         //*****************************************************************************//~va66R~
         public void resetReachDone()                               //~9511R~
         {                                                          //~9511I~
-            if (Dump.Y) Dump.println("Player.resetReachDone player Discarded player="+player+",swLastActionIsDiscard="+swLastActionIsDiscard+",tileLastDiscarded="+ Utils.toString(tileLastDiscarded));//~9B12R~//~va66R~//+va70R~
+            if (Dump.Y) Dump.println("Player.resetReachDone player Discarded player="+player+",swLastActionIsDiscard="+swLastActionIsDiscard+",tileLastDiscarded="+ Utils.toString(tileLastDiscarded));//~9B12R~//~va66R~//~va70R~
 //			if (tileLastDiscarded==null || !tileLastDiscarded.isReached())//~9706I~//~9B12R~
   			if (!swLastActionIsDiscard  || !tileLastDiscarded.isReached())//~9B12I~
             {                                                      //~9706I~

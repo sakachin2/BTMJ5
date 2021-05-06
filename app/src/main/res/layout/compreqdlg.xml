@@ -116,6 +116,20 @@
                             <include layout="@layout/setting_rule_opt_spritpos"
                             />
                         </LinearLayout>
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/setting_rule_yaku_fix"
+                        />
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/setting_rule_yaku_fix2"
+                        />
                     </LinearLayout> <!--RelatedRule-->
 
             </LinearLayout><!-- one view hosted in scrollview-->
