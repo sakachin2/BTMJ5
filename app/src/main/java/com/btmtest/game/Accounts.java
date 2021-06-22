@@ -1,5 +1,6 @@
-//*CID://+va72R~: update#= 821;                                    //~va72R~
+//*CID://+va9iR~: update#= 831;                                    //~va9iR~
 //**********************************************************************//~v101I~
+//2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
 //2021/03/30 va72 (Bug)when multiron for reach tile,nemaplate win color shadow was lost by showscore from resetReachDone//~va72I~
 //2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//~va6gI~
 //2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
@@ -29,6 +30,7 @@ import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
 
+import static com.btmtest.BT.BTMulti.*;
 import static com.btmtest.BT.Members.*;
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.game.GConst.*;
@@ -455,6 +457,7 @@ public class Accounts                                              //~v@@@R~
 //              Pmembers.MD[ii].account=accounts[ii];                //~v@@@I~//~9B11R~//~0118R~
                 Pmembers.MD[ii].setAccount(accounts[ii]);         //~9B11I~//~0118R~
         }                                                          //~v@@@I~
+      if (!AG.swTrainingMode)                                      //+va9iR~
         if (chkDupYourname())                                      //~0217I~
         	return false;	                                       //~0217I~
         activeMembers=getMemberCtr();                              //~v@@@I~
@@ -485,6 +488,8 @@ public class Accounts                                              //~v@@@R~
                     break;                                         //~0217I~
                 }                                                  //~0217I~
             }                                                      //~0217I~
+            if (true)                                              //~va9iI~
+                break;                                             //~va9iI~
         }                                                          //~0217I~
         return rc;                                                 //~0217I~
     }                                                              //~0217I~
@@ -1739,7 +1744,7 @@ public class Accounts                                              //~v@@@R~
         int pos=playerToPosition(Pplayer);                         //~9511R~
         score[pos]+=POINT_REACH;                                   //~9511I~
         if (Dump.Y) Dump.println("Accounts.resetReachDonePay lastReach="+Pplayer+",pos="+pos+",score="+Arrays.toString(score));//~9511R~
-//      AG.aNamePlate.showScore(); //showScore will be called later at endgame/nextgame from scoreDlg                                 //~9511I~//+va72R~
+//      AG.aNamePlate.showScore(); //showScore will be called later at endgame/nextgame from scoreDlg                                 //~9511I~//~va72R~
     }                                                              //~9511I~
     //**************************************************           //~9704I~
     //*at ResetGame by Chombo etc                                  //~9704I~
@@ -1869,7 +1874,8 @@ public class Accounts                                              //~v@@@R~
     public boolean isGrillBird()                                   //~9501I~
     {                                                              //~9501I~
     	boolean swBird=RuleSetting.isGrillBird();                  //~9501I~
-        boolean rc=(swBird && activeMembers==PLAYERS);               //~9501I~
+//      boolean rc=(swBird && activeMembers==PLAYERS);               //~9501I~//~va72R~
+        boolean rc=(swBird && (activeMembers==PLAYERS||RuleSetting.isThinkRobot()));//~va72I~
         if ((TestOption.option & TestOption.TO_BIRD_WITH_ROBOT)!=0) rc=swBird;       //~9501I~
         if (Dump.Y) Dump.println("Accounts.isGrillBird rc="+rc+",swBird="+swBird+",isRobotExist="+(activeMembers!=PLAYERS));//~9501I~
         return rc;                                                 //~9501I~
@@ -1879,7 +1885,8 @@ public class Accounts                                              //~v@@@R~
     {                                                              //~9501I~
     	int idx=playerToMember(Pplayer);                           //~9501I~
     	boolean rc;                                                //~9501I~
-        if (!RuleSetting.isGrillBird())                                      //~9501I~
+//      if (!RuleSetting.isGrillBird())                                      //~9501I~//~va72R~
+        if (!isGrillBird())                                        //~va72R~
         	rc=false;                                              //~9501I~
         else                                                       //~9501I~
     		rc=accounts[idx].isGrilled();                          //~9501R~
@@ -1892,7 +1899,8 @@ public class Accounts                                              //~v@@@R~
     public int getBirdAndCont()                                    //~9B01I~
     {                                                              //~9B01I~
     	int bird=0;               //idx seq                        //~9B01R~
-        if (RuleSetting.isGrillBird())                             //~9B01I~
+//      if (RuleSetting.isGrillBird())                             //~9B01I~//~va72R~
+        if (isGrillBird())                                         //~va72I~
         {                                                          //~9B01I~
         	for (int ii=0;ii<PLAYERS;ii++)                         //~9B01I~
             {                                                      //~9B01I~
@@ -2000,6 +2008,8 @@ public class Accounts                                              //~v@@@R~
             	memberData=PmemberData;                            //~v@@@I~
 //            if (PmemberData.getThread()!=null)                   //~9B11R~
 //            {                                                    //~9B11R~
+//            if (!AG.swTrainingMode || memberData.getName().equals(DEVICENAME_TRAINING))//stat is cleard at Member.setTraingMode//~va9iR~
+              {                                                    //~va9iI~
             	int stat=memberData.status;                        //~v@@@R~
                 if ((stat & Members.MS_LOCAL)!=0)                          //~v@@@R~
                 {                                                  //~v@@@I~
@@ -2023,6 +2033,7 @@ public class Accounts                                              //~v@@@R~
 //              thread=(BTIOThread)(memberData.getThread());       //~v@@@I~//~9A24R~
 	        	if (Dump.Y) Dump.println("Account.setMember type="+type+",devname="+memberData.getName()+",name="+name);//~v@@@I~//~9924R~
 //            }                                                    //~9B11R~
+              } //!trainingmode                                    //~va9iI~
             }                                                      //~v@@@I~
             if (type==AT_DUMMY)                                    //~v@@@I~
             {                                                      //~v@@@I~

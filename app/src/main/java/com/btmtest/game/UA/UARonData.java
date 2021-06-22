@@ -1,6 +1,8 @@
-//*CID://+va8rR~: update#= 799;                                    //+va8rR~
+//*CID://+va91R~: update#= 807;                                    //~va94R~//+va91R~
 //**********************************************************************//~v101I~
-//2021/04/26 va8r (Bug)Fu is 110 for pinfu tsumo under punfu-tsumo=yes//+va8rI~
+//2021/06/12 va94 (Bug)point calc ron at take same should be *2    //~va94I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
+//2021/04/26 va8r (Bug)Fu is 110 for pinfu tsumo under punfu-tsumo=yes//~va8rI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 //point Same  1/9/ji==>4/8  2->8==>2/4                             //~va11I~
@@ -43,10 +45,15 @@ public class UARonData                                             //~va11R~
     private int eswn,round,player;                               //~va11R~
     private UARonDataTree UARDT;                                   //~va11I~
     private int[] intRankS,pointS;                               //~va11I~
+    private int[] intRankFixErrS;                                  //~va91I~
+    private boolean swTaken;                                       //~va94I~
     public UAPair UAP;                                             //~va11R~
     public int idxPatternMax,pointMax,intRankMax,ctrPatternMix;           //~va11I~
+    public int intRankFixErrMax;                                    //~va91I~
     public Rank longRankMax;                                       //~va11I~
+    public Rank longRankFixErrMax;                                 //~va91R~
     public Rank[] longRankS;                                       //~va11I~
+    public Rank[] longRankFixErrS;                                 //~va91R~
     public boolean swPillowTanki;                                  //~va11I~
 	//*************************************************************************//~va11I~
     public UARonData(int PpairType,int Ptype,int Pnumber,int PdupCtr)//~va11R~
@@ -76,7 +83,9 @@ public class UARonData                                             //~va11R~
         if (Dump.Y) Dump.println("UARonData.getAmmount eswn="+Peswn+",round="+Pround+",player="+player+",ronType="+ronType+",ronNumber="+ronNumber+",rankBase="+PrankBase);//~va11R~
 //  	UARDT.aUARank.chkYakuStandard(this,uard,dupCtr,dupCtrAll); //~va11I~
     	intRankS=UARDT.aUARank.getRankStandard(UARDT,this);       //~va11I~
+    	intRankFixErrS=UARDT.aUARank.intRankFixErrS;               //~va91I~
     	longRankS=UARDT.aUARank.longRankS;                         //~va11I~
+    	longRankFixErrS=UARDT.aUARank.longRankFixErrS;             //~va91R~
         pointS=getPoint();                                         //~va11R~
         int amtMax=getAmmount(PrankBase);  //by intRankS and pointS//~va11R~
         if (Dump.Y) Dump.println("UARonData.getAmmount amtMax="+amtMax);//~va11R~
@@ -105,15 +114,17 @@ public class UARonData                                             //~va11R~
     //******************************************                   //~va11I~
     private int[] getPoint()                                        //~va11R~
     {                                                              //~va11I~
+        swTaken=UARDT.swTaken;                                     //~va94M~
 //      int pointPillow=getPointPillow();                          //~va11R~
         int pointNotNum=getPointNotNum();                          //~va11I~
         int base;                                                  //~va11I~
         boolean swAllInHand=UARDT.swAllInHand;                     //~va11R~
 //      base=swAllInHand ? POINT_ALLHAND : POINT_NOTALLHAND;       //~va11R~
-        base=(swAllInHand && !UARDT.swTaken) ? POINT_ALLHAND : POINT_NOTALLHAND;  //menzen ron:30,else 20//~va11I~
+//      base=(swAllInHand && !UARDT.swTaken) ? POINT_ALLHAND : POINT_NOTALLHAND;  //menzen ron:30,else 20//~va11I~//~va94R~
+        base=(swAllInHand && !swTaken) ? POINT_ALLHAND : POINT_NOTALLHAND;  //menzen ron:30,else 20//~va94I~
 //      int pointS[]=getPointNum(base+pointPillow+pointNotNum);    //~va11R~
         int pointS[]=getPointNum(base+pointNotNum);                //~va11I~
-        if (Dump.Y) Dump.println("UARonData.getPoint pointNotNum="+pointNotNum+",swAllInHand="+swAllInHand+",base="+base+",pointS="+Arrays.toString(pointS));//~va11R~
+        if (Dump.Y) Dump.println("UARonData.getPoint pointNotNum="+pointNotNum+",swTaken="+swTaken+",swAllInHand="+swAllInHand+",base="+base+",pointS="+Arrays.toString(pointS));//~va11R~//~va94R~
         return pointS;                                             //~va11I~
     }                                                              //~va11I~
     //******************************************                   //~va11M~
@@ -164,7 +175,10 @@ public class UARonData                                             //~va11R~
             	pt+=getPointKan(swTake,pair.type,pair.number);     //~va11R~
             }                                                      //~va11I~
             else                                                   //~va11I~
-            	pt+=getPointSame(null,pair.swHand,pair.type,pair.number);//~va11R~
+            {                                                      //~va94I~
+//          	pt+=getPointSame(null,pair.swHand,pair.type,pair.number);//~va11R~//~va94R~
+            	pt+=getPointSame(null,pair.swHand,pair.type,pair.number,swTaken);//~va94R~
+            }                                                      //~va94I~
         }                                                          //~va11I~
         if (Dump.Y) Dump.println("UARonData.getPointNotNum pt="+pt);//~va11R~
         return pt;                                                 //~va11I~
@@ -184,9 +198,9 @@ public class UARonData                                             //~va11R~
             	continue;                                          //~va11I~
     		if (longRankS[idxPairNumSS].isContains(RYAKU_PINFU))      //~va11I~
             {                                                      //~va11I~
-//          	if (UARDT.swTaken)	//pinfu tsumo:2han             //~va11I~//+va8rR~
-//  	            pointS[idxPairNumSS]=PbasePoint-(POINT_ALLHAND-POINT_NOTALLHAND);//~va11I~//+va8rR~
-//              else                                               //~va11I~//+va8rR~
+//          	if (UARDT.swTaken)	//pinfu tsumo:2han             //~va11I~//~va8rR~
+//  	            pointS[idxPairNumSS]=PbasePoint-(POINT_ALLHAND-POINT_NOTALLHAND);//~va11I~//~va8rR~
+//              else                                               //~va11I~//~va8rR~
 		            pointS[idxPairNumSS]=PbasePoint;               //~va11R~
 //                if ((TestOption.option2 & TestOption.TO2_RONVALUE_TESTSUB)!=0)//~va11R~
 //                    UView.showToastLong("pointNum pinfu="+pointS[idxPairNumSS]);//~va11R~
@@ -243,7 +257,10 @@ public class UARonData                                             //~va11R~
             pt=getPointKan(swTake,Ppair.type,Ppair.number);        //~va11I~
         }                                                          //~va11I~
         else                                                       //~va11I~
-        	pt=getPointSame(PpairS,Ppair.swHand,Ppair.type,Ppair.number);//~va11R~
+        {                                                          //~va94I~
+//      	pt=getPointSame(PpairS,Ppair.swHand,Ppair.type,Ppair.number);//~va11R~//~va94R~
+        	pt=getPointSame(PpairS,Ppair.swHand,Ppair.type,Ppair.number,swTaken);//~va94R~
+        }                                                          //~va94I~
         if (Dump.Y) Dump.println("UARonData.getPointNumSame pt="+pt+",pair="+Pair.toString(Ppair));//~va11R~
         return pt;                                                 //~va11M~
     }                                                              //~va11M~
@@ -289,7 +306,8 @@ public class UARonData                                             //~va11R~
     //******************************************                   //~va11M~
     //*1/9/ji==>4/8  2->8==>2/4                                    //~va11I~
     //******************************************                   //~va11I~
-    private int getPointSame(Pair[] PpairS,boolean PswHand,int Ptype,int Pnumber)//~va11R~
+//  private int getPointSame(Pair[] PpairS,boolean PswHand,int Ptype,int Pnumber)//~va11R~//~va94R~
+    private int getPointSame(Pair[] PpairS,boolean PswHand,int Ptype,int Pnumber,boolean PswTaken)//~va94R~
     {                                                              //~va11M~
     	int pt=0;                                                  //~va11M~
         if (Ptype==TT_JI || Pnumber==0 || Pnumber==8)	//1,9,ji   //~va11M~
@@ -307,13 +325,19 @@ public class UARonData                                             //~va11R~
 			if (!(Ptype==ronType && Pnumber==ronNumber))           //~va11I~
 	        	pt+=pt;                                            //~va11R~
             else                                                   //~va11I~
+            {                                                      //~va94I~
+            	if (PswTaken) //Ron by Self-Draw                   //~va94R~
+		        	pt+=pt;                                        //~va94I~
+                else                                               //~va94I~
             	if (chkSameAndSeq(PpairS,Ptype,Pnumber))           //~va11I~
 		        	pt+=pt;                                        //~va11I~
+            }                                                      //~va94I~
         if (Dump.Y) Dump.println("UARonData.getPointSame swHand="+PswHand+",type="+Ptype+",Pnumber="+Pnumber+",pt="+pt);//~va11R~
         return pt;                                                 //~va11M~
     }                                                              //~va11M~
     //***************************************************************************************************//~va11I~
     //*even if num same is same as ron tile, ron tile may be a part of seq. if, so get consealed point//~va11I~
+    //*e.g)  ron by 2 for 222234 (pair is 222 and 234), assume 2 is part of 222//~va94I~
     //***************************************************************************************************//~va11I~
     private boolean chkSameAndSeq(Pair[] PpairS,int Ptype,int Pnumber) //~va11I~
     {                                                              //~va11I~
@@ -380,7 +404,7 @@ public class UARonData                                             //~va11R~
             {                                                      //~va11I~
             	UARDT.addYakuman(RYAKU_BYRANK,false/*single yakuman*/);//~va11I~
                 setMax(ii);                                        //~va11R~
-		        if (Dump.Y) Dump.println("UARonData.getAmmount return by RYAKU_BYRANK rank="+rank+",longRankMax="+longRankMax.toString());//~va11I~
+		        if (Dump.Y) Dump.println("UARonData.getAmmount return by RYAKU_BYRANK rank="+rank+",longRankMax="+longRankMax.toString()+",longRankFixErrMax="+longRankFixErrMax.toString());//~va11I~//~va91R~
                 return 0;                                          //~va11I~
             }                                                      //~va11I~
     		int amt=getAmmount(rank,pt);                           //~va11I~
@@ -401,8 +425,10 @@ public class UARonData                                             //~va11R~
     	idxPatternMax=Pidx;                                        //~va11I~
         pointMax=pointS[Pidx];                                     //~va11I~
         intRankMax=intRankS[Pidx];                                 //~va11R~
+        intRankFixErrMax=intRankFixErrS[Pidx];                     //~va91I~
         longRankMax=longRankS[Pidx];                               //~va11I~
-        if (Dump.Y) Dump.println("UARonData.setMax idxPatternMax="+Pidx+",pointMax="+pointMax+",intRankMax="+intRankMax+",longRankMax="+Rank.toString(longRankMax)+"="+Rank.toStringName(longRankMax));//~va11R~
+        longRankFixErrMax=longRankFixErrS[Pidx];                   //~va91R~
+        if (Dump.Y) Dump.println("UARonData.setMax idxPatternMax="+Pidx+",pointMax="+pointMax+",intRankMax="+intRankMax+",intRankFixErrMax="+intRankFixErrMax+",longRankMax="+Rank.toString(longRankMax)+"="+Rank.toStringName(longRankMax)+",longRankFixErr="+Rank.toString(longRankFixErrMax));//~va11R~//~va91R~
     }                                                              //~va11I~
     //******************************************                   //~va11I~
     private int getAmmount(int Prank,int Ppoint)                   //~va11I~

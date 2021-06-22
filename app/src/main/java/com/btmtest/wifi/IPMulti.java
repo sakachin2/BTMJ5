@@ -1,5 +1,6 @@
-//*CID://+va46R~:                             update#=  426;       //~va46R~
+//*CID://+va9gR~:                             update#=  427;       //+va9gR~
 //********************************************************************************//~v101I~
+//2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//+va9gI~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //@002:20181103 use enum                                           //~@002I~
 //@001:20181103 updatebuttonstatus over config change              //~@001I~
@@ -47,6 +48,8 @@ public class IPMulti extends BTMulti                                            
 //  public void onConnected(Socket Psocket,ConnectionDta PconnectionData,Boolean PswClient)//~9723R~
     public void onConnected(Socket Psocket, ConnectionData PconnectionData, Boolean PswClient)//~9723I~
     {                                                              //~9723I~
+        if (Dump.Y) Dump.println("IPMulti:onConnected: reset swTrainingMode old="+AG.swTrainingMode);//+va9gI~
+        AG.swTrainingMode=false;                                   //+va9gI~
     	if (Dump.Y) Dump.println("IPMulti:onConnected swClient="+PswClient+",connectionData="+PconnectionData.toString());//~0117I~//~0B19R~
         AG.RemoteStatus=AG.RS_IPCONNECTED;                         //~9729I~
     	swServer=!PswClient;                                       //~9724I~
@@ -197,8 +200,8 @@ public class IPMulti extends BTMulti                                            
 //      	updateMember(PnameR[0],PnameR[1],""/*syncDate*/);      //~0107I~//~0108R~
             String macAddr=PnameR[4];                              //~va46I~
             String syncDT=PnameR[2];                               //~va46I~
-        	updateMember(PnameR[0],PnameR[1],macAddr,syncDT,false/*swNotify*/); //set connected status on devicelist of dialog//+va46R~
-			WDA.onConnectionChanged();  //update Dialog            //+va46I~
+        	updateMember(PnameR[0],PnameR[1],macAddr,syncDT,false/*swNotify*/); //set connected status on devicelist of dialog//~va46R~
+			WDA.onConnectionChanged();  //update Dialog            //~va46I~
             return;                                                //~0107I~
         }                                                          //~0107I~
 	    if (WDA.isReconnecting())                                  //~9B03I~

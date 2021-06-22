@@ -1,8 +1,10 @@
-//*CID://+va8BR~: update#= 737;                                    //~va86R~//+va8BR~
+//*CID://+va9fR~: update#= 741;                                    //~va9fR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
-//2021/05/04 va8B (Bug)when Score(CmpReqDlg) btn is pushed to open CompReqDlg, Pon button size is shorten//+va8BI~
+//2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
+//2021/06/15 va97 (Bug)CompReq button left as background table color if pushed at off(not orange)//~va97I~
+//2021/05/04 va8B (Bug)when Score(CmpReqDlg) btn is pushed to open CompReqDlg, Pon button size is shorten//~va8BI~
 //2021/04/13 va86 show RonAnyWay button by not preference by operation rule//~va86I~
 //2021/04/11 va80 return to top by back btn when gameoverl         //~va80R~
 //2021/04/05 va78 (Bug)PlayAlone notifymode; next player is not blocked by pending on//~va78I~
@@ -167,11 +169,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     public  boolean swGameView;                                    //~9B06I~
 //  private int btnBackgroundColor;                                //~9B25R~
     private Drawable btnBackgroundColor;                           //~9B25I~
-    private Drawable btnBackgroundColorCompReqDlg;                 //+va8BI~
+    private Drawable btnBackgroundColorCompReqDlg;                 //~va8BI~
 //    private boolean swReconnect;                                 //~0411R~
 	private int connectionCtrAtStartGame;                          //~va02I~
 	public  int statusPlayAlone;                                   //~va70R~
 	private boolean swCancel;                                              //~va75I~
+	private boolean swCompReqButtonStatus=false;                   //~va97I~
 //*************************                                        //~v@@@I~
 	public GC()                             //for IT override      //~va60I~
     {                                                              //~va60I~
@@ -189,7 +192,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~v@@@I~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
-            UView.fixOrientation(true);                            //~v@@@I~
+//          UView.fixOrientation(true);                            //~v@@@I~//~va9fR~
 	    	UView.getScreenSize();                                 //~v@@@I~
             swPortrait=AG.scrWidth<AG.scrHeight;                   //~v@@@I~
             btnLeftW =(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_left_small :R.dimen.gvbtn_left);//~9808M~
@@ -1112,6 +1115,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.showDlgComp");                //~v@@@I~
 //        if (chkComplete(true)==0)                                  //~v@@@I~//~9403R~
 //            UView.showToast(R.string.Err_NoneCompleted);           //~v@@@I~//~9403R~
+	  if (swCompReqButtonStatus)	//status orange                //~va97I~
 	    highlightCompReq(false/*PswOn*/);                           //~va49I~
     	CompReqDlg.showDismissed();                                //~9403I~
     }                                                              //~v@@@I~
@@ -1570,7 +1574,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.isAvailableOpenReach rc="+rc);
 		return rc;//~0329I~
 	}                                                              //~0329I~
-	public boolean isRobotGame()                                   //~0329I~
+//  public boolean isRobotGame()                                   //~0329I~//+va9fR~
+    private boolean isRobotGame()                                  //+va9fI~
     {                                                              //~0329I~
         int ctrActive=BTMulti.getMemberConnected();                //~0329I~
         boolean rc=(ctrActive+1<PLAYERS);                          //~0329I~
@@ -1756,8 +1761,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     //*******************************************************************//~va49I~
     public void highlightCompReq(boolean PswOn)                    //~va49I~
     {                                                              //~va49I~
-        if (Dump.Y) Dump.println("GC.highlightCompReq sw="+PswOn); //~va49I~
+        if (Dump.Y) Dump.println("GC.highlightCompReq sw="+PswOn+",old="+swCompReqButtonStatus); //~va49I~//~va97R~
     	highlightButton(btnCompReq,PswOn);                          //~va49I~
+		swCompReqButtonStatus=PswOn;                               //~va97I~
     }                                                              //~va49I~
     //*******************************************************************//~va49I~
     private void highlightButton(Button Pbtn,boolean PswOn)        //~va49R~
@@ -1765,14 +1771,14 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (Dump.Y) Dump.println("GC.highlightButton sw="+PswOn);  //~va49I~
     	if (PswOn)                                                 //~va49I~
         {                                                          //~va49I~
-		    btnBackgroundColorCompReqDlg=Pbtn.getBackground();     //+va8BI~
+		    btnBackgroundColorCompReqDlg=Pbtn.getBackground();     //~va8BI~
         	int color=AG.getColor(R.color.action_cancel);          //~va49I~
 		    new UiFunc().setBackground(Pbtn,color);                //~va49R~
         }                                                          //~va49I~
         else                                                       //~va49I~
         {                                                          //~va49I~
-//  	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColor/*drawable*/);//~va49I~//+va8BR~
-    	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//+va8BI~
+//  	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColor/*drawable*/);//~va49I~//~va8BR~
+    	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//~va8BI~
         }                                                          //~va49I~
     }                                                              //~va49I~
 //    //*******************************************************************//~va70R~

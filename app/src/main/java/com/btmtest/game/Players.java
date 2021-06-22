@@ -1,5 +1,6 @@
-//*CID://+va8AR~: update#= 850;                                    //~va8AR~
+//*CID://+va91R~: update#= 855;                                    //~va91R~
 //**********************************************************************//~v101I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/05/04 va8A accept dupron for also robot                     //~va8AI~
 //2021/04/13 va84 try Robot also ron by 13/14 NoPair               //~va84I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
@@ -1020,11 +1021,11 @@ public class Players                                               //~v@@@R~
                             }                                      //~0404I~
                         }                                          //~0404I~
                     }                                              //~0401I~
-//TODO test         else                                           //~9302I~//~0404R~//+va8AR~
-//                  if (AG.swTrainingMode &&  AG.aAccounts.isRobotPlayer(Pplayer))//~va70I~//+va8AR~
-//                  {                                              //~va70I~//+va8AR~
-//                      chkDupRonRobotPlayAlone(Pplayer,tileComplete);//~va70I~//+va8AR~
-//                  }                                              //~va70I~//+va8AR~
+//TODO test         else                                           //~9302I~//~0404R~//~va8AR~
+//                  if (AG.swTrainingMode &&  AG.aAccounts.isRobotPlayer(Pplayer))//~va70I~//~va8AR~
+//                  {                                              //~va70I~//~va8AR~
+//                      chkDupRonRobotPlayAlone(Pplayer,tileComplete);//~va70I~//~va8AR~
+//                  }                                              //~va70I~//~va8AR~
                     else                                           //~va70I~//~va8AR~
                     if (AG.aAccounts.isRobotPlayer(Pplayer))       //~va8AR~
                     {                                              //~va8AR~
@@ -1605,6 +1606,13 @@ public class Players                                               //~v@@@R~
     {                                                              //~v@@@I~
     	return players[Pplayer].getEarthForAddKan();               //~v@@@I~
     }                                                              //~v@@@I~
+    //*********************************************************************//~va91I~
+    //*for IT                                                      //~va91I~
+    //*********************************************************************//~va91I~
+    public void addPair(int Pplayer,TileData[] Ptds,int Pflag)     //+va91R~
+    {                                                              //~va91I~
+    	players[Pplayer].addPair(Ptds,Pflag);               //+va91R~
+    }                                                              //~va91I~
     //*********************************************************************//~v@@6I~
     public TileData[] getKanAddEarth(int Pplayer,boolean PswRep)   //~v@@6R~
     {                                                              //~v@@6I~

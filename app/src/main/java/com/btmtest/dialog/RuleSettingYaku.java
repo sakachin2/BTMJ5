@@ -1,6 +1,8 @@
-//*CID://+va8kR~:                             update#=  504;       //+va8kR~
+//*CID://+va98R~:                             update#=  506;       //~va91R~//+va98R~
 //*****************************************************************//~v101I~
-//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//+va8kI~
+//2021/06/15 va98 allow multiwait for take with allInHand          //+va98I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/20 va8j KataAgari chk(No furiten chk) for also Human Take in PlayAloneNotifyMode//~va8jI~
 //2021/04/18 va8f KataAgari chk                                    //~va8fI~
 //2021/04/17 va8c for robot ron,2 hancontraint should ignore rinshan,haitei,one shot//~va8cI~
@@ -65,10 +67,11 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private USpinner spnRenhoRank;                                 //~v@@@I~
     private UButtonRG bg8Continue;                                 //~v@@@I~
     private URadioGroup rgYakuFix,rgYakuFix2;                      //~v@@@R~
+    private URadioGroup rgYakuFixMultiwaitTake;                    //~va91I~
 //  private UCheckBox  cbYakuFix1;                                 //~va11R~
     private UCheckBox  cbOpenReach,cbMissingReach,cbAnkanAfterReach;//~v@@@R~
     private UCheckBox  cbOneShot;                                  //~va11I~
-    private UCheckBox  cbYakuFixMultiwaitOK/*,cbYakuFixMultiwaitDrawOK*/;//~0208R~//+va8kR~
+    private UCheckBox  cbYakuFixMultiwaitOK/*,cbYakuFixMultiwaitDrawOK*/;//~0208R~//~va8kR~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
     private Prop curProp;                                          //~v@@@I~
@@ -137,8 +140,9 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cb8ContMulti=new UCheckBox(PView,R.id.cb8ContMulti);       //~v@@@I~
     //*YakuFix                                                     //~v@@@I~
         rgYakuFix=new URadioGroup(PView,R.id.rgYakuFix,0,rbsYakuFix);//~v@@@I~
+        rgYakuFixMultiwaitTake=new URadioGroup(PView,R.id.rgYakuFixMultiwaitTake,0,rbsYakuFixMultiwaitTake);//~va91I~
     	cbYakuFixMultiwaitOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitOK);//~0208I~
-//  	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~0208I~//+va8kR~
+//  	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~0208I~//~va8kR~
     //*YakuFix1                                                    //~va11I~
 //  	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~va11R~
     //*YakuFix2                                                    //~v@@@I~
@@ -222,8 +226,9 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cb8ContMulti.setStateInt(Pprop.getParameter(getKeyRS(RSID_8CONT_MULTI),1),swFixed);//~v@@@I~
     //*YakuFix                                                     //~v@@@I~
         rgYakuFix.setCheckedID(Pprop.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT),swFixed);//~v@@@I~
+        rgYakuFixMultiwaitTake.setCheckedID(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_TAKE),YAKUFIX_TAKE_DEFAULT),swFixed);//~va91I~
     	cbYakuFixMultiwaitOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),0),swFixed);//~0208I~
-//  	cbYakuFixMultiwaitDrawOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),swFixed);//~0208I~//+va8kR~
+//  	cbYakuFixMultiwaitDrawOK.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),swFixed);//~0208I~//~va8kR~
     //*YakuFix1                                                    //~va11I~
 //  	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),0),swFixed);//~va11R~
     //*YakuFix2                                                    //~v@@@I~
@@ -283,8 +288,9 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_8CONT_MULTI),cb8ContReset.getStateInt());//~v@@@I~
     //*YakuFix                                                     //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX),rgYakuFix.getCheckedID());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_YAKUFIX_TAKE),rgYakuFixMultiwaitTake.getCheckedID());//~va91I~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),cbYakuFixMultiwaitOK.getStateInt());//~0208I~
-//      changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),cbYakuFixMultiwaitDrawOK.getStateInt());//~0208I~//+va8kR~
+//      changed+=updateProp(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),cbYakuFixMultiwaitDrawOK.getStateInt());//~0208I~//~va8kR~
     //*YakuFix1                                                    //~va11I~
 //      changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~va11R~
     //*YakuFix2                                                    //~v@@@I~
@@ -658,6 +664,13 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.getYakuFix rc="+rc); //~va8cI~
         return rc;                                                 //~va8cI~
     }                                                              //~va8cI~
+    //**************************************                       //~va91I~
+    public static int getYakuFixMultiwaitTake()                    //~va91I~
+    {                                                              //~va91I~
+        int rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_TAKE),YAKUFIX_TAKE_DEFAULT);	//default=NO=0//~va91I~
+        if (Dump.Y) Dump.println("RuleSetting.getYakuFixTake rc="+rc);//~va91I~
+        return rc;                                                 //~va91I~
+    }                                                              //~va91I~
     //**************************************                       //~va8cI~
     public static boolean isYakuFixLast()                              //~va8cI~
     {                                                              //~va8cI~
@@ -708,14 +721,14 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitOK rc="+rc);//~va8fI~
         return rc;                                                 //~va8fI~
     }                                                              //~va8fI~
-//    //**************************************                       //~va8fI~//+va8kR~
-//    public static boolean isYakuFixMultiwaitDrawOK()               //~va8fI~//+va8kR~
-//    {                                                              //~va8fI~//+va8kR~
-//        int def=0;  //false                                        //~va8fI~//+va8kR~
-//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),def)!=0;//~va8fI~//+va8kR~
-//        if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitDawOK rc="+rc);//~va8fI~//+va8kR~
-//        return rc;                                                 //~va8fI~//+va8kR~
-//    }                                                              //~va8fI~//+va8kR~
+//    //**************************************                       //~va8fI~//~va8kR~
+//    public static boolean isYakuFixMultiwaitDrawOK()               //~va8fI~//~va8kR~
+//    {                                                              //~va8fI~//~va8kR~
+//        int def=0;  //false                                        //~va8fI~//~va8kR~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),def)!=0;//~va8fI~//~va8kR~
+//        if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitDawOK rc="+rc);//~va8fI~//~va8kR~
+//        return rc;                                                 //~va8fI~//~va8kR~
+//    }                                                              //~va8fI~//~va8kR~
     //**************************************                       //~va8jI~
     public static boolean isFuritenReachOK()                       //~va8jI~
     {                                                              //~va8jI~

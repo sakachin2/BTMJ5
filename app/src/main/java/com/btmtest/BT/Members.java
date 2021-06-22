@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#= 301;        //~va66R~
+//*CID://+va9iR~:                             update#= 308;        //~va9iR~
 //**********************************************************************//~v@@@I~
+//2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //**********************************************************************//~va46I~
@@ -41,8 +42,8 @@ public class Members                                                      //~v@@
     public static final int SS_OK=1;                               //~v@@@I~
     public static final int SS_NG=2;                               //~v@@@I~
                                                                    //~v@@@I~
-//  public static final String YOURNAME_TRAINING="--Me--";         //+va66R~
-    public static final String YOURNAME_TRAINING= GConst.robotYourNameDefault[0];//+va66I~
+//  public static final String YOURNAME_TRAINING="--Me--";         //~va66R~
+    public static final String YOURNAME_TRAINING= GConst.robotYourNameDefault[0];//~va66I~
                                                                    //~va66I~
     public MemberData[] MD;                                        //~v@@@R~
     private int maxMember;                                                 //~v@@@I~
@@ -1328,6 +1329,8 @@ public class Members                                                      //~v@@
         MD[0].status=MS_SERVER|Members.MS_LOCAL|Members.MS_PLAYALONE;//~va66R~
 		setIndexSL(0);	//idxServer and idxLocal                   //~va66I~
         setRuleSyncDateBTIO(0/*idx*/,AG.ruleSyncDate);             //~va66R~
+        for (int ii=1;ii<maxMember;ii++)                           //~va9iI~
+            MD[ii].status=0;    //to set type=AT_DUMMY ay Accounts.setMember//~va9iI~
     	if (Dump.Y) Dump.println("Members.setTrainingMode exit");  //~va66I~
     }                                                              //~va66I~
     //*************************************************************//~v@@@I~
@@ -1649,7 +1652,7 @@ public class Members                                                      //~v@@
         public boolean isSetupEnd()                                //~v@@@I~
         {                                                          //~v@@@I~
         	boolean rc=(status & MS_SETUPEND)!=0;                  //~v@@@I~
-    		if (Dump.Y) Dump.println("MemberData.isSetupEnd="+rc+",name="+name); //~v@@@I~//~9B19R~
+    		if (Dump.Y) Dump.println("MemberData.isSetupEnd="+rc+",name="+name+",status="+Integer.toHexString(status)); //~v@@@I~//~9B19R~//~va66R~
         	return rc;                                             //~v@@@I~
         }                                                          //~v@@@I~
         public boolean isLocal()                                   //~v@@@R~
@@ -1683,6 +1686,12 @@ public class Members                                                      //~v@@
         {                                                          //~v@@@I~
             return "name="+name+",addr="+addr+",yourname="+yourname+",macAddr="+macAddr+",status=0x"+Integer.toHexString(status)+",connectionMode="+connectionMode+",syncDate="+ruleSyncDate+",syncDateBTIO="+ruleSyncDateBTIO+",thread="+Utils.toString(thread)+",statusRuleSync="+statusRuleSynch+",SocketBT="+Utils.toString(socket)+",socketIP="+Utils.toString(socketIP)+",robot="+Utils.toString(robot)+",account="+(account==null ? "null" :account.name);//~v@@@R~//~9B03R~//~0108R~//~0110R~
         }                                                          //~v@@@I~
+        public boolean  isSocketConnected()                        //~va9iR~
+        {                                                          //~va9iR~
+            boolean rc=socket!=null || socketIP!=null;             //~va9iR~
+            if (Dump.Y) Dump.println("MemberData.isSocketConnected rc="+rc);//~va9iR~
+            return rc;                                             //~va9iR~
+        }                                                          //~va9iR~
     }//class                                                       //~1AbTI~//~v@@@I~
 }//class                                                       //~1AbTI~//~v@@@I~
 

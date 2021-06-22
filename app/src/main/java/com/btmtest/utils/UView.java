@@ -1,6 +1,6 @@
-//*CID://+va40R~: update#= 294;                                    //+va40R~
+//*CID://+va40R~: update#= 295;                                    //~va40R~
 //**********************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/11/06 va30 change greenrobot EventCB to URunnable           //~va30I~
 //**********************************************************************//~va30I~
 //utility around screen                                            //~v@@@I~
@@ -27,8 +27,8 @@ import android.view.View;
 
 import android.view.ViewGroup;
 import android.view.WindowManager;
-//import android.app.DialogFragment;                               //+va40R~
-import androidx.fragment.app.DialogFragment;                      //+va40I~
+//import android.app.DialogFragment;                               //~va40R~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.widget.LinearLayout;
 
 import java.util.EmptyStackException;
@@ -57,6 +57,7 @@ public class UView                                                 //~v@@@I~
 //*************************                                        //~@@@@I~
 	public static void fixOrientation(boolean Pfix)                      //~@@@@I~//~v@@@R~
     {                                                              //~@@@@I~
+        if (Dump.Y) Dump.println("UView:fixOrientation Pfix="+Pfix);//+va40I~
         int ori2=ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;      //~@@@@I~
     	if (Pfix)                                                  //~@@@@I~
         {                                                          //~@@@@I~

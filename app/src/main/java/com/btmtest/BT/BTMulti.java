@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#=  490;       //~va46R~//~va66R~
+//*CID://+va9gR~:                             update#=  492;       //+va9gR~
 //********************************************************************************//~v101I~
+//2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//+va9gI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
@@ -407,6 +408,8 @@ public class BTMulti                                               //~1AebR~
     //*******************************************************      //~1AebI~
     public void onConnected(BluetoothSocket Psocket,String Premotedevicename,String Plocaldevicename,Boolean Pswclient)//~1AebR~
     {                                                              //~1AebI~
+        if (Dump.Y) Dump.println("BTMulti:onConnected: reset swTrainingMode old="+AG.swTrainingMode);//+va9gI~
+        AG.swTrainingMode=false;                                   //+va9gI~
         String addr=Psocket.getRemoteDevice().getAddress();   //hardware addr//~9817R~
 //      setRuleOutOfSynch();                                       //~9405I~//~9B25R~
         setRuleOutOfSynch(Premotedevicename);                      //~9B25I~
@@ -456,8 +459,8 @@ public class BTMulti                                               //~1AebR~
     public void setTrainingMode()                                  //~va66R~
     {                                                              //~va66I~
     	if (Dump.Y) Dump.println("BTMulti:setTrainingMode");       //~va66I~
-//      int role=ROLE_SERVER;                                      //+va66R~
-        int role=ROLE_UNDEFINED;                                   //+va66I~
+//      int role=ROLE_SERVER;                                      //~va66R~
+        int role=ROLE_UNDEFINED;                                   //~va66I~
 	    localDeviceName=DEVICENAME_TRAINING;                       //~va66I~
         memberRole=role;                                           //~va66I~
         serverDeviceName=localDeviceName;                          //~va66I~
@@ -1270,7 +1273,7 @@ public class BTMulti                                               //~1AebR~
 //***************************************************************************//~9622I~
 	public static int getMemberConnected()                         //~9622I~
     {                                                              //~9622I~
-        if (Dump.Y) Dump.println("BTMulti.chkMemberConnected");    //~9622I~
+        if (Dump.Y) Dump.println("BTMulti.getMemberConnected");    //~9622I~//~va66R~
     	BTMulti btm=AG.aBTMulti;                                   //~9622I~
         if (btm==null)                                             //~9622I~
         	return 0;                                              //~9622I~
@@ -1300,8 +1303,8 @@ public class BTMulti                                               //~1AebR~
         if (members==null)                                         //~0119I~
         	return 0;                                              //~0119I~
         if (Dump.Y) Dump.println("BTMulti.resetMemberDisconnected before="+members.toString());//~0119I~
-//      if (AG.swTrainingMode)                                     //+va66R~
-//      	btm.setTrainingMode();                                 //+va66R~
+//      if (AG.swTrainingMode)                                     //~va66R~
+//      	btm.setTrainingMode();                                 //~va66R~
         int ctrMember=members.MD.length;                           //~0119I~
         int ctrInActive=0;                                         //~0119I~
         for (int ii=0;ii<ctrMember;ii++)                           //~0119I~

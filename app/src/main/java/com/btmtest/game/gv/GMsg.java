@@ -1,5 +1,6 @@
-//*CID://+va66R~: update#= 636;                                    //~va66R~
+//*CID://+va99R~: update#= 639;                                    //~va99R~
 //**********************************************************************//~v101I~
+//2021/06/17 va99 protect loop by msgBar size                      //~va99I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //utility around screen                                            //~v@@@I~
@@ -59,7 +60,7 @@ public class GMsg                                                  //~v@@@R~
 					new Tables(Utils.getStr(R.string.Label_Ron),GCM_RON),//~v@@@I~
 					new Tables(Utils.getStr(R.string.Label_Take),GCM_TAKE),//~v@@@I~
 					new Tables(Utils.getStr(R.string.UserAction_Reach),GCM_REACH),	//last is longest text //~v@@@I~//~9C02I~
-					new Tables(Utils.getStr(R.string.UserAction_Reach_Open),GCM_REACH_OPEN),	//last is longest text//+va66I~
+					new Tables(Utils.getStr(R.string.UserAction_Reach_Open),GCM_REACH_OPEN),	//last is longest text//~va66I~
                     };                                             //~1A08I~//~v@@@I~
     private static final String SHIFTCHAR="。、";                              //~0215R~//~0216I~
     private static final String SHIFTUP=".,";                      //~0216I~
@@ -72,7 +73,8 @@ public class GMsg                                                  //~v@@@R~
     private Paint paint;                                           //~v@@@I~
     private Paint paintHL;                                         //~v@@@I~
     private int textSize;                                          //~v@@@I~
-    private int msgbarLen,msgbarSize;                              //~v@@@I~
+//  private int msgbarLen,msgbarSize;                              //~v@@@I~//~va99R~
+    protected int msgbarLen,msgbarSize;   //protected for ITMock   //~va99I~
     private boolean swPortrait;                                    //~v@@@I~
     private Rect rectMsgbar;
     private int xxDraw,yyDraw;                                     //~v@@@I~
@@ -511,6 +513,11 @@ public class GMsg                                                  //~v@@@R~
 //          if (strsz<msgbarLen && hh<maxH)                        //~v@@@I~
             if (strsz<msgbarLen)                                   //~v@@@I~
                 break;                                             //~v@@@I~
+            if (sz<=0)                                             //~va99I~
+            {                                                      //~va99I~
+        		sz=maxH;                                           //~va99I~
+                break;                                             //~va99I~
+            }                                                      //~va99I~
             sz-=4;                                                 //~v@@@I~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("GMsg.adjustTextSizeHorizontal sz="+sz+",strsz="+strsz);//~v@@@I~
@@ -535,6 +542,11 @@ public class GMsg                                                  //~v@@@R~
             if (Dump.Y) Dump.println("GMsg.adjustTextSizeVerticalB2T sz="+sz+",strsz="+strsz+",maxH="+maxH+",magbarLen="+msgbarLen);//~0215I~
             if (strsz<msgbarLen)                                   //~0215I~
                 break;                                             //~0215I~
+            if (sz<=0)                                             //~va99I~
+            {                                                      //~va99I~
+        		sz=maxH;                                           //~va99I~
+                break;                                             //~va99I~
+            }                                                      //~va99I~
             sz-=4;                                                 //~0215I~
         }                                                          //~0215I~
         if (Dump.Y) Dump.println("GMsg.adjustTextSizeVerticalB2T sz="+sz+",strsz="+strsz);//~0215I~
@@ -578,6 +590,7 @@ public class GMsg                                                  //~v@@@R~
     //********************************************                 //~v@@@I~
     private void setMsgbarVertical(String Pmsg)                    //~v@@@R~
     {                                                              //~v@@@I~
+	    if (Dump.Y) Dump.println("GMsg.setMsgBarVertical swVerticalB2T="+swVerticalB2T+",msg="+Pmsg);//~va66I~
     	if (swVerticalB2T)	//landscape english                    //~0215I~
         {                                                          //~0215I~
 		    setMsgbarVerticalB2T(Pmsg);                            //~0215I~
@@ -617,7 +630,7 @@ public class GMsg                                                  //~v@@@R~
 //              shift=chkCharShift(Pmsg,ii,charW,charH);           //~0215R~//~0218R~
         	fpos[ii*2]=xx+shift.x;                                         //~v@@@I~//~0215R~
             fpos[ii*2+1]=yy+charH*ii-shift.y;                              //~v@@@I~//~0215R~
-	        if (Dump.Y) Dump.println("GMsg.getTextHeightVertical getTextBounds ii="+ii+",descent="+descent+",measure="+wwch+",charW="+charW+",shift="+shift+",xx="+xx);//~0215I~//~0216R~
+	        if (Dump.Y) Dump.println("GMsg.setTextHeightVertical getTextBounds ii="+ii+",descent="+descent+",measure="+wwch+",charW="+charW+",shift="+shift+",xx="+xx);//~0215I~//~0216R~//~va66R~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("GMsg.drawMsgbarVertical fpos="+Arrays.toString(fpos));//~v@@@I~//~0218R~
 //      Graphics.drawText(rectMsgbar,COLOR_BG_TABLE,Pmsg,fpos,paint);//~v@@@R~
@@ -697,7 +710,8 @@ public class GMsg                                                  //~v@@@R~
         rectB2TText.right=yy0+strw;                                //~0215I~
     }                                                              //~0215I~
     //********************************************                 //~v@@@I~
-    private void drawMsgbarVertical(String Pmsg)                   //~v@@@R~
+//  private void drawMsgbarVertical(String Pmsg)                   //~v@@@R~//+va99R~
+    protected void drawMsgbarVertical(String Pmsg)	//protected for IT Mock//+va99I~
     {                                                              //~v@@@I~
         int color=colorHL==0 ? COLOR_BG_TABLE : colorHL;           //~v@@@I~
 	    drawMsgbarVerticalWidthBG(Pmsg,color);                     //~v@@@I~
@@ -799,16 +813,23 @@ public class GMsg                                                  //~v@@@R~
     {                                                              //~v@@@I~
         int sz,charH;                                              //~v@@@R~
     //********************                                         //~v@@@I~
+	    if (Dump.Y) Dump.println("GMsg.adjustTextSizeVertical msg="+Pmsg);//~va66I~
         paint=new Paint();                                         //~v@@@I~
         int ctr=Pmsg.length();                                     //~v@@@I~
         sz=TEXT_SIZE;                                              //~v@@@I~
         for (;;)                                                   //~v@@@I~
         {                                                          //~v@@@I~
             charH=getTextHeightVertical(Pmsg,sz);  //0 if width over//~v@@@R~
+		    if (Dump.Y) Dump.println("GMsg.adjustTextSizeVertical charH="+charH+",ctr="+ctr+",msgbarLen="+msgbarLen);//~va66I~
             if (charH>0 && charH*ctr<msgbarLen)                    //~v@@@R~
             {                                                      //~v@@@I~
                 break;                                             //~v@@@I~
             }                                                      //~v@@@I~
+            if (sz<=0)                                             //~va99I~
+            {                                                      //~va99I~
+        		sz=TEXT_SIZE;                                      //~va99I~
+                break;                                             //~va99I~
+            }                                                      //~va99I~
             sz-=4;                                                 //~v@@@I~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("GMsg.adjustTextSizeVertical sz="+sz+",charH="+charH+",textH="+charH*ctr);//~v@@@R~
@@ -817,6 +838,7 @@ public class GMsg                                                  //~v@@@R~
     //*********************************************************    //~v@@@I~
     private int getTextHeightVertical(String Pmsg,int Psz)//~v@@@I~
     {                                                              //~v@@@I~
+	    if (Dump.Y) Dump.println("GMsg.getTextHeightVertical msg="+Pmsg+",sz="+Psz);//~va66I~
     	Rect r=new Rect();                                         //~v@@@I~
         paint.setTextSize(Psz);                                     //~v@@@I~
         int maxh=0;                                                //~v@@@R~
@@ -826,7 +848,7 @@ public class GMsg                                                  //~v@@@R~
             paint.getTextBounds(Pmsg,ii,ii+1,r);                   //~v@@@R~
             int h=r.bottom-r.top;                                      //~v@@@I~
             int w=(int)paint.measureText(Pmsg,ii,ii+1);                //~v@@@R~
-	        if (Dump.Y) Dump.println("GMsg.getTextHeightVertical getTextBounds ii="+ii+",h="+h+",charW="+charW+",measured="+paint.measureText(Pmsg,ii,ii+1));//~v@@@R~
+	        if (Dump.Y) Dump.println("GMsg.getTextHeightVertical getTextBounds ii="+ii+",w="+w+",h="+h+",charW="+charW+",measured="+paint.measureText(Pmsg,ii,ii+1));//~v@@@R~//~va99R~
             if (w>charW)                                           //~v@@@I~
             	return 0;	//try next size                        //~v@@@I~
             maxh=Math.max(h,maxh);                                 //~v@@@I~

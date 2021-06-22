@@ -1,6 +1,8 @@
-//*CID://+va18R~: update#= 356;                                    //+va18R~
+//*CID://+va9fR~: update#= 358;                                    //~va9fR~
 //**********************************************************************//~v101I~
-//2020/10/18 va18 option to diaplay WinAnyway button               //+va18I~
+//2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
+//                not work because onConfigurationChanged is not fired by RVERSE request//~va9fI~
+//2020/10/18 va18 option to diaplay WinAnyway button               //~va18I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //**********************************************************************//~va06I~
 package com.btmtest.dialog;                                          //~@@@@R~
@@ -23,11 +25,12 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     }                                                              //~9412I~
     //*********************************************************************//~9412I~
     public static final int    PSID_ORIENTATION             =1;    //~9412I~
+//  public static final int    PSID_ORIENTATION_PORT_REV    =2;    //+va9fR~
     public static final int    PSID_DEL_TILE_TAKEN          =10;   //~9412I~
     public static final int    PSID_NO_RELATED_RULE         =20;   //~9520I~
     public static final int    PSID_NOTAKE_BUTTON           =30;   //~9630I~
     public static final int    PSID_NODISCARD_BUTTON        =31;   //~9630I~
-    public static final int    PSID_NOANYWAY_BUTTON         =32;   //+va18I~
+    public static final int    PSID_NOANYWAY_BUTTON         =32;   //~va18I~
     public static final int    PSID_NOSOUND                 =40;   //~9C01I~
     public static final int    PSID_BEEPONLY                =41;   //~9C01I~
     public static final int    PSID_VOLUME                  =42;   //~9C02I~
@@ -36,11 +39,12 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     private static final PSEnumPair[] pairs=                       //~9412I~
     			{                                                  //~9412I~
     				new PSEnumPair(PSID_ORIENTATION          ,"Orientation"          ),//~9412I~
+//  				new PSEnumPair(PSID_ORIENTATION_PORT_REV ,"OrientationPortRev"   ),//+va9fR~
     				new PSEnumPair(PSID_DEL_TILE_TAKEN       ,"DeleteRiverTileTaken" ),//~9412I~
     				new PSEnumPair(PSID_NO_RELATED_RULE      ,"NoRelatedRule"        ),//~9520I~
     				new PSEnumPair(PSID_NOTAKE_BUTTON        ,"NoTakeButton"         ),//~9630I~
     				new PSEnumPair(PSID_NODISCARD_BUTTON     ,"NoDiscardButton"      ),//~9630I~//~9C01R~
-    				new PSEnumPair(PSID_NOANYWAY_BUTTON      ,"NoAnywayButton"       ),//+va18I~
+    				new PSEnumPair(PSID_NOANYWAY_BUTTON      ,"NoAnywayButton"       ),//~va18I~
     				new PSEnumPair(PSID_NOSOUND              ,"NoSound"              ),//~9C01I~
     				new PSEnumPair(PSID_BEEPONLY             ,"BeepOnly"             ),//~9C01I~
     				new PSEnumPair(PSID_VOLUME               ,"Volume"               ),//~9C02I~

@@ -1,5 +1,6 @@
-//*CID://+va8wR~: update#= 238;                                    //~va8wR~
+//*CID://+va96R~: update#= 240;                                    //~va96R~
 //**********************************************************************//~v101I~
+//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/05/01 va8w (Bug)Furiten chk err,pos should be not take point but discarded point.(ron may occur without take(after all pon/chii))//~va8wI~
 //2021/04/29 va8v (Bug)chk also not AllInHabd case for fixed1st for sakizukechk, and consider human also//~va8vI~
 //2021/04/29 va8u (Bug)ignore furiten/kataagari for Take not AllInHand,chk sakizuke condition only//~va8uI~
@@ -85,8 +86,8 @@ public class RoundStat                                               //~v@@@R~//
         swServer=Accounts.isServer();                              //~va60R~
 //  	if (!swThinkRobot)     //maintain non discardable by openreach and pao//~1201I~
 //      	return;                                                //~1201I~
-        if (!swServer)                                             //~va60I~//~1118M~
-        	return;                                                //~va60I~//~1118M~
+//      if (!swServer)                                             //~va60I~//~1118M~//~va96R~
+//      	return;                                                //~va60I~//~1118M~//~va96R~
         windRound=PgameCtrSet;                                     //~va60R~
         gameCtrGame=PgameCtrGame;                                  //~va60I~
         gameCtrDup=PgameCtrDup;                                    //~1117I~
@@ -216,8 +217,8 @@ public class RoundStat                                               //~v@@@R~//
     public void discard(int Pplayer,TileData Ptd)                  //~va60I~
     {                                                              //~va60M~
         if (Dump.Y) Dump.println("RoundStat.discard swThinkRobot="+swThinkRobot+",swServer="+swServer+",player="+Pplayer+",td="+Ptd.toString());//~va60I~//~va70R~
-    	if (!swServer)                                             //~va60I~
-        	return;                                                //~va60I~
+//  	if (!swServer)                                             //~va60I~//+va96R~
+//      	return;                                                //~va60I~//+va96R~
     	int eswn=Accounts.playerToEswn(Pplayer);                   //~va60R~
         int pos=RAUtils.getPosTile(Ptd);                                   //~va60M~//~1119R~
         itsExposed[pos]++;                                         //~va60M~
@@ -225,6 +226,9 @@ public class RoundStat                                               //~v@@@R~//
         RSP[eswn].ctrDiscardedAllDiscarded=ctrDiscardedAll;        //~va8wM~
         itsDiscardedAll[ctrDiscardedAll++]=pos;  //for furiten chk //~va8wI~
                                                                    //~1201I~
+    	if (!swServer)                                             //+va96I~
+        	return;                                                //+va96I~
+                                                                   //+va96I~
     	if (!swThinkRobot)                                         //~1201M~
         	return;                                                //~1201M~
                                                                    //~1201I~
@@ -766,6 +770,11 @@ public class RoundStat                                               //~v@@@R~//
                                                                    //~1201I~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.discard eswn="+eswn+",swRobot="+swRobot+",swThinkRobot="+swThinkRobot+",eswn="+eswn+",Ppos="+Ppos+",ctrDiscarded="+ctrDiscarded+",Ptd="+Ptd.toString());//~va60R~//~1114R~//~1128R~//~1201R~//~1223R~
             itsDiscarded[Ppos]++;   //for furiten chk     //for also humen         //~va60I~//~1223I~
+    		if (!swServer)                                         //+va96I~
+            {                                                      //+va96I~
+		   		itsDiscardedSelf[ctrDiscarded++]=Ppos; //players discarded in the seq of discard,to chk furiten from reach/my discarded//+va96I~
+        		return;                                            //+va96I~
+            }                                                      //+va96I~
 	        setStatistic(itsDiscardStatus,Ppos,1/*Pctr*/);  //for also human        //~1217I~//~1223I~
 	        ctrHand=AG.aPlayers.getHands(player).length;  //agter removed from Hand by Pon/Kan/Chii//~1201I~//~1223M~
 //      	ctrDiscarded++;                                        //~1114I~//~1201M~//~1223M~//~1311R~
@@ -833,7 +842,7 @@ public class RoundStat                                               //~v@@@R~//
             if (!swRobot)                                          //~va8uI~
         		getItsHandYou();                                   //~va8uI~
 	        rc=getCtrValueWordSameInHand();  	//pair ctr of WGR, round, wind//~va8uI~
-//          rc+=getCtrValueWordAnkan();  //1st kan is counted at takeKan, for robot allow 1st call only as Fisrt//+va8wR~
+//          rc+=getCtrValueWordAnkan();  //1st kan is counted at takeKan, for robot allow 1st call only as Fisrt//~va8wR~
             if (Dump.Y) Dump.println("RoundStat.RSPlayer.getCtrFixedInHand rc="+rc);//~va8uI~//~va8wR~
             return rc;                                             //~va8uI~
         }                                                          //~va8uI~
@@ -1089,7 +1098,8 @@ public class RoundStat                                               //~v@@@R~//
             return rc;                                             //~1220I~
         }                                                          //~1220I~
         //**************************************************************************//~1311I~
-        //*rc:-1:discarde before reach, >1:discarded some time, =0:not reach done//~1311I~
+        //*from RADSOther.chkSafe                                  //+va96R~
+        //*rc:-1:discarde before reach, >1:discarded some time, =0:not reach done//+va96I~
         //**************************************************************************//~1311I~
         public int chkFuritenSelfBeforeReach(int Ppos)         //~1311I~
         {                                                          //~1311I~

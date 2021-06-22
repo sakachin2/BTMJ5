@@ -1,4 +1,4 @@
-//*CID://+va8xR~: update#= 523;                                    //~va8xR~
+//*CID://+va8xR~: update#= 524;                                    //~va8xR~
 //**********************************************************************//~v@@@I~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -116,7 +116,8 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO3_DEAL_ATODUKE_TAKE_YAKUHAI   =  0x00400000;//~va66I~
     public static final int TO3_ROBOT_DISCARD_TILE          =  0x00800000;//~va8xI~
     public static final int TO3_DEAL_ANKAN_FIX1             =  0x01000000;//~va8xI~
-    public static final int TO3_DEAL_SAKIDUKE_2HAN_TAKE     =  0x02000000;//+va8xI~
+    public static final int TO3_DEAL_SAKIDUKE_2HAN_TAKE     =  0x02000000;//~va8xI~
+    public static final int TO3_IT_RARON                    =  0x04000000;//+va8xI~
     public static int option2;                                     //~v@@@I~
     public static int option3;                                     //~va66I~
     public static int firstDealer;                                 //~v@@@I~

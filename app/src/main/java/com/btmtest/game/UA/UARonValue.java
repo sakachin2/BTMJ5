@@ -1,5 +1,6 @@
-//*CID://+va8kR~: update#= 938;                                    //~va8kR~
+//*CID://+va9bR~: update#= 940;                                    //~va9bR~
 //**********************************************************************//~v101I~
+//2021/06/17 va9b (bug)of kataagarichk by va8j. Dump when reach if red dora use//~va9bI~
 //2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
 //2021/04/20 va8i KataAgari chk for also Robot Take                //~va8iI~
@@ -158,7 +159,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         return rc;
     }                                                              //~va11I~
     //*************************************************************************//~va8jI~
-    //*from RAReach.chkMultiWait to chk kataagari; dupCtr was already setup//~va8jR~
+    //*from RAReach.chkMultiWait(<--UAReach.chkTenpai) to chk kataagari; dupCtr was already setup//~va8jR~//+va9bR~
     //*rc=-1:not ronnable,1:1han constraint, 2:2han constrint, 0 ok//~va8jI~
     //*************************************************************************//~va8jI~
     public int chkRankReachExceptDora(int Pplayer,TileData PtdWin,boolean PswCheckFix2,int[] PitsHand)//~va8jR~
@@ -273,7 +274,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private RonResult getValueRobot(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~va60R~//~1130R~//~va60R~
     {                                                              //~va60I~
 //      swRonnable=true;                                           //~va60I~//~1130R~
-        if (Dump.Y) Dump.println("UARonValue.getValueRobot player="+Pplayer+",swTaken="+PswTake+",PtdRon="+TileData.toString(PtdRon));//~va60I~//~1130R~//~1206R~//~va8fR~//~va8jR~//+va8kR~
+        if (Dump.Y) Dump.println("UARonValue.getValueRobot player="+Pplayer+",swTaken="+PswTake+",PtdRon="+TileData.toString(PtdRon));//~va60I~//~1130R~//~1206R~//~va8fR~//~va8jR~//~va8kR~
 //  	swAllInHand=isAllInHand();	//UARonChk, earth is ankan only//~va60R~
     	swAllInHand=isAllInHand(Pplayer);	//UARonChk, earth is ankan only//~va60I~
 //      sw1stTake=CompReqDlg.chk1stTake();	//parent 1st take or child 1st take//~va60R~
@@ -333,6 +334,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 		ctrPair=AG.aPlayers.getCtrPair(Pplayer);       //ctr of PairOPnEarth//~va60I~
 //      TileData[] tds=AG.aPlayers.getHands(Pplayer);       //including Ron tile//~va60I~//~va8jR~
 //      tdsHand=tds;	//not including PtdEmulated but may not required because it is not red5; checked at UARonDataTree.chkRedTile//~va60R~
+        TileData[] tds=AG.aPlayers.getHands(Pplayer);       //including Ron tile//~va9bI~
+        tdsHand=tds;	//not including PtdEmulated but may not required because it is not red5; checked at UARonDataTree.chkRedTile//~va9bI~
         tdssEarth=AG.aPlayers.getEarth(Pplayer);                   //~va60I~
 //      if (Dump.Y) Dump.println("UARonValue.getValueReach hand="+TileData.toString(tds));//~va60I~//~va8jR~
         if (Dump.Y) Dump.println("UARonValue.getValueReach earth="+TileData.toString(tdssEarth));//~va60I~//~va8jR~

@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.12</string>
+    <string name="app_version">v1.13</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -373,7 +373,7 @@
     <string name="Desc_Bird">"  = Grilled chicken : The mark disappears by win and get off the penalty."</string>
     <string name="Label_BirdPayToPlace">Divide</string>
     <string name="Label_BirdPayToEach">To All</string>
-    <string name="Label_BirdRule2">Out of score placing. Not imposed when robot included.</string>
+    <string name="Label_BirdRule2">Out of score placing. Not imposed when robot is \"DiscardAllDrawn\".</string>
     <string name="Label_MinusStopCharge">Adjust for negative score</string>
     <string name="Label_Yes">Yes</string>
     <string name="Label_No">No</string>
@@ -389,15 +389,14 @@
     <string name="NotAgreed">Inv.</string>
     <string name="Agreed">Agreed</string>
     <string name="NoGame">DrawWithNotTenpai</string>
-    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.
-					 Warning:Riichi accepted even if your hand is premature.</string>
+    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.</string>
     <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
     <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
     <string name="Label_ReachLimitOpenChombo">Continue as Chombo</string>
-    <string name="Label_ReachLimitOpenRobot">Open for Robot game</string>
+    <string name="Label_ReachLimitOpenRobot">OpenRiichi for robot game</string>
     <string name="Label_ReachLimitOpenRobotNone">Disable</string>
     <string name="Label_ReachLimitOpenRobotSkip">Ignore the discard.</string>
-    <string name="Label_ReachLimitOpenRobotNormal">Pay normal.</string>
+    <string name="Label_ReachLimitOpenRobotNormal">Pay usually.</string>
     <!--string name="Label_OpenReachRon">Pay Yakuman for OpenRiichi-er\'s ron</string-->
     <string name="Label_Drawn99Tile">9-9Tile</string>
     <string name="Label_Drawn3Ron">3Win</string>
@@ -575,12 +574,14 @@
 <!--BTMJ3-->
     <string name="Label_OrientationPortrait">Portrait</string>
     <string name="Label_OrientationLandscape">Landscape</string>
-    <string name="Label_OrientationPortraitReverse">Portrait-Reverse</string>
-    <string name="Label_OrientationLandscapeReverse">Landscape-Reverse</string>
+    <string name="Label_OrientationPortraitReverse">Port-Rev</string>
+    <string name="Label_OrientationLandscapeReverse">Land-Rev</string>
     <string name="Label_OrientationSelectMenu">SelectEachTime</string>
+    <!--string name="Label_OrientationAtEndOfLandscape">Top panel</string-->
 	<string-array name="OrientationMenuDlg_Items"> 
 		<item>@string/Label_OrientationPortrait</item>
 		<item>@string/Label_OrientationLandscape</item>
+		<item>@string/Label_OrientationLandscapeReverse</item>
 		<item>@string/Cancel</item>
 	</string-array>
 	<string-array name="ActionMenuDlg_Items"> 
@@ -713,8 +714,8 @@
     <string name="UserAction_Ron"    >Win</string>
     <string name="UserAction_Discard">Discard</string>
     <string name="UserAction_Reach_Open">OpenRiichi</string>
-    <string name="UserAction_Reach_Open_YN">Allow Open</string>
-    <string name="Desc_OpenReach">Additional setting bellow if Robot included</string>
+    <string name="UserAction_Reach_Open_YN">Allow OpenRiichi</string>
+    <string name="Desc_OpenReach">(Set additional options bellow if Robot is included.)</string>
     <string name="UserAction_Reach_Missing_YN">Allow Furiten</string>
     <string name="UserAction_ReachReset">Canceled Riichi.</string>
     <string name="Label_AnkanAfterReach">Allow Ankan after Riichi.</string>
@@ -743,7 +744,8 @@
 		<item>Suspend process</item>
 		<item>Gameover</item>
 		<item>Connection failure</item>
-		<item>Win anyway</item>
+		<item>Win Anyway</item>
+		<item>Riichi Anyway</item>
 		<item>Prefeence</item>
 		<item>Help for this menu</item>
 	</string-array>
@@ -1030,7 +1032,7 @@
 						</string>
     <string name="Desc_CheckRonable">Furiten not checked.</string>
     <string name="Desc_CheckRonValue">You can correct score on Dialog.</string>
-    <string name="Desc_CheckReach">Chk Tenpai pattern at Riich, FuritenRiich is allowed.</string>
+    <string name="Desc_CheckReach">Chk Tenpai pattern at Riich. Furiten, 2han-constraint is also checked.</string>
     <string name="Label_S2P">Fraction</string>
     <string name="Label_RankMUp">Rounded Mangan</string>
     <string name="Desc_RankMUp">(30fu4han and 60fu3han is Mangan）</string>
@@ -1074,7 +1076,8 @@
     <string name="Label_SoundVolume">Vol.</string>
     <string name="Label_Robot">Robot</string>
     <string name="Label_MinusRobot">Gameover also by Robot\'s minus score if Tobi is ON.</string>
-    <string name="Label_ThinkRobot">Novices. If Off, simply discard the taken.</string>
+    <string name="Label_ThinkRobot">Novice.</string>
+    <string name="Desc_ThinkRobot">" (If Off, simply discard the taken.)"</string>
     <string name="Label_RobotPay">Burden for Robot:</string>
     <string name="Label_RobotPaySprit">Divide</string>
     <string name="Label_RobotPayDependingScore">In proportion by score(See Help).</string>
@@ -1118,24 +1121,25 @@
     <string name="Label_YakuFixFirst">First only</string>
     <string name="Label_YakuFixLast">Finally</string>
     <string name="Label_YakuFixMiddle">Middle OK</string>
-    <string name="Label_YakuFixMultiwaitOK">Multi tile wait Ron</string>
-    <string name="Label_YakuFixMultiwaitDrawOK">Multi tile wait Draw OK</string>
-    <string name="Desc_YakuFix">Finally:Accept winning hand if it has Yaku finally.
-    							 Middle:Allow also not first calling a tile as first call.
-    							 First only:Required first calling a tile is related a Yaku of winning hand
-									 OR tiles in hand has Yaku or fixed by not multiple tile wait at Ron.\n
-                                 Muti tile wait Ron:For \"Finally\" only, accept multiple tile wait if winning tile has Yaku. Be careful of temporary furiten.\n     
-                                 Muti tile wait Draw OK:For \"Middle\" and \"First\" only, accpt multiple tile wait if winning tile drawn has Yaku.
-                                 (OK for Self-Draw regardless of this option and Furiten)
+    <string name="Label_YakuFixMultiwaitOK">For \"Finally\", multi tile wait OK for both Self-Draw and Ron</string>
+    <string name="Label_YakuFixMultiwaitTake">Multi tile wait when Self-Drawn</string>
+    <string name="Label_YakuFixMultiwaitOKTake">All OK</string>
+    <string name="Label_YakuFixMultiwaitOKTakeAllInHand">OK if no Earth</string>
+    <string name="Label_YakuFixMultiwaitOKTakeNo">NG</string>
+    <!--string name="Label_YakuFixMultiwaitDrawOK">Multi tile wait Draw OK</string-->
+    <string name="Desc_YakuFix">" Finally : Accept winning hand if it has Yaku finally.\n"
+    							"Middle : Allow also fixing Yaku not at 1st call but not last.\n"
+    							"First only : Required all calling of tile are related the Yaku of winning hand until fixing it. OR tiles in hand already has a Yaku fixed.\n"
+                                 (Sell Help for details.)
                                  </string>
-    <string name="Label_YakuFix1">1-han constraint</string>
-    <string name="Label_YakuFix1Yes">Do check</string>
+    <string name="Label_YakuFix1">Check 1-han constraint</string>
+    <string name="Label_YakuFix1Yes">Yes</string>
     <string name="Desc_YakuFix1"> (If off, can make 0 han err Ron.)</string>
     <string name="Label_YakuFix2">2-han constraint</string>
     <string name="Label_YakuFix2Stick4">From 4 CounterSticks</string>
     <string name="Label_YakuFix2Stick5">From 5</string>
     <string name="Label_YakuFix2Last">Allows that Yaku is composed finally</string>
-    <string name="Desc_YakuFix2">Effective only when \"1-han constraint\" is ON.\n
+    <string name="Desc_YakuFix2">Effective only when \"1-han constraint\" of \"Operation\" is ON .\n
 			If \"Fix Yaku\" option is NOT \"Finally\", ignore accidental Yaku such as Riichi-OneShot, Final Tile, Chankan, and  RinshanKaiho.
 			If "Fix Yaku is \"Finally\", those are all allowed.
             Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not allowed
@@ -1156,7 +1160,7 @@
 				&lt;span style="background-color:#f0e68c;"&gt;
 					yellowish brown
 				&lt;/span&gt;
-					 are checked if Setting option of \"Evaluate Point by APP\" is on.
+					 are checked depending Setting option of \"Evaluate Point by APP\" etc.
 		</string>
     <string name="Label_Kuitan">Kuitan</string>
     <string name="Label_DoublePillow">By Wind+Round, 4 fu for Pair</string>
@@ -1239,10 +1243,11 @@
     <string name="Info_GameEndDeclarePending">Final hand, Gameover by declaration of dealer\'s Tenpai.</string>
     <string name="Label_YakuStandard">Standard</string>
     <string name="Desc_YakuStandard">(see another topic for 7 pairs)</string>
-    <string name="Label_YakuStandardList">Tanyao, Pinfu, 1 identical sequence, Last tile, Win by KanDraw, Double-Riichi,Robbing a Kan\n
-					All triplet, 3 color straight, Straight, Terminal and honor, 3 closed triplet, Little 3 dragons, All terminals and honors, 3 color triplet,3 Kans\n
-					half flush, Terminal in each set, 2 identical sequences\n
-					Flush</string>
+    <string name="Label_YakuStandardList"> (1) Riichi, Value tiles, Conceild Self-Draw, Tanyao(All Simples), Pinfu(All Runs), Double Run(1 identical sequence), Final Tile Win, Win by Kan-Draw, Double-Riichi(+1), Robbing a Kan.\n
+					(2) All Triples, 3 Color Runs, Straight, Mixed outside hand, 3 Conceiled Triples, Little 3 dragons(+2), All Terminals and Honors, 3 Color Triples,3 Kans.\n
+					(3) Half flush, Pure outside hand, 2 Double Runs(2 identical sequences).\n
+					(6) Full Flush.\n
+					(Note)---(n) : han(=rank). Usualy 1 rank down if not All-In-Hand with some exception. (+n): always along with other rank.</string>
     <string name="Desc_YakuLocal">See also topic of Yakuman, Hand of man, NagasiMangan. Otherwise, take agree in the group beforehand.</string>
     <string name="Label_SpritPos">Wareme(割れ目)</string>
     <string name="Desc_SpritPos0">" = SpritPos : You will see \"割\" in End-of-Hand dialog."</string>
@@ -1440,6 +1445,12 @@
     <string name="AE_SameMeld">Violation of Same-Meld, select the other Tile.</string>
     <string name="AE_RankFix1">Hand required at least 1 han.</string>
     <string name="AE_RankFix2">Hand required at least 2 han.</string>
+    <string name="AE_MultiWait_Furiten">Furiten(already discarded winning tile)</string>
+    <string name="AE_MultiWait_FixFirst">\"Fix First only\" rule violation</string>
+    <string name="AE_MultiWait_FixMiddle">\"Fix Middle\" rule violation</string>
+    <string name="AE_MultiWait_Constraint1">1-han constraint err</string>
+    <string name="AE_MultiWait_Constraint2">2-han constraint err</string>
+    <string name="AE_MultiWait_Multiple">Not fixed multiple winning tiles</string>
     <string name="AE_RankFix2MultiWait">Some win tiles are 2 han constraint err.</string>
     <string name="Label_Anyway">Win-A</string>
     <string name="Warn_BlockedNeedRonAnyway">Use not \"Win\" but \"Win anyway" to proceed Win.</string>
@@ -1478,8 +1489,13 @@
     	Member = %1$s, Match = %2$d （ From %3$s）
 		</string>
     <string name="Label_ShowAnywayBtn">Show \"Win-A\"(Win Anyway)</string>
-    <string name="Desc_ShowAnywayBtn">Use to call win for irregular pattern except \"7 pairs\"、\"13 Orphans\".</string>
+    <string name="Desc_ShowAnywayBtn">Use to call win for irregular pattern except \"7 pairs\"、\"13 Orphans\". Or used when you may not agree on APP\'s decision for violation of Furiten and Fix-First.</string>
     <string name="Err_BS_NotCompleteSelected">Select a game overed.</string>
     <string name="Err_BSMultipleSelected">Select only one game.</string>
     <string name="AE_FuritenReach">Furiten Riichi</string>
+    <string name="Label_ChkMultiWait">Check \"Furiten and \"\"Fix Yaku\" rule violation</string>
+    <string name="Label_ChkMultiWaitYes">Yes</string>
+    <string name="Desc_ChkMultiWait">Checked at \"Win\" is pushed. \"1-han constraint\" is also checked. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to APP\'s decision.
+    			Regardless this setting \"ron-able\" is notified when play-alone mode. Robot calls \"Win\" after cheking this rule.</string>
+    <string name="AE_NoReachErrToForce">No Riichi error to force</string>
 </resources>

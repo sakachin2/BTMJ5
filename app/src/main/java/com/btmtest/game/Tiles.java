@@ -1,4 +1,4 @@
-//*CID://+va8xR~: update#= 554;                                    //~va8xR~
+//*CID://+va8xR~: update#= 556;                                    //~va8xR~
 //**********************************************************************//~v101I~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -791,13 +791,13 @@ public class Tiles                                 //~v@@@R~
         if (Pcase==61) //(61)rontaken double reach not oneshot //~1420I~//~1421R~
         {                           //robot east double reach     //~1420I~//~1421R~
         	itsDeal=new int[][]{                                   //~1420I~
-            						{18,19,20,  1, 2, 3,  4, 5, 6, 18,19, 8 },//~1420I~//~1427R~
-            						{ 1, 2, 3,  4, 5, 6,  9, 9,11, 21,22,23 },//~1420I~//~1427R~
+            						{19,20,21,  1, 2, 3,  4, 5, 6, 18,19, 8 },//~1420I~//~1427R~//+va8xR~
+            						{ 1, 2, 3,  4, 5, 6,  9, 9,11, 16,22,23 },//~1420I~//~1427R~//+va8xR~
             						{ 4, 5, 6, 18,19,30, 21,22,24,  0, 5, 6 },//~1420I~//~1427R~
             						{ 0, 2, 3, 21,22,23, 18,19,15, 20,22,23 },//~1420I~
             					};                                 //~1420I~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1420I~
-        	itsDealTake=new int[]{ 8,30,27,25};                    //~1420I~//~1421R~//~1427R~
+        	itsDealTake=new int[]{15,30,27,25};                    //~1420I~//~1421R~//~1427R~//~va8xR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1420I~
         	itsDealTake=new int[]{20,29,28,28};                    //~1420I~//~1427R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1420I~
@@ -1241,8 +1241,8 @@ public class Tiles                                 //~v@@@R~
         {                                                          //~1328I~
     	    tc=0;                                                  //~va8xI~
         	if (PswMulti)                                          //~1328I~//~1331R~//~va8xR~
-    	        tc=ii==3 ? 1 : 0;    //  for human=2                 //~1328R~//+va8xR~
-//  	        tc=(ii>=2) ? 1 : 0;  //for human=1                 //+va8xI~
+    	        tc=ii==3 ? 1 : 0;    //  for human=2                 //~1328R~//~va8xR~
+//  	        tc=(ii>=2) ? 1 : 0;  //for human=1                 //~va8xI~
             else                                                   //~1328I~//~1331R~//~va8xR~
     	        tc=ii;                                             //~1328I~//~1331R~//~va8xR~
             for (int kk=0;kk<12;kk++)                              //~1328I~

@@ -1,5 +1,7 @@
-//*CID://+va66R~:                             update#= 249;        //~va66R~
+//*CID://+va9fR~:                             update#= 271;        //~va9fR~
 //**********************************************************************//~@@@@I~
+//2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
+//                not work because onConfigurationChanged is not fired by RVERSE request//~va9fI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/08 va41 (Bug) coding Main.onPause had call CSI.onResume  //~va41I~
 //2020/11/06 va30 change greenrobot EventCB to URunnable           //~va30I~
@@ -14,6 +16,7 @@ import android.graphics.Point;
 import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity
     public static final int PERMISSION_LOCATION=1;                 //~9930I~
     public static final int PERMISSION_EXTERNAL_STORAGE=2;         //~9B09I~
                                                                    //~8C29I~
+    public static final int TOP_ORIENTATION=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;//~va9fR~
+                                                                   //~va9fI~
 //  private Button btnSettings,btnConnect,btnHelp,btnStartGame;    //~8C29R~//~0119R~
     private Button btnHistory;                                     //~9613I~
     private View  btnsMain,titleMain;                              //~8C29R~
@@ -92,6 +97,8 @@ public class MainActivity extends AppCompatActivity
 //  private int reverseOrientation=-1;                             //~9610R~
     private boolean swPaused,swIOErr,swStopped;                    //~9A22R~
     private String msgIOErr;                                       //~9A22I~
+//    private OrientationEventListener listenerOrientationChanged; //TODO test//+va9fR~
+//  private int orientationBeforeGame;	//0/1:land/port, 8/9:reverse, 6/7:sensor//~va9fR~
     //***********************************************************  //~8B05I~
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -118,6 +125,15 @@ public class MainActivity extends AppCompatActivity
 //            hideNavigationBar(true);      //TODO                   //~8B26R~//~8C29R~
 //  	addButtons();    //should be after addView(gameView) to show over gameView//~8C29R~
         new TestOption();                                     //~9103R~//~9515R~
+//        listenerOrientationChanged=new OrientationEventListener(this)   //TODO test//+va9fR~
+//        {                                                        //+va9fR~
+//            @Override                                            //+va9fR~
+//            public void onOrientationChanged(int Pori)           //+va9fR~
+//            {                                                    //+va9fR~
+////              orientationChanged(Pori);                        //+va9fR~
+//                if (Dump.Y) Dump.println("MainActivity.onOrientationChanged Pori="+Pori+",config="+AG.resource.getConfiguration().orientation);//+va9fR~
+//            }                                                    //+va9fR~
+//        };                                                       //+va9fR~
     	initApp();                                                 //~9106I~
     }
 	//*************************                                    //~8B06I~
@@ -223,6 +239,7 @@ public class MainActivity extends AppCompatActivity
         swPaused=false;                                            //~9A22I~
       try                                                          //~9719I~
       {                                                            //~9719I~
+//    	listenerOrientationChanged.enable(); //TODO test           //+va9fR~
         AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~
         AG.aBTI.onResume();	//set BTHandler activity               //~@@@@I~
         WDI.onResume();		//register receiver                    //~0113I~
@@ -260,6 +277,7 @@ public class MainActivity extends AppCompatActivity
         AG.aBTI.onPause();                                         //~@@@@I~
 	    WDI.onPause();		//unregister receiver                  //~0113I~
         super.onPause();                                           //~8B05I~
+//    	listenerOrientationChanged.disable();    //TODO test       //+va9fR~
         swPaused=true;                                             //~9A22I~
 //          registerEventBus(false);            //unregister at onDestroy//~8C30I~//~@@@@M~//~9719R~//~9A22R~
             if (AG.aGC!=null)                                          //~9101I~//~9719R~
@@ -457,6 +475,7 @@ public class MainActivity extends AppCompatActivity
             onConnect();                                           //~9106I~
             break;                                             //~8B05I~//~8C29R~
         case R.id.StartGame:                                       //~8C29I~
+            if (Dump.Y) Dump.println("MainActivity.onClickButton:startGame config.orientation="+AG.resource.getConfiguration().orientation);//~va9fM~
     	    Status.resetEndgameSomeone();                          //~9B20I~
     		AG.resumeHD=null;                                      //~9901I~
 	    	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))        //~0124I~
@@ -750,6 +769,7 @@ public class MainActivity extends AppCompatActivity
         }                                                          //~9411I~
 //    	mainView.hide(frameLayoutSizePortrait);                                //~9103I~//~9104R~//~9411R~//~9620R~
       	mainView.hideTopView(AG.portrait ? frameLayoutSizePortrait : frameLayoutSizeLandscape);//~9411R~//~9620R~
+//      orientationBeforeGame=AG.resource.getConfiguration().orientation;//~va9fR~
 	    new GC(frameLayout);    //game controler               //~9101I~//~@@@@R~
         AG.aGC.startGame();                                        //~8C30R~
     }                                                              //~8C30I~
@@ -795,12 +815,14 @@ public class MainActivity extends AppCompatActivity
     {                                                              //~9101I~
         int rc=0;                                                  //~9101I~
         int curOri=AG.resource.getConfiguration().orientation;     //~9610I~
-        if (Dump.Y) Dump.println("MainActivity.changeOrientation req="+PrequestedOrientation+",current="+curOri);//~9610I~
+        if (Dump.Y) Dump.println("MainActivity.changeOrientation swPortrait="+AG.portrait+",req="+PrequestedOrientation+",current="+curOri);//~9610I~//~va66R~//~va9fR~
         switch(PrequestedOrientation)                              //~9101I~
         {                                                          //~9101I~
         case PS_ORIENTATION_PORTRAIT:                              //~9101I~//~9412R~
-            if (AG.portrait)                                       //~9610R~
+//          if (AG.portrait)                                       //~9610R~//~va9fR~
 //          if (curOri==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)  //~9610R~
+//          if (curOri==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)  //~va9fR~
+            if (AG.portrait)                                       //~va9fI~
                 break;                                             //~9101I~
             requestChangeOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//~9101I~
             rc=1;                                                  //~9101I~
@@ -818,14 +840,18 @@ public class MainActivity extends AppCompatActivity
 //                requestChangeOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);//~9610R~
 //                reverseOrientation=-1;                           //~9610R~
 //            }                                                    //~9610R~
-            if (AG.portrait)   //could not change standard<-->reverse//~9610I~
+//          if (AG.portrait)   //could not change standard<-->reverse//~9610I~//~va9fR~
+//          if (curOri==ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT)//~va9fR~
+            if (AG.portrait)   //could not change standard<-->reverse//~va9fI~
                 break;                                             //~9610I~
             requestChangeOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);//~9610I~
             rc=1;                                                  //~9610I~
             break;                                                 //~9610I~
         case PS_ORIENTATION_LANDSCAPE:                             //~9101I~//~9412R~
-            if (!AG.portrait)                                      //~9101R~//~9610R~
+//          if (!AG.portrait)                                      //~9101R~//~9610R~//~va9fR~
 //          if (curOri==ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) //~9610R~
+//          if (curOri==ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) //~va9fR~
+            if (!AG.portrait)                                      //~va9fI~
                 break;                                             //~9101I~
             requestChangeOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//~9101I~
             rc=1;                                                  //~9101I~
@@ -834,7 +860,9 @@ public class MainActivity extends AppCompatActivity
 //            if (curOri==ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE)//~9610R~
 //                break;                                           //~9610R~
 //            requestChangeOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);//~9610R~
-            if (!AG.portrait)                                      //~9610I~
+//          if (!AG.portrait)                                      //~9610I~//~va9fR~
+//          if (curOri==ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE)//~va9fR~
+            if (!AG.portrait)                                      //~va9fI~
                 break;                                             //~9610I~
             requestChangeOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);//~9610I~
             rc=1;                                                  //~9610I~
@@ -850,14 +878,14 @@ public class MainActivity extends AppCompatActivity
 	//*************************************************************************//~9101I~
     public void requestChangeOrientation(int Porientation)         //~9101I~
     {                                                              //~9101I~
-        if (Dump.Y) Dump.println("MainActivity.requestChangeOrientation ori="+Porientation);//~9101I~
+        if (Dump.Y) Dump.println("MainActivity.requestChangeOrientation setRequestOrientation Activiy orientation="+Porientation);//~9101I~//~va9fR~
         setRequestedOrientation(Porientation);                     //~9101I~
     }                                                              //~9101I~
 //*************************                                        //~1120I~//~9101I~
     @Override                                                      //~1120I~//~9101I~
     public void onConfigurationChanged(Configuration Pcfg)         //~1120I~//~9101I~
 	{                                                              //~1120I~//~9101I~
-        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged curOri="+AG.resource.getConfiguration().orientation);//~9610R~
+        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged swEndGame="+swEndGame+",curOri="+AG.resource.getConfiguration().orientation);//~9610R~//~va66R~
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged getConfig="+AG.resource.getConfiguration().toString());//~9610I~
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged Pcfg="+Pcfg.toString());//~9610I~
         super.onConfigurationChanged(Pcfg);                        //~1120I~//~1413R~//~9101I~
@@ -915,7 +943,7 @@ public class MainActivity extends AppCompatActivity
 //**********************************************************       //~8C30I~
 	private void endGame(boolean PswConfigChanged)                                         //~8C30I~//~9102R~
     {                                                              //~8C30I~
-        if (Dump.Y) Dump.println("MainActivity.endGame configchanged="+PswConfigChanged+",AG.portrait="+AG.portrait);          //~8C30I~//~9102R~//~9610R~
+        if (Dump.Y) Dump.println("MainActivity.endGame configchanged="+PswConfigChanged+",AG.portrait="+AG.portrait);          //~8C30I~//~9102R~//~9610R~//+va9fR~
 //      UView.getMeasuredSize(frameLayout); //TODO test            //~9105I~//~0322R~
         if (!PswConfigChanged)                                     //~9102I~
         {                                                          //~9102I~
@@ -924,17 +952,22 @@ public class MainActivity extends AppCompatActivity
             	swEndGame=true;                                    //~9102I~
 //                hideNavigationBar(false);//TODO test               //~9103I~//~9104R~
 //  	    	restoreMainView();                                 //~9103I~
-        	  if (PrefSetting.getOrientation()==PS_ORIENTATION_PORTRAIT_REVERSE)//~9610I~
-                changeOrientation(PS_ORIENTATION_PORTRAIT_REVERSE);//~9610I~
-              else                                                 //~9610I~
-                changeOrientation(PS_ORIENTATION_PORTRAIT);        //~9102I~
+//      	  if (PrefSetting.getOrientation()==PS_ORIENTATION_PORTRAIT_REVERSE)//~9610I~//~va9fR~
+//              changeOrientation(PS_ORIENTATION_PORTRAIT_REVERSE);//~9610I~//~va9fR~
+//            else                                                 //~9610I~//~va9fR~
+//              changeOrientation(PS_ORIENTATION_PORTRAIT);        //~9102I~//~va9fR~
+//  			requestChangeOrientation(TOP_ORIENTATION);         //~va9fR~
+//  			requestChangeOrientation(orientationBeforeGame);   //~va9fR~
+//      	  if (orientationBeforeGame==ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT)//~va9fR~
+    			requestChangeOrientation(TOP_ORIENTATION);         //~va9fI~
+		        chngOrientation=1;                                 //~va9fI~
                 return;                                            //~9102I~
             }                                                      //~9102I~
         }                                                          //~9102I~
         else                                                       //~9102I~
         {                                                          //~9103I~
 		    setFullscreen(false/*avoid requestFeature*/);          //~9103R~
-            UView.fixOrientation(true);                            //~v@@@I~//~9102I~
+//          UView.fixOrientation(true);                            //~v@@@I~//~9102I~//~va9fR~
 //            if (false)                                           //~9105R~
 //            {                                                    //~9105R~
 //            new EventCB(ECB_RESTOREMAIN).postEvent();               //~v@21R~//~9103I~//~9105R~
@@ -1145,7 +1178,7 @@ public class MainActivity extends AppCompatActivity
 			if (RuleSetting.isAllowRobot())                        //~va66I~
             {                                                      //~va66I~
         		AG.swTrainingMode=true;                             //~va66I~
-    			AG.aBTMulti.setTrainingMode();                     //+va66I~
+    			AG.aBTMulti.setTrainingMode();                     //~va66I~
 	            String msg=Utils.getStr(R.string.Err_LackingMemberNoConnectionTraining);//~va66I~
 		        int flag=BUTTON_POSITIVE|BUTTON_NEGATIVE;          //~va66I~
 				Alert.showAlert(0/*app_name*/,msg,flag,this);      //~va66I~

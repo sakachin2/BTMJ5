@@ -1,5 +1,7 @@
-//*CID://+va83R~: update#= 749;                                    //~va83R~
+//*CID://+va95R~: update#= 753;                                    //~va95R~
 //**********************************************************************//~v101I~
+//2021/06/13 va95 (Bug)MakeParing misses NumSeq evaluation for 333 case(3-Same(3anko) and 3Seq(1peiko+)//~va95I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/12 va83 (Bug)13/14 NoPair was not notified(Decided to Robot will not Ron by 13/14 NoPair)//~va83I~
 //2021/04/12 va82 (Bug)issue "not ronnable" for 1st take Ron(tenho/chiiho) request if multiple pillow candidate exist//~va82I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -111,7 +113,8 @@ public class UARonChk                                                //~v@@@R~//
 	//*************************************************************************//~9C12I~
 //  private boolean chkCompleteSub()                               //~va20R~
 //  protected boolean chkCompleteSub()                             //~va20I~//~va83R~
-    private   boolean chkCompleteSub()                             //~va83I~
+//  private   boolean chkCompleteSub()                             //~va83I~//~va91R~
+    protected boolean chkCompleteSub()  //protected for ITUAxxx    //~va91I~
     {                                                              //~9C12I~
         boolean rc=isStandardPairing();                                     //~9C11I~//~9C12R~
         sw13_14NoPair=false;                                       //~va11I~
@@ -146,7 +149,7 @@ public class UARonChk                                                //~v@@@R~//
     {                                                              //~9C11I~
     	int type,num;                                              //~9C11I~
     //*******************************                              //~9C11I~
-        if (Dump.Y) Dump.println("UARonChk.sortTiles tds="+TileData.toString(Ptds)+",tdRonRiver="+Utils.toString(PtdRon));//~9C11R~//+va83R~
+        if (Dump.Y) Dump.println("UARonChk.sortTiles tds="+TileData.toString(Ptds)+",tdRonRiver="+Utils.toString(PtdRon));//~9C11R~//~va83R~
         for (int ii=0;ii<PIECE_TYPECTR_ALL;ii++)                   //~9C12I~
             Arrays.fill(dupCtr[ii],0);                             //~9C12I~
         ctrTileAll=Ptds.length;                                    //~9C12I~
@@ -437,6 +440,8 @@ public class UARonChk                                                //~v@@@R~//
 	        boolean rcSame,rcSeq;                                  //~va11I~
             if (PctrNum[ii]==0)                                    //~va11I~
             	continue;                                          //~va11I~
+          if (false)                                               //~va95I~
+          {                                                        //~va95I~
 //          int[] numForSeq=PctrNum.clone();                       //~va11R~
             if (PctrNum[ii]>=3)                                    //~va11I~
             {                                                      //~va11I~
@@ -448,6 +453,24 @@ public class UARonChk                                                //~v@@@R~//
 //          rcSeq=makePairingNumSeq(Puardp,numForSeq,ii/*pos*/,Ptype);//~va11R~
 //          rcSeq=makePairingNumSeq(Puardp,Pparent,numForSeq,ii/*pos*/,Ptype);//~va11R~
             rcSeq=makePairingNumSeq(Puardp,Pparent,PctrNum,ii/*pos*/,Ptype);//~va11I~
+          }	//if false                                             //~va95I~
+          else                                                     //~va95I~
+          {                                                        //~va95I~
+            if (PctrNum[ii]>=3)                                    //~va95I~
+            {                                                      //~va95I~
+                int[] numForSeq=PctrNum.clone();                   //+va95M~
+            	rcSame=makePairingNumSame(Puardp,Pparent,PctrNum,ii,Ptype);//~va95I~
+		        if (Dump.Y) Dump.println("UARonChk.makePairingNum@@@@ ctr>=3 after Same rcSame="+rcSame+",type="+Ptype+",num="+ii+",uardp="+Puardp.toStringPairAll());//~va95I~
+				rcSeq=makePairingNumSeq(Puardp,Pparent,numForSeq,ii/*pos*/,Ptype);//~va95I~
+		        if (Dump.Y) Dump.println("UARonChk.makePairingNum@@@@ ctr>=3 after Seq rcSeq="+rcSeq+",type="+Ptype+",num="+ii+",uardp="+Puardp.toStringPairAll());//~va95I~
+            }                                                      //~va95I~
+            else                                                   //~va95I~
+            {                                                      //~va95I~
+            	rcSame=false;                                      //~va95I~
+            	rcSeq=makePairingNumSeq(Puardp,Pparent,PctrNum,ii/*pos*/,Ptype);//~va95I~
+		        if (Dump.Y) Dump.println("UARonChk.makePairingNum@@@@ ctr<3 after Seq rcSeq="+rcSeq+",type="+Ptype+",num="+ii+",uardp="+Puardp.toStringPairAll());//~va95I~
+            }                                                      //~va95I~
+          }//if true                                               //~va95I~
             if (!rcSame && !rcSeq)                                 //~va11I~
             {                                                      //~va11I~
 		        if (Dump.Y) Dump.println("UARonChk.makePairingNum @@@@ rcSame and rcSeq is null");//~va11I~
@@ -481,7 +504,7 @@ public class UARonChk                                                //~v@@@R~//
 //  private boolean makePairingNumSeq(Pairs Puardp,int[] PctrNum,int Ppos,int Ptype)//~va11R~
     private boolean makePairingNumSeq(UAPair Puardp,Pair Pparent,int[] PctrNum,int Ppos,int Ptype)//~va11I~
     {                                                              //~va11I~
-//      if (Dump.Y) Dump.println("UARonChk.makePairingNumSeq type="+Ptype+",pos="+Ppos+",Num="+Arrays.toString(PctrNum));//~va11R~
+        if (Dump.Y) Dump.println("UARonChk.makePairingNumSeq type="+Ptype+",pos="+Ppos+",Num="+Arrays.toString(PctrNum));//~va11R~//+va95R~
         boolean rc=false;                                          //~va11I~
         if (Ppos+2<PIECE_NUMBERCTR                                 //~va11I~
         &&  PctrNum[Ppos]!=0 && PctrNum[Ppos+1]!=0 && PctrNum[Ppos+2]!=0)//~va11I~

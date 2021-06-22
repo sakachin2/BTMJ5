@@ -1,4 +1,4 @@
-//*CID://+dateR~:                             update#=  124;       //~1108I~
+//*CID://+dateR~:                             update#=  129;       //~1108I~
 //******************************************************************//~0B03I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //******************************************************************//~0B03I~
@@ -88,8 +88,8 @@ public class ITMock                                          //~0B03R~//~1108R~/
         	new Mock_DiceBox();                                     //~1112I~
         if ((newClass=ITM_POINTSTICK)!=0)                          //~1121I~
         	new Mock_PointStick();                                 //~1121I~
-//      if ((newClass=ITM_USERACTION)!=0)                          //~1122R~
-//      	new Mock_UserAction();                                 //~1122R~
+      	if ((newClass=ITM_USERACTION)!=0)                          //~1122R~//~1611R~
+      		new Mock_UserAction();                                 //~1122R~//~1611R~
         AG.aHands=new Mock_Hands();                                //~1123R~
         AG.aRiver=new Mock_River();                                          //~1123I~
         AG.aStock=new Mock_Stock();                                //~1123I~
@@ -287,8 +287,8 @@ public class ITMock                                          //~0B03R~//~1108R~/
             AG.aUserAction=this;                                   //~1122I~
             init();                                                //~1123R~
         }                                                          //~1122I~
-//    public void init()                                             //~v@@@R~//~1123R~
-//    {                                                              //~v@@@I~//~1123R~
+      public void init()                                             //~v@@@R~//~1123R~//~1611R~
+      {                                                              //~v@@@I~//~1123R~//~1611R~
 //        players=AG.aPlayers;                                       //~v@@@I~//~1123R~
 //        tiles=AG.aTiles;                                           //~v@@@I~//~1123R~
 //        hands=AG.aHands;                                           //~v@@@I~//~1123R~
@@ -298,7 +298,7 @@ public class ITMock                                          //~0B03R~//~1108R~/
 //        acaction=AG.aACAction;                                     //~v@@@I~//~1123R~
 //        isServer=Accounts.isServer();                              //~v@@@I~//~1123R~
 ////      UADL=new UADelayed(this);                             //~v@@@I~//~9B17R~//~1123R~
-//        UADL=new Mock_UADelayed2();                                 //~9B17I~//~1123R~
+          UADL=new Mock_UADelayed2();                                 //~9B17I~//~1123R~//~1611R~
 //        UAT=new UATake(this);                                      //~v@@@I~//~1123R~
 //        UAD=new UADiscard(this);                                   //~v@@@I~//~1123R~
 //        UAP=new UAPon(this);                                       //~v@@@I~//~1123R~
@@ -308,8 +308,8 @@ public class ITMock                                          //~0B03R~//~1108R~/
 //        UARE=new UAReach(this);                                    //~v@@7I~//~1123R~
 //        UAEG=new UAEndGame();                                             //~v@@@I~//~v@@7I~//~1123R~
 ////      new UARestart(this);                                       //~9A28R~//~1123R~
-//        if (Dump.Y) Dump.println("Mock_UserAction init isServer="+isServer);//~v@@@I~//~1123R~
-//    }                                                              //~v@@@I~//~1123I~
+          if (Dump.Y) Dump.println("Mock_UserAction init isServer="+isServer);//~v@@@I~//~1123R~//~1611R~
+      }                                                              //~v@@@I~//~1123I~//~1611R~
         @Override                                                  //~1122I~
 //      public void action(Message Pmsg)                               //~v@@@I~//~1122R~
         public void action(Message Pmsg)                                       //~1122I~
@@ -686,6 +686,11 @@ public class ITMock                                          //~0B03R~//~1108R~/
         {                                                          //~1123I~
                 if (Dump.Y) Dump.println("Mock_UADelayed.postDelayedActionMsgIM strp return by swStop");//~1123I~
         }                                                          //~1123I~
+        public boolean chkSelectInfo2TouchRobot(int Pplayer,int[] PintParm)//~va60I~//~1611I~
+        {                                                              //~va60I~//~1611I~
+            if (Dump.Y) Dump.println("Mock_UADelayed2.chkSelectInfo2TouchRobot rc="+true);//~1611I~//~1612R~
+            return true;                                          //~1611I~//~1612R~
+        }                                                              //~va60I~//~1611I~
     }                                                              //~1123I~
 //***********************************************                  //~1123I~
 	class Mock_Sound  extends Sound                                             //~1123R~
@@ -732,6 +737,8 @@ public class ITMock                                          //~0B03R~//~1108R~/
     {                                                              //~1123I~
         public Mock_GMsg()                                         //~1123I~
         {                                                          //~1123I~
+        	msgbarSize=40;                                         //~1617I~
+        	msgbarLen=800;                                         //~1617I~
             if (Dump.Y) Dump.println("Mock_GMsg.default constructor");//~1123I~
         }                                                          //~1123I~
         //*********************************************************    //~v@@@I~//~1123I~
@@ -740,6 +747,12 @@ public class ITMock                                          //~0B03R~//~1108R~/
             if (Dump.Y) Dump.println("Mock_GMsg.errorMsg reset sleep");//~1125I~
             setNextLine(false);                                    //~1125I~
         }                                                              //~v@@@I~//~1123I~
+        //*********************************************************//~1617I~
+        @Override                                                  //+1617I~
+        public void drawMsgbarVertical(String Ptext)               //+1617R~
+        {                                                          //~1617I~
+            if (Dump.Y) Dump.println("Mock_GMsg.drawMsgBar msg="+Ptext);//~1617I~
+        }                                                          //~1617I~
     }                                                              //~1123I~
     //******************************************************************//~1123I~
     class Mock_HandsTouch extends HandsTouch                       //~1123I~

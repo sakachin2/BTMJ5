@@ -1,12 +1,14 @@
-//*CID://+v@@@R~:                             update#=  166;       //~1Af6R~//~v@@@R~
+//*CID://+va9fR~:                             update#=  167;       //~1Af6R~//~v@@@R~//+va9fR~
 //*****************************************************************//~v101I~
+//2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//+va9fI~
+//                not work because onConfigurationChanged is not fired by RVERSE request//+va9fI~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 
 import com.btmtest.R;
 
 import static com.btmtest.game.GConst.*;
-import static com.btmtest.dialog.PrefSetting.*;                    //+v@@@R~
+import static com.btmtest.dialog.PrefSetting.*;                    //~v@@@R~
 
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.EventCB;
@@ -63,11 +65,14 @@ public class OrientationMenuDlg                                    //~v@@@R~
         switch(Pidx) //tumo,pon,chii,kan,reach,ron                 //~v@@@R~
         {                                                          //~v@@@R~
         case 0: //portrait                                         //~v@@@R~
-            ori=PS_ORIENTATION_PORTRAIT;                           //+v@@@R~
+            ori=PS_ORIENTATION_PORTRAIT;                           //~v@@@R~
             break;                                                 //~v@@@R~
         case 1:                                                    //~v@@@R~
-            ori=PS_ORIENTATION_LANDSCAPE;                          //+v@@@R~
+            ori=PS_ORIENTATION_LANDSCAPE;                          //~v@@@R~
             break;                                                 //~v@@@R~
+        case 2:                                                    //+va9fI~
+            ori=PS_ORIENTATION_LANDSCAPE_REVERSE;                  //+va9fI~
+            break;                                                 //+va9fI~
         default:                                                   //~v@@@R~
             return;	//cancel                                       //~v@@@R~
         }                                                          //~v@@@R~

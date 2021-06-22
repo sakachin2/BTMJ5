@@ -1,6 +1,7 @@
-//*CID://+va48R~:                             update#=  215;       //+va48R~
+//*CID://+va9eR~:                             update#=  216;       //+va9eR~
 //*****************************************************************//~v101I~
-//2020/11/21 va48 (Bug)gameover rejected on client after suspendgame//+va48I~
+//2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//+va9eI~
+//2020/11/21 va48 (Bug)gameover rejected on client after suspendgame//~va48I~
 //2020/05/08 va07:close menu in game when preference selected      //~va07I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
 //*****************************************************************//~v101I~
@@ -12,6 +13,7 @@ import com.btmtest.R;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Status;
 import com.btmtest.game.UA.UAEndGame;
+import com.btmtest.game.UA.UAReach;
 import com.btmtest.game.UA.UARon;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
@@ -44,10 +46,11 @@ public class MenuInGameDlg                                         //~v@@@R~
 	public static final int ITEMID_RETURN               =ITEMID_BASE+6;//~9903I~//~9A29R~//~9C04R~//~0206R~//~0304R~
 	public static final int ITEMID_IOERR                =ITEMID_BASE+7 ;//~9A18I~//~9A29R~//~9C04R~//~0206R~//~0304R~
     public static final int ITEMID_WIN_ANYWAY           =ITEMID_BASE+8 ;//~9C04R~//~0205R~//~0206R~//~0304R~
-    public static final int ITEMID_PREF_SETTING         =ITEMID_BASE+9 ;//~0205I~//~0206R~//~0304R~
-	public static final int ITEMID_MENU_HELP            =ITEMID_BASE+10;//~v@@@I~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04I~//~0205R~//~0206R~//~0304R~
-	public static final int ITEMID_HELP                 =ITEMID_BASE+11;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~
-	public static final int ITEMID_CLOSE                =ITEMID_BASE+12;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~
+    public static final int ITEMID_REACH_ANYWAY         =ITEMID_BASE+9 ;//+va9eI~
+    public static final int ITEMID_PREF_SETTING         =ITEMID_BASE+10;//~0205I~//~0206R~//~0304R~//+va9eR~
+	public static final int ITEMID_MENU_HELP            =ITEMID_BASE+11;//~v@@@I~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04I~//~0205R~//~0206R~//~0304R~//+va9eR~
+	public static final int ITEMID_HELP                 =ITEMID_BASE+12;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~//+va9eR~
+	public static final int ITEMID_CLOSE                =ITEMID_BASE+13;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~//+va9eR~
                                                                    //~v@@@I~
 	private UMenuDlg umdlg;                                        //~v@@@I~
 	private UMenuDlg.UMenuDlgI listener;                                    //~v@@@I~
@@ -224,6 +227,11 @@ public class MenuInGameDlg                                         //~v@@@R~
                 	break;                                         //~0206I~
             	doWinAnyway();                                     //~0205I~
                 break;                                             //~0205I~
+			case ITEMID_REACH_ANYWAY:                              //+va9eI~
+            	if (!isGaming())                                   //+va9eI~
+                	break;                                         //+va9eI~
+            	doReachAnyway();                                   //+va9eI~
+                break;                                             //+va9eI~
 			case ITEMID_MENU_HELP:                                 //~v@@@R~
             	doMenuHelp();                                      //~v@@@R~
                 break;                                             //~v@@@I~
@@ -312,6 +320,12 @@ public class MenuInGameDlg                                         //~v@@@R~
         if (Dump.Y) Dump.println("MenuInGameDlg.doWinAnyway");     //~0205I~
         swDismiss= UARon.winAnyway();                               //~0205I~
     }                                                              //~0205I~
+//**********************************                               //+va9eI~
+    private void doReachAnyway()                                   //+va9eI~
+    {                                                              //+va9eI~
+        if (Dump.Y) Dump.println("MenuInGameDlg.doReachAnyway");   //+va9eI~
+        swDismiss= UAReach.reachAnyway();                          //+va9eI~
+    }                                                              //+va9eI~
 //**********************************                               //~9903I~
     private void doReturn()                                        //~9903I~
     {                                                              //~9903I~
@@ -356,12 +370,12 @@ public class MenuInGameDlg                                         //~v@@@R~
 		if (Status.isGameOver() || Status.isGameSuspended())       //~va02R~
 			if (!Accounts.isServer())                              //~va02I~
             {                                                      //~va02I~
-			  if (AG.aBTMulti.BTGroup.getConnectedCtr()!=0)        //+va48I~
-              {                                                    //+va48I~
+			  if (AG.aBTMulti.BTGroup.getConnectedCtr()!=0)        //~va48I~
+              {                                                    //~va48I~
                 UView.showToast(R.string.Err_TryEndgameFromServer);//~va02I~
                 swDismiss=false;                                   //~va02I~
                 return;                                            //~va02I~
-              }                                                    //+va48I~
+              }                                                    //~va48I~
             }                                                      //~va02I~
     	swDismiss=AG.aGC.endGameReturn();                          //~9903R~
     }                                                              //~9903I~

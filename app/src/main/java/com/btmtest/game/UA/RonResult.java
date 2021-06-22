@@ -1,5 +1,6 @@
-//*CID://+va8fR~: update#= 796;                                    //~va8fR~
+//*CID://+va91R~: update#= 801;                                    //~va91R~
 //**********************************************************************//~v101I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/20 va8i KataAgari chk for also Robot Take                //~va8iI~
 //2021/04/18 va8f KataAgari chk                                    //~va8fI~
 //2021/04/17 va8c for robot ron,2 hancontraint should ignore rinshan,haitei,one shot//~va8cI~
@@ -15,22 +16,27 @@ import static com.btmtest.game.UA.Rank.*;
 public class RonResult                                             //~va11R~
 {                                                                  //~0914I~
 	public Rank longRank;                                          //~va11R~
+	public Rank longRankFixErr;                                    //~va91I~
     public int amt,han,point;                                      //~va11R~
     public boolean swRonChkErr;                                    //~va11R~
+    public int hanFixErr;                                          //~va91I~
 	//*************************************************************************//~va11I~
     public RonResult(int Pamt,int Phan,int Ppoint,Rank PlongRank)  //~va11R~
     {                                                              //~va11R~
     	amt=Pamt; han=Phan; point=Ppoint; longRank=PlongRank;      //~va11I~
+        longRankFixErr=new Rank(0L);                               //~va91I~
         if (Dump.Y) Dump.println("RonResult.Constructor");         //~va11R~
     }                                                              //~va11R~
     public String toString()                                       //~va11R~
     {                                                              //~va11I~
-        return "amt="+amt+",han="+han+",point="+point+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/);//~va11R~
+        return "amt="+amt+",han="+han+",hanFixErr="+hanFixErr+",point="+point+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/)//~va11R~//~va91R~
+                +",longRankFixErr="+Rank.toString(longRankFixErr)+"="+Rank.toStringName(longRankFixErr,false/*NO show honor*/);//~va91I~
     }                                                              //~va11I~
     public void update(RonResult Pvalue)                         //~va11I~
     {                                                              //~va11I~
     	amt=Pvalue.amt;                                            //~va11I~
     	longRank=Pvalue.longRank;  //yaku                          //~va11I~
+    	longRankFixErr=Pvalue.longRankFixErr;  //yaku              //~va91I~
     	han=Pvalue.han; //han                                      //~va11I~
     	point=Pvalue.point;   //fu                                 //~va11I~
         if (Dump.Y) Dump.println("RonResult.update new:"+toString());//~va11I~
@@ -77,6 +83,7 @@ public class RonResult                                             //~va11R~
             }                                                      //~va8cR~
             if (PswFix2)                                           //~va8iI~
             {                                                      //~va8iI~
+            //*reach+take is a han for 2han constarint             //+va91I~
                 if ((longRank.isContains(RYAKU_REACH) || longRank.isContains(RYAKU_REACH_DOUBLE))  			//20;//~va8iR~
                 &&  longRank.isContains(RYAKU_TAKE_NOEARTH))    //24//~va8iI~
                     rc--;                                          //~va8iI~
@@ -84,20 +91,30 @@ public class RonResult                                             //~va11R~
             if (rc<0)                                              //~va8iI~
                 rc=0;                                              //~va8iI~
         }                                                          //~va8cI~
-        if (Dump.Y) Dump.println("RonResult.getHanExceptDora rc="+rc+",swIgnoreAccidental="+PswIgnoreAccidental+",swFix2="+PswFix2);//~va8cI~//~va8iR~
+        if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraint rc="+rc+",swIgnoreAccidental="+PswIgnoreAccidental+",swFix2="+PswFix2);//~va8cI~//~va8iR~//+va91R~
         return rc;                                                 //~va8cI~
     }                                                              //~va8cI~
+	//*************************************************************************//+va91I~
+	//*Chk err of FixFirst/FixMiddle                               //+va91I~
+	//*************************************************************************//+va91I~
+    public int getHanExceptDoraConstraintChkFix(boolean PswIgnoreAccidental,boolean PswFix2)//+va91I~
+    {                                                              //+va91I~
+	    int rc=getHanExceptDoraConstraint(PswIgnoreAccidental,PswFix2);//+va91I~
+        rc-=hanFixErr;                                             //+va91I~
+        if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraintChkFix rc="+rc+",hanFixErr="+hanFixErr);//+va91I~
+        return rc;                                                 //+va91I~
+    }                                                              //+va91I~
     public boolean isTakeAllInHand()                                   //~va8fI~
     {                                                              //~va8fI~
         boolean rc=longRank.isContains(RYAKU_TAKE_NOEARTH);	//  =24 x01000000//~va8fI~
         if (Dump.Y) Dump.println("RonResult.isTakeAllInHand rc="+rc+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/));//~va8fI~
         return rc;                                                 //~va8fI~
     }                                                              //~va8fI~
-    public boolean isTakeAllInHandNoReach()                            //+va8fI~
-    {                                                              //+va8fI~
-        boolean rc=!longRank.isContains(RYAKU_REACH) //         =20;//+va8fI~
-                && longRank.isContains(RYAKU_TAKE_NOEARTH);	//  =24 x01000000//+va8fI~
-        if (Dump.Y) Dump.println("RonResult.isTakeAllInHandNoReach rc="+rc+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/));//+va8fI~
-        return rc;                                                 //+va8fI~
-    }                                                              //+va8fI~
+    public boolean isTakeAllInHandNoReach()                            //~va8fI~
+    {                                                              //~va8fI~
+        boolean rc=!longRank.isContains(RYAKU_REACH) //         =20;//~va8fI~
+                && longRank.isContains(RYAKU_TAKE_NOEARTH);	//  =24 x01000000//~va8fI~
+        if (Dump.Y) Dump.println("RonResult.isTakeAllInHandNoReach rc="+rc+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/));//~va8fI~
+        return rc;                                                 //~va8fI~
+    }                                                              //~va8fI~
 }                                                                  //~va11I~

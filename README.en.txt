@@ -19,15 +19,30 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
-V1.12 : 2021/05/06
-        .Move settion of "show RonAnyWay button" from preference to operation rule dialog.
-        .Show B/S also limited to a group.
-        .Stlengthen Robot.
-        .Bug fixes.
-         -Error "Not ron-able pattern" may issued at Tenho or Chiho call.
-		 -Robot'win looses yaku:rinshan,hitei,hotei
-         -Msg "Violation of Same-Meld" may be issued at Chii.
+V1.13 : 2021/06/21
+        .Apply "Fixed Yaku" rule. (See Help of Settings-->Yaku)
+        .At Riichi called, check Furiten and 2-han constraint rule.
+         (You can force Riichi from Menu item "Riichi Anyway" after when error detected).
+        .Support reverse orientation of device.
+        .(BUG)
+         -erroneous calculation of "Fu" for triplet taken.
+         -"Riichi" is ignored when RedDora and Tenpai Check option are both ON.
+         -Exchanging Match and PlayAlone mode may requires APP restart.
 *********************************************************************************************
+V1.13 : 2021/06/21
+        .Apply "Yakitori"(Grilled Bird) option to smart robot game.
+        .Apply "Fixed Yaku" rule. (See Help of Settings-->Yaku)
+         Reject Win call if violation detected.
+        .Allow Riichi call for the case winning tile is empty.
+        .At Riichi called, check Furiten and 2-han constraint rule.
+         (You can force Riichi from Menu item "Riichi Anyway" after when error detected).
+        .Support reverse orientation of device.
+        .(BUG)
+         -erroneous calculation of "Fu" for triplet taken.
+         -e.g. 111222333 is not 3 conceiled treples but may be higher rank of Pure outside hand.
+         -Trouble for "Tenho"(Win at fisrt take of dealer).
+         -"Riichi" is ignored when RedDora and Tenpai Check option are both ON.
+         -Exchanging Match and PlayAlone mode may requires APP restart.
 V1.12 : 2021/05/06
         .Return to top panel by back btn when gameover of playing alone.
         .Move settion of "show RonAnyWay button" from preference to operation rule.

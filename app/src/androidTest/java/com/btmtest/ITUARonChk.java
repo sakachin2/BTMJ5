@@ -31,7 +31,7 @@ import static com.btmtest.game.GConst.*;                           //~0A31R~
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ITUARonChk                                            //~0A31R~
+public class ITUARonChk                                            //~1607R~
 {                                                                  //~0A31I~
                                                                    //~0A31I~
     private MainActivity mActivity;                                //~0A31I~
@@ -103,7 +103,7 @@ public class ITUARonChk                                            //~0A31R~
         {                                                          //~0A31R~
             boolean rc;                                            //~0A31R~
             if (Dump.Y) Dump.println("UARonChk.ronTest");          //~0A31R~
-                                                                   //+1407I~
+                                                                   //~1407I~
             ctrTileAll=HANDCTR_TAKEN;                              //~0A31R~
             dupCtr=new int[][]{   //4 anko                         //~0A31R~
                 {3,3,0, 0,0,0, 0,0,0},                             //~0A31R~
@@ -112,16 +112,25 @@ public class ITUARonChk                                            //~0A31R~
                 { 3,3,0,0,  2,0,0, 0,0} };                         //7//~0A31R~
             rc=chkCompleteSub();                                   //~0A31R~
             if (Dump.Y) Dump.println("UARonChk.ronTest-1 4Anko rc="+rc);//~0A31R~
-                                                                   //+1407I~
-            ctrTileAll=HANDCTR_TAKEN;                              //+1407I~
-            dupCtr=new int[][]{   //4 anko                         //+1407I~
-                {0,0,0, 0,1,1, 1,0,0},                             //+1407I~
-                {0,1,1, 1,2,2, 2,0,0},                             //+1407I~
-                {0,0,0, 0,2,0, 0,0,0},                             //+1407I~
-                { 0,0,0,0,  0,0,0, 0,0} };                         //7//+1407I~
-            rc=chkCompleteSub();                                   //+1407I~
-            if (Dump.Y) Dump.println("UARonChk.ronTest-1-2 3shiki errr rc="+rc);//+1407I~
+                                                                   //~1407I~
+            ctrTileAll=HANDCTR_TAKEN;                              //~1407I~
+            dupCtr=new int[][]{   //4 anko                         //~1407I~
+                {0,0,0, 0,1,1, 1,0,0},                             //~1407I~
+                {0,1,1, 1,2,2, 2,0,0},                             //~1407I~
+                {0,0,0, 0,2,0, 0,0,0},                             //~1407I~
+                { 0,0,0,0,  0,0,0, 0,0} };                         //7//~1407I~
+            rc=chkCompleteSub();                                   //~1407I~
+            if (Dump.Y) Dump.println("UARonChk.ronTest-1-2 3shiki errr rc="+rc);//~1407I~
                                                                    //~0A31R~
+            ctrTileAll=HANDCTR_TAKEN;                              //+1612I~
+            dupCtr=new int[][]{   //4 anko                         //+1612I~
+                {3,3,3, 0,0,0, 0,0,0},                             //+1612I~
+                {0,0,0, 0,0,0, 1,1,3},                             //+1612I~
+                {0,0,0, 0,0,0, 0,0,0},                             //+1612I~
+                { 0,0,0,0,  0,0,0, 0,0} };                         //7//+1612I~
+            rc=chkCompleteSub();                                   //+1612I~
+            if (Dump.Y) Dump.println("UARonChk.ronTest-1-3 3shiki errr rc="+rc);//+1612I~
+                                                                   //+1612I~
             dupCtr=new int[][]{           //7 pair                 //~0A31R~
                 {2,2,0, 0,0,0, 0,0,0},                             //~0A31R~
                 {2,2,2, 0,0,0, 2,0,2},                             //~0A31R~
@@ -1033,4 +1042,9 @@ public class ITUARonChk                                            //~0A31R~
                                                                    //~0A31R~
         }                                                          //~0A31R~
     }//class UARonChk2                                             //~0A31I~
+    private boolean chkCompleteSub()                               //~1607I~
+    {                                                              //~1607I~
+    	if (Dump.Y) Dump.println("ITUARonChk.chkCompleteSub @@@@Dummy");//~1607I~
+        return false;                                              //~1607I~
+    }                                                              //~1607I~
 }

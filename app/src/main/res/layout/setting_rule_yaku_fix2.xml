@@ -14,6 +14,7 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_YakuFix2"
             android:textSize="@dimen/textview_middle"
+            android:background="@color/getvalue"
         />
         <RadioGroup
             android:orientation="horizontal"

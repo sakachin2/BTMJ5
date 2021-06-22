@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.btmtest"
-      android:versionCode="112"
-      android:versionName="1.12">
+      android:versionCode="113"
+      android:versionName="1.13">
  <!--   xmlns:tools="http://schemas.android.com/tools" --> <!-- Warning:never used -->
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -36,7 +36,7 @@
         <activity android:name=".MainActivity"
                   android:configChanges="orientation|screenSize"
 	    		        android:theme="@style/AppTheme.NoActionBar"
-        			android:screenOrientation="portrait">
+        			android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +46,9 @@
     <!--    android:requestLegacyExternalStorage="true" ignored from Android11-->
     <!--			android:screenOrientation="portrait"-->
     <!--			android:screenOrientation="sensor"-->
+    <!--			android:screenOrientation="sensorPortrait"-->
+    <!--			android:screenOrientation="fullSensor"-->
+    <!--    			android:screenOrientation="reversePortrait"-->
     <!--          android:configChanges="orientation|screenSize" -->
     <!--          android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|layoutDirection" -->
     </application>

@@ -1,5 +1,8 @@
-//*CID://+va8jR~: update#= 149;                                    //~va8jR~
+//*CID://+va9hR~: update#= 154;                                    //+va9hR~
 //**********************************************************************
+//2021/06/19 va9h avoid reach when winList=1 except 7pair at eraly timimg//+va9hI~
+//2021/06/17 va9d allow reach for the case empty winning tile(getWinlist returns empty for chk furiten)//~va9dI~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
 //2021/04/17 va8d (Bug)evaluateWinlist has to consider doubleReach //~va8dI~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
@@ -45,6 +48,7 @@ public class RAReach
     private int hanMax;                                            //~1122I~
     private boolean swSkipReach;                                   //~1215I~
     private int hanExceptDora;                                     //~1219I~
+    private boolean swNoChkEmpty;                                  //~va9dI~
 //*************************
 	public RAReach()
     {
@@ -255,8 +259,10 @@ public class RAReach
                 }                                                  //~1224I~
             }                                                      //~1224I~
             else                                                   //~1224I~
-        	if (!swWaitingWordTile && ctrWinList==1 && ctrWinTotal<HV_CTRWIN_TO_REACH_ONE_TYPE && ctrTaken<HV_CTR_TO_WAIT_REACH_EARLY) //tanki/kanchan/penshan//~1224I~
-        	//**                                       ctrWinTotal<4                           && ctrTaken<8                         ) //tanki/kanchan/penshan//~1224I~
+//      	if (!swWaitingWordTile && ctrWinList==1 && ctrWinTotal<HV_CTRWIN_TO_REACH_ONE_TYPE && ctrTaken<HV_CTR_TO_WAIT_REACH_EARLY) //tanki/kanchan/penshan//~1224I~//+va9hR~
+        	if (((intent & INTENT_7PAIR)==0)                        //+va9hI~
+        	&&  !swWaitingWordTile && ctrWinList==1 && ctrWinTotal<HV_CTRWIN_TO_REACH_ONE_TYPE && ctrTaken<HV_CTR_TO_WAIT_REACH_EARLY_WINLIST) //tanki/kanchan/penshan//+va9hI~
+        	//**                                       ctrWinTotal<4                           && ctrTaken<10                         ) //tanki/kanchan/penshan//~1224I~//+va9hR~
             {                                                      //~1224I~
         	  if ((TestOption.option2 & TO3_ROBOT_DO_REACH)!=0) //TODO test//~va8dI~
               {                                                    //~va8dI~
@@ -325,11 +331,11 @@ public class RAReach
 //            return false;                                        //~va8jR~
 //        }                                                        //~va8jR~
         boolean rc=true;                                           //~va8jI~
-        if (PhanReachAdd>=PhanRequired)                            //+va8jI~
-        {                                                          //+va8jI~
-            if (Dump.Y) Dump.println("RAReach.chkMultiWait return true by hanReach="+PhanReachAdd+">="+PhanRequired);//+va8jI~
-            return rc;                                             //+va8jI~
-        }                                                          //+va8jI~
+        if (PhanReachAdd>=PhanRequired)                            //~va8jI~
+        {                                                          //~va8jI~
+            if (Dump.Y) Dump.println("RAReach.chkMultiWait return true by hanReach="+PhanReachAdd+">="+PhanRequired);//~va8jI~
+            return rc;                                             //~va8jI~
+        }                                                          //~va8jI~
         for (int ii=0;ii<ctrWinList;ii++)                          //~va8jI~
         {                                                          //~va8jI~
             int pos=itsWinWork[ii];                                //~va8jI~
@@ -379,7 +385,8 @@ public class RAReach
     {
         if (Dump.Y) Dump.println("RAReach.getValue posWin="+PposWin);
         PitsHand[PposWin]++;                                           //~1121I~
-    	int han=AG.aRARon.getRonValueExceptDora(playerReach,PitsHand,PposWin);//han as not taken//~1219R~
+//  	int han=AG.aRARon.getRonValueExceptDora(playerReach,PitsHand,PposWin);//han as not taken//~1219R~//~va91R~
+    	int han=AG.aRARon.getRonValueExceptDoraReach(playerReach,PitsHand,PposWin);//han as not taken//~va91I~
         PitsHand[PposWin]--;                                           //~1121I~
         hanExceptDora=AG.aRARon.hanExceptDora;                     //~1219I~
         if (Dump.Y) Dump.println("RAReach.getValue playerReach="+playerReach+",posWin="+PposWin+",han="+han+",hanExceptDora="+hanExceptDora+",ctrHand="+PctrHand);//~1219R~
@@ -523,7 +530,8 @@ public class RAReach
     {
     	int ctrWin=0;
     	int ctr=PctrHand+1;
-        if (!RAUtils.isEmpty(PitsTile,Ppos)) //all exposed         //~1124R~
+//      if (!RAUtils.isEmpty(PitsTile,Ppos)) //all exposed         //~1124R~//~va9dR~
+    	if (swNoChkEmpty || !RAUtils.isEmpty(PitsTile,Ppos)) //allow emptr or all exposed//~va9dI~
         {
 	    	PitsTile[Ppos]++;
             boolean rc=(Shanten.chkWinStandard(PitsTile,ctr)==-1);
@@ -535,7 +543,7 @@ public class RAReach
                 PitsWin[ctrWinList++]=Ppos;                        //~1310I~
             }
         }
-        if (Dump.Y) Dump.println("RAReach.getWinList_Standard_Sub ctrWin="+ctrWin+",pos="+Ppos);
+        if (Dump.Y) Dump.println("RAReach.getWinList_Standard_Sub swNochkEmpty="+swNoChkEmpty+",ctrWin="+ctrWin+",pos="+Ppos);//~va9dR~
         return ctrWin;
     }
     //*********************************************************
@@ -636,18 +644,21 @@ public class RAReach
         int ctrH=RS.RSP[playerEswn].ctrHand;                             //~va8jI~
                                                                    //~va8jI~
         itsH[posDiscard]--;                                        //~va8jR~
+        swNoChkEmpty=true;                                         //~va9dI~
         int ctrWin=getItsWinList(itsH,ctrH-1,itsWinWork); //output to itsWinListWork//~va8jR~
+        swNoChkEmpty=false;                                        //~va9dI~
         itsH[posDiscard]++;                                        //~va8jR~
         if (ctrWin==0)                                             //~va8jR~
         {                                                          //~va8jI~
-        	if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait ctrWin=0 return 0");//~va8jR~
-            return false;                                          //~va8jI~
+        	if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait@@@@ ctrWin=0 return 0");//~va8jR~//~va9dR~
+//          return false;                                          //~va8jI~//~va9dR~
+            return true;    //empty tile                           //~va9dI~
         }                                                          //~va8jI~
                                                                    //~va8jI~
-        itsH[posDiscard]--;                                        //+va8jR~
-        rc=chkMultiWait(playerEswn,posDiscard,hanReach,hanRequired,itsH/*dropped Discard*/,ctrH-1);//+va8jR~
-        itsH[posDiscard]++;                                        //+va8jR~
-                                                                   //+va8jI~
+        itsH[posDiscard]--;                                        //~va8jR~
+        rc=chkMultiWait(playerEswn,posDiscard,hanReach,hanRequired,itsH/*dropped Discard*/,ctrH-1);//~va8jR~
+        itsH[posDiscard]++;                                        //~va8jR~
+                                                                   //~va8jI~
         if (rc)                                                    //~va8jI~
 	    	rc=!chkFuritenReach(playerEswn,itsWinWork,ctrWin,posDiscard);//~va8jR~
         if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait rc="+rc);//~va8jI~

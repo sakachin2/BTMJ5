@@ -1,4 +1,4 @@
-//*CID://+va66R~: update#= 675;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~
+//*CID://+va66R~: update#= 676;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~
 //**********************************************************************//~v101I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //v@@7 20190131 del GCM_DORA msg exchange(deal msg contains wanpai)//~v@@7R~
@@ -68,7 +68,7 @@ public class ACAction                                              //~v@@@R~
         accounts=Paccounts;                                        //~v@@@I~
         acatouch=new ACATouch(this,accounts);                      //~v@@@R~
         isServer=Accounts.isServer();                              //~v@@@I~
-        if (Dump.Y) Dump.println("ACAction Constructor isServer="+isServer);         //~1506R~//~@@@@R~//~v@@@R~
+        if (Dump.Y) Dump.println("ACAction.Constructor isServer="+isServer);         //~1506R~//~@@@@R~//~v@@@R~//+va66R~
     }                                                              //~0914I~//~v@@@R~
 //***************************************************************************//~v@@@I~
     public  void setWaitStatus(int Pstatus)                        //~v@@@R~
@@ -386,7 +386,7 @@ public class ACAction                                              //~v@@@R~
     public void setupEndMember()                                   //~v@@@R~
     {                                                              //~v@@@I~
     	boolean rc=false;                                          //~v@@@I~
-        if (Dump.Y) Dump.println("ACAction.setupEndMember");       //~v@@@R~
+        if (Dump.Y) Dump.println("ACAction.setupEndMember isServer="+isServer);       //~v@@@R~//+va66R~
     	Status.setGameStatus(GS_SETUPEND);                         //~v@@@I~
         if (isServer)                                              //~v@@@R~
         {                                                          //~v@@@I~
@@ -860,7 +860,7 @@ public class ACAction                                              //~v@@@R~
         AG.aGMsg.reset();                                          //~9626I~
         int spot=diceRoll1+diceRoll2;                              //~9502I~
 	    int player=accounts.getCurrentStarter();             //~9502I~
-        if (Dump.Y) Dump.println("ACAction.diceCastedAll_StartGameNext player="+player+",starterRelative="+accounts.starterRelativePos+",roll1="+diceRoll1+",roll2="+diceRoll2+",spot="+spot);//~9502I~//+va66R~
+        if (Dump.Y) Dump.println("ACAction.diceCastedAll_StartGameNext player="+player+",starterRelative="+accounts.starterRelativePos+",roll1="+diceRoll1+",roll2="+diceRoll2+",spot="+spot);//~9502I~//~va66R~
         deal(player,spot);                                         //~9502I~
     }                                                              //~9502I~
 //    //**************************************************         //~v@@@R~

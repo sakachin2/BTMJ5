@@ -1,5 +1,6 @@
-//*CID://+va70R~:                             update#=  494;       //+va70R~
+//*CID://+va96R~:                             update#=  495;       //+va96R~
 //*****************************************************************//~v101I~
+//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//+va96I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
@@ -31,6 +32,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
 	private static final int DEFAULT_CHK_REACH=1;                  //~va27I~
+	private static final int DEFAULT_CHK_MULTIWAIT=0;              //+va96I~
 	private static final int DEFAULT_FIX1=1;
     //**********************************************************   //~v@@@I~
     private static final int UNIT_SEC=10;                          //~9622I~//~v@@@M~
@@ -52,6 +54,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //  private UCheckBox cb2CheckRonable;                             //~0205I~//~va1aR~
     private UCheckBox cb2CheckRonValue;                            //~0928I~
     private UCheckBox cb2CheckReach;                               //~va27I~
+    private UCheckBox cbChkMultiWait;                              //+va96I~
     private UCheckBox  cbYakuFix1;                                 //~0A15I~
     private UCheckBox cbAllowRobotAllButton;                       //~va27I~
     private UCheckBox cbPlayAloneNotify;                           //~va70I~
@@ -134,6 +137,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
                                                                    //~0A15I~
         cb2CheckRonValue=new UCheckBox(PView,R.id.cbCheckRonValue);    //2touchMode//~0928I~
         cb2CheckReach=new UCheckBox(PView,R.id.cbCheckReach);    //2touchMode//~va27I~
+        cbChkMultiWait=new UCheckBox(PView,R.id.cbChkMultiWait);    //2touchMode//+va96I~
     //*YakuFix1                                                    //~0A15I~
     	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~0A15I~
         cb2TouchTimeout=new UCheckBox(PView,R.id.cb2TouchTimeout);    //2touchMode//~9C09R~
@@ -200,6 +204,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),DEFAULT_FIX1),swFixed);//~0A15I~
         cb2CheckRonValue.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_RONVALUE),DEFAULT_RONVALUE/*default false*/),swFixed);//~0928I~
         cb2CheckReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_REACH),DEFAULT_CHK_REACH/*default false*/),swFixed);//~va27I~
+        cbChkMultiWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),DEFAULT_CHK_MULTIWAIT/*default false*/),swFixed);//+va96I~
         cb2TouchTimeout.setStateInt(Pprop.getParameter(getKeyRS(RSID_2TOUCH_TIMEOUT),0/*default false*/),swFixed);//~9C09I~
     //*positioning                                                 //~v@@@I~
         cbPositioning.setStateInt(Pprop.getParameter(getKeyRS(RSID_POSITIONING),0/*default false*/),swFixed);//~v@@@I~
@@ -241,6 +246,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~0A15I~
         changed+=updateProp(getKeyRS(RSID_CHECK_RONVALUE),cb2CheckRonValue.getStateInt());//~0928I~
         changed+=updateProp(getKeyRS(RSID_CHECK_REACH),cb2CheckReach.getStateInt());//~va27I~
+        changed+=updateProp(getKeyRS(RSID_CHK_MULTIWAIT),cbChkMultiWait.getStateInt());//+va96I~
         changed+=updateProp(getKeyRS(RSID_2TOUCH_TIMEOUT),cb2TouchTimeout.getStateInt());//~9C09I~
     //*positioning                                                 //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_POSITIONING),cbPositioning.getStateInt());//~v@@@I~
@@ -508,6 +514,14 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isCheckReach rc="+rc);//~va27I~
         return rc;                                                 //~va27I~
     }                                                              //~va27I~
+    //**************************************                       //+va96I~
+    public static boolean isCheckMultiWait()                       //+va96I~
+    {                                                              //+va96I~
+        int def=DEFAULT_CHK_MULTIWAIT;  //false                    //+va96I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),def)!=0;//+va96I~
+        if (Dump.Y) Dump.println("RuleSetting.isCheckMultiWait rc="+rc);//+va96I~
+        return rc;                                                 //+va96I~
+    }                                                              //+va96I~
     //**************************************                       //~v@@@I~
 	public static boolean isPositioningSkip()                      //~v@@@I~
     {                                                              //~v@@@I~

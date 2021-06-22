@@ -1,4 +1,4 @@
-//*CID://+va1aR~: update#= 769;                                    //~va1aR~
+//*CID://+va1aR~: update#= 770;                                    //~va1aR~
 //**********************************************************************//~v101I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
 //2020/10/10 va14 (BUG)7pairwith Kan is err even optio allow it    //~va14I~
@@ -53,7 +53,7 @@ public class ITUARonChkSub extends UARonChk                               //~va1
         	sw13NoPair=true;                                       //~va1aI~
         	sw14NoPair=true;                                       //~va1aI~
         }                                                          //~va1aI~
-        if (Dump.Y) Dump.println("UARonChkSub +rcLogic(noPairY)=rc="+rcLogic+",rcLogic2(noPairN)="+rcLogic2+",rcTbl="+rcTbl+",EQ1="+eq1+",EQ2="+eq2);//+va1aR~
+        if (Dump.Y) Dump.println("UARonChkSub +rcLogic(noPairY)=rc="+rcLogic+",rcLogic2(noPairN)="+rcLogic2+",rcTbl="+rcTbl+",EQ1="+eq1+",EQ2="+eq2);//~va1aR~
         return rcLogic;                                            //~va1aI~
     }                                                              //~va1aI~
 	//*************************************************************************//~va1aI~
@@ -86,6 +86,26 @@ public class ITUARonChkSub extends UARonChk                               //~va1
         if (Dump.Y) Dump.println("UARonChk.ronTest-1 4Anko rc="+rc);//~9C12R~
         assertTrue("ronTest-1",rc);                                //~va1aR~
                                                                    //~9C12I~
+		ctrTileAll=HANDCTR_TAKEN;                                  //+va1aI~
+        dupCtr=new int[][]{   //4 anko                             //+va1aI~
+        	{3,3,3, 0,0,0, 0,0,0},                                 //+va1aI~
+        	{0,0,0, 0,0,0, 1,1,3},                                 //+va1aI~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va1aI~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va1aI~
+	    rc=chkCompleteSub();                                       //+va1aI~
+        if (Dump.Y) Dump.println("UARonChk.ronTest-1-2 junchann 3anko rc="+rc);//+va1aI~
+        assertTrue("ronTest-1-2",rc);                              //+va1aI~
+                                                                   //+va1aI~
+		ctrTileAll=HANDCTR_TAKEN;                                  //+va1aI~
+        dupCtr=new int[][]{   //4 anko                             //+va1aI~
+        	{0,0,0, 0,0,0, 1,1,3},                                 //+va1aI~
+        	{3,3,3, 0,0,0, 0,0,0},                                 //+va1aI~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va1aI~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va1aI~
+	    rc=chkCompleteSub();                                       //+va1aI~
+        if (Dump.Y) Dump.println("UARonChk.ronTest-1-3 junchann 3anko rc="+rc);//+va1aI~
+        assertTrue("ronTest-1-2",rc);                              //+va1aI~
+                                                                   //+va1aI~
         dupCtr=new int[][]{           //7 pair                     //~9C12I~
         	{2,2,0, 0,0,0, 0,0,0},                                 //~9C12I~
         	{2,2,2, 0,0,0, 2,0,2},                                 //~9C12I~

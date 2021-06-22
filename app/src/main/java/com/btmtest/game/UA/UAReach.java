@@ -1,5 +1,8 @@
-//*CID://+va8jR~: update#= 596;                                    //~va8jR~
+//*CID://+va9eR~: update#= 603;                                    //~va9cR~//~va9eR~
 //**********************************************************************//~v101I~
+//2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9cI~
+//2021/06/17 va9c allow reach and warinig only for 2han-constraint or kataagari err. set reach at discard even issed warning//~va9cI~
+//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va28 Delete force reach option, local yaku is all abount patterns, is not ron format.//~va28I~
@@ -53,6 +56,7 @@ public class UAReach                                                //~v@@@R~//~
     private River river;                                           //~v@@@I~//~v@@6R~
     private boolean swCheckReach;                                  //~va27I~
     private int actionID;                                          //~va27I~
+    private int actionIDErr;                                       //~va9eI~
 //*************************                                        //~v@@@I~
 	public UAReach(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~v@@6R~
     {                                                              //~0914I~
@@ -93,6 +97,7 @@ public class UAReach                                                //~v@@@R~//~
     {                                                              //~v@@6I~
         if (Dump.Y) Dump.println("UAReach.selectInfo actionID="+PactionID+",swServer="+PswServer+",player="+Pplayer+",swCheckReach="+swCheckReach);//~va27R~
         actionID=PactionID;                                        //~va27I~
+        actionIDErr=0;                                             //~va9eI~
 //        statusReach=PLS.reachAvailableStatus();                  //~v@@6R~
 //        boolean rc=(statusReach!=REACH_NA)                       //~v@@6R~
 		if (!chkTenpai(PactionID))                                 //~va27R~
@@ -105,7 +110,7 @@ public class UAReach                                                //~v@@@R~//~
     private boolean chkTenpai(int PactionID)                       //~va27R~
     {                                                              //~va27I~
     	boolean rc=true;                                           //~va27I~
-        if (Dump.Y) Dump.println("UAReach.chkTenpai action="+PactionID+",swCheckReach="+swCheckReach);             //~va27I~//+va8jR~
+        if (Dump.Y) Dump.println("UAReach.chkTenpai action="+PactionID+",swCheckReach="+swCheckReach);             //~va27I~//~va8jR~
         if (PactionID==GCM_REACH||PactionID==GCM_REACH_OPEN)	//not FORCE//~va27I~
             if (swCheckReach)                                      //~va27R~
             {                                                      //~va27R~
@@ -119,11 +124,16 @@ public class UAReach                                                //~v@@@R~//~
                 {                                                  //~va27R~
                     GMsg.drawMsgbar(R.string.Err_ReachNoten);      //~va27R~
 //                  AG.aUserAction.updateButtonStatusReach(GCM_FORCE_REACH_ENABLE);//~va28R~
+                	actionIDErr=actionID;                          //~va9eI~
                     return false;                                  //~va27R~
                 }                                                  //~va27R~
-                rc=AG.aRAReach.chkFuritenMultiWait(PactionID,td);  //~va8jI~
+//              rc=AG.aRAReach.chkFuritenMultiWait(PactionID,td);  //~va8jI~//~va9cR~
+//              AG.aRAReach.chkFuritenMultiWait(PactionID,td); //rc=true evenif chkFuritenErr//~va9cR~
+                rc=AG.aRAReach.chkFuritenMultiWait(PactionID,td);  //~va9cI~
+                if (!rc)                                           //~va9eI~
+                	actionIDErr=actionID;                          //~va9eI~
             }                                                      //~va27R~
-        if (Dump.Y) Dump.println("UAReach.chkTenpai rc="+rc);      //~va27I~
+        if (Dump.Y) Dump.println("UAReach.chkTenpai rc="+rc+",actionIDErr="+actionIDErr);      //~va27I~//~va9eR~
         return rc;                                                 //~va27I~
     }                                                              //~va27I~
 	//*************************************************************************//~v@@@I~
@@ -347,12 +357,18 @@ public class UAReach                                                //~v@@@R~//~
                   }//open                                          //~v@@6I~
                 }                                                  //~v@@6I~
                 if (optOpen==OPT_OPEN_OPEN)                        //~9A30I~
+                {                                                  //~va96I~
+                    AG.aRoundStat.reachOpen(Pplayer);              //~va96I~
 //  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~//~va60R~
         			GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);     //~va60I~
+                }                                                  //~va96I~
                 else                                               //~9A30I~
 				if (optOpen==OPT_OPEN_SAVE) //reach not open       //~9A30I~
+                {                                                  //~va96I~
+                    AG.aRoundStat.reach(Pplayer);                  //~va96I~
 //  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach));//~9A30I~//~va60R~
         			GMsg.showHLName(0,GCM_REACH,Pplayer);          //~va60I~
+                }                                                  //~va96I~
             }                                                      //~v@@6I~
         }                                                          //~v@@6I~
         return true;                                               //~v@@6I~
@@ -412,7 +428,40 @@ public class UAReach                                                //~v@@@R~//~
     //*************************************************************************//~9519I~
     public static void postOpenOnly99(int Pplayer)                 //~9519I~
     {                                                              //~9519I~
-        if (Dump.Y) Dump.println("UADiscard.postOpen99 player="+Pplayer);//~9519I~
+        if (Dump.Y) Dump.println("UAReach.postOpen99 player="+Pplayer);//~9519I~//~va9eR~
         GameViewHandler.sendMsg(GCM_OPEN,Pplayer,OPT_OPEN_ONLY99,0);//~9519I~
     }                                                              //~9519I~
+    //*************************************************************************//~va9eI~
+    //*on the device(PLAYER_YOU)                                   //~va9eI~
+    //*************************************************************************//~va9eI~
+    public static boolean reachAnyway()                            //~va9eR~
+    {                                                              //~va9eI~
+        if (Dump.Y) Dump.println("UAReach.reachAnyway static");    //~va9eI~
+        boolean rc=AG.aUserAction.UARE.reachAnyway(PLAYER_YOU);            //~va9eR~
+        if (Dump.Y) Dump.println("UAReach.reachAnyway static rc="+rc);//~va9eI~
+        return rc;                                                 //~va9eI~
+    }                                                              //~va9eI~
+    //*************************************************************************//~va9eI~
+    //*on the device(PLAYER_YOU)                                   //~va9eI~
+    //*************************************************************************//~va9eI~
+    private boolean reachAnyway(int Pplayer)                       //~va9eR~
+    {                                                              //~va9eI~
+        if (Dump.Y) Dump.println("UAReach.reachAnyway player="+Pplayer+",actionID="+actionID+",actionIDErr="+actionIDErr);//~va9eR~
+        boolean rc=true;                                           //~va9eI~
+        int msgID;	                                               //~va9eI~
+        if (actionIDErr==GCM_REACH_OPEN)	//not FORCE            //~va9eI~
+        	msgID=GCM_FORCE_REACH_OPEN;	//    =28;                 //~va9eI~
+        else                                                       //~va9eI~
+        if (actionIDErr==GCM_REACH)	//not FORCE                    //~va9eI~
+        	msgID=GCM_FORCE_REACH;                                 //~va9eI~
+        else                                                       //~va9eI~
+        {                                                          //~va9eI~
+        	GMsg.drawMsgbar(R.string.AE_NoReachErrToForce);        //~va9eI~
+            return false;                                          //~va9eR~
+        }                                                          //~va9eI~
+        actionIDErr=0;                                             //+va9eI~
+        GameViewHandler.sendMsg(msgID,null);                       //~va9eI~
+        if (Dump.Y) Dump.println("UAReach.reachAnyway return true");//~va9eI~
+        return true;                                               //~va9eI~
+    }                                                              //~va9eI~
 }//class                                                           //~v@@@R~

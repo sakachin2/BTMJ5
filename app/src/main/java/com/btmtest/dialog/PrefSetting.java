@@ -1,5 +1,7 @@
-//*CID://+va18R~:                             update#=  459;       //~va18R~
+//*CID://+va9fR~:                             update#=  467;       //~va18R~//~va9fR~
 //*****************************************************************//~v101I~
+//2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
+//                not work because onConfigurationChanged is not fired by RVERSE request//~va9fI~
 //2020/10/18 va18 option to diaplay WinAnyway button               //~va18I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //*****************************************************************//~v101I~
@@ -63,6 +65,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private UCheckBox cbNoTakeButton,cbNoDiscardButton;            //~v@@@I~
     private UCheckBox cbNoAnywayButton;                            //~va18I~
     private UCheckBox cbNoSound,cbBeepOnly;                        //~v@@@R~
+//  private UCheckBox cbPortraitReverse;                           //+va9fR~
 //  private boolean swFixedParm;                                   //~v@@@R~
     private Prop curPropOld;                                 //~v@@@I~
     private USpinBtn sbVolume;                                     //~v@@@I~
@@ -120,9 +123,9 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("PrefSetting.setupLayout");       //~v@@@I~
         rgOrientation=new URadioGroup(PView,R.id.rgOrientation,0,rbIDOrientation);//~v@@@I~
         ((View)UView.findViewById(PView,R.id.rbOriPortraitReverse)).setVisibility(View.GONE);//~v@@@I~
-        ((View)UView.findViewById(PView,R.id.rbOriLandscapeReverse)).setVisibility(View.GONE);//~v@@@I~
+//      ((View)UView.findViewById(PView,R.id.rbOriLandscapeReverse)).setVisibility(View.GONE);//~v@@@I~//~va9fR~
                                                                    //~v@@@I~
-                                                                   //~v@@@I~
+//      cbPortraitReverse=new UCheckBox(PView,R.id.cbPortraitReverse);//+va9fR~
         cbDelRiverTileTaken=new UCheckBox(PView,R.id.cbDelRiverTileTaken);//~v@@@I~
         cbNoRelatedRule=new UCheckBox(PView,R.id.cbNoRelatedRule); //~v@@@I~
         cbNoTakeButton=new UCheckBox(PView,R.id.cbNoTakeButton);   //~v@@@I~
@@ -174,6 +177,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      rgOrientation.setCheckedID(Pprop.getParameter(getKeyPS(PSID_ORIENTATION),0),swFixed);//~v@@@R~
 //      rgOrientation.setCheckedID(Pprop.getParameter(getKeyPS(PSID_ORIENTATION),0),swFixedParm);//~v@@@R~
         rgOrientation.setCheckedID(Pprop.getParameter(getKeyPS(PSID_ORIENTATION),0),swFixed);//~v@@@I~
+                                                                   //~va9fI~
+//      cbPortraitReverse.setStateInt(Pprop.getParameter(getKeyPS(PSID_ORIENTATION_PORT_REV),0),swFixed);//+va9fR~
                                                                    //~v@@@I~
         cbDelRiverTileTaken.setStateInt(Pprop.getParameter(getKeyPS(PSID_DEL_TILE_TAKEN),0/*defaultIdx*/),swFixed);//~v@@@I~
 //      cbNoRelatedRule.setStateInt(Pprop.getParameter(getKeyPS(PSID_NO_RELATED_RULE),1/*defaultIdx*/),swFixed);//~v@@@R~
@@ -182,7 +187,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      cbNoDiscardButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NODISCARD_BUTTON),0/*defaultIdx*/),swFixed);//~v@@@R~
         cbNoTakeButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOTAKE_BUTTON),0/*defaultIdx*/),false);//~v@@@I~
         cbNoDiscardButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NODISCARD_BUTTON),0/*defaultIdx*/),false);//~v@@@I~
-        cbNoAnywayButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOANYWAY_BUTTON),1/*default*/),false);//+va18R~
+        cbNoAnywayButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOANYWAY_BUTTON),1/*default*/),false);//~va18R~
 //      cbNoSound.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOSOUND),0/*defaultIdx*/),swFixed);//~v@@@R~
         cbNoSound.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOSOUND),0/*defaultIdx*/),false);//~v@@@I~
         cbBeepOnly.setStateInt(Pprop.getParameter(getKeyPS(PSID_BEEPONLY),0/*defaultIdx*/),swFixed);//~v@@@I~
@@ -210,6 +215,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	    changedBtn=0;                                              //~v@@@I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties"); //~v@@@R~
         changed+=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~v@@@I~
+//      changed+=updateProp(getKeyPS(PSID_ORIENTATION_PORT_REV),cbPortraitReverse.getStateInt());//+va9fR~
         changed+=updateProp(getKeyPS(PSID_DEL_TILE_TAKEN),cbDelRiverTileTaken.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyPS(PSID_NO_RELATED_RULE),cbNoRelatedRule.getStateInt());//~v@@@I~
 //      changed+=updateProp(getKeyPS(PSID_NOTAKE_BUTTON),cbNoTakeButton.getStateInt());//~v@@@R~
@@ -319,6 +325,13 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("PrefSetting.getOrientation rc="+rc);//~v@@@R~
         return rc;                                                 //~v@@@R~
     }                                                              //~v@@@I~
+//    //**************************************                     //+va9fR~
+//    public static int getOrientationPortReverse()                //+va9fR~
+//    {                                                            //+va9fR~
+//        int rc=AG.prefProp.getParameter(getKeyPS(PSID_ORIENTATION_PORT_REV),0);//+va9fR~
+//        if (Dump.Y) Dump.println("PrefSetting.getOrientationPortReverse rc="+rc);//+va9fR~
+//        return rc;                                               //+va9fR~
+//    }                                                            //+va9fR~
     //**************************************                       //~v@@@I~
     public static boolean isDeleteRiverTileTaken()                 //~v@@@I~
     {                                                              //~v@@@I~
@@ -354,7 +367,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     //**************************************                       //~va18I~
     public static boolean isNoAnywayButton()                       //~va18I~
     {                                                              //~va18I~
-		int def=1;	//false                                        //+va18R~
+		int def=1;	//false                                        //~va18R~
         boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_NOANYWAY_BUTTON),def)!=0;//~va18I~
     	if (Dump.Y) Dump.println("PrefSetting.isNoAnywayButton:"+rc);//~va18I~
         return rc;                                                 //~va18I~

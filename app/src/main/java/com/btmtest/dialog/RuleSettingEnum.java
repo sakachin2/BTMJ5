@@ -1,6 +1,10 @@
-//*CID://+va8kR~: update#= 504;                                    //+va8kR~
+//*CID://+va98R~: update#= 511;                                    //~va98R~
 //**********************************************************************//~v101I~
-//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//+va8kI~
+//2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
+//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
+//2021/06/06 va93 setting of nakaduke was ignored                  //~va93I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
+//2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/13 va86 show RonAnyWay button by not preference by operation rule//~va86I~
 //2021/04/07 va7e change default to On for allow_robot_all         //~va7eI~
 //2021/04/07 va7c (Bug)option OpenReachRobot change is not saved and not effective(not sended)//~va7cI~
@@ -125,10 +129,19 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int[] rbs8Continue=new int[]{R.id.rb8ContNo,R.id.rb8ContDealer,R.id.rb8ContOnePlayer,R.id.rb8ContStick,R.id.rb8ContStickAnyOne};//~9516I~//~9517R~
     public static final int[] ID8Continue=new int[]{Y8C_NO,Y8C_DEALER,Y8C_ANYONE,Y8C_STICK,Y8C_STICK_ANYONE};//~9516I~//~9517R~
                                                                    //~9516I~
-    public static final int[] rbsYakuFix=new int[]{R.id.rbYakuFixLast,R.id.rbYakuFixFirst};//~9516I~
+//  public static final int[] rbsYakuFix=new int[]{R.id.rbYakuFixLast,R.id.rbYakuFixFirst};//~9516I~//~va93R~
+    public static final int[] rbsYakuFix=new int[]{R.id.rbYakuFixLast,R.id.rbYakuFixMiddle,R.id.rbYakuFixFirst};//~va93I~
     public static final int YAKUFIX_LAST=0;                        //~9516I~
-    public static final int YAKUFIX_FIRST=1;                       //~9516I~
+    public static final int YAKUFIX_MIDDLE=1;                       //~9516I~//~va93R~
+//  public static final int YAKUFIX_FIRST=1;                       //~va93I~
+    public static final int YAKUFIX_FIRST=2;                       //~va93I~
     public static final int YAKUFIX_DEFAULT=YAKUFIX_LAST;          //~9516I~
+//  public static final int[] rbsYakuFixMultiwaitTake=new int[]{R.id.rbYakuFixMultiwaitOKTake,R.id.rbYakuFixMultiwaitOKTakeAllInHand,R.id.rbYakuFixMultiwaitOKTakeNo};//~va91M~//+va98R~
+    public static final int[] rbsYakuFixMultiwaitTake=new int[]{R.id.rbYakuFixMultiwaitOKTake,R.id.rbYakuFixMultiwaitOKTakeAllInHand};//+va98I~
+    public static final int YAKUFIX_TAKE_ALL=0;                    //~va91I~
+    public static final int YAKUFIX_TAKE_ALLINHAND=1;              //~va91I~
+//  public static final int YAKUFIX_TAKE_NO=2;                       //~va91I~//~va98R~
+    public static final int YAKUFIX_TAKE_DEFAULT=YAKUFIX_TAKE_ALL; //~va91I~
                                                                    //~9516I~
     public static final int[] rbsYakuFix2=new int[]{R.id.rbYakuFix2No,R.id.rbYakuFix2Stick4,R.id.rbYakuFix2Stick5};//~9516I~
     public static final int YAKUFIX2_NO=0;                         //~9516I~
@@ -345,8 +358,10 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_YAKUFIX2              =311;    //~9516I~
 //  public static final int    RSID_YAKUFIX2LAST          =312;    //~9516I~//~9B10R~
     public static final int    RSID_YAKUFIX_MULTIWAITOK   =313;    //~0208R~
-//  public static final int    RSID_YAKUFIX_MULTIWAITDRAWOK=314;   //~0208I~//+va8kR~
+//  public static final int    RSID_YAKUFIX_MULTIWAITDRAWOK=314;   //~0208I~//~va8kR~
     public static final int    RSID_YAKUFIX1              =315;    //~va11I~
+    public static final int    RSID_YAKUFIX_TAKE          =316;    //~va91I~
+    public static final int    RSID_CHK_MULTIWAIT         =317;    //~va96I~
                                                                    //~9516I~
     public static final int    RSID_EATCHANGE             =320;    //~9516I~
                                                                    //~9517I~
@@ -500,11 +515,13 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_8CONT_MULTI          ,"Ron8ContMulti"     ),//~9517I~
                                                                    //~9516I~
     				new RSEnumPair(RSID_YAKUFIX              ,"YakuFix"              ),//~9516I~
+    				new RSEnumPair(RSID_YAKUFIX_TAKE         ,"YakuFixTake"          ),//~va91I~
+    				new RSEnumPair(RSID_CHK_MULTIWAIT        ,"ChkMultiWait"         ),//~va96I~
     				new RSEnumPair(RSID_YAKUFIX1             ,"YakuFix1"             ),//~va11I~
     				new RSEnumPair(RSID_YAKUFIX2             ,"YakuFix2"             ),//~9516I~
 //  				new RSEnumPair(RSID_YAKUFIX2LAST         ,"YakuFix2Last"         ),//~9516I~//~9B10R~
     				new RSEnumPair(RSID_YAKUFIX_MULTIWAITOK  ,"YakuFixMultiWaitOK"   ),//~0208I~
-//  				new RSEnumPair(RSID_YAKUFIX_MULTIWAITDRAWOK,"YakuFixMultiWaitDrawOK"),//~0208I~//+va8kR~
+//  				new RSEnumPair(RSID_YAKUFIX_MULTIWAITDRAWOK,"YakuFixMultiWaitDrawOK"),//~0208I~//~va8kR~
                                                                    //~9516I~
     				new RSEnumPair(RSID_EATCHANGE            ,"EatChange"            ),//~9516I~
                                                                    //~9517I~

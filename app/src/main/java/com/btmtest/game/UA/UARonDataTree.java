@@ -1,5 +1,7 @@
-//*CID://+va60R~: update#= 857;                                    //~va64R~//~va60R~
+//*CID://+va91R~: update#= 861;                                    //~va91R~
 //**********************************************************************//~v101I~
+//2021/06/06 va91 sakizukechk for robot                            //~va91I~
+//2021/06/06 va92 drop duplicated call of getRankStandard          //~va92I~
 //2021/01/26 va64 (Bug)yaku:1stChildRon falsg was lost when not mix and get higher//~va64I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -39,7 +41,9 @@ public class UARonDataTree                                         //~va11R~
                                                                    //~va11I~
     private int type,number;                                       //~va11R~
     public  int ronType,ronNumber;                                 //~va11R~
-    private int eswn,round,total;                                  //~va11I~
+//  private int eswn,round,total;                                  //~va11I~//+va91R~
+    public  int eswn,round;                                        //+va91I~
+    private int total;                                                 //+va91I~
     private UARonValue UARV;                                       //~va11I~
 //  private TileData tdRon;                                        //~va11R~
     private static final int MAX_LISTPAIRED_HAND=7;                //~va11M~
@@ -61,6 +65,7 @@ public class UARonDataTree                                         //~va11R~
     private int amtTotal,rankHonor;                                //~va11R~
 //  public  int rankTanyao;                                        //~va11R~
     private int rankSpecial,amtSpecial,yakuSpecial,rankFinal,pointFinal;//~va11R~
+    private int rankFixErrFinal;                                   //~va91I~
     private int rankOther;	//dora,reach,..                        //~va11R~
     private int[][] dupCtrAll,dupCtr;                              //~va11I~
     private UARonData maxUARD;                                      //~va11I~
@@ -70,6 +75,7 @@ public class UARonDataTree                                         //~va11R~
     private static final int TYPE_MAX_UARD_SPECIAL=2;              //~va11I~
     public UARank aUARank;                                         //~va11R~
     public Rank longRankOther/*dora,honor*/,longRankFinal,longRankSpecial/*renho*/;//~va11R~
+    public Rank longRankFixErrFinal;                               //~va91I~
     public Rank longRank7/*7pair*/;                                //~va11I~
     public boolean swTaken,swAllInHand;                            //~va11R~
     public boolean swNoMixSpecial;                                 //~va11I~
@@ -186,7 +192,7 @@ public class UARonDataTree                                         //~va11R~
                 UARonData uard=uardS[ii];                          //~va11R~
 //              uard.makePattern();                                //~va11R~
                 uard.makePattern(UARV.pairEarth);                  //~va11I~
-				aUARank.getRankStandard(this,uard);//~va11R~
+//  			aUARank.getRankStandard(this,uard); getRankStandard will be called at uard.getAmmount//~va11R~//~va92R~
                 int v=0;                                           //~va11I~
 	            v=uard.getAmmount(this,player,eswn,round,rankBase);//~va11R~
 		        if (isYakuman()) //now may include kazoeyakuman    //~va11M~
@@ -204,9 +210,11 @@ public class UARonDataTree                                         //~va11R~
                 	maxUARD=uard;                                  //~va11I~
                 	amt=v;                                         //~va11R~
                     rankFinal=uard.intRankMax;                        //~va11R~
+                    rankFixErrFinal=uard.intRankFixErrMax;         //~va91I~
                     pointFinal=uard.pointMax;                      //~va11R~
                     longRankFinal=uard.longRankMax;                //~va11I~
-			        if (Dump.Y) Dump.println("UARonDataTree.getAmmount swChkRank="+UARV.swChkRank+",v="+v+",amt="+amt+",rankFinal="+rankFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal));//~va11R~
+                    longRankFixErrFinal=uard.longRankFixErrMax;    //~va91I~
+			        if (Dump.Y) Dump.println("UARonDataTree.getAmmount swChkRank="+UARV.swChkRank+",v="+v+",amt="+amt+",rankFinal="+rankFinal+",rankFixErrFinal"+rankFixErrFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal)+",longRankFixErrDinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~
                     if (UARV.swChkRank && longRankFinal.isContainsAnyYakuExceptDora())//~va11R~
                     	break;                                     //~va11I~
                 }                                                  //~va11I~
@@ -236,7 +244,7 @@ public class UARonDataTree                                         //~va11R~
             }                                                      //~va11I~
         }                                                          //~va11I~
         amtTotal=amt;                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonDataTree.getAmmount return rankYakuman="+rankYakuman+",amtTotal="+amtTotal+",rankFinal="+rankFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal));//~va11R~
+        if (Dump.Y) Dump.println("UARonDataTree.getAmmount return rankYakuman="+rankYakuman+",amtTotal="+amtTotal+",rankFinal="+rankFinal+",rankFixErrFinal="+rankFixErrFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal)+".longRankFixErrFinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~
 	    setResult(PronValue);                                      //~va11I~
         return amtTotal;                                           //~va11R~
     }                                                              //~va11I~
@@ -301,9 +309,11 @@ public class UARonDataTree                                         //~va11R~
             }                                                      //~va11I~
         }                                                          //~va11I~
         Presult.longRank=longRankFinal;                            //~va11I~
+        Presult.longRankFixErr=longRankFixErrFinal;                //~va91I~
     	Presult.han=rankFinal;                                     //~va11R~
+    	Presult.hanFixErr=rankFixErrFinal;                         //~va91I~
 	    Presult.point=pointFinal;	//roundup by 10 if not 7Pair   //~va11R~
-        if (Dump.Y) Dump.println("UARonDataTree.setResult pointFinal="+pointFinal+",PronResult="+Presult.toString()+",longRank="+longRankFinal.toStringName());//~va11R~
+        if (Dump.Y) Dump.println("UARonDataTree.setResult pointFinal="+pointFinal+",PronResult="+Presult.toString()+",longRank="+longRankFinal.toStringName()+",longRankFixErrFinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~
     }                                                              //~va11I~
     //***************************************************************************//~va11I~
     //*from UARonValue                                             //~va11I~
@@ -314,7 +324,7 @@ public class UARonDataTree                                         //~va11R~
 	    PronResult.han=rankYakuman;                          //~va11I~
         PronResult.point=0;                                   //~va11I~
         PronResult.longRank=longRankYakuman;                  //~va11I~
-        if (Dump.Y) Dump.println("UARonDataTree.setResultYakuman PronResult="+PronResult.toString());//~va11I~
+         if (Dump.Y) Dump.println("UARonDataTree.setResultYakuman PronResult="+PronResult.toString());//~va11I~
     }                                                              //~va11I~
     //***************************************************************************//~va11I~
     public void addYakuman(int Pyaku,boolean PswDouble)             //~va11I~
@@ -492,7 +502,7 @@ public class UARonDataTree                                         //~va11R~
     {                                                              //~va11I~
     	int type,num,ctrUp=0,ctrDown=0,ctrKanUp=0,ctrKanDown=0;    //~va11I~
         //**********************************                       //~va11I~
-        if (Dump.Y) Dump.println("UARonDataTree.chkDora player="+player+",swEmulation="+UARV.swEmulation);//+va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDora player="+player+",swEmulation="+UARV.swEmulation);//~va60I~
         if ((TestOption.option2 & TO2_RONVALUE_NODORA)!=0)          //~va11I~
         	return 0;                                              //~va11I~
 //      if (UARV.itsDoraOpen!=null)                                //~va60R~
@@ -515,8 +525,8 @@ public class UARonDataTree                                         //~va11R~
         }                                                          //~va60I~
     //*lower                                                       //~va11I~
         int styleUnder=RuleSetting.getStyleHiddenDora();       //~va11R~
-//      boolean swReach=AG.aPlayers.getReachStatus(PLAYER_YOU)==REACH_DONE;//~va11I~//+va60R~
-        boolean swReach=AG.aPlayers.getReachStatus(player)==REACH_DONE;//+va60I~
+//      boolean swReach=AG.aPlayers.getReachStatus(PLAYER_YOU)==REACH_DONE;//~va11I~//~va60R~
+        boolean swReach=AG.aPlayers.getReachStatus(player)==REACH_DONE;//~va60I~
         if (swReach)                                               //~va11I~
         {                                                          //~va11I~
             type=dora[2]; num=dora[3];                             //~va11R~
@@ -562,7 +572,7 @@ public class UARonDataTree                                         //~va11R~
 			addYakuOtherWithCtr(RYAKU_CTR_DORA,rc);                //~va11I~
         if (Dump.Y) Dump.println("UARonDataTree.chkDora style under="+styleUnder+",kanUp="+styleKanUpper+",kanLower="+styleKanLower);//~va11R~
         if (Dump.Y) Dump.println("UARonDataTree.chkDora ctr="+rc+",ctrUp="+ctrUp+",ctrDown="+ctrDown+",ctrKanUp="+ctrKanUp+",ctrKanDown="+ctrKanDown);//~va11R~
-        if (Dump.Y) Dump.println("UARonDataTree.chkDora itsDoraOpen="+Arrays.toString(itsDoraOpen));//+va60I~
+        if (Dump.Y) Dump.println("UARonDataTree.chkDora itsDoraOpen="+Arrays.toString(itsDoraOpen));//~va60I~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va60I~

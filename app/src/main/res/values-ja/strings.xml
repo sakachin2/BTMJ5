@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.12</string>
+    <string name="app_version">v1.13</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -366,7 +366,8 @@
     <string name="Desc_Bird"> </string>
     <string name="Label_BirdPayToPlace">場に払う</string>
     <string name="Label_BirdPayToEach">全員に払う</string>
-    <string name="Label_BirdRule2">順位には影響しない。ボットが居る対局では焼き鳥なし</string>
+    <!--string name="Label_BirdRule2">順位には影響しない。ボットが居る対局では焼き鳥なし</string-->
+    <string name="Label_BirdRule2">順位には影響しない。ボットがツモ切りのときは焼き鳥なし</string>
     <string name="Label_MinusStopCharge">ハコ下負担調整</string>
     <string name="Label_Yes">あり</string>
     <string name="Label_No">なし</string>
@@ -382,8 +383,7 @@
     <string name="NotAgreed">無効</string>
     <string name="Agreed">有効</string>
     <string name="NoGame">ノーテン流れ</string>
-    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。
-									ノーテンリーチはチェックされません、リーチが成立します</string>
+    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。</string>
     <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
     <string name="Label_ReachLimitOpenYakuman">役満払い</string>
     <string name="Label_ReachLimitOpenChombo">チョンボで続行</string>
@@ -565,9 +565,11 @@
     <string name="Label_OrientationPortraitReverse">縦-上下逆</string>
     <string name="Label_OrientationLandscapeReverse">横-左右逆</string>
     <string name="Label_OrientationSelectMenu">毎回選択</string>
+    <!--string name="Label_OrientationAtEndOfLandscape">トップ画面</string-->
 	<string-array name="OrientationMenuDlg_Items"> 
 		<item>@string/Label_OrientationPortrait</item>
 		<item>@string/Label_OrientationLandscape</item>
+		<item>@string/Label_OrientationLandscapeReverse</item>
 		<item>@string/Cancel</item>
 	</string-array>
 	<string-array name="ActionMenuDlg_Items"> 
@@ -731,6 +733,7 @@
 		<item>対局終了</item>
 		<item>接続障害処理</item>
 		<item>とにかく和了</item>
+		<item>とにかくリーチ</item>
 		<item>個人設定</item>
 		<item>メニューのヘルプ</item>
 	</string-array>
@@ -1036,7 +1039,7 @@
 						</string>
     <string name="Desc_CheckRonable">振りテンのチェックはしない。</string>
     <string name="Desc_CheckRonValue">但しダイアログで得点を修正できます</string>
-    <string name="Desc_CheckReach">立直のとき聴牌チェック、フリテンは考慮しない</string>
+    <string name="Desc_CheckReach">立直のとき聴牌チェック。フリテン、二飜縛りの片上がりもチェックします。</string>
     <string name="Label_S2P">端数調整</string>
     <string name="Label_RankMUp">切り上げ満貫あり</string>
     <string name="Desc_RankMUp">（３０符４飜、６０符３飜は満貫）</string>
@@ -1080,7 +1083,8 @@
     <string name="Label_SoundVolume">音量</string>
     <string name="Label_Robot">ロボット</string>
     <string name="Label_MinusRobot">トビありなら、ボットもトブ</string>
-    <string name="Label_ThinkRobot">ボットも和了を目指す。オフならツモ切り</string>
+    <string name="Label_ThinkRobot">スマートロボット</string>
+    <string name="Desc_ThinkRobot">（ボットも和了を目指す。オフならツモ切り）</string>
     <string name="Label_RobotPay">一人遊びでないときのボット分の負担</string>
     <string name="Label_RobotPaySprit">均等割り</string>
     <string name="Label_RobotPayDependingScore">ラス者との点数差に比例</string>
@@ -1128,12 +1132,16 @@
     <string name="Label_YakuFixFirst">先付け</string>
     <string name="Label_YakuFixLast">後付けあり</string>
     <string name="Label_YakuFixMiddle">中付けあり</string>
-    <string name="Label_YakuFixMultiwaitOK">後付けありのとき片上がりOK</string>
-    <string name="Label_YakuFixMultiwaitDrawOK">後付け無しでも片上がりツモはOK</string>
-    <string name="Desc_YakuFix">後付けあり：上がったときに役があればよい。
-		中付けあり：中付けも先付とみなす。
-		先付け：最初の副露が役に関連しているか手牌中で役があるか片上がりでなく役がある。\n
-		（自摸の場合は片上がり・フリテンは常にOK）
+    <string name="Label_YakuFixMultiwaitOK">後付けのとき片上がりは自摸、ロン共にOK</string>
+    <string name="Label_YakuFixMultiwaitTake">自摸の時の片上がり</string>
+    <string name="Label_YakuFixMultiwaitOKTake">OK</string>
+    <string name="Label_YakuFixMultiwaitOKTakeAllInHand">面前のみOK</string>
+    <string name="Label_YakuFixMultiwaitOKTakeNo">NG</string>
+    <!--string name="Label_YakuFixMultiwaitDrawOK">後付け無しでも片上がりツモはOK</string-->
+    <string name="Desc_YakuFix">" 後付けあり：上がったときに役があればよい。\n"
+		"中付けあり：中付けも先付とみなす。\n"
+		"先付け：最初の副露が役に関連しているか手牌中で役があるか片上がりでなく役がある。\n"
+		（詳細はヘルプ参照）
         </string>
 <!--
 		片上がりOK：後付けありのときに片上がりを認める。一巡フリテンには注意。\n
@@ -1146,7 +1154,7 @@
     <string name="Label_YakuFix2Stick4">４本場から</string>
     <string name="Label_YakuFix2Stick5">５本場から</string>
     <string name="Label_YakuFix2Last">後付けあり</string>
-    <string name="Desc_YakuFix2">\"一飜縛り\"をチェックするとした場合のみ有効です。\n
+    <string name="Desc_YakuFix2">\"操作\"で\"一飜縛り\"をチェックするとした場合のみ有効です。\n
 					後付けなしの場合、偶然役の立直・一発、海底、河底、槍槓、嶺上開花は含めない。後付けありならOK。
 					いずれの場合も\"フリテン立直あり\"にかかわらず、立直・自摸のみは不可</string>
     <string name="Label_EatChange">食い変え</string>
@@ -1164,7 +1172,7 @@
 				&lt;span style="background-color:#f0e68c;"&gt;
 				柿色
 				&lt;/span&gt;
-				の部分は設定で\"アプリで点数計算\"：YESの時チェックします。
+				の部分は設定で\"アプリで点数計算\"などのオプション設定によります。
 			</string>
     <string name="Label_Kuitan">食いタンあり</string>
     <string name="Label_DoublePillow">場+風で枕も４符</string>
@@ -1446,7 +1454,13 @@
     <string name="AE_SameMeld">喰い変え違反です、他の牌を選択してください</string>
     <string name="AE_RankFix1">一飜縛り違反</string>
     <string name="AE_RankFix2">二飜縛り違反</string>
-    <string name="AE_RankFix2MultiWait">二飜縛りまたは片上がり違反</string>
+    <string name="AE_MultiWait_Furiten">フリテンです</string>
+    <string name="AE_MultiWait_FixFirst">先付け違反</string>
+    <string name="AE_MultiWait_FixMiddle">中付け違反</string>
+    <string name="AE_MultiWait_Constraint1">一飜縛り違反</string>
+    <string name="AE_MultiWait_Constraint2">二飜縛り違反</string>
+    <string name="AE_MultiWait_Multiple">片上がり違反</string>
+    <string name="AE_RankFix2MultiWait">二飜縛りまたは片上がり違反</string> <!--for Reach-->
     <string name="Label_Anyway">とに和</string>
     <string name="Warn_BlockedNeedRonAnyway">\"和了\"ボタンではなく、\"とにかく和了\"してください</string>
     <string name="AE_TestRobotDiscardButtonServerOnly">テスト用ボット用の打牌ボタン使用はサーバーのみです</string>
@@ -1476,8 +1490,13 @@
     	メンバー＝%1$s、ゲーム数＝%2$d　（%3$s から）
 		</string>
     <string name="Label_ShowAnywayBtn">\"とに和\"(とにかく和了)ボタン表示</string>
-    <string name="Desc_ShowAnywayBtn">--七対子、国士 以外の変則形を上がるときに必要</string>
+    <string name="Desc_ShowAnywayBtn">七対子、国士 以外の変則形を上がるときに必要。アプリの先付、フリテンのチェックに不満があり、強制的にあがるためにも使用できる</string>
     <string name="Err_BS_NotCompleteSelected">終了したゲームを選択してください</string>
     <string name="Err_BSMultipleSelected">ゲームの選択は１行にしてください</string>
     <string name="AE_FuritenReach">フリテン立直</string>
+    <string name="Label_ChkMultiWait">片上がり、フリテン、先付違反</string>
+    <string name="Label_ChkMultiWaitYes">チェックする</string>
+    <string name="Desc_ChkMultiWait">\"和了\"を押したときにチェック。一飜縛りもチェックします。アプリの判定に不満がある場合に備えて、役の設定で\"とに和\"ボタンを表示した方が良いでしょう。
+				一人遊びの時は、この設定にかかわらずチェックします。またロボットもチェックOKに限って上がりを宣言します。</string>
+    <string name="AE_NoReachErrToForce">強制すべき立直のエラーはありません</string>
 </resources>

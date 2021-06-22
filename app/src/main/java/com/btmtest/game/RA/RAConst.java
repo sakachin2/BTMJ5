@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 299;
+//*CID://+va9hR~: update#= 300;                                    //+va9hR~
 //**********************************************************************
+//2021/06/19 va9h avoid reach when winList=1 except 7pair at eraly timimg//+va9hI~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -143,7 +144,7 @@ public class RAConst                                               //~1130R~
     public static final int HV_TREND_SAME_SAME              =2;   //if same>=2 ans pair>=3  trend is same//~1224R~
     public static final int HV_TREND_SAME_PAIR              =3;   //for trend_same//~1224I~
     public static final int HV_HAN_MARKOTHER                 =4;   //ignore other if han >= 4
-    public static final int HV_DORA_MARKOTHER                =3;   //ignore other if dora>= 3//+1314I~
+    public static final int HV_DORA_MARKOTHER                =3;   //ignore other if dora>= 3//~1314I~
     public static final int HV_HAN_EARTHOTHER                =4;   //mark if opened han>=4//~1220I~
     public static final int HV_SHANTEN_TRYNEXT               =2;   //simulate Take if shanen=1 or 2
     public static final int HV_SHANTEN_TO_PON_WORD_ON_REACH  =2;   //if shanten<=2 call pon for value word at 2nd exposed//~1306I~
@@ -157,6 +158,7 @@ public class RAConst                                               //~1130R~
     public static final int HV_PARENT_1STCALL_SHANTEN       =3;		//if parent shanten<=3, call PON at 1st discard//~1305I~
 
     public static final int HV_CTR_TO_WAIT_REACH_EARLY      =8;    // if ctrTaken<8 wait winning tile>=4//~1215I~//~1216R~//~1218R~
+    public static final int HV_CTR_TO_WAIT_REACH_EARLY_WINLIST=10;  // if ctrTaken<10 wait winList!=1//+va9hI~
     public static final int HV_CTR_TO_CHK_WORD_STARTING     =6;    // count word tile of ctrTaken<6 for samecolor//~1216I~//~1217R~
     public static final int HV_CTR_WORD_STARTING_SAMECOLOR  =3;    // if word tile>=3 in first 6 discard it is not same color//~1224R~
     public static final int HV_INTENT_SAMECOLOR_SHANTEN     =3;    // set intent if shanten<=3//~1218I~//~1308R~

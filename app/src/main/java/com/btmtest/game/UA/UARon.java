@@ -1,5 +1,7 @@
-//*CID://+va88R~: update#= 695;                                    //+va88R~
+//*CID://+va9aR~: update#= 706;                                    //~va9aR~
 //**********************************************************************//~v101I~
+//2021/06/17 va9a (bug)Dump by at tenho(AG.aPlayers.getTileCompleteSelectInfoRon() return null)//~va9aI~
+//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/04/14 va88 chk constraint for TakeRon in notify mode(avoid dump)//~va88R~
 //2021/04/13 va85 (Bug)Robot loose envaironment yaku:rinshan,hitei,hotei//~va85I~
 //2021/03/30 va71 (Bug)when multi ron called for reach tile,river tile is drawn by stand and lying.//~va71I~
@@ -51,6 +53,7 @@ import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.Players.*;
+import static com.btmtest.game.RA.RARon.*;
 import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.UA.Rank.*;
 
@@ -76,6 +79,7 @@ public class UARon                                                 //~v@@@R~//~v
     private UARonValue UARV;                                       //~va11I~
 //  private boolean swCheckRonable;                                //~va11I~//~va1aR~
     private boolean swCheckFix1;                                   //~va11I~
+    private boolean swCheckMultiWait;                              //~va96I~
     private boolean swCheckFix2;                                   //~va88I~
     private int completeType,currentEswn;                          //~va11R~
     private boolean swTake;                                        //~va11I~
@@ -113,7 +117,9 @@ public class UARon                                                 //~v@@@R~//~v
     	swMultiRon3Next=RuleSetting.isDrawnHW3R();     //~v@@6I~   //~9B29I~
 //      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~va11I~//~va1aR~
         swCheckFix1= RuleSettingOperation.isYakuFix1();            //~va11R~
+        swCheckMultiWait=RuleSettingOperation.isCheckMultiWait();  //~va96R~
         constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~//~va88I~
+        if (Dump.Y) Dump.println("UARon.init swCheckFix1="+swCheckFix1+",swCheckMultiwait="+swCheckMultiWait);//~va96I~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
 //    public boolean complete(int Pplayer)                            //~v@@@I~//~v@@6R~
@@ -176,7 +182,7 @@ public class UARon                                                 //~v@@@R~//~v
         return true;                                               //~9B23I~
     }                                                              //~9B23I~
 	//*************************************************************************//~va70I~
-	//* from RACall in PlayAloneNotifyMode for human player        //~va70I~
+	//* from RACall in PlayAloneNotifyMode for human player at other discrded         //~va70I~//~va96R~
 	//*************************************************************************//~va70I~
     public boolean selectInfoPlayAloneNotify()                     //~va70R~
     {                                                              //~va70I~
@@ -196,7 +202,8 @@ public class UARon                                                 //~v@@@R~//~v
         return true;                                               //~va70I~
     }                                                              //~va70I~
 	//*************************************************************************//~va88I~
-	//*when Human taken                                            //~va88I~
+	//*from RACall                                                 //~va96R~
+	//*when Human taken at playalone mode                          //~va96I~
 	//*************************************************************************//~va88I~
     public boolean selectInfoPlayAloneNotifyTake(TileData PtdTaken)//~va88I~
     {                                                              //~va88I~
@@ -237,7 +244,8 @@ public class UARon                                                 //~v@@@R~//~v
 //      }                                                            //~va11I~//~va1aR~
         if (rc)                                                    //~va11R~
         {                                                          //~va11R~
-            if (swCheckFix1)                                       //~va11R~
+//          if (swCheckFix1)                                       //~va11R~//~va96R~
+            if (swCheckFix1 || swCheckMultiWait)                   //~va96I~
             {                                                      //~va11I~
             	swCheckFix2=isCheckFix2();                         //~va88I~
 //              int rc2=UARV.chkRank(this,Pplayer);                //~va11R~//~va88R~
@@ -259,7 +267,15 @@ public class UARon                                                 //~v@@@R~//~v
     			  		GMsg.drawMsgbar(R.string.Err_RonChk);      //~va11R~
                 	rc=false;                                      //~va11I~
                 }                                                  //~va11I~
-            }                                                      //~va11I~
+        		if (rc && swCheckMultiWait)   //confirmed shanten==-1 by chkRank//~va96I~
+            	{                                                  //~va96I~
+//        			if (!chkCompleteMultiWaitMatchModeHuman(PLAYER_YOU))     //chk furiten kataagari//~va96I~//~va9aR~
+                	TileData td=swChkCompleteTake ? tdNotifyTake : null;//~va9aI~
+//        			if (!chkCompleteMultiWaitMatchModeHuman(PLAYER_YOU,td))     //chk furiten kataagari//+va9aR~
+          			if (!chkCompleteMultiWaitHuman(PLAYER_YOU,td))     //chk furiten kataagari//+va9aI~
+            			rc=false;                                  //~va96I~
+            	}                                                  //~va96I~
+            }                                                      //~va96I~
         }                                                          //~va11R~
         if (Dump.Y) Dump.println("UARon.chkComplete rc="+rc);      //~va70I~
 		return rc;                                          //~9C11I~
@@ -777,4 +793,20 @@ public class UARon                                                 //~v@@@R~//~v
         if ((completeType & COMPLETE_KAN_ADD)!=0)	//chankan      //~va11I~
 			UARV.addOtherYaku(RYAKU_KAN_ADD,RANK_KAN_ADD);         //~va11I~
     }                                                              //~va11I~
+	//*************************************************************************//~va96I~
+	//*after chkRank(constraint chk done)                          //~va96R~
+	//*************************************************************************//~va96I~
+//  private boolean chkCompleteMultiWaitMatchModeHuman(int Pplayer)//~va96R~//~va9aR~
+    private boolean chkCompleteMultiWaitHuman(int Pplayer,TileData Ptd)//+va9aR~
+    {                                                              //~va96I~
+//  	boolean swTaken=AG.aUARonValue.swTaken;	//set at UARonValue.chkRank() by ctrHand//~va96R~
+        TileData[] tds=AG.aPlayers.getHands(Pplayer);               //~va96I~
+        boolean swTaken=Tiles.isTakenStatus(tds.length);                   //~va96I~
+//      TileData tdRon=AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va11I~//~va96I~//~va9aR~
+        TileData tdRon=Ptd!=null ? Ptd : AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va9aI~
+        if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitMatchModeHuman player="+Pplayer+",swTaken="+swTaken+",tdRon="+tdRon.toString());//~va96R~//~va9aR~
+        boolean rc=AG.aRARon.isRonableMultiWaitMatchModeHuman(Pplayer,swTaken,tdRon);//~va96R~
+        if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitHuman rc="+rc);//~va96I~//+va9aR~
+		return rc;                                                 //~va96R~
+	}                                                              //~va96I~
 }//class                                                           //~v@@@R~

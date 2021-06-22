@@ -1,4 +1,4 @@
-//*CID://+va8uR~: update#= 836;                                    //~va11R~//~va8uR~
+//*CID://+va8uR~: update#= 837;                                    //~va11R~//~va8uR~
 //**********************************************************************//~v101I~
 //2021/04/29 va8u (Bug)ignore furiten/kataagari Take not AllInHand,chk skazuke condition only//~va8uI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -123,7 +123,7 @@ public class Rank                                                  //~va11R~
                                                                    //~va8uI~
 	public static final long YAKUID_FIX=(  0L                          //~va8uI~
 //        |  (1L<< RYAKU_7PAIR            )                        //~va8uR~
-          |  (1L<< RYAKU_TANYAO           )   //ON only when rulesetting kuitan:Yes//+va8uR~
+          |  (1L<< RYAKU_TANYAO           )   //ON only when rulesetting kuitan:Yes//~va8uR~
 //        |  (1L<< RYAKU_PINFU            )                        //~va8uR~
 //        |  (1L<< RYAKU_RSV1             )                        //~va8uR~
 //        |  (1L<< RYAKU_WIND             )                        //~va8uR~
@@ -393,7 +393,8 @@ public class Rank                                                  //~va11R~
   	    addYaku(this,Pyaku,Pctr);                                  //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
-    public static void addYaku(Rank Prank,int Pyaku,int Pctr)      //~va11I~
+//  public static void addYaku(Rank Prank,int Pyaku,int Pctr)      //~va11I~//+va8uR~
+    private static void addYaku(Rank Prank,int Pyaku,int Pctr)     //+va8uI~
     {                                                              //~va11I~
 //	    addYaku(Prank,Pyaku);                                      //~va11R~
         setCtr(Prank,Pyaku,Pctr);                                  //~va11I~
@@ -568,12 +569,14 @@ public class Rank                                                  //~va11R~
     	if (Dump.Y) Dump.println("Rank.resetWGR old="+rankToString(old)+",new="+toString(Prank));//~va11R~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
-    public void setCtr(int Pyaku,int Pctr)                         //~va11R~
+//  public void setCtr(int Pyaku,int Pctr)                         //~va11R~//+va8uR~
+    private void setCtr(int Pyaku,int Pctr)                        //+va8uI~
     {                                                              //~va11I~
 	    setCtr(this,Pyaku,Pctr);                                   //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
-    public static void setCtr(Rank Prank,int Pyaku,int Pctr)       //~va11I~
+//  public static void setCtr(Rank Prank,int Pyaku,int Pctr)       //~va11I~//+va8uR~
+    private static void setCtr(Rank Prank,int Pyaku,int Pctr)      //+va8uI~
     {                                                              //~va11I~
     	if (Dump.Y) Dump.println("Rank.setCtr yaku="+Pyaku+",ctr="+Pctr);//~va11R~
     	if (Pyaku==RYAKU_CTR_DORA)                                 //~va11I~

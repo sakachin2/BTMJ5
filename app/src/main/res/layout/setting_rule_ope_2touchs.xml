@@ -132,6 +132,35 @@
         />
     </LinearLayout>
     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+        android:orientation="vertical"
+    >
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                    android:text="@string/Label_ChkMultiWait"
+                android:textSize="@dimen/textview_middle"
+            />
+            <CheckBox
+                android:id="@+id/cbChkMultiWait"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Label_ChkMultiWaitYes"
+            />
+	    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Desc_ChkMultiWait"
+        />
+    </LinearLayout>
+    <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
