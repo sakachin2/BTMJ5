@@ -1,4 +1,4 @@
-//*CID://+va23R~: update#= 952;                                    //~va23R~
+//*CID://+va23R~: update#= 956;                                    //~va23R~
 //**********************************************************************//~v101I~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
 //**********************************************************************//~1107I~
@@ -2941,7 +2941,119 @@ public class ITRARonSub extends RARon                              //~va23R~
 				};                                                 //~va23I~
 				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23I~
 				if (Dump.Y)                                        //~va23I~
-					Dump.println("IRRARonSub.ronTest-8034 FIX_LAST kataagari OK if kataagariOK setting multiron rc=" + rc);//+va23R~
+					Dump.println("IRRARonSub.ronTest-8034 FIX_LAST kataagari OK if kataagariOK setting multiron rc=" + rc);//~va23R~
+				if (!swTestAll) break;                             //~va23I~
+			case 8041:                                             //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 3},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 3},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 6/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23I~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-8041 penchan junchan and 3 anko rc=" + rc);//~va23R~
+				if (!swTestAll) break;                             //~va23I~
+			case 80411:                                            //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 3},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 3},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23I~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-80411 pinfu junchan and 3 anko rc=" + rc);//~va23I~
+				if (!swTestAll) break;                             //~va23I~
+			case 8042:                                             //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23R~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-8042 pinfu honchan and 3 anko rc=" + rc);//~va23I~
+				if (!swTestAll) break;                             //~va23I~
+			case 8043:                                             //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 2, 0, 0, 0, 0}};                         //7//+va23R~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 2, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23R~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-8043 NOT pinfu(WGR), honchan and 3 anko rc=" + rc);//~va23R~
+				if (!swTestAll) break;                             //~va23I~
+			case 8044:                                             //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 1, 1, 1, 1, 1, 1},               //~va23I~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 1, 1, 1, 1, 1, 1},               //~va23I~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 6/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23I~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-8044 penchan pinfu rc=" + rc);//~va23I~
+				if (!swTestAll) break;                             //~va23I~
+			case 80441:                                            //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 1, 1, 1, 1, 1, 1},               //~va23I~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 1, 1, 1, 1, 1, 1},               //~va23I~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23I~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-80441 Not HONOR tile pinfu rc=" + rc);//~va23I~
+				if (!swTestAll) break;                             //~va23I~
+			case 8045:                                             //~va23I~
+				dupCtr = new int[][]{                              //~va23I~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 1, 1, 1, 1, 1, 1},               //~va23I~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				dupCtrAll = new int[][]{                           //~va23I~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},               //~va23I~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},               //~va23I~
+						{0, 0, 0, 1, 1, 1, 1, 1, 1},               //~va23I~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~va23I~
+				pairEarth = new Pair[]{                            //~va23I~
+				};                                                 //~va23I~
+				rc = ronTestSubMatchMode(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/, false/*swTake*/, pairEarth);//~va23I~
+				if (Dump.Y)	Dump.println("IRRARonSub.ronTest-8045 HONOR tile pinfu rc=" + rc);//~va23I~
 				if (!swTestAll) break;                             //~va23I~
 			default:  //value1                                             //~va23I~
 				if (Dump.Y) Dump.println("IRRARonSub.ronTest3-@@@@ caseNo err="+testCase);//~va23R~

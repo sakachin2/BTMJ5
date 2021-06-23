@@ -113,7 +113,7 @@ public class ITRARon                                          //~0B02R~//~1607R~
     {                                                              //~0B01I~
         setUpEnv();                                                //~0B01I~
 //        UARVS.ronTestValue(0);                      //~1408I~       //~1607R~//~1613R~
-//      UARVS.ronTestValue(101);     //3shiki                      //~1607R~//~1608R~//~1609R~//~1610R~//~1611R~//~1613R~//+1617R~
+//      UARVS.ronTestValue(101);     //3shiki                      //~1607R~//~1608R~//~1609R~//~1610R~//~1611R~//~1613R~//~1617R~
 //      UARVS.ronTestValue(201);     //ittsu                       //~1607R~//~1611R~
 //      UARVS.ronTestValue(301);     //3tonko                      //~1607R~//~1611R~
 //      UARVS.ronTestValue(401);     //3kan                        //~1607R~//~1609R~
@@ -121,7 +121,7 @@ public class ITRARon                                          //~0B02R~//~1607R~
 //      UARVS.ronTestValue(601);     //honor tile                  //~1610R~//~1611R~//~1612R~
 //    UARVS.ronTestValue(701);     //kataagari sample            //~1612R~//~1613R~
 //      UARVS.ronTestValue(70942);     //kataagari sample          //~1612I~//~1613R~
-      UARVS.ronTestValue(801);     //kataagari human               //+1617I~
+      UARVS.ronTestValue(8043);     //kataagari human               //~1617I~//+1623R~
     }                                                              //~0B01I~
     private void setUpEnv()                                             //~0B01I~
     {                                                              //~0B01I~
