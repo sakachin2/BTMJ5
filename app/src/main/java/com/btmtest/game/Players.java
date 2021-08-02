@@ -1,5 +1,6 @@
-//*CID://+va91R~: update#= 855;                                    //~va91R~
+//*CID://+vaadR~: update#= 863;                                    //~vaadR~
 //**********************************************************************//~v101I~
+//2021/06/30 vaad (Bug)PlayAlone mode,did not notify kan if kan not in deal. maintaine ItsHand also for MatcNotify mode//~vaadI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/05/04 va8A accept dupron for also robot                     //~va8AI~
 //2021/04/13 va84 try Robot also ron by 13/14 NoPair               //~va84I~
@@ -363,6 +364,7 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.setInitialDeal Peswn="+Peswn+",pos="+Ppos);//~v@@@R~
 //      players[player].setInitialDeal(Ptd,Ppos);                  //~v@@@R~
         players[PLAYER_YOU].setInitialDeal(Ptd,Ppos,Peswn);	//set on player[0]//~v@@@I~
+        AG.aRoundStat.deal(PLAYER_YOU,Peswn);                      //~vaadI~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public TileData[] getHands(int Pplayer)                        //~v@@@R~
@@ -1235,6 +1237,7 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.discardOtherOnClient swLight="+PswLight+",swShadow="+PswShadow+",player="+Pplayer+",Ptd="+Ptd.toString());//~v@@@R~
         Ptd.setDiscarded(); //TDF_DISCARDED                        //~v@@@I~
         tileLastDiscarded=Ptd;                                     //~v@@@I~
+        if (Dump.Y) Dump.println("Players.discardOtherOnClient player="+Pplayer+",tileLastDiscarded="+Ptd.toString());//~vaadI~
         playerLastDiscarded=Pplayer;                               //~v@@@I~
     	players[Pplayer].discardOtherOnClient(Ptd);                //~v@@@I~
         if (PswLight)                                              //~v@@@I~
@@ -1391,6 +1394,8 @@ public class Players                                               //~v@@@R~
 //      if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
 //          players[PLAYER_YOU].takePon(Ptds);            //~v@@5I~//~v@@@R~
         players[Pplayer].takePonOtherOnClient(Ptds);               //~v@@@R~
+        if (Pplayer==PLAYER_YOU)                                   //~vaadI~
+        	AG.aRoundStat.takePon(Pplayer,Ptds);                   //~vaadI~
         setCurrentPlayer(Pplayer,PswShadow);                       //~v@@5I~
         return true;                                               //~v@@5I~
     }                                                              //~v@@5I~
@@ -1428,6 +1433,8 @@ public class Players                                               //~v@@@R~
 //      if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
 //          players[PLAYER_YOU].takeChii(Ptds);                    //~v@@@R~
         players[Pplayer].takeChiiOtherOnClient(Ptds);              //~v@@@R~
+        if (Pplayer==PLAYER_YOU)                                   //~vaadI~
+        	AG.aRoundStat.takeChii(Pplayer,Ptds);                  //~vaadI~
         setCurrentPlayer(Pplayer,PswShadow);                       //~v@@@I~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
@@ -1491,6 +1498,8 @@ public class Players                                               //~v@@@R~
     {                                                              //~v@@6I~
         if (Dump.Y) Dump.println("Players.takeKanOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@6I~//~va60R~
         int rc=players[Pplayer].takeKanOtherOnClient(Ptds);        //~v@@6R~
+        if (Pplayer==PLAYER_YOU)                                   //~vaadI~
+        	AG.aRoundStat.takeKan(Pplayer,Ptds);                   //~vaadI~
         setCurrentPlayer(Pplayer,PswShadow);                       //~v@@6I~
         return rc;                                                 //~v@@6R~
     }                                                              //~v@@6I~
@@ -1609,9 +1618,9 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~va91I~
     //*for IT                                                      //~va91I~
     //*********************************************************************//~va91I~
-    public void addPair(int Pplayer,TileData[] Ptds,int Pflag)     //+va91R~
+    public void addPair(int Pplayer,TileData[] Ptds,int Pflag)     //~va91R~
     {                                                              //~va91I~
-    	players[Pplayer].addPair(Ptds,Pflag);               //+va91R~
+    	players[Pplayer].addPair(Ptds,Pflag);               //~va91R~
     }                                                              //~va91I~
     //*********************************************************************//~v@@6I~
     public TileData[] getKanAddEarth(int Pplayer,boolean PswRep)   //~v@@6R~
@@ -2015,7 +2024,7 @@ public class Players                                               //~v@@@R~
 			TileData tdTaken;                                      //~v@@@I~
             boolean swTaken=false;                                 //~v@@@I~
         //********************************                         //~v@@@I~
-            if (Dump.Y) Dump.println("Players.discard discard td="+Ptd.type+",no="+Ptd.number);//~v@@@I~
+            if (Dump.Y) Dump.println("Players.discard discard t="+Ptd.type+",n="+Ptd.number);//~v@@@I~//+vaadR~
             posTaken=arrayList.size()-1;                           //~v@@@I~
             tdTaken=arrayList.get(posTaken);                            //~v@@@I~
 //          swTaken=TileData.TDCompare(tdTaken,Ptd)==0;	//discard taken//~v@@@I~//~v@@6R~
@@ -2316,11 +2325,17 @@ public class Players                                               //~v@@@R~
 	        return takePonChii(Ptds,TDF_PON);                      //~v@@@I~
         }                                                          //~v@@@I~
         //*********************************************************************//~v@@@I~
+        //*on client                                               //~vaadI~
+        //*********************************************************************//~vaadI~
         public boolean takePonOtherOnClient(TileData[] Ptds)       //~v@@@I~
         {                                                          //~v@@@I~
-	        return takePonChiiOtherOnClient(Ptds,TDF_PON);         //~v@@@I~
+            if (Dump.Y) Dump.println("Player.takePonOtherOnClient player="+player+",Ptds="+TileData.toString(Ptds));//~vaadI~
+            return takePonChiiOtherOnClient(Ptds,TDF_PON);         //~v@@@I~//~vaadR~
         }                                                          //~v@@@I~
         //*********************************************************************//~v@@@I~
+        //*On Server for All player including robot                //~vaadI~
+        //*On Client(OtherOnClient) for PLAYER_YOU                 //~vaadI~
+        //*********************************************************************//~vaadI~
         public boolean takePonChii(TileData[] Ptds,int PactionID)  //~v@@@I~
         {                                                          //~v@@@I~
             if (Dump.Y) Dump.println("Player.takePonChii player="+player+",Ptds="+TileData.toString(Ptds));//~v@@@I~
@@ -2346,6 +2361,8 @@ public class Players                                               //~v@@@R~
             return true;                                           //~v@@@I~
         }                                                          //~v@@@I~
         //*********************************************************************//~v@@@I~
+        //*from UAPon/UAPon on client                              //~vaadI~
+        //*********************************************************************//~vaadI~
         public boolean takePonChiiOtherOnClient(TileData[] Ptds,int PactionID)//~v@@@I~
         {                                                          //~v@@@I~
             if (Dump.Y) Dump.println("Player.takePonChiiOnOtherClient player="+player+",Ptds="+TileData.toString(Ptds));//~v@@@I~
@@ -2380,7 +2397,8 @@ public class Players                                               //~v@@@R~
         //*********************************************************************//~v@@@I~
         public boolean takeChiiOtherOnClient(TileData[] Ptds)      //~v@@@I~
         {                                                          //~v@@@I~
-	        return takePonChiiOtherOnClient(Ptds,TDF_CHII);        //~v@@@I~
+            if (Dump.Y) Dump.println("Player.takeChiiOtherOnClient player="+player+",tds="+TileData.toString(Ptds));//~vaadI~
+            return takePonChiiOtherOnClient(Ptds,TDF_CHII);        //~v@@@I~//~vaadR~
         }                                                          //~v@@@I~
 //        //*********************************************************************//~v@@@I~//~v@@6R~
 ////      public boolean takeKan(TileData Ptd,TileData Ptdkan,boolean Pswtakeriver)//~v@@@R~//~v@@6R~
@@ -2681,7 +2699,7 @@ public class Players                                               //~v@@@R~
         //*********************************************************************//~9208I~
         public int takeKanOtherOnClient(TileData[] Ptds)           //~v@@6R~
         {                                                          //~v@@6I~
-            if (Dump.Y) Dump.println("Player.takeKanOtherOnClient player="+player+",Ptds="+TileData.toString(Ptds));//~v@@6I~
+            if (Dump.Y) Dump.println("Players.takeKanOtherOnClient player="+player+",Ptds="+TileData.toString(Ptds));//~v@@6I~//~va91R~
             int rc;                                                //~v@@6I~
             if (player==PLAYER_YOU)                                //~v@@6I~
         		rc=takeKan(Ptds);                                  //~v@@6R~

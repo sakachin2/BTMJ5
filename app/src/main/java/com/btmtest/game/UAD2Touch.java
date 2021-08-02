@@ -1,5 +1,6 @@
-//*CID://+va70R~:                             update#=  255;       //~va70R~
+//*CID://+vaa2R~:                             update#=  265;       //~vaa2R~//~vaafR~//+vaa2R~
 //*****************************************************************//~v101I~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //*****************************************************************//~v101I~
 package com.btmtest.game;                                         //~v@@@R~
@@ -25,9 +26,11 @@ public class UAD2Touch                                             //~v@@@R~
 {                                                                  //~2C29R~
     private static final int COLOR_BLOCKING= Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~v@@@R~
     private static final int COLOR_MORE= Color.argb(0xff,0xff,0xff,0x00);   //Light's orange//~v@@@I~
+    private static final int COLOR_NOTIFY= AG.getColor(R.color.btn_notify);		//yellow//~vaa2R~
     public static final int COLOR_NORMAL=-1;   //gc.btnbackground  //~v@@@R~
 	public static final int BTN_STATUS_ENABLE_CANCEL=1;            //~v@@@R~
 	public static final int BTN_STATUS_DISABLE_CANCEL=2;           //~v@@@R~
+	public static final int BTN_STATUS_MATCH_NOTIFY  =0x80;        //~vaa2I~
                                                                    //~9B28I~
     private UADelayed2 UADL;                                       //~v@@@I~
 //  private int actionToCancel;                                    //~v@@@I~//~9B28R~
@@ -168,14 +171,23 @@ public class UAD2Touch                                             //~v@@@R~
         if (Dump.Y) Dump.println("UAD2Touch.stopAuto2TouchPlayAloneNotify actionID="+PactionID);//~va70I~
 	    updateBtnPlayAloneNotify(PactionID,BTN_STATUS_ENABLE_CANCEL); //~va70R~
     }                                                              //~va70I~
-//    //*************************************************************************//+va70R~
-//    //*for human player when PlayAloneNotfy mode at GC button push//+va70R~
-//    //*************************************************************************//+va70R~
-//    public void reset2TouchPlayAloneNotify(int PactionID)        //+va70R~
-//    {                                                            //+va70R~
-//        if (Dump.Y) Dump.println("UAD2Touch.reset2TouchPlayAloneNotify actionID="+PactionID);//+va70R~
-//        updateBtnPlayAloneNotify(PactionID,BTN_STATUS_DISABLE_CANCEL);//+va70R~
-//    }                                                            //+va70R~
+	//*************************************************************************//~vaa2I~
+	//*for human player when Match mode                            //~vaa2I~
+	//*************************************************************************//~vaa2I~
+    public void stopAuto2TouchPlayMatchNotify(int PactionID)       //~vaa2I~
+    {                                                              //~vaa2I~
+        if (Dump.Y) Dump.println("UAD2Touch.stopAuto2TouchPlayMatchNotify actionID="+PactionID);//~vaa2I~
+//      updateBtnPlayAloneNotify(PactionID,BTN_STATUS_ENABLE_CANCEL);//~vaa2R~
+        updateBtnPlayMatchNotify(PactionID,0);                     //~vaa2I~
+    }                                                              //~vaa2I~
+//    //*************************************************************************//~va70R~
+//    //*for human player when PlayAloneNotfy mode at GC button push//~va70R~
+//    //*************************************************************************//~va70R~
+//    public void reset2TouchPlayAloneNotify(int PactionID)        //~va70R~
+//    {                                                            //~va70R~
+//        if (Dump.Y) Dump.println("UAD2Touch.reset2TouchPlayAloneNotify actionID="+PactionID);//~va70R~
+//        updateBtnPlayAloneNotify(PactionID,BTN_STATUS_DISABLE_CANCEL);//~va70R~
+//    }                                                            //~va70R~
 	//*************************************************************************//~v@@@I~
     public boolean releaseAuto2Touch(int PactionID,int Pplayer)       //~v@@@I~//~9B28R~
     {                                                              //~v@@@I~
@@ -496,6 +508,26 @@ public class UAD2Touch                                             //~v@@@R~
         int color=Pstatus==BTN_STATUS_ENABLE_CANCEL ? COLOR_BLOCKING : COLOR_NORMAL;//~va70R~
         runUpdateBtnUIPlayAloneNotify(PmsgID,Pstatus,color);       //~va70R~
     }                                                              //~va70I~
+//**********************************************************       //~vaa2I~
+//* from RACall when PlayMatchNotify mode                          //~vaa2I~
+//**********************************************************       //~vaa2I~
+    public void updateBtnPlayMatchNotify(int PmsgID,int Pstatus)   //~vaa2I~
+    {                                                              //~vaa2I~
+        if (Dump.Y) Dump.println("UAD2Touch.updateBtnPlayMatchNotify msgid="+PmsgID+",Pstatus="+Pstatus);//~vaa2I~
+        int color=COLOR_NOTIFY;                                    //~vaa2R~
+        runUpdateBtnUIPlayAloneNotify(PmsgID,Pstatus|BTN_STATUS_MATCH_NOTIFY,color);//~vaa2I~
+    }                                                              //~vaa2I~
+//**********************************************************       //~vaa2I~
+    public void updateBtnPlayMatchNotifyReset()                    //~vaa2I~
+    {                                                              //~vaa2I~
+        if (Dump.Y) Dump.println("UAD2Touch.updateBtnPlayMatchNotifyReset swPlayMatchNotify="+AG.swPlayMatchNotify+",GC.statusPlayMatchNotify="+AG.aGC.statusPlayMatchNotify);//~vaa2R~
+        if (!AG.swPlayMatchNotify)                                 //~vaa2I~
+        	return;                                                //~vaa2I~
+        if (AG.aGC.statusPlayMatchNotify==0)                       //~vaa2I~
+        	return;                                                //~vaa2I~
+        int color=COLOR_NORMAL;                                    //~vaa2I~
+        runUpdateBtnUIPlayAloneNotify(0/*msgID*/,BTN_STATUS_MATCH_NOTIFY,color);//~vaa2I~
+    }                                                              //~vaa2I~
     //*******************************************************      //~v@@@I~
     private void runUpdateBtnUI(final int Pstat,final int Pcolor)//~v@@@R~//~9B28R~
     {                                                              //~v@@@I~
@@ -525,7 +557,7 @@ public class UAD2Touch                                             //~v@@@R~
     //*******************************************************      //~va70I~
     private void runUpdateBtnUIPlayAloneNotify(final int PmsgID,final int Pstat,final int Pcolor)//~va70R~
     {                                                              //~va70I~
-        if (Dump.Y) Dump.println("UAD2Touch.runUpdateBtnUIPlayAloneNotify msgID="+PmsgID+",stat="+Pstat+",color="+Integer.toHexString(Pcolor));//~va70R~
+        if (Dump.Y) Dump.println("UAD2Touch.runUpdateBtnUIPlayAloneNotify msgID="+PmsgID+",stat=0x"+Integer.toHexString(Pstat)+",color="+Integer.toHexString(Pcolor));//~va70R~//~vaa2R~
         AG.activity.runOnUiThread(                                 //~va70I~
             new Runnable()                                         //~va70I~
             {                                                      //~va70I~

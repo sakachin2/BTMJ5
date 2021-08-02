@@ -1,6 +1,17 @@
-//*CID://+va9hR~: update#= 300;                                    //+va9hR~
+//*CID://+vabmR~: update#= 320;                                    //~vabcR~//+vabmR~
 //**********************************************************************
-//2021/06/19 va9h avoid reach when winList=1 except 7pair at eraly timimg//+va9hI~
+//2021/07/29 vabm skip reach for shanpon to change ryanmen         //+vabmI~
+//2021/07/27 vabc defuse decision of chanta                        //~vabcI~
+//2021/07/27 vabb evaluate value of allsame; more minus for trplet over pair//~vabbI~
+//2021/07/25 vab9 gnore shanten Up/Down if once called pon/chii according intent//~vab9I~
+//2021/07/27 vaba defuse decision of intent allsame                //~vabaI~
+//2021/07/25 vab7 skip reach if other called open reach            //~vab7I~
+//2021/07/17 vaaP (Bug of Vaad)at discard of reach, shanten was not set. miss notify of Ron at take if reach done//~vaaPI~
+//2021/07/16 vaaM Intent tanyao value should be over shantendown after once called//~vaaMI~
+//2021/07/11 vaaC set intent tanyao/chanta/samecolor for also 7pair//~vaaCI~
+//2021/07/09 vaaw (Bug)Miss to set ALLSAME(INTENT_TREND_SAME is similar flag, us ALLSAME only)//~vaawI~
+//2021/07/03 vaai strengthen robot; call pon/chii if become shanten 0 with a Yaku+dora>=2//~vaaiI~
+//2021/06/19 va9h avoid reach when winList=1 except 7pair at eraly timimg//~va9hI~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -53,10 +64,13 @@ public class RAConst                                               //~1130R~
     public static final int DV_13ORPHAN       =DV_KEEP ;
     public static final int DV_13ORPHAN_OTHER =  -30000;
     public static final int DV_NOT_TANYAO     =   10000;
-    public static final int DV_NOT_TANYAO_AFTER_CALL=20000; //once called pon/chii//~1219I~//~1221R~
+//  public static final int DV_NOT_TANYAO_AFTER_CALL=20000; //once called pon/chii//~1219I~//~1221R~//~vaaMR~
+//  public static final int DV_NOT_TANYAO_AFTER_CALL=110000;//not plus for chanta but minus for tanyao tile //once called pon/chii//~vaaMI~//~vab9R~
     public static final int DV_NOT_CHANTA     =   10000;           //~1217I~
+    public static final int DV_WAIT1_CHANTA   =   10000;    //select 1/9/ji when tanki wait in Not Tanyao intent//~vaawI~
 	public static final int DV_ALL_SAME       =  -20000;     //toitoi lager than tanyao/chanta//~1221R~
-    public static final int DV_NOT_CHANTA_AFTER_CALL=20000; //once called pon/chii//~1220I~//~1221R~
+	public static final int DV_ALL_SAME3      =  -60000;     //toitoi lager than pair//~vabbI~
+//  public static final int DV_NOT_CHANTA_AFTER_CALL=20000; //once called pon/chii//~1220I~//~1221R~//~vab9R~
                                                                    //~1220I~
     public static final int DV_MARK_OTHER_BY_LEVEL_CHILD        =100000;        //100,000 vs REACH 3,000,000//~1222R~//~1311R~
     public static final int DV_MARK_OTHER_BY_LEVEL_PARENT       =150000;        //150,000 vs REACH 3,000,000//~1311I~
@@ -124,7 +138,8 @@ public class RAConst                                               //~1130R~
     public static final int HV_SET_INTENT_SAMECOLOR_OTHER1  =3;	//other color limit is <=3  when ctrTaken<=6//~1308I~
     public static final int HV_SET_INTENT_SAMECOLOR_OTHER2  =2;	//other color limit is <=2  when ctrTaken>6//~1308I~
     public static final int HV_SET_INTENT_3DRAGON           =6;	//dragon trplet*3+pair*2+orphan*1>=6//~1307I~
-    public static final int HV_SET_INTENT_ALLSAME_VALUE     =9;	    //limit of determin toitoi intent by VALUE_PAIR*pair+VALUE_PON*(pon+kan)>=9//~1308R~
+//  public static final int HV_SET_INTENT_ALLSAME_VALUE     =9;	    //limit of determin toitoi intent by VALUE_PAIR*pair+VALUE_PON*(pon+kan)>=9//~1308R~//~vabaR~
+    public static final int HV_SET_INTENT_ALLSAME_VALUE     =8;	    //limit of determin toitoi intent by VALUE_PAIR*pair+VALUE_PON*(pon+kan)>=8//~vabaI~
     public static final int HV_SET_INTENT_ALLSAME_VALUE_PAIR=1;    //~1217R~
     public static final int HV_SET_INTENT_ALLSAME_VALUE_PON =3;
     public static final int HV_SET_INTENT_TAKE_13ORPHAM  =1;	//select 13 orphan at 1st take//~1121I~//~1213R~
@@ -158,12 +173,17 @@ public class RAConst                                               //~1130R~
     public static final int HV_PARENT_1STCALL_SHANTEN       =3;		//if parent shanten<=3, call PON at 1st discard//~1305I~
 
     public static final int HV_CTR_TO_WAIT_REACH_EARLY      =8;    // if ctrTaken<8 wait winning tile>=4//~1215I~//~1216R~//~1218R~
-    public static final int HV_CTR_TO_WAIT_REACH_EARLY_WINLIST=10;  // if ctrTaken<10 wait winList!=1//+va9hI~
+    public static final int HV_CTR_TO_WAIT_REACH_EARLY_WINLIST=10;  // if ctrTaken<10 wait winList!=1//~va9hI~
     public static final int HV_CTR_TO_CHK_WORD_STARTING     =6;    // count word tile of ctrTaken<6 for samecolor//~1216I~//~1217R~
     public static final int HV_CTR_WORD_STARTING_SAMECOLOR  =3;    // if word tile>=3 in first 6 discard it is not same color//~1224R~
+    public static final int HV_CTR_DORA_FOR_PONCHII_OTHERREACH=0;  // if dora>=0 call pon/chii if shanten=1 and anyone called reach//~vaaiR~
+    public static final int HV_CTR_WINTILE_FOR_PONCHII_OTHERREACH=3; // if dora>=0 call pon/chii if shanten=1 and anyone called reach//~vaaiI~
+    public static final int HV_CTR_DORA_FOR_PONCHII_SHANTEN1=2;    // if dora>=2 call pon/chii if shanten=1//~vaaiI~
+    public static final int HV_CTR_DORA_FOR_PONCHII_SHANTEN2=3;    // if dora>=3 call pon/chii if shanten=2//~vaaiR~
     public static final int HV_INTENT_SAMECOLOR_SHANTEN     =3;    // set intent if shanten<=3//~1218I~//~1308R~
     public static final int HV_CTRWIN_TO_REACH_EARLY         =4;    // if wintile>=4 do reach in early phase//~1215I~
     public static final int HV_CTRWIN_TO_REACH_ONE_TYPE      =4;    //wintile<4 for penchan kanchan tanki//~1224I~
+    public static final int HV_CTRWIN_TO_REACH_SKIP_SHANPON  =4;    //wintile<4 for shanpon skip reach//+vabmI~
     public static final int HV_CTRWIN_TO_REACH               =2;    // if wintile>=2 do reach//~1215I~
     public static final int HV_CTRWIN_TO_REACH_2ND           =5;    // if wintile>=5 do reach if other player reached//~1306I~//~1309R~
     public static final int HV_CTRWIN_TO_REACH_7PAIR         =2;    // if wintile>=2 do reach//~1224I~
@@ -176,7 +196,9 @@ public class RAConst                                               //~1130R~
     public static final int HV_SHANTEN_GIVEUP                =2;      //give up if discard>=15 && shanten>=2//~1217I~
     public static final int HV_DISCARD_GIVEUP_WEAK           =14;     //short before half of round//~1217I~//~1302R~
     public static final int HV_SHANTEN_GIVEUP_WEAK           =2;      //give up if discard>=15 && shanten>=2//~1217I~
-    public static final int HV_INTENT_CHANTA_MELD            =5;      //intent chanta if candidate>=5//~1217I~//~1221R~
+    public static final int HV_SHANTEN_KAN_WORD              =2;      //issue kan for word tile if shanten<=2//~vaaiI~
+//  public static final int HV_INTENT_CHANTA_MELD            =5;      //intent chanta if candidate>=5//~1217I~//~1221R~//~vabcR~
+    public static final int HV_INTENT_CHANTA_MELD            =4;      //intent chanta if candidate>=4//~vabcI~
     public static final int HV_INTENT_CHANTA_MELD_WEIGHT2    =4;      //(meld candidate:4)+(sigle term:1)/4//~1221I~
     public static final int HV_INTENT_CHANTA_MELD_WEIGHT1    =1;      //(meld candidate:4)+(sigle term:1)/4//~1221I~
     public static final int HV_INTENT_TANYAO_TAKECTR         =8;     //when ctrTaken>=8//~1217R~
@@ -184,6 +206,9 @@ public class RAConst                                               //~1130R~
     public static final int HV_INTENT_TANYAO_TILECTR_EARLY   =3;     //else tanyao tile<=4//~1217I~//~1218R~
     public static final int HV_INTENT_TANYAO_MAX_CHANTA_MELD =2;     //allow chanta meld<=2 for tanyao//~1221I~
     public static final int HV_INTENT_TANYAO_SHANTEN_FORCE   =2;     //if shanten<2 ignore chanta meld & chanta dora//~1223I~
+    public static final int HV_INTENT_CTR_CHANTA_7PAIR       =4;     //if chanta pairctr<=4 7pair chanta//~vaaCI~
+    public static final int HV_INTENT_CTR_CHANTA_7PAIR_SINGLE=2;     //and hanta single chanta>=2//~vaaCI~
+    public static final int HV_INTENT_SHANTEN_7PAIR_ONLY     =1;     //if shanten<=1 no chk standard form//~vaaCR~
                                                                    //~1217I~//~1221R~
 
 	public static final int ERR_DISCARD_OPENREACH=1;                         //~va60I~//~1130M~
@@ -226,7 +251,7 @@ public class RAConst                                               //~1130R~
 	public static final int INTENT_SAMECOLOR_ANY    =(INTENT_SAMECOLOR_MAN | INTENT_SAMECOLOR_PIN | INTENT_SAMECOLOR_SOU);//~1219R~
 	public static final int INTENT_ALLSAME          =0x10; //toitoi//~1115R~//~1130M~
 	public static final int INTENT_ALLSEQ           =0x20; //pinfu //~1115R~//~1130M~
-	public static final int INTENT_TREND_SAME       =0x40; //many seed of SAME//~1115I~//~1130M~
+//  public static final int INTENT_TREND_SAME       =0x40; //many seed of SAME//~1115I~//~1130M~//~vaawR~
 	public static final int INTENT_TANYAO           =0x80;         //~1116I~//~1130M~
 	public static final int INTENT_13ORPHAN       =0x0100; //13orpahn//~1115R~//~1130M~
 	public static final int INTENT_7PAIR          =0x0200; //7pair //~1115R~//~1130M~
@@ -240,6 +265,8 @@ public class RAConst                                               //~1130R~
 	public static final int CALLSTAT_REACH              =0x01; //reach called//~1115R~//~1130M~
 	public static final int CALLSTAT_SAME               =0x02; //many call PON/KAN//~1115R~//~1130M~
 	public static final int CALLSTAT_REACH_ONESHOT      =0x04; //  //~1219I~
+	public static final int CALLSTAT_REACH_SET_SHANTEN  =0x08; //  //~vaaPI~
+	public static final int CALLSTAT_REACH_OPEN         =0x10; //reachOpen called//~vab7I~
                                                                    //~1115I~//~1130M~
     public static final int CTR_TILETYPE=34;                      //~1106I~//~va60R~//~1130M~
     public static final int OFFS_WORDTILE=3*9;                    //~1106I~//~va60R~//~1130M~

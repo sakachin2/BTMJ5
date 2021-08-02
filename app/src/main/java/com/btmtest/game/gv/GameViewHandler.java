@@ -1,4 +1,4 @@
-//*CID://+va60R~: update#= 422;                                    //~v@21R~//~va27R~//~va60R~
+//*CID://+va60R~: update#= 424;                                    //~v@21R~//~va27R~//~va60R~
 //**********************************************************************//~v101I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -75,13 +75,13 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         }                                                          //~v@11I~
     }                                                              //~v@11I~
 //*********************************************************************************//~va60I~
-//* for IT, skip GCanvas                                           //+va60R~
+//* for IT, skip GCanvas                                           //~va60R~
 //*********************************************************************************//~va60I~
-    public GameViewHandler(Looper Plooper,GameView Pgv)            //+va60R~
+    public GameViewHandler(Looper Plooper,GameView Pgv)            //~va60R~
     {                                                              //~va60I~
         super(Plooper);                                            //~va60I~
-        gameView=Pgv;                                              //+va60I~
-        AG.aGameViewHandler=this;                              //~1123I~//+va60I~
+        gameView=Pgv;                                              //~va60I~
+        AG.aGameViewHandler=this;                              //~1123I~//~va60I~
         if (Dump.Y) Dump.println("GameViewHandler Constructor parm=super only");//~va60I~
     }                                                              //~va60I~
 //*********************************************************************************//~v@11I~
@@ -332,7 +332,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
     {                                                              //~v@@@I~
         Bundle bundle=Pmsg.getData();                              //~v@@@I~
         String data=bundle.getString(GVPARM1,null);                //~v@@@I~
-        if (Dump.Y) Dump.println("GameView.getMsgData msgid="+Pmsg.what+",data="+data);//~v@@@I~
+        if (Dump.Y) Dump.println("GameViewHandler.getMsgData msgid="+Pmsg.what+",data="+data);//~v@@@I~//~va60R~
         return data;                                               //~v@@@I~
     }                                                              //~v@@@I~
     //***********************************************************  //~v@21I~
@@ -342,7 +342,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         String data1=bundle.getString(GVPARM1,"");                 //~v@21I~
         String data2=bundle.getString(GVPARM2,"");                 //~v@21I~
         String data3=bundle.getString(GVPARM3,"");                 //~v@21I~
-        if (Dump.Y) Dump.println("GameView.getMsgStrData msgid="+Pmsg.what+",data1="+data1+",data2="+data2+",data3="+data3);//~v@21I~
+        if (Dump.Y) Dump.println("GameViewHandler.getMsgStrData msgid="+Pmsg.what+",data1="+data1+",data2="+data2+",data3="+data3);//~v@21I~//~va60R~
         String[] datas=new String[3];                              //~v@21I~
         datas[0]=data1; datas[1]=data2; datas[2]=data3;               //~v@21I~
         return datas;                                               //~v@21I~
@@ -356,7 +356,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         int p3=bundle.getInt(GVPARM_INT3,0);                       //~v@@@I~
         int p4=bundle.getInt(GVPARM_INT4,0);                       //~v@11I~
         int p5=bundle.getInt(GVPARM_INT5,0);                       //~v@11R~
-        if (Dump.Y) Dump.println("GameView.getMsgIntData msgid="+Pmsg.what+",intdata1="+p1+",data2="+p2+",data3="+p3+",data4="+p4+",data5="+p5);//~v@11R~
+        if (Dump.Y) Dump.println("GameViewHandler.getMsgIntData msgid="+Pmsg.what+",intdata1="+p1+",data2="+p2+",data3="+p3+",data4="+p4+",data5="+p5);//~v@11R~//~va60R~
 //      int[] intp=new int[3];                                           //~v@@@I~//~v@11R~
         int[] intp=new int[5];                                     //~v@11R~
 		intp[0]=p1; intp[1]=p2; intp[2]=p3;                        //~v@@@I~
@@ -367,7 +367,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
 	public void gvHandleMsg(Message Pmsg)                          //~v@@@R~
     {                                                              //~v@@@I~
     	boolean rc=false;   //need call draw                       //~v@@@I~
-        if (Dump.Y) Dump.println("GameViewHandler.handleMsg what="+Pmsg.what);//~v@@@R~
+        if (Dump.Y) Dump.println("GameViewHandler.gvHandleMsg what="+Pmsg.what);//~v@@@R~//+va60R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
 	        switch(Pmsg.what)                                      //~v@@@R~

@@ -1,5 +1,9 @@
-//*CID://+va6iR~: update#= 362;                                    //~va6eR~//~va6iR~
+//*CID://+vaaRR~: update#= 363;                                    //+vaaRR~
 //**********************************************************************//~v101I~
+//2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//+vaaRI~
+//                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//+vaaRI~
+//                Consequently CompReqDlg shows Not ronable format.//+vaaRI~
+//                Send current player at Ron and chk it on server  //+vaaRI~
 //2021/03/15 va6i add BGM of eburishou kouka                       //~va6iI~
 //2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
 //2021/02/10 va68 change robot name                                //~va68I~
@@ -88,6 +92,7 @@ public class GConst                                                    //~v@@@R~
 	public  final static int PARMPOS_PLAYER=0;                     //~v@@@I~//~v@11M~
 	public  final static int PARMPOS_CTRFORTD=5;  //type/number/flag/ctrRemain/eswn//~v@@@I~//~v@11M~
 	public  final static int PARMPOS_TD=1;                          //~v@@@I~//~v@11M~
+	public  final static int PARMPOS_COMPLETE_LOOSER_ESWN=1;       //+vaaRI~
 	public  final static int PARMPOS_OPEN_OPTION=1;                //~v@@7I~//~v@11M~
 	public  final static int PARMPOS_OPEN_TDS=2;                   //~v@@7I~//~v@11M~
 	public  final static int PARMPOS_TD_DORA=3;                    //~v@@@I~//~v@11M~
@@ -168,7 +173,7 @@ public class GConst                                                    //~v@@@R~
     public static final int SOUNDID_BGM_GAME4SLOW=18;              //~va06I~
     public static final int SOUNDID_BGM_GAME4FAST=19;              //~va06I~
     public static final int SOUNDID_BGM_EBURISHOU=20;              //~va6iI~
-    public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //+va6iI~
+    public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //~va6iI~
     //*******************************************                  //~v@11I~
     public GConst()                                                //~v@11I~
     {                                                              //~v@11I~

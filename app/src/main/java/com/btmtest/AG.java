@@ -1,6 +1,7 @@
-//*CID://+va70R~:                             update#=  449;       //+va70R~
+//*CID://+vaa2R~:                             update#=  450;       //~va70R~//+vaa2R~
 //******************************************************************************************************************//~v101R~
-//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//+va70I~
+//2021/06/27 vaa2 Notify mode of Match                             //+vaa2I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -412,7 +413,8 @@ public class AG                                                    //~1107R~
     private int[] msgSeqNoEach=new int[PLAYERS];                   //~@@01I~
     private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~
     public boolean swTrainingMode;                                 //~va66R~
-    public boolean swPlayAloneNotify;                              //+va70I~
+    public boolean swPlayAloneNotify;                              //~va70I~
+    public boolean swPlayMatchNotify;                              //+vaa2I~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
 //************************************                             //~@@01I~

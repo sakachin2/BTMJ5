@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 145;                                    //~va27R~//~1108R~//~1111R~
+//*CID://+vab3R~: update#= 152;                                    //~vab3R~
 //**********************************************************************//~v101I~
+//2021/07/25 vab3 selectrMeld;select if possibility of dor even not red5 exist//~vab3I~
+//2021/07/12 vaaE select word tile to discard if winlist=1 also for NOT reach//~vaaEI~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.RA;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -22,6 +24,7 @@ import java.util.Arrays;
 public class RAUtils                                               //~v@@@R~//~va60R~//~1119R~
 {                                                                  //~0914I~
 //*************************                                        //~v@@@I~
+	private static boolean swSelectRed5;                           //~vab3I~
 	public RAUtils()                                               //~v@@@R~//~va60R~//~1119R~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("RAUtils Constructor");         //~1506R~//~@@@@R~//~v@@@R~//~va60R~//~1119R~
@@ -161,6 +164,7 @@ public class RAUtils                                               //~v@@@R~//~v
     	        rc+=2;                                             //~1118I~//~1119M~//~1215R~
             if (windPos==Peswn)          //wind of you                //~1118I~//~1119M~//~1125R~
                 rc+=3;                                             //~1118I~//~1119M~//~1215R~
+        	if (Dump.Y) Dump.println("RAUtils.chkValueWordTile tile wind="+windPos+",round="+AG.aRoundStat.windRound);//+vab3R~
         }                                                          //~1118I~//~1119M~
         if (Dump.Y) Dump.println("RAUtils.chkValueWordTile Ppos="+Ppos+",eswn="+Peswn+",rc="+rc);//~1118R~//~1119I~//~1125R~
         return rc;                                                  //~1118I~//~1119M~
@@ -228,6 +232,17 @@ public class RAUtils                                               //~v@@@R~//~v
         TileData tdDiscard=selectTileInHand(Ppos,itsHand,tdsHand); //~1129I~
         return tdDiscard;                                          //~1119I~
     }                                                              //~1119I~
+    //*********************************************************    //~vab3I~
+    //*select tile red5 for make Chii                              //~vab3I~
+    //*********************************************************    //~vab3I~
+    public static TileData selectTileInHandRed5(int Peswn,int Ppos)//~vab3I~
+    {                                                              //~vab3I~
+    	swSelectRed5=true;                                         //~vab3I~
+    	TileData td=selectTileInHand(Peswn,Ppos);                  //~vab3I~
+    	swSelectRed5=false;                                        //~vab3I~
+        if (Dump.Y) Dump.println("RAUtils.selectTileInHandRed5 td="+Utils.toString(td));//~vab3I~
+        return td;                                                 //~vab3I~
+    }                                                              //~vab3I~
     //*********************************************************    //~1119I~
     //*select tile non red5;                                       //~1119I~
     //*********************************************************    //~1119I~
@@ -241,7 +256,7 @@ public class RAUtils                                               //~v@@@R~//~v
 //        int[] itsHandRed=PitsHandRed;                              //~1119I~//~1129R~
         TileData[] tdsHand=PtdsHand;                               //~1119I~
 //        boolean swRed5=itsHand[Ppos]==itsHandRed[Ppos]; //all tile is red5//~1119I~//~1129R~
-		if (Dump.Y) Dump.println("RAUtils.selectTileInHand pos="+Ppos+",itsHand="+Utils.toString(itsHand,9));//~1119I~
+		if (Dump.Y) Dump.println("RAUtils.selectTileInHand swSelectRed5="+swSelectRed5+",pos="+Ppos+",itsHand="+Utils.toString(itsHand,9));//~1119I~//~vab3R~
 //        if (Dump.Y) Dump.println("RAUtils.selectTileInHand swRed5="+swRed5+",itsHandRed="+Utils.toString(itsHandRed,9));//~1119I~//~1129R~
         int type=Ppos/CTR_NUMBER_TILE;                             //~1119I~
         int num=Ppos%CTR_NUMBER_TILE;                              //~1119I~
@@ -265,6 +280,9 @@ public class RAUtils                                               //~v@@@R~//~v
                 }                                                  //~1129I~
             }                                                      //~1119I~
         }                                                          //~1119I~
+        if (swSelectRed5 && tdRed5!=null)                          //~vab3I~
+        	tdDiscard=tdRed5;                                      //~vab3I~
+        else                                                       //~vab3I~
         if (tdDiscard==null) //select red5 if no red5 found        //~1129I~
         	tdDiscard=tdRed5;                                      //~1129I~
         if (Dump.Y) Dump.println("RAUtils.selectTileInHand tdDiscard="+Utils.toString(tdDiscard));//~1119I~//~1124R~
@@ -329,7 +347,40 @@ public class RAUtils                                               //~v@@@R~//~v
         default:                                                   //~1220I~
         	rc=PswWord;                                            //~1220I~
         }                                                          //~1220I~
-        if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",type="+Ptype);//~1220I~//+1427R~
+        if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",type="+Ptype);//~1220I~//~1427R~
         return rc;                                                 //~1220I~
     }                                                              //~1220I~
+    //*********************************************************    //~vaaEI~
+    //*single tile (ctr=1 & both side=0)                           //~vaaEI~
+    //*********************************************************    //~vaaEI~
+    public static boolean isSingle(int[] PitsHand,int Ppos,int PctrAdd)//~vaaER~
+    {                                                              //~vaaEI~
+        if (Dump.Y) Dump.println("RAUtils.isSingle pos="+Ppos+",ctrAdd="+PctrAdd+",itsHand="+Utils.toString(PitsHand,9));//~vaaER~
+    	boolean rc;                                                //~vaaEI~
+        int ctr=PitsHand[Ppos]+PctrAdd;                            //~vaaER~
+        if (ctr!=1)                                                //~vaaEI~
+        {                                                          //~vaaEI~
+	        if (Dump.Y) Dump.println("RAUtils.isSingle return FALSE by ctr="+ctr+"!=1");//~vaaEI~
+        	return false;                                          //~vaaEI~
+        }                                                          //~vaaEI~
+    	if (Ppos>=OFFS_WORDTILE)                                   //~vaaEI~
+        {                                                          //~vaaEI~
+	        if (Dump.Y) Dump.println("RAUtils.isSingle return TRUE by WORD tile");//~vaaEI~
+        	return true;                                           //~vaaEI~
+        }                                                          //~vaaEI~
+        int num=Ppos%CTR_NUMBER_TILE;                              //~vaaER~
+        switch (num)                                               //~vaaEI~
+        {                                                          //~vaaEI~
+        case TN1:                                                  //~vaaEI~
+        	rc=PitsHand[Ppos+1]==0;                                //~vaaEI~
+            break;                                                 //~vaaEI~
+        case TN9:                                                  //~vaaEI~
+        	rc=PitsHand[Ppos-1]==0;                                //~vaaEI~
+            break;                                                 //~vaaEI~
+        default:                                                   //~vaaEI~
+        	rc=PitsHand[Ppos-1]==0 && PitsHand[Ppos+1]==0;         //~vaaEI~
+        }                                                          //~vaaEI~
+        if (Dump.Y) Dump.println("RAUtils.isSingle rc="+rc+",pos="+Ppos);//~vaaEI~
+        return rc;                                                 //~vaaEI~
+    }                                                              //~vaaEI~
 }//class RAUtils                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~//~1119R~

@@ -1,7 +1,8 @@
-//*CID://+va60R~: update#= 630;                                    //~v@@@R~//~v@21R~//~9B30R~//+va60R~
+//*CID://+vabiR~: update#= 631;                                    //+vabiR~
 //**********************************************************************//~v101I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
-//**********************************************************************//+va60I~
+//2021/07/29 vabi selection frame in hand disappear by ankan cancel//+vabiI~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//**********************************************************************//~va60I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -14,6 +15,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import com.btmtest.R;
+import com.btmtest.game.Tiles;
 import com.btmtest.utils.Dump;
 
 import java.util.Arrays;
@@ -49,10 +51,10 @@ public class HandsTouch                                            //~v@@@R~
     private boolean swMultiSelectionMode=false,enableKan=false;    //~v@21R~
     private boolean[] swSelectedMulti;                                //~v@21I~
 //*************************                                        //~v@@@I~
-	public HandsTouch()	//for IT                                   //+va60I~
-    {                                                              //+va60I~
-        if (Dump.Y) Dump.println("HandsTouch.default constructor");//+va60I~
-    }                                                              //+va60I~
+	public HandsTouch()	//for IT                                   //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("HandsTouch.default constructor");//~va60I~
+    }                                                              //~va60I~
 	public HandsTouch(GCanvas Pgcanvas,Hands Phands,Rect Prect)    //~v@@@R~
     {                                                              //~0914I~
     	AG.aHandsTouch=this;                                       //~v@21I~
@@ -126,7 +128,7 @@ public class HandsTouch                                            //~v@@@R~
         Rect r;                                                    //~v@@@I~
         Bitmap bm;                                                 //~v@@@I~
     //************************************                         //~v@@@I~
-        if (Dump.Y) Dump.println("HandsTouch.resetSelection olpos="+posOld);//~v@@@I~
+        if (Dump.Y) Dump.println("HandsTouch.resetSelection posOld="+posOld);//~v@@@I~//+vabiR~
         if (Ppos>=0 && Ppos<ctrHands)	//erase selected id        //~v@@@I~
         {                                                          //~v@@@I~
 	        xx=pointsHands[Ppos].x;  yy=pointsHands[Ppos].y;       //~v@@@I~
@@ -308,6 +310,7 @@ public class HandsTouch                                            //~v@@@R~
         if (Dump.Y) Dump.println("HandsTouch.resetSelection posOld="+posOld+",swMultiSelectionMode="+swMultiSelectionMode);//~9C01I~
         if (swMultiSelectionMode)                                  //~9C01I~
     		enableMultiSelectionMode(false);                       //~9C01I~
+      if (!Tiles.isTakenStatus(posOld+1))                          //+vabiI~
 		resetSelection(posOld);                                    //~9C01I~
     }                                                              //~9C01I~
 	//*********************************************************    //~v@@@I~

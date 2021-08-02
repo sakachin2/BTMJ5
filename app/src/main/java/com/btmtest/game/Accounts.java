@@ -1,5 +1,6 @@
-//*CID://+va9iR~: update#= 831;                                    //~va9iR~
+//*CID://+vabgR~: update#= 834;                                    //+vabgR~
 //**********************************************************************//~v101I~
+//2021/07/29 vabg (Bug)Test option set final game, 1st dealer is not east player//+vabgI~
 //2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
 //2021/03/30 va72 (Bug)when multiron for reach tile,nemaplate win color shadow was lost by showscore from resetReachDone//~va72I~
 //2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//~va6gI~
@@ -256,6 +257,7 @@ public class Accounts                                              //~v@@@R~
     //**************************************************           //~v@@5I~//~9306M~
     public boolean isDummyByCurrentEswn(int Peswn)                 //~v@@5I~//~9306M~
     {                                                              //~v@@5I~//~9306M~
+        if (Dump.Y) Dump.println("Accounts.isDummyByCurrentEswn Peswn="+Peswn);//~va9iI~
 		Account a=currentAccountsByESWN[Peswn];                    //~v@@5I~//~9306M~
         if (Dump.Y) Dump.println("Accounts.isDummyByCurrentEswn Peswn="+Peswn+",idx="+a.idxMembers+",isDummy="+a.isDummy());//~v@@5I~//~9306M~//~9526R~
 		return a.isDummy();                                          //~v@@5I~//~9306M~
@@ -457,7 +459,7 @@ public class Accounts                                              //~v@@@R~
 //              Pmembers.MD[ii].account=accounts[ii];                //~v@@@I~//~9B11R~//~0118R~
                 Pmembers.MD[ii].setAccount(accounts[ii]);         //~9B11I~//~0118R~
         }                                                          //~v@@@I~
-      if (!AG.swTrainingMode)                                      //+va9iR~
+      if (!AG.swTrainingMode)                                      //~va9iR~
         if (chkDupYourname())                                      //~0217I~
         	return false;	                                       //~0217I~
         activeMembers=getMemberCtr();                              //~v@@@I~
@@ -768,7 +770,7 @@ public class Accounts                                              //~v@@@R~
 //      int eswn=Players.nextPlayer(AG.aAccounts.yourESWN/*base*/,AG.aStatus.gameCtrGame);//~v@@@R~//~9319R~
 //      int eswn=Players.nextPlayer(AG.aAccounts.yourESWN/*base*/,-AG.aStatus.gameCtrGame);//~9319I~//~9513R~
         int eswn=Players.nextPlayer(AG.aAccounts.yourESWN/*base*/,3*AG.aStatus.gameCtrGame);//~9513I~
-        if (Dump.Y) Dump.println("Accounts.getCurrentEswn="+eswn); //~v@@@R~
+        if (Dump.Y) Dump.println("Accounts.getCurrentEswn="+eswn+",yourESWN="+AG.aAccounts.yourESWN+",gameCtrGame="+AG.aStatus.gameCtrGame); //~v@@@R~//~va9iR~
         return eswn;                                               //~v@@@M~
     }                                                              //~v@@@M~
 //******************************************************************************//~v@@5I~
@@ -1279,7 +1281,9 @@ public class Accounts                                              //~v@@@R~
 //          int starter=getCurrentStarter();                       //~9922I~//~9923M~
 //          starter=Players.nextPlayer(starterRelativePos,AG.aStatus.gameCtrGame);//~9923M~
             starter=player;                                        //~9923I~
-            if (Dump.Y) Dump.println("Accounts.finalGameTest enableDiceRelative starter="+starter+",gameCtr="+AG.aStatus.gameCtrGame);//~9922I~//~9923I~
+            if (Dump.Y) Dump.println("Accounts.finalGameTest OLD AG,playerCurrent="+AG.aPlayers.playerCurrent);//+vabgI~
+            AG.aPlayers.playerCurrent=starter;                     //+vabgI~
+            if (Dump.Y) Dump.println("Accounts.finalGameTest enableDiceRelative starter="+starter+",gameCtr="+AG.aStatus.gameCtrGame+",AG,playerCurrent="+AG.aPlayers.playerCurrent);//+vabgR~
             if (Dump.Y) Dump.println("Accounts.finalGameTest currentAccountsByESWN="+Arrays.toString(currentAccountsByESWN));//~9923I~//~0222R~
 	        enableDiceRelative(starter);                           //~9922R~//~9923M~
     	AG.aRoundStat.newGame(false/*Psw1st*/,TestOption.finalGameCtrSet,TestOption.finalGameCtrGame,0/*dupctr*/);//~va60R~

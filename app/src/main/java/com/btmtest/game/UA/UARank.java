@@ -1,5 +1,6 @@
-//*CID://+va91R~: update#= 900;                                    //~va91R~
+//*CID://+vaaQR~: update#= 901;                                    //+vaaQR~
 //**********************************************************************//~v101I~
+//2021/07/17 vaaQ (Bug)honchan decision; not cheked pillow is terminal//+vaaQI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/07 va7d (Bug)misjudge 3shiki for 234 man 234234(pin 1peiko)//~va7dI~
 //2021/03/09 va6d (BUG)mixFlush allows other color pillow          //~va26I~
@@ -363,8 +364,8 @@ public class UARank                                                //~va11R~
         //*chk earth                                               //~va91I~
 	    for (Pair pair:pairEarth)                                  //~va91I~
         {                                                          //~va91I~
-        	if (pair==null)                                        //+va91I~
-            	continue;                                          //+va91I~
+        	if (pair==null)                                        //~va91I~
+            	continue;                                          //~va91I~
             if (pair.type==TT_JI && (pair.number>=TT_4ESWN_CTR || pair.number==eswnHonor|| pair.number==roundHonor))//~va91I~
             {                                                      //~va91I~
                 if (swOther)                                       //~va91I~
@@ -502,8 +503,8 @@ public class UARank                                                //~va11R~
         //*chk earth same pair as ron tile                         //~va91I~
 	    for (Pair pair:pairEarth)                                  //~va91I~
         {                                                          //~va91R~
-        	if (pair==null)                                        //+va91I~
-            	continue;                                          //+va91I~
+        	if (pair==null)                                        //~va91I~
+            	continue;                                          //~va91I~
             pairnum=pair.number;                                    //~va91I~
             if ((pair.flag & TDF_KAN_TAKEN)!=0)      //Ankan is not a furo//~va91R~
                 continue;                                          //~va91R~
@@ -624,8 +625,8 @@ public class UARank                                                //~va11R~
     	if (Dump.Y) Dump.println("UARank.chkEarth3Same sizePairSeqS="+sizePairSeqS+",pairNumS="+Pair.toString(pairNumS));//~va91I~
 	    for (Pair pair:pairEarth)                                  //~va91I~
         {                                                          //~va91R~
-        	if (pair==null)                                        //+va91I~
-            	continue;                                          //+va91I~
+        	if (pair==null)                                        //~va91I~
+            	continue;                                          //~va91I~
             if ((pair.flag & TDF_KAN_TAKEN)!=0)      //Ankan is not a furo//~va91R~
                 continue;                                          //~va91R~
             if (pair.typePair==PT_NUMSAME && pair.type!=TT_JI && pair.number==Pnum)//~va91R~
@@ -753,8 +754,8 @@ public class UARank                                                //~va11R~
         //*chk earth same pair as ron tile                         //~va91I~
 	    for (Pair pair:pairEarth)                                  //~va91I~
         {                                                          //~va91I~
-        	if (pair==null)                                        //+va91I~
-            	continue;                                          //+va91I~
+        	if (pair==null)                                        //~va91I~
+            	continue;                                          //~va91I~
             pairnum=pair.number;                                   //~va91I~
             if ((pair.flag & TDF_KAN_TAKEN)!=0)      //Ankan is not a furo//~va91I~
                 continue;                                          //~va91I~
@@ -859,7 +860,8 @@ public class UARank                                                //~va11R~
         }                                                          //~va11I~
     	int rc=0;                                                  //~va11I~
         int ctr=0;                                                 //~va11I~
-    	if (ctrPairNotNum!=0/*mix*/ || statusPillow==STP_NOTNUM || statusPillow==STP_HONOR)//~va11R~
+//  	if (ctrPairNotNum!=0/*mix*/ || statusPillow==STP_NOTNUM || statusPillow==STP_HONOR)//~va11R~//+vaaQR~
+    	if (statusPillow!=STP_TANYAO && ctrPairNotNum!=0/*mix*/)   //+vaaQI~
         {                                                          //~va11I~
         	if (chkTerminalNum())                                  //~va11I~
             {                                                      //~va11I~
@@ -949,8 +951,8 @@ public class UARank                                                //~va11R~
     	if (Dump.Y) Dump.println("UARank.chkEarth3Kan sizePairSeqS="+sizePairSeqS+",pairNumS="+Pair.toString(pairNumS));//~va91R~
 	    for (Pair pair:pairEarth)                                  //~va91I~
         {                                                          //~va91R~
-        	if (pair==null)                                        //+va91I~
-            	continue;                                          //+va91I~
+        	if (pair==null)                                        //~va91I~
+            	continue;                                          //~va91I~
             if (pair.typePair==PT_NUMSAME && (pair.flag & (TDF_KAN_TAKEN|TDF_KAN_RIVER|TDF_KAN_ADD))!=0)//~va91R~
             {                                                      //~va91R~
                 if (swOther)                                       //~va91R~
@@ -1126,8 +1128,8 @@ public class UARank                                                //~va11R~
     	if (Dump.Y) Dump.println("UARank.chkEarth3DragonSmall sizePairSeqS="+sizePairSeqS+",pairNumS="+Pair.toString(pairNumS));//~va91I~
 	    for (Pair pair:pairEarth)                                  //~va91I~
         {                                                          //~va91R~
-        	if (pair==null)                                        //+va91I~
-            	continue;                                          //+va91I~
+        	if (pair==null)                                        //~va91I~
+            	continue;                                          //~va91I~
             if ((pair.flag & TDF_KAN_TAKEN)!=0)      //Ankan is not a furo//~va91R~
                 continue;                                          //~va91R~
             if (pair.typePair==PT_NUMSAME && pair.type==TT_JI && pair.number>=TT_4ESWN_CTR)//~va91R~

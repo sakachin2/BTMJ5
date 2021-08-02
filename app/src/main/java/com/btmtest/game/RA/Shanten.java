@@ -1,4 +1,4 @@
-//*CID://+va60R~:                             update#=   78;       //~1107I~//~va60R~
+//*CID://+va60R~:                             update#=   79;       //~1107I~//~va60R~
 //*******************************************************          //~1107I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //*******************************************************          //~va60I~
@@ -346,6 +346,7 @@ public int getShanten_13Orphan(int[] PitsTile)                           //~1106
         	pending13Orphan=pos;                                   //~va60I~
     }                                                              //~1106I~
     int rc=13-(ctrOrphan+(head!=0 ? 1 : 0));                       //~1106R~
+    if (Dump.Y) Dump.println("Shanten.getShanten_13Orphan rc="+rc);//+va60I~
     return rc;                                                     //~1106I~
 }                                                                  //~1106I~
 //*******************************************************          //~va60I~
@@ -380,7 +381,7 @@ private int getShanten_7Pair(int[] PitsTile)                              //~110
         else                                                       //~1106I~
     	if (ctr>=2)                                                //~1106I~//~va60R~
         {                                                          //~va60I~
-        	if (ctr==3 && sw7PairKan)                              //+va60R~
+        	if (ctr==3 && sw7PairKan)                              //~va60R~
 	        	pending7Pair=ii;                                   //~va60I~
         	ctrPair++;                                             //~1106I~
         }                                                          //~va60I~

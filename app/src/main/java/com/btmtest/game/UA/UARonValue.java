@@ -1,5 +1,6 @@
-//*CID://+va9bR~: update#= 940;                                    //~va9bR~
+//*CID://+vaapR~: update#= 943;                                    //~vaapR~
 //**********************************************************************//~v101I~
+//2021/07/05 vaap (Bug)getValue for evaluate Reach should not timing yakuman//~vaapI~
 //2021/06/17 va9b (bug)of kataagarichk by va8j. Dump when reach if red dora use//~va9bI~
 //2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
@@ -88,6 +89,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private TileData tdChkRankTaken;                               //~va88I~
 	public boolean swYakuFixLast;                                  //~va8eI~
     public boolean swYakuFixMultiwaitOK/*,swYakuFixMultiwaitDrawOK*/;  //~va8fM~//~va8kR~
+    private boolean swReach;	//from RAReach                     //~vaapI~
     //*************************                                        //~v@@@I~
 	public UARonValue()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9C11R~//~0925R~//~va11R~
     {                                                              //~0914I~
@@ -159,7 +161,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         return rc;
     }                                                              //~va11I~
     //*************************************************************************//~va8jI~
-    //*from RAReach.chkMultiWait(<--UAReach.chkTenpai) to chk kataagari; dupCtr was already setup//~va8jR~//+va9bR~
+    //*from RAReach.chkMultiWait(<--UAReach.chkTenpai) to chk kataagari; dupCtr was already setup//~va8jR~//~va9bR~
     //*rc=-1:not ronnable,1:1han constraint, 2:2han constrint, 0 ok//~va8jI~
     //*************************************************************************//~va8jI~
     public int chkRankReachExceptDora(int Pplayer,TileData PtdWin,boolean PswCheckFix2,int[] PitsHand)//~va8jR~
@@ -223,6 +225,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         tdRonLast=tdChkRankTaken;                                  //~va88I~
       else                                                         //~va88I~
         tdRonLast=AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va11I~
+        if (Dump.Y) Dump.println("UARonValue.getValue tdRonLast="+Utils.toString(tdRonLast));//+vaapI~
         ronType=tdRonLast.type;                                    //~va11I~
         ronNumber=tdRonLast.number;                                //~va11I~
 //      TileData tdRon=null;	//to be added to hands             //~va11R~
@@ -256,6 +259,19 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         if (Dump.Y) Dump.println("UARonValue.getValue rc="+rc+",ronvalue="+ronResult.toString());//~va11R~
         return ronResult;                                          //~va11R~
     }                                                              //~va11I~
+    //*************************************************************************//~vaapI~
+    //*from RARon.getRonValueExceptDoraReach() for Robot           //~vaapI~
+    //*run by emulation mode(swEmulation:True)                     //~vaapI~
+    //*************************************************************************//~vaapI~
+    public RonResult getValueReach(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~vaapI~
+    {                                                              //~vaapI~
+        if (Dump.Y) Dump.println("UARonValue.getValueReach swTake="+PswTake+",player="+Pplayer+",tdRon="+PtdRon.toString());//~vaapI~
+        swReach=true;                                              //~vaapI~
+	    RonResult rc=getValue(PswTake,Pplayer,PitsHand,PtdRon);    //~vaapI~
+        swReach=false;                                             //~vaapI~
+        if (Dump.Y) Dump.println("UARonValue.getValueReach player="+Pplayer+",rc=ronvalue="+rc.toString()+",tdRon="+PtdRon.toString());//~vaapI~
+        return rc;                                                 //~vaapI~
+    }                                                              //~vaapI~
     //*************************************************************************//~va60I~
     //*from RARon to get value of emulated take                    //~va60I~//~1130R~
     //*************************************************************************//~va60I~
@@ -271,6 +287,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         itsDoraOpen=null;                                          //~1217I~
         return r;                                                  //~1130I~
     }                                                              //~1130I~
+    //*************************************************************************//~vaapI~
     private RonResult getValueRobot(boolean PswTake,int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~va60R~//~1130R~//~va60R~
     {                                                              //~va60I~
 //      swRonnable=true;                                           //~va60I~//~1130R~
@@ -1101,7 +1118,12 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 	//*************************************************************************//~va11I~
 	public void addTimingYakuman(int Pyakuman,int Prank,int Pamt) //~va11R~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.addTimingYakuman Pyakuman="+Pyakuman+",rank="+Prank+",amt="+Pamt);//~va11I~//~1130R~
+        if (Dump.Y) Dump.println("UARonValue.addTimingYakuman swReach="+swReach+",Pyakuman="+Pyakuman+",rank="+Prank+",amt="+Pamt);//~va11I~//~1130R~//~vaapR~
+        if (swReach)                                               //~vaapI~
+        {                                                          //~vaapI~
+	        if (Dump.Y) Dump.println("UARonValue.addTimingYakuman ignored by swReach");//~vaapI~
+        	return;                                               //~vaapI~
+        }                                                          //~vaapI~
     	if (Pyakuman==RYAKU_CHILDRON)                              //~va11I~
         {                                                          //~va11I~
 //            if (Pamt==0)    //yakuman                            //~va11R~

@@ -1,6 +1,8 @@
-//*CID://+va96R~:                             update#=  495;       //+va96R~
+//*CID://+vaaFR~:                             update#=  500;       //~vaaFR~
 //*****************************************************************//~v101I~
-//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//+va96I~
+//2021/07/13 vaaF setting option of waittimeby 0.5 second          //~vaaFI~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
+//2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //2020/10/19 va1a drop ronchk option,1han constraint only          //~va1aI~
@@ -32,7 +34,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
 	private static final int DEFAULT_CHK_REACH=1;                  //~va27I~
-	private static final int DEFAULT_CHK_MULTIWAIT=0;              //+va96I~
+	private static final int DEFAULT_CHK_MULTIWAIT=0;              //~va96I~
 	private static final int DEFAULT_FIX1=1;
     //**********************************************************   //~v@@@I~
     private static final int UNIT_SEC=10;                          //~9622I~//~v@@@M~
@@ -45,6 +47,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     private USpinner spnSuspendPenalty;                            //~v@@@I~
     private USpinner spnSuspendPenaltyIOErr;                       //~v@@@I~
     private URadioGroup rgSuspend;                                 //~v@@@I~
+    private URadioGroup rgDelayUnit;                               //~vaaFI~
 //  private URadioGroup rg2Touch,rg2TouchRon;                      //~9C03I~//~9C09R~
 //  private URadioGroup rg2Touch;                                  //~9C09I~//~9C10R~
 //  private UCheckBox cb2TouchTOPon,cb2TouchTORon;                    //~9C03I~//~9C07R~//~9C09R~
@@ -54,10 +57,11 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //  private UCheckBox cb2CheckRonable;                             //~0205I~//~va1aR~
     private UCheckBox cb2CheckRonValue;                            //~0928I~
     private UCheckBox cb2CheckReach;                               //~va27I~
-    private UCheckBox cbChkMultiWait;                              //+va96I~
+    private UCheckBox cbChkMultiWait;                              //~va96I~
     private UCheckBox  cbYakuFix1;                                 //~0A15I~
     private UCheckBox cbAllowRobotAllButton;                       //~va27I~
     private UCheckBox cbPlayAloneNotify;                           //~va70I~
+    private UCheckBox cbPlayMatchNotify;                           //~vaa2I~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
     private Prop curProp;                                          //~v@@@I~
@@ -118,6 +122,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	sbTimeoutTakeRobot=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKEROBOT_MIN,DEFAULT_TIMEOUT_TAKEROBOT_MAX,DEFAULT_TIMEOUT_TAKEROBOT_INC,DEFAULT_TIMEOUT_TAKEROBOT);//~v@@@I~
         cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//~va27I~
         cbPlayAloneNotify=new UCheckBox(PView,R.id.cbPlayAloneNotify);//~va70I~
+        cbPlayMatchNotify=new UCheckBox(PView,R.id.cbPlayMatchNotify);//~vaa2I~
 //  	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBTimeoutTakeKan);//~v@@@R~
 //  	sbTimeoutTakeKan=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKEKAN_MIN,DEFAULT_TIMEOUT_TAKEKAN_MAX,DEFAULT_TIMEOUT_TAKEKAN_INC,DEFAULT_TIMEOUT_TAKEKAN);//~v@@@R~
         //*2touch                                                  //~v@@@I~//~9C03R~
@@ -137,7 +142,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
                                                                    //~0A15I~
         cb2CheckRonValue=new UCheckBox(PView,R.id.cbCheckRonValue);    //2touchMode//~0928I~
         cb2CheckReach=new UCheckBox(PView,R.id.cbCheckReach);    //2touchMode//~va27I~
-        cbChkMultiWait=new UCheckBox(PView,R.id.cbChkMultiWait);    //2touchMode//+va96I~
+        cbChkMultiWait=new UCheckBox(PView,R.id.cbChkMultiWait);    //2touchMode//~va96I~
     //*YakuFix1                                                    //~0A15I~
     	cbYakuFix1=new UCheckBox(PView,R.id.cbYakuFix1);           //~0A15I~
         cb2TouchTimeout=new UCheckBox(PView,R.id.cb2TouchTimeout);    //2touchMode//~9C09R~
@@ -150,6 +155,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         spnSuspendPenaltyIOErr=new USpinner(PView,R.id.spnSuspendPenaltyIOErr);//~v@@@I~
         spnSuspendPenaltyIOErr.setArray(R.array.SuspendPenalty);   //~v@@@R~
         rgSuspend=new URadioGroup(PView,R.id.rgSuspendOption,0,rbIDSuspendOption);//~v@@@I~
+        rgDelayUnit=new URadioGroup(PView,R.id.rgDelayUnit,0,rbIDDelayUnit);//~vaaFI~
                                                                    //~v@@@I~
     }                                                              //~v@@@I~
 	//***********************************************************  //~v@@@I~
@@ -187,6 +193,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //      sbTimeoutTakeKan.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEKAN),DEFAULT_TIMEOUT_TAKEKAN),swFixed);//~v@@@R~
         cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~va27I~
         cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//~va70R~
+        cbPlayMatchNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_MATCH_NOTIFY),DEFAULT_PLAY_MATCH_NOTIFY/*default:true*/),swFixed);//~vaa2I~
     //*2Touch                                                        //~v@@@I~//~9C03R~
 //      cbRuleWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_RULEWAIT),0/*default false*/),swFixed);//~v@@@I~//~9C03R~
 //      cb2TouchTO.setStateInt(Pprop.getParameter(getKeyRS(RSID_DELAY_2TOUCH_TO_PON),0/*default false*/),swFixed);//~9C03R~//~9C07R~
@@ -204,7 +211,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	cbYakuFix1.setStateInt(Pprop.getParameter(getKeyRS(RSID_YAKUFIX1),DEFAULT_FIX1),swFixed);//~0A15I~
         cb2CheckRonValue.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_RONVALUE),DEFAULT_RONVALUE/*default false*/),swFixed);//~0928I~
         cb2CheckReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHECK_REACH),DEFAULT_CHK_REACH/*default false*/),swFixed);//~va27I~
-        cbChkMultiWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),DEFAULT_CHK_MULTIWAIT/*default false*/),swFixed);//+va96I~
+        cbChkMultiWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),DEFAULT_CHK_MULTIWAIT/*default false*/),swFixed);//~va96I~
         cb2TouchTimeout.setStateInt(Pprop.getParameter(getKeyRS(RSID_2TOUCH_TIMEOUT),0/*default false*/),swFixed);//~9C09I~
     //*positioning                                                 //~v@@@I~
         cbPositioning.setStateInt(Pprop.getParameter(getKeyRS(RSID_POSITIONING),0/*default false*/),swFixed);//~v@@@I~
@@ -212,6 +219,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         spnSuspendPenalty.select(Pprop.getParameter(getKeyRS(RSID_SUSPEND_PENALTY),0),swFixed);//~v@@@I~
         spnSuspendPenaltyIOErr.select(Pprop.getParameter(getKeyRS(RSID_SUSPEND_PENALTYIOERR),0),swFixed);//~v@@@I~
         rgSuspend.setCheckedID(Pprop.getParameter(getKeyRS(RSID_SUSPEND),0),swFixed);//~v@@@I~
+        rgDelayUnit.setCheckedID(Pprop.getParameter(getKeyRS(RSID_DELAY_UNIT),0),swFixed);//~vaaFI~
     }                                                              //~v@@@I~
 	//***********************************************************  //~v@@@I~
     private boolean dialog2Properties()                            //~v@@@I~
@@ -229,6 +237,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //      changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKEKAN),sbTimeoutTakeKan.getVal());//~v@@@R~
         changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//~va27I~
         changed+=updateProp(getKeyRS(RSID_PLAY_ALONE_NOTIFY),cbPlayAloneNotify.getStateInt());//~va70I~
+        changed+=updateProp(getKeyRS(RSID_PLAY_MATCH_NOTIFY),cbPlayMatchNotify.getStateInt());//~vaa2I~
     //*2Touch                                                      //~9C03R~
 //      changed+=updateProp(getKeyRS(RSID_RULEWAIT),cbRuleWait.getStateInt());//~v@@@I~//~9C03R~
 //      changed+=updateProp(getKeyRS(RSID_DELAY_2TOUCH_TO_PON),cb2TouchTO.getStateInt());//~9C03R~//~9C07R~
@@ -246,7 +255,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_YAKUFIX1),cbYakuFix1.getStateInt());//~0A15I~
         changed+=updateProp(getKeyRS(RSID_CHECK_RONVALUE),cb2CheckRonValue.getStateInt());//~0928I~
         changed+=updateProp(getKeyRS(RSID_CHECK_REACH),cb2CheckReach.getStateInt());//~va27I~
-        changed+=updateProp(getKeyRS(RSID_CHK_MULTIWAIT),cbChkMultiWait.getStateInt());//+va96I~
+        changed+=updateProp(getKeyRS(RSID_CHK_MULTIWAIT),cbChkMultiWait.getStateInt());//~va96I~
         changed+=updateProp(getKeyRS(RSID_2TOUCH_TIMEOUT),cb2TouchTimeout.getStateInt());//~9C09I~
     //*positioning                                                 //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_POSITIONING),cbPositioning.getStateInt());//~v@@@I~
@@ -254,6 +263,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_SUSPEND_PENALTY),spnSuspendPenalty.getSelectedIndex());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_SUSPEND_PENALTYIOERR),spnSuspendPenaltyIOErr.getSelectedIndex());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_SUSPEND),rgSuspend.getCheckedID());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_DELAY_UNIT),rgDelayUnit.getCheckedID());//~vaaFI~
                                                                    //~v@@@I~
         if (Dump.Y) Dump.println("RuleSettingOperation.dialog2Properties changed="+changed);//~v@@@R~
     	return changed!=0;                                         //~v@@@I~
@@ -279,15 +289,29 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     {                                                              //~v@@@I~
     	int rc=Psec;                                               //~v@@@I~
         if (rc<UNIT_SEC)                                           //~v@@@I~
+        {                                                          //~vaaFI~
         	rc*=1000;                                              //~v@@@I~
+        	rc/=getDelayUnit();	//ms                               //~vaaFI~
+        }                                                          //~vaaFI~
         else                                                       //~v@@@I~
         if ((TestOption.option2 & TO2_UNIT_MILISEC)!=0)            //~v@@@I~
         	rc*=10;		//by 10ms unit, 20-->200ms                 //~v@@@I~
         else                                                       //~v@@@I~
-        	rc*=1000;	//ms                                       //~v@@@I~
+        {                                                          //+vaaFI~
+        	rc*=1000;	//ms                                       //~v@@@I~//+vaaFR~
+        	rc/=getDelayUnit();	//ms                               //+vaaFI~
+        }                                                          //+vaaFI~
     	if (Dump.Y) Dump.println("RuleSetting.adjustTime Psec="+Psec+",rc="+rc);//~v@@@I~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+    //************************************************************************//~vaaFI~
+    private static int getDelayUnit()                              //~vaaFI~
+    {                                                              //~vaaFI~
+		int rc=AG.ruleProp.getParameter(getKeyRS(RSID_DELAY_UNIT),0);//~vaaFI~
+        rc=rc==0 ? 1 : 2;	//devider                              //~vaaFI~
+    	if (Dump.Y) Dump.println("RuleSetting.getDelayUnit rc="+rc);//~vaaFI~
+        return rc;                                                 //~vaaFI~
+    }                                                              //~vaaFI~
     //************************************************************************//~v@@@I~
     public static int getDelayPonKan()                             //~v@@@I~
     {                                                              //~v@@@I~
@@ -356,7 +380,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 //        else                                                     //~v@@@R~
 //            rc*=10;     //10ms unit 20-->200ms                   //~v@@@R~
         rc=adjustTime(rc);                                         //~v@@@I~
-    	if (Dump.Y) Dump.println("RuleSetting.getDelayLast:"+rc);  //~v@@@I~
+    	if (Dump.Y) Dump.println("RuleSetting.getDelay2Touch:"+rc);  //~v@@@I~//~vaaFR~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
     //**************************************                       //~v@@@I~
@@ -514,14 +538,14 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isCheckReach rc="+rc);//~va27I~
         return rc;                                                 //~va27I~
     }                                                              //~va27I~
-    //**************************************                       //+va96I~
-    public static boolean isCheckMultiWait()                       //+va96I~
-    {                                                              //+va96I~
-        int def=DEFAULT_CHK_MULTIWAIT;  //false                    //+va96I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),def)!=0;//+va96I~
-        if (Dump.Y) Dump.println("RuleSetting.isCheckMultiWait rc="+rc);//+va96I~
-        return rc;                                                 //+va96I~
-    }                                                              //+va96I~
+    //**************************************                       //~va96I~
+    public static boolean isCheckMultiWait()                       //~va96I~
+    {                                                              //~va96I~
+        int def=DEFAULT_CHK_MULTIWAIT;  //false                    //~va96I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),def)!=0;//~va96I~
+        if (Dump.Y) Dump.println("RuleSetting.isCheckMultiWait rc="+rc);//~va96I~
+        return rc;                                                 //~va96I~
+    }                                                              //~va96I~
     //**************************************                       //~v@@@I~
 	public static boolean isPositioningSkip()                      //~v@@@I~
     {                                                              //~v@@@I~
@@ -600,4 +624,12 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isPlayAloneNotify rc="+rc);//~va70I~
         return rc;                                                 //~va70I~
     }                                                              //~va70I~
+    //**************************************                       //~vaa2I~
+	public static boolean isPlayMatchNotify()                      //~vaa2I~
+    {                                                              //~vaa2I~
+    	int def=DEFAULT_PLAY_MATCH_NOTIFY;	//true                 //~vaa2I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PLAY_MATCH_NOTIFY),def)!=0;//~vaa2I~
+        if (Dump.Y) Dump.println("RuleSetting.isPlayMatchNotify rc="+rc);//~vaa2I~
+        return rc;                                                 //~vaa2I~
+    }                                                              //~vaa2I~
 }//class                                                           //~v@@@R~

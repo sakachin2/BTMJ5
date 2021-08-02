@@ -1,5 +1,6 @@
-//*CID://+va8kR~:                             update#=  715;       //~va8kR~
+//*CID://+vabsR~:                             update#=  716;       //+vabsR~
 //*****************************************************************//~v101I~
+//2021/08/02 vabs drop robot option to discard just taken,remains as test option//+vabsI~
 //2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/04/07 va7e change default to On for allow_robot_all         //~va66I~
@@ -1766,8 +1767,9 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //    }                                                            //~va66R~
 	public static boolean isThinkRobot()                           //~va60I~
     {                                                              //~va60I~
-		int def=DEFAULT_THINK_ROBOT;	//false                                        //~va60I~//~va66R~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_THINK_ROBOT),def)!=0;//~va60I~
+//        int def=DEFAULT_THINK_ROBOT;    //false                                        //~va60I~//~va66R~//+vabsR~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_THINK_ROBOT),def)!=0;//~va60I~//+vabsR~
+        boolean rc=(TestOption.option5 & TestOption.TO5_NOTHINK_ROBOT)==0;      //+vabsI~
         if (Dump.Y) Dump.println("RuleSetting.isThinkRobot rc="+rc);//~va60I~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~
@@ -1970,11 +1972,11 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     public static void setYakuFix(View PView,boolean PswFixed)     //~va8bI~
     {                                                              //~va8bI~
         if (Dump.Y) Dump.println("RuleSetting.setYakuFix swFixed="+PswFixed);//~va8bI~
-    	UCheckBox  cbYakuFixMultiwaitOK/*,cbYakuFixMultiwaitDrawOK*/;  //~va8bI~//+va8kR~
+    	UCheckBox  cbYakuFixMultiwaitOK/*,cbYakuFixMultiwaitDrawOK*/;  //~va8bI~//~va8kR~
     	cbYakuFixMultiwaitOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitOK);//~va8bI~
 //  	cbYakuFixMultiwaitDrawOK=new UCheckBox(PView,R.id.cbYakuFixMultiwaitDrawOK);//~va8bI~//~va8kR~
     	cbYakuFixMultiwaitOK.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),0),PswFixed);//~va8bI~
-//  	cbYakuFixMultiwaitDrawOK.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),PswFixed);//~va8bI~//+va8kR~
+//  	cbYakuFixMultiwaitDrawOK.setStateInt(AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITDRAWOK),0),PswFixed);//~va8bI~//~va8kR~
                                                                    //~va8bI~
 	    URadioGroup rgYakuFix;                                     //~va8bI~
         rgYakuFix=new URadioGroup(PView,R.id.rgYakuFix,0,rbsYakuFix);//~va8bI~

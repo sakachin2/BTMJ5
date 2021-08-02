@@ -1,5 +1,8 @@
-//*CID://+va75R~: update#= 898;                                    //~va70R~//~va75R~
+//*CID://+vab2R~: update#= 917;                                    //~vab2R~
 //**********************************************************************//~v101I~
+//2021/07/24 vab2 UADelayedTimer illegalStateException if once run() returned by vab1//~vab2I~
+//2021/07/24 vab1 stop UADelayedTime if block released for cost    //~vab1I~
+//2021/07/19 vaaU chankan was not notified                         //~vaaUI~
 //2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
 //2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//~va74I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
@@ -266,9 +269,13 @@ public class UADelayed //implements Runnable                            //~v@@@R
 	    	if (Dump.Y) Dump.println("UADelayed.postDelayedTakableKan return by swStop");//~0403I~
         	return;                                                //~0403I~
         }                                                          //~0403I~
-        if (Dump.Y) Dump.println("UADelayed postDelayedTakableKan delay="+delayPonKan+",player="+Pplayer+",ctrTakenAll="+AG.aPlayers.ctrTakenAll+",ctrDiscardedAll="+AG.aPlayers.ctrDiscardedAll);//~0403I~
-        Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKABLE_RINSHAN,delayPonKan,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~0403R~
-        sendMsgDelayed(msg,delayPonKan);	//callback to timeoutToTakableRinshan//~0403I~//~va60R~
+        if (Dump.Y) Dump.println("UADelayed postDelayedTakableKan delayPonKan="+delayPonKan+",delayTake="+delayTake+",player="+Pplayer+",ctrTakenAll="+AG.aPlayers.ctrTakenAll+",ctrDiscardedAll="+AG.aPlayers.ctrDiscardedAll);//~0403I~//~vaaUR~
+//      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKABLE_RINSHAN,delayPonKan,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~0403R~//~vaaUR~
+//      sendMsgDelayed(msg,delayPonKan);	//callback to timeoutToTakableRinshan//~0403I~//~va60R~//~vaaUR~
+        int delay=delayPonKan/*red time*/+delayTake/*yellow time*/;	//callback to timeoutToTakableRinshan//~vaaUR~
+//      delay=5000;	//todo test                                    //~vaaUR~
+        Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKABLE_RINSHAN,delay,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~vaaUI~
+        sendMsgDelayed(msg,delay);	//callback to timeoutToTakableRinshan//~vaaUI~
     }                                                              //~0403I~
     //***********************************************************************//~9624I~
 	private void postDelayedLastDrawn(int Pplayer)                  //~9624I~//~va60R~
@@ -315,6 +322,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
     public void timeoutToTakableRinshan(Message Pmsg)              //~0403R~
     {                                                              //~0403I~
         int[] intp=getMsgData(Pmsg);                               //~0403I~
+        if (Dump.Y) Dump.println("UADelay.timeoutToTakableRinshan swTrainingMode="+AG.swTrainingMode+",swPlayAloneNotify="+AG.swPlayAloneNotify);//~vaaVI~
         notifyTimeout(Pmsg,GCM_TIMEOUT_TO_TAKABLE_RINSHAN,intp);   //~0403R~
     }                                                              //~0403I~
     //***********************************************************************//~9628I~
@@ -463,7 +471,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         if (!PswServer)                                            //~9627R~//~9628R~
         {                                                          //~9628I~
 	        delayedAction=GCM_TIMEOUT_AUTOTAKE_KAN;                //~9628I~
-        	if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan return by Server set delayedAction="+delayedAction);//~9628I~
+        	if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan return by Not Server, set delayedAction="+delayedAction);//~9628I~//~va75R~
         	return;                                                //~9627R~//~9628R~
         }                                                          //~9628I~
 //      if (timeoutAutoTakeKan==0)                                 //~9624I~//~9625R~
@@ -518,7 +526,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
     }                                                              //~v@@@I~//~9625M~
     //***********************************************************************//~9622I~
     //*on Server                                                   //~9628I~
-    //*from GVH by GCM_TIMEOUT_AUTOTAKE,timeup to auto take                                //~9628I~//+va75R~
+    //*from GVH by GCM_TIMEOUT_AUTOTAKE,timeup to auto take                                //~9628I~//~va75R~
     //***********************************************************************//~9628I~
 	public void autoTakeTimeout(Message Pmsg)                   //~9622I~//~9625R~
     {                                                              //~9622I~
@@ -552,7 +560,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         	return false;                                          //~9B20I~
         }                                                          //~9B20I~
         int[] intp=GameViewHandler.getMsgIntData(Pmsg);            //~9622I~
-        if (Dump.Y) Dump.println("UADelayed autoTakeTimeout msg parm="+Arrays.toString(intp));//~9622I~//~9625R~
+        if (Dump.Y) Dump.println("UADelayed autoTakeTimeout swIgnoreWaiting="+PswIgnoreWaiting+",msg parm="+Arrays.toString(intp));//~9622I~//~9625R~//~va75R~
 	    if (!PswIgnoreWaiting)                                     //~9629I~
 			showRescheduledGmsg(Pmsg);                             //~9629I~
         if (UA.UAD.isActiveAutoTakeTimeout(intp[POSPARM_PLAYER]/*player*/,intp[POSPARM_CTRTAKEN]/*ctrTaken*/))//~9627R~
@@ -975,7 +983,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         }                                                          //~9623I~
       	if (Status.isIssuedRon())                                  //~9626I~
         {                                                          //~9626I~
-	    	if (Dump.Y) Dump.println("UADelayed.notifyTimeout issuedRon");//~9626I~
+	    	if (Dump.Y) Dump.println("UADelayed.notifyTimeout issuedRon PactionID="+PactionID);//~9626I~//~vaaUR~
           if (PactionID==GCM_TIMEOUT_TO_TAKABLE_RINSHAN            //~0404R~
           ||  PactionID==GCM_NEXT_PLAYER_PONKAN)                   //~0404R~
           {                                                        //~0404I~
@@ -1293,6 +1301,8 @@ public class UADelayed //implements Runnable                            //~v@@@R
         	swStop=false;                                          //~9701I~
         	UADLT.start();                                         //~9701I~
         }                                                          //~9701I~
+//      else                                                       //~vab1I~//~vab2R~
+//      	UADLT.startNew();                                      //~vab1I~//~vab2R~
     }                                                              //~9701I~
     //***********************************************************************//~v@@@I~
     //*GCM_WAITON/GCM_WAITOFF is not used                          //~0228I~
@@ -2417,10 +2427,30 @@ public class UADelayed //implements Runnable                            //~v@@@R
     //************************************************************ //~v@@@R~
     class UADelayTimer extends Thread                              //~v@@@I~
     {                                                              //~1420I~//~v@@@I~
+//      private static final int LIMIT_ENDTHREAD=60;//1min, 0:eternally//~vab1I~//~vab2R~
+//      private int limit=LIMIT_ENDTHREAD*1000/SLEEP_TIME;//0:eternally//~vab1I~//~vab2R~
+//      private boolean suSuspendThread=false;                         //~vab1I~//~vab2R~
+//      private int ctrNoWork=0;                                   //~vab1I~//~vab2R~
+        private int ctrWaiting;                                    //~vab1I~
         UADelayTimer()                                  //~1420R~  //~v@@@I~
         {                                                          //~1420I~//~v@@@I~
-	        if (Dump.Y) Dump.println("UADelayTimer new()");        //~v@@@R~
+//          if (Dump.Y) Dump.println("UADelayTimer new() LIMiIT_NOWORK="+LIMIT_ENDTHREAD+",limit="+limit);        //~v@@@R~//~vab1R~//~vab2R~
+            if (Dump.Y) Dump.println("UADelayTimer new()");        //~vab2I~
         }                                                          //~1420I~//~v@@@I~
+//        //**************************                               //~vab1I~//~vab2R~
+//        public void startNew()                                     //~vab1I~//~vab2R~
+//        {                                                          //~vab1I~//~vab2R~
+//            if (Dump.Y) Dump.println("UADelayTimer.startNrw ctrNoWork="+ctrNoWork);//~vab1I~//~vab2R~
+//            synchronized(this)                                     //~vab1I~//~vab2R~
+//            {                                                      //~vab1I~//~vab2R~
+//                ctrNoWork=0;                                       //~vab1R~//~vab2R~
+//                if (swSuspendThread)                                   //~vab1I~//~vab2R~
+//                {                                                  //~vab1I~//~vab2R~
+//                    swSuspendThread=false;                             //~vab1I~//~vab2R~
+//                    notify();                                      //~vab1I~//~vab2R~
+//                }                                                  //~vab1I~//~vab2R~
+//            }                                                      //~vab1I~//~vab2R~
+//        }                                                          //~vab1I~//~vab2R~
     	//**************************                               //~v@@@I~
         public void run ()                                         //~1420I~//~v@@@I~
         {                                                          //~1420I~//~v@@@I~
@@ -2431,9 +2461,16 @@ public class UADelayed //implements Runnable                            //~v@@@R
                 {                                                  //~v@@@I~
                   if (!swStopTemporally)                           //~0223I~
                   {                                                //~0223I~
-            		if (swStop)                                    //~v@@@I~
-                		break;                                     //~v@@@I~
+            		if (swStop)                                    //~v@@@I~//+vab2R~
+                    {                                              //+vab2R~
+				        if (Dump.Y) Dump.println("UADelayTimer.run exit by swStop");//+vab2I~
+//                  	swSuspendThread=true;                      //~vab2R~
+//  					suspendThread()                            //~vab2R~
+                		break;                                     //~v@@@I~//+vab2I~
+                    }                                              //+vab2R~
 					runTimer();                                    //~9B18I~
+//                  if (swSuspendThread)                           //~vab2R~
+//  					suspendThread()                            //~vab2R~
                   }                                                //~0223I~
                 	Utils.sleep(SLEEP_TIME) ;                       //~v@@@I~
                 }                                                  //~v@@@I~
@@ -2444,13 +2481,25 @@ public class UADelayed //implements Runnable                            //~v@@@R
             }                                                      //~1420I~//~v@@@I~
             if (Dump.Y) Dump.println("UADelayTimer.run exit");     //~v@@@I~
         }                                                          //~1420I~//~v@@@I~
-    }//UADelayTimer thread                                                              //~1420I~//~v@@@I~
+//  }//UADelayTimer thread                                                              //~1420I~//~v@@@I~//~vab1R~
+//    private void suspendThread()                                 //~vab2R~
+//    {                                                            //~vab2R~
+//        if (Dump.Y) Dump.println("UADelayTimer.suspendThread")   //~vab2R~
+//        synchronized(this)                                       //~vab2R~
+//        {                                                        //~vab2R~
+//            wait();                                              //~vab2R~
+//        }                                                        //~vab2R~
+//        catch(InterruptedException e)                            //~vab2R~
+//        {                                                        //~vab2R~
+//            if (Dump.Y) Dump.println("UADelayTimer wait Interrupted");//~vab2R~
+//        }                                                        //~vab2R~
+//    }                                                            //~vab2R~
     //**************************************************************//~9B18I~
     protected void runTimer()                                           //~9B18I~
     {                                                              //~9B18I~
 //                    boolean swPost;                              //~9B18I~
                     boolean swPostM;                               //~9B18I~
-                    int ctrWaiting;                                //~9B18I~
+//                  int ctrWaiting;                                //~9B18I~//~vab1R~
                     synchronized(swWaiting)                        //~9B18I~
                     {                                              //~9B18I~
 //                      swPost=(ctrWaitingPlayer==0 && actionWaiting!=0);//~9B18I~
@@ -2469,6 +2518,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
                             swBlock=true;                          //~9B18I~
                         if (Dump.Y) Dump.println("UADelayed.runTimer stopAutoFix="+stopAutoFix+",swStopAuto2Touch="+swStopAuto2Touch+",stopAutoCtr="+stopAutoCtr+",swBlock="+swBlock);//~9B18R~//~9B28R~
                     }                                              //~9B18I~
+                    if (Dump.Y) Dump.println("UADelayed.runTimer swBlock="+swBlock+",msgWaiting="+Utils.toString(msgWaiting));//~vaaUR~
                     if (swBlock)                                   //~9B18I~
                     {                                              //~9B18I~
                         swPostM=false;                             //~9B18I~
@@ -2502,7 +2552,21 @@ public class UADelayed //implements Runnable                            //~v@@@R
 ////                      GVH.postDelayed(AG.aUADelayed,RESCHEDULE_DELAY);    //GVH:Handler extended//~9B18I~
 //                        GameViewHandler.sendMsgDelayed(msgWaiting,RESCHEDULE_DELAY);    //callback to timeoutToPonKan//~9B18I~
 //                    }                                            //~9B18I~
+//        if (!swBlock && !swPostM)                                  //~vab1I~//~vab2R~
+//        {                                                          //~vab1I~//~vab2R~
+//            ctrNoWork++;                                           //~vab1I~//~vab2R~
+//            if (Dump.Y) Dump.println("UADelayed.runTimer ctrNoWork="+ctrNoWork+",limit="+limit);//~vab1I~//~vab2R~
+//            if (limit>0 && ctrNoWork>=limit)                       //~vab1I~//~vab2R~
+//            {                                                      //~vab1I~//~vab2R~
+//                if (Dump.Y) Dump.println("UADelayed.runTimer endThread by ctrNoWork="+ctrNoWork+",limit="+limit);//~vab1I~//~vab2R~
+//                suSuspendThread=true;                                  //~vab1I~//~vab2R~
+//                ctrNoWork=0;                                       //~vab1I~//~vab2R~
+//            }                                                      //~vab1I~//~vab2R~
+//        }                                                          //~vab1I~//~vab2R~
+//        else                                                       //~vab1I~//~vab2R~
+//            ctrNoWork=0;                                           //~vab1I~//~vab2R~
     }                                                              //~9B18I~
+    }//UADelayTimer thread class                                   //~vab1I~
 //    //*****************************************************************//~9B16I~//~9B17R~
 //    //*confirm action by popupdialog                               //~9B16I~//~9B17R~
 //    //*****************************************************************//~9B16I~//~9B17R~

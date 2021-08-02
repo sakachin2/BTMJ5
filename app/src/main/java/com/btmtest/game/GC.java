@@ -1,12 +1,19 @@
-//*CID://+va9fR~: update#= 741;                                    //~va9fR~
+//*CID://+vaahR~: update#= 791;                                    //~vaaZR~//~vaahR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2021/07/29 vabh (Bug)cancel of Ankan, sendmsg not GCM_NEXT_PLAYER but schedule autodiscard//~vaahI~
+//2021/07/24 vaaZ PlayAlone mode;after Cancel Ron,discard rejected by err msg of "push orange btn" when ron is cancelable//~vaaZI~
+//2021/07/23 vaaV PlayAlone mode;win btn after chankan cause err NotYourTurn//~vaaVI~
+//2021/07/19 vaaU chankan was not notified                         //~vaaUI~
+//2021/07/03 vaah For PlayAloneNotify mode,reject other action when cancel btn shown//~vaahI~
+//2021/07/01 vaaf Button BG color by span string because setbackgroundColor is expands button to its boundary.//~vaafI~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
 //2021/06/15 va97 (Bug)CompReq button left as background table color if pushed at off(not orange)//~va97I~
 //2021/05/04 va8B (Bug)when Score(CmpReqDlg) btn is pushed to open CompReqDlg, Pon button size is shorten//~va8BI~
 //2021/04/13 va86 show RonAnyWay button by not preference by operation rule//~va86I~
-//2021/04/11 va80 return to top by back btn when gameoverl         //~va80R~
+//2021/04/11 va80 return to top by back btn when gameover         //~va80R~//~vaahR~
 //2021/04/05 va78 (Bug)PlayAlone notifymode; next player is not blocked by pending on//~va78I~
 //2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
 //2021/03/31 va74 va60 ignore robot Ron if Human  ron is cancelable, Now allow schedule next Robot ron if human canceled also when trainingmode without notify option//~va74I~
@@ -58,7 +65,6 @@ import static com.btmtest.game.Status.*;//~v@@@I~
 import com.btmtest.game.gv.GameView;                               //~v@@@I~
 import com.btmtest.game.UA.UAEndGame;                              //~9303I~
 import com.btmtest.dialog.RuleSetting;
-import com.btmtest.dialog.RuleSettingYaku;//~9412I~
 import com.btmtest.utils.UiFunc;
 import com.btmtest.utils.Utils;
 import com.btmtest.utils.sound.Sound;
@@ -71,9 +77,16 @@ import static com.btmtest.utils.Alert.*;
 import static com.btmtest.game.UAD2Touch.*;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
 
@@ -81,6 +94,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class GC implements UButton.UButtonI                        //~v@@@R~
    							,Alert.AlertI                          //~9B25I~
@@ -128,6 +142,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int BTNID_F6      =R.id.Func6;   //TODO   //~v@@@I~
                                                                    //~9301I~
     private static final int COLOR_ACTIVEBTN=Color.argb(0xff,0xff,0xa5,0x00);//orange//~9301I~
+    private static final int COLOR_BTN_NORMAL_BG= AG.getColor(R.color.btn_normal_bg);		//yellow//~vaafI~//~vaa2I~
                                                                    //~v@@@I~
     private static final int URO_STARTGAME=1;                      //~v@@@I~
     private static final int URO_ADDVIEW=2;                        //~v@@@I~
@@ -168,17 +183,27 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private boolean swOpenReachNow;                                //~va27I~
     public  boolean swGameView;                                    //~9B06I~
 //  private int btnBackgroundColor;                                //~9B25R~
-    private Drawable btnBackgroundColor;                           //~9B25I~
-    private Drawable btnBackgroundColorCompReqDlg;                 //~va8BI~
+//  private Drawable btnBackgroundColor;                           //~9B25I~//~vaafR~
+//  private int btnTextColor;                                      //~vaa2I~//~vaafR~
+//  private Drawable btnBackgroundColorCompReqDlg;                 //~va8BI~//~vaafR~
 //    private boolean swReconnect;                                 //~0411R~
 	private int connectionCtrAtStartGame;                          //~va02I~
-	public  int statusPlayAlone;                                   //~va70R~
+	private  int statusPlayAlone;                                   //~va70R~
+                                                                   //~vaa2I~
+	public  int statusPlayMatchNotify;                             //~vaa2R~
+	private static final int SPMN_PON      =0x01;                  //~vaa2I~
+	private static final int SPMN_KAN      =0x02;                   //~vaa2I~
+	private static final int SPMN_CHII     =0x04;                   //~vaa2I~
+	private static final int SPMN_RON      =0x08;                   //~vaa2I~
+                                                                   //~vaa2I~
 	private boolean swCancel;                                              //~va75I~
 	private boolean swCompReqButtonStatus=false;                   //~va97I~
+	private boolean swShownBtnCancel;                              //~vaahI~
+	private boolean swChankan;                                     //~vaaVI~
 //*************************                                        //~v@@@I~
 	public GC()                             //for IT override      //~va60I~
     {                                                              //~va60I~
-        if (Dump.Y) Dump.println("GC.default Constructor");        //~va60I~
+        if (Dump.Y) Dump.println("GC.default Constructor swTrainingMode="+AG.swTrainingMode);        //~va60I~//~vaa2R~
     }                                                              //~va60I~
 	public GC(View Pframe)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
@@ -201,7 +226,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             btnBottomH=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_bottom_small:R.dimen.gvbtn_bottom);//~9808I~
         	if(Dump.Y) Dump.println("GC.init dimen dWidth left="+btnLeftW+",right="+btnRightW);//~9808R~
 //            chkLayoutSize();                                       //~v@@@R~//~9411R~
-        	if(Dump.Y) Dump.println("GC.init swPortrait="+swPortrait+",ww="+AG.scrWidth+",hh="+AG.scrHeight);//~v@@@I~
+        	if(Dump.Y) Dump.println("GC.init swPortrait="+swPortrait+",ww="+AG.scrWidth+",hh="+AG.scrHeight+",swTrainingMode="+AG.swTrainingMode);//~v@@@I~//~vaa2R~
 //          new Accounts();                                        //~v@@@R~
 //          new Status();                                          //~v@@@R~
             new Rule();                                            //~v@@@I~//~9C01R~
@@ -277,12 +302,15 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //                        }                                        //~v@@@R~
 //                   )).start();                                   //~v@@@R~
         AG.swPlayAloneNotify=false;                                //~va70I~
+        AG.swPlayMatchNotify=false;                                //~vaa2I~
         if (AG.swTrainingMode)                                     //~va60I~
         {                                                          //~va60I~
             AG.swPlayAloneNotify= RuleSettingOperation.isPlayAloneNotify();//~va70I~
             AG.aBTMulti.startGameTrainingMode();                   //~va60I~
         }                                                          //~va60I~
         else                                                       //~va60I~
+        {                                                          //~vaa2I~
+        	AG.swPlayMatchNotify=RuleSettingOperation.isPlayMatchNotify();//~vaa2R~
 		if (BTMulti.isServerDevice())                              //~9621I~
         {                                                          //~9B30I~
 //	        AG.aBTMulti.startGameSendName();    //for the case anyone connected/disconnected//~9B30R~
@@ -292,6 +320,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~9B30I~
         else                                                       //~9621I~
 			startGameGo();                                         //~9621I~
+        }                                                          //~vaa2I~
 //        AG.aStatus.startGame();                                    //~v@@@I~//~9621R~
 //        URunnable.setRunFuncSubthread(this,0/*delay*/,this/*parmObj*/,URO_STARTGAME);//~v@@@I~//~9621R~
         if(Dump.Y) Dump.println("GC.startGame end rc="+rc);               //~v@@@I~//~9621R~//~0119R~
@@ -304,6 +333,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~va70I~
         if(Dump.Y) Dump.println("GC.newGame");                     //~va70I~
         statusPlayAlone=0;                                         //~va70R~
+        swChankan=false;                                           //~vaaVI~
+		swShownBtnCancel=false;                                    //~vaahI~
     }                                                              //~va70I~
 //***********************************************************      //~9621R~
 //*from BTMulti when Date Synched OK                               //~9621I~
@@ -345,7 +376,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //*************************                                        //~v@@@I~
 	private void init2()                                           //~v@@@R~
     {                                                              //~1120I~//~1122M~
-        if(Dump.Y) Dump.println("GC.init2");                       //~v@@@I~
+        if (Dump.Y) Dump.println("GC.init2 swTrainingMode="+AG.swTrainingMode);                       //~v@@@I~//~vaa2R~
         try                                                        //~1109I~//~1120M~//~1122M~
         {                                                          //~1109I~//~1120M~//~1122M~
         	gameView=new GameView(AG.context);                     //~v@@@R~
@@ -355,12 +386,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         {                                                          //~1109I~//~1120M~//~1122M~
     		Dump.println(e,"GC.init2");//~1109I~//~1120M~//~1122M~//~1329R~//~@@@@R~//~v@@@R~
         }                                                          //~1109I~//~1120M~//~1122M~
-        if(Dump.Y) Dump.println("GC.init2 end");                   //~v@@@I~
+        if(Dump.Y) Dump.println("GC.init2 end swTrainingMode="+AG.swTrainingMode);                   //~v@@@I~//~vaa2R~
     }                                                              //~1120I~//~1122M~
 //*************************                                        //~v@@@I~
 	private void init3()                                           //~v@@@I~
     {                                                              //~v@@@I~
-        if(Dump.Y) Dump.println("GC.init3");                       //~v@@@I~
+        if(Dump.Y) Dump.println("GC.init3 swTrainingMode="+AG.swTrainingMode);                       //~v@@@I~//~vaa2R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
 //          int lp=ViewGroup.LayoutParams.FILL_PARENT;             //~v@@@I~//~va40R~
@@ -376,7 +407,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
               (new UserAction()).init();                           //~v@@@R~
             swGameView=true;                                       //~9B06I~
 //          btnBackgroundColor=Uview.getBackgroundColor(btnPon);   //~9B25R~
-            btnBackgroundColor=btnPon.getBackground();          //~9B25I~
+//          btnBackgroundColor=btnPon.getBackground();          //~9B25I~//~vaafR~
+//          btnTextColor=btnPon.getCurrentTextColor();             //~vaa2R~//~vaafR~
         }                                                          //~v@@@I~
         catch(Exception e)                                         //~v@@@I~
         {                                                          //~v@@@I~
@@ -599,6 +631,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         switch(id)                                                 //~v@@@I~
         {                                                          //~v@@@I~
         case BTNID_F1:         //TODO                              //~v@@@R~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
         	if ((TestOption.option & TestOption.TO_HIDE_BUTTON)!=0)//~v@@@R~
         		hideButtons();                                     //~v@@@I~
             else                                                   //~v@@@I~
@@ -635,6 +668,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //          player=Players.nextPlayer(AG.aPlayers.getCurrentPlayer());//~v@@@R~
 //          player=PLAYER_YOU;                                     //~v@@@R~
 //      	sendMsg(GCM_TAKE,player);                              //~v@@@R~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
     		if (!resetPendingPlayAloneNotifyTake())                //~va75R~
             	break;                                             //~va75I~
         	sendMsg(GCM_TAKE,null);                                //~v@@@I~
@@ -642,24 +676,34 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case BTNID_PON:                                            //~v@@@I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
-    		resetPendingPlayAloneNotify(GCM_PON);                  //~va70R~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
+//  		resetPendingPlayAloneNotify(GCM_PON);                  //~va70R~//~vaahR~
+    		if (!resetPendingPlayAloneNotify(GCM_PON))	//have to reset Cancel//~vaahR~
+            	break;                                             //~vaahR~
         	sendMsg(GCM_PON,null);                                 //~v@@@R~
             break;                                                 //~v@@@I~
         case BTNID_CHII:                                           //~v@@@I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
-			resetPendingPlayAloneNotify(GCM_CHII);                 //~va70R~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
+//  		resetPendingPlayAloneNotify(GCM_CHII);                 //~va70R~//~vaahR~
+    		if (!resetPendingPlayAloneNotify(GCM_CHII))	//have to reset Cancel//~vaahR~
+            	break;                                             //~vaahR~
         	sendMsg(GCM_CHII,null);                                //~v@@@R~
             break;                                                 //~v@@@I~
         case BTNID_KAN:                                            //~v@@@I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
-			resetPendingPlayAloneNotify(GCM_KAN);                  //~va70R~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
+//  		resetPendingPlayAloneNotify(GCM_KAN);                  //~va70R~//~vaahR~
+    		if (!resetPendingPlayAloneNotify(GCM_KAN))	//have to reset Cancel//~vaahR~
+            	break;                                             //~vaahR~
         	sendMsg(GCM_KAN,null);                                 //~v@@@R~
             break;                                                 //~v@@@I~
         case BTNID_REACH:                                           //~v@@@I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
 //          updateButtonStatusReach(id);                           //~9A30R~//~9A31R~
         	sendMsg(GCM_REACH,null);                               //~v@@@R~//~9301R~
 //      	onClickReach();                                        //~v@@@I~//~9301R~
@@ -667,6 +711,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case BTNID_REACH_OPEN:                                     //~9301I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
 //          updateButtonStatusReach(id);                           //~9A30R~//~9A31R~
 //      	onClickReachOpen();                                    //~9301I~
         	sendMsg(GCM_REACH_OPEN,null);                          //~9301I~
@@ -686,12 +731,16 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case BTNID_FORCE_REACH:                                    //~va27I~
 			if (isRestarting())                                    //~va27I~
             	break;                                             //~va27I~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
         	sendMsg(swOpenReachNow ? GCM_FORCE_REACH_OPEN : GCM_FORCE_REACH,null);//~va27I~
             break;                                                 //~va27I~
         case BTNID_RON:                                           //~v@@@I~
 			if (isRestarting())                                    //~9A29I~
             	break;                                             //~9A29I~
-			resetPendingPlayAloneNotify(GCM_RON);                  //~va70I~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
+//  		resetPendingPlayAloneNotify(GCM_RON);                  //~va70I~//~vaahR~
+    		if (!resetPendingPlayAloneNotify(GCM_RON))	//have to reset Cancel//~vaahR~
+            	break;                                             //~vaahR~
         	sendMsg(GCM_RON,null);                                 //~v@@@R~
             break;                                                 //~v@@@I~
         case BTNID_DISCARD:                                           //~v@@@I~
@@ -699,7 +748,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             	break;                                             //~9A29I~
 //          updateButtonStatusReach(0/*reset*/);                    //~9A30R~//~9A31R~
 //          player=AG.aPlayers.getCurrentPlayer();                 //~v@@@R~
-			resetPendingPlayAloneNotify(GCM_DISCARD);              //~va80I~
+		    resetPendingPlayMatchNotify(0/*PmsgID*/);              //~vaa2I~
+//  		resetPendingPlayAloneNotify(GCM_DISCARD);              //~va80I~//~vaahR~
+    		if (!resetPendingPlayAloneNotify(GCM_DISCARD))	//have to reset Cancel//~vaahR~
+            	break;                                             //~vaahR~
         	sendMsg(GCM_DISCARD,PLAYER_YOU);                       //~v@@@R~
             break;                                                 //~v@@@I~
 //        case BTNID_WAITON:                                         //~v@@@I~//~0228R~
@@ -893,7 +945,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             AG.aDiceBox.setWaitingResponse(player1stPicker);   //waiting lamp//~v@@@R~
 //          AG.aDiceBox.setWaitingResponseAll();   //waiting lamp  //~v@@@R~
             Status.setGameStatus(GS_POSITION_ACCEPTING);           //~v@@@I~
-            AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositionAccepting); //TDO test//~v@@@I~
+            AG.aGMsg.drawMsgbar(R.string.Msg_DiceForPositionAccepting); //TODO test//~v@@@I~//~vaa2R~
 //            AG.aNamePlate.show(playerTempStarter,spot);          //~v@@@R~
 //            Status.setGameStatus(GS_POSITION_ACCEPTING);         //~v@@@R~
 //            AG.aDiceBox.setWaitingResponse();   //wait all players//~v@@@R~
@@ -1491,6 +1543,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
       {                                                            //~va70I~
 //      actionPlayAloneNotify(msgid);                              //~va70R~//~va74R~
         actionPlayAlone(msgid,true/*updateBtn*/);                  //~va74R~
+        AG.aUAD2Touch.actionCancel();                              //~vaaZR~
       }                                                            //~va70I~
       else                                                         //~va70I~
       {                                                            //~va74I~
@@ -1538,29 +1591,156 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (Pcolor!=0)                                             //~9B25I~
         {                                                          //~9B25I~
             if (Pcolor==COLOR_NORMAL)                           //~9B25I~
-		        btn.setBackground(btnBackgroundColor/*drawable*/); //~9B25R~
+//  	        btn.setBackground(btnBackgroundColor/*drawable*/); //~9B25R~//~vaafR~
+				setBtnBG(btn,COLOR_BTN_NORMAL_BG);                 //~vaafI~
             else                                                   //~9B25I~
-		        btn.setBackgroundColor(Pcolor);                    //~9B25R~
+//  	        btn.setBackgroundColor(Pcolor);                    //~9B25R~//~vaafR~
+				setBtnBG(btn,Pcolor);                              //~vaafI~
             if (btn2!=null)                                        //~va74I~
             {                                                      //~va74I~
             	if (Pcolor==COLOR_NORMAL)                          //~va74I~
-		        	btn2.setBackground(btnBackgroundColor/*drawable*/);//~va74I~
+//  	        	btn2.setBackground(btnBackgroundColor/*drawable*/);//~va74I~//~vaafR~
+					setBtnBG(btn2,COLOR_BTN_NORMAL_BG);            //~vaafI~
             	else                                               //~va74I~
-		        	btn2.setBackgroundColor(Pcolor);               //~va74I~
+//  	        	btn2.setBackgroundColor(Pcolor);               //~va74I~//~vaafR~
+					setBtnBG(btn2,Pcolor);                         //~vaafI~
             }                                                      //~va74I~
         }                                                          //~9B25I~
         switch(Pstat)                                              //~9B25I~
         {                                                          //~9B25I~
         case BTN_STATUS_ENABLE_CANCEL:                             //~9B25I~
         	btnActionCancel.setVisibility(View.VISIBLE);            //~9B25I~
+			swShownBtnCancel=true;                                 //~vaahI~
             if (AG.swTrainingMode)                                 //~va74I~
 				statusPlayAlone=PactionID;                         //~va74I~
         	break;                                                 //~9B25I~
         case BTN_STATUS_DISABLE_CANCEL:                            //~9B25I~
+			swShownBtnCancel=false;                                //~vaahI~
         	btnActionCancel.setVisibility(View.GONE);               //~9B25I~
         	break;                                                 //~9B25I~
         }                                                          //~9B25I~
+        if (Dump.Y) Dump.println("GC.updateActionBtn2Touch exit swChankan="+swChankan);//~vaaVI~
     }                                                              //~9B25I~
+    //*******************************************************************//~vaa2I~
+    //*from Action2Touch on MainThread when PlayMatchNotify mode   //~vaa2I~
+    //*******************************************************************//~vaa2I~
+    private void updateActionBtn2TouchMatchNotify(int PactionID,int Pstat,int Pcolor)//~vaa2R~
+    {                                                              //~vaa2I~
+		if (Dump.Y) Dump.println("GC.updateActionBtn2TouchMatchNotify actionID="+PactionID+",stat="+Pstat+",color="+Integer.toHexString(Pcolor));//~vaa2I~
+        if (PactionID==0)	//reset req by received action msg     //~vaa2I~
+        {                                                          //~vaa2I~
+    		resetPendingPlayMatchNotify(0);                        //~vaa2I~
+            return;                                                //~vaa2I~
+        }                                                          //~vaa2I~
+        Button btn=null;                                           //~vaa2I~
+        Button btn2=null;                                          //~vaa2I~
+        int statMatch=0;                                           //~vaa2I~
+        switch(PactionID)                                          //~vaa2I~
+        {                                                          //~vaa2I~
+        case GCM_PON:                                              //~vaa2I~
+        	btn=btnPon;                                            //~vaa2I~
+            statMatch=SPMN_PON;                                    //~vaa2I~
+            break;                                                 //~vaa2I~
+        case GCM_KAN:                                              //~vaa2I~
+        	btn=btnKan;                                            //~vaa2I~
+            statMatch=SPMN_KAN;                                    //~vaa2I~
+            break;                                                 //~vaa2I~
+        case GCM_CHII:                                             //~vaa2I~
+        	btn=btnChii;                                           //~vaa2I~
+            statMatch=SPMN_CHII;                                   //~vaa2I~
+            break;                                                 //~vaa2I~
+        case GCM_RON:                                              //~vaa2I~
+        	btn=btnRon;                                            //~vaa2I~
+            statMatch=SPMN_RON;                                    //~vaa2I~
+            break;                                                 //~vaa2I~
+        case GCM_KAN_OR_PON:                                       //~vaa2I~
+        	btn=btnKan;                                            //~vaa2I~
+            statMatch=SPMN_PON|SPMN_KAN;                           //~vaa2I~
+        	btn2=btnPon;                                           //~vaa2I~
+            break;                                                 //~vaa2I~
+        }                                                          //~vaa2I~
+        statusPlayMatchNotify|=statMatch;                          //~vaa2I~
+		if (Dump.Y) Dump.println("GC.updateActionBtn2TouchMatchNotify statMatch="+Integer.toHexString(statMatch)+",statusPlayMatchNotify="+Integer.toHexString(statusPlayMatchNotify));//~vaa2I~
+        if (btn==null)                                             //~vaa2I~
+        	return;                                                //~vaa2I~
+        if (Pcolor!=0)                                             //~vaa2I~
+        {                                                          //~vaa2I~
+//          if (Pcolor==COLOR_NORMAL)                              //~vaa2R~
+//  	        btn.setBackground(btnBackgroundColor/*drawable*/); //~vaa2R~
+//          else                                                   //~vaa2R~
+//  	        btn.setBackgroundColor(Pcolor);                    //~vaa2R~
+    		updateActionBtn2TouchMatchNotify(btn,Pcolor);          //~vaa2I~
+            if (btn2!=null)                                        //~vaa2I~
+            {                                                      //~vaa2I~
+//          	if (Pcolor==COLOR_NORMAL)                          //~vaa2R~
+//  	        	btn2.setBackground(btnBackgroundColor/*drawable*/);//~vaa2R~
+//          	else                                               //~vaa2R~
+//  	        	btn2.setBackgroundColor(Pcolor);               //~vaa2R~
+	    		updateActionBtn2TouchMatchNotify(btn2,Pcolor);     //~vaa2I~
+            }                                                      //~vaa2I~
+        }                                                          //~vaa2I~
+//      switch(Pstat)                                              //~vaa2I~
+//      {                                                          //~vaa2I~
+//      case BTN_STATUS_ENABLE_CANCEL:                             //~vaa2I~
+//      	btnActionCancel.setVisibility(View.VISIBLE);           //~vaa2I~
+//          if (AG.swTrainingMode)                                 //~vaa2I~
+//  			statusPlayAlone=PactionID;                         //~vaa2I~
+//      	break;                                                 //~vaa2I~
+//      case BTN_STATUS_DISABLE_CANCEL:                            //~vaa2I~
+//      	btnActionCancel.setVisibility(View.GONE);              //~vaa2I~
+//      	break;                                                 //~vaa2I~
+//      }                                                          //~vaa2I~
+    }                                                              //~vaa2I~
+    //*******************************************************************//~vaa2I~
+    private void updateActionBtn2TouchMatchNotify(Button Pbtn,int Pcolor)//~vaa2I~
+    {                                                              //~vaa2I~
+		if (Dump.Y) Dump.println("GC.updateActionBtn2TouchMatchNotify Button="+Pbtn.toString()+",color="+Integer.toHexString(Pcolor));//~vaa2I~
+//    if (false)      //TODO test                                  //~vaa2R~//~vaafR~
+//    {                                                            //~vaa2I~//~vaafR~
+//      if (Pcolor==COLOR_NORMAL)                                  //~vaa2I~//~vaafR~
+//          Pbtn.setTextColor(btnTextColor);                       //~vaa2I~//~vaafR~
+//      else                                                       //~vaa2I~//~vaafR~
+//          Pbtn.setTextColor(Pcolor);                             //~vaa2I~//~vaafR~
+//    }                                                            //~vaa2I~//~vaafR~
+//    else                                                         //~vaa2I~//~vaafR~
+        if (Pcolor==COLOR_NORMAL)                                  //~vaa2I~
+//        if (true)                                                //~vaa2I~//~vaafR~
+//        {                                                        //~vaa2I~//~vaafR~
+//  		Drawable bgd=Pbtn.getBackground();                     //~vaa2R~
+//          ColorStateList sl=bgd.colostateList;                   //~vaa2R~
+//          setBtnBG(Pbtn,0xfff0f0f0);                             //~vaa2R~//~vaafR~
+//        }                                                        //~vaa2I~//~vaafR~
+//        else                                                     //~vaa2I~//~vaafR~
+//          Pbtn.setBackground(btnBackgroundColor/*drawable*/);    //~vaa2I~//~vaafR~
+            setBtnBG(Pbtn,COLOR_BTN_NORMAL_BG);                    //~vaafI~
+        else                                                       //~vaa2I~
+            setBtnBG(Pbtn,Pcolor);                                 //~vaa2R~
+    }                                                              //~vaa2I~
+    //*******************************************************************//~vaa2I~
+    //*TODO test                                                   //~vaa2I~
+    //*******************************************************************//~vaa2I~
+	private void setBtnBG(Button Pbtn,int Pcolor)                  //~vaa2R~
+    {                                                              //~vaa2I~
+		if (Dump.Y) Dump.println("GC.setBtnBG color="+Integer.toHexString(Pcolor)+",btn="+Pbtn.toString());//~vaa2R~
+//  	Drawable bgd=Pbtn.getBackground();                         //~vaa2R~
+//      if (bgd instanceof ColorDrawable)                          //~vaa2R~
+//      {                                                          //~vaa2R~
+//      	int bgc=((ColorDrawable)bgd).getColor();               //~vaa2R~
+//      }                                                          //~vaa2R~
+//      BitmapDrawable bmd=(BitmapDrawable)bgd;                    //~vaa2R~
+//      int bmc=bmd.getBitmap().getPixel(0,0);                     //~vaa2R~
+//      int txc=Pbtn.getCurrentTextColor();                        //~vaa2R~
+//      if (true)                                                  //~vaa2I~//~vaafR~
+        	Utils.setBtnBG(Pbtn,Pcolor);                           //~vaa2I~
+//      else                                                       //~vaa2I~//~vaafR~
+//    	if (false)                               //TODO test       //~vaa2R~//~vaafR~
+//      	Utils.setSpanTextBG(Pbtn,Pcolor);                      //~vaa2R~//~vaafR~
+//    	else                                                       //~vaa2R~//~vaafR~
+//      if (false)                               //TODO test       //~vaa2I~//~vaafR~
+//      	Utils.setSpanBG(Pbtn,Pcolor);                          //~vaa2R~//~vaafR~
+//      else                                                       //~vaa2I~//~vaafR~
+//  		Utils.setTintBG(Pbtn,Pcolor);                          //~vaa2I~//~vaafR~
+    }                                                              //~vaa2I~
     //*******************************************************************//~va70I~
 	private boolean isAvailableOpenReach()                         //~0329I~
     {                                                              //~0329I~
@@ -1574,8 +1754,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.isAvailableOpenReach rc="+rc);
 		return rc;//~0329I~
 	}                                                              //~0329I~
-//  public boolean isRobotGame()                                   //~0329I~//+va9fR~
-    private boolean isRobotGame()                                  //+va9fI~
+//  public boolean isRobotGame()                                   //~0329I~//~va9fR~
+    private boolean isRobotGame()                                  //~va9fI~
     {                                                              //~0329I~
         int ctrActive=BTMulti.getMemberConnected();                //~0329I~
         boolean rc=(ctrActive+1<PLAYERS);                          //~0329I~
@@ -1771,14 +1951,31 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (Dump.Y) Dump.println("GC.highlightButton sw="+PswOn);  //~va49I~
     	if (PswOn)                                                 //~va49I~
         {                                                          //~va49I~
-		    btnBackgroundColorCompReqDlg=Pbtn.getBackground();     //~va8BI~
+//  	    btnBackgroundColorCompReqDlg=Pbtn.getBackground();     //~va8BI~//~vaafR~
         	int color=AG.getColor(R.color.action_cancel);          //~va49I~
-		    new UiFunc().setBackground(Pbtn,color);                //~va49R~
+//          if (true ) //TODO                                      //~vaa2R~//~vaafR~
+//            setBtnBG(Pbtn,color);                                //~vaa2I~//~vaafR~
+//          else                                                   //~vaa2R~//~vaafR~
+//  	    new UiFunc().setBackground(Pbtn,color);                //~va49R~//~vaafR~
+    	    new UiFunc().setBtnBG(Pbtn,color);                     //~vaafI~
         }                                                          //~va49I~
         else                                                       //~va49I~
         {                                                          //~va49I~
+//          if (true)   //TODO                                     //~vaa2I~//~vaafR~
+//            		Utils.clearTintBG(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//~vaa2I~//~vaafR~
+//          else                                                   //~vaa2I~//~vaafR~
+//          if (true)   //TODO                                     //~vaa2I~//~vaafR~
+//            setBtnBG(Pbtn,COLOR_BTN_NORMAL_BG);                  //~vaa2I~//~vaafR~
+//          else                                                   //~vaa2I~//~vaafR~
+//          if (false) //TODO                                      //~vaa2R~//~vaafR~
+//          	if (true)  //TODO                                  //~vaa2R~//~vaafR~
+//  		  		Utils.setTintBG(Pbtn,0xffc0c0f0);              //~vaa2R~//~vaafR~
+//          	else                                               //~vaa2R~//~vaafR~
+//            		Utils.clearTintBG(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//~vaa2R~//~vaafR~
+//          else                                                   //~vaa2R~//~vaafR~
 //  	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColor/*drawable*/);//~va49I~//~va8BR~
-    	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//~va8BI~
+//  	    new UiFunc().setBackgroundDrawable(Pbtn,btnBackgroundColorCompReqDlg/*drawable*/);//~va8BI~//~vaafR~
+    	    new UiFunc().setBtnBG(Pbtn,COLOR_BTN_NORMAL_BG);       //~vaafI~
         }                                                          //~va49I~
     }                                                              //~va49I~
 //    //*******************************************************************//~va70R~
@@ -1791,13 +1988,21 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        if (Dump.Y) Dump.println("GC.setButtonPlayAlone msgid="+PmdgID+",statusPlayAlone="+statusPlayAlone);//~va70R~
 //    }                                                            //~va70R~
     //*******************************************************************//~va70I~
-    //*from UAD2T.updateBtnUIPlayAloneNotify when Human player Ronable//~va70I~
+    //*from UAD2T.updateBtnUIPlayAloneNotify when Human player in PlayAlone mode//~vaa2R~
+    //*from UAD2T.updateBtnUIPlayAloneNotify when Human player in Matchmode//~vaa2I~
     //*******************************************************************//~va70I~
     public void updateActionBtn2TouchPlayAloneNotify(int PactionID,int Pstat,int Pcolor)//~va70R~
     {                                                              //~va70I~
 		if (Dump.Y) Dump.println("GC.updateActionBtn2TouchPlayAloneNotify actionID="+PactionID+",stat="+Pstat+",color="+Integer.toHexString(Pcolor));//~va70R~
+       if ((Pstat & BTN_STATUS_MATCH_NOTIFY)!=0)                   //~vaa2I~
+       {                                                           //~vaa2I~
+    	updateActionBtn2TouchMatchNotify(PactionID,(Pstat & ~BTN_STATUS_MATCH_NOTIFY),Pcolor);//~vaa2I~
+       }                                                           //~vaa2I~
+       else                                                        //~vaa2I~
+       {                                                           //~vaa2I~
 	    updateActionBtn2Touch(PactionID,Pstat,Pcolor);             //~va70I~
         statusPlayAlone=PactionID;                                 //~va70R~
+       }                                                           //~vaa2I~
     }                                                              //~va70I~
 //    //*******************************************************************//~va70R~
 //    private boolean highlightButtonPlayAlone(int PmsgID,boolean PswOn)//~va70R~
@@ -1830,15 +2035,22 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     //*******************************************************************//~va70I~
     //* chk action pending                                         //~va70I~
     //*******************************************************************//~va70I~
-    private void resetPendingPlayAloneNotify(int PmsgID)           //~va70R~
+//  private void resetPendingPlayAloneNotify(int PmsgID)           //~va70R~//~vaahR~
+    private boolean resetPendingPlayAloneNotify(int PmsgID)        //~vaahR~
     {                                                              //~va70I~
+    	boolean rc=true;	//do sendMsg                           //~vaahI~
         if (Dump.Y) Dump.println("GC.resetPendingPlayAloneNotify msgID="+PmsgID+",statusPlayAlone="+statusPlayAlone);//~va70R~
         if (statusPlayAlone==0)                                    //~va70R~
-        	return;                                                //~va70R~
+//      	return;                                                //~va70R~//~vaahR~
+        	return true;                                           //~vaahR~
         if (statusPlayAlone==GCM_KAN_OR_PON)                       //~va74I~
         {                                                          //~va74I~
         	if (PmsgID!=GCM_KAN && PmsgID!=GCM_PON)                //~va74I~
-            	return;                                            //~va74I~
+            {                                                      //~vaahI~
+//          	return;                                            //~va74I~//~vaahR~
+                rc=!chkCancelBtn();	//if cancel btn shown, return false(skip sendmsg)//~vaahR~
+            	return rc;                                         //~vaahR~
+            }                                                      //~vaahI~
         }                                                          //~va74I~
         else                                                       //~va74I~
         if (PmsgID==GCM_DISCARD)                                   //~va80I~
@@ -1846,18 +2058,67 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	        if (statusPlayAlone!=GCM_RON)                          //~va80I~
             {                                                      //~va80I~
 		        if (Dump.Y) Dump.println("GC.resetPendingPlayAloneNotify ignored by status is not GCM_RON");//~va80I~
-            	return;                                            //~va80I~
+//          	return;                                            //~va80I~//~vaahR~
+                rc=!chkCancelBtn();	//if cancel btn shown, return false(skip sendmsg)//~vaahR~
+            	return rc;                                         //~vaahR~
             }                                                      //~va80I~
         }                                                          //~va80I~
         else                                                       //~va80I~
         if (PmsgID!=statusPlayAlone)                               //~va70R~
-        	return;                                                //~va70I~
+        {                                                          //~vaahI~
+//      	return;                                                //~va70I~//~vaahR~
+            rc=!chkCancelBtn();	//if cancel btn shown, return false(skip sendmsg)//~vaahR~
+            return rc;                                             //~vaahR~
+        }                                                          //~vaahI~
         int svStatus=statusPlayAlone;                              //~va74I~
 	    statusPlayAlone=0;                                         //~va70R~
 //      actionPlayAloneNotify(PmsgID);                             //~va70I~//~va74R~
         actionPlayAlone(svStatus,true/*updateBtn*/);               //~va74R~
 //      AG.aUADelayed.actionCanceledPlayAloneNotify(PmsgID);       //~va70R~
+        return true;                                               //~vaahI~
     }                                                              //~va70I~
+    //*******************************************************************//~vaa2I~
+    //* chk action pending                                         //~vaa2I~
+    //*******************************************************************//~vaa2I~
+    private void resetPendingPlayMatchNotify(int PmsgID)           //~vaa2I~
+    {                                                              //~vaa2I~
+        if (Dump.Y) Dump.println("GC.resetPendingPlayMatchNotify msgID="+PmsgID+",statusPlayMatchNotify="+Integer.toHexString(statusPlayMatchNotify));//~vaa2I~
+        if (statusPlayMatchNotify==0)                              //~vaa2I~
+        	return;                                                //~vaa2I~
+        if ((statusPlayMatchNotify & SPMN_PON)!=0)                 //~vaa2I~
+        {                                                          //~vaa2I~
+        	if (PmsgID==0 || PmsgID==GCM_PON)                      //~vaa2I~
+            {                                                      //~vaa2I~
+		        statusPlayMatchNotify &= ~SPMN_PON;                //~vaa2I~
+			    updateActionBtn2TouchMatchNotify(btnPon,COLOR_NORMAL);//~vaa2I~
+            }                                                      //~vaa2I~
+        }                                                          //~vaa2I~
+        if ((statusPlayMatchNotify & SPMN_KAN)!=0)                 //~vaa2I~
+        {                                                          //~vaa2I~
+        	if (PmsgID==0 || PmsgID==GCM_KAN)                      //~vaa2I~
+            {                                                      //~vaa2I~
+		        statusPlayMatchNotify &= ~SPMN_KAN;                //~vaa2I~
+			    updateActionBtn2TouchMatchNotify(btnKan,COLOR_NORMAL);//~vaa2I~
+            }                                                      //~vaa2I~
+        }                                                          //~vaa2I~
+        if ((statusPlayMatchNotify & SPMN_CHII)!=0)                //~vaa2I~
+        {                                                          //~vaa2I~
+        	if (PmsgID==0 || PmsgID==GCM_CHII)                     //~vaa2I~
+            {                                                      //~vaa2I~
+		        statusPlayMatchNotify &= ~SPMN_CHII;               //~vaa2I~
+			    updateActionBtn2TouchMatchNotify(btnChii,COLOR_NORMAL);//~vaa2I~
+            }                                                      //~vaa2I~
+        }                                                          //~vaa2I~
+        if ((statusPlayMatchNotify & SPMN_RON)!=0)                 //~vaa2I~
+        {                                                          //~vaa2I~
+        	if (PmsgID==0 || PmsgID==GCM_RON)                      //~vaa2I~
+            {                                                      //~vaa2I~
+		        statusPlayMatchNotify &= ~SPMN_RON;                //~vaa2I~
+			    updateActionBtn2TouchMatchNotify(btnRon,COLOR_NORMAL);//~vaa2I~
+            }                                                      //~vaa2I~
+        }                                                          //~vaa2I~
+        if (Dump.Y) Dump.println("GC.resetPendingPlayMatchNotify exit msgID="+PmsgID+",statusPlayMatchNotify="+Integer.toHexString(statusPlayMatchNotify));//~vaa2I~
+    }                                                              //~vaa2I~
     //*******************************************************************//~va75I~
     //* chk action pending                                         //~va75I~
     //* return false:not your turn                                 //~va75I~
@@ -1867,6 +2128,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (Dump.Y) Dump.println("GC.resetPendingPlayAloneNotifyTake statusPlayAlone="+statusPlayAlone);//~va75R~
         if (statusPlayAlone==0)                                    //~va75I~
         	return true;                                           //~va75R~
+        if (chkCancelBtn()) 	//cancel btn shown                 //~vaahR~
+        	return false;                                          //~vaahR~
         if (AG.aPlayers.getNextPlayer()!=PLAYER_YOU)               //~va75M~
         {                                                          //~va75M~
 	        actionError(0,PLAYER_YOU,R.string.AE_NotYourTurn);     //~va75M~
@@ -1889,7 +2152,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //  private void actionPlayAloneNotify(int PmsgID)                 //~va70I~//~va74R~
     private void actionPlayAlone(int PmsgID,boolean PswUpdateBtn)  //~va74R~
     {
-        if (Dump.Y) Dump.println("GC.actionPlayAlone msgID="+PmsgID+",swUpdateBtn="+PswUpdateBtn+",swCancel="+swCancel+",notify mode="+AG.swPlayAloneNotify);//~va70I~//~va74R~//~va75R~
+        if (Dump.Y) Dump.println("GC.actionPlayAlone msgID="+PmsgID+",swUpdateBtn="+PswUpdateBtn+",swCancel="+swCancel+",swChankan="+swChankan+",notify mode="+AG.swPlayAloneNotify);//~va70I~//~va74R~//~va75R~//~vaaVR~
     	int player;                                                //~va70I~
         switch(PmsgID)                                             //~va78I~
         {                                                          //~va78I~
@@ -1897,6 +2160,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     		player=AG.aPlayers.getCurrentPlayer();    //for pass chk of PLS.isActionDoneExceptRon//~va70R~
     	  	if (AG.aPlayers.getCurrentPlayerTaking()==player)      //~va80R~
             {                                                      //~va80I~
+            	if (swCancel && swChankan)                         //~vaaVR~
+            	{                                                  //~vaaVI~
+			        if (Dump.Y) Dump.println("GC.actionPlayAlone reschedule rinshantakable by swChankan");//~vaaVR~
+		        	AG.aUserAction.UAK.postDelayedTakableKan(player);//~vaaVI~//~vaaUR~
+                }                                                  //~vaaVI~
+                swChankan=false;                                   //~vaaUI~
 		        if (Dump.Y) Dump.println("GC.actionPlayAlone skip postDelayedPonKan by currentPlayerTaking player="+player);//~va80R~
             	break;                                             //~va80I~
             }                                                      //~va80I~
@@ -1910,6 +2179,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case GCM_KAN:                                              //~va78I~
         case GCM_KAN_OR_PON:                                       //~va78I~
     		player=AG.aPlayers.getCurrentPlayer();    //for pass chk of PLS.isActionDoneExceptRon//~va78I~
+        	if (Dump.Y) Dump.println("GC.actionPlayAlone swCancel="+swCancel+",current player="+player);//+vaahI~
+          if (swCancel && player==PLAYER_YOU)   // you are taken   //~vaahI~
+          	postAutoDiscardAnkan();                                //~vaahI~
+          else                                                     //~vaahI~
     	    GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(player),0,0);	//on server,to UADiscard.nextPlayer()//~va78I~
             break;                                                 //~va78I~
         default:                                                   //~va78I~
@@ -1920,4 +2193,24 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
       if (PswUpdateBtn)                                            //~va74I~
     	updateActionBtn2Touch(PmsgID,BTN_STATUS_DISABLE_CANCEL,COLOR_NORMAL);//~va70I~
     }
+    //*******************************************************************//~vaahI~
+    private boolean chkCancelBtn()                                 //~vaahI~
+    {                                                              //~vaahI~
+    	if (swShownBtnCancel)                                      //~vaahI~
+	        actionError(0,PLAYER_YOU,R.string.AE_CancelAtFirst);   //~vaahI~
+		if (Dump.Y) Dump.println("GC.chkCancelBtn rc=swShownBtnCancel="+swShownBtnCancel);//~vaahI~
+        return swShownBtnCancel;                                   //~vaahI~
+    }                                                              //~vaahI~
+    //*******************************************************************//~vaaUI~
+    public void setPlayAloneNotifyChankan(boolean Psw)             //~vaaUI~
+    {                                                              //~vaaUI~
+		if (Dump.Y) Dump.println("GC.setPlayAloneNotifyChankan Psw="+Psw);//~vaaUI~
+        swChankan=Psw;                                             //~vaaUI~
+    }                                                              //~vaaUI~
+    //*******************************************************************//~vaahI~
+    private void postAutoDiscardAnkan()                            //~vaahI~
+    {                                                              //~vaahI~
+		if (Dump.Y) Dump.println("GC.postAutoDiscardAnkan");       //~vaahI~
+        AG.aUserAction.UAT.setAutoDiscardTimeout(true/*swServer*/,PLAYER_YOU,GCM_TAKE);//~vaahI~
+    }                                                              //~vaahI~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

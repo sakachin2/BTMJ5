@@ -13,6 +13,8 @@
                         android:id="@+id/UserAction_Ron"
                         android:text="@string/UserAction_Ron"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:layout_width="fill_parent"
@@ -21,6 +23,8 @@
                         android:id="@+id/UserAction_Pon"
                         android:text="@string/UserAction_Pon"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:layout_width="fill_parent"
@@ -29,6 +33,8 @@
                         android:id="@+id/UserAction_Chii"
                         android:text="@string/UserAction_Chii"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:layout_width="fill_parent"
@@ -37,6 +43,8 @@
                         android:id="@+id/UserAction_Kan"
                         android:text="@string/UserAction_Kan"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <!--Button
                         android:layout_width="fill_parent"
@@ -45,6 +53,8 @@
                         android:id="@+id/UserAction_Reach"
                         android:text="@string/UserAction_Reach"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              /-->
              <Button
                         android:layout_width="fill_parent"
@@ -53,6 +63,8 @@
                         android:id="@+id/UserAction_Take"
                         android:text="@string/UserAction_Take"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:layout_width="fill_parent"
@@ -61,6 +73,8 @@
                         android:id="@+id/UserAction_Discard"
                         android:text="@string/UserAction_Discard"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:layout_width="fill_parent"
@@ -68,9 +82,10 @@
                  android:layout_weight="1"
                         android:id="@+id/UserAction_Cancel"
                         android:text="@string/CancelExecute"
-                        android:background="@color/action_cancel"
                         android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/action_cancel"
+                 android:textColor="@color/btn_normal_fg"
              />
               <!--          android:background="@color/action_cancel" -->
               <!--      android:background="@drawable/btn2touch" -->

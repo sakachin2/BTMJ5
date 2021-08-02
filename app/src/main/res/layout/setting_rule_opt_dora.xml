@@ -230,5 +230,27 @@
             android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
         />
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+        >
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                    android:src="@drawable/s_manrs"
+            />
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                    android:src="@drawable/s_pinrs"
+            />
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                    android:src="@drawable/s_sours"
+            />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

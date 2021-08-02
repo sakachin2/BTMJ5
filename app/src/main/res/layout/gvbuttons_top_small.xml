@@ -15,6 +15,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/Func2"
@@ -23,6 +25,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/Func3"
@@ -32,6 +36,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/Func4"
@@ -41,6 +47,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/Func5"
@@ -50,6 +58,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/Func6"
@@ -59,6 +69,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/MenuInGame"
@@ -67,6 +79,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_Anyway"
@@ -75,6 +89,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/ShowRule"
@@ -83,6 +99,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_EndScore"
@@ -92,6 +110,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_MinusStop"
@@ -101,6 +121,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_DrawnGame"
@@ -110,6 +132,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_DlgComp"
@@ -118,6 +142,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_Force_Reach"
@@ -128,6 +154,8 @@
                 android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_Reach_Open"
@@ -136,6 +164,8 @@
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_Reach_Open_Reset"
@@ -143,9 +173,10 @@
                         android:text="@string/Label_ResetOpenReach"
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
-                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/action_cancel"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_Reach"
@@ -154,6 +185,8 @@
                         android:layout_width="fill_parent"
                  			android:layout_weight="1"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:id="@+id/UserAction_Reach_Reset"
@@ -161,9 +194,10 @@
                         android:text="@string/Label_ResetReach"
                         android:layout_width="fill_parent"
                  			android:layout_weight="1"
-                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/action_cancel"
+                 android:textColor="@color/btn_normal_fg"
              />
              <Button
                         android:id="@+id/UserAction_DlgCompResult"
@@ -173,6 +207,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_WaitOff"
@@ -182,6 +218,8 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
              <Button
                         android:id="@+id/UserAction_WaitOn"
@@ -191,5 +229,7 @@
              				android:layout_weight="1"
                 android:visibility="gone"
                  android:textAllCaps="false"
+                 android:backgroundTint="@color/btn_normal_bg"
+                 android:textColor="@color/btn_normal_fg"
             />
 </LinearLayout>

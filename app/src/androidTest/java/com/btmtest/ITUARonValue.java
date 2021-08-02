@@ -90,10 +90,16 @@ public class ITUARonValue                                          //~0B02R~
 //      UARVS.ronTestValue(23204/*case#*/);                        //~1310I~//~1407R~
 //      UARVS.ronTestValue(23205/*case#*/);                        //~1310I~//~1407R~
 //      UARVS.ronTestValue(23206/*case#*/);                        //~1310I~//~1407R~
-//      UARVS.ronTestValue(20102/*case#*/);                        //~1407I~//+1408R~
-//      UARVS.ronTestValue(20103/*case#*/);                        //~1407I~//+1408R~
-//      UARVS.ronTestValue(20104/*case#*/);                        //+1408R~
-        UARVS.ronTestValue(28722/*case#*/);                        //+1408I~
+//      UARVS.ronTestValue(20102/*case#*/);                        //~1407I~//~1408R~
+//      UARVS.ronTestValue(20103/*case#*/);                        //~1407I~//~1408R~
+//      UARVS.ronTestValue(20104/*case#*/);                        //~1408R~
+//      UARVS.ronTestValue(28722/*case#*/);                        //~1408I~//~1717R~
+//      UARVS.ronTestValue(23207/*case#*/);                        //+1717R~
+//      UARVS.ronTestValue(23208/*case#*/);                        //+1717R~
+//      UARVS.ronTestValue(23209/*case#*/);                        //+1717R~
+        UARVS.ronTestValue(232091/*case#*/);                       //+1717I~
+        UARVS.ronTestValue(232092/*case#*/);                       //+1717I~
+        UARVS.ronTestValue(232093/*case#*/);                       //+1717I~
     }                                                              //~0B01I~
     private void setUpEnv()                                             //~0B01I~
     {                                                              //~0B01I~

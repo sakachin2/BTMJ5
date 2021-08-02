@@ -1,6 +1,7 @@
-//*CID://+va8bR~:                             update#=  881;       //~va60R~//~va66R~//+va8bR~
+//*CID://+vab6R~:                             update#=  882;       //+vab6R~
 //*****************************************************************//~v101I~
-//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //+va8bI~
+//2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //+vab6I~
+//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/01 va21 move chk1stTake to Players from CompReqDlg because static method mocking is hard//~va20I~
@@ -364,8 +365,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //      {                                                          //~9529I~//~9708R~
 	        RuleSetting.setDora(PView,true/*swFixed*/);            //~9529I~
 	        RuleSetting.setSpritPos(PView,true/*swFixed*/);        //~9530I~
-            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //+va8bI~
-            RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //+va8bI~
+            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //~va8bI~
+            RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //~va8bI~
 //      }                                                          //~9529I~//~9708R~
 //      getRuleSetting();                                                           //~v@@@I~//~9212R~//~va11R~
         setTitle();                                                //~v@@@I~//~9220R~
@@ -938,11 +939,15 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         {                                                          //~va11I~
 		    txt+=ronResult.point+" "+Utils.getStr(R.string.Label_Fu)+" "+ronResult.han+" "+Utils.getStr(R.string.Label_Han)+" : ";//~va11R~
         }                                                          //~va11I~
-        if (ctrDora!=0)                                            //~va11I~
-	        txt+=Utils.getStr(R.string.Label_Dora)+"="+ctrDora+" ";//~va11R~
-        if (ctrHonor!=0)                                           //~va11I~
-	        txt+=Utils.getStr(R.string.Label_Honor)+"="+ctrHonor+" ";//~va11R~
+//      if (ctrDora!=0)                                            //~va11I~//+vab6R~
+//          txt+=Utils.getStr(R.string.Label_Dora)+"="+ctrDora+" ";//~va11R~//+vab6R~
+//      if (ctrHonor!=0)                                           //~va11I~//+vab6R~
+//          txt+=Utils.getStr(R.string.Label_Honor)+"="+ctrHonor+" ";//~va11R~//+vab6R~
         txt+=Rank.toStringName(ronResult.longRank,false/*no Honor*/);//~va11R~
+        if (ctrHonor!=0)                                           //+vab6I~
+            txt+=" "+Utils.getStr(R.string.Label_Honor)+"="+ctrHonor;//+vab6I~
+        if (ctrDora!=0)                                            //+vab6I~
+            txt+=" "+Utils.getStr(R.string.Label_Dora)+"="+ctrDora;//+vab6I~
 //      txt+="WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"; //TODO test//~va11R~
 	  }                                                            //~va16I~
         if (Dump.Y) Dump.println("CompReqDlg.setYaku text="+txt+",ronResyult="+ronResult.toString());//~va11R~

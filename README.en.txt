@@ -6,7 +6,7 @@ You can play alone with biginner level robots.
 *****
 I suppose you are familiar to rule and operation of Japanese style Mahjong.
 From 1 to 4 players can play game.
-Rule of "Yakitori", "Wareme" and "Tobi" is supported.
+Rule of "Yakitori"(prize for once won), "Wareme"(split wall prize)  and "Tobi"(bankrupt prize) is supported.
 Suspend and resume is supported.
 Any local "Yaku"(winning pattern) is acceptable
  because winner can claim the value of winning hand.
@@ -19,16 +19,69 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
-V1.13 : 2021/06/21
-        .Apply "Fixed Yaku" rule. (See Help of Settings-->Yaku)
-        .At Riichi called, check Furiten and 2-han constraint rule.
-         (You can force Riichi from Menu item "Riichi Anyway" after when error detected).
-        .Support reverse orientation of device.
-        .(BUG)
-         -erroneous calculation of "Fu" for triplet taken.
-         -"Riichi" is ignored when RedDora and Tenpai Check option are both ON.
-         -Exchanging Match and PlayAlone mode may requires APP restart.
+V1.14 : 2021/08/02
+        .Add unit=0.5 seconds to setting option of DelayTime for young players.
+        .Optionally notify possibility of Pon/Kan/Chii/Ron.
+        .Robot's dead hand option goes out of use.
+        .Strengthen smart Robot.
+        .Fix Bugs.
+         -Decision error of Mixed-Outsde-Hand.
+         -Client Win message may be overtaken by Robot's Draw+Discard, it cause hung.
 *********************************************************************************************
+V1.14 : 2021/08/02
+        .Add unit=0.5 seconds to setting option of DelayTime. Default was also changed from two to one second.
+        .Optionally notify possibility of Pon/Kan/Chii/Ron.
+        .For also PlayAlone mode, check violation of Rule of Furiten/Fix Yaku at first only/multiple Ron tile missing Yaku.
+        .For also PlayAlone mode, apply option of "Ron is cancelable".
+        .For also PlayAlone mode, a Win button push dose both "Accept Notify" and "Confirmed Win".
+        .Change display sequence of Yaku on Win confirm dialog such as Yaku, Honor tile, Dora.
+        .Concealed Kan and Added Kan are not notified from now.
+        .Robot's dead hand option goes out of use.
+        .Strengthen smart Robot.
+         -Call Pon/Chii if Honor tile + Dora >=2
+         -Select tile to discard to make higher Rank of Yaku if score is same.
+         -Skip call Kan under other player's Riichi.
+         -Continue up to 10 draws when Ron tile is Kanchan(center of sequence meld).
+         -Correct Toitoi(All triples) intent decision.
+         -Call Pon/Chii by high possibility of ToiToi and (Half-)Flush.
+         -Select Word tile as Ron tile if rank and remaining tile count is same.
+         -Skip Riichi when Yakuman Tenpai(status of waiting Winning tile).
+         -For 7 pairs, consider possibility of Tanyao, Chanta and (Half-)Flush.
+         -Call Pon/Chii at Shanten=1 if called once.
+         -Call Chii for Penchan/Kanchan at Shanten=2.
+         -Call Pon for discarded Dora considering Yaku Fix.
+         -Use Red5 Dora if available for meld opened by Chii.
+         -Avoid Riichi after anyone called Open-Riichi.
+         -Wait to call Riichi in early phase if win form is Kanchan(middle tile of seq meld).
+         -Yaku-Intent will not be changed after once called Pon/Chii.
+         -For Intent:All-Trples, differentiate value of tile for triplet and pair.
+         -Avoid selection of Intent:Tanyao if any Chanta Meld exists. 
+         -At near the final round, call Pon for 1st discard of honor tile if the Robot is in the top place.
+         -At near the final round, prioritize aimming Yaku decided over call Pon for 1st discard of honor tile.
+         -All triples is preferable over 7 pairs.
+         -Intent:7 pair is not selected if 2 sequence meld exist.
+         -Avoid Riichi in early phase for more win possibility if winning tile is any of 2 pairs.
+         -If intent:Flush is set, avoid call Chii for other color meld.
+         -Call Pon for 1st discard of honor tile if GrillBird option is on inEast only round.
+        .Bugs
+         -Kan is not notified in PlayAlone mode.
+         -In PlayAlone mode, call Ron of 13-broken/14-broken is rejected by not form of win.
+         -Call Kan at 1st draw cause error.
+         -Setting option of "Open Dora at MinKan" was ignored.
+         -When Shanten < 2, Tanyao possibility was not considered.
+         -Dora was ignored at Double-Riichi.
+         -Discarded tile just before misleaded Furiten check.
+         -Counted red-5 Dora at evaluate winning score at discard tile selection even it is to be discarded.
+         -Decision error of Mixed-Outside-Hand.
+         -Client Win message may be overtaken by Robot's Draw+Discard, it cause hung.
+         -Chankan(Robbing a Kan) was not notified.
+         -Could not win by Chankan.
+         -Hung by Concealed Kan call if option of Kokushi(13 orphan) can call win for Concealed Kan is No.
+         -RinshanKaiho(win by Kan-Draw at concealed Kan) was not notified.
+         -Could not discard if canceled Win at Play-Alone notify mode.
+         -At Robot selecting tile to discard, consider Dora for winning pattern expecting only when Yaku constraint is fixed.
+         -Missing evaluation of Earth for decision of Intent:Chanta. 
+         -Win by draw was not notified after issed Riichi.
 V1.13 : 2021/06/21
         .Apply "Yakitori"(Grilled Bird) option to smart robot game.
         .Apply "Fixed Yaku" rule. (See Help of Settings-->Yaku)

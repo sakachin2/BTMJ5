@@ -31,4 +31,7 @@
     <color name="bg_dialog_remarkable2">#80ff80</color>     <!--deep green-->
     <color name="action_execute">#ffffff00</color>    <!--yellow-->
     <color name="action_cancel">#ffff6600</color>    <!--orange-->
+    <color name="btn_notify">#ffffd000</color>    <!-- BG:yellow orange-->
+    <color name="btn_normal_bg">#ffe0e0e0</color> 
+    <color name="btn_normal_fg">#ff000000</color> 
 </resources>

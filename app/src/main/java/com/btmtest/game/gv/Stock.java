@@ -1,6 +1,6 @@
-//*CID://+va60R~: update#= 570;                                    //~v@@@R~//~v@11R~//~9214R~//+va60R~
+//*CID://+va60R~: update#= 571;                                    //~v@@@R~//~v@11R~//~9214R~//~va60R~
 //**********************************************************************//~v101I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -75,10 +75,10 @@ public class Stock                                                 //~v@@@R~
     private Rect[] rectCompleteDora=new Rect[MAXCTR_DORA];         //~0328I~
     private int ctrDoraComplete;                                   //~9503I~
 //*************************                                        //~v@@@I~
-	public Stock()	//for IT                                       //+va60I~
-    {                                                              //+va60I~
-        if (Dump.Y) Dump.println("Stock.default Constructor");     //+va60I~
-    }                                                              //+va60I~
+	public Stock()	//for IT                                       //~va60I~
+    {                                                              //~va60I~
+        if (Dump.Y) Dump.println("Stock.default Constructor");     //~va60I~
+    }                                                              //~va60I~
 	public Stock(GCanvas Pgcanvas)                                 //~v@@@R~
     {                                                              //~0914I~
     	AG.aStock=this;                                            //~v@@@I~
@@ -816,6 +816,7 @@ public class Stock                                                 //~v@@@R~
 	        lastPosDora=p.x;                                       //~v@11I~
         }                                                          //~v@@@I~
         ctrKanDrawn=ctrKan;                                        //~v@@@I~
+        if (Dump.Y) Dump.println("Stock.drawDora ctrKanDrawn="+ctrKanDrawn);//+va60I~
     }                                                              //~v@@@I~
     //*********************************************************    //~9214I~
     //*show hidden Dora(uradora)                                   //~9214I~

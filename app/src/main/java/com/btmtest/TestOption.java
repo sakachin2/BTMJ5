@@ -1,5 +1,6 @@
-//*CID://+va8xR~: update#= 524;                                    //~va8xR~
+//*CID://+vaa6R~: update#= 556;                                    //~va8xR~//~vaa6R~
 //**********************************************************************//~v@@@I~
+//2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
@@ -117,9 +118,41 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO3_ROBOT_DISCARD_TILE          =  0x00800000;//~va8xI~
     public static final int TO3_DEAL_ANKAN_FIX1             =  0x01000000;//~va8xI~
     public static final int TO3_DEAL_SAKIDUKE_2HAN_TAKE     =  0x02000000;//~va8xI~
-    public static final int TO3_IT_RARON                    =  0x04000000;//+va8xI~
+    public static final int TO3_IT_RARON                    =  0x04000000;//~va8xI~
+    public static final int TO3_INITIAL_POSITION_CLIENT     =  0x08000000;    //initialposition//~vaa6I~
+    public static final int TO3_DEAL_NOTIFY_ALL             =  0x10000000;    //initialposition//~vaa6I~
+    public static final int TO3_DEAL_MINKAN_RON             =  0x20000000;    //initialposition//~vaa6I~
+    public static final int TO3_DEAL_DOUBLEREACH_CHII       =  0x40000000;//~vaa6R~
+    public static final int TO4_DEAL_DOUBLEREACH_PON        =  0x00000001;//~vaa6I~
+    public static final int TO4_DEAL_DOUBLEREACH_PON_HONOR  =  0x00000002;//~vaa6I~
+    public static final int TO4_DEAL_MINKAN_HONOR           =  0x00000004;//~vaa6I~
+    public static final int TO4_DEAL_MINKAN_HONOR_SAMECOLOR =  0x00000008;//~vaa6I~
+    public static final int TO4_DEAL_PON_ALLSAME            =  0x00000010;//~vaa6I~
+    public static final int TO4_DEAL_KANCHAN_REACH          =  0x00000020;//~vaa6I~
+    public static final int TO4_DEAL_PENCHAN_REACH          =  0x00000040;//~vaa6I~
+    public static final int TO4_DEAL_TANKI_REACH            =  0x00000080;//~vaa6I~
+    public static final int TO4_REACH_EARLY                 =  0x00000100;//~vaa6I~
+    public static final int TO4_DEAL_TANKI_REACH_TANYAO     =  0x00000200;//~vaa6I~
+    public static final int TO4_DEAL_13ORPHAN               =  0x00000400;//~vaa6I~
+    public static final int TO4_DEAL_7PAIR_TANYAO           =  0x00000800;//~vaa6I~
+    public static final int TO4_DEAL_7PAIR_CHANTA           =  0x00001000;//~vaa6I~
+    public static final int TO4_DEAL_7PAIR_NOT_TANYAO       =  0x00002000;//~vaa6I~
+    public static final int TO4_DEAL_7PAIR_SAMECOLOR        =  0x00004000;//~vaa6I~
+    public static final int TO4_DEAL_PON_WAIT_TANKI         =  0x00008000;//~vaa6I~
+    public static final int TO4_DEAL_PONPON                 =  0x00010000;//~vaa6I~
+    public static final int TO4_DEAL_PONCHII_SELECT_DORA    =  0x00020000;//~vaa6I~
+    public static final int TO4_INITIAL_POSITION_CLIENT_FACING =  0x10000000;    //initialposition//~vaa6I~
+    public static final int TO4_DEAL_CHANKAN                   =  0x20000000;    //initialposition//~vaa6I~
+    public static final int TO4_DEAL_CHANKAN_13ORPHAN          =  0x40000000;    //initialposition//~vaa6I~
+    public static final int TO5_DEAL_INTENT_ALLSAME            =  0x00000001;    //initialposition//~vaa6I~
+    public static final int TO5_DEAL_INTENT_TANYAO             =  0x00000002;//~vaa6I~
+    public static final int TO5_DEAL_INTENT_CHANTA             =  0x00000004;//~vaa6I~
+    public static final int TO5_DEAL_SHANPON_REACH             =  0x00000008;//~vaa6R~
+    public static final int TO5_NOTHINK_ROBOT                    =  0x00000010;//+vaa6R~
     public static int option2;                                     //~v@@@I~
     public static int option3;                                     //~va66I~
+    public static int option4;                                     //~vaa6I~
+    public static int option5;                                     //~vaa6I~
     public static int firstDealer;                                 //~v@@@I~
     public static int finalGameCtrSet,finalGameCtrGame;            //~v@@@I~
     public static int ioerr;                                       //~v@@@I~

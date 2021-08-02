@@ -1,5 +1,9 @@
-//*CID://+va66R~:                                   update#=  261; //~va66R~
+//*CID://+vaaRR~:                                   update#=  265; //~vaaRR~
 //*************************************************************************//~@002R~
+//2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
+//                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
+//                Consequently CompReqDlg shows Not ronable format.//~vaaRI~
+//                Send current player at Ron and chk it on server  //~vaaRI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //*************************************************************************//~va60I~
@@ -27,7 +31,9 @@ public class Robot                                                 //~@002I~
 {                                                                  //~1AecR~
                                                                    //~@002I~
 //  private static final int delayRobot=200; //miliseconds,after this sendmsg to after process//~@002R~//~0228R~//~0229R~
-    private static final int delayRobot=0; //miliseconds,after this sendmsg to after process//~0229I~
+//  private static final int delayRobot=0; //miliseconds,after this sendmsg to after process//~0229I~//~vaaRR~
+    private static final int DELAY_ROBOT=200; //miliseconds,after this sendmsg to after process//~vaaRI~
+    private static final int DELAY_ROBOT_DISCARD=500;  //miliseconds,after this sendmsg to after process//~vaaRR~
 //  private static final int delayRobot=5200;//TODO test //miliseconds,after this sendmsg to after process//~0228R~
 //  private String remoteDeviceName;                               //~@002R~
 //  private String localDeviceName;                                //~1AecI~//~@002R~
@@ -274,23 +280,22 @@ public class Robot                                                 //~@002I~
 ////      if (timeoutAutoTake==0)                                    //~9630I~//~9B27R~//~0222R~
 ////          sendTake(Peswn);                                            //~@002R~//~9630R~//~9B27R~//~0222R~
 //    }                                                              //~@002R~//~0222R~
-    //**************************************************************//+va66I~
-    //*from UADiscard at GCM_NEXT_PLAYER at manual mode(not auto take)//+va66I~
-    //**************************************************************//+va66I~
-    public static void nextPlayerManual(int Pplayer)               //+va66I~
-    {                                                              //+va66I~
-        Robot r=AG.aAccounts.getRobot(Pplayer);                    //+va66I~
-        int eswn=r.getCurrentEswnRobot(); //not msg to me          //+va66I~
-        if (Dump.Y) Dump.println("Robot.nextPlayerManual player="+Pplayer+",eswn="+eswn);//+va66I~
-        AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //+va66I~
-        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit");   //+va66I~
-    }                                                              //+va66I~
+    //**************************************************************//~va66I~
+    //*from UADiscard at GCM_NEXT_PLAYER at manual mode(not auto take)//~va66I~
+    //**************************************************************//~va66I~
+    public static void nextPlayerManual(int Pplayer)               //~va66I~
+    {                                                              //~va66I~
+        Robot r=AG.aAccounts.getRobot(Pplayer);                    //~va66I~
+        int eswn=r.getCurrentEswnRobot(); //not msg to me          //~va66I~
+        if (Dump.Y) Dump.println("Robot.nextPlayerManual player="+Pplayer+",eswn="+eswn);//~va66I~
+        AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //~va66I~
+        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit");   //~va66I~
+    }                                                              //~va66I~
     //**************************************************************//~9630I~
-    //*from UATake.autoDiscardTimeout                              //~va60I~
-    //*  issue Chii(Discard will be done by UAT.setAutoDiscardTimeout)//~va60I~
-    //*  ir sendTake                                               //~va60I~
+    //*from UADiscard.autoTakeTimeout, UAKan.autoTakeKanTimeout    //~vaaRI~
+    //*  issue Chii(Discard will be done by UAT.setAutoDiscardTimeout)//~va60I~//~vaaRI~
     //**************************************************************//~va60I~
-    public static void autoTakeTimeout(int Pplayer)                     //~9630I~//+va66R~
+    public static void autoTakeTimeout(int Pplayer)                     //~9630I~//~va66R~
     {                                                              //~9630I~
 		if (Dump.Y) Dump.println("Robot.autoTakeTimeout player="+Pplayer);//~va60I~
         Robot r=AG.aAccounts.getRobot(Pplayer);                    //~9630I~
@@ -364,6 +369,11 @@ public class Robot                                                 //~@002I~
         String msg=Peswn+MSG_SEPAPP2+Pdata;//~v@@@I~               //~@002R~
 //      AG.aUserAction.actionReceived(PactionID,msg);              //~@002R~
 //      AG.aUserAction.UADL.postDelayed(delayRobot,PactionID,msg);	//after current action process returned//~@002R~
+		int delayRobot;                                            //~vaaRI~
+	  	if (PactionID==GCM_DISCARD)                                //~vaaRI~
+        	delayRobot=DELAY_ROBOT_DISCARD;     //500ms            //~vaaRI~
+        else                                                       //~vaaRI~
+        	delayRobot=DELAY_ROBOT;             //200s             //~vaaRI~
         UADelayed.postDelayedRobotMsg(PswWaiterBlock,delayRobot,PactionID,initialEswn,msg);	//after current action process returned//~@002R~//~9624R~
     }                                                              //~v@@@I~//~@002I~
 ////*************************                                        //~@@@@I~//~@@@2I~//~@@@@I~//~v@@@I~//~@@@@I~//~@002R~

@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.13</string>
+    <string name="app_version">v1.14</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -367,7 +367,8 @@
     <string name="Label_BirdPayToPlace">場に払う</string>
     <string name="Label_BirdPayToEach">全員に払う</string>
     <!--string name="Label_BirdRule2">順位には影響しない。ボットが居る対局では焼き鳥なし</string-->
-    <string name="Label_BirdRule2">順位には影響しない。ボットがツモ切りのときは焼き鳥なし</string>
+    <!--string name="Label_BirdRule2">順位には影響しない。ボットがツモ切りのときは焼き鳥なし</string-->
+    <string name="Label_BirdRule2">順位には影響しない</string>
     <string name="Label_MinusStopCharge">ハコ下負担調整</string>
     <string name="Label_Yes">あり</string>
     <string name="Label_No">なし</string>
@@ -985,11 +986,13 @@
     <string name="Label_RuleIDName">ルール：</string>
     <string name="Label_ShowStatus">同意状況表示</string>
     <string name="Label_Delay">待ち時間</string>
-    <string name="Label_DelayUnit">(秒)</string>
+    <string name="Label_DelayUnit">単位：</string>
+    <string name="Label_DelayUnit1">１秒</string>
+    <string name="Label_DelayUnit05">０.５秒</string>
     <string name="Label_DelayPonKan">ロン用（赤）：打牌すると半円ランプが赤になる、この時間経過後にポン・カンできる</string>
     <string name="Label_DelayTake">ポン・カン用（黄）：ロン用時間＋この時間経過後に緑になりツモれる</string>
     <string name="Label_DelayLast">海底用：海底打牌の後、上記時間＋この時間経過後に流局となる</string>
-    <string name="Label_DelayDiscard">自動打牌。自模るとランプは青になり、この時間が経過すると、緑枠の牌を自動で打牌、０は制限なし。</string>
+    <string name="Label_DelayDiscard">自動打牌。自模るとランプは青になり、この時間が経過すると、緑枠の牌を自動で打牌、０は制限なし。ロボットは対象外</string>
     <string name="Label_Delay2Touch">経過すると待った解消</string>
     <string name="Label_TimeoutTake">自動自摸。経過すると下家は自動で自摸る、０は制限なし。槓の嶺上ツモにも適用</string>
     <string name="Label_TimeoutTakeRobot">自動自摸-ボット用。１秒以上。上の自動自摸が０の時有効、０でないときはボットもそれに従う。但し、一人遊びの時はボタン操作も可能。</string>
@@ -1092,8 +1095,10 @@
     <string name="Label_AllowRobot">４人揃わない時ボットを加え対戦する、あるいは一人遊びする</string>
     <!--string name="Label_AllowRobotAll">練習モードあり</string-->
     <string name="Label_AllowRobotAllButton">一人遊びのときボットの自摸はタイムアウトではなくボタンで操作</string>
-    <string name="Label_PlayAloneNotify">一人遊びのときはロン、ポン、カン、チーを通知</string>
-    <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる。ヘルプ参照）</string>
+    <string name="Label_PlayAloneNotify">一人遊びのときにロン、ポン、カン、チーを通知</string>
+    <string name="Label_PlayMatchNotify">ロン、ポン、カン、チーの可能性を通知</string>
+    <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる）</string>
+    <string name="Desc_PlayMatchNotify">（ヘルプ参照）</string>
 
     <string name="Label_GameSet">試合</string>
     <string name="Label_GameSetInterrupted">迄 終了、次は</string>
@@ -1156,7 +1161,7 @@
     <string name="Label_YakuFix2Last">後付けあり</string>
     <string name="Desc_YakuFix2">\"操作\"で\"一飜縛り\"をチェックするとした場合のみ有効です。\n
 					後付けなしの場合、偶然役の立直・一発、海底、河底、槍槓、嶺上開花は含めない。後付けありならOK。
-					いずれの場合も\"フリテン立直あり\"にかかわらず、立直・自摸のみは不可</string>
+					いずれの場合も\"フリテン立直あり\"にかかわらず、立直・自摸のみは不可。</string>
     <string name="Label_EatChange">食い変え</string>
     <string name="Label_EatChangeNo">不可</string>
     <string name="Label_EatChangeExceptIt">現物のみ不可</string>
@@ -1496,7 +1501,12 @@
     <string name="AE_FuritenReach">フリテン立直</string>
     <string name="Label_ChkMultiWait">片上がり、フリテン、先付違反</string>
     <string name="Label_ChkMultiWaitYes">チェックする</string>
+<!--
     <string name="Desc_ChkMultiWait">\"和了\"を押したときにチェック。一飜縛りもチェックします。アプリの判定に不満がある場合に備えて、役の設定で\"とに和\"ボタンを表示した方が良いでしょう。
 				一人遊びの時は、この設定にかかわらずチェックします。またロボットもチェックOKに限って上がりを宣言します。</string>
-    <string name="AE_NoReachErrToForce">強制すべき立直のエラーはありません</string>
+-->
+    <string name="Desc_ChkMultiWait">\"和了\"を押したときにチェック。一飜縛りもチェックします。アプリの判定に不満がある場合に備えて、役の設定で\"とに和\"ボタンを表示した方が良いでしょう。
+				ロンの通知もこの設定に従います。ロボットはこの設定にかかわらずチェックOKに限って上がりを宣言します。</string>
+    <string name="AE_NoReachErrToForce">リーチ/オープンリーチ失敗の後でのみ有効です</string>
+    <string name="AE_CancelAtFirst">オレンジボタン以外を押す場合は、先に取り消してください</string>
 </resources>

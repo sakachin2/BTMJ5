@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 585;                                    //~v@@@R~//~v@@6R~//~9225R~
+//*CID://+DATER~: update#= 586;                                    //~v@@@R~//~v@@6R~//~9225R~
 //**********************************************************************//~v101I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
@@ -104,6 +104,7 @@ public class UATake                                                //~v@@@R~
 	//*************************************************************************//~v@@6I~
     public boolean selectInfo(boolean PswServer,int Pplayer)       //~v@@6I~//~9B28R~
     {                                                              //~v@@6I~
+        if (Dump.Y) Dump.println("UATake.selectInfo swServer="+PswServer+",Pplayer="+Pplayer);//+1723I~
     	boolean rc=true;                                           //~v@@6I~
 	    if (isLocked(Pplayer))	//before NEXT_PLAYER can take                                     //~v@@6I~//~9626R~
         	rc=false;                                              //~v@@6I~
@@ -306,9 +307,9 @@ public class UATake                                                //~v@@@R~
 			AG.aGC.sendMsg(GCM_DISCARD,Pplayer);	//simulate discard button//~9627I~
         else                                                       //~9627I~
         {                                                          //~1129I~
-          Robot r=AG.aAccounts.getRobot(Pplayer);                    //+1129I~
-          if (r!=null)                                             //+1129R~
-           	r.autoDiscardTimeout(Pplayer);                         //+1129R~
+          Robot r=AG.aAccounts.getRobot(Pplayer);                    //~1129I~
+          if (r!=null)                                             //~1129R~
+           	r.autoDiscardTimeout(Pplayer);                         //~1129R~
           else                                                     //~1129I~
 			UA.UADL.sendMsgEmulatedToClient(GCM_DISCARD,Pplayer);	//simulate discard button//~9627I~
         }                                                          //~1129I~

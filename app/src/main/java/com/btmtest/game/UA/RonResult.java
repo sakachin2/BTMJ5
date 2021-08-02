@@ -1,4 +1,4 @@
-//*CID://+va91R~: update#= 801;                                    //~va91R~
+//*CID://+va91R~: update#= 802;                                    //~va91R~
 //**********************************************************************//~v101I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/20 va8i KataAgari chk for also Robot Take                //~va8iI~
@@ -19,7 +19,7 @@ public class RonResult                                             //~va11R~
 	public Rank longRankFixErr;                                    //~va91I~
     public int amt,han,point;                                      //~va11R~
     public boolean swRonChkErr;                                    //~va11R~
-    public int hanFixErr;                                          //~va91I~
+    public int hanFixErr;       //accum of kata-agari han          //+va91R~
 	//*************************************************************************//~va11I~
     public RonResult(int Pamt,int Phan,int Ppoint,Rank PlongRank)  //~va11R~
     {                                                              //~va11R~
@@ -83,7 +83,7 @@ public class RonResult                                             //~va11R~
             }                                                      //~va8cR~
             if (PswFix2)                                           //~va8iI~
             {                                                      //~va8iI~
-            //*reach+take is a han for 2han constarint             //+va91I~
+            //*reach+take is a han for 2han constarint             //~va91I~
                 if ((longRank.isContains(RYAKU_REACH) || longRank.isContains(RYAKU_REACH_DOUBLE))  			//20;//~va8iR~
                 &&  longRank.isContains(RYAKU_TAKE_NOEARTH))    //24//~va8iI~
                     rc--;                                          //~va8iI~
@@ -91,19 +91,19 @@ public class RonResult                                             //~va11R~
             if (rc<0)                                              //~va8iI~
                 rc=0;                                              //~va8iI~
         }                                                          //~va8cI~
-        if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraint rc="+rc+",swIgnoreAccidental="+PswIgnoreAccidental+",swFix2="+PswFix2);//~va8cI~//~va8iR~//+va91R~
+        if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraint rc="+rc+",swIgnoreAccidental="+PswIgnoreAccidental+",swFix2="+PswFix2);//~va8cI~//~va8iR~//~va91R~
         return rc;                                                 //~va8cI~
     }                                                              //~va8cI~
-	//*************************************************************************//+va91I~
-	//*Chk err of FixFirst/FixMiddle                               //+va91I~
-	//*************************************************************************//+va91I~
-    public int getHanExceptDoraConstraintChkFix(boolean PswIgnoreAccidental,boolean PswFix2)//+va91I~
-    {                                                              //+va91I~
-	    int rc=getHanExceptDoraConstraint(PswIgnoreAccidental,PswFix2);//+va91I~
-        rc-=hanFixErr;                                             //+va91I~
-        if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraintChkFix rc="+rc+",hanFixErr="+hanFixErr);//+va91I~
-        return rc;                                                 //+va91I~
-    }                                                              //+va91I~
+	//*************************************************************************//~va91I~
+	//*Chk err of FixFirst/FixMiddle                               //~va91I~
+	//*************************************************************************//~va91I~
+    public int getHanExceptDoraConstraintChkFix(boolean PswIgnoreAccidental,boolean PswFix2)//~va91I~
+    {                                                              //~va91I~
+	    int rc=getHanExceptDoraConstraint(PswIgnoreAccidental,PswFix2);//~va91I~
+        rc-=hanFixErr;                                             //~va91I~
+        if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraintChkFix rc="+rc+",hanFixErr="+hanFixErr);//~va91I~
+        return rc;                                                 //~va91I~
+    }                                                              //~va91I~
     public boolean isTakeAllInHand()                                   //~va8fI~
     {                                                              //~va8fI~
         boolean rc=longRank.isContains(RYAKU_TAKE_NOEARTH);	//  =24 x01000000//~va8fI~

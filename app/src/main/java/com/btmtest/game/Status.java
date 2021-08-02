@@ -1,5 +1,6 @@
-//*CID://+va6fR~: update#= 548;                                    //~va6fR~
+//*CID://+vabfR~: update#= 551;                                    //~vabfR~
 //**********************************************************************//~v101I~
+//2021/07/28 vabf Robot call Honer tile at first if top at near final game//~vabfI~
 //2021/03/11 va6f (BUG)when resume ,1st take occures on player currentEswn!=0//~va6fI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
@@ -228,8 +229,8 @@ public class Status //extends Handler                              //~v@@@R~
 //        if (Dump.Y) Dump.println("Status.resetDiscardedCtr");    //~v@@@R~
 //    }                                                            //~v@@@R~
     //******************************************************       //~v@@@I~
-    //*Rect:(left,top,right,bottom)                                //+va6fI~
-    //******************************************************       //+va6fI~
+    //*Rect:(left,top,right,bottom)                                //~va6fI~
+    //******************************************************       //~va6fI~
     public static Rect getGameSeq()                                //~v@@@I~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Status.getGameSeq set="+aStatus.gameCtrSet+",game="+aStatus.gameCtrGame+",dup="+aStatus.gameCtrDup+",reach="+aStatus.gameCtrReachStick);//~v@@@R~
@@ -413,6 +414,37 @@ public class Status //extends Handler                              //~v@@@R~
 	    if (Dump.Y) Dump.println("Status.isFinalGame rc="+rc+",swAdditionalRound="+aStatus.swAdditionalRound+",gameCtrGame="+aStatus.gameCtrGame+",gameCtrSet="+aStatus.gameCtrSet);//~9513I~//~9526R~
         return rc;
     }                                                              //~9513I~
+    //******************************************************       //~vabfI~
+    public static boolean isNearFinalGame()                        //~vabfI~
+    {                                                              //~vabfI~
+        int roundRemain=SET_GAMECTR-aStatus.gameCtrGame%SET_GAMECTR;//~vabfI~
+        int type=RuleSetting.getGameSetType();                     //~vabfI~
+        if (Dump.Y) Dump.println("Status.isNearFinalGame GameSetType="+type+",roundRemain="+roundRemain);//~vabfR~
+        boolean rc=false;                                          //~vabfI~
+        switch(type)                                               //~vabfI~
+        {                                                          //~vabfI~
+        case GST_ES:                                               //~vabfI~
+            rc=aStatus.swAdditionalRound || aStatus.gameCtrSet==1; //~vabfI~
+            rc=rc && roundRemain<=2;                               //+vabfR~
+            break;                                                 //~vabfI~
+        case GST_EN:                                               //~vabfI~
+            rc=aStatus.swAdditionalRound || aStatus.gameCtrSet==3; //~vabfI~
+            rc=rc && roundRemain<=2;                               //+vabfR~
+            break;                                                 //~vabfI~
+        case GST_ESWN:                                             //~vabfI~
+            rc=aStatus.swAdditionalRound || aStatus.gameCtrSet==3; //~vabfI~
+            rc=rc && roundRemain<=2;                               //+vabfR~
+            break;                                                 //~vabfI~
+        case GST_E:                                                //~vabfI~
+            rc=roundRemain==1;                                     //~vabfI~
+            break;                                                 //~vabfI~
+        default:  //GST_EE                                         //~vabfI~
+ //         rc=aStatus.swAdditionalRound || aStatus.gameCtrGame==7;//~vabfI~
+            rc=aStatus.swAdditionalRound || (aStatus.gameCtrGame>SET_GAMECTR && roundRemain<=2);//+vabfR~
+        }                                                          //~vabfI~
+	    if (Dump.Y) Dump.println("Status.isNearFinalGame rc="+rc+",swAdditionalRound="+aStatus.swAdditionalRound+",gameCtrGame="+aStatus.gameCtrGame+",gameCtrSet="+aStatus.gameCtrSet);//~vabfR~
+        return rc;                                                 //~vabfI~
+    }                                                              //~vabfI~
     //******************************************************       //~v@@@I~
     private void resetForNewGameSets()                             //~v@@@R~
     {                                                              //~v@@@I~

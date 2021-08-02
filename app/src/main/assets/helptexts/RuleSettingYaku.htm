@@ -1,3 +1,4 @@
+<!--span style="color:#000000; background-color:#c0d0c0";-->
 Rules about <B>Yaku</B>(define pattern of winning hand and its value).
 <BR>
  To check whether winning hand is complete or not, set "Do check" on topic <B>1-han constraint</B> of <B>Oper</B> Setting.
@@ -30,34 +31,73 @@ you can win by Self-Draw only.
 One-shot is addtional option to add 1 han by getting win until your next discard
 without intercept by other player's call of Pon/Kan/Chii.
 <BR>
-<B>Value Tiles:</B>3 dragon(白=White, 發=Green, 中=Red) and wind(東=East, 南=South, 西=West, 北=North) assigned to the round and the position.
+<B>Value Tiles:</B>triplet of dragon(<img src=@drawable/s_ji3ws>:White, <img src=@drawable/s_ji3gs>:Green, <img src=@drawable/s_ji3rs>:Red)
 <BR>
-<B>Tanyao(All Simples):</B> no 1,9,dragon and wind tiles included.
+ or wind(<img src=@drawable/s_ji4es>:East, <img src=@drawable/s_ji4ss>:South, <img src=@drawable/s_ji4ws>:West, <img src=@drawable/s_ji4ns>:North) assigned to the round and the position.
+<BR>
+<B>Tanyao(All Simples):</B> no 1,9,dragon and wind tiles included. Optionally NOT All-In-Hand.
+<BR>
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s> <img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_man8s> <img src=@drawable/s_pin4s><img src=@drawable/s_pin4s> <img src=@drawable/s_sou3s><img src=@drawable/s_sou3s><img src=@drawable/s_sou3s> <img src=@drawable/s_sou3s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s>
 <BR>
 <B>Pinfu(All Runs):</B>meld is all Run(number tile sequence) without Value Tiles,
 and Winning tile is one of 2 side of the run.
 That is Winning tile have not be Penchan(one side, 3 of 123, 7 of 789) Kanchan(gap, 3 of 234).
 Pair by wind is allowed if it is not assigned to wind of round and position.
 <BR>
-<B>Double Run:</B>112233 of a color.
+All-In-Hand only.
 <BR>
-<B>3 Color Runs:</B>three 234 by Man(Character), Pin(Circle) and Sou(Bamboo).
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s> <img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s> <img src=@drawable/s_sou3s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> when <img src=@drawable/s_ji4ns> is not your wind.
 <BR>
-<B>Straight;</B> 123456789 by one color.
+<B>Double Run:</B>:2 same run. All-In-Hand only.
 <BR>
-<B>Mixed outside hand:</B>Man:123 789, Pin:99, Sou:111, NNN(North)
+e.g. <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou3s>
+
 <BR>
-<B>Little 3 dragons:</B>2 triples and 1 pair from dragon.(WWW RRR GG)
+<B>All Triples</B>: NOT All-In-Hand. It is Yakuman:4-anko if All-In-Hand.0
+<BR>
+e.g.
+<!--span style="background-color:#005900"-->
+&nbsp;<img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2l><img src=@drawable/s_pin2s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4nl>
+<!--/span-->
+<BR>
+<B>3 Color Runs</B>:same number seqence of 3 color(Man(Character), Pin(Circle) and Sou(Bamboo)).
+<BR>
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s> <img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou4s>
+<BR>
+<B>Straight</B>: 1 to 9 by one color.
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_man6s> <img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s>
+<BR>
+<B>Mixed outside hand</B>:All meld includes Terminal or Honors.
+<BR>
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> <img src=@drawable/s_pin9s><img src=@drawable/s_pin9s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou1s>
+<BR>
+<B>Little 3 dragons:</B>2 triples and 1 pair from dragon.
+<BR>
+e.g. <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2l> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rl><img src=@drawable/s_ji3rs>
 <BR>
 <B>All Terminals and Honors:</B>all trples and pair by 1,9,dragon,wind.
 <BR>
-<B>3 Color Triples:</B>tree 222 by Man, Pin and Sou.
+e.g. <img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s> <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_sou9s><img src=@drawable/s_sou9s> <img src=@drawable/s_man1s><img src=@drawable/s_man1l><img src=@drawable/s_man1s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4nl><img src=@drawable/s_ji4ns>
+<BR>
+<B>3 Color Triples:</B>same number triples.
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
 <BR>
 <B>3 Kans:</B>3 Quads
 <BR>
+e.g. <img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s>
+ <img src=@drawable/stock_earth><img src=@drawable/s_pin8s><img src=@drawable/s_pin8s><img src=@drawable/stock_earth>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4sl>
+<BR>
 <B>Pure outside hand:</B>outside hand without dragon and wind.
 <BR>
-<B>2 Double Runs(2 identical sequences);</B>223344(Man) 667788(Pin)
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s> <img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s> <img src=@drawable/s_pin9s><img src=@drawable/s_pin9s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou1s>
+
+<BR>
+<B>2 Double Run</B>2 identical sequences. All-In-Hand only.
+<BR>
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man4s> <img src=@drawable/s_pin7s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s>
+
 <BR>
 <BR>
 <BIG><B>Show Win-A</B></BIG>：
@@ -84,6 +124,13 @@ At ExhaustiveDraw, if your-hand is not status of Tenpai(waiting winning tile) wi
 <BR>
 Under 2-han constraint condition, <B>0-han OK</b>:no Yaku is required. <B>2-han possibility</b>:requires possibility of Yaku more than 2-han by a winning tile.
  But if Psuedo-Tenpai is "0-han OK", requires 1-han possibility.   
+<BR>
+<BIG><B>7 Pairs</BIG></B></BIG>
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<BR>
+When quads allowed.
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<BR>
 <BR>
 <BIG><B>Fix Yaku</BIG></B>
 <BR>
@@ -150,4 +197,60 @@ This rule is used for checking 1/2-han constraint, and if OK value of Yaku is ev
 As much as possible, robot will avoid to discard winning tile for OpenRiichi.
 <BR>
 <BR>
-<SMALL>RuleSettingYaku 2021/06/19</SMALL>
+<BIG><B>Yakuman</BIG></B>
+<BR>
+<B>4-anko</B>:4 trples are All-In-Hand. "1 wait" means win by tile of the pair.
+<BR>
+e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s> <img src=@drawable/s_pin4s><img src=@drawable/s_pin4s> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws>
+<BR>
+<B>kokusi</B>:all 1, 9, wind and dragons. "13 wait" means win by tile of the pair. 
+<BR>
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man9s><img src=@drawable/s_pin1s><img src=@drawable/s_pin9s><img src=@drawable/s_sou1s><img src=@drawable/s_sou9s>
+<img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs> <img src=@drawable/s_sou1s>
+<BR>
+<BR>
+<B>9 Gates</B>:three 1 and 9, and one 2 to 8 by Mans(Character). Optionally by Pins(Circle) or Sous(Bamboo).
+All-In-Hand only. "9 wait" means win from the status of winning tiles are all 1 to 9.
+<BR>
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s><img src=@drawable/s_man9s><img src=@drawable/s_man9s> <img src=@drawable/s_man2s>
+<BR>
+<B>Big 4 wind</B>:
+e.g. <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s> <img src=@drawable/s_ji4el><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es>
+<BR>
+<B>Little 4 wind</B>:
+e.g. <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss> <img src=@drawable/s_ji4el><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es>
+<BR>
+<B>Big 3 dragon</B>:
+e.g. <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs>
+<BR>
+<B>Big Circle</B>:7 pairs 2 to 8. All-In-Hand only.
+<BR>
+e.g. <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_pin8s>
+<BR>
+<B>All Green</B>:optionally without <img src=@drawable/s_ji3gs>
+<BR>
+e.g. <img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou4s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou4s> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs> <img src=@drawable/s_sou8s><img src=@drawable/s_sou8s> <img src=@drawable/s_sou6s><img src=@drawable/s_sou6l><img src=@drawable/s_sou6s>
+
+<BR>
+<B>All Honors</B>
+<BR>
+e.g. <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs> <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+
+<BR>
+<B>All Terminals</B>
+<BR>
+e.g. <img src=@drawable/s_man9s><img src=@drawable/s_man9s><img src=@drawable/s_man9s> <img src=@drawable/s_pin9s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s><img src=@drawable/s_sou1s> <img src=@drawable/s_sou9s><img src=@drawable/s_sou9s> <img src=@drawable/s_man1s><img src=@drawable/s_man1l><img src=@drawable/s_man1s>
+
+<BR>
+<B>13 broken</B>:no meld candidate and 1 pair at 1st draw without any other intercepting Pon/Kan/Chii.
+<BR>
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man5s><img src=@drawable/s_man9s><img src=@drawable/s_man9s><img src=@drawable/s_pin2s><img src=@drawable/s_pin7s><img src=@drawable/s_sou3s><img src=@drawable/s_sou6s><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3rs>
+<BR>
+<B>14 broken</B>:no pair for 13 broken.
+<BR>
+e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man5s><img src=@drawable/s_man9s><img src=@drawable/s_pin2s><img src=@drawable/s_pin7s><img src=@drawable/s_sou3s><img src=@drawable/s_sou6s><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs>
+<BR>
+<BR>
+<SMALL>RuleSettingYaku 2021/06/27</SMALL>
+<!--/span-->

@@ -1,5 +1,6 @@
-//*CID://+va49R~:                             update#=   71;       //~va49R~
+//*CID://+vaafR~:                             update#=   73;       //+vaafR~
 //**********************************************************************//~v105I~
+//2021/07/01 vaaf Button BG color by span string because setbackgroundColor is expands button to its boundary.//+vaafI~
 //2020/11/21 va49 highlight compreqdlg button when Ron             //~va49I~
 //**********************************************************************//~v105I~
 package com.btmtest.utils;                                         //~v@@@R~
@@ -42,6 +43,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     private final static int FUNC_SETLAYOUTHEIGHT=17;              //~@@@@I~//~v@@@R~
     private final static int FUNC_APPENDSPAN=18;                   //~v101I~//~v@@@R~
     private final static int FUNC_BGDRAWABLE  =19;                 //~va49I~
+    private final static int FUNC_BTNBG       =20;                 //+vaafI~
                                                                    //~v101I~
     private final static int DEFAULT_TEXT_SIZE=48;                 //~@@@@I~
     private String line;                                              //~1221R~//~1425R~
@@ -89,8 +91,19 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     }                                                              //~1312I~
     public void setBackgroundUI(Object Pparm)                     //~1310I~
     {                                                              //~1310I~
+    	if (Dump.Y) Dump.println("UiFunc.setBackgroundUI Pparm=ViewID="+Integer.toHexString(((View)Pparm).getId())+",bgcolor="+Integer.toHexString(bgcolor));//~va49I~
         ((View)Pparm).setBackgroundColor(bgcolor);                        //~1310I~
     }                                                              //~1310I~
+    public void setBtnBG(Button Pview,int Pcolor)                  //+vaafI~
+    {                                                              //+vaafI~
+    	bgcolor=Pcolor;                                            //+vaafI~
+    	runOnUiThread(FUNC_BTNBG,Pview);                           //+vaafI~
+    }                                                              //+vaafI~
+    public void setBtnBGUI(Object Pparm)                           //+vaafI~
+    {                                                              //+vaafI~
+    	if (Dump.Y) Dump.println("UiFunc.setBbtnBGUI Pparm=ViewID="+Integer.toHexString(((View)Pparm).getId())+",bgcolor="+Integer.toHexString(bgcolor));//+vaafI~
+        Utils.setBtnBG((Button)Pparm,bgcolor);                     //+vaafI~
+    }                                                              //+vaafI~
     public void setBackgroundDrawable(View Pview,Drawable Pdrawable)//~va49I~
     {                                                              //~va49I~
     	bgDrawable=Pdrawable;                                      //~va49I~
@@ -98,7 +111,7 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
     }                                                              //~va49I~
     public void setBackgroundDrawableUI(Object Pparm)              //~va49I~
     {                                                              //~va49I~
-    	if (Dump.Y) Dump.println("UiFunc.setBackgroundDrawableUI Pparm=ViewID="+Integer.toHexString(((View)Pparm).getId()));//+va49R~
+    	if (Dump.Y) Dump.println("UiFunc.setBackgroundDrawableUI Pparm=ViewID="+Integer.toHexString(((View)Pparm).getId()));//~va49R~
         ((View)Pparm).setBackground(bgDrawable);              //~va49I~
     }                                                              //~va49I~
     public void setBGFGUI(Object Pparm)                            //~1312I~
@@ -259,6 +272,9 @@ public class UiFunc// extends LinearLayout                        //~1120R~//~12
         case FUNC_BGCOLOR:                                         //~1310I~//~v@@@R~
         	setBackgroundUI(Pparm);                                //~1310I~
             break;                                                 //~1310I~
+        case FUNC_BTNBG:                                           //+vaafI~
+        	setBtnBGUI(Pparm);                                     //+vaafI~
+            break;                                                 //+vaafI~
         case FUNC_BGFGCOLOR:                                       //~1312I~//~v@@@R~
         	setBGFGUI(Pparm);                                      //~1312I~
             break;                                                 //~1312I~

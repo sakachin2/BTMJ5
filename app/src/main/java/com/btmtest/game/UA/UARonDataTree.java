@@ -1,5 +1,6 @@
-//*CID://+va91R~: update#= 861;                                    //~va91R~
+//*CID://+vaaKR~: update#= 863;                                    //~vaaKR~
 //**********************************************************************//~v101I~
+//2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/06/06 va92 drop duplicated call of getRankStandard          //~va92I~
 //2021/01/26 va64 (Bug)yaku:1stChildRon falsg was lost when not mix and get higher//~va64I~
@@ -41,9 +42,9 @@ public class UARonDataTree                                         //~va11R~
                                                                    //~va11I~
     private int type,number;                                       //~va11R~
     public  int ronType,ronNumber;                                 //~va11R~
-//  private int eswn,round,total;                                  //~va11I~//+va91R~
-    public  int eswn,round;                                        //+va91I~
-    private int total;                                                 //+va91I~
+//  private int eswn,round,total;                                  //~va11I~//~va91R~
+    public  int eswn,round;                                        //~va91I~
+    private int total;                                                 //~va91I~
     private UARonValue UARV;                                       //~va11I~
 //  private TileData tdRon;                                        //~va11R~
     private static final int MAX_LISTPAIRED_HAND=7;                //~va11M~
@@ -576,6 +577,8 @@ public class UARonDataTree                                         //~va11R~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va60I~
+	//*when swEmulation                                            //~vaaKI~
+	//************************************************************************//~vaaKI~
     private int chkDoraOpen(int[] PitsDoraOpen,int PctrDoraOpen)    //~va60I~
     {                                                              //~va60I~
         //**********************************                       //~va60I~
@@ -684,7 +687,11 @@ public class UARonDataTree                                         //~va11R~
 	    for (TileData td:tdsHand)                                  //~va11I~
         {                                                          //~va11I~
         	if ((td.flag & TDF_RED5)!=0)                           //~va11I~
+              if (!td.isDiscardedRed5())                           //+vaaKI~
+              {                                                    //+vaaKI~
                 ctrRed5++;                                         //~va11I~
+				if (Dump.Y) Dump.println("UARonDataTree.chkRedTile ctrRed5="+ctrRed5+",td="+td.toString());//+vaaKI~
+              }                                                    //+vaaKI~
         }                                                          //~va11I~
         //*ron tile is not included in Hand when ron River         //~va11I~
         if (UARV.tdRonRiver!=null)                                 //~va11R~

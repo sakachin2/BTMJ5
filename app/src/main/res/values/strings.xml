@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.13</string>
+    <string name="app_version">v1.14</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -373,7 +373,8 @@
     <string name="Desc_Bird">"  = Grilled chicken : The mark disappears by win and get off the penalty."</string>
     <string name="Label_BirdPayToPlace">Divide</string>
     <string name="Label_BirdPayToEach">To All</string>
-    <string name="Label_BirdRule2">Out of score placing. Not imposed when robot is \"DiscardAllDrawn\".</string>
+    <!--string name="Label_BirdRule2">Out of score placing. Not imposed when robot is \"DiscardAllDrawn\".</string-->
+    <string name="Label_BirdRule2">Out of score placing.</string>
     <string name="Label_MinusStopCharge">Adjust for negative score</string>
     <string name="Label_Yes">Yes</string>
     <string name="Label_No">No</string>
@@ -862,8 +863,8 @@
     <string name="Info_SuspendCanceledDup">You are not claimed SuspendGame.</string>
     <string name="Title_ResumeDlg">ResumeSuspended Confirmation</string>
     <string name="Title_SuspendDlgReq">SuspendGame Claim</string>
-    <string name="Title_SuspendIOErrReqDlg">ConnectionFilure Notification</string>
-    <string name="Title_SuspendIOErrDlg">SuspendGame by ConnectionFilure Claim.</string>
+    <string name="Title_SuspendIOErrReqDlg">ConnectionFailure Notification</string>
+    <string name="Title_SuspendIOErrDlg">SuspendGame by ConnectionFailure Claim.</string>
     <string name="Title_SuspendIOErrDlgResp">SuspendGame by ConnectionFailure Response</string>
     <string name="Title_ConfirmEndgame">Gameover Confirmation</string>
     <string name="Msg_ConfirmEndgame">No connection exists, do you proceed to Gameover?\n
@@ -999,11 +1000,13 @@
     <string name="Label_RuleIDName">Rule:</string>
     <string name="Label_ShowStatus">Status</string>
     <string name="Label_Delay">DelayTime</string>
-    <string name="Label_DelayUnit">(Sec)</string>
+    <string name="Label_DelayUnit">"Unit : "</string>
+    <string name="Label_DelayUnit1">"1.0 Sec"</string>
+    <string name="Label_DelayUnit05">"0.5 Sec"</string>
     <string name="Label_DelayPonKan">Ron (Red):Semicircle lamp becomes red just after discard. Pon/Kan is available after this time exhausted.</string>
     <string name="Label_DelayTake">Pon/Kan (Yellow):Semicircle lamp becomes green after Ron+Pon/Kan time exhausted, then Chii/Draw is available.</string>
     <string name="Label_DelayLast">After last discard: ExhaustiveDraw completes when this time exhausted after lamp changed to green.</string>
-    <string name="Label_DelayDiscard">AutoDiscard:Lamp becomes blue just after draw, then the tile of green frame will be discarded when this time exhausted. 0 means no timeout.</string>
+    <string name="Label_DelayDiscard">AutoDiscard:Lamp becomes blue just after draw, then the tile of green frame will be discarded when this time exhausted. 0 means no timeout. Not applicable to Robot.</string>
     <string name="Label_Delay2Touch">Timeout of \"Wait!\"</string>
     <string name="Label_TimeoutTake">AutoDraw:Next player draws automatically when this time exhausted from start of Chii/Draw period. 0 means no timeout. Applied for also KanDraw.</string>
     <!--string name="Label_TimeoutTakeRobot">AutoDraw for Robot:Set minimum 1 second. This is applied if Autodraw above is 0, else the value above is applied.</string-->
@@ -1085,7 +1088,9 @@
     <!--string name="Label_AllowRobotAll">Allow Training Mode</string-->
     <string name="Label_AllowRobotAllButton">When playing alone, Robot\'s \"Draw\" is by button.</string>
     <string name="Label_PlayAloneNotify">Notify availability of Ron,Pon,Kan,Chii when playing alone.</string>
-    <string name="Desc_PlayAloneNotify">(Quick Robot Action. See \"Help\")</string>
+    <string name="Label_PlayMatchNotify">Notify availability of Ron,Pon,Kan,Chii.</string>
+    <string name="Desc_PlayAloneNotify">(Quick Robot Action)</string>
+    <string name="Desc_PlayMatchNotify">(See \"Help\")</string>
 
     <string name="Label_GameSet">Rounds</string>
     <string name="Label_GameSetInterrupted">Comp. Next is</string>
@@ -1140,9 +1145,9 @@
     <string name="Label_YakuFix2Stick5">From 5</string>
     <string name="Label_YakuFix2Last">Allows that Yaku is composed finally</string>
     <string name="Desc_YakuFix2">Effective only when \"1-han constraint\" of \"Operation\" is ON .\n
-			If \"Fix Yaku\" option is NOT \"Finally\", ignore accidental Yaku such as Riichi-OneShot, Final Tile, Chankan, and  RinshanKaiho.
-			If "Fix Yaku is \"Finally\", those are all allowed.
-            Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not allowed
+If \"Fix Yaku\" option is NOT \"Finally\", ignore accidental Yaku such as Riichi-OneShot, Final Tile, Chankan, and  RinshanKaiho.
+If "Fix Yaku is \"Finally\", those are all allowed.
+Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not allowed.
             </string>
     <string name="Label_EatChange">Call the same Meld</string>
     <string name="Label_EatChangeNo">No</string>
@@ -1184,14 +1189,14 @@
     <string name="Label_9Ren9">Nine gates 9 wait</string>
     <string name="Label_4Wind">Big 4 wind</string>
     <string name="Label_Yakuman">Yakuman</string>
-    <string name="Label_9RenPinSou">Not mans 9 gates</string>
+    <string name="Label_9RenPinSou">Not Mans 9 gates</string>
     <string name="Label_AllGreenNoBlue">All green w/o dragon</string>
     <string name="Label_BigRing">7 pairs by pin2-8</string>
     <string name="Label_NoPair13">13 broken</string>
     <string name="Label_NoPair14">14 broken</string>
     <string name="Label_Rank13">13 or more han(Max Mangan*3 if off）</string>
     <!--string name="Label_OpenReachRon">Pay Yakuman for OpenRiichi-er\'s ron</string-->
-    <string name="Label_5thKan">Accept AbotedDraw by 5th Kan for a player\'s Tenpai of 4 Kans. Select Draw on Menu.</string>
+    <string name="Label_5thKan">Accept AbortiveDraw by 5th Kan for a player\'s Tenpai of 4 Kans. Select Draw on Menu.</string>
     <string name="Err_5thKan">5th Kan. Setting to protect Yakuman:4Kan is %1$s.</string>
     <string name="Label_KokusiAnkanRon">Accept Ron for Ankan by Kokushi.</string>
     <string name="Desc_Yakuman">14 broken is by the status of at first Take.\nAdditional to this and Double Youman,4 Kans with pair, Big 3 dragons, All honors, Litte 4 wind, All terminals, Heavenly hans, Hand of earth. Some are composable to Double Yakuman like as Big 3 dragons and All honors.</string>
@@ -1495,7 +1500,12 @@
     <string name="AE_FuritenReach">Furiten Riichi</string>
     <string name="Label_ChkMultiWait">Check \"Furiten and \"\"Fix Yaku\" rule violation</string>
     <string name="Label_ChkMultiWaitYes">Yes</string>
+<!--
     <string name="Desc_ChkMultiWait">Checked at \"Win\" is pushed. \"1-han constraint\" is also checked. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to APP\'s decision.
     			Regardless this setting \"ron-able\" is notified when play-alone mode. Robot calls \"Win\" after cheking this rule.</string>
-    <string name="AE_NoReachErrToForce">No Riichi error to force</string>
+-->
+    <string name="Desc_ChkMultiWait">Checked at \"Win\" is pushed. \"1-han constraint\" is also checked. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to APP\'s decision.
+    			Notification of \"ron-able\" obeys this setting. But Robot calls \"Win\" only if check OK regardress this setting.</string>
+    <string name="AE_NoReachErrToForce">Accepted only after failure of Riichi/OpenRiich.</string>
+    <string name="AE_CancelAtFirst">\"Cancel\" is required for other action button highlighten.</string>
 </resources>

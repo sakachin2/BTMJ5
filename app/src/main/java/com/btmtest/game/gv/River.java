@@ -1,5 +1,6 @@
-//*CID://+va81R~: update#= 586;                                    //~va81R~
+//*CID://+vaa6R~: update#= 598;                                    //~vaa6R~
 //**********************************************************************//~v101I~
+//2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/04/11 va81 (Bug)In notify mode,btn si not highlighen when take//~va81I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/04/26 va05:sound effect at positioning tile get             //~va05I~
@@ -17,6 +18,7 @@ import android.graphics.Rect;
 import com.btmtest.TestOption;
 import com.btmtest.game.Players;
 
+import static com.btmtest.BT.Members.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.Players.*;
 import static com.btmtest.game.Complete.*;
@@ -858,15 +860,19 @@ public class River                                                 //~v@@@R~
     {                                                              //~v@@@I~
     	int[] posPlayer=new int[PLAYERS];                           //~v@@@I~
         int p=P1stPicker;                                           //~v@@@I~
+        int posClient=-1;                                          //~vaa6I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~v@@@I~
         {                                                          //~v@@@I~
         	TileData td=sortedSetupTiles[ii];                      //~v@@@R~
             posPlayer[td.number]=p;                                //~v@@@I~
 	        if (Dump.Y) Dump.println("River.getPlayerPosition player="+p+",pos="+td.number);//~v@@@R~
+	        if (Dump.Y) Dump.println("River.getPlayerPosition MD["+p+"]="+AG.aBTMulti.BTGroup.MD[p].toString());//~vaa6I~
+            if ((AG.aBTMulti.BTGroup.MD[p].status & MS_REMOTECLIENT)!=0)//~vaa6R~
+            	posClient=td.number;                               //~vaa6M~
             p=Players.nextPlayer(p);                               //~v@@@I~
         }                                                          //~v@@@I~
-	    if (Dump.Y) Dump.println("River.getPlayerPosition testOption2="+Integer.toHexString(TestOption.option2)+",firstDealer="+TestOption.firstDealer+",posPlayer="+Arrays.toString(posPlayer));//~v@@@R~//~va81R~
-        if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)   //~v@@@I~//+va81R~
+	    if (Dump.Y) Dump.println("River.getPlayerPosition testOption2="+Integer.toHexString(TestOption.option2)+",firstDealer="+TestOption.firstDealer+",posClient="+posClient+",posPlayer="+Arrays.toString(posPlayer));//~v@@@R~//~va81R~//~vaa6R~
+        if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)   //~v@@@I~//~va81R~
         if (TestOption.firstDealer!=0)	//swap test dealer vs East //~v@@@I~
         {                                                          //~v@@@I~
         	int testdealer=TestOption.firstDealer-1;    //0:no,1:N1=E,2:N2=E,3:N1=N,4:N2:N//~v@@@R~
@@ -889,17 +895,69 @@ public class River                                                 //~v@@@R~
             }                                                      //~v@@@I~
 	    	if (Dump.Y) Dump.println("River.getPlayerPosition firstDealer="+testdealer+",posPlayer="+Arrays.toString(posPlayer));//~v@@@R~
         }                                                          //~v@@@I~
-        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//+va81I~
-        if (TestOption.firstDealer!=0)	//swap test dealer vs East //+va81I~
-        {                                                          //+va81I~
-        	int eswn=TestOption.firstDealer-1;                     //+va81I~
-        	int eswnPlayer=posPlayer[eswn];                        //+va81I~
-            for (int ii=0;ii<PLAYERS;ii++)   //swap test eswn player and player_YOU//+va81I~
-            	if (posPlayer[ii]==PLAYER_YOU)                     //+va81I~
-                	posPlayer[ii]=eswnPlayer;                      //+va81I~
-            posPlayer[eswn]=PLAYER_YOU;                            //+va81I~
-	    	if (Dump.Y) Dump.println("River.getPlayerPosition eswn="+eswn+",posPlayer="+Arrays.toString(posPlayer));//+va81I~
-        }                                                          //+va81I~
+        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//~va81I~
+        if (TestOption.firstDealer!=0)	//swap test dealer vs East //~va81I~//~vaa6R~
+        {                                                          //~va81I~
+        	int eswn=TestOption.firstDealer-1;                     //~va81I~
+        	int eswnPlayer=posPlayer[eswn];                        //~va81I~
+            for (int ii=0;ii<PLAYERS;ii++)   //swap test eswn player and player_YOU//~va81I~
+            	if (posPlayer[ii]==PLAYER_YOU)                     //~va81I~
+                {                                                  //~vaa6I~
+                    if (eswn==posClient) //replace posClint        //~vaa6R~
+                        posClient=ii;                              //~vaa6I~
+                	posPlayer[ii]=eswnPlayer;                      //~va81I~
+                                                                   //~vaa6I~
+                }                                                  //~vaa6I~
+            posPlayer[eswn]=PLAYER_YOU;                            //~va81I~
+	    	if (Dump.Y) Dump.println("River.getPlayerPosition posClient="+posClient+",Server eswn="+eswn+",posPlayer="+Arrays.toString(posPlayer));//~va81I~//~vaa6R~
+        }                                                          //~va81I~
+	    if (Dump.Y) Dump.println("River.getPlayerPosition testOption3="+Integer.toHexString(TestOption.option3));//~vaa6I~
+        if ((TestOption.option3 & TestOption.TO3_INITIAL_POSITION_CLIENT)!=0)//~vaa6R~
+        {                                                          //~vaa6I~
+            if (Dump.Y) Dump.println("River.getPlayerPosition Client firstDealer="+TestOption.firstDealer+",posClient="+posClient);//~vaa6I~
+            if (TestOption.firstDealer!=0                          //~vaa6R~
+	        && posClient!=-1)                                      //~vaa6I~
+            {                                                      //~vaa6I~
+                if (Dump.Y) Dump.println("River.getPlayerPosition ClientNext old posPlayer="+Arrays.toString(posPlayer));//+vaa6R~
+    	    	int posTo;                                         //~vaa6I~
+		        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//~vaa6I~
+                {                                                  //~vaa6I~
+    	    		posTo=TestOption.firstDealer; 	//move to  next of dealer//~vaa6R~
+                    if (posTo==PLAYERS)                            //~vaa6I~
+                        posTo=0;                                   //~vaa6I~
+                }                                                  //~vaa6I~
+                else                                               //~vaa6I~
+    	    		posTo=TestOption.firstDealer-1; 	//move to  //~vaa6R~
+                int posFrom=posClient;                             //~vaa6R~
+                int oldTo=posPlayer[posTo];                        //~vaa6I~
+                posPlayer[posTo]=posPlayer[posFrom];               //~vaa6R~
+                posPlayer[posFrom]=oldTo;                          //~vaa6I~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client posFrom="+posFrom+",posTo="+posTo+",new posPlayer="+Arrays.toString(posPlayer));//~vaa6R~
+            }                                                      //~vaa6I~
+        }                                                          //~vaa6I~
+        if ((TestOption.option4 & TestOption.TO4_INITIAL_POSITION_CLIENT_FACING)!=0)//+vaa6I~
+        {                                                          //+vaa6I~
+            if (Dump.Y) Dump.println("River.getPlayerPosition ClientFacing firstDealer="+TestOption.firstDealer+",posClient="+posClient);//+vaa6I~
+            if (TestOption.firstDealer!=0                          //+vaa6I~
+	        && posClient!=-1)                                      //+vaa6I~
+            {                                                      //+vaa6I~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client old posPlayer="+Arrays.toString(posPlayer));//+vaa6I~
+    	    	int posTo;                                         //+vaa6I~
+		        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//+vaa6I~
+                {                                                  //+vaa6I~
+    	    		posTo=TestOption.firstDealer+1; 	//move to  next of next of dealer//+vaa6I~
+                    if (posTo>=PLAYERS)                            //+vaa6I~
+                        posTo-=PLAYERS;                            //+vaa6I~
+                }                                                  //+vaa6I~
+                else                                               //+vaa6I~
+    	    		posTo=TestOption.firstDealer-1; 	//move to  //+vaa6I~
+                int posFrom=posClient;                             //+vaa6I~
+                int oldTo=posPlayer[posTo];                        //+vaa6I~
+                posPlayer[posTo]=posPlayer[posFrom];               //+vaa6I~
+                posPlayer[posFrom]=oldTo;                          //+vaa6I~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client posFrom="+posFrom+",posTo="+posTo+",new posPlayer="+Arrays.toString(posPlayer));//+vaa6I~
+            }                                                      //+vaa6I~
+        }                                                          //+vaa6I~
 	    if (Dump.Y) Dump.println("River.getPlayerPosition posPlayer="+Arrays.toString(posPlayer));//~v@@@I~
         return posPlayer;                                          //~v@@@I~
     }                                                              //~v@@@I~

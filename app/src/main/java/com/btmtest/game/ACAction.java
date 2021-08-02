@@ -1,4 +1,4 @@
-//*CID://+va66R~: update#= 676;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~
+//*CID://+va66R~: update#= 677;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~
 //**********************************************************************//~v101I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //v@@7 20190131 del GCM_DORA msg exchange(deal msg contains wanpai)//~v@@7R~
@@ -68,7 +68,7 @@ public class ACAction                                              //~v@@@R~
         accounts=Paccounts;                                        //~v@@@I~
         acatouch=new ACATouch(this,accounts);                      //~v@@@R~
         isServer=Accounts.isServer();                              //~v@@@I~
-        if (Dump.Y) Dump.println("ACAction.Constructor isServer="+isServer);         //~1506R~//~@@@@R~//~v@@@R~//+va66R~
+        if (Dump.Y) Dump.println("ACAction.Constructor isServer="+isServer);         //~1506R~//~@@@@R~//~v@@@R~//~va66R~
     }                                                              //~0914I~//~v@@@R~
 //***************************************************************************//~v@@@I~
     public  void setWaitStatus(int Pstatus)                        //~v@@@R~
@@ -386,7 +386,7 @@ public class ACAction                                              //~v@@@R~
     public void setupEndMember()                                   //~v@@@R~
     {                                                              //~v@@@I~
     	boolean rc=false;                                          //~v@@@I~
-        if (Dump.Y) Dump.println("ACAction.setupEndMember isServer="+isServer);       //~v@@@R~//+va66R~
+        if (Dump.Y) Dump.println("ACAction.setupEndMember isServer="+isServer);       //~v@@@R~//~va66R~
     	Status.setGameStatus(GS_SETUPEND);                         //~v@@@I~
         if (isServer)                                              //~v@@@R~
         {                                                          //~v@@@I~
@@ -1162,6 +1162,8 @@ public class ACAction                                              //~v@@@R~
         AG.aGCanvas.drawStock(posStarter,spot);  //after setShuffled//~v@@7I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
+    //*not used                                                    //+va66I~
+    //*******************************************************************//+va66I~
 	private void user_Action_Dora(String Pdata)                    //~v@@@I~
     {                                                              //~v@@@I~
 		if (Dump.Y) Dump.println("ACAction.user_Action_Dora isServer="+isServer+",data="+Pdata);//~v@@@I~

@@ -1,5 +1,13 @@
-//*CID://+va9aR~: update#= 706;                                    //~va9aR~
+//*CID://+vaaRR~: update#= 722;                                    //~vaaRR~
 //**********************************************************************//~v101I~
+//2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
+//                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
+//                Consequently CompReqDlg shows Not ronable format.//~vaaRI~
+//                Send current player at Ron and chk it on server  //~vaaRI~
+//2021/07/03 vaag Allow Cancelable for also PlayAlonNotify mode    //~vaagI~
+//2021/06/29 vaa7 duplicated call isRonableMultiWait for PlayAlone //~vaa7R~
+//2021/06/28 vaa3 (Bug)PlauAlone mode; 13/14 broke failes by not-win-form.//~vaa3I~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/06/17 va9a (bug)Dump by at tenho(AG.aPlayers.getTileCompleteSelectInfoRon() return null)//~va9aI~
 //2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/04/14 va88 chk constraint for TakeRon in notify mode(avoid dump)//~va88R~
@@ -170,32 +178,47 @@ public class UARon                                                 //~v@@@R~//~v
             }                                                      //~va19I~
         	return false;                                          //~9C11R~
         }                                                          //~9C12I~
-      if (AG.swPlayAloneNotify)                                    //~va70I~
-      {                                                            //~va70I~
-        if (Dump.Y) Dump.println("UARon.selectInfo playAloneNotify mode not cancelable, rc=true");//~va70I~
-      }                                                            //~va70I~
-      else                                                         //~va70I~
-      {                                                            //~va70I~
+//    if (AG.swPlayAloneNotify)                                    //~va70I~//~vaagR~
+//    {                                                            //~va70I~//~vaagR~
+//      if (Dump.Y) Dump.println("UARon.selectInfo playAloneNotify mode not cancelable, rc=true");//~va70I~//~vaagR~
+//    }                                                            //~va70I~//~vaagR~
+//    else                                                         //~va70I~//~vaagR~
+//    {                                                            //~va70I~//~vaagR~
         if (!UADL.chkSelectInfo2Touch(PswServer,GCM_RON,Pplayer,PintParm))	//actionAlert optionally//~9B23I~
             return false;                                          //~9B23I~
-      }                                                            //~va70I~
+//    }                                                            //~va70I~//~vaagR~
+//      UA.msgDataToServer=Integer.toString(Accounts.playerToEswn(PLS.playerLastDiscarded));//~vaaRR~
+        int playerLooser=getLooser();                              //~vaaRI~
+        UA.msgDataToServer=Integer.toString(Accounts.playerToEswn(playerLooser));//~vaaRI~
+        if (Dump.Y) Dump.println("UARon.selectInfo msgDataToServer="+UA.msgDataToServer);//~vaaRI~
         return true;                                               //~9B23I~
     }                                                              //~9B23I~
+	//*************************************************************************//~vaaRI~
+    private int getLooser()                                        //~vaaRI~
+    {                                                              //~vaaRI~
+    	int rc;                                                    //~vaaRI~
+    	if (PLS.getCurrentPlayerTaking()==-1)   //discrded         //+vaaRI~
+			rc=PLS.playerLastDiscarded;                            //+vaaRM~
+        else		//current player taking                        //+vaaRR~
+        	rc=PLS.getCurrentPlayer();                             //+vaaRM~
+        if (Dump.Y) Dump.println("UARon.getLooser rc="+rc);        //~vaaRI~
+        return rc;
+    }                                                              //~vaaRI~
 	//*************************************************************************//~va70I~
 	//* from RACall in PlayAloneNotifyMode for human player at other discrded         //~va70I~//~va96R~
 	//*************************************************************************//~va70I~
     public boolean selectInfoPlayAloneNotify()                     //~va70R~
     {                                                              //~va70I~
         if (Dump.Y) Dump.println("UARon.selectInfoPlayAloneNotify");//~va70R~
-//    if (PactionID==GCM_RON)   //!GCM_RON_ANYWAY                  //~va70I~
-        if (!chkComplete(PLAYER_YOU))                                 //~va70I~
-        {                                                          //~va70I~
-//          if (UADL.isBlockedTop())                               //~va70I~
-//          {                                                      //~va70I~
-//          	UView.showToastLong(R.string.Warn_BlockedNeedRonAnyway);//~va70I~
-//          }                                                      //~va70I~
-        	return false;                                          //~va70I~
-        }
+////    if (PactionID==GCM_RON)   //!GCM_RON_ANYWAY                  //~va70I~//~vaa7R~
+//        if (!chkComplete(PLAYER_YOU))                                 //~va70I~//~vaa7R~
+//        {                                                          //~va70I~//~vaa7R~
+////          if (UADL.isBlockedTop())                               //~va70I~//~vaa7R~
+////          {                                                      //~va70I~//~vaa7R~
+////              UView.showToastLong(R.string.Warn_BlockedNeedRonAnyway);//~va70I~//~vaa7R~
+////          }                                                      //~va70I~//~vaa7R~
+//            return false;                                          //~va70I~//~vaa7R~
+//        }                                                        //~vaa7R~
 //      int[] intp=new int[]{0,0,0,0,0};                           //~va70R~
 //      if (!UADL.chkSelectInfo2Touch(true/*PswServer*/,GCM_RON,PLAYER_YOU,intp))	//actionAlert optionally//~va70R~
         UADL.notify2TouchPlayAloneNotify(GCM_RON);	//update GC btn//~va70I~
@@ -203,30 +226,69 @@ public class UARon                                                 //~v@@@R~//~v
     }                                                              //~va70I~
 	//*************************************************************************//~va88I~
 	//*from RACall                                                 //~va96R~
-	//*when Human taken at playalone mode                          //~va96I~
+	//*when Human taken at PlayAlone mode                          //~vaa2R~
 	//*************************************************************************//~va88I~
-    public boolean selectInfoPlayAloneNotifyTake(TileData PtdTaken)//~va88I~
+//  public boolean selectInfoPlayAloneNotifyTake(TileData PtdTaken)//~va88I~//~vaa3R~
+    public boolean selectInfoPlayAloneNotifyTake(TileData PtdTaken,boolean PswNoPair)//~vaa3I~
     {                                                              //~va88I~
-        if (Dump.Y) Dump.println("UARon.selectInfoPlayAloneNotifyTake");//~va88I~
-        tdNotifyTake=PtdTaken;                                     //~va88I~
-        if (!chkCompleteTake(PLAYER_YOU))                          //~va88I~
-        {                                                          //~va88I~
-        	tdNotifyTake=null;                                     //~va88I~
-        	return false;                                          //~va88I~
-        }                                                          //~va88I~
+        if (Dump.Y) Dump.println("UARon.selectInfoPlayAloneNotifyTake swNoPair="+PswNoPair+",tdTaken="+PtdTaken.toString());//~va88I~//~vaa3R~
+//        tdNotifyTake=PtdTaken;                                     //~va88I~//~vaa7R~
+//      if (!PswNoPair)                                              //~vaa3I~//~vaa7R~
+//      {                                                            //~vaa3I~//~vaa7R~
+//        if (!chkCompleteTake(PLAYER_YOU))                          //~va88I~//~vaa7R~
+//        {                                                          //~va88I~//~vaa7R~
+//            tdNotifyTake=null;                                     //~va88I~//~vaa7R~
+//            return false;                                          //~va88I~//~vaa7R~
+//        }                                                          //~va88I~//~vaa7R~
+//      }                                                            //~vaa3I~//~vaa7R~
         tdNotifyTake=null;                                         //~va88I~
         UADL.notify2TouchPlayAloneNotify(GCM_RON);	//update GC btn//~va88I~
         return true;                                               //~va88I~
     }                                                              //~va88I~
-	//*************************************************************************//~va88I~
-    private boolean chkCompleteTake(int Pplayer)                   //~va88I~
-    {                                                              //~va88I~
-        if (Dump.Y) Dump.println("UARon.chkCompleteTake");         //~va88I~
-    	swChkCompleteTake=true;                                    //~va88I~
-	    boolean rc=chkComplete(Pplayer);                           //~va88I~
-    	swChkCompleteTake=false;                                   //~va88I~
-        return rc;                                                 //~va88I~
-    }                                                              //~va88I~
+	//*************************************************************************//~vaa2I~
+	//*from RACall                                                 //~vaa2I~
+	//*when Human taken at Match mode                              //~vaa2I~
+	//*************************************************************************//~vaa2I~
+    public boolean selectInfoPlayMatchNotifyTake(TileData PtdTaken,boolean PswNoPair)//~vaa2I~
+    {                                                              //~vaa2I~
+        if (Dump.Y) Dump.println("UARon.selectInfoPlayMatchNotifyTake swNoPair="+PswNoPair+",tdTaken="+PtdTaken.toString());//~vaa2I~
+//        tdNotifyTake=PtdTaken;                                     //~vaa2I~//~vaa7R~
+//        if (!PswNoPair)                                            //~vaa2I~//~vaa7R~
+//        {                                                          //~vaa2I~//~vaa7R~
+//            if (!chkCompleteTake(PLAYER_YOU))                      //~vaa2I~//~vaa7R~
+//            {                                                      //~vaa2I~//~vaa7R~
+//                tdNotifyTake=null;                                 //~vaa2I~//~vaa7R~
+//                return false;                                      //~vaa2I~//~vaa7R~
+//            }                                                      //~vaa2I~//~vaa7R~
+//        }                                                          //~vaa2I~//~vaa7R~
+//        tdNotifyTake=null;                                         //~vaa2I~//~vaa7R~
+        UADL.notify2TouchPlayMatchNotify(GCM_RON);	//update GC btn//~vaa2I~
+        return true;                                               //~vaa2I~
+    }                                                              //~vaa2I~
+	//*************************************************************************//~vaa2I~
+	//*from RACall.discardedPlaymatchNotify                        //~vaa2I~
+	//*for PLAYER_YOU when other player discarded in Match mode on server and client//~vaa2I~
+	//*************************************************************************//~vaa2I~
+    public boolean selectInfoPlayMatchNotify(TileData PtdDiscard)  //~vaa2I~
+    {                                                              //~vaa2I~
+        if (Dump.Y) Dump.println("UARon.selectInfoPlayMatchNotifyTake tdDiscard="+PtdDiscard.toString());//~vaa2I~
+//        if (!chkComplete(PLAYER_YOU))                              //~vaa2I~//~vaa7R~
+//        {                                                          //~vaa2I~//~vaa7R~
+//            if (Dump.Y) Dump.println("UARon.selectInfoPlayMatchNotifyTake@@@@ return by chkComplete failed");//~vaa2I~//~vaa7R~
+//            return false;                                          //~vaa2I~//~vaa7R~
+//        }                                                          //~vaa2I~//~vaa7R~
+        UADL.notify2TouchPlayMatchNotify(GCM_RON);	//update GC btn//~vaa2I~
+        return true;                                               //~vaa2I~
+    }                                                              //~vaa2I~
+//    //*************************************************************************//~va88I~//~vaaRR~
+//    private boolean chkCompleteTake(int Pplayer)                   //~va88I~//~vaaRR~
+//    {                                                              //~va88I~//~vaaRR~
+//        if (Dump.Y) Dump.println("UARon.chkCompleteTake");         //~va88I~//~vaaRR~
+//        swChkCompleteTake=true;                                    //~va88I~//~vaaRR~
+//        boolean rc=chkComplete(Pplayer);                           //~va88I~//~vaaRR~
+//        swChkCompleteTake=false;                                   //~va88I~//~vaaRR~
+//        return rc;                                                 //~va88I~//~vaaRR~
+//    }                                                              //~va88I~//~vaaRR~
 	//*************************************************************************//~9C11I~
     private boolean chkComplete(int Pplayer)                       //~9C11I~
     {                                                              //~9C11I~
@@ -271,8 +333,8 @@ public class UARon                                                 //~v@@@R~//~v
             	{                                                  //~va96I~
 //        			if (!chkCompleteMultiWaitMatchModeHuman(PLAYER_YOU))     //chk furiten kataagari//~va96I~//~va9aR~
                 	TileData td=swChkCompleteTake ? tdNotifyTake : null;//~va9aI~
-//        			if (!chkCompleteMultiWaitMatchModeHuman(PLAYER_YOU,td))     //chk furiten kataagari//+va9aR~
-          			if (!chkCompleteMultiWaitHuman(PLAYER_YOU,td))     //chk furiten kataagari//+va9aI~
+//        			if (!chkCompleteMultiWaitMatchModeHuman(PLAYER_YOU,td))     //chk furiten kataagari//~va9aR~
+          			if (!chkCompleteMultiWaitHuman(PLAYER_YOU,td))     //chk furiten kataagari//~va9aI~
             			rc=false;                                  //~va96I~
             	}                                                  //~va96I~
             }                                                      //~va96I~
@@ -312,13 +374,30 @@ public class UARon                                                 //~v@@@R~//~v
         TileData[] tds;                                            //~v@@@R~
         int msgid;                                                 //~v@@6I~
     //***********************                                      //~v@@@I~
-        if (Dump.Y) Dump.println("UARon.complete swServer="+PswServer+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~v@@@R~//~v@@6R~//~9B23R~
+        if (Dump.Y) Dump.println("UARon.complete swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~v@@@R~//~v@@6R~//~9B23R~//~vaaRR~
 //      AG.aUADelayed.actionDone(GCM_PON,PswServer,PswReceived,Pplayer);//~9B23I~//~9B27R~
         int typeComplete=0;
         swServer=PswServer;                                        //~v@@6I~
         swReceived=PswReceived;                                    //~v@@6I~
         if (PswServer)                                             //~v@@@I~
         {                                                          //~v@@@I~
+        	if (PswReceived)                                       //~vaaRI~
+            {	                                                   //~vaaRI~
+            	if (PintParm.length==PARMPOS_COMPLETE_LOOSER_ESWN+1)//~vaaRI~
+                {                                                  //~vaaRI~
+                    int looserEswn=PintParm[PARMPOS_COMPLETE_LOOSER_ESWN];  //=1;//~vaaRR~
+                    int curPlayer=PLS.getCurrentPlayer();          //~vaaRR~
+                    int curEswn=Accounts.playerToEswn(curPlayer);  //~vaaRR~
+                    if (Dump.Y) Dump.println("UARon.complete GCM_RON curPlayer="+curPlayer+",Pplayer="+Pplayer+",curEswn="+curEswn+",looserEswn="+looserEswn);//~vaaRI~
+                    if (curPlayer!=Pplayer      //Not Ron taken    //~vaaRR~
+                    && looserEswn!=curEswn)    //not advanced by taken after issued Ron//~vaaRR~
+                    {                                              //~vaaRR~
+                        if (Dump.Y) Dump.println("UARon.complete GCM_RON was OverTaken looserEswn="+looserEswn+",currentEswn="+curEswn);//~vaaRR~
+                        UA.sendErr(0,Pplayer,R.string.AE_NotYourTurn);//~vaaRR~
+                        return false;                              //~vaaRR~
+                    }                                              //~vaaRR~
+                }                                                  //~vaaRI~
+            }                                                      //~vaaRI~
 //            if (isDelayedRon(PswReceived,Pplayer))               //~v@@6R~
 //            {                                                    //~v@@6R~
 //                return false;                                    //~v@@6R~
@@ -797,16 +876,16 @@ public class UARon                                                 //~v@@@R~//~v
 	//*after chkRank(constraint chk done)                          //~va96R~
 	//*************************************************************************//~va96I~
 //  private boolean chkCompleteMultiWaitMatchModeHuman(int Pplayer)//~va96R~//~va9aR~
-    private boolean chkCompleteMultiWaitHuman(int Pplayer,TileData Ptd)//+va9aR~
+    private boolean chkCompleteMultiWaitHuman(int Pplayer,TileData Ptd)//~va9aR~
     {                                                              //~va96I~
 //  	boolean swTaken=AG.aUARonValue.swTaken;	//set at UARonValue.chkRank() by ctrHand//~va96R~
         TileData[] tds=AG.aPlayers.getHands(Pplayer);               //~va96I~
         boolean swTaken=Tiles.isTakenStatus(tds.length);                   //~va96I~
 //      TileData tdRon=AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va11I~//~va96I~//~va9aR~
         TileData tdRon=Ptd!=null ? Ptd : AG.aPlayers.getTileCompleteSelectInfoRon();   //to calc Fu//~va9aI~
-        if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitMatchModeHuman player="+Pplayer+",swTaken="+swTaken+",tdRon="+tdRon.toString());//~va96R~//~va9aR~
+        if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitHuman player="+Pplayer+",swTaken="+swTaken+",tdRon="+tdRon.toString());//~va96R~//~va9aR~//~vaa3R~
         boolean rc=AG.aRARon.isRonableMultiWaitMatchModeHuman(Pplayer,swTaken,tdRon);//~va96R~
-        if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitHuman rc="+rc);//~va96I~//+va9aR~
+        if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitHuman rc="+rc);//~va96I~//~va9aR~
 		return rc;                                                 //~va96R~
 	}                                                              //~va96I~
 }//class                                                           //~v@@@R~

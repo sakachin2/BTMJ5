@@ -1,4 +1,4 @@
-//*CID://+va23R~: update#= 872;                                    //~va23R~
+//*CID://+va23R~: update#= 876;                                    //~va23R~
 //**********************************************************************//~v101I~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
 //**********************************************************************//~1107I~
@@ -192,18 +192,18 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         	{0,2,0, 0,1,1, 1,0,0},                                 //~va23I~
     	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23I~
 	    rc=ronTestSub(dupCtr,0,0);                                 //~va23I~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-20103 3shiki bug chk ok "+rc.toString());//+va23R~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-20103 3shiki bug chk ok "+rc.toString());//~va23R~
         if (!swTestAll) break;                                     //~va23I~
-//*********                                                        //+va23I~
-    case 20104:                                                    //+va23I~
-        dupCtr=new int[][]{           //7 pair                     //+va23I~
-        	{0,1,1, 1,1,1, 1,0,0},                                 //+va23I~
-        	{0,0,0, 0,1,1, 1,0,0},                                 //+va23I~
-        	{0,2,0, 0,1,1, 1,0,0},                                 //+va23I~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
-	    rc=ronTestSub(dupCtr,0,0);                                 //+va23I~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-20104 3shiki bug chk ok "+rc.toString());//+va23I~
-        if (!swTestAll) break;                                     //+va23I~
+//*********                                                        //~va23I~
+    case 20104:                                                    //~va23I~
+        dupCtr=new int[][]{           //7 pair                     //~va23I~
+        	{0,1,1, 1,1,1, 1,0,0},                                 //~va23I~
+        	{0,0,0, 0,1,1, 1,0,0},                                 //~va23I~
+        	{0,2,0, 0,1,1, 1,0,0},                                 //~va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23I~
+	    rc=ronTestSub(dupCtr,0,0);                                 //~va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-20104 3shiki bug chk ok "+rc.toString());//~va23I~
+        if (!swTestAll) break;                                     //~va23I~
 //*********                                                        //~0A17I~
     case 2:                                                        //~va11I~
         dupCtr=new int[][]{           //7 pair                     //~9C12I~//~va11M~
@@ -819,8 +819,118 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
     			new Pair(PT_NUMSAME,3/*type*/,6/*number*/,3/*ctr*/,0            ),//~va23I~
         };                                                         //~va23I~
 	    rc=ronTestSub(dupCtr,dupCtrAll,0/*ronType*/,1/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//~va23I~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23205  honitus ="+rc.toString());//~va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23206  honitus ="+rc.toString());//~va23R~
         if (!swTestAll) break;                                     //~va23I~
+//*********                                                        //~va23I~
+    case 23207:                                                    //~va23I~
+        dupCtr=new int[][]{                                        //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+        	{1,1,1, 0,0,0, 1,3,1},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23I~
+        dupCtrAll=new int[][]{                                     //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+        	{1,1,1, 0,0,0, 1,3,1},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,3,0,0,  0,3,0, 0,0} };                         //7 //~va23I~
+        pairEarth=new Pair[]{                                      //~va23I~
+				new Pair(PT_NUMSAME,3/*type*/,1/*number*/,3/*ctr*/,0            ),//~va23I~
+    			new Pair(PT_NUMSAME,3/*type*/,5/*number*/,3/*ctr*/,0            ),//~va23I~
+        };                                                         //~va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,1/*ronType*/,7/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//~va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23207  honitus+!honchan="+rc.toString());//~va23R~
+        if (!swTestAll) break;                                     //~va23I~
+//*********                                                        //~va23I~
+    case 23208:                                                    //~va23I~
+        dupCtr=new int[][]{                                        //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+        	{1,1,1, 0,0,0, 1,1,3},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23I~
+        dupCtrAll=new int[][]{                                     //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+        	{1,1,1, 0,0,0, 1,1,3},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,3,0,0,  0,3,0, 0,0} };                         //7 //~va23I~
+        pairEarth=new Pair[]{                                      //~va23I~
+				new Pair(PT_NUMSAME,3/*type*/,1/*number*/,3/*ctr*/,0            ),//~va23I~
+    			new Pair(PT_NUMSAME,3/*type*/,5/*number*/,3/*ctr*/,0            ),//~va23I~
+        };                                                         //~va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,1/*ronType*/,8/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//~va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23208  honitus+honchan="+rc.toString());//~va23R~
+        if (!swTestAll) break;                                     //~va23I~
+//*********                                                        //~va23I~
+    case 23209:                                                    //~va23I~
+        dupCtr=new int[][]{                                        //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+        	{1,1,1, 0,2,0, 1,1,1},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~va23I~
+        dupCtrAll=new int[][]{                                     //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+        	{1,1,1, 0,2,0, 1,1,1},                                 //~va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //~va23I~
+    	    { 0,3,0,0,  0,3,0, 0,0} };                         //7 //~va23I~
+        pairEarth=new Pair[]{                                      //~va23I~
+				new Pair(PT_NUMSAME,3/*type*/,1/*number*/,3/*ctr*/,0            ),//~va23I~
+    			new Pair(PT_NUMSAME,3/*type*/,5/*number*/,3/*ctr*/,0            ),//~va23I~
+        };                                                         //~va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,1/*ronType*/,8/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//~va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23209  honitus+!honchan="+rc.toString());//~va23I~
+        if (!swTestAll) break;                                     //~va23I~
+//*********                                                        //+va23I~
+    case 232091:                                                   //+va23I~
+        dupCtr=new int[][]{                                        //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{1,1,1, 0,0,0, 1,1,1},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,2},                                 //+va23I~
+    	    { 0,0,0,0,  0,3,0, 0,0} };                         //7 //+va23I~
+        dupCtrAll=new int[][]{                                     //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{1,1,1, 0,0,0, 1,1,1},                                 //+va23I~
+        	{3,0,0, 0,0,0, 0,0,2},                                 //+va23I~
+    	    { 0,0,0,0,  0,3,0, 0,0} };                         //7 //+va23I~
+        pairEarth=new Pair[]{                                      //+va23I~
+				new Pair(PT_NUMSAME,2/*type*/,0/*number*/,3/*ctr*/,0            ),//+va23I~
+        };                                                         //+va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,1/*ronType*/,8/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//+va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-232091  honchan="+rc.toString());//+va23I~
+        if (!swTestAll) break;                                     //+va23I~
+//*********                                                        //+va23I~
+		case 232092:                                                    //+va23I~
+        dupCtr=new int[][]{                                        //+va23I~
+        	{0,0,0, 0,0,0, 0,0,3},                                 //+va23I~
+        	{1,1,1, 0,0,0, 1,1,1},                                 //+va23I~
+        	{0,0,0, 0,0,0, 0,0,2},                                 //+va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
+        dupCtrAll=new int[][]{                                     //+va23I~
+        	{0,0,0, 0,0,0, 0,0,3},                                 //+va23I~
+        	{1,1,1, 0,0,0, 1,1,1},                                 //+va23I~
+        	{3,0,0, 0,0,0, 0,0,2},                                 //+va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
+        pairEarth=new Pair[]{                                      //+va23I~
+        };                                                         //+va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,1/*ronType*/,8/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//+va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-232092  junchan="+rc.toString());//+va23I~
+        if (!swTestAll) break;                                     //+va23I~
+//*********                                                        //+va23I~
+		case 232093:                                                    //+va23I~
+        dupCtr=new int[][]{                                        //+va23I~
+        	{0,0,0, 0,0,0, 0,0,0},                                 //+va23I~
+        	{1,1,1, 0,0,0, 1,1,1},                                 //+va23I~
+        	{3,0,0, 0,0,0, 0,0,2},                                 //+va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
+        dupCtrAll=new int[][]{                                     //+va23I~
+        	{0,0,0, 0,0,0, 0,0,3},                                 //+va23I~
+        	{1,1,1, 0,0,0, 1,1,1},                                 //+va23I~
+        	{3,0,0, 0,0,0, 0,0,2},                                 //+va23I~
+    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+va23I~
+        pairEarth=new Pair[]{                                      //+va23I~
+				new Pair(PT_NUMSAME,0/*type*/,8/*number*/,3/*ctr*/,0            ),//+va23I~
+        };                                                         //+va23I~
+	    rc=ronTestSub(dupCtr,dupCtrAll,1/*ronType*/,8/*ronNumber*/,0/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//+va23I~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-232093  junchan="+rc.toString());//+va23I~
+        if (!swTestAll) break;                                     //+va23I~
 //*********                                                        //~va11I~
     case 2321:                                                     //~va11I~
         dupCtr=new int[][]{                                        //~va11I~

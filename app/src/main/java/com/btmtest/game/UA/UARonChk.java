@@ -1,4 +1,4 @@
-//*CID://+va95R~: update#= 753;                                    //~va95R~
+//*CID://+va95R~: update#= 754;                                    //~va95R~
 //**********************************************************************//~v101I~
 //2021/06/13 va95 (Bug)MakeParing misses NumSeq evaluation for 333 case(3-Same(3anko) and 3Seq(1peiko+)//~va95I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
@@ -458,7 +458,7 @@ public class UARonChk                                                //~v@@@R~//
           {                                                        //~va95I~
             if (PctrNum[ii]>=3)                                    //~va95I~
             {                                                      //~va95I~
-                int[] numForSeq=PctrNum.clone();                   //+va95M~
+                int[] numForSeq=PctrNum.clone();                   //~va95M~
             	rcSame=makePairingNumSame(Puardp,Pparent,PctrNum,ii,Ptype);//~va95I~
 		        if (Dump.Y) Dump.println("UARonChk.makePairingNum@@@@ ctr>=3 after Same rcSame="+rcSame+",type="+Ptype+",num="+ii+",uardp="+Puardp.toStringPairAll());//~va95I~
 				rcSeq=makePairingNumSeq(Puardp,Pparent,numForSeq,ii/*pos*/,Ptype);//~va95I~
@@ -504,7 +504,7 @@ public class UARonChk                                                //~v@@@R~//
 //  private boolean makePairingNumSeq(Pairs Puardp,int[] PctrNum,int Ppos,int Ptype)//~va11R~
     private boolean makePairingNumSeq(UAPair Puardp,Pair Pparent,int[] PctrNum,int Ppos,int Ptype)//~va11I~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonChk.makePairingNumSeq type="+Ptype+",pos="+Ppos+",Num="+Arrays.toString(PctrNum));//~va11R~//+va95R~
+        if (Dump.Y) Dump.println("UARonChk.makePairingNumSeq type="+Ptype+",pos="+Ppos+",Num="+Arrays.toString(PctrNum));//~va11R~//~va95R~
         boolean rc=false;                                          //~va11I~
         if (Ppos+2<PIECE_NUMBERCTR                                 //~va11I~
         &&  PctrNum[Ppos]!=0 && PctrNum[Ppos+1]!=0 && PctrNum[Ppos+2]!=0)//~va11I~
@@ -687,7 +687,7 @@ public class UARonChk                                                //~v@@@R~//
 //          	restorePillow(p);                                  //~va22R~
                 dupCtr[p.x][p.y]++; //restore 1/2 of pillow        //~va22I~
         }                                                          //~9C11I~
-        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc+",wIs14NoPair="+swIs14NoPair);//~va22R~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc+",rule-swIs14NoPair="+swIs14NoPair);//~va22R~//+va95R~
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
 	//*************************************************************************//~va83I~

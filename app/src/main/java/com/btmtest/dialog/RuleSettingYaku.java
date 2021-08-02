@@ -1,6 +1,7 @@
-//*CID://+va98R~:                             update#=  506;       //~va91R~//+va98R~
+//*CID://+vaa0R~:                             update#=  508;       //~vaa0R~
 //*****************************************************************//~v101I~
-//2021/06/15 va98 allow multiwait for take with allInHand          //+va98I~
+//2021/06/26 vaa0 support <img> in htmlText                        //~vaa0I~
+//2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/20 va8j KataAgari chk(No furiten chk) for also Human Take in PlayAloneNotifyMode//~va8jI~
@@ -13,29 +14,25 @@
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.btmtest.R;
-import com.btmtest.TestOption;                                     //~v@@@R~
-import com.btmtest.dialog.RuleSettingEnum;                         //~v@@@R~
 import com.btmtest.gui.UButtonRG;
 import com.btmtest.gui.URadioGroup;
 import com.btmtest.utils.Prop;                                     //~v@@@R~
 import com.btmtest.utils.Dump;                                     //~v@@@R~
-import com.btmtest.dialog.UFDlg;
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.gui.USpinner;
-import com.btmtest.utils.UFile;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
-import java.io.File;
-
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@@I~
-import static com.btmtest.dialog.CompReqDlg.RANKIDX_YAKUMAN;
+import static com.btmtest.dialog.CompReqDlg.*;
+import static com.btmtest.dialog.HelpDialog.*;
 import static com.btmtest.dialog.RuleSettingEnum.*;                //~v@@@I~
 import static com.btmtest.game.GConst.*;
 
@@ -195,6 +192,13 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 	        RSD.swChangedYaku=swChanged;                           //~v@@@R~
         dismiss();                                                 //~v@@@M~
     }                                                              //~1602M~//~v@@@I~
+    //*******************************************************      //~vaa0I~
+    @Override                                                      //~vaa0I~
+    public void onClickHelp()                                      //~vaa0I~
+    {                                                              //~vaa0I~
+        if (Dump.Y) Dump.println("RuleSettingYaku.onClickHelp");   //~vaa0I~
+    	HelpDialog.newInstance(HELP_TITLEID,HELPFILE,HELP_BG_IMAGE,HELP_FG_IMAGE).show();//~vaa0I~
+    }                                                              //~vaa0I~
 	//***********************************************************  //~v@@@I~
     private void getValue()                                        //~v@@@I~
     {                                                              //~v@@@I~

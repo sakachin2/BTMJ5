@@ -1,5 +1,6 @@
-//*CID://+va70R~: update#= 792;                                    //~va66R~//~va70R~
+//*CID://+vaa2R~: update#= 793;                                    //+vaa2R~
 //**********************************************************************//~v101I~
+//2021/06/27 vaa2 Notify mode of Match                             //+vaa2I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/23 va62 no need to send to robot; GCM_PON,GCM_CHII,GCM_KAN(Rovbot ignores it but)//~va62I~
@@ -837,11 +838,11 @@ public class UserAction       //~v@@@R~
     	int rc=-1;                                                 //~va66I~
     	if ((TestOption.option2 & TO2_ROBOT_DISCARD_BUTTON)!=0)    //~va66I~
         {                                                          //~va66I~
-        	if (AG.aGC.getStatusPlayAlone()!=0)                        //+va70I~
-            {                                                      //+va70I~
-		        if (Dump.Y) Dump.println("UserAction.chkRobotTakenTestOption Test mode rc=-1 by playalone status");//+va70I~
-            	return rc;                                         //+va70I~
-            }                                                      //+va70I~
+        	if (AG.aGC.getStatusPlayAlone()!=0)                        //~va70I~
+            {                                                      //~va70I~
+		        if (Dump.Y) Dump.println("UserAction.chkRobotTakenTestOption Test mode rc=-1 by playalone status");//~va70I~
+            	return rc;                                         //~va70I~
+            }                                                      //~va70I~
         	int cp=AG.aPlayers.getCurrentPlayer();                 //~va66I~
             if (AG.aAccounts.isRobotPlayer(cp))                    //~va66I~
             {                                                      //~va66I~
@@ -1085,6 +1086,11 @@ public class UserAction       //~v@@@R~
         {                                                          //~v@@7I~
             return false;                                          //~v@@7I~
         }                                                          //~v@@7I~
+        if (swReceived && Pplayer!=PLAYER_YOU)                     //+vaa2I~
+        {                                                          //+vaa2I~
+	        if (PactionID==GCM_TAKE || PactionID==GCM_PON || PactionID==GCM_KAN || PactionID==GCM_CHII || PactionID==GCM_RON)//+vaa2I~
+            	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //+vaa2I~
+        }                                                          //+vaa2I~
         boolean rc=true;                                            //~v@@@R~
         swSendAll=true;                                      //~v@@@R~
         swRobot=true;                                              //~v@@@R~

@@ -1,5 +1,6 @@
-//*CID://+va8xR~: update#= 391;                                    //~va6aR~//~va8xR~
+//*CID://+vaaKR~: update#= 393;                                    //~vaaKR~
 //**********************************************************************//~v101I~
+//2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/12 va6a (BUG)TDF_LAST was not set to last discard(Haitei was valid but Hotei was not)//~va6aI~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
@@ -49,6 +50,7 @@ public class TileData                                              //~v@@@R~
     public static final int TDF_LOCKED_PONKAN   =0x020000;         //~v@@6I~
     public static final int TDF_DORA            =0x040000;         //~va60I~
     public static final int TDF_ROBOT_SELECTION =0x080000;         //~va60I~
+    public static final int TDF_DISCARDED_RED5  =0x100000;   //for tryNextTake, emulate discard      //~vaaKI~
                                                                    //~v@@@I~
     public static final int TDF_INTERCEPTED=(TDF_PON | TDF_CHII | TDF_RON | TDF_KAN_RIVER);//~v@@@I~
                                                                    //~v@@@I~
@@ -119,7 +121,7 @@ public class TileData                                              //~v@@@R~
     //*****************************************************        //~v@@@I~
      public String toString()                                      //~v@@@I~
      {                                                             //~v@@@I~
-        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder);//~v@@@I~//~v@@6R~//+va8xR~
+        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder);//~v@@@I~//~v@@6R~//~va8xR~
      }                                                             //~v@@@I~
     //*****************************************************        //~v@@6I~
      public static String toString(TileData Ptd)                   //~v@@6I~
@@ -193,6 +195,19 @@ public class TileData                                              //~v@@@R~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("TileData.setRed5 parm="+Ptrue);  //~v@@6I~
      }                                                             //~v@@@I~
+    //*****************************************************        //~vaaKI~
+     public void setDiscardedRed5(boolean Ptrue)                   //~vaaKI~
+     {                                                             //~vaaKI~
+       	if (Ptrue)                                                 //~vaaKI~
+       	{                                                          //~vaaKI~
+       		flag|=TDF_DISCARDED_RED5;	//0x100000;                //~vaaKI~
+        }                                                          //~vaaKI~
+        else                                                       //~vaaKI~
+       	{                                                          //~vaaKI~
+       		flag&=~TDF_DISCARDED_RED5;	//0x100000;                //~vaaKI~
+        }                                                          //~vaaKI~
+        if (Dump.Y) Dump.println("TileData.setDiscardedRed5 parm="+Ptrue);//~vaaKI~
+     }                                                             //~vaaKI~
     //*****************************************************        //~v@@@I~
     //* for clone                                                  //~v@@@I~
     //*****************************************************        //~v@@@I~
@@ -201,6 +216,12 @@ public class TileData                                              //~v@@@R~
         if (Dump.Y) Dump.println("TileData.isRed5="+((flag & TDF_RED5)!=0));//~v@@@I~
        	return (flag & TDF_RED5)!=0;                               //~v@@@I~
      }                                                             //~v@@@I~
+    //*****************************************************        //~vaaKI~
+     public boolean isDiscardedRed5()                              //~vaaKI~
+     {                                                             //~vaaKI~
+        if (Dump.Y) Dump.println("TileData.isDiscardedRed5="+((flag & TDF_DISCARDED_RED5)!=0));//+vaaKR~
+       	return (flag & TDF_DISCARDED_RED5)!=0;                     //~vaaKI~
+     }                                                             //~vaaKI~
     //*****************************************************        //~v@@@I~
     //*for not Red5;                                               //~va60I~
     //*****************************************************        //~va60I~

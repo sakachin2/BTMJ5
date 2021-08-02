@@ -1,5 +1,8 @@
-//*CID://+va98R~: update#= 511;                                    //~va98R~
+//*CID://+vabuR~: update#= 516;                                    //+vabuR~
 //**********************************************************************//~v101I~
+//2021/08/02 vabu change default delaytime 2-->1 sec               //+vabuI~
+//2021/07/13 vaaF setting option of waittimeby 0.5 second          //~vaaFI~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
 //2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/06/06 va93 setting of nakaduke was ignored                  //~va93I~
@@ -81,6 +84,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9602I~
 //  public static final int[] rbIDSuspendOption=new int[]{R.id.rbSuspendOptionGameover,R.id.rbSuspendOptionSuspend,R.id.rbSuspendOptionContinue};//~9820I~//~9822R~//~9B01R~
     public static final int[] rbIDSuspendOption=new int[]{R.id.rbSuspendOptionSuspend,R.id.rbSuspendOptionGameover,R.id.rbSuspendOptionContinue};//~9B01I~
+    public static final int[] rbIDDelayUnit=new int[]{R.id.rbDelayUnit1,R.id.rbDelayUnit05};//~vaaFI~
     public static final int SUSPEND_SUSPEND=0;                     //~9820I~//~9B01R~
     public static final int SUSPEND_GAMEOVER=1;                    //~9820I~//~9B01I~
     public static final int SUSPEND_CONTINUE=2;                    //~9822I~
@@ -136,8 +140,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int YAKUFIX_FIRST=1;                       //~va93I~
     public static final int YAKUFIX_FIRST=2;                       //~va93I~
     public static final int YAKUFIX_DEFAULT=YAKUFIX_LAST;          //~9516I~
-//  public static final int[] rbsYakuFixMultiwaitTake=new int[]{R.id.rbYakuFixMultiwaitOKTake,R.id.rbYakuFixMultiwaitOKTakeAllInHand,R.id.rbYakuFixMultiwaitOKTakeNo};//~va91M~//+va98R~
-    public static final int[] rbsYakuFixMultiwaitTake=new int[]{R.id.rbYakuFixMultiwaitOKTake,R.id.rbYakuFixMultiwaitOKTakeAllInHand};//+va98I~
+//  public static final int[] rbsYakuFixMultiwaitTake=new int[]{R.id.rbYakuFixMultiwaitOKTake,R.id.rbYakuFixMultiwaitOKTakeAllInHand,R.id.rbYakuFixMultiwaitOKTakeNo};//~va91M~//~va98R~
+    public static final int[] rbsYakuFixMultiwaitTake=new int[]{R.id.rbYakuFixMultiwaitOKTake,R.id.rbYakuFixMultiwaitOKTakeAllInHand};//~va98I~
     public static final int YAKUFIX_TAKE_ALL=0;                    //~va91I~
     public static final int YAKUFIX_TAKE_ALLINHAND=1;              //~va91I~
 //  public static final int YAKUFIX_TAKE_NO=2;                       //~va91I~//~va98R~
@@ -190,9 +194,11 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9412I~
     public static final int 	DEFAULT_ORDERPRIZE=1;	//5-10     //~9819I~
                                                                    //~9819I~
-    public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~9412R~
+//  public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~9412R~//+vabuR~
+    public static final int 	DEFAULT_DELAY_PONKAN=1;		//sec  //+vabuI~
     public static final int 	DEFAULT_DELAY_PONKAN_NOTIFYMODE=200;		//msec//~va70I~
-    public static final int 	DEFAULT_DELAY_TAKE=2  ;		//sec  //~9412I~
+//  public static final int 	DEFAULT_DELAY_TAKE=2  ;		//sec  //~9412I~//+vabuR~
+    public static final int 	DEFAULT_DELAY_TAKE=1  ;		//sec  //+vabuI~
     public static final int 	DEFAULT_DELAY_LAST=2;	//sec      //~9412R~
     public static final int 	DEFAULT_DELAY_DISCARD=0;           //~9622I~
     public static final int 	DEFAULT_DELAY_2TOUCH=2;            //~9B15I~
@@ -240,6 +246,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int 	DEFAULT_THINK_ROBOT=1;             //~va66I~
     public static final int 	DEFAULT_ALLOW_ROBOT_ALL=1;         //~va7eR~
     public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~
+    public static final int     DEFAULT_PLAY_MATCH_NOTIFY=1;       //~vaa2R~
                                                                    //~9413I~
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
     public static final String[] rankDrawnMangan=AG.resource.getStringArray(R.array.DrawnManganRank);//~9413I~
@@ -293,6 +300,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_TIMEOUT_TAKEKAN       =135;    //~9623I~//~9625R~
     public static final int    RSID_RULEWAIT              =136;    //~9629I~
     public static final int    RSID_TIMEOUT_TAKEROBOT     =137;    //~9701I~
+    public static final int    RSID_DELAY_UNIT            =138;    //~vaaFI~
                                                                    //~9408I~
 //  public static final int    RSID_DRAWN_MANGAN_YN       =140;    //~9413I~//~9505R~
 //  public static final int    RSID_DRAWN_MANGAN_PENDING  =141;    //~9413I~//~9422R~//~9505R~
@@ -325,6 +333,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_ALLOW_ROBOT_ALL       =174;    //~va66R~
     public static final int    RSID_ALLOW_ROBOT_ALL_BTN   =175;    //~va66I~
     public static final int    RSID_PLAY_ALONE_NOTIFY     =176;    //~va70I~
+    public static final int    RSID_PLAY_MATCH_NOTIFY     =177;    //~vaa2I~
                                                                    //~9414I~
     public static final int    RSID_BIRD                  =180;    //~9430I~
     public static final int    RSID_BIRD_PAY              =181;    //~9430I~
@@ -458,6 +467,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_DELAY_LAST           ,"DelayLastDrawn"       ),//~9412R~
     				new RSEnumPair(RSID_DELAY_DISCARD        ,"DelayDiscard"         ),//~9622R~
     				new RSEnumPair(RSID_DELAY_2TOUCH         ,"Delay2Touch"          ),//~9B15I~//~9C10R~
+    				new RSEnumPair(RSID_DELAY_UNIT           ,"DelayUnit"            ),//~vaaFI~
 //  				new RSEnumPair(RSID_2TOUCH_PON           ,"Delay2TPon"          ),//~9C03I~//~9C09R~//~9C10R~
 //  				new RSEnumPair(RSID_2TOUCH_RON           ,"Delay2TRon"           ),//~9C03I~//~9C09R~//~9C10R~
 //  				new RSEnumPair(RSID_2TOUCH_TO_PON        ,"Delay2TTOPon"         ),//~9C03R~//~9C09R~//~9C10R~
@@ -497,6 +507,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  				new RSEnumPair(RSID_ALLOW_ROBOT_ALL      ,"RobotPlayerAll"       ),//~va66R~
     				new RSEnumPair(RSID_ALLOW_ROBOT_ALL_BTN  ,"RobotPlayerAllBtn"    ),//~va66I~
     				new RSEnumPair(RSID_PLAY_ALONE_NOTIFY    ,"PlayAloneNotify"      ),//~va70I~
+    				new RSEnumPair(RSID_PLAY_MATCH_NOTIFY    ,"PlayMatchNotify"      ),//~vaa2I~
                                                                    //~9429I~
     				new RSEnumPair(RSID_BIRD                 ,"Bird"                 ),//~9430I~
     				new RSEnumPair(RSID_BIRD_PAY             ,"BirdPay"              ),//~9430I~

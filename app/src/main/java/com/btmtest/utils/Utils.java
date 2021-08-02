@@ -1,5 +1,7 @@
-//*CID://+va7bR~: update#= 288;                                    //~va7bR~
+//*CID://+vaafR~: update#= 309;                                    //~vaafR~
 //**********************************************************************//~1107I~
+//2021/07/01 vaaf Button BG color by span string because setbackgroundColor is expands button to its boundary.//~vaafI~
+//2021/06/16 vaa0 support <img> in htmlText                        //~vaa0I~
 //2021/04/06 va7b (Bug)HistryData setScore exception (out of bound)//~va7bI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -27,17 +29,29 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;                         //~v107R~
 import android.content.pm.PackageManager;                          //~v107R~
 import android.content.pm.PackageManager.NameNotFoundException;    //~v107R~
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.graphics.Color;                                     //~v@@@I~
 //import android.app.DialogFragment;                               //~va40R~
 import android.os.Build;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
+import android.widget.Button;
+import android.widget.TextView;
 
-import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
+import static androidx.core.text.HtmlCompat.*;
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.AG.*;//~v@21I~//~@@01I~
 
@@ -679,9 +693,9 @@ public class Utils                                            //~1309R~//~@@@@R~
         try                                                        //~va7bI~
         {                                                          //~va7bI~
             dbl=Double.parseDouble(Pstr);                          //~va7bI~
-            double tmp=dbl*Punit1+(dbl<0 ? -(Punit2-1) : (Punit2-1));//+va7bR~
-            pi=(((int)tmp)/Punit2)*Punit2;                         //+va7bR~
-            if (Dump.Y) Dump.println("Utils.parseDoubleToInt str="+Pstr+",dbl="+dbl+",tmp="+tmp+",pi="+pi);//+va7bR~
+            double tmp=dbl*Punit1+(dbl<0 ? -(Punit2-1) : (Punit2-1));//~va7bR~
+            pi=(((int)tmp)/Punit2)*Punit2;                         //~va7bR~
+            if (Dump.Y) Dump.println("Utils.parseDoubleToInt str="+Pstr+",dbl="+dbl+",tmp="+tmp+",pi="+pi);//~va7bR~
         }                                                          //~va7bI~
         catch(Exception e)                                         //~va7bI~
         {                                                          //~va7bI~
@@ -779,8 +793,54 @@ public class Utils                                            //~1309R~//~@@@@R~
     //*************************************************            //~va40I~
     public static String toString(int[] Psa2,int PctrSplit)        //~va40I~
     {                                                              //~va40I~
+    	if (Psa2==null)                                            //+vaafI~
+        	return "null";                                         //+vaafI~
     	return toString(Psa2,PctrSplit,Psa2.length);               //~va40I~
     }                                                              //~va40I~
+    //*************************************************            //~vaafI~
+    public static String toHexString(int[] Psa2,int PctrSplit)     //~vaafR~
+    {                                                              //~vaafI~
+    	if (Psa2==null)                                            //+vaafI~
+        	return "null";                                         //+vaafI~
+    	return toHexString(Psa2,PctrSplit,Psa2.length);            //~vaafI~
+    }                                                              //~vaafI~
+    //*************************************************            //~vaafI~
+    //*splitctr: 0=all,-1=up to max ctr                            //~vaafI~
+    //*************************************************            //~vaafI~
+    public static String toHexString(int[] Psa2,int PctrSplit,int PctrMax)//~vaafI~
+    {                                                              //~vaafI~
+        if (Psa2==null)                                            //~vaafI~
+        	return "null";                                         //~vaafI~
+    	if (PctrSplit==0)                                          //~vaafI~
+        {                                                          //~vaafI~
+        	return Arrays.toString(Psa2);                          //~vaafI~
+        }                                                          //~vaafI~
+        int ctrMax=Math.min(PctrMax,Psa2.length);                  //~vaafI~
+        StringBuffer sb=new StringBuffer();                        //~vaafI~
+        sb.append("[");                                            //~vaafI~
+        if (Psa2==null)                                            //~vaafI~
+	        sb.append("null");                                     //~vaafI~
+        else                                                       //~vaafI~
+        for (int ii=0;ii<ctrMax;ii++)     //account sequence       //~vaafI~
+        {                                                          //~vaafI~
+        	if (ii!=0)                                             //~vaafI~
+                if (PctrSplit<0)                                   //~vaafI~
+    	        	sb.append(",");                                //~vaafI~
+                else                                               //~vaafI~
+            	if (ii%PctrSplit==0)                               //~vaafI~
+                {                                                  //~vaafI~
+	    	        sb.append("]");                                //~vaafI~
+                    if (ii<ctrMax)                                 //~vaafI~
+		    	        sb.append("[");                            //~vaafI~
+                }                                                  //~vaafI~
+                else                                               //~vaafI~
+    	        	sb.append(",");                                //~vaafI~
+            sb.append(Integer.toHexString(Psa2[ii]));              //~vaafI~
+        }                                                          //~vaafI~
+        sb.append("]");                                            //~vaafI~
+        String s=sb.toString();                                    //~vaafI~
+        return s;                                                  //~vaafI~
+    }                                                              //~vaafI~
     //*************************************************            //~va60I~
     public static String toHexString(int[] Psa2)                   //~va60I~
     {                                                              //~va60I~
@@ -1187,4 +1247,109 @@ public class Utils                                            //~1309R~//~@@@@R~
     {                                                              //~va40I~
         return Html.fromHtml(PtextHtml);                           //~va40I~
     }                                                              //~va40I~
+//***********                                                      //~vaa0I~
+    public static Spanned fromHtmlImage(String PtextHtml)          //~vaa0I~
+    {                                                              //~vaa0I~
+    	if (Dump.Y) Dump.println("Utils.fromHtmlImage text="+PtextHtml);//~vaa0I~
+        UImageGetter imageGetter=new UImageGetter();           //~vaa0I~
+        Spanned s;                                                 //~vaa0I~
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) //api24 android7:N//~vaa0I~
+        {                                                          //~vaa0I~
+        	int flag=FROM_HTML_MODE_LEGACY;                        //~vaa0I~
+        	s=Html.fromHtml(PtextHtml,flag,imageGetter,null/*tagHandler*/);//~vaa0I~
+        }                                                          //~vaa0I~
+        else                                                       //~vaa0I~
+		    s=fromHtml_Under24(PtextHtml,imageGetter,null/*tagHandler*/);//~vaa0I~
+        return s;                                                  //~vaa0I~
+    }                                                              //~vaa0I~
+//*************************************************************    //~vaa0I~
+	@SuppressWarnings("deprecation")                               //~vaa0I~
+    private static Spanned fromHtml_Under24(String PtextHtml,Html.ImageGetter PimageGetter,Html.TagHandler PtagH)//~vaa0I~
+    {                                                              //~vaa0I~
+        return Html.fromHtml(PtextHtml,PimageGetter,PtagH);              //~vaa0I~
+    }                                                              //~vaa0I~
+//*************************************************************    //~vaa0I~
+	static class UImageGetter implements Html.ImageGetter                    //~vaa0I~
+    {                                                              //~vaa0I~
+    	@Override                                                  //~vaa0I~
+        public Drawable getDrawable(String Psrc)                   //~vaa0I~
+        {                                                          //~vaa0I~
+			String pkg=AG.context.getPackageName();                //~@@01I~//~vaa0I~
+        	int resID=AG.resource.getIdentifier(Psrc,"drawable",pkg);//~vaa0I~
+    		if (Dump.Y) Dump.println("Utils.UImageGetter.getDrawable src="+Psrc+",pkg="+pkg+",resID="+Integer.toHexString(resID));//~vaa0I~
+//          Drawable drawable=AG.resource.getDrawable(resID);      //~vaa0R~
+            Drawable drawable= ContextCompat.getDrawable(AG.context,resID);//~vaa0I~
+            int hh=drawable.getIntrinsicHeight();                  //~vaa0I~
+            int ww=drawable.getIntrinsicWidth();                   //~vaa0I~
+    		if (Dump.Y) Dump.println("Utils.UImageGetter.getDrawable intrinsic ww="+ww+",hh="+hh);//~vaa0I~
+            drawable.setBounds(0,0,ww,hh);                         //~vaa0I~
+            return drawable;                                       //~vaa0I~
+        }                                                          //~vaa0I~
+    }                                                              //~vaa0I~
+//*************************************************************    //~vaafR~
+//*background of text(small rect)                                  //~vaafR~
+//*************************************************************    //~vaafR~
+	public static void setSpanTextBG(TextView Pview, int Pcolor/*rgb only*/)//~vaafR~
+    {                                                              //~vaafR~
+    	int color=Pcolor|0x01000000;	//to                       //~vaafR~
+    	String txt=(String)Pview.getText();                        //~vaafR~
+    	String htmlText="<span style=\"background-color:#"         //~vaafR~
+						+Integer.toHexString(Pcolor).substring(2)  //~vaafR~
+						+"\">"                                     //~vaafR~
+                        +txt                                       //~vaafR~
+						+"</span>";                                //~vaafR~
+    	if (Dump.Y) Dump.println("Utils.setSpanTextBG color="+Integer.toHexString(Pcolor)+",htmlText="+htmlText+",view="+Pview.toString());//~vaafR~
+        Spanned strSpan=Utils.fromHtml(htmlText);                  //~vaafR~
+    	Pview.setText(strSpan,TextView.BufferType.SPANNABLE);      //~vaafR~
+    }                                                              //~vaafR~
+//*************************************************************    //~vaafR~
+//*background of text(small rect)                                  //~vaafR~
+//*************************************************************    //~vaafR~
+	public static void setSpanBG(TextView Pview,int Pcolor/*rgb only*/)//~vaafR~
+    {                                                              //~vaafR~
+    	if (Dump.Y) Dump.println("Utils.setSpanBG color="+Integer.toHexString(Pcolor)+",view="+Pview.toString());//~vaafR~
+        SpannableString ss=new SpannableString(Pview.getText());   //~vaafR~
+        BackgroundColorSpan bcs=new BackgroundColorSpan(Pcolor);   //~vaafR~
+        ss.setSpan(bcs,0,ss.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//~vaafR~
+        Pview.setText(ss);                                         //~vaafR~
+    }                                                              //~vaafR~
+//*************************************************************    //~vaafR~
+//*background of text(small rect)                                  //~vaafR~
+//*************************************************************    //~vaafR~
+	public static void setTintBG(TextView Pview,int Pcolor/*rgb only*/)//~vaafR~
+    {                                                              //~vaafR~
+    	if (Dump.Y) Dump.println("Utils.setTintBG color="+Integer.toHexString(Pcolor)+",view="+Pview.toString());//~vaafR~
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) //~vaafR~
+            Pview.getBackground().setTint(Pcolor);                 //~vaafR~
+        else                                                       //~vaafR~
+            Pview.setBackgroundColor(Pcolor);                      //~vaafR~
+//          Pview.getBackground().setTint(new ColorDrawable(Pcolor));//~vaafR~
+//      Pbtn.setBackground(new ColorDrawable(Pcolor));             //~vaafR~
+//      Pbtn.getBackground().setTintMode(PorterDuff.Mode.SRC_OVER);//~vaafR~
+    }                                                              //~vaafR~
+//*************************************************************    //~vaafR~
+	public static void clearTintBG(TextView Pview,Drawable Pdrawable)//~vaafR~
+    {                                                              //~vaafR~
+    	if (Dump.Y) Dump.println("Utils.clearTintBG view="+Pview.toString());//~vaafR~
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) //~vaafR~
+        {                                                          //~vaafR~
+//          Pview.setBackground(Pdrawable); //not work after setTint//~vaafI~
+            Pview.getBackground().setTintList(null);               //~vaafR~
+        }                                                          //~vaafR~
+        else                                                       //~vaafR~
+            Pview.setBackground(Pdrawable);                        //~vaafR~
+    }                                                              //~vaafR~
+//*************************************************************    //~vaafR~
+	public static void setBtnBG(Button Pbtn, int Pcolor)           //~vaafR~
+    {                                                              //~vaafR~
+    	if (Dump.Y) Dump.println("Utils.setBtnBG color="+Integer.toHexString(Pcolor)+",view="+Pbtn.toString());//~vaafR~
+//      Pbtn.getBackground().setColorFilter(Pcolor,PorterDuff.Mode.SRC_OVER);//~vaafR~
+//      Pbtn.getBackground().setColorFilter(Pcolor, PorterDuff.Mode.MULTIPLY);//~vaafR~
+//      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)//~vaafR~
+//  	{                                                          //~vaafI~
+//          ColorFilter cf=Pbtn.getBackground().getColorFilter();  //~vaafR~
+//      	if (Dump.Y) Dump.println("Utils.setBtnBG cf="+Utils.toString(cf));//~vaafR~
+//      }                                                          //~vaafR~
+        Pbtn.getBackground().setColorFilter(new PorterDuffColorFilter(Pcolor, PorterDuff.Mode.SRC_ATOP));//~vaafR~
+    }                                                              //~vaafR~
 }//class Utils                                                //~1309R~//~v@@@R~

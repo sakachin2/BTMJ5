@@ -1,5 +1,6 @@
-//*CID://+va16R~: update#= 435;                                    //~va11R~//~va16R~
+//*CID://+vaakR~: update#= 436;                                    //+vaakR~
 //**********************************************************************
+//2021/07/05 vaak (Bug)it is ignored dora open option of MinKan discard is not ron//+vaakI~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va16I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~va11I~
@@ -401,7 +402,7 @@ public class CompDlgDora extends AppCompatImageView               //~v@21R~//~92
     //*************************************************************//~v@21I~
 	private int drawDora(int Pxx,int Pyy,TileData Ptd,boolean PswFaceDown) //~v@21R~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("CompDlgDora.drawDora faceDown="+PswFaceDown);         //~v@21I~//~9219R~//+va16R~
+        if (Dump.Y) Dump.println("CompDlgDora.drawDora faceDown="+PswFaceDown);         //~v@21I~//~9219R~//~va16R~
         Bitmap bm=getBitmapDora(Ptd,PswFaceDown);                   //~v@21I~
         Graphics.drawBitmap(canvas,bm,Pxx,Pyy);        //~v@21R~
         int xx=Pxx+bm.getWidth();                                     //~v@21I~
@@ -441,7 +442,7 @@ public class CompDlgDora extends AppCompatImageView               //~v@21R~//~92
     private void drawDoraHidden(int PposX)                          //~v@21I~//~9810R~
     {                                                              //~v@21I~
     	int xx,yy;                                                 //~v@21I~
-        if (Dump.Y) Dump.println("CompDlgDora.drawDoraHidden ctrKanDraw="+ctrKanDrawn+",completeEswn="+completeEswn);//~v@21I~//~9810R~//+va16R~
+        if (Dump.Y) Dump.println("CompDlgDora.drawDoraHidden ctrKanDraw="+ctrKanDrawn+",completeEswn="+completeEswn);//~v@21I~//~9810R~//~va16R~
 //        if (swDrawDoraRight)                                       //~v@21I~//~9219R~
 //        {                                                          //~v@21I~//~9219R~
 //            xx=PposX+SPACING_X*4;                                  //~v@21I~//~9219R~
@@ -491,10 +492,12 @@ public class CompDlgDora extends AppCompatImageView               //~v@21R~//~92
         int[] rc=new int[(MAXCTR_KAN+1)*2*2];                      //~va11R~
         Arrays.fill(rc,-1);                                        //~va11I~
         TileData[] shuffled=AG.aTiles.getShuffled();               //~va11I~
-    //*open                                                        //~va11I~
+        if (Dump.Y) Dump.println("CompDlgDora.getDoraTiles ctrKan="+ctrKan+",ctrKanDraw="+AG.aStock.ctrKanDrawn);//+vaakI~
+//*open                                                        //~va11I~
         for (int ii=0;ii<=MAXCTR_KAN;ii++)                         //~va11I~
         {                                                          //~va11I~
-		    if (ii<=ctrKan)                                        //~va11I~
+//  	    if (ii<=ctrKan)                                        //~va11I~//+vaakR~
+    	    if (ii<=AG.aStock.ctrKanDrawn)                         //+vaakI~
             {                                                      //~va11I~
 	    //*open                                                    //~va11I~
 	    		td=shuffled[DORA_TDPOS-ii*STOCK_LAYER];            //~va11I~

@@ -1,5 +1,6 @@
-//*CID://+va8uR~: update#= 837;                                    //~va11R~//~va8uR~
+//*CID://+vab8R~: update#= 838;                                    //~va11R~//~va8uR~//+vab8R~
 //**********************************************************************//~v101I~
+//2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //+vab8I~
 //2021/04/29 va8u (Bug)ignore furiten/kataagari Take not AllInHand,chk skazuke condition only//~va8uI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
@@ -94,6 +95,17 @@ public class Rank                                                  //~va11R~
     private static final long MASK_YAKUMAN   =0x00FFFFFF00000000L; //~va11I~
     private static final long MASK_YAKU      =0x30FFFFFFFFFFFFFFL; //except dora//~va11R~
     private static final long BIT_BYRANK=(1L<<RYAKU_BYRANK);       //~va11I~
+                                                                   //+vab8I~
+    private static final int[] SdisplayTop={                       //+vab8I~
+	 RYAKU_REACH,                                                  //+vab8I~
+	 RYAKU_REACH_DOUBLE,                                           //+vab8I~
+	 RYAKU_REACH_OPEN,                                             //+vab8I~
+	 RYAKU_REACH_JUST,                                             //+vab8I~
+	 RYAKU_TAKE_NOEARTH,                                           //+vab8I~
+	 RYAKU_TANYAO,                                                 //+vab8I~
+	 RYAKU_PINFU,                                                  //+vab8I~
+	 RYAKU_7PAIR,                                                  //+vab8I~
+    	};                                                         //+vab8I~
                                                                    //~va11I~
                                                                    //~va11I~
 //  private static final long OVER_YAKUMAN=(1L<<RYAKU_YAKUMAN);    //~va11R~
@@ -345,11 +357,32 @@ public class Rank                                                  //~va11R~
     	StringBuffer sb=new StringBuffer();                        //~va11I~
         long lr=Prank.rank;                                        //~va11I~
         int ctr=0;                                                 //~va11I~
+        for (int ii=0;ii<SdisplayTop.length;ii++)                  //+vab8I~
+        {                                                          //+vab8I~
+            int yakuID=SdisplayTop[ii];                            //+vab8I~
+        	if ((lr & (0x01<<yakuID))!=0)                          //+vab8I~
+            {                                                      //+vab8I~
+                if (ctr++!=0)                                      //+vab8I~
+	            	sb.append(",");                                //+vab8I~
+            	sb.append(SyakuNameS[yakuID]);                     //+vab8I~
+            }                                                      //+vab8I~
+        }                                                          //+vab8I~
         for (int ii=0;ii<CTR_ALL;ii++,lr>>=1)                       //~va11R~
         {                                                          //~va11I~
         	if (!PswHonor)                                         //~va11I~
             	if (ii==RYAKU_ROUND||ii==RYAKU_WIND)                //~va11I~
                 	continue;                                      //~va11I~
+            boolean swTop=false;                                   //+vab8I~
+            for (int jj=0;jj<SdisplayTop.length;jj++)              //+vab8I~
+            {                                                      //+vab8I~
+                if (ii==SdisplayTop[jj])                           //+vab8I~
+                {                                                  //+vab8I~
+                    swTop=true;                                    //+vab8I~
+                    break;                                         //+vab8I~
+                }                                                  //+vab8I~
+            }                                                      //+vab8I~
+            if (swTop)                                             //+vab8I~
+                continue;                                          //+vab8I~
         	if ((lr & 0x01)!=0)                                    //~va11I~
             {                                                      //~va11I~
                 if (ctr++!=0)                                      //~va11I~
@@ -393,8 +426,8 @@ public class Rank                                                  //~va11R~
   	    addYaku(this,Pyaku,Pctr);                                  //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
-//  public static void addYaku(Rank Prank,int Pyaku,int Pctr)      //~va11I~//+va8uR~
-    private static void addYaku(Rank Prank,int Pyaku,int Pctr)     //+va8uI~
+//  public static void addYaku(Rank Prank,int Pyaku,int Pctr)      //~va11I~//~va8uR~
+    private static void addYaku(Rank Prank,int Pyaku,int Pctr)     //~va8uI~
     {                                                              //~va11I~
 //	    addYaku(Prank,Pyaku);                                      //~va11R~
         setCtr(Prank,Pyaku,Pctr);                                  //~va11I~
@@ -569,14 +602,14 @@ public class Rank                                                  //~va11R~
     	if (Dump.Y) Dump.println("Rank.resetWGR old="+rankToString(old)+",new="+toString(Prank));//~va11R~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
-//  public void setCtr(int Pyaku,int Pctr)                         //~va11R~//+va8uR~
-    private void setCtr(int Pyaku,int Pctr)                        //+va8uI~
+//  public void setCtr(int Pyaku,int Pctr)                         //~va11R~//~va8uR~
+    private void setCtr(int Pyaku,int Pctr)                        //~va8uI~
     {                                                              //~va11I~
 	    setCtr(this,Pyaku,Pctr);                                   //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
-//  public static void setCtr(Rank Prank,int Pyaku,int Pctr)       //~va11I~//+va8uR~
-    private static void setCtr(Rank Prank,int Pyaku,int Pctr)      //+va8uI~
+//  public static void setCtr(Rank Prank,int Pyaku,int Pctr)       //~va11I~//~va8uR~
+    private static void setCtr(Rank Prank,int Pyaku,int Pctr)      //~va8uI~
     {                                                              //~va11I~
     	if (Dump.Y) Dump.println("Rank.setCtr yaku="+Pyaku+",ctr="+Pctr);//~va11R~
     	if (Pyaku==RYAKU_CTR_DORA)                                 //~va11I~

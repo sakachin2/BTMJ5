@@ -1,6 +1,8 @@
-//*CID://+va8yR~: update#= 639;                                    //+va8yR~
+//*CID://+vaa2R~: update#= 646;                                    //~vaa2R~
 //**********************************************************************//~v101I~
-//2021/05/02 va8y (Bug)Kuikae err chk should check type also.      //+va8yI~
+//2021/06/28 vaa5 (Bug)Dump at canceled Kan at 1st take because lastDiscarded is null//~vaa5I~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
+//2021/05/02 va8y (Bug)Kuikae err chk should check type also.      //~va8yI~
 //2021/04/05 va78 (Bug)PlayAlone notifymode; next player is not blocked by pending on//~va78I~
 //2021/04/04 va77 (Bug)when manual robot(autotake) mode,chii is not notified because autotake timeout is not set//~va77I~
 //2021/03/31 va75 Autotake when Notify mode(Chii or Take)          //~va75I~
@@ -36,6 +38,8 @@ import com.btmtest.game.UserAction;                                //~v@@@I~
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 import com.btmtest.utils.sound.Sound;
+
+import java.util.Arrays;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.TestOption.*;
@@ -202,7 +206,7 @@ public class UADiscard                                             //~v@@@R~
         TileData td;                                               //~v@@@I~
         int statReachOld,statReachNew;                             //~v@@6I~
     //***********************                                      //~v@@@I~
-        if (Dump.Y) Dump.println("UADiscard.discard swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer);//~v@@@R~
+        if (Dump.Y) Dump.println("UADiscard.discard swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer+",intP="+ Arrays.toString(PintParm));//~v@@@R~//~vaa5R~
         eraseRiverTaken();                                         //~v@@@I~
         if (PswServer)                                             //~v@@@I~
         {                                                          //~v@@@I~
@@ -298,6 +302,8 @@ public class UADiscard                                             //~v@@@R~
     	Sound.play(SOUNDID_DISCARD,false/*not change to beep when beeponly option is on*/);//~9C03I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_DISCARD)//~v@@6I~
           	TestOption.disableBT();                                //~v@@6R~
+        if (Pplayer!=PLAYER_YOU && AG.swPlayMatchNotify)           //~vaa2R~
+        	AG.aRACall.discardedPlayMatchNotify(GCM_DISCARD,Pplayer,td);//~vaa2R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
@@ -347,6 +353,7 @@ public class UADiscard                                             //~v@@@R~
         if (AG.aTiles.chkLast())                                   //~v@@6I~
         	return true;                                           //~v@@6I~
         TileData td=PLS.getLastDiscarded();                        //~v@@6I~
+      if (td!=null)                                                //~vaa5I~
         td.setLock(false);                                         //~v@@6I~
 //      boolean swShadow=!accounts.isDrawThisDevice(Pplayer);      //~v@@@I~
 //      players.setNextPlayer(Pplayer,swShadow);                   //~v@@@I~
@@ -371,11 +378,15 @@ public class UADiscard                                             //~v@@@R~
 			if (Pplayer==PLAYER_YOU)                               //~v@@6I~
 	    	    UADelayed.postDelayedActionMsg(100,GCM_TAKE,null); //~v@@6R~
         }                                                          //~v@@6I~
+        if (AG.swPlayMatchNotify)                                  //+vaa2I~
+        {                                                          //+vaa2I~
+           	AG.aRACall.nextPlayerPlayMatchNotify(PswServer,Pplayer,td);//+vaa2I~
+        }                                                          //+vaa2I~
         setTimeout(PswServer,Pplayer/*nextPlayer*/);    //timeout to take by nextplayer//~v@@6R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@6I~
-	//*Server and Client                                           //~9B28I~
+	//*Server and Client from UserAction.action()                                           //~9B28I~//~vaa5R~
 	//*************************************************************************//~9B28I~
     public boolean nextPlayerPonKan(boolean PswServer,int Pplayer) //~v@@6I~
     {                                                              //~v@@6I~
@@ -396,10 +407,14 @@ public class UADiscard                                             //~v@@@R~
 //  		UA.setNoMsgToServer();                                 //~v@@6R~
 //      UADL.setRonable(false);     	//for dup ron availability //~9B28I~//~va70R~
 		UA.UADL.timeoutPonKan(PswServer);	//for client,save delayedAction//~v@@6I~
+      if (td!=null)                  //for safety                              //~vaa5I~//~vaa2R~
         td.setLockPonKan(false);	//after Robot ron chk for playalone mode//~va70I~
         UADL.setRonable(false);     //for dup ron availability, after robot ron chk for playalone mode//~va70I~
+      if (td!=null)                 //for safety                               //~vaa5I~//~vaa2R~
         if (PswServer)                                             //~va60R~
 		    AG.aRoundStat.timeoutPonKan(Pplayer,td);               //~va60R~
+        else                                                       //~vaa2I~
+		    AG.aRoundStat.timeoutPonKanClient(Pplayer,td);         //~vaa2I~
         return true;                                               //~v@@6I~
     }                                                              //~v@@6I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
@@ -484,6 +499,7 @@ public class UADiscard                                             //~v@@@R~
         int playerDiscarded= Players.prevPlayer(PLAYER_YOU);       //~va75I~
         int eswnDiscarded=Accounts.playerToEswn(playerDiscarded);  //~va75I~
         TileData tdDiscarded=AG.aPlayers.getLastDiscarded();       //~va75I~
+      if (tdDiscarded!=null)                                       //~vaa5I~
 	    rc=AG.aRACall.autoTakeTimeoutPlayAloneNotify(eswnPlayer,playerDiscarded,eswnDiscarded,tdDiscarded);//~va75R~
         return rc;                                                 //~va75I~
     }                                                              //~va75I~
@@ -560,8 +576,8 @@ public class UADiscard                                             //~v@@@R~
         else                                                       //~va15I~
         if ((tdRiver.flag & TDF_CHII)!=0)                          //~va15I~
         {                                                          //~va15I~
-          if (PtileSelected.type==tdRiver.type)                    //+va8yI~
-          {                                                        //+va8yI~
+          if (PtileSelected.type==tdRiver.type)                    //~va8yI~
+          {                                                        //~va8yI~
         	if (posRiver==0)	//left side eat                    //~va15I~
             {                                                      //~va15I~
             	if (PtileSelected.number==tdRiver.number+3)        //~va15I~
@@ -579,7 +595,7 @@ public class UADiscard                                             //~v@@@R~
         		    rc=true;                                       //~va15I~
                 }                                                  //~va15I~
             }                                                      //~va15I~
-          }                                                        //+va8yI~
+          }                                                        //~va8yI~
         }                                                          //~va15I~
     	if (rc)                                                    //~va15I~
         	GC.actionError(0,PLAYER_YOU,R.string.AE_SameMeld);         //~va15I~
@@ -594,6 +610,11 @@ public class UADiscard                                             //~v@@@R~
     {                                                              //~va60I~
     	int rc;                                                //~va60I~
 	    TileData tdDiscarded=PLS.getLastDiscarded();                //~va60I~
+	    if (tdDiscarded==null)                                     //~vaa5I~
+        {                                                          //~vaa5I~
+		    if (Dump.Y) Dump.println("UADiscard.getSameMeldTile player="+Pplayer+",lastDiscarded=null");//~vaa5I~
+        	return 0;                                              //~vaa5I~
+        }                                                          //~vaa5I~
 	    if (Dump.Y) Dump.println("UADiscard.getSameMeldTile player="+Pplayer+",lastDiscarded="+TileData.toString(tdDiscarded));//~va60I~
         if (typeSameMeld==EATCHANGE_ALLOK)                         //~va60I~
         {                                                          //~va60I~
