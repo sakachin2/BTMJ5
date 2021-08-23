@@ -1,6 +1,7 @@
-//*CID://+va47R~:                             update#=  493;       //+va47R~
+//*CID://+vac5R~:                             update#=  494;       //+vac5R~
 //*****************************************************************//~v101I~
-//2020/11/21 va47 (Bug)BT;suspend button disabled on server after disconnected//+va47I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2020/11/21 va47 (Bug)BT;suspend button disabled on server after disconnected//~va47I~
 //2020/11/20 va45 (Bug)WD:Suspend button was diable when disconnected//~va45I~
 //*****************************************************************//~va45I~
 //*BlietoothRecobectDialog                                       //~v@@@I~//~9A21R~
@@ -47,7 +48,8 @@ public class BTRDialog extends BTCDialog                           //~9A21R~
         	return null;                                           //~9709I~
         }                                                          //~9709I~
 		BTRDialog dlg=new BTRDialog();                             //~v@@@I~//~9A21R~
-    	UFDlg.setBundle(dlg,R.string.Title_BluetoothReconnect,R.layout.btrdialog,//~9227R~//~9A21R~
+//  	UFDlg.setBundle(dlg,R.string.Title_BluetoothReconnect,R.layout.btrdialog,//~9227R~//~9A21R~//+vac5R~
+    	UFDlg.setBundle(dlg,R.string.Title_BluetoothReconnect,(AG.swSmallFont ? R.layout.btrdialog_theme : R.layout.btrdialog),//+vac5I~
 				UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,            //~v@@@I~
 //  			R.string.Title_BluetoothReconnect,"BTRDialog");             //~v@@@I~//~9A21R~//~9C13R~
     			R.string.Title_BluetoothReconnect,HELPFILE);       //~9C13I~
@@ -285,7 +287,7 @@ public class BTRDialog extends BTCDialog                           //~9A21R~
 //          	btnConnect.setVisibility(View.VISIBLE);            //~9B07I~//~0218R~
 			btnConnect.setEnabled(!swReconnectedAll);              //~0218I~
         }                                                          //~9A30I~
-//      btnSuspendGame.setEnabled(swReconnectedAll);               //~9A30I~//+va47R~
-        btnSuspendGame.setEnabled(!swReconnectedAll);              //+va47I~
+//      btnSuspendGame.setEnabled(swReconnectedAll);               //~9A30I~//~va47R~
+        btnSuspendGame.setEnabled(!swReconnectedAll);              //~va47I~
     }                                                              //~9A23I~
 }//class                                                           //~v@@@R~

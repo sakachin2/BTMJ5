@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 598;                                    //~v@@@R~//~9301R~
+//*CID://+DATER~: update#= 599;                                    //~v@@@R~//~9301R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -191,7 +191,7 @@ public class LastGame                                              //~9504R~
     private boolean chkSkipDialog(int Pclosable)                   //~9526I~
     {                                                              //~9526I~
     	boolean rc=Pclosable==prevClosable;                        //~9526I~
-        if (Dump.Y) Dump.println("LastGame.chkSkipDialog closable="+Pclosable+",prev="+prevClosable+",rc="+rc);//~9526I~
+        if (Dump.Y) Dump.println("LastGame.chkSkipDialog closable=0x"+Integer.toHexString(Pclosable)+",prev=0x"+Integer.toHexString(prevClosable)+",rc="+rc);//~9526I~//+1820R~
         prevClosable=Pclosable;                                     //~9526I~
         return rc;                                                 //~9526I~
     }                                                              //~9526I~
@@ -394,7 +394,7 @@ public class LastGame                                              //~9504R~
         AG.aAccounts.sendToAll(GCM_LASTGAME,msgData);   //sendToServer if Client//~0111R~
     }                                                              //~9523I~//~9524I~
     //**************************************************************************//~9524I~
-    private static void sendToClientExceptSender(int PsenderEswn,int Pmsgid,int PtypeClose,int PendgameType,int PnextgameType)//~9524I~//+0226R~
+    private static void sendToClientExceptSender(int PsenderEswn,int Pmsgid,int PtypeClose,int PendgameType,int PnextgameType)//~9524I~//~0226R~
     {                                                              //~9524I~
         if (Dump.Y) Dump.println("FinalGameDlg:sendToAllExceptSender senderEswn="+PsenderEswn+",msgid="+Pmsgid+",endgameType="+PendgameType+",nextgameType="+PnextgameType+",typeClose="+Integer.toHexString(PtypeClose));//~9524I~
         String msgData=Accounts.getCurrentEswn()+MSG_SEPAPP2+Pmsgid+MSG_SEPAPP2+PtypeClose+MSG_SEPAPP2+PendgameType+MSG_SEPAPP2+PnextgameType;//~9524I~
@@ -402,7 +402,7 @@ public class LastGame                                              //~9504R~
         AG.aAccounts.sendToClientSkipByEswn(false/*swRobot*/,PsenderEswn,GCM_LASTGAME,msgData);//~9524I~
     }                                                              //~9524I~
     //**************************************************************************//~0217I~
-    private static void sendToClientExceptSender(int PsenderEswn,int Pmsgid,int PtypeClose,int PendgameType,int PnextgameType,int Pokng)//~0217I~//+0226R~
+    private static void sendToClientExceptSender(int PsenderEswn,int Pmsgid,int PtypeClose,int PendgameType,int PnextgameType,int Pokng)//~0217I~//~0226R~
     {                                                              //~0217I~
         if (Dump.Y) Dump.println("FinalGameDlg:sendToAllExceptSender senderEswn="+PsenderEswn+",msgid="+Pmsgid+",endgameType="+PendgameType+",nextgameType="+PnextgameType+",typeClose="+Integer.toHexString(PtypeClose)+",okng="+Pokng);//~0217I~
         String msgData=PsenderEswn+MSG_SEPAPP2+Pmsgid+MSG_SEPAPP2+PtypeClose+MSG_SEPAPP2+PendgameType+MSG_SEPAPP2+PnextgameType+MSG_SEPAPP2+Pokng;//~0217R~

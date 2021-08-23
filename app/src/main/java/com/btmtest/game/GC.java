@@ -1,7 +1,14 @@
-//*CID://+vaahR~: update#= 791;                                    //~vaaZR~//~vaahR~
+//*CID://+vacfR~: update#= 811;                                    //~vacfR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2021/08/22 vacf vertical button label for landscape              //~vacfI~
+//2021/08/21 vacd (Bug)PlayAlone mode; at blocked by Ron issued, Discard btn reset Cancel btn and issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vacdI~
+//2021/08/18 vacb Win btn do AinAny after WinAny button.           //~vacbI~
+//					(if Win is not cancalable Win btn dose not change to orange and Score btn winn change to orange directly)//~vacbI~
+//2021/08/18 vaca test SmallFont dialog                            //~vacaI~
+//2021/08/11 vac3 add BGM kouka                                    //~vac3I~
+//2021/08/03 vac0 display Match type                               //~vaahI~
 //2021/07/29 vabh (Bug)cancel of Ankan, sendmsg not GCM_NEXT_PLAYER but schedule autodiscard//~vaahI~
 //2021/07/24 vaaZ PlayAlone mode;after Cancel Ron,discard rejected by err msg of "push orange btn" when ron is cancelable//~vaaZI~
 //2021/07/23 vaaV PlayAlone mode;win btn after chankan cause err NotYourTurn//~vaaVI~
@@ -42,6 +49,7 @@ import com.btmtest.dialog.CompReqDlg;
 import com.btmtest.dialog.CompleteDlg;
 import com.btmtest.dialog.MenuInGameDlg;
 import com.btmtest.dialog.PrefSetting;                             //~9630I~
+import com.btmtest.dialog.RuleSettingEnum;
 import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.dialog.ScoreDlg;
@@ -57,6 +65,7 @@ import com.btmtest.utils.EventCB;
 import com.btmtest.utils.URunnable;
 import com.btmtest.utils.UView;//~v@@@R~
 
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
 import static com.btmtest.AG.*;
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.dialog.PrefSetting.*;
@@ -79,6 +88,7 @@ import static com.btmtest.game.UAD2Touch.*;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -141,8 +151,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int BTNID_F5      =R.id.Func5;   //TODO   //~v@@@I~
     private static final int BTNID_F6      =R.id.Func6;   //TODO   //~v@@@I~
                                                                    //~9301I~
-    private static final int COLOR_ACTIVEBTN=Color.argb(0xff,0xff,0xa5,0x00);//orange//~9301I~
+//  private static final int COLOR_ACTIVEBTN=Color.argb(0xff,0xff,0xa5,0x00);//orange//~9301I~//~vacbR~
     private static final int COLOR_BTN_NORMAL_BG= AG.getColor(R.color.btn_normal_bg);		//yellow//~vaafI~//~vaa2I~
+                                                                   //~vaahI~
+//  private static final int COLOR_GST_DEBUG=AG.getColor(R.color.btn_normal_bg);//~vaahR~
+    private static final int COLOR_GST_DEBUG  =Color.argb(0xff,0xc0,0xf0,0x00);//~vaahR~
+    private static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vaahI~
+    private static final int COLOR_GST_RELEASE_TEXT=Color.argb(0xff,0xff,0x00,0x00);//orange//~vaahR~
                                                                    //~v@@@I~
     private static final int URO_STARTGAME=1;                      //~v@@@I~
     private static final int URO_ADDVIEW=2;                        //~v@@@I~
@@ -200,6 +215,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	private boolean swCompReqButtonStatus=false;                   //~va97I~
 	private boolean swShownBtnCancel;                              //~vaahI~
 	private boolean swChankan;                                     //~vaaVI~
+	private boolean swWinAnywayPushed,swWinAnywayActive;           //~vacbR~
 //*************************                                        //~v@@@I~
 	public GC()                             //for IT override      //~va60I~
     {                                                              //~va60I~
@@ -217,6 +233,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~v@@@I~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
+			swWinAnywayPushed=false; swWinAnywayActive=false;      //~vacbI~
 //          UView.fixOrientation(true);                            //~v@@@I~//~va9fR~
 	    	UView.getScreenSize();                                 //~v@@@I~
             swPortrait=AG.scrWidth<AG.scrHeight;                   //~v@@@I~
@@ -468,10 +485,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~v@@@I~
     Button b1=                                                     //~9B20I~
         UButton.bind(btns1,BTNID_F1,this);   //TODO                //~v@@@R~
-        if (!AG.isDebuggable)                                      //~0123I~
-        	b1.setVisibility(View.GONE);                           //~0123I~
+//      if (!AG.isDebuggable)                                      //~0123I~//~vaahR~
+//      {                                                          //~vaahR~
+//        	b1.setVisibility(View.GONE);                           //~0123I~//~vaahR~
+//      }                                                          //~vaahR~
 //    if (!AG.aAccounts.isServer())                                //~9B20I~//~9B23R~
 //      b1.setEnabled(false);                                      //~9B20I~//~9B23R~
+	    showGameType(b1);                                          //~vaahI~
                                                                    //~9B20I~
     Button b2=                                                     //~0123I~
         UButton.bind(btns1,BTNID_F2,this);                         //~v@@@I~
@@ -627,7 +647,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~v@@@I~
     	int player;                                                //~v@@@I~
     	int id=Pbtn.getId();                                       //~v@@@I~
-        if (Dump.Y) Dump.println("GC.onClickButton id="+Integer.toHexString(id)+"="+Pbtn.getText());//~v@@@R~//~9B18R~
+        if (Dump.Y) Dump.println("GC.onClickButton id="+Integer.toHexString(id)+"="+Pbtn.getText()+",swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed);//~v@@@R~//~9B18R~//~vacbR~
+        if (id==BTNID_RON)                                         //~vacbI~
+        {                                                          //~vacbI~
+	        if (swWinAnywayActive)                                 //~vacbI~
+            	id=BTNID_ANYWAY;                                   //~vacbI~
+        }                                                          //~vacbI~
         switch(id)                                                 //~v@@@I~
         {                                                          //~v@@@I~
         case BTNID_F1:         //TODO                              //~v@@@R~
@@ -647,7 +672,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             if (AG.activeSessionType==AST_WD)                      //~9B03I~
                 TestOption.throwIOEWD();                             //~9B03I~//~9B05R~
             else                                                   //~9B03I~
-	          	AG.aBTI.mBTC.startBTActivity(BTControl.BTA_DISABLE);   //~9A26I~//~9B03R~
+//	          	AG.aBTI.mBTC.startBTActivity(BTControl.BTA_DISABLE);   //~9A26I~//~9B03R~//~vacaR~
+                TestOption.throwIOEBT();                           //~vacaI~
             break;                                                 //~v@@@I~
         case BTNID_F3:                                             //~v@@@R~
 //      	sendMsg(GCM_DICE,null);                                //~v@@@R~//~0316R~
@@ -1556,7 +1582,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     //*******************************************************************//~va06I~
     private void actionAnyway()                                    //~va06I~
     {                                                              //~va06I~
-		if (Dump.Y) Dump.println("GC.actionAnyway");               //~va06I~
+		if (Dump.Y) Dump.println("GC.actionAnyway entry swWinAnywayPushed="+swWinAnywayPushed+",swAnywayActive="+swWinAnywayActive);//~vacbI~
+        swWinAnywayPushed=true;  //activate when Win btn changed to orange//~vacbR~
+        swWinAnywayActive=false;                                   //~vacbI~
+		if (Dump.Y) Dump.println("GC.actionAnyway exit swWinAnywayPushed="+swWinAnywayPushed+",swAnywayActive="+swWinAnywayActive);               //~va06I~//~vacbR~
         UARon.winAnyway();                                         //~va06I~
     }                                                              //~va06I~
     //*******************************************************************//~9B25I~
@@ -1740,6 +1769,17 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //      	Utils.setSpanBG(Pbtn,Pcolor);                          //~vaa2R~//~vaafR~
 //      else                                                       //~vaa2I~//~vaafR~
 //  		Utils.setTintBG(Pbtn,Pcolor);                          //~vaa2I~//~vaafR~
+		if (Dump.Y) Dump.println("GC.setBtnBG entry swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed);//~vacbI~
+        swWinAnywayActive=false;                                   //~vacbI~
+		if (Pbtn.getId()==BTNID_RON)                               //~vacbI~
+        {                                                          //~vacbI~
+        	if (Pcolor==UAD2Touch.COLOR_BLOCKING && swWinAnywayPushed)//~vacbR~
+            {                                                      //~vacbI~
+            	swWinAnywayActive=true;                             //~vacbI~
+            }                                                      //~vacbI~
+        }                                                          //~vacbI~
+        swWinAnywayPushed=false;	//effective only once              //~vacbI~
+		if (Dump.Y) Dump.println("GC.setBtnBG return swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed);//~vacbR~
     }                                                              //~vaa2I~
     //*******************************************************************//~va70I~
 	private boolean isAvailableOpenReach()                         //~0329I~
@@ -1922,19 +1962,38 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
                 soundID=SOUNDID_BGM_GAME4FAST;                     //~va06I~
             }                                                      //~va06I~
             break;                                                 //~va06I~
+        case PS_BGM_SERIESK:                                       //~vac3I~
+            switch (PctrGame%PLAYERS)                              //~vac3I~
+            {                                                      //~vac3I~
+            case 0:                                                //~vac3I~
+                soundID=SOUNDID_BGM_EBURISHOU;                      //~vac3I~
+                break;                                             //~vac3I~
+            case 1:                                                //~vac3I~
+                soundID=SOUNDID_BGM_MIZUCHUKOUKA;                  //~vac3I~
+                break;                                             //~vac3I~
+            case 2:                                                //~vac3I~
+                soundID=SOUNDID_BGM_TOUCHIKUKOUKA;                 //~vac3I~
+                break;                                             //~vac3I~
+            case 3:                                                //~vac3I~
+                soundID=SOUNDID_BGM_KYOUTO;                       //~vac3I~
+                break;                                             //~vac3I~
+            default:                                               //~vac3I~
+	        	soundID=SOUNDID_BGM_TOP;                           //~vac3I~
+            }                                                      //~vac3I~
+            break;                                                 //~vac3I~
         default:                                                   //~va06I~
         	soundID=SOUNDID_BGM_TOP;                               //~va06I~
         }                                                          //~va06I~
-        if (typeBGM!=PS_BGM_NO)                                    //~va6iI~
-        {                                                          //~va6iI~
-            Rect r=Status.getGameSeq();                        //~va06I~//~va6iR~
-            int  gameCtrSet=r.left;                                //~va6iR~
-            if (Status.isFinalGame())                              //~va6iR~
-                soundID=SOUNDID_BGM_MIZUCHUKOUKA;                  //~va6iR~
-            else                                                   //~va6iR~
-            if (gameCtrSet==1 && PctrGame==0)  //1st round of sounth rotation//~va6iR~
-                soundID=SOUNDID_BGM_EBURISHOU;                     //~va6iR~
-        }                                                          //~va6iI~
+//        if (typeBGM!=PS_BGM_NO)                                    //~va6iI~//~vac3R~
+//        {                                                          //~va6iI~//~vac3R~
+//            Rect r=Status.getGameSeq();                        //~va06I~//~va6iR~//~vac3R~
+//            int  gameCtrSet=r.left;                                //~va6iR~//~vac3R~
+//            if (Status.isFinalGame())                              //~va6iR~//~vac3R~
+//                soundID=SOUNDID_BGM_MIZUCHUKOUKA;                  //~va6iR~//~vac3R~
+//            else                                                   //~va6iR~//~vac3R~
+//            if (gameCtrSet==1 && PctrGame==0)  //1st round of sounth rotation//~va6iR~//~vac3R~
+//                soundID=SOUNDID_BGM_EBURISHOU;                     //~va6iR~//~vac3R~
+//        }                                                          //~va6iI~//~vac3R~
       if (soundID!=-1)                                             //~va61I~
         Sound.playBGM(soundID);                                    //~va06I~
     }                                                              //~va06I~
@@ -2055,7 +2114,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         else                                                       //~va74I~
         if (PmsgID==GCM_DISCARD)                                   //~va80I~
         {                                                          //~va80I~
-	        if (statusPlayAlone!=GCM_RON)                          //~va80I~
+//          if (statusPlayAlone!=GCM_RON)                          //~va80I~//~vacdR~
             {                                                      //~va80I~
 		        if (Dump.Y) Dump.println("GC.resetPendingPlayAloneNotify ignored by status is not GCM_RON");//~va80I~
 //          	return;                                            //~va80I~//~vaahR~
@@ -2179,7 +2238,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case GCM_KAN:                                              //~va78I~
         case GCM_KAN_OR_PON:                                       //~va78I~
     		player=AG.aPlayers.getCurrentPlayer();    //for pass chk of PLS.isActionDoneExceptRon//~va78I~
-        	if (Dump.Y) Dump.println("GC.actionPlayAlone swCancel="+swCancel+",current player="+player);//+vaahI~
+        	if (Dump.Y) Dump.println("GC.actionPlayAlone swCancel="+swCancel+",current player="+player);//~vaahI~
           if (swCancel && player==PLAYER_YOU)   // you are taken   //~vaahI~
           	postAutoDiscardAnkan();                                //~vaahI~
           else                                                     //~vaahI~
@@ -2212,5 +2271,32 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~vaahI~
 		if (Dump.Y) Dump.println("GC.postAutoDiscardAnkan");       //~vaahI~
         AG.aUserAction.UAT.setAutoDiscardTimeout(true/*swServer*/,PLAYER_YOU,GCM_TAKE);//~vaahI~
+    }                                                              //~vaahI~
+    //*******************************************************************//~vaahI~
+    private void showGameType(Button Pbtn)                         //~vaahI~
+    {                                                              //~vaahI~
+        if (!AG.isDebuggable)                                      //~vaahI~
+        {                                                          //~vaahI~
+          	Pbtn.setEnabled(false);                                //~vaahI~
+            float px=Pbtn.getTextSize();                             //~vaahI~
+            Pbtn.setTextSize(COMPLEX_UNIT_PX,px*1.4f);             //~vaahR~
+            Pbtn.setTypeface(Pbtn.getTypeface(), Typeface.BOLD);   //~vaahI~
+  	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE);            //~vaahI~
+            setBtnBG(Pbtn,COLOR_GST_RELEASE);                      //~vaahI~
+            Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT);             //~vaahI~
+        }                                                          //~vaahI~
+        else                                                       //~vaahI~
+        {                                                          //~vaahI~
+            setBtnBG(Pbtn,COLOR_GST_DEBUG);                        //~vaahI~
+        }                                                          //~vaahI~
+        int intGST=RuleSetting.getGameSetType();                   //~vaahI~
+//      String strGST= RuleSettingEnum.strsGameSetType[intGST];    //~vaahI~//~vacfR~
+        String strGST;                                             //~vacfI~
+        if (AG.portrait)                                           //~vacfI~
+            strGST= RuleSettingEnum.strsGameSetType[intGST];       //~vacfI~
+        else                                                       //~vacfI~
+            strGST= RuleSettingEnum.strsGameSetTypeLand[intGST];   //~vacfI~
+		if (Dump.Y) Dump.println("GC.showGameType intGst="+intGST+",strGst="+strGST);//+vacfI~
+        Pbtn.setText(strGST);                                      //~vaahI~
     }                                                              //~vaahI~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

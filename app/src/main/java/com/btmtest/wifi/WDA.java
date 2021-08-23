@@ -1,6 +1,7 @@
-//*CID://+va66R~:                             update#=  237;       //+va66R~
+//*CID://+vac5R~:                             update#=  239;       //~vac5R~
 //*************************************************************************//~1A65I~
-//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
 //1Ad2 2015/07/17 HelpDialog by helptext                           //~1Ad2I~
@@ -55,6 +56,7 @@ public class WDA extends AxeDlg                                    //~9720I~
 {                                                                  //~1A65I~
 //  private static final int LAYOUTID=R.layout.device_wd;          //~1A65I~//~9720R~
     private static final int LAYOUTID= R.layout.wifidialog;         //~9720I~
+    private static final int LAYOUTID_SMALLFONT= R.layout.wifidialog_theme;//~vac5I~
 //  private static final int LAYOUTID_MDPI=R.layout.device_wd_mdpi;//~1A67I~//~9720R~
     private static final int TITLEID=R.string.DialogTitle_DeviceDetail;//~1A65R~
     private static final int HELP_TITLEID=TITLEID;                 //~9721I~
@@ -129,7 +131,8 @@ public class WDA extends AxeDlg                                    //~9720I~
         if (Dump.Y) Dump.println("WDA:newInstance");               //~9720R~
         WDA dlg=new WDA();                                         //~9720R~
         dlg.IPC=Pipc;                                              //~9720I~
-        AxeDlg.newInstance(dlg,TITLEID,LAYOUTID,HELPFILE);         //~9720I~
+//      AxeDlg.newInstance(dlg,TITLEID,LAYOUTID,HELPFILE);         //~9720I~//+vac5R~
+        AxeDlg.newInstance(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),HELPFILE);//+vac5I~
         return dlg;                                                //~9720I~
     }                                                              //~9720I~
     //***********************************************************************//~9724I~
@@ -1044,8 +1047,8 @@ public class WDA extends AxeDlg                                    //~9720I~
     	aWDActivity.cancelDiscovery();                              //~0124I~
         aWDActivity.unregisterReceiver();                          //~1A65I~//~9725M~
         IPC.dismissWDA();                                          //~1A67I~//~9725M~
-//      boolean enable=(swOwner)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~//+va66R~
-//      AG.aMainView.enableStartGame(enable);                      //~9724I~//+va66R~
+//      boolean enable=(swOwner)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~//~va66R~
+//      AG.aMainView.enableStartGame(enable);                      //~9724I~//~va66R~
         AG.aWDA=null;                                              //~9724M~
         WDI.dismissedWDA();                                         //~0113R~
 	}                                                              //~9724I~

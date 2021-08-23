@@ -1,5 +1,6 @@
-//*CID://+vaa0R~:                             update#=  508;       //~vaa0R~
+//*CID://+vac5R~:                             update#=  509;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //2021/06/26 vaa0 support <img> in htmlText                        //~vaa0I~
 //2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
@@ -41,6 +42,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 {                                                                  //~2C29R~
   	private static final int    TITLEID=R.string.Label_YakuList;   //~v@@@R~
 	private static final int    LAYOUTID=R.layout.setting_rule_yaku;//~v@@@R~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_yaku_theme;//+vac5I~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingYaku";        //~v@@@R~
     //**********************************************************   //~v@@@R~
@@ -82,7 +84,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     public static RuleSettingYaku newInstance(RuleSetting Pparent) //~v@@@R~
     {                                                              //~v@@@I~
         RuleSettingYaku dlg=new RuleSettingYaku();                 //~v@@@R~
-        UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~//+vac5R~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                        //~v@@@R~
         dlg.RSD=Pparent;                                           //~v@@@I~

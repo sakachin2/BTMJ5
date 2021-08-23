@@ -1,5 +1,6 @@
-//*CID://+va52R~:                             update#=  233;       //~va52R~
+//*CID://+vac5R~:                             update#=  242;       //~vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/29 va52 lint err(setStyle 1st parm)                      //~va52I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*common FragmentDialog                                           //~v@@@I~
@@ -51,6 +52,10 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     private static final String PARM_HELPTITLE="helptitle";                 //~v@@@I~
     private static final String PARM_FLAG="flag";                           //~v@@@I~
     private static final String PARM_LAYOUT="layout";                       //~v@@@I~
+                                                                   //~vac5I~
+    private static final int ID_SMALLFONT_BUTTON_WIDTH=R.dimen.smallfont_buttonheight_dialog_button;//~vac5I~
+    private static final int ID_LAYOUT_BOTTOM_BUTTONS=R.id.llBottomButtons;//~vac5I~
+    private static final int ID_LAYOUT_TOP_BUTTONS=R.id.llTopButtons;//+vac5I~
                                                                    //~v@@@I~
 //  private static final int BASE_NEXUS7=800;                      //~v@@@R~
                                                                    //~v@@@I~
@@ -176,17 +181,23 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     {                                                              //~v@@@I~
         super.onCreate(Pbundle);                                   //~v@@@I~
 //      swNarrow=(AG.portrait ? AG.scrWidth : AG.scrHeight)<BASE_NEXUS7;  //mediapad 3.7:600*1024,nexus7:800*1280//~v@@@R~
-    	if (Dump.Y) Dump.println("UFDlg.onCreate swSmallDevice="+AG.swSmallDevice);//~v@@@R~
+    	if (Dump.Y) Dump.println("UFDlg.onCreate swSmallDevice="+AG.swSmallDevice+",swSmallFont="+AG.swSmallFont);//~v@@@R~//~vac5R~
 //      if (swNarrow)                                              //~v@@@R~
+        if (AG.swSmallFont)                                        //~vac5I~
+        {                                                          //~vac5I~
+    		if (Dump.Y) Dump.println("UFDlg.onCreate setStyle DialogRhemeCustomNarrowSmallFont");//~vac5I~
+            setStyle(DialogFragment.STYLE_NORMAL/*=0*/,R.style.DialogThemeCustomNarrowSmallFont);//~vac5I~
+        }                                                          //~vac5I~
+        else                                                       //~vac5I~
         if (AG.swSmallDevice)                                         //~v@@@I~
         {                                                          //~v@@@I~
-    		if (Dump.Y) Dump.println("UFDlg.onCreate setStyle smallDevice");   //~v@@@I~//~9923R~
+    		if (Dump.Y) Dump.println("UFDlg.onCreate setStyle DialogThemeCustomNarrow");   //~v@@@I~//~9923R~//~vac5R~
 //          setStyle(0,R.style.DialogThemeCustomNarrow);           //~v@@@I~//~va52R~
             setStyle(DialogFragment.STYLE_NORMAL/*=0*/,R.style.DialogThemeCustomNarrow);//~va52I~
         }                                                          //~v@@@I~
         else                                                       //~9923I~
         {                                                          //~9923I~
-    		if (Dump.Y) Dump.println("UFDlg.onCreate setStyle non small");//~9923I~
+    		if (Dump.Y) Dump.println("UFDlg.onCreate setStyle DialogThemeCustomWithTitle");//~9923I~//~vac5R~
 //          setStyle(DialogFragment.STYLE_NO_TITLE,0);             //~9923I~
 //          setStyle(DialogFragment.STYLE_NORMAL,0);               //~9923I~
             setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogThemeCustomWithTitle); //TODO test//~9923I~
@@ -268,7 +279,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     	int ww=0;                                                  //~v@@@I~
         if (AG.swSmallDevice)                                      //~v@@@I~
 	    	ww=AG.portrait ? AG.scrWidthReal : AG.scrHeightReal;   //~v@@@I~
-    	if (Dump.Y) Dump.println("UFDlg.getDialogWidthSmallDevice ww=0");//~v@@@I~
+    	if (Dump.Y) Dump.println("UFDlg.getDialogWidthSmallDevice ww="+ww);//~v@@@I~//~va52R~
     	return ww;                                                 //~v@@@I~
     }                                                              //~v@@@I~
     //******************************************                   //~9819I~
@@ -432,7 +443,29 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
             swNoRule=PrefSetting.isNoRelatedRule();               //~v@@@I~
             showRule(swNoRule);                                    //~v@@@I~
         }                                                          //~v@@@I~
+        setButtonHeight(Playout);                                  //~vac5R~
 	}                                                              //~v@@@I~
+    //******************************************                   //~vac5I~
+    protected void setButtonHeight(View Playout)                   //~vac5R~
+    {                                                              //~vac5I~
+        if (Dump.Y) Dump.println("UFDlg:setButtonHeight swSmallFont="+AG.swSmallFont);//~vac5R~
+        if (AG.swSmallFont)                                        //~vac5I~
+        {                                                          //~vac5I~
+        	int hh=(int)(AG.resource.getDimension(ID_SMALLFONT_BUTTON_WIDTH));//~vac5I~
+        	UButton.setSize(Playout,ID_LAYOUT_BOTTOM_BUTTONS,0/*keep current width value*/,hh,false/*PswDPI*/);//~vac5R~
+        	UButton.setSize(Playout,ID_LAYOUT_TOP_BUTTONS,0/*keep current width value*/,hh,false/*PswDPI*/);//+vac5I~
+        }                                                          //~vac5I~
+	}                                                              //~vac5I~
+    //******************************************                   //~vac5I~
+    public static void setButtonHeight(View Playout,int PcontainerID)//~vac5I~
+    {                                                              //~vac5I~
+        if (Dump.Y) Dump.println("UFDlg:setButtonHeight swSmallFont="+AG.swSmallFont+",layoutID="+Integer.toHexString(PcontainerID));//~vac5I~
+        if (AG.swSmallFont)                                        //~vac5I~
+        {                                                          //~vac5I~
+        	int hh=(int)(AG.resource.getDimension(ID_SMALLFONT_BUTTON_WIDTH));//~vac5I~
+        	UButton.setSize(Playout,PcontainerID,0/*keep current width value*/,hh,false/*PswDPI*/);//~vac5I~
+        }                                                          //~vac5I~
+	}                                                              //~vac5I~
     //******************************************                   //~v@@@I~
     private void showRule(boolean PswNoRule)                      //~v@@@I~
     {                                                              //~v@@@I~
@@ -455,7 +488,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     public void onClickButton(Button Pbutton)                   //~v@@@R~
 	{                                                              //~v@@@I~
     	boolean rc=true;                                           //~v@@@I~
-        if (Dump.Y) Dump.println("UFDlg:onClickButton:"+Pbutton.getText());//~v@@@I~//+va52R~
+        if (Dump.Y) Dump.println("UFDlg:onClickButton:"+Pbutton.getText());//~v@@@I~//~va52R~
     	try                                                        //~v@@@I~
         {                                                          //~v@@@I~
         	int id=Pbutton.getId();                                //~v@@@I~

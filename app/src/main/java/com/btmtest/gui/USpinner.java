@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=   33;       //~v1EjI~//~9226R~
+//*CID://+vac5R~:                             update#=   34;       //+vac5R~
 //**************************************************************************//~1B0bI~//~v1EjI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //**************************************************************************//~1B0bI~//~v1EjI~
 package com.btmtest.gui;                                           //~v1EjI~
 
@@ -23,8 +24,10 @@ public class USpinner                                              //~v1EjI~
     private ArrayAdapter<CharSequence> adapter;                                  //~v1EjI~
 //  private static final int itemlayout=android.R.layout.simple_spinner_item;//~v1EjI~
     private static final int itemlayout=R.layout.spinner_item;     //~v1EjI~
+    private static final int itemlayout_smallfont=R.layout.spinner_item_theme;//+vac5I~
 //  private static final int dropdownlayout=android.R.layout.simple_spinner_dropdown_item;//~v1EjI~
     private static final int dropdownlayout=R.layout.spinner_dropdown;//~v1EjI~
+    private static final int dropdownlayout_smallfont=R.layout.spinner_dropdown_theme;//+vac5I~
     private int USParm;                                            //~v1EjI~
     private USpinnerI listener;
     private OnItemSelectedListener spListener;//~v1EjI~
@@ -40,8 +43,10 @@ public class USpinner                                              //~v1EjI~
     public USpinner(View Playout, int Pid)                                                 //~1112R~//~1219R~//~v1EjR~
     {                                                              //~1112I~//~v1EjI~
 		spinner=(Spinner)UView.findViewById(Playout,Pid);        //~v@@@I~//~v1EjI~
-    	adapter=new ArrayAdapter(AG.context,itemlayout);           //~v1EjR~
-    	adapter.setDropDownViewResource(dropdownlayout);           //~v1EjR~
+//  	adapter=new ArrayAdapter(AG.context,itemlayout);           //~v1EjR~//+vac5R~
+    	adapter=new ArrayAdapter(AG.context,(AG.swSmallFont ? itemlayout_smallfont : itemlayout));//+vac5I~
+//  	adapter.setDropDownViewResource(dropdownlayout);           //~v1EjR~//+vac5R~
+    	adapter.setDropDownViewResource(AG.swSmallFont ? dropdownlayout_smallfont : dropdownlayout);//+vac5I~
         spinner.setAdapter(adapter);                               //~v1EjI~
 //  	setListener(null);                                         //~9228I~//~9902R~
 		setListener(createListener());                             //~9902I~
@@ -147,15 +152,15 @@ public class USpinner                                              //~v1EjI~
                             }                                          //~9226I~//~9228R~
                         }                                              //~9226I~//~9228R~
                         else                                           //~9226I~//~9228R~
-                        {                                          //+9903I~
-                        	if (listener!=null)                        //~9902I~//+9903R~
-	                        	listener.onItemSelectedUS(spinner.getId(),Ppos,USParm);        //~v1EjR~//~9228R~//+9903R~
-                        	else                                       //~9902I~//+9903R~
-                            {                                      //+9903I~
-	                            if (Ppos!=idxFixed)	//changed from setting by dialog//+9903I~
-    	                        	CommonListener.onItemSelectedUS(spinner.getId(),Ppos);//~9902I~//+9903R~
-                            }                                      //+9903I~
-                        }                                          //+9903I~
+                        {                                          //~9903I~
+                        	if (listener!=null)                        //~9902I~//~9903R~
+	                        	listener.onItemSelectedUS(spinner.getId(),Ppos,USParm);        //~v1EjR~//~9228R~//~9903R~
+                        	else                                       //~9902I~//~9903R~
+                            {                                      //~9903I~
+	                            if (Ppos!=idxFixed)	//changed from setting by dialog//~9903I~
+    	                        	CommonListener.onItemSelectedUS(spinner.getId(),Ppos);//~9902I~//~9903R~
+                            }                                      //~9903I~
+                        }                                          //~9903I~
                     }                                              //~9228I~
                     catch(Exception e)                             //~9228I~
                     {                                              //~9228I~

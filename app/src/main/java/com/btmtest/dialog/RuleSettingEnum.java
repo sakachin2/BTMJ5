@@ -1,6 +1,7 @@
-//*CID://+vabuR~: update#= 516;                                    //+vabuR~
+//*CID://+vacfR~: update#= 517;                                    //+vacfR~
 //**********************************************************************//~v101I~
-//2021/08/02 vabu change default delaytime 2-->1 sec               //+vabuI~
+//2021/08/22 vacf vertical button label for landscape              //+vacfI~
+//2021/08/02 vabu change default delaytime 2-->1 sec               //~vabuI~
 //2021/07/13 vaaF setting option of waittimeby 0.5 second          //~vaaFI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
@@ -194,11 +195,11 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9412I~
     public static final int 	DEFAULT_ORDERPRIZE=1;	//5-10     //~9819I~
                                                                    //~9819I~
-//  public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~9412R~//+vabuR~
-    public static final int 	DEFAULT_DELAY_PONKAN=1;		//sec  //+vabuI~
+//  public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~9412R~//~vabuR~
+    public static final int 	DEFAULT_DELAY_PONKAN=1;		//sec  //~vabuI~
     public static final int 	DEFAULT_DELAY_PONKAN_NOTIFYMODE=200;		//msec//~va70I~
-//  public static final int 	DEFAULT_DELAY_TAKE=2  ;		//sec  //~9412I~//+vabuR~
-    public static final int 	DEFAULT_DELAY_TAKE=1  ;		//sec  //+vabuI~
+//  public static final int 	DEFAULT_DELAY_TAKE=2  ;		//sec  //~9412I~//~vabuR~
+    public static final int 	DEFAULT_DELAY_TAKE=1  ;		//sec  //~vabuI~
     public static final int 	DEFAULT_DELAY_LAST=2;	//sec      //~9412R~
     public static final int 	DEFAULT_DELAY_DISCARD=0;           //~9622I~
     public static final int 	DEFAULT_DELAY_2TOUCH=2;            //~9B15I~
@@ -251,6 +252,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
     public static final String[] rankDrawnMangan=AG.resource.getStringArray(R.array.DrawnManganRank);//~9413I~
     public static final String[] strsGameSetType=AG.resource.getStringArray(R.array.GameSetType);//~9501I~
+    public static final String[] strsGameSetTypeLand=AG.resource.getStringArray(R.array.GameSetTypeLand);//+vacfI~
     public static final int GST_E=0;                               //~9501I~
     public static final int GST_EE=1;                              //~9501I~
     public static final int GST_ES=2;                              //~9501I~

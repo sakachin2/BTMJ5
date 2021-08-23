@@ -1,5 +1,6 @@
-//*CID://+vaaFR~:                             update#=  500;       //~vaaFR~
+//*CID://+vaaFR~:                             update#=  501;       //~vaaFR~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vaaFI~
 //2021/07/13 vaaF setting option of waittimeby 0.5 second          //~vaaFI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
@@ -30,6 +31,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 {                                                                  //~2C29R~
   	private static final int    TITLEID=R.string.Title_OperationSetting; //~v@@@R~//~0211R~
 	private static final int    LAYOUTID=R.layout.setting_rule_operation;//~v@@@R~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_operation_theme;//+vaaFI~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
@@ -75,7 +77,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     public static RuleSettingOperation newInstance(RuleSetting Pparent)//~v@@@R~
     {                                                              //~v@@@I~
         RuleSettingOperation dlg=new RuleSettingOperation();       //~v@@@R~
-        UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~//+vaaFR~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vaaFI~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                   //~v@@@I~//~9C13R~
         dlg.RSD=Pparent;                                           //~v@@@I~
@@ -297,10 +300,10 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if ((TestOption.option2 & TO2_UNIT_MILISEC)!=0)            //~v@@@I~
         	rc*=10;		//by 10ms unit, 20-->200ms                 //~v@@@I~
         else                                                       //~v@@@I~
-        {                                                          //+vaaFI~
-        	rc*=1000;	//ms                                       //~v@@@I~//+vaaFR~
-        	rc/=getDelayUnit();	//ms                               //+vaaFI~
-        }                                                          //+vaaFI~
+        {                                                          //~vaaFI~
+        	rc*=1000;	//ms                                       //~v@@@I~//~vaaFR~
+        	rc/=getDelayUnit();	//ms                               //~vaaFI~
+        }                                                          //~vaaFI~
     	if (Dump.Y) Dump.println("RuleSetting.adjustTime Psec="+Psec+",rc="+rc);//~v@@@I~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~

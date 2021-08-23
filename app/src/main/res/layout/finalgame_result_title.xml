@@ -36,7 +36,7 @@
     </LinearLayout>
     <LinearLayout
          android:layout_width="0dp"
-         android:layout_weight="0.288"
+         android:layout_weight="0.28"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
     >
@@ -73,24 +73,24 @@
     </LinearLayout>
     <LinearLayout
          android:layout_width="0dp"
-         android:layout_weight="0.592"
+         android:layout_weight="0.2"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
+                android:gravity="center_vertical|right"
+                android:layout_marginRight="10dp"
     >
         <TextView
 	         android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|right"
             android:text="@string/Label_ScoreNewTotal"
-            android:layout_marginLeft="30dp"
-                android:maxLines="1"
         />     
-        <TextView
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"
-            android:gravity="center_vertical"
-             android:text="@string/Label_FinalGameTotalReach"
-                android:maxLines="1"
-        />     
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="0dp"
+         android:layout_weight="0.4"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
     </LinearLayout>
 </LinearLayout>

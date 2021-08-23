@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/Label_FinalLast"
             android:textSize="@dimen/textview_middle"
+                android:gravity="center_vertical"
         />
         <CheckBox
             android:id="@+id/cbClosablePending"

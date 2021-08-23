@@ -1,5 +1,6 @@
-//*CID://+va66R~:                             update#= 1111;       //~va66R~
+//*CID://+vac5R~:                             update#= 1112;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va03I~
@@ -70,6 +71,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private static final int TITLEID_REQ=R.string.Title_CompleteDlgReq;   //~9224I~//~9314R~
     private static final int TITLEID_RESP=R.string.Title_CompleteDlgResp;//~9314I~
     private static final int LAYOUTID=R.layout.completedlg;        //~9224I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.completedlg_theme;//+vac5I~
     private static final String HELPFILE="CompleteDlg";            //~9224I~
                                                                    //~9224I~
     private static final int COMPTYPE_NONE=0;                      //~9211I~
@@ -260,7 +262,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~v@@@I~//~9226R~
     	dlg=new CompleteDlg();                                     //~v@@@I~
 //  	dlg.ufdlg=UFDlg.newInstance(dlg,TITLEID,LAYOUTID,          //~9224R~//~9227R~
-    	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~
+//  	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~//+vac5R~
+    	UFDlg.setBundle(dlg,TITLEID_REQ,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
 				FLAG_OKBTN | FLAG_CANCELBTN | FLAG_CLOSEBTN | FLAG_HELPBTN | FLAG_RULEBTN,//~v@@@I~//~9314R~//~9708R~
 				TITLEID_REQ/*helptitleid*/,HELPFILE);         //~v@@@I~//~9224R~
         AG.aCompleteDlg=dlg;                                       //~v@@@I~
@@ -279,7 +282,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~9225I~//~9226R~
     	dlg=new CompleteDlg();                                     //~9225I~
 //  	dlg.ufdlg=UFDlg.newInstance(dlg,TITLEID,LAYOUTID,          //~9225I~//~9227R~
-    	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~
+//  	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~//+vac5R~
+    	UFDlg.setBundle(dlg,TITLEID_REQ,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
 				FLAG_OKBTN | FLAG_CANCELBTN | FLAG_CLOSEBTN | FLAG_HELPBTN | FLAG_RULEBTN,//~9225I~//~9316R~//~9708R~
 				TITLEID_REQ/*helptitleid*/,HELPFILE);                  //~9225I~
         AG.aCompleteDlg=dlg;                                       //~9225I~
@@ -3162,7 +3166,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
             UView.showToast(R.string.Err_CompReqNotShowable);      //~9B11I~
         else               //all replyedAll                        //~9B11R~
             rc=true;                                               //~9B11I~
-        if (Dump.Y) Dump.println("CompleteDlg.chkCompReqReplyAll rc="+rc);//~9B11I~//+va66R~
+        if (Dump.Y) Dump.println("CompleteDlg.chkCompReqReplyAll rc="+rc);//~9B11I~//~va66R~
         return rc;                                                 //~9B11I~
     }                                                              //~9B11I~
     //*******************************************************************//~9403I~

@@ -15,6 +15,12 @@
             android:text="@string/Label_Orientation"
                         android:textSize="@dimen/textview_middle"
         />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+    > <!--orientation-->
         <RadioGroup
             android:orientation="horizontal"
             android:layout_height="wrap_content"

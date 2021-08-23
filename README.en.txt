@@ -13,20 +13,20 @@ Any local "Yaku"(winning pattern) is acceptable
 Evaluation of winning hand is optional for brain training.
 Checking validity of winning hand is also optional,
 so "Chombo" by mistaken Ron may occur like as real Mahjong game.
-
-Device is required portrait width 600 pixels over and 800 pixels is recommended.
+Device is required portrait width >=360 dip, tablet is recommended.
 Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
-V1.14 : 2021/08/02
-        .Add unit=0.5 seconds to setting option of DelayTime for young players.
-        .Optionally notify possibility of Pon/Kan/Chii/Ron.
-        .Robot's dead hand option goes out of use.
-        .Strengthen smart Robot.
-        .Fix Bugs.
-         -Decision error of Mixed-Outsde-Hand.
-         -Client Win message may be overtaken by Robot's Draw+Discard, it cause hung.
+V1.15 : 2021/08/23
+        .Correspond to narrow phone device with dpi over 360dp.
+        .Bugs
+         -Win-Anyway was allowed at before other player discards after drawn.
+*********************************************************************************************
+V1.15 : 2021/08/23
+        .Correspond to narrow phone device with dpi over 360dp.
+        .Bugs
+         -Win-Anyway was allowed at before other player discards after drawn.
 *********************************************************************************************
 V1.14 : 2021/08/02
         .Add unit=0.5 seconds to setting option of DelayTime. Default was also changed from two to one second.

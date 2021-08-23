@@ -1,6 +1,8 @@
-//*CID://+va8bR~:                             update#= 1089;       //~va6bR~//~va66R~//+va8bR~
+//*CID://+vac8R~:                             update#= 1092;       //~vac8R~
 //*****************************************************************//~v101I~
-//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //+va8bI~
+//2021/08/18 vac8 always display point stick value on drawnDlglast(no reason to limit DrawnmanganAsRon)//~vac8I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
 //2021/02/10 va67 (Bug) isDummy paramerr; minsustop chk st drawnLast invalid robot chk//~va67I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -53,6 +55,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
                ,Alert.AlertI                                        //~9611I~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.drawndlglast;      //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.drawndlglast_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_DrawnDlgLast;//~9220I~//~9302R~//~9303R~//~9304R~//~9307R~
     private static final int TITLEID_NONDEALER=R.string.Title_DrawnDlgLastReceived;//~9307I~
     private static final String HELPFILE="DrawnDlgLast";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~
@@ -196,7 +199,8 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("DrawnDlgLast.newInstance eswn="+Peswn+",dataType="+PdataType+",reason="+Arrays.toString(PreasonResp)+",respstat="+Arrays.toString(PrespStat)+",dialogData="+Arrays.toString(PdialogData));//~9311R~
     	DrawnDlgLast dlg=new DrawnDlgLast();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~v@@@I~//~9220R~//~9305R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
 //      dlg.reason=Preason;                                        //~9304M~//~9311R~
@@ -285,16 +289,16 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 //      {                                                          //~9520I~//~9708R~
             RuleSetting.setPendingCont(PView,true/*swFixed*/);     //~9709I~
             RuleSettingYaku.setDrawnMangan(PView,true/*swFixed*/);         //~9422I~//~9520R~
-            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //+va8bI~
-            RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //+va8bI~
+            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //~va8bI~
+            RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //~va8bI~
             if (swDrawnManganAvailable)                            //~9520R~
                 RuleSetting.setMultiRon(PView,true/*swFixed*/);    //~9520R~
             else                                                   //~9520R~
                 ((LinearLayout)UView.findViewById(PView,R.id.llRuleMultiRon)).setVisibility(View.GONE);//~9520R~
 //      }                                                          //~9520I~//~9708R~
         RuleSettingYaku.setKeiten(PView,true/*swFixed*/);          //~va6bR~
-    	if (!swDrawnManganAsRon)                                   //~9604I~
-        	((LinearLayout)UView.findViewById(PView,R.id.llPointStick)).setVisibility(View.GONE);//~9604I~
+//  	if (!swDrawnManganAsRon)                                   //~9604I~//~vac8R~
+//      	((LinearLayout)UView.findViewById(PView,R.id.llPointStick)).setVisibility(View.GONE);//~9604I~//+vac8R~
                                                                    //~9604I~
     	Rect r=Status.getGameSeq();                                //~9506M~
         gameDup=r.right;                                           //~9506M~

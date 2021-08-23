@@ -1,4 +1,4 @@
-//*CID://+va9eR~: update#= 603;                                    //~va9cR~//~va9eR~
+//*CID://+va9eR~: update#= 604;                                    //~va9cR~//~va9eR~
 //**********************************************************************//~v101I~
 //2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9cI~
 //2021/06/17 va9c allow reach and warinig only for 2han-constraint or kataagari err. set reach at discard even issed warning//~va9cI~
@@ -14,7 +14,6 @@ package com.btmtest.game.UA;                                         //~1107R~  
 
 import com.btmtest.R;
 import com.btmtest.TestOption;
-import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
@@ -25,6 +24,7 @@ import com.btmtest.game.gv.GMsg;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.game.gv.River;
 import com.btmtest.utils.Dump;
+import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
@@ -457,9 +457,10 @@ public class UAReach                                                //~v@@@R~//~
         else                                                       //~va9eI~
         {                                                          //~va9eI~
         	GMsg.drawMsgbar(R.string.AE_NoReachErrToForce);        //~va9eI~
+            UView.showToastLong(R.string.AE_NoReachErrToForce);    //+va9eI~
             return false;                                          //~va9eR~
         }                                                          //~va9eI~
-        actionIDErr=0;                                             //+va9eI~
+        actionIDErr=0;                                             //~va9eI~
         GameViewHandler.sendMsg(msgID,null);                       //~va9eI~
         if (Dump.Y) Dump.println("UAReach.reachAnyway return true");//~va9eI~
         return true;                                               //~va9eI~

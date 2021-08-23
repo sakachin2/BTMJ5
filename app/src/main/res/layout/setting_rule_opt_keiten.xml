@@ -20,6 +20,12 @@
             android:text="@string/Label_PendingRank0"
 	            android:textSize="@dimen/textview_middle"
         />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
         <CheckBox
             android:id="@+id/cbPendingRankNo"
             android:layout_width="wrap_content"
@@ -55,7 +61,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Label_PendingRank2"
+	            android:textSize="@dimen/textview_middle"
         />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:gravity="center_vertical"
+    >
         <RadioGroup
             android:orientation="horizontal"
             android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1244;       //~9A21R~
+//*CID://+vac5R~:                             update#= 1245;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Rect;
@@ -39,6 +40,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
             implements UCheckBox.UCheckBoxI, URadioGroup.URadioGroupI//~0308I~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.suspenddlg;              //~9312R~//~9322R~//~9819R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.suspenddlg_theme;//+vac5I~
     private static final int TITLEID=R.string.Title_SuspendDlgReq;//~9307I~//~9312R~//~9322R~//~9818R~//~9822R~
     private static final int TITLEID_RESP=R.string.Title_SuspendDlgResp;//~9822I~
     private static final String HELPFILE="SuspendDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~//~9818R~
@@ -131,7 +133,8 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
     {                                                              //~9818I~
         if (Dump.Y) Dump.println("SuspendDlg.newInstance");        //~9818I~
     	SuspendDlg dlg=new SuspendDlg();                           //~9818I~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9818I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9818I~//+vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~9818I~
 				TITLEID,HELPFILE);                                 //~9818I~
         dlg.lastScore=AG.aAccounts.score;                          //~9818I~
@@ -995,7 +998,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
 //  	Status.endGame(endgameType,NGTP_GAMEOVER);   //reset ctrGame to 0,affect to getCurrentEswn and OKNGDlg.isdealer()//~9824I~
 		Rect r=Status.getGameSeq();                                //~9824I~
 	    r.bottom+=AG.aPlayers.ctrReach; //reachctr is not yet set(it will be set at Status.setGameSeq//~9829I~
-        if (Dump.Y) Dump.println("SuspendDlg.suspendGameSuspend type="+endgameType+",ctrReach="+AG.aPlayers.ctrReach+",gameSeqReach="+r.bottom);//~9824R~//+1312I~
+        if (Dump.Y) Dump.println("SuspendDlg.suspendGameSuspend type="+endgameType+",ctrReach="+AG.aPlayers.ctrReach+",gameSeqReach="+r.bottom);//~9824R~//~1312I~
         int[] gameSeq=new int[]{r.left/*wind*/,r.top/*gamectr*/,r.right/*dupctr*/,r.bottom/*reach ctr*/};//~9824I~
                                                                    //~9829I~
     	int[] score=AG.aAccounts.score;                            //~9824I~

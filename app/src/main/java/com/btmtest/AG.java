@@ -1,6 +1,8 @@
-//*CID://+vaa2R~:                             update#=  450;       //~va70R~//+vaa2R~
+//*CID://+vac5R~:                             update#=  454;       //~vac5R~
 //******************************************************************************************************************//~v101R~
-//2021/06/27 vaa2 Notify mode of Match                             //+vaa2I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac4I~
+//2021/08/11 vac4 for safety initialize scaleSmallDevice(currently swSmallDevice is checked)//~vaa4I~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
@@ -213,7 +215,12 @@ public class AG                                                    //~1107R~
     public  int       scrNavigationbarRightWidth;                  //~@@01I~
     public  int       scrPortraitWW;	//width of top panel(portrait)//~@@01I~
     public  boolean   swSmallDevice;      //portrait screen width<800pixel//~@@01R~
-    public  double    scaleSmallDevice;   //portrait screen width/800pixel//~@@01I~
+//  public  double    scaleSmallDevice;   //portrait screen width/800pixel//~@@01I~//~vac4R~
+    public  double    scaleSmallDevice=1.0;   //portrait screen width/800pixel//~vaa4I~
+    public  boolean   swSmallFont;        //portrait screen width<800pixel//+vac5M~
+    public  double    scaleSmallFont=1.0;        //portrait screen width<800pixel//+vac5M~
+    public  int       scrDencity;        //160:mdpi, 240:hdpi(*1.5), 320:xhdpi(*2), 480:xxhdpi(*3). 640:xxxhdpi(*4)//+vac5I~
+    public  int       scrPortraitWidthDPI;       //portrait        //+vac5I~
 //    private static View      currentLayout;//~1120I~               //~1428R~//~1Ad7R~
 //    public static int       currentLayoutId;                       //~1428R~//~1Ad7R~
 //    public static boolean currentIsDialog;                         //~1428R~//~1Ad7R~
@@ -414,7 +421,7 @@ public class AG                                                    //~1107R~
     private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~
     public boolean swTrainingMode;                                 //~va66R~
     public boolean swPlayAloneNotify;                              //~va70I~
-    public boolean swPlayMatchNotify;                              //+vaa2I~
+    public boolean swPlayMatchNotify;                              //~vaa2I~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
 //************************************                             //~@@01I~

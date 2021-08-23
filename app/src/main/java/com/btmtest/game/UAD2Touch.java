@@ -1,5 +1,8 @@
-//*CID://+vaa2R~:                             update#=  265;       //~vaa2R~//~vaafR~//+vaa2R~
+//*CID://+vaccR~:                             update#=  270;       //~vaccR~
 //*****************************************************************//~v101I~
+//2021/08/21 vacc (Bug)Match mode; at blocked by Ron issued, Discard btn issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vaccI~
+//2021/08/18 vacb Win btn do AinAny after WinAny button.           //~vacbI~
+//					(if Win is not cancalable Win btn dose not change to orange and Score btn winn change to orange directly)//~vacbI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //*****************************************************************//~v101I~
@@ -24,7 +27,8 @@ import static com.btmtest.game.gv.GMsg.*;
 
 public class UAD2Touch                                             //~v@@@R~
 {                                                                  //~2C29R~
-    private static final int COLOR_BLOCKING= Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~v@@@R~
+//  private static final int COLOR_BLOCKING= Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~v@@@R~//~vacbR~
+    public  static final int COLOR_BLOCKING= Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~vacbI~
     private static final int COLOR_MORE= Color.argb(0xff,0xff,0xff,0x00);   //Light's orange//~v@@@I~
     private static final int COLOR_NOTIFY= AG.getColor(R.color.btn_notify);		//yellow//~vaa2R~
     public static final int COLOR_NORMAL=-1;   //gc.btnbackground  //~v@@@R~
@@ -629,10 +633,32 @@ public class UAD2Touch                                             //~v@@@R~
         return rc;                                                 //~9C06I~
     }                                                              //~9C06I~
     //*******************************************************      //~9C06I~
-    public boolean is2ndTouchOtherAction(int PactionID)            //~9C06I~
+    //*from UADelayed2.isYourTurn                                  //~vaccI~
+    //*******************************************************      //~vaccI~
+//  public boolean is2ndTouchOtherAction(int PactionID)            //~9C06I~//~vaccR~
+    public int is2ndTouchOtherAction(int PactionID)                //~vaccI~
     {                                                              //~9C06I~
+    	int msgid=0;                                               //~vaccI~
     	boolean rc=yourStatus==YS_BLOCKED_TOP && yourAction!=PactionID;        //1st blocker with the action//~9C06I~
-        if (Dump.Y) Dump.println("UAD2Touch.is2ndTouchOtherAction rc="+rc+",actionID="+PactionID+",yourStatus="+yourStatus+",yourAction="+yourAction);//~9C06I~
-        return rc;                                                 //~9C06I~
+        if (rc)                                                    //~vaccI~
+        {                                                          //~vaccI~
+            switch (yourAction)                                    //~vaccI~
+            {                                                      //~vaccI~
+            case GCM_PON:                                          //~vaccI~
+            case GCM_KAN:                                          //~vaccI~
+            case GCM_CHII:                                         //~vaccI~
+	            msgid=R.string.ActionBlockedYouAreNotBlockerOfTheAction;//~vaccI~
+                break;                                             //~vaccI~
+//          case GCM_RON:                                          //+vaccR~
+//          	if (PactionID!=GCM_RON_ANYWAY)                     //+vaccR~
+//  	            msgid=R.string.AE_CancelAtFirst;               //+vaccR~
+//              break;                                             //+vaccR~
+            default:                                               //~vaccI~
+	            msgid=R.string.AE_CancelAtFirst;                   //~vaccI~
+            }                                                      //~vaccI~
+        }                                                          //~vaccI~
+        if (Dump.Y) Dump.println("UAD2Touch.is2ndTouchOtherAction rc="+rc+",msgid="+Integer.toHexString(msgid)+",actionID="+PactionID+",yourStatus="+yourStatus+",yourAction="+yourAction);//~9C06I~//~vaccR~
+//      return rc;                                                 //~9C06I~//~vaccR~
+        return msgid;                                                     //~vaccI~
     }                                                              //~9C06I~
 }//class                                                           //~v@@@R~

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+> 
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+		    android:gravity="center_vertical"
+    >
+        <LinearLayout
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+		    android:gravity="center_vertical"
+		    android:layout_weight="0.45"
+        >
+            <TextView
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                         android:layout_weight="0.4"
+		                android:gravity="center_vertical"
+                    android:text="@string/Label_DrawnMangan"
+                    android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                android:maxLines="1"
+            />         
+            <LinearLayout
+                 android:orientation="horizontal"
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                             android:layout_weight="0.6"
+            >
+                <TextView
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                            android:layout_marginRight="1dp"
+                        android:text="@string/Label_PointAmmountColon"
+                android:maxLines="1"
+                />     
+                <!--Spinner
+                     android:id="@+id/spnDrawnMangan"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                /-->
+                <TextView
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:id="@+id/tvDrawnManganPoint"
+                    android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                />     
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+             android:orientation="horizontal"
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+		    android:layout_weight="0.55"
+        >
+            <include layout="@layout/eswn_checkbox"
+            />   <!--gainer-1 -->
+        </LinearLayout>
+    </LinearLayout>   <!--abnormal Rank and Player-->
+</LinearLayout>

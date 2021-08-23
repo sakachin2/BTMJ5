@@ -150,7 +150,6 @@
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:text="@string/Label_Force_Reach"
-                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
@@ -172,10 +171,9 @@
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:text="@string/Label_ResetOpenReach"
-                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
-                 android:backgroundTint="@color/btn_normal_bg"
+                 android:backgroundTint="@color/action_cancel"
                  android:textColor="@color/btn_normal_fg"
             />
              <Button
@@ -194,10 +192,9 @@
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:text="@string/Label_ResetReach"
-                android:background="@color/action_cancel"
                 android:visibility="gone"
                  android:textAllCaps="false"
-                 android:backgroundTint="@color/btn_normal_bg"
+                 android:backgroundTint="@color/action_cancel"
                  android:textColor="@color/btn_normal_fg"
              />
              <Button

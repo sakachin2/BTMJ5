@@ -1,6 +1,7 @@
-//*CID://+va40R~:                             update#=  490;       //+va40R~
+//*CID://+vac5R~:                             update#=  493;       //~vac5R~
 //*****************************************************************//~v101I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
     private static final int HELP_TITLEID=R.string.Title_RuleFileDlg;//~9616R~
     private static final String HELPFILE="RuleFileDlg";           //~9614I~//~9616R~//~9C13R~
     private static final int LAYOUTID=R.layout.rulefiledlg;         //~9614I~//~9616R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.rulefiledlg_theme;//~vac5I~
     private static final String PREFIX_SYNCDATE="._";              //~9B09I~
     private static final int UCBP_MULTISELECT=1;                   //~0114I~
                                                                    //~0114I~
@@ -51,7 +53,8 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
     {                                                              //~9616I~
     	RuleFileDlg dlg=new RuleFileDlg();                         //~9616R~
 //  	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),LAYOUTID,//~9616I~//~0114R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~0114I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~0114I~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);//~9616I~//~9C13R~
         Bundle b=dlg.bundle;                                       //~9616I~
         b.putString(PARM_FILTER,Pfilter);                          //~9616I~
@@ -86,8 +89,8 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
 //  	String title=Utils.getStr(swLoad ? TITLEID_LOAD : TITLEID_SAVE)+"："+((workDirSD!=null) ? workDirSD : pathDataDir);//~9617R~//~0114R~
     	String action=Utils.getStr(swLoad ? R.string.Load : R.string.Save);//~0114I~
     	String path=(workDirSD!=null) ? workDirSD : pathDataDir;   //~0114I~
-//      Spanned title= Html.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//+va40R~
-        Spanned title=Utils.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//+va40I~
+//      Spanned title= Html.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//~va40R~
+        Spanned title=Utils.fromHtml(Utils.getStr(R.string.Title_RuleFileDlgFolder,action,path));//~va40I~
         getDialog().setTitle(title);                                           //~9617I~
     }                                                              //~9617I~
     //*********************************************************************//~9B09I~

@@ -1,6 +1,7 @@
-//*CID://+va8qR~:                             update#=  798;       //~va11R~//+va8qR~
+//*CID://+vac5R~:                             update#=  800;       //~vac5R~
 //*****************************************************************//~v101I~
-//2021/04/26 va8q (Bug)shows "app checkValue option is off" even if option is on;//+va8qI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/04/26 va8q (Bug)shows "app checkValue option is off" even if option is on;//~va8qI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -19,10 +20,12 @@ import com.btmtest.utils.Utils;
 
 import static com.btmtest.dialog.CompReqDlg.*;
 import static com.btmtest.game.UA.Rank.*;
+import static com.btmtest.StaticVars.AG;                           //+vac5I~
 
 public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9220R~//~va11R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.showyakudlg;      //~9220I~//~va11R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.showyakudlg_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_ShowYakuDlg;//~9220I~//~va11R~
     private static final String HELPFILE="ShowYakuDlg";                //~9220I~//~va11R~
     private RonResult ronResult;                                   //~va11I~
@@ -96,7 +99,8 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("ShowYakuDlg.newInstance result="+Presult.toString());        //~9226I~//~va11R~
     	ShowYakuDlg dlg=new ShowYakuDlg();                                     //~v@@@I~//~9220R~//~9221R~//~va11R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~//~9220R~//~9708R~//~va11R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         dlg.ronResult=Presult;                                     //~va11I~
@@ -132,7 +136,7 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
     	int ctrDora=longRank.getDora();                            //~va11R~
     	int ctrDragon=longRank.getWGR();                           //~va11R~
     	txt="";                                                    //~va11I~
-//    	txt+=Utils.getStr(R.string.Info_NoOptionShowValue);        //~va11I~//+va8qR~
+//    	txt+=Utils.getStr(R.string.Info_NoOptionShowValue);        //~va11I~//~va8qR~
         if (!longRank.isYakumanExceptByRank()) //except kazoeyakuman//~va11I~
 		    txt+=ronResult.han+" "+Utils.getStr(R.string.Label_Han)+" : ";//~va11I~
     	txt+=Utils.getStr(R.string.Label_Dora)+" = "+ctrDora+" , "+Utils.getStr(R.string.Label_Dragon)+" = "+ctrDragon;//~va11I~

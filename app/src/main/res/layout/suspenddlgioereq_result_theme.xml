@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>   <!--***each line of score result***-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    >
+        <LinearLayout
+             android:layout_width="0dp"
+             android:layout_weight="0.3"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                android:gravity="center_vertical"
+        >
+            <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                android:id="@+id/tvCurrentEswn"
+                android:maxLines="1"
+            /> 
+            <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                android:id="@+id/tvIOErr"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/editable"
+                android:maxLines="1"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="0dp"
+             android:layout_weight="0.3"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+        >
+            <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                android:id="@+id/tvServerClient"
+                android:maxLines="1"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="0dp"
+             android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+                        android:gravity="center_vertical"
+        >
+            <TextView
+                 android:layout_height="wrap_content"
+                 android:layout_width="fill_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                     android:id="@+id/memberName"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                    android:layout_marginLeft="5dp"
+                android:maxLines="1"
+            />     
+            <!--    android:text="name"-->
+		</LinearLayout>
+	</LinearLayout><!--1st line-->
+
+</LinearLayout>

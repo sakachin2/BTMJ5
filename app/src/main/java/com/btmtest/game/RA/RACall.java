@@ -1,5 +1,6 @@
-//*CID://+vabtR~: update#= 347;                                    //~vabrR~//~vabtR~
+//*CID://+vac1R~: update#= 351;                                    //~vac1R~//~vabfR~//~vac1R~
 //**********************************************************************//~v101I~
+//2021/08/05 vac1 call pon for honor tile at near final round if top, but if only not in east wind//~vac1I~
 //2021/08/01 vabt Pon for 1st discard of honor tile if GrillBird option is on in East only round.//~vabtI~
 //2021/08/01 vabr avoid other color chii when intent is samecolor  //~vabrI~
 //2021/07/29 vabp (Bug of vaad) at human take, not notified Ron if after reach called//~vabpI~
@@ -2125,6 +2126,7 @@ public class RACall                                               //~v@@@R~//~va
         {                                                          //~vabfI~
         	int idx=AG.aAccounts.playerToPosition(ii);             //~vabfI~
         	int score=scoreS[idx];	//account index seq            //~vabfI~
+        	if (Dump.Y) Dump.println("RACall.isStatusHurryUpToGoal player="+ii+",score="+score+",scoreHurryUpGoal="+scoreHurryUpGoal);//+vac1I~
             if (score>scoreHurryUpGoal && score>mx)                //~vabfR~
             {                                                      //~vabfI~
             	mx=score;                                          //~vabfI~
@@ -2133,7 +2135,11 @@ public class RACall                                               //~v@@@R~//~va
         }                                                          //~vabfI~
         if (Dump.Y) Dump.println("RACall.isStatusHurryUpToGoal mxPlayer="+mxPlayer+",Pplayer="+Pplayer+",mxScore="+mx);//~vabfI~
         if (mxPlayer==Pplayer)	//robot is top                     //~vabfI~
+        {                                                          //~vac1I~
         	rc=Status.isNearFinalGame();                           //~vabfI~
+            if (rc)                                                //~vac1I~
+            	rc=Accounts.playerToEswn(Pplayer)!=ESWN_E;	//call if robot is not East wind//~vac1I~
+        }                                                          //~vac1I~
         if (Dump.Y) Dump.println("RACall.isStatusHurryUpToGoal rc="+rc+",Pplayer="+Pplayer);//~vabfI~
         return rc;                                                 //~vabfI~
     }                                                              //~vabfI~
@@ -2152,7 +2158,7 @@ public class RACall                                               //~v@@@R~//~va
     private boolean isStatusAimToHigherScore(int Pplayer,int Pintent)//~vabtI~
     {                                                              //~vabtI~
     	boolean rc=false;                                          //~vabtI~
-        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore player="+Pplayer+",intent="+Integer.toHexString(Pintent));//+vabtR~
+        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore player="+Pplayer+",intent="+Integer.toHexString(Pintent));//~vabtR~
         int[] scoreS=AG.aAccounts.score;                           //~vabtI~
         int debt=scorePlus;                                        //~vabtI~
         int limit=debt-Complete.POINT_RANKM; //mangan under debt   //~vabtI~

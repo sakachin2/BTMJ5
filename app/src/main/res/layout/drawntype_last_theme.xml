@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> 
+<!-- ** halfway drawn type radio buttons -->
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+        > <!--drawn type radio buttons-->
+        	<RadioGroup
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/rgDrawnType"
+        	>
+                <RadioButton
+                    android:id="@+id/rbDrawnPendingNo"
+                    android:layout_height="wrap_content"
+            		android:layout_width="wrap_content"
+                    android:text="@string/Label_PendingNo"
+                    android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                />
+                <RadioButton
+                    android:id="@+id/rbDrawnPending"
+                    android:layout_height="wrap_content"
+            		android:layout_width="wrap_content"
+                    android:text="@string/Label_Pending"
+                    android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                />
+        	</RadioGroup>
+            <CheckBox
+                android:id="@+id/cbDrawnMangan"
+                android:layout_height="wrap_content"
+            		android:layout_width="wrap_content"
+                android:text="@string/Label_DrawnMangan"
+                    android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                android:layout_marginLeft="20px"
+                android:layout_weight="1"
+            />
+        </LinearLayout> <!--drawn type radio buttons-->
+</LinearLayout>

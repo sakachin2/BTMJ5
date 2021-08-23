@@ -20,11 +20,12 @@
         />
         <Button
             android:id="@+id/btnRuleRelated"             
-            android:layout_height="@dimen/btn_rule_related_height"
+             android:layout_height="@dimen/btn_rule_related_height" 
             android:layout_width="@dimen/btn_rule_related_width"
+             android:background="@color/btn_other" 
                     android:text="@string/View"
                         android:textSize="@dimen/btn_rule_related_textsize"
-                    android:background="@color/btn_other"
+                 android:backgroundTint="@color/btn_other"
             android:layout_gravity="center_vertical"
             android:gravity="center"
         />

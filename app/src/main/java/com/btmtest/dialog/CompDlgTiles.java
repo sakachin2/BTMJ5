@@ -1,5 +1,7 @@
-//*CID://+DATER~: update#= 522;                                    //~v@21R~//~9218R~
+//*CID://+vac7R~: update#= 527;                                    //~vac7R~
 //**********************************************************************
+//2021/08/18 vac7 (Bug)99 tile did not dispaly taken               //~vac9I~//~vac7R~
+//**********************************************************************//~vac9I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen
 //**********************************************************************
@@ -75,7 +77,7 @@ public class CompDlgTiles extends AppCompatImageView               //~v@21R~//~9
     private boolean swReacher;                                     //~9302R~
     private boolean swSingleLine;                                  //~9302R~
     private boolean swRequestedLayout;                             //~9302I~
-    private boolean swPending;                                     //~9309I~
+    private boolean swPending;   //tenpai at drawn last            //~9309I~//~vac7R~
     public int widthTileImage;                                     //~9815I~
     private int heightTileImage;                                   //~0326I~
 //  private View layoutDialog;                                     //~9925I~//~9927R~
@@ -83,6 +85,7 @@ public class CompDlgTiles extends AppCompatImageView               //~v@21R~//~9
 	private int shiftEarth,firstPosEarth,endPosEarth;                          //~0326I~//~0327R~
 	private boolean swChkEarthPosition;                            //~0326I~
 	private int stroke_width;                                      //~0401I~
+	private static boolean swShowHandAllStatic;                    //+vac7I~
     //**************************************************************//~v@@@R~//~v@21R~
     //*if calss defined in xml                                     //~v@@@I~//~v@21R~
     //**************************************************************//~v@@@I~//~v@21R~
@@ -130,6 +133,15 @@ public class CompDlgTiles extends AppCompatImageView               //~v@21R~//~9
     {                                                              //~9228I~
 	    return setImageLayout(PView,PeswnReach,PswPending,null/*compstat*/);//~9815I~
     }                                                              //~9815I~
+    //******************************************                   //+vac7I~
+    public static CompDlgTiles setImageLayoutHandAll(View PView,int Peswn)//+vac7I~
+    {                                                              //+vac7I~
+        if (Dump.Y) Dump.println("CompDlgTiles.setImageLayoutHandAll eswnReach="+Peswn+",PView="+PView.toString());//+vac7I~
+		swShowHandAllStatic=true;                                  //+vac7I~
+	    CompDlgTiles dlg=setImageLayout(PView,Peswn,false/*PswPending*/,null/*compstat*/);//+vac7I~
+		swShowHandAllStatic=false;                                 //+vac7I~
+        return dlg;                                                //+vac7I~
+    }                                                              //+vac7I~
 //    //******************************************                   //~9815I~//~9927R~
 ////  public static CompDlgTiles setImageLayout(View PView,int PeswnReach,boolean PswPending)//~9815I~//~9927R~
 //    public static CompDlgTiles setImageLayout(View PView,int PeswnReach,boolean PswPending,Complete.Status PcompStat)//~9815I~//~9927R~
@@ -217,7 +229,7 @@ public class CompDlgTiles extends AppCompatImageView               //~v@21R~//~9
     //******************************************                   //~9927I~
     public static CompDlgTiles setImageLayout(View PView,int PeswnReach,boolean PswPending,Complete.Status PcompStat)//~9927I~
     {                                                              //~9927I~
-        if (Dump.Y) Dump.println("CompDlgTiles.setImageLayout eswnReach="+PeswnReach+",PView="+PView.toString());//~9927I~
+        if (Dump.Y) Dump.println("CompDlgTiles.setImageLayout eswnReach="+PeswnReach+",swPending="+PswPending+",PView="+PView.toString());//~9927I~//~1818R~
         GCanvas gcanvas = AG.aGCanvas;                             //~9927I~
         MJTable table = gcanvas.table;                             //~9927I~
         int pieceH=table.handPieceH;                               //~9927I~
@@ -229,7 +241,8 @@ public class CompDlgTiles extends AppCompatImageView               //~v@21R~//~9
         ViewGroup.LayoutParams llp=llImage.getLayoutParams();      //~9927I~
         boolean swReacher=PeswnReach!=-1;                          //~9927I~
         int heightTileImage=pieceH+CompDlgTiles.SPACING_Y*2;       //~9927I~
-        int widthTileImage=getHandsMaxWidth(PeswnReach==-1/*swComp*/,pairctr);//~9927I~
+//      int widthTileImage=getHandsMaxWidth(PeswnReach==-1/*swComp*/,pairctr);//~9927I~//+vac7R~
+        int widthTileImage=getHandsMaxWidth((PeswnReach==-1 || swShowHandAllStatic)/*swComp*/,pairctr);//+vac7I~
         llp.width=widthTileImage;                                  //~9927I~
         llp.height=heightTileImage;                                //~9927I~
         if (Dump.Y) Dump.println("CompDlgTiles.setImageLayout llImage llp w="+llp.width+",h="+llp.height);//~9927I~
@@ -693,15 +706,15 @@ public class CompDlgTiles extends AppCompatImageView               //~v@21R~//~9
         if (Dump.Y) Dump.println("CompDlgTiles.drawPiece swComplete="+PswComplete);//~v@21R~
         if (PswComplete)                                           //~v@21R~
         {                                                          //~v@21I~
-//      	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,COMPLETE_STROKE_WIDTH,COMPLETE_COLOR);//~v@21I~//+0401R~
-        	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,stroke_width,COMPLETE_COLOR);//+0401I~
+//      	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,COMPLETE_STROKE_WIDTH,COMPLETE_COLOR);//~v@21I~//~0401R~
+        	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,stroke_width,COMPLETE_COLOR);//~0401I~
         }                                                          //~v@21I~
         else                                                       //~v@21I~
         {                                                          //~v@21I~
-//      	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,HandsTouch.WIDTH_SELECTED,HandsTouch.COLOR_SELECTED);//~v@21I~//+0401R~
-        	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,stroke_width,HandsTouch.COLOR_SELECTED);//+0401I~
+//      	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,HandsTouch.WIDTH_SELECTED,HandsTouch.COLOR_SELECTED);//~v@21I~//~0401R~
+        	Graphics.drawRectFrameBitmap(canvas,Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,stroke_width,HandsTouch.COLOR_SELECTED);//~0401I~
         }                                                          //~v@21I~
-        if (Dump.Y) Dump.println("CompDlgTiles.drawPiece stroke_width="+stroke_width);//+0401I~
+        if (Dump.Y) Dump.println("CompDlgTiles.drawPiece stroke_width="+stroke_width);//~0401I~
     }                                                              //~v@21I~
     //*******************************************************************//~9219I~//~9815R~
 //  private static int getPairCtr(int PeswnReach)                                //~9219I~//~9301R~//~9815R~

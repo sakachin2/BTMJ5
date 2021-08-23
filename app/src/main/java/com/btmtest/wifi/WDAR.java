@@ -1,6 +1,6 @@
-//*CID://+va45R~:                             update#=  213;       //+va45R~
+//*CID://+va45R~:                             update#=  214;       //~va45R~
 //*************************************************************************//~1A65I~
-//2020/11/20 va45 (Bug)WD:Suspend button was diable when disconnected//+va45I~
+//2020/11/20 va45 (Bug)WD:Suspend button was diable when disconnected//~va45I~
 //1Ad2 2015/07/17 HelpDialog by helptext                           //~1Ad2I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
 //1Ac3 2015/07/06 WD:Unpare after active session was closed        //~1Ac3I~
@@ -41,6 +41,7 @@ import static com.btmtest.StaticVars.AG;                           //~9721I~
 public class WDAR extends WDA                                      //~9B03I~
 {                                                                  //~1A65I~
     private static final int LAYOUTID= R.layout.wifireconnectdlg;         //~9720I~//~9B04R~
+    private static final int LAYOUTID_SMALLFONT= R.layout.wifireconnectdlg_theme;//+va45I~
     private static final int TITLEID=R.string.DialogTitle_WDAR;//~1A65R~//~9B04R~
     private static final int HELP_TITLEID=TITLEID;                 //~9721I~
                                                                    //~9B04I~
@@ -94,7 +95,8 @@ public class WDAR extends WDA                                      //~9B03I~
         if (Dump.Y) Dump.println("WDAR:newInstance Pipc="+Pipc.toString());               //~9720R~//~9B03R~//~9B07R~
         WDAR dlg=new WDAR();                                         //~9720R~//~9B03R~
         dlg.IPC=Pipc;                                              //~9720I~
-        AxeDlg.newInstance(dlg,TITLEID,LAYOUTID,HELPFILE);         //~9720I~
+//      AxeDlg.newInstance(dlg,TITLEID,LAYOUTID,HELPFILE);         //~9720I~//+va45R~
+        AxeDlg.newInstance(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),HELPFILE);//+va45I~
         return dlg;                                                //~9720I~
     }                                                              //~9720I~
     //***********************************************************************//~9724I~//~9B03R~
@@ -456,8 +458,8 @@ public class WDAR extends WDA                                      //~9B03I~
 //          	btnConnect.setVisibility(View.GONE);               //~9B04I~//~0218R~
 			btnConnect.setEnabled(!swReconnectedAll);              //~0218I~
         }                                                          //~9B04I~
-//      btnSuspendGame.setEnabled(swReconnectedAll);               //~9B04I~//+va45R~
-        btnSuspendGame.setEnabled(!swReconnectedAll);              //+va45I~
+//      btnSuspendGame.setEnabled(swReconnectedAll);               //~9B04I~//~va45R~
+        btnSuspendGame.setEnabled(!swReconnectedAll);              //~va45I~
     }                                                              //~9B04I~
 //                                                                   //~9729I~//~9B03R~
 ////    //**********************************                           //~1A65I~//~9721R~//~9B03R~

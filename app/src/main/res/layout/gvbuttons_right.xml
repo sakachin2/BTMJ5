@@ -17,6 +17,7 @@
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
              />
+         <!--    android:rotation="-90" ;rotate not only text but butoon itself-->
              <Button
                         android:layout_width="@dimen/gvbtn_right"
                         android:layout_height="fill_parent"

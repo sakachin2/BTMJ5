@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"  
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+     android:id="@+id/DialogContainer"
+>
+    <LinearLayout
+         android:layout_width="fill_parent" 
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+                android:background="#ffccff99"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent" 
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+        >
+            <include layout="@layout/compreqdlg_point_theme"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="fill_parent" 
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                android:gravity="center_vertical"
+        >
+            <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+            >
+                <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/Label_YakuList"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                    android:layout_marginRight="5dp"
+                />
+                <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tvYaku"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_weight="1"
+                />
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:id="@+id/llTopButtons"          
+            >
+                <Button
+                    android:id="@+id/btnShowYaku"           
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/ShowYaku"
+                    android:layout_gravity="center_vertical|right"
+                />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"   
+    > <!--above buttons-->
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater2"
+        />
+        <ScrollView
+             android:layout_width="fill_parent" 
+             android:layout_height="wrap_content"
+             android:scrollbarStyle="insideOverlay"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            >   <!--one view in scroll-->
+                    <include layout="@layout/rule_related_theme"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:orientation="vertical"
+                            android:layout_height="wrap_content"
+                                android:id="@+id/llRelatedRule"
+                                android:visibility="gone"
+                    >
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+
+                        />
+                        <LinearLayout
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                        >
+                            <include layout="@layout/setting_rule_opt_dora_theme"
+                            />
+                        </LinearLayout>
+                        <LinearLayout
+                             android:layout_width="wrap_content"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <LinearLayout
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                        >
+                            <include layout="@layout/setting_rule_opt_spritpos_theme"
+                            />
+                        </LinearLayout>
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/setting_rule_yaku_fix_theme"
+                        />
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+                        />
+                        <include layout="@layout/setting_rule_yaku_fix2_theme"
+                        />
+                    </LinearLayout> <!--RelatedRule-->
+
+            </LinearLayout><!-- one view hosted in scrollview-->
+        </ScrollView>
+    </LinearLayout> <!--above buttons-->
+    <LinearLayout
+         android:layout_width="fill_parent" 
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--resp and buttons-->
+
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent" 
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+                android:background="#ffccff99"
+        > <!--OK/NG reply -->
+            <include layout="@layout/eswnresponse_theme"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+             style="?android:attr/buttonBarStyle"
+                android:id="@+id/llBottomButtons"   
+        >   <!--buttons-->
+            <Button
+                android:id="@+id/OK"                
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:text="@string/OK"
+                android:layout_gravity="center_vertical"
+            />
+             <!--style="?android:attr/buttonBarButtonStyle"-->
+            <Button
+                android:id="@+id/CompleteNG"                
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:text="@string/NG"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/Send"                
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:text="@string/Send"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/ShowRule"                
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:text="@string/Label_ShowRule"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/Close"               
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:text="@string/Close"
+                android:layout_gravity="center_vertical"
+            />
+            <Button
+                android:id="@+id/Help"               
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:text="@string/Help"
+                android:layout_gravity="center_vertical"
+            />
+        </LinearLayout>
+    </LinearLayout> <!--resp and buttons-->
+</LinearLayout>

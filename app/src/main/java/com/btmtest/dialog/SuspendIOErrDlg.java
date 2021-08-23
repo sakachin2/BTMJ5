@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1255;       //~v@@@R~//~9211R~//~v@01R~//~0218R~
+//*CID://+bac5R~:                             update#= 1256;       //+bac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+bac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.text.Spanned;
@@ -32,6 +33,7 @@ public class SuspendIOErrDlg  extends SuspendDlg                   //~v@01R~
             implements UCheckBox.UCheckBoxI                        //~v@01I~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.suspenddlgioe;              //~9312R~//~9322R~//~9819R~//~v@01R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.suspenddlgioe_theme;//+bac5I~
     private static final int TITLEID=R.string.Title_SuspendIOErrDlg;//~9307I~//~9312R~//~9322R~//~9818R~//~9822R~//~v@01R~
     private static final int TITLEID_RESP=R.string.Title_SuspendIOErrDlgResp;//~v@01I~
     private static final String HELPFILE="SuspendIOErrDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~//~9818R~//~v@01R~
@@ -69,7 +71,8 @@ public class SuspendIOErrDlg  extends SuspendDlg                   //~v@01R~
     {                                                              //~9818I~
         if (Dump.Y) Dump.println("SuspendIOErrDlg.newInstance");        //~9818I~//~v@01R~
     	SuspendIOErrDlg dlg=new SuspendIOErrDlg();                           //~9818I~//~v@01R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9818I~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9818I~//+bac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+bac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~9818I~
 				TITLEID,HELPFILE);                                 //~9818I~
         dlg.lastScore=AG.aAccounts.score;                          //~9818I~
@@ -498,11 +501,11 @@ public class SuspendIOErrDlg  extends SuspendDlg                   //~v@01R~
             switch(scoreMsgtype)                                   //~9321I~//~v@01R~
             {                                                      //~9321I~//~v@01R~
             case SUSPENDGAME_CONFIRM_REPLY:                      //~9321R~//~9819R~//~v@01R~
-                if (UAEndGame.isUpdateAfterSendServer())           //+0314I~
-                {                                                  //+0314I~
-                    if (Dump.Y) Dump.println("SuspendIOErrDlg.onReceivedRequest COMPRESULT RESP updateAfterSend");//+0314I~
-                    break;                                         //+0314I~
-                }                                                  //+0314I~
+                if (UAEndGame.isUpdateAfterSendServer())           //~0314I~
+                {                                                  //~0314I~
+                    if (Dump.Y) Dump.println("SuspendIOErrDlg.onReceivedRequest COMPRESULT RESP updateAfterSend");//~0314I~
+                    break;                                         //~0314I~
+                }                                                  //~0314I~
                 int replyEswn=PintParm[POS_REPLAY_ESWN];           //~9822I~//~v@01R~
                 if (Utils.isShowingDialogFragment(AG.aSuspendIOErrDlg)) //~9822I~//~v@01R~
                     AG.aSuspendIOErrDlg.repaintOKNG(replyEswn,PintParm[POS_OKNG]!=0);    //callback updateOKNGAdditional//~9822I~//~v@01R~
@@ -775,21 +778,21 @@ public class SuspendIOErrDlg  extends SuspendDlg                   //~v@01R~
   		    showAmmount();                                         //~v@01I~
           	break;                                                 //~v@01I~
         }                                                          //~v@01I~
-        resetSent();                                               //+0314I~
+        resetSent();                                               //~0314I~
     }                                                              //~v@01I~
-    //**************************************************************************//+0314I~
-    private void resetSent()                                            //+0314I~
-    {                                                              //+0314I~
-        if (Dump.Y) Dump.println("SuspendIOErrDlg.resetSent");     //+0314I~
-	    CMP.swSent=false;                                          //+0314I~
-        swAllOK=false;                                             //+0314I~
-        resetRespStat();	//OKNGDlg                              //+0314I~
-    	setButton();                                               //+0314I~
-    }                                                              //+0314I~
+    //**************************************************************************//~0314I~
+    private void resetSent()                                            //~0314I~
+    {                                                              //~0314I~
+        if (Dump.Y) Dump.println("SuspendIOErrDlg.resetSent");     //~0314I~
+	    CMP.swSent=false;                                          //~0314I~
+        swAllOK=false;                                             //~0314I~
+        resetRespStat();	//OKNGDlg                              //~0314I~
+    	setButton();                                               //~0314I~
+    }                                                              //~0314I~
     //**************************************************************************//~0110I~//~v@01M~
     private static void dismissReconnectDlg()                             //~0110I~//~v@01M~
     {                                                              //~0110I~//~v@01M~
-        if (Dump.Y) Dump.println("SuspendIOErrDlg.dismissReconnectDlg");//~0110I~//~v@01M~//+0314R~
+        if (Dump.Y) Dump.println("SuspendIOErrDlg.dismissReconnectDlg");//~0110I~//~v@01M~//~0314R~
 		if (Utils.isShowingDialogFragment(AG.aBTRDialog))          //~0110I~//~v@01M~
 	        AG.aBTRDialog.dismiss();                               //~0110I~//~v@01M~
 		if (Utils.isShowingDialogFragment(AG.aWDAR))               //~0110I~//~v@01M~

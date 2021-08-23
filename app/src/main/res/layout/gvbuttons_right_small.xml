@@ -16,6 +16,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -26,6 +27,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -36,6 +38,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -46,17 +49,8 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
-             <!--Button
-                        android:layout_width="@dimen/gvbtn_right_small"
-                        android:layout_height="fill_parent"
-                 android:layout_weight="1"
-                        android:id="@+id/UserAction_Reach"
-                        android:text="@string/UserAction_Reach"
-                 android:textAllCaps="false"
-                 android:backgroundTint="@color/btn_normal_bg"
-                 android:textColor="@color/btn_normal_fg"
-             /-->
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
                         android:layout_height="fill_parent"
@@ -66,6 +60,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -76,6 +71,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -87,5 +83,6 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/action_cancel"
                  android:textColor="@color/btn_normal_fg"
+                            android:textSize="@dimen/smallfont_textsize_game_buttons"
              />
 </LinearLayout>

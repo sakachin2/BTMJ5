@@ -1,4 +1,4 @@
-//*CID://+DATER~:                             update#=  461;       //~v@@@R~//~9404R~
+//*CID://+DATER~:                             update#=  462;       //~v@@@R~//~9404R~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -127,6 +127,7 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
             }                                                          //~9406I~//~9408R~
             showSyncStatus();                                   //~9405I~//~9406I~//~9408R~
         }                                                          //~9408I~
+		UFDlg.setButtonHeight(PView,R.id.llFile);                //+1816I~
     }                                                              //~v@@@M~
     //******************************************                   //~v@@@I~
     @Override                                                      //~v@@@I~
@@ -397,7 +398,7 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
         saveProperties(true/*swReceived*/);   //save to current.rule                 //~9616I~//~9621R~
         AG.ruleProp.resetProperties(curProp);   //replace Properties of AG.ruleProp.P by curProp.P//~9616I~
         AG.ruleSyncDate=AG.ruleProp.getParameter(getKeyRS(RSID_SYNCDATE),"Unknown");//~9616I~//~9A31R~
-        if (Dump.Y) Dump.println("SettingDlg.saveReceived AG.ruleSyncDate="+AG.ruleSyncDate);//+1319I~
+        if (Dump.Y) Dump.println("SettingDlg.saveReceived AG.ruleSyncDate="+AG.ruleSyncDate);//~1319I~
     }                                                              //~9616I~
     //*******************************************************      //~v@@@I~
     protected int updateProp(String Pkey,int Pnewval)              //~v@@@R~

@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.14</string>
+    <string name="app_version">v1.15</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -76,6 +76,7 @@
     <string name="Delete">削除</string>
     <string name="Cancel">キャンセル</string>
     <string name="CancelExecute">取消</string>
+    <string name="CancelExecute_Vertical">取\n消</string>
     <string name="Execute">実行</string>
     <string name="Close">閉じる</string>
     <string name="OK">OK</string>
@@ -655,11 +656,13 @@
     <string name="Desc_KanDoraOpenTiming">\"即\"とは嶺上牌ツモ後、\"即\"のケースのみ嶺上開花で槓ドラは表示される</string>
     <string name="Label_PaoFor">対</string>
     <string name="Label_OpenReach">オープンリ</string>
+    <!--string name="Label_OpenReach_Vertical">オー\nプ\nン\nリ</string-->
+    <string name="Label_OpenReach_Vertical">オ\n〡\nプ\nン</string>
     <string name="Label_ScoreAddTotal">得点</string>
     <string name="Label_ScoreNewScore">結果</string>
     <string name="Label_ScoreMinusPay">トビ賞</string>
     <string name="Label_MinusCharge">ハコ下分</string>
-    <string name="Label_ForBotCharge">ボット分負担</string>
+    <string name="Label_ForBotCharge">ボット分</string>
     <string name="Label_MinusPayByErr">チョンボ分はハコ下精算するが、トビ賞は</string>
     <string name="Label_MinusPayByPending">但し、ノーテン罰符はハコ下精算する、トビ賞はテンパイ者で等分</string>
     <string name="Label_MinusPayByErrNo">なし</string>
@@ -667,7 +670,7 @@
     <string name="Label_MinusPayByErrAll">全員に払う</string>
     <string name="Label_ScoreNewTotal">合計</string>
     <string name="Label_ScoreSetPayer">支払先は変更できます</string>
-    <string name="Label_AccountsOrder">順位</string>
+    <string name="Label_AccountsOrder">位</string>
     <string name="Label_CurrentEswn">風</string>
     <string name="Label_CompStatus">状況</string>
     <string name="Label_AccountsScore">得点</string>
@@ -702,6 +705,14 @@
     <string name="UserAction_Reach"  >リーチ</string>
     <string name="UserAction_Ron"    >和了</string>
     <string name="UserAction_Discard">打牌</string>
+    <string name="UserAction_Take_Vertical"   >自\n摸</string>
+    <string name="UserAction_Pon_Vertical"    >ポ\nン</string>
+    <string name="UserAction_Chii_Vertical"   >チ\n〡</string>
+    <string name="UserAction_Kan_Vertical"    >カ\nン</string>
+    <!--string name="UserAction_Reach_Vertical"  >リ\nー\nチ</string-->
+    <string name="UserAction_Reach_Vertical"  >リ\n〡\nチ</string>
+    <string name="UserAction_Ron_Vertical"    >和\n了</string>
+    <string name="UserAction_Discard_Vertical">打\n牌</string>
     <string name="UserAction_Reach_Open">オープンリーチ</string>
     <string name="UserAction_Reach_Open_YN">オープン立直あり</string>
     <string name="Desc_OpenReach">ボット入りのときは下記、追加の設定あり</string>
@@ -711,6 +722,7 @@
     <string name="UserAction_WaitOn">ち待</string>
     <string name="UserAction_WaitOff">消待</string>
     <string name="UserAction_DlgComp">得点</string>
+    <string name="UserAction_DlgComp_Vertical">得\n点</string>
     <string name="UserAction_DlgCompResult">結果</string>
     <string name="UserAction_DrawnGame">流局</string>
     <string name="UserAction_DrawnHW">途中流局</string>
@@ -719,8 +731,11 @@
     <!--string name="UserAction_FinalGame">オーラス終了</string-->
 
     <string name="Title_MenuInGame">メニュー</string>
-    <string name="Label_MenuInGame">メニュー</string>
+    <string name="Label_MenuInGame">・・・</string>
+    <string name="Label_MenuInGame_Vertical">・\n・\n・</string>
     <string name="Label_ShowRule">ルール</string>
+    <!--string name="Label_ShowRule_Vertical">ル\n｜\nル</string-->
+    <string name="Label_ShowRule_Vertical">ル\n〡\nル</string>
 	<string-array name="Items_MenuInGame"> 
 		<!--item>和了 申告</item-->
 		<item>局の終了確認の表示</item>
@@ -884,11 +899,13 @@
     <string name="Info_SuspendSaved">中断</string>
     <string name="Info_LastEndgame">終局</string>
     <string name="Label_ResetReach">リ取消</string>
+    <string name="Label_ResetReach_Vertical">リ\n取\n消</string>
     <string name="Label_Force_Reach">聴牌！</string>
     <string name="Label_ResetOpenReach">オリ取消</string>
+    <string name="Label_ResetOpenReach_Vertical">オ\nリ\n取\n消</string>
     <string name="Desc_SuspendPenalty">処理は省略値でダイアログで変更できます。罰金は均等払い、順位には影響しません。精算する場合、焼鳥はなしとします。\n接続障害の場合、\"パオ\"をチェック：ONするとこの設定にかかわらず、最低 8000*3 にすることができます。</string>
     <string name="Desc_SuspendGameover">\"持ち点\"は供出リーチ棒の返却を含みます。精算の場合、焼鳥はなしとします</string>
-    <string name="Label_ctrReachStick">供出リーチ棒</string>
+    <string name="Label_ctrReachStick">リーチ棒</string>
     <string name="Err_FinalGameNoData">オーラス終了状況ではありません</string>
     <string name="Info_WaitDiscardTimeout">打牌後、設定のポン・カン用時間帯が過ぎるまでチー・ツモできません</string>
     <string name="Info_WaitKanTakableTimeout">暗槓、槍槓後、設定のロン用時間帯が過ぎるまで嶺上ツモできません</string>
@@ -1077,11 +1094,12 @@
     <string name="Label_NoAnywayButton">\"とに和\"(とにかく和了)非表示</string>
     <string name="Label_Sound">効果音</string>
     <string name="Label_BGM">BGM</string>
-    <string name="Label_BGMSame">共通</string>
+    <string name="Label_BGMSame">ゲーム音</string>
     <string name="Label_BGM4Seasons">春夏秋冬</string>
     <string name="Label_BGM4SeasonsFast">〃(速い)</string>
+    <string name="Label_BGMSeriesK">Kシリーズ</string>
     <!--string name="Desc_BGM">ゲーム中のBGMを変える場合は共通以外を設定する</string-->
-    <string name="Desc_BGM">オーラスはBGMが変わります</string>
+    <!--string name="Desc_BGM">オーラスはBGMが変わります</string-->
     <string name="Label_BeepOnly">ビープ音</string>
     <string name="Label_SoundVolume">音量</string>
     <string name="Label_Robot">ロボット</string>
@@ -1116,10 +1134,17 @@
     <string name="Label_NextRound">次の場に入る</string>
 	<string-array name="GameSetType"> 
 		<item>東風戦</item>
-		<item>東々戦</item>
+		<item>東東戦</item>
 		<item>東南戦</item>
 		<item>東北戦</item>
 		<item>一荘戦</item>
+	</string-array>
+	<string-array name="GameSetTypeLand"> 
+		<item>東\n風\n戦</item>
+		<item>東\n東\n戦</item>
+		<item>東\n南\n戦</item>
+		<item>東\n北\n戦</item>
+		<item>一\n荘\n戦</item>
 	</string-array>
 	
     <string name="Label_YakuList">役</string>
@@ -1206,7 +1231,7 @@
     <string name="Label_BigRing">大車輪（ピンズ２－８）</string>
     <string name="Label_NoPair13">十三不塔</string>
     <string name="Label_NoPair14">十四不塔</string>
-    <string name="Label_Rank13">数え役満（無しの場合は上限は３倍萬）</string>
+    <string name="Label_Rank13">数え役満（無しなら上限３倍萬）</string>
     <!--string name="Label_OpenReachRon">オープンリーチ放銃は役満払い</string-->
     <string name="Label_5thKan">１人が四槓子状態のとき他家は槓を宣言して流局にできる。メニューから途中流局してください。</string>
     <string name="Err_5thKan">５槓子です。四槓子役満を阻止できる設定は%1$s</string>
@@ -1467,7 +1492,8 @@
     <string name="AE_MultiWait_Multiple">片上がり違反</string>
     <string name="AE_RankFix2MultiWait">二飜縛りまたは片上がり違反</string> <!--for Reach-->
     <string name="Label_Anyway">とに和</string>
-    <string name="Warn_BlockedNeedRonAnyway">\"和了\"ボタンではなく、\"とにかく和了\"してください</string>
+    <string name="Label_Anyway_Vertical">と\nに\n和</string>
+    <string name="Warn_BlockedNeedRonAnyway">\"和了\"ボタンではなく、\"とに和\"してください</string>
     <string name="AE_TestRobotDiscardButtonServerOnly">テスト用ボット用の打牌ボタン使用はサーバーのみです</string>
 	<string-array name="Default_YourNameRobot"> 
 		<item>" S それがし "</item>

@@ -1,5 +1,7 @@
-//*CID://+va66R~:                             update#=  883;       //~va40R~//~va66R~
+//*CID://+vac7R~:                             update#=  888;       //~vac7R~
 //*****************************************************************//~v101I~
+//2021/08/18 vac7 (Bug)99 tile did not dispaly taken               //~vac7I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/04/16 va03:alert suspendrequested                           //~va03I~
@@ -46,6 +48,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
             ,URadioGroup.URadioGroupI                                          //~9703I~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.drawndlghw;      //~9220I~//~9302R~//~9303R~//~9304R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.drawndlghw_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_DrawnDlgHW;//~9220I~//~9302R~//~9303R~//~9304R~
     private static final int TITLEID_NONDEALER=R.string.Title_DrawnDlgHWReceived;//~9306I~
     private static final String HELPFILE="DrawnDlgHW";                //~9220I~//~9302R~//~9303R~//~9304R~
@@ -90,7 +93,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     protected int currentEswn;                                     //~9305I~//~9307R~//~9319R~
     private int[] respStat;                                      //~9305I~//~9319R~
     private String strErr,strOK,strNG,strSend,strBot,strNoReply,strDealer;                //~9305I~//~9306R~//~9311R~//~9319R~//~9611R~
-    private LinearLayout[]  llReachers,lls99Tile;                  //~9425I~
+    private LinearLayout[]  llReachers/*,lls99Tile*/;                  //~9425I~//~vac7R~
     private LinearLayout    llllReachers,llll99Tile;
     private boolean[] swsReach=new boolean[PLAYERS];              //~9425I~//~9522R~
     private boolean[] swsErrLooser=new boolean[PLAYERS];           //~9426I~
@@ -142,7 +145,8 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("DrawnDlgHW.newInstance reason="+Preason+",typeNextGame="+PtypeNextGame+",eswnRequester="+PeswnRequester+",respStat="+Arrays.toString(PrespStat));        //~9226I~//~9302R~//~9303R~//~9304R~//~9305R~//~9518R~//~9608R~//~9705R~
     	DrawnDlgHW dlg=new DrawnDlgHW();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~v@@@I~//~9220R~//~9305R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
 //      dlg.reason=Preason;                                        //~9425R~//~9426R~
@@ -636,8 +640,17 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
 		boolean sw99=getReason99();                                //~9518I~
         if (Dump.Y) Dump.println("DrawnDlgHW.show99Tile eswn99="+eswn99Tile+",sw99="+sw99);//~9518R~
         if (sw99)                                                  //~9518I~
-        	new CompDlgReacher(this,ll99Reacher,eswn99Tile,true/*swPending*/);//~9425R~//~9518R~
+//      	new CompDlgReacher(this,ll99Reacher,eswn99Tile,true/*swPending*/);//~9425R~//~9518R~//~vac7R~
+        	show99Tile(ll99Reacher,eswn99Tile);                   //~vac7I~
     }                                                              //~9425I~
+    //******************************************                   //~vac7I~
+    private void show99Tile(View Pview,int Peswn)                  //~vac7I~
+    {                                                              //~vac7I~
+        if (Dump.Y) Dump.println("DrawnDlgHW.show99Tile eswn="+Peswn+",parent="+Pview.toString());//~vac7I~
+        TextView tvReacherEswn         =(TextView)    UView.findViewById(Pview,R.id.tvReacherEswn);//~vac7I~
+        tvReacherEswn.setText(GConst.nameESWN[Peswn]);             //~vac7I~
+      	CompDlgTiles.setImageLayoutHandAll(ll99Reacher,Peswn);     //+vac7R~
+    }                                                              //~vac7I~
     //******************************************                   //~9305I~
     protected void setupTextViewResp(View PView)                                  //~9305I~//~9307R~
     {                                                              //~9305I~
@@ -691,7 +704,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     @Override                                                      //~9306I~
     public void setButton()                                        //~9221I~//~9303R~//~9306R~
     {                                                              //~9221I~//~9303R~//~9306R~
-        if (Dump.Y) Dump.println("DrawDlgHW.setButton swTrainingMode="+AG.swTrainingMode);//+va66I~
+        if (Dump.Y) Dump.println("DrawDlgHW.setButton swTrainingMode="+AG.swTrainingMode);//~va66I~
         btnNextGame = UButton.bind(layoutView,R.id.ShowTotal,this); //~9311I~//~9609M~
         if (swRequester)                                           //~9306I~
         {                                                          //~9306I~

@@ -1,5 +1,6 @@
-//*CID://+va44R~:                             update#=  174;       //~va40R~//~va44R~
+//*CID://+vac5R~:                             update#=  176;       //~vac5R~
 //*************************************************************************//~1A65I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired flag yet off//~va40I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1Aa5 2015/04/20 test function for mdpi listview                  //~1Aa5I~
@@ -68,6 +69,7 @@ import static com.btmtest.StaticVars.AG;                           //~9721I~//~@
 public class DeviceListFragment implements PeerListListener {      //~1A65R~
 
 	private static final int LAYOUTID_LIST_ROW=R.layout.textrowdevice_wd;//~1A65I~
+	private static final int LAYOUTID_LIST_ROW_SMALLFONT=R.layout.textrowdevice_wd_theme;//~vac5I~
 //	private static final int LAYOUTID_LIST_ROW_MDPI=R.layout.textrowdevice_wd_mdpi;//~1A6pI~//~1A8pI~
 	private static final int COLOR_SELECTED=0xff000080;            //~1A65I~
 	private static final int COLOR_BG_DEVICE_LIST= BTCDialog.COLOR_BG_DEVICE_LIST; //Color.rgb(0xc8,0xff,0xc8);  //orange//~v@@@R~//~1Aa5I~
@@ -119,7 +121,8 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
     public void initFragment(View Playoutview)                     //~1Aa5I~
     {                                                              //~1A65I~
 //      resid_textrow=AG.layoutMdpi ? LAYOUTID_LIST_ROW_MDPI : LAYOUTID_LIST_ROW;//~1A6pI~//~1A8pI~//~1Aa5R~
-        resid_textrow=LAYOUTID_LIST_ROW;                           //~1Aa5I~
+//      resid_textrow=LAYOUTID_LIST_ROW;                           //~1Aa5I~//~vac5R~
+        resid_textrow=AG.swSmallFont ? LAYOUTID_LIST_ROW_SMALLFONT : LAYOUTID_LIST_ROW;//+vac5R~
     	layoutView=Playoutview;                                    //~1A65I~
 		tvMyName=(TextView)layoutView.findViewById(R.id.my_name);  //~1A65I~
 //        tvMyStatus=(TextView)layoutView.findViewById(R.id.my_status);//~1A65I~//~1Aa5R~
@@ -420,7 +423,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
             return;                                                //~va44I~
 //      this.device = device;                                      //~va44I~
 //      thisStatus=device.status;                                  //~va44I~
-        thisStatus=WifiP2pDevice.CONNECTED;	//THIS_DEVICE_CHANGED was not received//+va44I~
+        thisStatus=WifiP2pDevice.CONNECTED;	//THIS_DEVICE_CHANGED was not received//~va44I~
         TextView view =tvMyName;                                   //~va44I~
 //      view.setText(DeviceDetailFragment.getDeviceName(device));  //~va44I~
         view.setText(PdeviceName);                                 //~va44I~

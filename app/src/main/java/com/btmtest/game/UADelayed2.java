@@ -1,6 +1,8 @@
-//*CID://+vab0R~: update#=1017;                                    //+vab0R~
+//*CID://+vacdR~: update#=1020;                                    //+vacdR~
 //**********************************************************************//~v101I~
-//2021/07/24 vab0 PlayAlone mode;no need startTimer for Block timeout. timer used by DrawnReqDlgHW for STOP auto//+vab0I~
+//2021/08/21 vacd skip msg that robot blocked by human's priority  //+vacdI~
+//2021/08/21 vacc (Bug)Match mode; at blocked by Ron issued, Discard btn issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vaccI~
+//2021/07/24 vab0 PlayAlone mode;no need startTimer for Block timeout. timer used by DrawnReqDlgHW for STOP auto//~vab0I~
 //2021/07/24 vaaZ PlayAlone mode;after Cancel Ron,discard rejected by err msg of "push orange btn" when ron is cancelable//~vaaYI~
 //2021/07/24 vaaY PlayAlone mode;avoid Win/Cancel butn update twice when ron is cancelable//~vaaYI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
@@ -280,12 +282,14 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
             {                                                      //~va60I~
 		        if (swStopAuto2Touch)  //blocked                   //~va60I~
                 {                                                  //~va60I~
-	        		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~
+//          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~//+vacdR~
+        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot action was blocked by HswStopAuto2Touch");//+vacdI~
                     return -1;                                     //~va60I~
                 }                                                  //~va60I~
 		        if (PactionID==GCM_RON && isBlockRobotRon())  //blocked//~va8tR~
                 {                                                  //~va8tR~
-	        		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va8tR~
+//          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va8tR~//+vacdR~
+        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot Ron was blocked by Human priority");//+vacdI~
                     return -1;                                     //~va8tR~
                 }                                                  //~va8tR~
             }                                                      //~va60I~
@@ -293,8 +297,13 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         }                                                          //~va60I~
         if (swStopAuto2Touch)  //blocked                                    //~9C06I~//~9C07R~
         {                                                          //~9C06I~
-            if (UAD2T.is2ndTouchOtherAction(PactionID))    //Top But different action//~9C06R~
-                msgid=R.string.ActionBlockedYouAreNotBlockerOfTheAction;//~9C06M~
+//          if (UAD2T.is2ndTouchOtherAction(PactionID))    //Top But different action//~9C06R~//~vaccR~
+            msgid=UAD2T.is2ndTouchOtherAction(PactionID);    //Top But different action//~vaccR~
+            if (msgid!=0)    //Top But different action            //~vaccI~
+            {                                                      //~vaccI~
+//              msgid=R.string.ActionBlockedYouAreNotBlockerOfTheAction;//~9C06M~//~vaccR~
+        		if (Dump.Y) Dump.println("UADelayed2.isYourTurn 2ndTouchOtherAction msgid="+Integer.toHexString(msgid)+",swStopAuto2Touch="+swStopAuto2Touch);//~vaccR~
+            }                                                      //~vaccI~
             else   //not top or (top and same btn)                                                //~9C06I~//~9C07R~
             if (!UAD2T.is2ndTouch())    //not top bloocker         //~9C07R~
             {                                                      //~9C06R~//~9C07R~
@@ -658,7 +667,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
                 break;                                             //~9B27I~
             }                                                      //~9B27I~
 //        if (!AG.swPlayAloneNotify)	//no timeout for playalone notify mode//~va70R~
-          if (!AG.swPlayAloneNotify)	//no need, avoid cost of timer thread//+vab0I~
+          if (!AG.swPlayAloneNotify)	//no need, avoid cost of timer thread//~vab0I~
             startTimer();   //to release blocked msg at canceled   //~9B27I~
 //          setActionBlocked(PswServer,actionID,Pplayer,0/*status:not used*/);//~9B27I~//~9B28R~
             setActionBlocked(PswServer,actionID,Pplayer,flag);     //~9B28I~

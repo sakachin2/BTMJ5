@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#= 1188;       //~v@@@R~//~9211R~
+//*CID://+vac5R~:                             update#= 1189;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
@@ -47,6 +48,7 @@ import static com.btmtest.utils.Utils.*;
 public class ResumeDlg  extends OKNGDlg //UFDlg                                            //~9312R~//~9321R~//~9322R~//~9828R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.resumedlg;              //~9312R~//~9322R~//~9828R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.resumedlg_theme;//+vac5I~
     private static final int TITLEID=R.string.Title_ResumeDlg;//~9307I~//~9312R~//~9322R~//~9828R~
     private static final String HELPFILE="ResumeDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~//~9828R~
                                                                    //~9318I~
@@ -129,7 +131,8 @@ public class ResumeDlg  extends OKNGDlg //UFDlg                                 
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("ResumeDlg.newInstance swServer="+PswServer+",scores="+Utils.toString(Phds.scores));//~9828R~
     	ResumeDlg dlg=new ResumeDlg();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~//~9828R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//+vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~v@@@I~//~9220R~//~9305R~//~9312R~//~9316R~//~9321R~//~9708R~//~9828R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         dlg.swServer=PswServer; //point at last game(not total score)//~9828I~
@@ -1025,14 +1028,14 @@ public class ResumeDlg  extends OKNGDlg //UFDlg                                 
         if (Dump.Y) Dump.println("ResumeDlg.updateOKNGResume sender="+Psender+",okng="+PswOK+",timestamp="+Ptimestamp);//~9831R~
         if (!Utils.isShowingDialogFragment(AG.aResumeDlg))         //~9831I~
         {                                                          //~9831I~
-            UView.showToastLong(Utils.getStr(R.string.Warn_ResumeDlgReceivedReplyUnderNoDialog,Psender));//~9831I~//+0314R~
+            UView.showToastLong(Utils.getStr(R.string.Warn_ResumeDlgReceivedReplyUnderNoDialog,Psender));//~9831I~//~0314R~
             return;                                                //~9831I~
         }                                                          //~9831I~
         HistoryData hd=AG.aResumeDlg.resumeHD;                     //~9831I~
 //      if (Ptimestamp.compareTo(hd.HD[HDPOS_HDR][RDPOS_TIMESTAMP])!=0)//~9831R~//~0314R~
         if (Ptimestamp.compareTo(hd.HD[HDPOS_HDR][POS_TIMESTAMP])!=0)//~0314I~
         {                                                          //~9831I~
-            UView.showToastLong(Utils.getStr(R.string.Warn_ResumeDlgReceivedReplyUnmatchTimestamp,Psender));//~9831I~//+0314R~
+            UView.showToastLong(Utils.getStr(R.string.Warn_ResumeDlgReceivedReplyUnmatchTimestamp,Psender));//~9831I~//~0314R~
             return;                                                //~9831I~
         }                                                          //~9831I~
         int pos=hd.getOldPosition(Psender);                        //~9831R~

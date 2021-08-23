@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+>
+            <Button
+                android:id="@+id/btnSpinDown"                    
+                android:layout_width="@dimen/smallfont_buttonwidth_spinbutton"
+                android:layout_height="@dimen/smallfont_buttonheight_spinbutton"
+                android:text="&lt;"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+            />
+            <!--android:layout_height="40dp" -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+                 android:id="@+id/tvSpinText"
+                    android:gravity="center_vertical|right"
+                    android:layout_gravity="center"
+                    android:minEms="1"
+        />
+            <Button
+                android:id="@+id/btnSpinUp"                    
+                android:layout_width="@dimen/smallfont_buttonwidth_spinbutton"
+                android:layout_height="@dimen/smallfont_buttonheight_spinbutton"
+                android:text="&gt;"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+            />
+            <!--android:layout_height="40dp"-->
+
+</LinearLayout>

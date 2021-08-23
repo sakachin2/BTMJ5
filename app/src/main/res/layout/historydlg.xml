@@ -96,6 +96,7 @@
                  android:orientation="horizontal"
                            android:layout_gravity="right"
                            android:gravity="center_vertical|right"
+                    android:id="@+id/llTopButtons"
             >
                 <CheckBox
                     android:id="@+id/cbMultiSelect"
@@ -164,7 +165,7 @@
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:orientation="horizontal"
-               android:id="@+id/BottomButtons2"
+            android:id="@+id/llBottomButtons"          
                   android:background="#ff101010"
         >
             <Button

@@ -1,6 +1,8 @@
-//*CID://+va66R~:                             update#= 1119;       //+va66R~
+//*CID://+vac9R~:                             update#= 1123;       //~vac9R~
 //*****************************************************************//~v101I~
-//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
+//2021/08/18 vac9 AccountsDlg, avoid colomn shift by option, keep column same as title//~vac9I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.app.Dialog;
@@ -40,6 +42,7 @@ import static com.btmtest.utils.Utils.*;
 public class AccountsDlg  extends OKNGDlg //UFDlg                                            //~9312R~//~9321R~//~9322R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.accounts;              //~9312R~//~9322R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.accounts_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_AccountsDlg;//~9307I~//~9312R~//~9322R~
     private static final String HELPFILE="AccountsDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~
                                                                    //~9318I~
@@ -128,7 +131,8 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("AccountsDlg.newInstance score="+Arrays.toString(PintssP[0])+",minusPrize="+Arrays.toString(PintssP[1])+",minusCharge="+Arrays.toString(PintssP[2]));//~9312R~//~9322R~//~9415R~
     	AccountsDlg dlg=new AccountsDlg();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT :LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~v@@@I~//~9220R~//~9305R~//~9312R~//~9316R~//~9321R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
 //      dlg.lastScore=Pscore;	//point at last game(not total score)//~9321I~//~9322R~//~9415R~
@@ -332,7 +336,10 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
             int eswn=ii;    //account lsit is position order       //~9416I~
             tvsOrder[eswn].setText(Integer.toString(idx2Order[ii]+1));//~9401R~
             tvsScore[eswn].setText(Integer.toString(lastScore[ii]));//~9401R~
+          if (topPrize[ii]!=0)                                     //~vac9I~
             tvsTopPrize[eswn].setText(Integer.toString(topPrize[ii]));//~9401R~
+          else                                                     //~vac9I~
+            tvsTopPrize[eswn].setText(" ");                        //~vac9I~
             tvsOrderPrize[eswn].setText(Integer.toString(orderPrize[ii]));//~9401R~
             newTotal[ii]=lastScore[ii]+topPrize[ii]+orderPrize[ii];//~9401R~
             tvsTotal[eswn].setText(Integer.toString(newTotal[ii]));//~9401R~
@@ -340,7 +347,8 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
             if (mp!=0)                                             //~9416I~
 	            tvsMinusPrize[eswn].setText(Integer.toString(mp));//~9415R~//~9416R~
             else                                                   //~9416I~
-	            llsMinusPrize[eswn].setVisibility(View.GONE);      //~9416I~
+//              llsMinusPrize[eswn].setVisibility(View.GONE);      //~9416I~//~vac9R~
+	            tvsMinusPrize[eswn].setText(" ");                  //~vac9I~
 	    	if (swMinusPayGetAllPoint)                             //~9415I~
             {                                                      //~9415I~
                 int mc=minusCharge[ii];                            //~9416I~
@@ -348,13 +356,15 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
                 if (mc!=0)                                         //~9416I~
 		            tvsMinusCharge[eswn].setText(Integer.toString(mc));//~9415I~//~9416R~
                 else                                               //~9416I~
-		            llsMinusCharge[eswn].setVisibility(View.GONE); //~9416I~
+//		            llsMinusCharge[eswn].setVisibility(View.GONE); //~9416I~//~vac9R~
+		            tvsMinusCharge[eswn].setText("0");             //~vac9R~
             }                                                      //~9415I~
             else                                                   //~9415I~
             {                                                      //~9415I~
 	            finalScore[ii]=newTotal[ii]+minusPrize[ii];        //~9415I~
 //              tvsMinusCharge[eswn].setText(Integer.toString(0)); //~9415I~//~9416R~
-		        llsMinusCharge[eswn].setVisibility(View.GONE);     //~9416I~
+//  	        llsMinusCharge[eswn].setVisibility(View.GONE);     //~9416I~//~vac9R~
+                tvsMinusCharge[eswn].setText(" ");                 //~vac9I~
             }                                                      //~9415I~
             tvsFinalScore[eswn].setText(Integer.toString(finalScore[ii]));//~9415I~
         }                                                          //~9309I~
@@ -392,9 +402,9 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     //********************************************************     //~9429I~
     protected void adjustByRobotScore(int [] PfinalScore)            //~9429I~//~9821R~
     {                                                              //~9429I~
-    	if (Dump.Y) Dump.println("AccountsDlg.adjustByRobotScore swTrainingMode="+AG.swTrainingMode+",payType="+robotPayType+",finalScore="+Arrays.toString(PfinalScore));//~9429R~//+va66R~
-        if (AG.swTrainingMode)                                     //+va66I~
-        	return;                                                //+va66I~
+    	if (Dump.Y) Dump.println("AccountsDlg.adjustByRobotScore swTrainingMode="+AG.swTrainingMode+",payType="+robotPayType+",finalScore="+Arrays.toString(PfinalScore));//~9429R~//~va66R~
+        if (AG.swTrainingMode)                                     //~va66I~
+        	return;                                                //~va66I~
     	Accounts.Account act;
         int[] forRobot=new int[PLAYERS];                           //~9429I~
         int robotPay=0;                                            //~9429I~

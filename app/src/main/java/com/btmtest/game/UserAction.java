@@ -1,6 +1,7 @@
-//*CID://+vaa2R~: update#= 793;                                    //+vaa2R~
+//*CID://+vaceR~: update#= 794;                                    //+vaceR~
 //**********************************************************************//~v101I~
-//2021/06/27 vaa2 Notify mode of Match                             //+vaa2I~
+//2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//+vaceI~
+//2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/23 va62 no need to send to robot; GCM_PON,GCM_CHII,GCM_KAN(Rovbot ignores it but)//~va62I~
@@ -780,10 +781,14 @@ public class UserAction       //~v@@@R~
         {                                                          //~v@@@I~
 			swReceived=false;                                      //~v@@@I~
 //      	if (!getActionInfo(actionID,player,parm))                 //~v@@@I~//~v@@7R~//~9426R~
-        	if (!getActionInfo(actionID,player,parm,strParm))      //~9426I~
+            int orgActionID=actionID;                              //+vaceI~
+            if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //+vaceI~
+                actionID=GCM_RON;                                  //+vaceI~
+//      	if (!getActionInfo(actionID,player,parm,strParm))      //~9426I~//+vaceR~
+        	if (!getActionInfo(actionID,player,parm,strParm,orgActionID))//+vaceI~
         		return;                                      //~v@@@I~
-            if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //~0205I~
-                actionID=GCM_RON;                                  //~0205I~
+//          if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //~0205I~//+vaceR~
+//              actionID=GCM_RON;                                  //~0205I~//+vaceR~
         }                                                          //~v@@@I~
         if (isServer)                                              //~v@@@I~
         {                                                          //~v@@@I~
@@ -857,7 +862,8 @@ public class UserAction       //~v@@@R~
     //*On Server/Clinet, get info when button pushed                //~v@@@R~//~v@@7R~
     //*************************************************************************//~v@@@R~
 //  public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm)        //~v@@@R~//~v@@7R~//~9426R~
-    public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm)//~9426I~
+//  public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm)//~9426I~//+vaceR~
+    private boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm,int PorgActionID)//+vaceI~
     {                                                              //~v@@@R~
         boolean rc=true;                                           //~v@@@R~
         int playerTakeDiscardRobot=-1;                             //~va66R~
@@ -946,10 +952,11 @@ public class UserAction       //~v@@@R~
     		updateButtonStatusReach(PactionID);             //~9A30R~//~9A31R~
             break;                                                 //~9A30R~//~9A31R~
         case GCM_RON:                                              //~v@@@R~
-        case GCM_RON_ANYWAY:                                       //~0205I~
+//      case GCM_RON_ANYWAY:                                       //~0205I~//+vaceR~
 //          rc=complete(Pplayer);                                   //~v@@@R~//~v@@7R~
 //          rc=UAR.selectInfo(isServer,Pplayer,PintParm);                   //~9B23I~//~0205R~
-            rc=UAR.selectInfo(PactionID,isServer,Pplayer,PintParm);//~0205I~
+//          rc=UAR.selectInfo(PactionID,isServer,Pplayer,PintParm);//~0205I~//+vaceR~
+            rc=UAR.selectInfo(PorgActionID,isServer,Pplayer,PintParm);//+vaceI~
             break;                                                 //~v@@@R~
         case GCM_OPEN:                                             //~v@@@R~
 //          rc=open(Pplayer);                                       //~v@@@R~//~v@@7R~
@@ -1086,11 +1093,11 @@ public class UserAction       //~v@@@R~
         {                                                          //~v@@7I~
             return false;                                          //~v@@7I~
         }                                                          //~v@@7I~
-        if (swReceived && Pplayer!=PLAYER_YOU)                     //+vaa2I~
-        {                                                          //+vaa2I~
-	        if (PactionID==GCM_TAKE || PactionID==GCM_PON || PactionID==GCM_KAN || PactionID==GCM_CHII || PactionID==GCM_RON)//+vaa2I~
-            	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //+vaa2I~
-        }                                                          //+vaa2I~
+        if (swReceived && Pplayer!=PLAYER_YOU)                     //~vaa2I~
+        {                                                          //~vaa2I~
+	        if (PactionID==GCM_TAKE || PactionID==GCM_PON || PactionID==GCM_KAN || PactionID==GCM_CHII || PactionID==GCM_RON)//~vaa2I~
+            	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //~vaa2I~
+        }                                                          //~vaa2I~
         boolean rc=true;                                            //~v@@@R~
         swSendAll=true;                                      //~v@@@R~
         swRobot=true;                                              //~v@@@R~

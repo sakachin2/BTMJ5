@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#ffccff99"
+    >
+
+            <LinearLayout
+                 android:layout_width="0dp"
+                 android:layout_height="0dp"
+                 android:focusable="true"
+                 android:focusableInTouchMode="true"
+            />
+        <ScrollView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            >
+                <TextView
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+                        android:id="@+id/tvFinalGameDescription"            
+    					android:background="@color/descriptiononly"
+                />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="2px"
+                            android:background="@color/separater"
+
+                />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                >
+                    <include layout="@layout/finalgame_results_theme"
+                    />
+                </LinearLayout>  <!--result-->
+                        <LinearLayout
+                             android:layout_width="fill_parent"
+                             android:layout_height="2px"
+                                    android:background="@color/separater"
+
+                        />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:orientation="vertical"
+                        android:layout_height="wrap_content"
+			            android:background="#ffffffff"
+                >
+    				<include layout="@layout/rule_related_theme"
+    				/>
+                </LinearLayout>  <!--result-->
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/llRelatedRule"            
+			            android:background="#ffffffff"
+        			    android:visibility="gone"
+                >
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_opt_gameset_theme"
+                        />
+                    </LinearLayout>
+                    <include layout="@layout/setting_rule_opt_pending_cont_theme"
+                    />
+            	</LinearLayout> <!--Settings-->
+        	</LinearLayout><!-- one view hosted in scrollview-->
+	    </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+
+        />
+        <include layout="@layout/eswnresponse_theme"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+            android:id="@+id/llBottomButtons"                        
+    >   <!--buttons-->
+        <Button
+            android:id="@+id/OK"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/OK"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Send"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Send"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+        />
+        <Button
+            android:id="@+id/GameOver"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_GameOver"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+        />
+        <Button
+            android:id="@+id/GameContinue"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_GameContinue"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+        />
+        <Button
+            android:id="@+id/FixGame"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/FixTotal"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+        />
+        <Button
+            android:id="@+id/Cancel"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/NG"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/ShowRule"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_ShowRule"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Close"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Close"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Help"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Help"
+            android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+</LinearLayout>

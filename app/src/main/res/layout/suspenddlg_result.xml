@@ -21,7 +21,7 @@
                  android:layout_weight="0.5"
                  android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/textview_middle"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
                 android:id="@+id/StartingEswn"
             /> 
             <TextView
@@ -29,7 +29,7 @@
                  android:layout_weight="0.7"
                  android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/textview_middle"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
                 android:id="@+id/Order"
             /> 
         </LinearLayout>
@@ -54,7 +54,7 @@
                  android:layout_height="wrap_content"
         		    android:gravity="right"
                 android:id="@+id/Score"
-                    android:textSize="@dimen/textview_small_middle"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
                     android:background="@color/editable"
             />
             <TextView
@@ -85,7 +85,7 @@
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                      android:id="@+id/memberName"
-                    android:textSize="@dimen/textview_membername"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
                     android:layout_marginLeft="10dp"
             />     
              <!--   android:text="name"-->
@@ -156,7 +156,7 @@
                 android:gravity="center_vertical|right"
                 android:id="@+id/finalScore"
                     android:background="@color/editable"
-                android:textSize="@dimen/textview_middle"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
             />
         </LinearLayout>
         <LinearLayout
@@ -195,7 +195,7 @@
                     android:background="@color/editable"
                     android:id="@+id/finalPoint"
                     android:layout_marginRight="10dp"
-                    android:textSize="@dimen/textview_middle"
+                        android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
                 />
         	</LinearLayout>
         </LinearLayout>

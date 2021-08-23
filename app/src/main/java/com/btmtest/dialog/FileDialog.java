@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  294;       //~v@@@R~//+0323R~
+//*CID://+vac5R~:                             update#=  298;       //~vac5R~
 //*************************************************************************//~v105I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*************************************************************************//~v105I~
 package com.btmtest.dialog;                                           //~1108R~//~1109R~//~1A21R~//~v@@@R~
 
@@ -31,7 +32,9 @@ public class FileDialog extends UFDlg                                      //~v@
     implements UListView.UListViewI , Alert.AlertI                 //~v@@@R~
 {                                                                  //~1111I~
     private static final int LAYOUTID=R.layout.filedialog;         //~v@@@I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.filedialog_theme;//~vac5I~
     private static final int LISTVIEW_ROW_LAYOUTID=R.layout.textrowlist_filedialog;//~v@@@I~
+    private static final int LISTVIEW_ROW_LAYOUTID_SMALLFONT=R.layout.textrowlist_filedialog_theme;//~vac5I~
     private static final int TITLEID_LOAD=R.string.Title_FileDialog_Load;//~v@@@I~
     private static final int TITLEID_SAVE=R.string.Title_FileDialog_Save;//~v@@@I~
     private static final int HELP_TITLEID=R.string.Title_Help_FileDialog;//~v@@@I~
@@ -107,7 +110,8 @@ public class FileDialog extends UFDlg                                      //~v@
     {                                                              //~v@@@I~
     	FileDialog dlg=new FileDialog();                           //~v@@@I~
 //  	UFDlg ufdlg=UFDlg.newInstance(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),LAYOUTID,//~v@@@R~
-    	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),LAYOUTID,//~v@@@I~
+//  	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),LAYOUTID,//~v@@@I~//~vac5R~
+    	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5R~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);//~v@@@R~
 //  	dlg.ufdlg=ufdlg;                                           //~v@@@R~
 //      Bundle b=ufdlg.bundle;                                     //~v@@@R~
@@ -161,7 +165,8 @@ public class FileDialog extends UFDlg                                      //~v@
         btnBackup         =UButton.bind(Playoutview,R.id.Backup,this);//~v@@@I~
         btnRestore        =UButton.bind(Playoutview,R.id.Restore,this);//~v@@@I~
         containerFilename=(View)UView.findViewById(Playoutview,R.id.FileNameContainer);//~v@@@I~
-        lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_MULTIPLE);//~v@@@R~
+//      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_MULTIPLE);//~v@@@R~//~vac5R~
+        lvFilename=new UListView(Playoutview,R.id.FileList,(AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT : LISTVIEW_ROW_LAYOUTID),this,UListView.CHOICEMODE_MULTIPLE);//~vac5R~
         setInitialValue();                                         //~v@@@I~
     }                                                              //~1214I~
 	//************************************                         //~v@@@I~

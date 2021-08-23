@@ -1,5 +1,6 @@
-//*CID://+va87R~:                             update#=   43;       //~va87R~
+//*CID://+vac5R~:                             update#=   45;       //~vac5R~
 //*****************************************************************
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/13 va87 show B/S limited to a group                      //~va87I~
 //2021/04/06 va7a add function of show balance sheet
 //*****************************************************************
@@ -30,7 +31,9 @@ public class HistoryBSDlg extends UFDlg                                         
     private static final int HELP_TITLEID=TITLEID;
     private static final String HELPFILE="HistoryBSDlg";           //~1406R~
     private static final int LAYOUTID=R.layout.historybsdlg;       //~1406R~
-    private static final int LISTVIEW_ROW_LAYOUTID=R.layout.textrowlist_historybsdlg;//~1406R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.historybsdlg_theme;//+vac5I~
+    private static final int LISTVIEW_ROW_LAYOUTID=R.layout.textrowlist_historybsdlg;//~1406R~//~vac5R~
+    private static final int LISTVIEW_ROW_LAYOUTID_SMALLFONT=R.layout.textrowlist_historybsdlg_theme;//~vac5I~
     private static final int ID_ALONE=1;                           //~1406I~
     private static final int ID_MATCH=2;                           //~1406I~
 
@@ -59,7 +62,8 @@ public class HistoryBSDlg extends UFDlg                                         
     public static HistoryBSDlg newInstance(int[] PselectedList)    //~va87I~
     {
     	HistoryBSDlg dlg=new HistoryBSDlg();                       //~1406R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //+vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);
         dlg.selectedList=PselectedList;                            //~va87I~
         if (Dump.Y) Dump.println("HistoryBSDlg.newInstance slectedLis=length="+PselectedList.length+"="+Utils.toString(PselectedList));//~va87R~
@@ -83,7 +87,8 @@ public class HistoryBSDlg extends UFDlg                                         
     protected void getComponent(View PView)                        //~1406I~
     {                                                              //~1406I~
         if (Dump.Y) Dump.println("HistoryBSDlg.getComponent");     //~1406I~
-        lvBS=new UListView(PView,R.id.lvBS,LISTVIEW_ROW_LAYOUTID,this/*UListViewI*/,UListView.CHOICEMODE_NONE);//~1406I~
+//      lvBS=new UListView(PView,R.id.lvBS,LISTVIEW_ROW_LAYOUTID,this/*UListViewI*/,UListView.CHOICEMODE_NONE);//~1406I~//~vac5R~
+        lvBS=new UListView(PView,R.id.lvBS,(AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT : LISTVIEW_ROW_LAYOUTID),this/*UListViewI*/,UListView.CHOICEMODE_NONE);//~vac5I~
         tvSummary=(TextView)    UView.findViewById(PView,R.id.tvSummary);//~1406I~
     }                                                              //~1406I~
     //******************************************
@@ -143,10 +148,10 @@ public class HistoryBSDlg extends UFDlg                                         
 	  if (ctrSelectedMembers!=0)                                      //~va87I~
       {                                                            //~va87I~
       	String names="";                                           //~va87I~
-      	for (int ii=0;ii<ctrSelectedMembers;ii++)                  //+va87R~
+      	for (int ii=0;ii<ctrSelectedMembers;ii++)                  //~va87R~
             names+=selectedMemberName[ii]+"  ";                    //~va87I~
-        if (ctrSelectedMembers<PLAYERS)                            //+va87R~
-            names+=nameRobot+"("+ctrSelectedMembers+")";           //+va87R~
+        if (ctrSelectedMembers<PLAYERS)                            //~va87R~
+            names+=nameRobot+"("+ctrSelectedMembers+")";           //~va87R~
         s=AG.resource.getString(R.string.Desc_BS_Summary_selected,names,ctrGameMatch,dateFrom);//~va87I~
       }                                                            //~va87I~
       else                                                         //~va87I~
@@ -328,7 +333,8 @@ public class HistoryBSDlg extends UFDlg                                         
         View v=Pview;                                              //~1406I~
         if (v == null)                                             //~1406I~
         {                                                          //~1406I~
-            v=AG.inflater.inflate(LISTVIEW_ROW_LAYOUTID,null);     //~1406I~
+//          v=AG.inflater.inflate(LISTVIEW_ROW_LAYOUTID,null);     //~1406I~//~vac5R~
+            v=AG.inflater.inflate((AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT : LISTVIEW_ROW_LAYOUTID),null);//~vac5I~
         }                                                          //~1406I~
         UListView.UListViewData ld=lvBS.arrayData.get(Ppos);       //~1406I~
         String name=ld.itemtext;                                   //~1406I~

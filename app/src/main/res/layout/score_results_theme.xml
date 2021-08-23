@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>   <!--show 4 members gain and loss-->
+        <include layout="@layout/score_result_title_theme"
+        />
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="1px"
+                    android:background="@color/separater"
+
+        />
+        <include layout="@layout/score_result_theme"
+            android:id="@+id/llResultE"                        
+        />
+        <include layout="@layout/score_result_theme"
+            android:id="@+id/llResultS"                        
+        />
+        <include layout="@layout/score_result_theme"
+            android:id="@+id/llResultW"                        
+        />
+        <include layout="@layout/score_result_theme"
+            android:id="@+id/llResultN"                        
+        />
+</LinearLayout>

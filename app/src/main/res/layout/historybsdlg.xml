@@ -52,7 +52,7 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="vertical"
-         android:id="@+id/BottomButtons"
+         android:id="@+id/llBottomButtons"
             android:background="#ff101010"
     >
         <LinearLayout

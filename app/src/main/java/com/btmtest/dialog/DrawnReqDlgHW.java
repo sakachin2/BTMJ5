@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  708;       //~v@@@R~//~9211R~
+//*CID://+vac5R~:                             update#=  709;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Point;
@@ -34,6 +35,7 @@ import static com.btmtest.game.UADelayed.*;
 public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~//~9307R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.drawnreqdlghw;      //~9220I~//~9302R~//~9303R~
+    private static final int LAYOUTID_SMALLFONT=R.layout.drawnreqdlghw_theme;//+vac5I~
     private static final int TITLEID=R.string.Title_DrawnReqDlgHW;//~9220I~//~9302R~//~9303R~
     private static final String HELPFILE="DrawnReqDlgHW";                //~9220I~//~9302R~//~9303R~
                                                                    //~9214I~
@@ -80,7 +82,8 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("DrawnReqDlgHW.newInstance");        //~9226I~//~9302R~//~9303R~
     	DrawnReqDlgHW dlg=new DrawnReqDlgHW();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//+vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
     			UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN|UFDlg.FLAG_RULEBTN,//~v@@@I~//~9220R~//~9701R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         return dlg;                                                //~v@@@R~
@@ -152,7 +155,7 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
 	@Override //drawnReqDlgLast                                                      //~9811I~//~9813I~
     protected int getDialogWidth()                                 //~9811R~//~9813I~
     {                                                              //~9811I~//~9813I~
-    	if (Dump.Y) Dump.println("DrawnReqDlgHW.getDialogWidth ww=0");//~9813I~//+0305R~
+    	if (Dump.Y) Dump.println("DrawnReqDlgHW.getDialogWidth ww=0");//~9813I~//~0305R~
         return 0;       //do not set dislogwidth by portrait realwidth on UFDlg//~9813I~
     }                                                              //~9811I~//~9813I~
 //    //*******************************************************      //~v@@@I~//~9303R~

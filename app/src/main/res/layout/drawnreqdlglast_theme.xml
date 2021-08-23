@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:background="#ffccff99"
+    > <!--above buttons-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/llrgDrawnType"
+        >
+            <include layout="@layout/drawntype_last_theme"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+        >
+            <TextView
+                android:text="@string/Desc_DrawnReqDlgLast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater2"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"   
+    > <!--above buttons-->
+        <ScrollView
+             android:layout_width="fill_parent" 
+             android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+            >   <!--one view in scroll-->
+                <include layout="@layout/rule_related_theme"
+                />
+                <LinearLayout
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                     android:gravity="center_vertical"
+                            android:id="@+id/llRelatedRule"
+                >
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_opt_keiten_theme"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_yaku_fix_theme"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="2px"
+                                android:background="@color/separater"
+                    />
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_yaku_fix2_theme"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_opt_pending_cont_theme"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                    >
+                        <include layout="@layout/setting_rule_opt_drawnmangan_theme"
+                        />
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                            android:id="@+id/llRuleMultiRon"
+                    >
+                        <include layout="@layout/setting_rule_opt_multiron_theme"
+                        />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>   <!--one view in scroll-->
+        </ScrollView>
+    </LinearLayout> <!--above buttons-->
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+            android:id="@+id/llBottomButtons"            
+    >   <!--buttons-->
+        <Button
+            android:id="@+id/OK"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Send"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/ShowRule"                        
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Label_ShowRule"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Close"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Close"
+            android:layout_gravity="center_vertical"
+        />
+        <Button
+            android:id="@+id/Help"                       
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/Help"
+            android:layout_gravity="center_vertical"
+        />
+    </LinearLayout>
+</LinearLayout>

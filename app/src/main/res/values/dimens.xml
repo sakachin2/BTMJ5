@@ -1,6 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="listview_itemtext">24sp</dimen>
+    <!--dimen name="listview_itemtext">24sp</dimen-->
     <dimen name="smalldevice_title_textsize">20sp</dimen>
     <dimen name="smalldevice_title_height">20dp</dimen>
     <!--dimen name="textview_middle">24sp</dimen-->
@@ -8,11 +8,14 @@
     <dimen name="textview_small_middle">20sp</dimen>
     <dimen name="textview_large">30sp</dimen>
     <dimen name="textview_small">16sp</dimen>
+    <dimen name="lisview_row_small">12sp</dimen>
     <dimen name="textview_membername">20sp</dimen>
     <dimen name="textview_editable">24sp</dimen>
     <dimen name="gvbtn_left">60dp</dimen>
+    <dimen name="gvbtn_left_land">60dp</dimen>
     <dimen name="gvbtn_left_small">45dp</dimen>
     <dimen name="gvbtn_right">60dp</dimen>
+    <dimen name="gvbtn_right_land">60dp</dimen>
     <dimen name="gvbtn_right_small">45dp</dimen>
     <dimen name="gvbtn_top">60dp</dimen>
     <dimen name="gvbtn_bottom">60dp</dimen>
@@ -36,4 +39,27 @@
     <dimen name="tv_textsize">12sp</dimen>
     <dimen name="dlg_button_height">30dp</dimen>
     <dimen name="dlg_min_width">98%</dimen>
+    <dimen name="smallfont_textsize_title">16sp</dimen>
+    <dimen name="smallfont_textsize_title_version">14sp</dimen>
+    <dimen name="smallfont_textsize_main_buttons">12sp</dimen>
+    <dimen name="smallfont_textsize_menuingame_menuitem">14sp</dimen>
+    <dimen name="smallfont_textsize_game_buttons">10sp</dimen>
+    <dimen name="smallfont_textsize_game_buttons2">8sp</dimen>
+    <dimen name="smallfont_textsize_game_buttons_land">8sp</dimen>
+    <dimen name="smallfont_textsize_dialog_checkbox">10sp</dimen>
+    <dimen name="smallfont_textsize_dialog_textview_middle">14sp</dimen>
+    <dimen name="smallfont_textsize_dialog_textview_middle2">12sp</dimen>
+    <dimen name="smallfont_textsize_dialog_textview">10sp</dimen>
+    <dimen name="smallfont_textsize_dialog_edittext">14sp</dimen>
+    <dimen name="smallfont_textsize_dialog_radiobutton">10sp</dimen>
+    <dimen name="smallfont_textsize_dialog_radiobutton_middle">14sp</dimen>
+    <dimen name="smallfont_textsize_dialog_button">12sp</dimen>
+    <dimen name="smallfont_textsize_spinner_item">14sp</dimen>
+    <dimen name="smallfont_textsize_spinner_dropdown">20sp</dimen>
+    <dimen name="smallfont_textsize_listitem_middle">14sp</dimen>
+    <dimen name="smallfont_textsize_listitem_small">10sp</dimen>
+    <dimen name="smallfont_buttonheight_dialog_button">36dp</dimen>
+    <dimen name="smallfont_buttonheight_spinbutton">36dp</dimen>
+    <dimen name="smallfont_buttonwidth_spinbutton">30dp</dimen>
+    <dimen name="smallfont_buttonwidth_spinner">100dp</dimen>
 </resources>

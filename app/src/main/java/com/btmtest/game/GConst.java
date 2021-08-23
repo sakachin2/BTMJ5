@@ -1,9 +1,11 @@
-//*CID://+vaaRR~: update#= 363;                                    //+vaaRR~
+//*CID://+vac5R~: update#= 369;                                    //~vac5R~
 //**********************************************************************//~v101I~
-//2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//+vaaRI~
-//                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//+vaaRI~
-//                Consequently CompReqDlg shows Not ronable format.//+vaaRI~
-//                Send current player at Ron and chk it on server  //+vaaRI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/08/11 vac3 add BGM kouka                                    //~vaaRI~
+//2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
+//                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
+//                Consequently CompReqDlg shows Not ronable format.//~vaaRI~
+//                Send current player at Ron and chk it on server  //~vaaRI~
 //2021/03/15 va6i add BGM of eburishou kouka                       //~va6iI~
 //2021/03/11 va6e add robot name over 3 robot                      //~va6eI~
 //2021/02/10 va68 change robot name                                //~va68I~
@@ -62,8 +64,10 @@ public class GConst                                                    //~v@@@R~
 	public static final int COLOR_EDITABLE_DISABLED =R.color.markabletext; //editabledisabled;//~v@11I~
                                                                    //~v@11I~
     public static final double RATE_SMALLDEVICE_WIDTH=0.95;       //~9818I~//~v@11I~
+    public static final double RATE_SMALLFONT_WIDTH=0.99;          //+vac5R~
     public static final double RATE_SMALLDEVICE_WIDTH_LANDSCAPE=0.7;//~v@11R~
     public static final double RATE_MAX_WIDTH=0.95;                //~v@11I~
+    public static final double RATE_SMALLFONT_MENUINGAME=0.7;      //~vac5I~
                                                                    //~@@@@I~
 	public static final int ISTOUCH_NONE=-1;                       //~v@@@I~//~@@@@M~
 	public static final int ISTOUCH_SWIPED=100;                    //~v@11I~
@@ -92,7 +96,7 @@ public class GConst                                                    //~v@@@R~
 	public  final static int PARMPOS_PLAYER=0;                     //~v@@@I~//~v@11M~
 	public  final static int PARMPOS_CTRFORTD=5;  //type/number/flag/ctrRemain/eswn//~v@@@I~//~v@11M~
 	public  final static int PARMPOS_TD=1;                          //~v@@@I~//~v@11M~
-	public  final static int PARMPOS_COMPLETE_LOOSER_ESWN=1;       //+vaaRI~
+	public  final static int PARMPOS_COMPLETE_LOOSER_ESWN=1;       //~vaaRI~
 	public  final static int PARMPOS_OPEN_OPTION=1;                //~v@@7I~//~v@11M~
 	public  final static int PARMPOS_OPEN_TDS=2;                   //~v@@7I~//~v@11M~
 	public  final static int PARMPOS_TD_DORA=3;                    //~v@@@I~//~v@11M~
@@ -174,6 +178,8 @@ public class GConst                                                    //~v@@@R~
     public static final int SOUNDID_BGM_GAME4FAST=19;              //~va06I~
     public static final int SOUNDID_BGM_EBURISHOU=20;              //~va6iI~
     public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //~va6iI~
+    public static final int SOUNDID_BGM_TOUCHIKUKOUKA=22;          //~vac3R~
+    public static final int SOUNDID_BGM_KYOUTO=23;                 //~vac3I~
     //*******************************************                  //~v@11I~
     public GConst()                                                //~v@11I~
     {                                                              //~v@11I~

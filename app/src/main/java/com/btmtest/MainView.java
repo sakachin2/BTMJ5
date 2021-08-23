@@ -1,7 +1,8 @@
-//*CID://+va66R~: update#= 406;                                    //~v@21R~//~9411R~//+va66R~
+//*CID://+vac5R~: update#= 409;                                    //~vac5R~
 //**********************************************************************
-//2021/02/01 va66 training mode(1 human and 3 robot)               //+va66I~
-//**********************************************************************//+va66I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
+//**********************************************************************//~va66I~
 package com.btmtest;                                               //~v@21R~
 
 import android.graphics.Bitmap;
@@ -29,8 +30,10 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~
 public class MainView                                   //~v@21R~  //~9620R~
 {
     private static final int MAIN_TITLE =R.layout.main_title;      //~v@21I~
+    private static final int MAIN_TITLE_SMALLFONT =R.layout.main_title_smallfont;//~vac5I~
     private static final int RID_TOPIMAGE=R.drawable.top_portrait; //~v@21I~
     private static final int MAIN_BUTTONS =R.layout.main_buttons;  //~v@21I~
+    private static final int MAIN_BUTTONS_SMALLFONT =R.layout.main_buttons_smallfont;//~vac5I~
 //    private static final int MAIN_MSGBAR =R.layout.main_msgbar;    //~9619I~//~9620R~
                                                                    //~v@21I~
     private FrameLayout frameLayout;                               //~v@21I~
@@ -79,10 +82,10 @@ public class MainView                                   //~v@21R~  //~9620R~
 //      addMsgBar();                                              //~v@21I~//~9619R~//~9620R~
         addButtons();                                              //~9619I~
         bindButtons();                                             //~v@21I~
-//      if ((TestOption.option & TestOption.TO_CONNECTED)!=0)	//TODO test//~v@21I~//+va66R~
+//      if ((TestOption.option & TestOption.TO_CONNECTED)!=0)	//TODO test//~v@21I~//~va66R~
         	setButtonStatus(true);                                 //~v@21I~
-//      else                                                       //~v@21I~//+va66R~
-//      	setButtonStatus(false);                                //~v@21I~//+va66R~
+//      else                                                       //~v@21I~//~va66R~
+//      	setButtonStatus(false);                                //~v@21I~//~va66R~
     }                                                              //~v@21I~
 	//*****************************************************************//~v@21R~
     private void setImage()                                        //~v@21I~
@@ -116,7 +119,8 @@ public class MainView                                   //~v@21R~  //~9620R~
 		int fp=ViewGroup.LayoutParams.MATCH_PARENT;                //~v@21R~
         FrameLayout.LayoutParams lp;                               //~v@21I~
         lp=new FrameLayout.LayoutParams(fp,wc);                    //~v@21I~
-        titleMain=AG.inflater.inflate(MAIN_TITLE,null);            //~v@21I~
+//      titleMain=AG.inflater.inflate(MAIN_TITLE,null);            //~v@21I~//~vac5R~
+        titleMain=AG.inflater.inflate((AG.swSmallFont ? MAIN_TITLE_SMALLFONT : MAIN_TITLE),null);//~vac5I~
         appendTimestampMade(titleMain);                            //~v@21I~
         lp.gravity=Gravity.TOP|Gravity.LEFT;    //=layout_gravity  //~v@21I~
         titleMain.setLayoutParams(lp);                             //~v@21I~
@@ -145,7 +149,8 @@ public class MainView                                   //~v@21R~  //~9620R~
 		int mp=ViewGroup.LayoutParams.MATCH_PARENT;                //~v@21I~
         FrameLayout.LayoutParams lp;                               //~v@21I~
         lp=new FrameLayout.LayoutParams(mp,wc);                    //~v@21I~
-        btnsMain=AG.inflater.inflate(MAIN_BUTTONS,null);           //~v@21I~
+//      btnsMain=AG.inflater.inflate(MAIN_BUTTONS,null);           //~v@21I~//~vac5R~
+        btnsMain=AG.inflater.inflate((AG.swSmallFont ? MAIN_BUTTONS_SMALLFONT : MAIN_BUTTONS),null);//~vac5I~
         topMsgBar=(TextView)    UView.findViewById(btnsMain,R.id.TopMsgBar);//~9620I~
 //      lp.gravity=Gravity.BOTTOM|Gravity.CENTER;    //=layout_gravity//~v@21R~
         lp.gravity=Gravity.BOTTOM;    //=layout_gravity            //~v@21I~
@@ -208,8 +213,8 @@ public class MainView                                   //~v@21R~  //~9620R~
         btnHistory   =              UButton.bind(btnsMain,R.id.History,main);//~9614I~//~0119R~
         btnHelp      =              UButton.bind(btnsMain,R.id.Help,main);//~v@21R~//~0119R~
         btnTest1     =              UButton.bind(btnsMain,R.id.Test1,main);	//TODO test//~v@21I~//~0119R~
-        if (AG.isDebuggable)                                       //~0316I~
-	        btnTest1.setVisibility(View.VISIBLE);                  //~0316I~
+//      if (AG.isDebuggable)                                       //~0316I~//+vac5R~
+//          btnTest1.setVisibility(View.VISIBLE);                  //~0316I~//+vac5R~
     }                                                              //~v@21I~
 	//*************************                                    //~v@21I~
     private void setButtonStatus(boolean PswConnected)             //~v@21I~

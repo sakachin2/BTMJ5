@@ -1,5 +1,6 @@
-//*CID://+va8bR~:                             update#=  717;       //~va8bR~
+//*CID://+vac5R~:                             update#=  718;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -37,6 +38,7 @@ import static com.btmtest.game.UA.UAEndGame.*;
 public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~//~9220R~//~9302R~//~9307R~
 {                                                                  //~2C29R~
     protected static final int LAYOUTID=R.layout.drawnreqdlglast;      //~9220I~//~9302R~//~9303R~//~9413R~
+    protected static final int LAYOUTID_SMALLFONT=R.layout.drawnreqdlglast_theme;//+vac5I~
     protected static final int TITLEID=R.string.Title_DrawnReqDlgLast;//~9220I~//~9302R~//~9303R~//~9307R~
     protected static final String HELPFILE="DrawnReqDlgLast";           //~9719R~//~9C13R~
                                                                    //~9214I~
@@ -87,7 +89,8 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
             return null;                                           //~9304I~
         }                                                          //~9308I~
     	DrawnReqDlgLast dlg=new DrawnReqDlgLast();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9307R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//+vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT  : LAYOUTID),//+vac5I~
     			UFDlg.FLAG_OKBTN|UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN|UFDlg.FLAG_RULEBTN,//~v@@@I~//~9220R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         AG.aUAEndGame.reqDlgLast=dlg;                                          //~9304I~//~9308M~
@@ -178,7 +181,7 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
 //      {                                                          //~9520I~//~9708R~
             RuleSetting.setPendingCont(PView,true/*swFixed*/);    //~9422I~//~9520R~//~9709R~
             RuleSettingYaku.setDrawnMangan(PView,true/*swFixed*/); //~9709I~
-            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //+va8bI~
+            RuleSetting.setYakuFix(PView,true/*swFixed*/);         //~va8bI~
             RuleSetting.setYakuFix2(PView,true/*swFixed*/);        //~va8bI~
             if (swDrawnManganAvailable)                            //~9520R~
                 RuleSetting.setMultiRon(PView,true/*swFixed*/);    //~9520R~

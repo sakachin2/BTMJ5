@@ -137,6 +137,7 @@
              android:orientation="horizontal"
             android:background="#ff101010"
         >
+         <!--    android:id="@+id/llTopButtons"-->
                     <Button
                         android:id="@+id/BTAccept"
                         android:layout_width="fill_parent"
@@ -203,12 +204,12 @@
                 />
             </LinearLayout> <!--listview-->
         <LinearLayout
-             android:id="@+id/BottomButtons"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:orientation="vertical"
             android:background="#ff101010"
         >
+        <!--     android:id="@+id/llBottomButtons" label is too long -->
             <LinearLayout
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content"

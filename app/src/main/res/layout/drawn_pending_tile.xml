@@ -3,11 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:gravity="center_vertical"
 > 
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
+    android:gravity="center_vertical"
     >
         <TextView
             android:layout_height="wrap_content"
@@ -16,6 +18,7 @@
             android:textSize="@dimen/completedlg_textsize"
 	         android:id="@+id/tvPending"
 	         android:layout_weight="1"
+	         android:layout_gravity="center_vertical"
         />
         <LinearLayout
              android:layout_width="fill_parent"

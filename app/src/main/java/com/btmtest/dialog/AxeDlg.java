@@ -1,5 +1,7 @@
-//*CID://+@@@@R~: update#= 220;                                    //~1Aa7R~//~@@@@R~
+//*CID://+vac5R~: update#= 221;                                    //+vac5R~
 //**********************************************************************//~1107I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//**********************************************************************//+vac5I~
 package com.btmtest.dialog;                                                   //~1A65I~//~1Aa7R~//~@@@@R~
 
 import android.app.Dialog;
@@ -23,7 +25,8 @@ import static com.btmtest.StaticVars.AG;                           //~9721I~//~@
 public class AxeDlg extends UFDlg                              //~1830R~//~@@@@R~
     implements  UButton.UButtonI                                   //~@@@@I~
 {                                                                  //~0914I~
-	private static final int buttonGroup          = R.id.DialogButtons;       //~1528I~
+//  private static final int buttonGroup          = R.id.DialogButtons;       //~1528I~//+vac5R~
+    private static final int buttonGroup          = R.id.llTopButtons; //for this LinearLayout, setButtonHeight at UFDlg//+vac5I~
     public  static final String NO_TITLE="NoTitle";                //~vagFI~
 //  protected ViewGroup layoutView;    //of UFDlg                    //~1818R~//~@@@@R~
 //	protected AxeList axeList;                                     //~1818R~//~v1B6R~
@@ -179,7 +182,7 @@ public class AxeDlg extends UFDlg                              //~1830R~//~@@@@R
     {                                                              //~1528I~
 //        boolean rc=true;                                           //~1528I~//~@@@@R~
         int id=Pbutton.getId();                                    //~@@@@I~
-    	if (Dump.Y) Dump.println("AxeDlg onClick buttonid="+Integer.toHexString(id)+"="+Pbutton.getText());//+@@@@R~
+    	if (Dump.Y) Dump.println("AxeDlg onClick buttonid="+Integer.toHexString(id)+"="+Pbutton.getText());//~@@@@R~
     	switch(id)                                          //~1821I~//~@@@@R~
         {                                                          //~1821I~
         case R.id.OK:                                              //~@@@@I~

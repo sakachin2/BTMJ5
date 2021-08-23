@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+> 
+<!-- ** halfway drawn type radio buttons -->
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+            > <!--drawn type radio buttons-->
+                <RadioButton
+                    android:id="@+id/rb4Reach"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn4Reach"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/smallfont_textsize_dialog_radiobutton_middle"
+                /> 
+                <RadioButton
+                    android:id="@+id/rb4Wind"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn4Wind"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/smallfont_textsize_dialog_radiobutton_middle"
+                /> 
+                <RadioButton
+                    android:id="@+id/rb4Kan"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn4Kan"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/smallfont_textsize_dialog_radiobutton_middle"
+                /> 
+            </LinearLayout>
+            <LinearLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+            > <!--drawn type radio buttons-->
+                <RadioButton
+                    android:id="@+id/rb99Tile"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn99Tile"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/smallfont_textsize_dialog_radiobutton_middle"
+                /> 
+                <RadioButton
+                    android:id="@+id/rb3Ron"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_Drawn3Ron"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/smallfont_textsize_dialog_radiobutton_middle"
+                /> 
+                <RadioButton
+                    android:id="@+id/rbOther"
+                    android:layout_height="wrap_content"
+	                 android:layout_width="fill_parent"
+                    android:text="@string/Label_DrawnOther"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/smallfont_textsize_dialog_radiobutton_middle"
+                /> 
+        	</LinearLayout> <!--drawn type radio buttons-->
+</LinearLayout>

@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  442;       //~v001R~//~@002R~//~9210R~
+//*CID://+vac5R~:                             update#=  443;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v@@@I~
 package com.btmtest.BT;                                        //~v@@@R~//~9722R~
@@ -75,7 +76,8 @@ public class GroupList                                             //~9722R~
         if (Dump.Y) Dump.println("GroupList displayGroup connectedctr="+connectedCtr+",memberctr="+memberCtr);//~v@@@R~//~9722R~
   		if (GL==null)                                              //~v@@@R~
         {                                                          //~v@@@I~
-	        GL=new ListGL(layoutView,RID_GROUPLIST,R.layout.textrowlist_bt_group); //display member 2column/row//~v@@@R~
+//          GL=new ListGL(layoutView,RID_GROUPLIST,R.layout.textrowlist_bt_group); //display member 2column/row//~v@@@R~//+vac5R~
+            GL=new ListGL(layoutView,RID_GROUPLIST,(AG.swSmallFont ? R.layout.textrowlist_bt_group_theme : R.layout.textrowlist_bt_group)); //display member 2column/row//+vac5I~
 		    GL.setBackground(COLOR_BG_GROUP_LIST);                 //~v@@@I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@R~
@@ -101,10 +103,10 @@ public class GroupList                                             //~9722R~
         if (Dump.Y) Dump.println("GroupList.showYourName memberCtr="+memberCtr);//~9722I~
     	if (etYourName==null)                                      //~9722I~
         	return;                                                //~9722I~
-        if (AG.activeSessionType==AST_BT)                          //+9B07I~
+        if (AG.activeSessionType==AST_BT)                          //~9B07I~
         BTCDialog.showYourName(etYourName,memberCtr);              //~9722I~
-        else                                                       //+9B07I~
-        WDA.showYourName(etYourName,memberCtr);                    //+9B07I~
+        else                                                       //~9B07I~
+        WDA.showYourName(etYourName,memberCtr);                    //~9B07I~
     }                                                              //~9722I~
     //******************************************                   //~v@@@I~
     //*member name by YoutrName and DeviceName                     //~v@@@I~//~9722R~

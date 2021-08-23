@@ -1,5 +1,6 @@
-//*CID://+vaadR~: update#= 863;                                    //~vaadR~
+//*CID://+vaceR~: update#= 866;                                    //~vaceR~
 //**********************************************************************//~v101I~
+//2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//~vaceR~
 //2021/06/30 vaad (Bug)PlayAlone mode,did not notify kan if kan not in deal. maintaine ItsHand also for MatcNotify mode//~vaadI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/05/04 va8A accept dupron for also robot                     //~va8AI~
@@ -844,6 +845,7 @@ public class Players                                               //~v@@@R~
                 }                                                  //~9225M~
                 break;                                             //~v@@@R~
             case GCM_RON:                                          //~v@@@R~
+//          case GCM_RON_ANYWAY:           //GCM_RON is parm from UserAction//+vaceR~
             	typeAction=AT_STD;                                 //~9B14I~
                 emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C06I~
                 if (emsg!=0)                                       //~9C06I~
@@ -2024,7 +2026,7 @@ public class Players                                               //~v@@@R~
 			TileData tdTaken;                                      //~v@@@I~
             boolean swTaken=false;                                 //~v@@@I~
         //********************************                         //~v@@@I~
-            if (Dump.Y) Dump.println("Players.discard discard t="+Ptd.type+",n="+Ptd.number);//~v@@@I~//+vaadR~
+            if (Dump.Y) Dump.println("Players.discard discard t="+Ptd.type+",n="+Ptd.number);//~v@@@I~//~vaadR~
             posTaken=arrayList.size()-1;                           //~v@@@I~
             tdTaken=arrayList.get(posTaken);                            //~v@@@I~
 //          swTaken=TileData.TDCompare(tdTaken,Ptd)==0;	//discard taken//~v@@@I~//~v@@6R~

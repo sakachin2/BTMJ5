@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>   <!--show 4 members gain and loss-->
+    <include layout="@layout/drawn_result_title_theme"
+    />
+    <include layout="@layout/drawn_result_theme"
+            android:id="@+id/lldrawn_result1"
+    />
+    <include layout="@layout/drawn_result_theme"
+            android:id="@+id/lldrawn_result2"
+    />
+    <include layout="@layout/drawn_result_theme"
+            android:id="@+id/lldrawn_result3"
+    />
+    <include layout="@layout/drawn_result_theme"
+            android:id="@+id/lldrawn_result4"
+    />
+</LinearLayout>

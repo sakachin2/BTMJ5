@@ -1,6 +1,7 @@
-//*CID://+vabsR~:                             update#=  716;       //+vabsR~
+//*CID://+vac5R~:                             update#=  717;       //+vac5R~
 //*****************************************************************//~v101I~
-//2021/08/02 vabs drop robot option to discard just taken,remains as test option//+vabsI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/08/02 vabs drop robot option to discard just taken,remains as test option//~vabsI~
 //2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/04/07 va7e change default to On for allow_robot_all         //~va66I~
@@ -54,6 +55,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 	public  static final String PROP_NAME="RuleSetting";           //~9404I~
 	private static final int    TITLEID=R.string.Title_RuleSetting;//~v@@@I~
 	private static final int    LAYOUTID=R.layout.setting_rule;      //~v@@@I~//~9412R~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_theme;//+vac5I~
 	private static final int    HELP_TITLEID=R.string.Title_RuleSetting;//~v@@@I~
 	private static final String HELPFILE="RuleSetting";       //~v@@@I~//~9412R~//~9515R~//~9615R~//~9C13R~
                                                                    //~9408I~
@@ -179,7 +181,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     {                                                              //~v@@@I~
         RuleSetting dlg=new RuleSetting();                         //~v@@@I~
 //      dlg.ufdlg=UFDlg.newInstance((UFDlg)dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@R~
-        UFDlg.setBundle(dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@I~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@I~//+vac5R~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),           //SettingDlg//+vac5I~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                   //~v@@@I~//~9C13R~
         return dlg;                                                //~v@@@I~
@@ -1767,9 +1770,9 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //    }                                                            //~va66R~
 	public static boolean isThinkRobot()                           //~va60I~
     {                                                              //~va60I~
-//        int def=DEFAULT_THINK_ROBOT;    //false                                        //~va60I~//~va66R~//+vabsR~
-//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_THINK_ROBOT),def)!=0;//~va60I~//+vabsR~
-        boolean rc=(TestOption.option5 & TestOption.TO5_NOTHINK_ROBOT)==0;      //+vabsI~
+//        int def=DEFAULT_THINK_ROBOT;    //false                                        //~va60I~//~va66R~//~vabsR~
+//        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_THINK_ROBOT),def)!=0;//~va60I~//~vabsR~
+        boolean rc=(TestOption.option5 & TestOption.TO5_NOTHINK_ROBOT)==0;      //~vabsI~
         if (Dump.Y) Dump.println("RuleSetting.isThinkRobot rc="+rc);//~va60I~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~

@@ -1,6 +1,7 @@
-//*CID://+vab6R~:                             update#=  882;       //+vab6R~
+//*CID://+vac5R~:                             update#=  884;       //~vac5R~
 //*****************************************************************//~v101I~
-//2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //+vab6I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //~vab6I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -56,6 +57,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             implements USpinner.USpinnerI                          //~9220I~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.compreqdlg;      //~9220I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.compreqdlg_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_CompReqDlg;//~9220I~
     private static final String HELPFILE="CompReqDlg";                //~9220I~
     private static final int MULTIWINDOW_SHIFT=50;                 //~9403I~
@@ -184,7 +186,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         if (Dump.Y) Dump.println("CompReqDlg.newInstance");        //~9226I~
     	CompReqDlg dlg=new CompReqDlg();                                     //~v@@@I~//~9220R~//~9221R~
 //  	dlg.ufdlg=UFDlg.newInstance(dlg,TITLEID,LAYOUTID,//~v@@@I~ //~9220R~//~9227R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			UFDlg.FLAG_OKBTN|UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN|FLAG_RULEBTN,//~v@@@I~//~9220R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
 //      dlg.ufdlg.tagSuffix=Integer.toString(Pstat.completeEswn);	//for multiple instance//~9222I~//~9227R~
@@ -292,7 +295,10 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         	int ww=getTilesWidth();                                //~9927R~
         	ww+=AG.dialogPaddingHorizontal; //dialog shrink by padding,add to fully include tiles//~9927R~
 //        }                                                        //~9927R~
-        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swPortrait="+AG.portrait+",ww="+ww);//~9812R~//~9925R~
+        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swPortrait="+AG.portrait+",ww="+ww+",padding="+AG.dialogPaddingHorizontal);//+vac5I~
+        if (AG.swSmallFont && AG.portrait)                         //+vac5I~
+            ww=Math.max(ww,(int)(AG.scrWidth*RATE_SMALLFONT_WIDTH));       //+vac5I~
+        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swSmallFont="+AG.swSmallFont+",swPortrait="+AG.portrait+",ww="+ww);//~9812R~//~9925R~//+vac5R~
         return ww;                                               //~9812R~//~9925R~
     }                                                            //~9812R~//~9925R~
     //******************************************                   //~9410I~
@@ -939,15 +945,15 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         {                                                          //~va11I~
 		    txt+=ronResult.point+" "+Utils.getStr(R.string.Label_Fu)+" "+ronResult.han+" "+Utils.getStr(R.string.Label_Han)+" : ";//~va11R~
         }                                                          //~va11I~
-//      if (ctrDora!=0)                                            //~va11I~//+vab6R~
-//          txt+=Utils.getStr(R.string.Label_Dora)+"="+ctrDora+" ";//~va11R~//+vab6R~
-//      if (ctrHonor!=0)                                           //~va11I~//+vab6R~
-//          txt+=Utils.getStr(R.string.Label_Honor)+"="+ctrHonor+" ";//~va11R~//+vab6R~
+//      if (ctrDora!=0)                                            //~va11I~//~vab6R~
+//          txt+=Utils.getStr(R.string.Label_Dora)+"="+ctrDora+" ";//~va11R~//~vab6R~
+//      if (ctrHonor!=0)                                           //~va11I~//~vab6R~
+//          txt+=Utils.getStr(R.string.Label_Honor)+"="+ctrHonor+" ";//~va11R~//~vab6R~
         txt+=Rank.toStringName(ronResult.longRank,false/*no Honor*/);//~va11R~
-        if (ctrHonor!=0)                                           //+vab6I~
-            txt+=" "+Utils.getStr(R.string.Label_Honor)+"="+ctrHonor;//+vab6I~
-        if (ctrDora!=0)                                            //+vab6I~
-            txt+=" "+Utils.getStr(R.string.Label_Dora)+"="+ctrDora;//+vab6I~
+        if (ctrHonor!=0)                                           //~vab6I~
+            txt+=" "+Utils.getStr(R.string.Label_Honor)+"="+ctrHonor;//~vab6I~
+        if (ctrDora!=0)                                            //~vab6I~
+            txt+=" "+Utils.getStr(R.string.Label_Dora)+"="+ctrDora;//~vab6I~
 //      txt+="WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"; //TODO test//~va11R~
 	  }                                                            //~va16I~
         if (Dump.Y) Dump.println("CompReqDlg.setYaku text="+txt+",ronResyult="+ronResult.toString());//~va11R~

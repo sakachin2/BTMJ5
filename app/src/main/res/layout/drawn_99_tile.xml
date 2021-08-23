@@ -3,27 +3,39 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+                     android:id="@+id/ll99Reacher"
 > 
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
+            android:gravity="center_vertical"
     >
         <TextView
             android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
             android:text="@string/Label_Drawn99Tile"
             android:textSize="@dimen/completedlg_textsize"
-	         android:layout_weight="1"
         />
+        <TextView
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+                     android:id="@+id/tvReacherEswn"
+                    android:textSize="@dimen/spinner_item"
+                android:layout_marginLeft="10dp"
+        />         
     </LinearLayout>
+
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
-                     android:id="@+id/ll99Reacher"
     >
+      <!--
         <include layout="@layout/compdlgreacher"
+        />
+      -->
+        <include layout="@layout/compdlgtiles"
         />
     </LinearLayout>   <!--abnormal Rank and Player-->
 </LinearLayout>

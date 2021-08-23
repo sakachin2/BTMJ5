@@ -5,6 +5,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     >
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+                 android:focusable="true"
+                 android:focusableInTouchMode="true"
+    />       <!--avoid EditText kbd up-->
 	<LinearLayout 
 		 android:layout_width="fill_parent"
 		 android:layout_height="wrap_content"
@@ -77,6 +84,7 @@
                  android:orientation="horizontal"
                            android:layout_gravity="right"
                            android:gravity="center_vertical|right"
+                    android:id="@+id/llTopButtons"
             >
                 <CheckBox
                     android:id="@+id/cbMultiSelect"
@@ -129,7 +137,7 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="vertical"
-         android:id="@+id/BottomButtons"
+         android:id="@+id/llBottomButtons"
             android:background="#ff101010"
     >
         <LinearLayout

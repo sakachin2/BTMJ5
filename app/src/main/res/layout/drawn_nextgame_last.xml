@@ -9,12 +9,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
                  android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
         >
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                     android:text="@string/Label_NextGame"
                 android:textSize="@dimen/completedlg_textsize"
+	           android:layout_gravity="center_vertical"
             />
             <RadioGroup
                 android:id="@+id/rgNextGame"

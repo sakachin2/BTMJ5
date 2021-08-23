@@ -1,5 +1,8 @@
-//*CID://+va9fR~:                             update#=  467;       //~va18R~//~va9fR~
+//*CID://+vac6R~:                             update#=  470;       //+vac6R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac6 by vac6, change URadioGroup to UButtonRG         //+vac6I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/08/11 vac3 add BGM kouka                                    //~vac3I~
 //2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
 //                not work because onConfigurationChanged is not fired by RVERSE request//~va9fI~
 //2020/10/18 va18 option to diaplay WinAnyway button               //~va18I~
@@ -8,6 +11,7 @@
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Rect;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.btmtest.R;
@@ -18,6 +22,7 @@ import com.btmtest.gui.USpinBtn;
 import com.btmtest.utils.Prop;                                     //~v@@@R~
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.gui.UCheckBox;
+import com.btmtest.gui.UButtonRG;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.sound.Sound;
 
@@ -33,6 +38,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	public  static final String PROP_NAME="PreferenceSetting";     //~v@@@I~
 	private static final int    TITLEID=R.string.Title_PrefSetting;//~v@@@R~
 	private static final int    LAYOUTID=R.layout.setting_preference;    //~v@@@R~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_preference_theme;//~vac5I~
 	private static final int    HELP_TITLEID=R.string.Title_PrefSetting;//~v@@@R~
 	private static final String HELPFILE="SettingPreference";      //~v@@@R~
                                                                    //~v@@@I~
@@ -46,13 +52,17 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	public  static final int    PS_ORIENTATION_LANDSCAPE=3;        //~v@@@R~
 	public  static final int    PS_ORIENTATION_LANDSCAPE_REVERSE=4;//~v@@@I~
                                                                    //~v@@@I~
-    private URadioGroup rgBGM;                                     //~va06I~
-    private static final int[] rbIDBGM=new int[]{R.id.rbBGMNo,R.id.rbBGMSame,R.id.rbBGM4Seasons,R.id.rbBGM4SeasonsFast};//~va06R~
+//  private URadioGroup rgBGM;                                     //~va06I~//+vac6R~
+    private UButtonRG   bgBGM;                                     //+vac6I~
+//  private static final int[] rbIDBGM=new int[]{R.id.rbBGMNo,R.id.rbBGMSame,R.id.rbBGM4Seasons,R.id.rbBGM4SeasonsFast};//~va06R~//~vac3R~
+    private static final int[] rbIDBGM=new int[]{R.id.rbBGMNo,R.id.rbBGMSame,R.id.rbBGM4Seasons,R.id.rbBGM4SeasonsFast,R.id.rbBGMSeriesK};//~vac3I~
 	public  static final int    PS_BGM_NO=0;                       //~va06I~
 	public  static final int    PS_BGM_COMMON=1;                   //~va06R~
 	public  static final int    PS_BGM_4SEASONS=2;                 //~va06R~
 	public  static final int    PS_BGM_4SEASONS_FAST=3;            //~va06I~
+	public  static final int    PS_BGM_SERIESK=4;                  //~vac3I~
 	public  static final int    PS_BGM_DEFAULT=PS_BGM_COMMON;      //~va06I~
+    private static final int[] IDS_BGM=new int[]{PS_BGM_NO,PS_BGM_COMMON,PS_BGM_4SEASONS,PS_BGM_4SEASONS_FAST,PS_BGM_SERIESK};//~9417I~//+vac6I~
                                                                    //~va06I~
     public static final int 	DEFAULT_VOLUME_MIN=0;              //~v@@@I~
     public static final int 	DEFAULT_VOLUME_MAX=10;             //~v@@@I~
@@ -65,7 +75,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private UCheckBox cbNoTakeButton,cbNoDiscardButton;            //~v@@@I~
     private UCheckBox cbNoAnywayButton;                            //~va18I~
     private UCheckBox cbNoSound,cbBeepOnly;                        //~v@@@R~
-//  private UCheckBox cbPortraitReverse;                           //+va9fR~
+//  private UCheckBox cbPortraitReverse;                           //~va9fR~
 //  private boolean swFixedParm;                                   //~v@@@R~
     private Prop curPropOld;                                 //~v@@@I~
     private USpinBtn sbVolume;                                     //~v@@@I~
@@ -90,7 +100,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     public static PrefSetting newInstance(boolean PswFixed)        //~v@@@I~
     {                                                              //~v@@@I~
         PrefSetting dlg=new PrefSetting();                         //~v@@@I~
-        UFDlg.setBundle(dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@I~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@I~//~vac5R~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),           //SettingDlg//~vac5I~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                        //~v@@@R~
 //      dlg.swFixedParm=PswFixed;                                  //~v@@@R~
@@ -125,7 +136,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         ((View)UView.findViewById(PView,R.id.rbOriPortraitReverse)).setVisibility(View.GONE);//~v@@@I~
 //      ((View)UView.findViewById(PView,R.id.rbOriLandscapeReverse)).setVisibility(View.GONE);//~v@@@I~//~va9fR~
                                                                    //~v@@@I~
-//      cbPortraitReverse=new UCheckBox(PView,R.id.cbPortraitReverse);//+va9fR~
+//      cbPortraitReverse=new UCheckBox(PView,R.id.cbPortraitReverse);//~va9fR~
         cbDelRiverTileTaken=new UCheckBox(PView,R.id.cbDelRiverTileTaken);//~v@@@I~
         cbNoRelatedRule=new UCheckBox(PView,R.id.cbNoRelatedRule); //~v@@@I~
         cbNoTakeButton=new UCheckBox(PView,R.id.cbNoTakeButton);   //~v@@@I~
@@ -137,7 +148,11 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	sbVolume= USpinBtn.newInstance(llSpinBtn,DEFAULT_VOLUME_MIN,DEFAULT_VOLUME_MAX,DEFAULT_VOLUME_INC,DEFAULT_VOLUME);//~v@@@I~
     	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBBGMVolume);//~va06I~
     	sbVolumeBGM= USpinBtn.newInstance(llSpinBtn,DEFAULT_VOLUME_MIN,DEFAULT_VOLUME_MAX,DEFAULT_VOLUME_INC,DEFAULT_VOLUME);//~va06I~
-        rgBGM=new URadioGroup(PView,R.id.rgBGM,0,rbIDBGM);         //~va06I~
+//      rgBGM=new URadioGroup(PView,R.id.rgBGM,0,rbIDBGM);         //~va06I~//+vac6R~
+        bgBGM=new UButtonRG((ViewGroup)PView,rbIDBGM.length);      //+vac6I~
+	    for (int ii=0;ii<rbIDBGM.length;ii++)                      //+vac6I~
+			bgBGM.add(IDS_BGM[ii],rbIDBGM[ii]);                    //+vac6I~
+        bgBGM.setDefaultChk(PS_BGM_DEFAULT);                       //+vac6I~
     }                                                              //~v@@@I~
 	//*****************                                                //~1613I~//~v@@@I~
     protected void setInitialValue()                                 //~v@@@I~
@@ -178,7 +193,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      rgOrientation.setCheckedID(Pprop.getParameter(getKeyPS(PSID_ORIENTATION),0),swFixedParm);//~v@@@R~
         rgOrientation.setCheckedID(Pprop.getParameter(getKeyPS(PSID_ORIENTATION),0),swFixed);//~v@@@I~
                                                                    //~va9fI~
-//      cbPortraitReverse.setStateInt(Pprop.getParameter(getKeyPS(PSID_ORIENTATION_PORT_REV),0),swFixed);//+va9fR~
+//      cbPortraitReverse.setStateInt(Pprop.getParameter(getKeyPS(PSID_ORIENTATION_PORT_REV),0),swFixed);//~va9fR~
                                                                    //~v@@@I~
         cbDelRiverTileTaken.setStateInt(Pprop.getParameter(getKeyPS(PSID_DEL_TILE_TAKEN),0/*defaultIdx*/),swFixed);//~v@@@I~
 //      cbNoRelatedRule.setStateInt(Pprop.getParameter(getKeyPS(PSID_NO_RELATED_RULE),1/*defaultIdx*/),swFixed);//~v@@@R~
@@ -194,7 +209,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      sbVolume.setVal(Pprop.getParameter(getKeyPS(PSID_VOLUME),DEFAULT_VOLUME),swFixed);//~v@@@R~
         sbVolume.setVal(Pprop.getParameter(getKeyPS(PSID_VOLUME),DEFAULT_VOLUME),false);//~v@@@I~
         sbVolumeBGM.setVal(Pprop.getParameter(getKeyPS(PSID_VOLUME_BGM),DEFAULT_VOLUME),false);//~va06I~
-        rgBGM.setCheckedID(Pprop.getParameter(getKeyPS(PSID_BGM),PS_BGM_DEFAULT),false);//~va06R~
+//      rgBGM.setCheckedID(Pprop.getParameter(getKeyPS(PSID_BGM),PS_BGM_DEFAULT),false);//~va06R~//+vac6R~
+        bgBGM.setChecked(Pprop.getParameter(getKeyPS(PSID_BGM),PS_BGM_DEFAULT),false);//+vac6I~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
     @Override //SettingDlg                                         //~v@@@I~
@@ -215,7 +231,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	    changedBtn=0;                                              //~v@@@I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties"); //~v@@@R~
         changed+=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~v@@@I~
-//      changed+=updateProp(getKeyPS(PSID_ORIENTATION_PORT_REV),cbPortraitReverse.getStateInt());//+va9fR~
+//      changed+=updateProp(getKeyPS(PSID_ORIENTATION_PORT_REV),cbPortraitReverse.getStateInt());//~va9fR~
         changed+=updateProp(getKeyPS(PSID_DEL_TILE_TAKEN),cbDelRiverTileTaken.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyPS(PSID_NO_RELATED_RULE),cbNoRelatedRule.getStateInt());//~v@@@I~
 //      changed+=updateProp(getKeyPS(PSID_NOTAKE_BUTTON),cbNoTakeButton.getStateInt());//~v@@@R~
@@ -228,7 +244,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         changedSound+=updateProp(getKeyPS(PSID_NOSOUND),cbNoSound.getStateInt());//~v@@@M~
         changedSound+=updateProp(getKeyPS(PSID_VOLUME),sbVolume.getVal());//~v@@@R~
         changedBGM+=updateProp(getKeyPS(PSID_VOLUME_BGM),sbVolumeBGM.getVal());//~va06I~
-        changedBGM+=updateProp(getKeyPS(PSID_BGM),rgBGM.getCheckedID());//~va06I~
+//      changedBGM+=updateProp(getKeyPS(PSID_BGM),rgBGM.getCheckedID());//~va06I~//+vac6R~
+        changedBGM+=updateProp(getKeyPS(PSID_BGM),bgBGM.getChecked());//+vac6I~
         changed+=changedSound;                                     //~va06I~
         changed+=changedBGM;                                     //~v@@@I~//~va06I~
         changed+=changedBtn;                                       //~v@@@I~
@@ -325,13 +342,13 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("PrefSetting.getOrientation rc="+rc);//~v@@@R~
         return rc;                                                 //~v@@@R~
     }                                                              //~v@@@I~
-//    //**************************************                     //+va9fR~
-//    public static int getOrientationPortReverse()                //+va9fR~
-//    {                                                            //+va9fR~
-//        int rc=AG.prefProp.getParameter(getKeyPS(PSID_ORIENTATION_PORT_REV),0);//+va9fR~
-//        if (Dump.Y) Dump.println("PrefSetting.getOrientationPortReverse rc="+rc);//+va9fR~
-//        return rc;                                               //+va9fR~
-//    }                                                            //+va9fR~
+//    //**************************************                     //~va9fR~
+//    public static int getOrientationPortReverse()                //~va9fR~
+//    {                                                            //~va9fR~
+//        int rc=AG.prefProp.getParameter(getKeyPS(PSID_ORIENTATION_PORT_REV),0);//~va9fR~
+//        if (Dump.Y) Dump.println("PrefSetting.getOrientationPortReverse rc="+rc);//~va9fR~
+//        return rc;                                               //~va9fR~
+//    }                                                            //~va9fR~
     //**************************************                       //~v@@@I~
     public static boolean isDeleteRiverTileTaken()                 //~v@@@I~
     {                                                              //~v@@@I~

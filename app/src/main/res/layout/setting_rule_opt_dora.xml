@@ -19,6 +19,7 @@
                 android:layout_width="wrap_content"
                     android:text="@string/Label_Dora"
                 android:textSize="@dimen/textview_middle"
+                android:layout_gravity="center_vertical"
             />
             <RadioGroup
                 android:orientation="horizontal"
@@ -222,6 +223,7 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_Red5"
             android:textSize="@dimen/textview_middle"
+                android:layout_gravity="center_vertical"
         />
         <CheckBox
             android:id="@+id/cbUseRed5"

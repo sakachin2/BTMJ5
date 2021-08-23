@@ -1,8 +1,9 @@
-//*CID://+va69R~:                             update#=  504;       //+va69R~
+//*CID://+vac5R~:                             update#=  506;       //~vac5R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
-//2021/02/12 va69 (BUG)BTCDialog;disconnect button is disable at connection failed even another connection is active//+va69I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/02/12 va69 (BUG)BTCDialog;disconnect button is disable at connection failed even another connection is active//~va69I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
@@ -164,7 +165,8 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 //      connectionType=PmemberRole;                               //~@002I~//~9620R~
 		BTCDialog dlg=new BTCDialog();                             //~v@@@I~
 //  	dlg.ufdlg=UFDlg.newInstance(dlg,R.string.Title_Bluetooth,R.layout.btcdialog,//~v@@@R~//~9227R~
-    	UFDlg.setBundle(dlg,R.string.Title_Bluetooth,R.layout.btcdialog,//~9227R~
+//  	UFDlg.setBundle(dlg,R.string.Title_Bluetooth,R.layout.btcdialog,//~9227R~//~vac5R~
+    	UFDlg.setBundle(dlg,R.string.Title_Bluetooth,(AG.swSmallFont ? R.layout.btcdialog_theme : R.layout.btcdialog),//~vac5I~
 				UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,            //~v@@@I~
 //  			R.string.Title_Bluetooth,"BTCDialog");             //~v@@@I~//~9C13R~
     			R.string.Title_Bluetooth,HELPFILE);                //~9C13I~
@@ -671,7 +673,8 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         if (Dump.Y) Dump.println("BTCDialog displayRemoteDevice");//~1AbSI~//~v@@@R~
         if (DL==null)                                              //~v@@@I~
         {                                                          //~v@@@I~
-        	DL=new ListBT(layoutView,RID_DEVICELIST,R.layout.textrowlist_bt);//~1A6fI~//~v@@@R~
+//      	DL=new ListBT(layoutView,RID_DEVICELIST,R.layout.textrowlist_bt);//~1A6fI~//~v@@@R~//+vac5R~
+        	DL=new ListBT(layoutView,RID_DEVICELIST,(AG.swSmallFont ? R.layout.textrowlist_bt_theme :R.layout.textrowlist_bt));//+vac5I~
         	DL.setBackground(COLOR_BG_DEVICE_LIST);                             //~3203I~//~3209R~//~@@@2R~//~v@@@R~
         }                                                          //~v@@@I~
         pairedDeviceList=AG.aBTI.getPairDeviceList();               //~1AbTI~//~v@@@R~
@@ -1694,7 +1697,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
                 btnAccept.setEnabled(true);                            //~v@@@I~//~@002R~
                 btnStopAccept.setEnabled(false);                       //~v@@@I~//~@002R~
                 btnConnect.setEnabled(true);                           //~v@@@I~//~@002R~
-              if (connectedCtr==0)                                 //+va69I~
+              if (connectedCtr==0)                                 //~va69I~
                 btnDisconnect.setEnabled(false);                       //~v@@@I~//~@002R~
                 break;                                                 //~v@@@I~//~@002R~
             case CS_DISCONNECTED://server & client action              //~v@@@I~//~@002R~

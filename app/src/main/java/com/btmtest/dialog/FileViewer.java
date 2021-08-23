@@ -1,5 +1,6 @@
-//*CID://+1A4zR~:                             update#=  192;
+//*CID://+vac5R~:                             update#=  193;       //+vac5R~
 //*************************************************************************
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //1A4z 2014/12/09 FileDialog:view file by click twice
 //*************************************************************************
 package com.btmtest.dialog;                                           //~1A4zR~
@@ -20,6 +21,7 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~//~1
 public class FileViewer extends UFDlg                                      //~1A4zR~
 {
     private static final int LAYOUTID=R.layout.fileviewer;
+    private static final int LAYOUTID_SMALLFONT=R.layout.fileviewer_theme;//+vac5I~
     private static final int TITLEID_VIEWER=R.string.Title_FileViewer;//~1A4zI~
     private static final int HELPTITLEID=R.string.HelpTitle_FileViewer;//~1A4zR~
     private static final String HELPFILE="FileViewer";         //~v@@@R~//~1A4zI~
@@ -42,12 +44,13 @@ public class FileViewer extends UFDlg                                      //~1A
     public static FileViewer newInstance(String Pfname,String Pfullpath)//~1A4zR~
     {                                                              //~1A4zI~
     	FileViewer dlg=new FileViewer();                           //~1A4zI~
-//      String title=Utils.getStr(TITLEID_VIEWER,Pfullpath);       //+1A4zR~
-        int pos=Pfullpath.lastIndexOf("/");                        //+1A4zI~
-        String fnm=pos>=0 ? Pfullpath.substring(pos+1) : Pfullpath;//+1A4zI~
-        String title=Utils.getStr(TITLEID_VIEWER,fnm);             //+1A4zI~
+//      String title=Utils.getStr(TITLEID_VIEWER,Pfullpath);       //~1A4zR~
+        int pos=Pfullpath.lastIndexOf("/");                        //~1A4zI~
+        String fnm=pos>=0 ? Pfullpath.substring(pos+1) : Pfullpath;//~1A4zI~
+        String title=Utils.getStr(TITLEID_VIEWER,fnm);             //~1A4zI~
 //  	UFDlg ufdlg=UFDlg.newInstance(dlg,title,LAYOUTID,          //~1A4zR~
-    	UFDlg.setBundle(dlg,title,LAYOUTID,                        //~1A4zI~
+//  	UFDlg.setBundle(dlg,title,LAYOUTID,                        //~1A4zI~//+vac5R~
+    	UFDlg.setBundle(dlg,title,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
 //                  UFDlg.FLAG_CLOSEBTN,0,HELPFILE);               //~1A4zR~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELPTITLEID,HELPFILE);//~1A4zR~
 //  	dlg.ufdlg=ufdlg;                                           //~1A4zR~

@@ -1,5 +1,6 @@
-//*CID://+va6iR~:                             update#=  110;       //~va6iR~
+//*CID://+vac3R~:                             update#=  114;       //~vac3R~
 //*************************************************************************//~v106I~
+//2021/08/11 vac3 add BGM kouka                                    //~vac3I~
 //2021/03/15 va6i add BGM of eburishou kouka                       //~va6iI~
 //2021/03/15 va6h (BUG)BGM not stop iby MenuInGame                 //~va6hI~
 //2020/04/27 va06:BGM                                              //~va06I~
@@ -38,7 +39,9 @@ public class BGMList                                               //~va06I~
     				new Tables(SOUNDID_BGM_GAME4SLOW,         R.raw.bgm_in_game_fuyu_slow),//use MediaPlayer for BGM(long audio)//~va06I~
     				new Tables(SOUNDID_BGM_GAME4FAST,         R.raw.bgm_in_game_fuyu_fast),//use MediaPlayer for BGM(long audio)//~va06I~
     				new Tables(SOUNDID_BGM_EBURISHOU,         R.raw.bgm_eburisho_kouka),//~va6iI~
-    				new Tables(SOUNDID_BGM_MIZUCHUKOUKA,      R.raw.bgm_mizuchu_kouka),//+va6iI~
+    				new Tables(SOUNDID_BGM_MIZUCHUKOUKA,      R.raw.bgm_mizuchu_kouka),//~va6iI~
+    				new Tables(SOUNDID_BGM_TOUCHIKUKOUKA,     R.raw.bgm_touchiku_kouka180),//~vac3I~
+    				new Tables(SOUNDID_BGM_KYOUTO,            R.raw.bgm_3koryoka60),//+vac3R~
                     };                                             //~1A08I~
     private static final int MAX_ERRCTR=4;                         //~1A3bI~//~9C02M~
 //  boolean Busy;                                                  //~va06R~

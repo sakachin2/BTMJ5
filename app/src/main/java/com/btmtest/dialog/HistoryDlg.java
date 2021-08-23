@@ -1,6 +1,7 @@
-//*CID://+va87R~:                             update#=  587;       //+va87R~
+//*CID://+vac5R~:                             update#=  591;       //~vac5R~
 //*****************************************************************//~v101I~
-//2021/04/13 va87 show B/S limited to a group                      //+va87I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//2021/04/13 va87 show B/S limited to a group                      //~va87I~
 //2021/04/06 va7a add function of show balance sheet               //~va7aI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -48,8 +49,10 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     private static final int HELP_TITLEID=TITLEID;                 //~9614I~
     private static final String HELPFILE="HistoryDlg";           //~9614I~//~9C13R~
     private static final int LAYOUTID=R.layout.historydlg;         //~9614I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.historydlg_theme;//~vac5I~
     private static final String STR_FILTER=EXT_HISTORY;            //~9614R~
     private static final int LISTVIEW_ROW_LAYOUTID=R.layout.textrowlist_historydlg;//~v@@@I~//~9614R~
+    private static final int LISTVIEW_ROW_LAYOUTID_SMALLFONT=R.layout.textrowlist_historydlg_theme;//~vac5I~
     private static final int COLOR_INTERRUPTED=Color.argb(0xff,0xff,0x00,0x00);//~9824I~
     private static final int COLOR_NOT_INTERRUPTED=Color.argb(0xff,0x00,0x00,0x00);//~9824I~
                                                                    //~9613I~
@@ -81,7 +84,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     public static HistoryDlg newInstance()                         //~9614R~
     {                                                              //~v@@@I~//~9614I~
     	HistoryDlg dlg=new HistoryDlg();                           //~v@@@I~//~9614R~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,//~v@@@I~             //~9614I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,//~v@@@I~             //~9614I~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);//~v@@@I~//~9614I~//~9C13R~
     	return dlg;                                               //~v@@@I~//~9614I~
     }                                                              //~v@@@I~//~9614I~
@@ -107,7 +111,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         UButton.bind(Playoutview,R.id.btnHistoryBS,this);          //~va7aI~
         containerFilename=UView.findViewById(Playoutview,R.id.FileNameContainer);//~v@@@I~//~9614I~
 //      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_MULTIPLE);//~v@@@R~//~9614I~//~0114R~
-        lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_SINGLE);//~0114I~
+//      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_SINGLE);//~0114I~//~vac5R~
+        lvFilename=new UListView(Playoutview,R.id.FileList,(AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT : LISTVIEW_ROW_LAYOUTID),this,UListView.CHOICEMODE_SINGLE);//~vac5R~
 //      tvFolderName      =(TextView)UView.findViewById(Playoutview,R.id.FolderName);//~9615R~//~0114R~
         setInitialValue();                                         //~v@@@I~//~9614I~
     }                                                              //~v@@@M~
@@ -956,7 +961,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     public void onClickHistoryBS()                                 //~va7aI~
     {                                                              //~va7aI~
         if (Dump.Y) Dump.println("HistoryDlg.onClickHistoryBS");   //~va7aI~
-//	    HistoryBSDlg.newInstance().show();                         //~va7aR~//+va87R~
-  	    HistoryBSDlg.newInstance(multipleSelected).show();         //+va87I~
+//	    HistoryBSDlg.newInstance().show();                         //~va7aR~//~va87R~
+  	    HistoryBSDlg.newInstance(multipleSelected).show();         //~va87I~
     }                                                              //~va7aI~
 }//class                                                           //~v@@@R~

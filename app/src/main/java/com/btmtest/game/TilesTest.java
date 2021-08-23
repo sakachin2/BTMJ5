@@ -1,4 +1,4 @@
-//*CID://+vaauR~: update#= 638;                                    //~vaauR~
+//*CID://+vaauR~: update#= 642;                                    //~vaauR~
 //**********************************************************************//~v101I~
 //2021/07/08 vaau split test deal to TilesTest.java                //~vaauI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
@@ -891,16 +891,16 @@ public class TilesTest                                 //~v@@@R~   //~va8xR~
         if (Pcase==1)                                                 //~1405I~//~1407R~
         {                //pon and chii for tenpai                 //~vaauR~
             itsDeal=new int[][]{                                   //~vaauI~
-                                    {23,24,25,  1, 2, 3, 10,15,16, 10, 4, 4 },//+vaauR~
+                                    {23,24,25,  1, 2, 3, 10,15,16, 10, 4, 4 },//~vaauR~
 //                                  {23,24,25,  0, 1, 4, 28,28,12, 27,27, 5 }, //tenpai by Chii//~vaauI~
 //                                  {23,24,26,  0, 1, 4, 28,28,12, 27,27, 5 }, //Not Tenpai penchan//~vaauR~
 //                                  {23,24,25,  0, 2, 4, 28,28,12, 27,27,11 }, //Not Tenpai kanchan//~vaauR~
-                                    {14,15,16,  0, 2,14, 28,28,22, 27,27,18 }, //Not Tenpai kanchan red5//+vaauR~
-                                    {23,24,25,  1, 3,10,  9,11,16, 29,29, 8 },//+vaauR~
-                                    {23,24,25,  3, 6, 6, 10,11,12, 26,26, 8 },//+vaauR~
+                                    {14,15,16,  0, 2,14, 28,28,22, 27,27,18 }, //Not Tenpai kanchan red5//~vaauR~
+                                    {23,24,25,  1, 3,10,  9,11,16, 29,29, 8 },//~vaauR~
+                                    {23,24,25,  3, 6, 6, 10,11,12, 26,26, 8 },//~vaauR~
                                 };                                 //~vaauI~
             outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vaauI~
-            itsDealTake=new int[]{27,26, 7,26};                    //+vaauR~
+            itsDealTake=new int[]{27,26, 7,26};                    //~vaauR~
             outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
             itsDealTake=new int[]{28, 7, 7, 7};                    //~vaauI~
             outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
@@ -1178,10 +1178,12 @@ public class TilesTest                                 //~v@@@R~   //~va8xR~
         if (Pcase==413) //atoduke take yakuhai 1 han   //no 7 8 9 10  //~1501I~//~vaauR~
         {                                                          //~1501I~
             itsDeal=new int[][]{                                   //~1501I~//~vaauR~
-                                    { 0, 0, 2,  4, 4, 5,  6, 6,11, 17,20+100, 23},//~1501I~//~va8xR~//~vaauR~
-                                    {18,19,17, 33,33,28, 13,13,13, 24,25, 17},//~1501I~//~va8xR~//~vaauR~
+//                                  { 0, 0, 2,  4, 4, 5,  6, 6,11, 17,20+100, 23},//~1501I~//~va8xR~//~vaauR~
+//                                  {18,19,17, 33,33,28, 13,13,13, 24,25, 17},//~1501I~//~va8xR~//~vaauR~
+                                    {18,19,17, 33,33,28, 11,13,16, 21,25, 17},//~vaauR~
+                                    { 0, 0, 2,  4, 4, 5,  6, 6,11, 17,20+100, 23},//~vaauI~
                                     { 2, 5,11, 12,12,15, 18,21,24, 31,32, 27},//~1501I~//~vaauR~
-                                    { 1, 4, 6, 11,14,16, 18,21,24, 31,32, 27},//~1501I~//~va8xR~//~vaauR~
+                                    { 1, 4, 6, 11,14,16, 18,21,24,  4, 6, 10},//~1501I~//~va8xR~//+vaauR~
                                 };                                 //~1501I~//~vaauR~
 //            itsDeal=new int[][]{                                 //~vaauR~
 //                                    { 0, 2, 3,  4,13, 5,  6,11,28, 17,20+100, 27},//~vaauR~
@@ -1193,9 +1195,9 @@ public class TilesTest                                 //~v@@@R~   //~va8xR~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vaauI~
         	itsDealTake=new int[]{27+200,26,28,15};   //200 selection order//~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1501I~
-        	itsDealTake=new int[]{33,29,29,27};                    //~1501I~//~va8xR~//~vaauR~
+        	itsDealTake=new int[]{ 0,29,29,33};                    //~1501I~//~va8xR~//~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1501I~
-        	itsDealTake=new int[]{33,14,14,15};                    //~va8xI~//~vaauR~
+        	itsDealTake=new int[]{ 1,14,14,15};                    //~va8xI~//~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~va8xI~
         }                                                          //~1501I~
         else                                                       //~va8xI~

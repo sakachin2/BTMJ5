@@ -1,5 +1,6 @@
-//*CID://+va40R~:                             update#=  231;       //~va40R~
+//*CID://+vac5R~:                             update#=  234;       //~vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v@@1I~
 //multichoice option; dismiss control by selected option           //~v@@1I~
@@ -7,10 +8,7 @@
 package com.btmtest.dialog;                                         //~v@@@R~
 
 import android.app.Dialog;
-//import android.app.DialogFragment;                               //+va40R~
-import androidx.fragment.app.DialogFragment;                      //+va40I~
-//import android.app.FragmentManager;                              //~va40R~
-//import android.app.FragmentTransaction;                          //~va40R~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 import android.content.DialogInterface;
 import android.app.AlertDialog;                                    //~v@@@I~
 import android.graphics.Color;
@@ -30,6 +28,7 @@ import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@1I~
+import static com.btmtest.game.GConst.*;
 
 
 public class UMenuDlg   extends DialogFragment                     //~v@@@R~
@@ -147,7 +146,7 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
 	@Override                                                      //~v@@@I~
     public Dialog onCreateDialog(Bundle Pbundle)                   //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UMenuDlg.onCreateDialog entry"); //~v@@1R~
+        if (Dump.Y) Dump.println("UMenuDlg.onCreateDialog entry swTheme="+swTheme+",swNoAutoDismiss="+swNoAutoDismiss); //~v@@1R~//~vac5R~
         Bundle b=getArguments();                                   //~v@@@I~
         String title=b.getString(PARM_TITLE,null);                 //~v@@@I~
         int  itemsid=b.getInt(PARM_ITEMSID,0);                //~v@@@I~
@@ -155,7 +154,12 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
      	AlertDialog.Builder builder;                               //~v@@1I~
         if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog swTheme="+swTheme);//~@003I~//~v@@1R~
         if (swTheme)                                               //~@003I~//~v@@1I~
+        {                                                          //~vac5I~
+          if (AG.swSmallFont)                                      //~vac5I~
+    		builder=new AlertDialog.Builder(new ContextThemeWrapper(AG.context,R.style.AlertDialogThemeCustomSmallFont));//~vac5I~
+          else                                                     //~vac5I~
     		builder=new AlertDialog.Builder(new ContextThemeWrapper(AG.context,R.style.AlertDialogThemeCustom));//~@003I~//~v@@1I~
+        }                                                          //~vac5I~
         else                                                       //~@003I~//~v@@1I~
      		builder=new AlertDialog.Builder(AG.context);//~v@@@I~  //~v@@1R~
 	    builder.setTitle(title);                                   //~v@@@I~
@@ -195,8 +199,10 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
     	AlertDialog ad=(AlertDialog)androidDialog;                 //~v@@1I~
         ad.show();                                                 //~v@@1I~
         int wc=ViewGroup.LayoutParams.WRAP_CONTENT;                //~v@@1M~
-        int minww=(AG.portrait ? AG.scrWidth : AG.scrHeight)/2;     //~v@@1I~
+//      int minww=(AG.portrait ? AG.scrWidth : AG.scrHeight)/2;     //~v@@1I~//+vac5R~
+        int minww=(int)((AG.portrait ? AG.scrWidth : AG.scrHeight)*(AG.swSmallFont ? RATE_SMALLFONT_MENUINGAME : 0.5));   //0.7//+vac5I~
         ad.getWindow().setLayout(minww,wc);                        //~v@@1R~
+        if (Dump.Y) Dump.println("UMenuDlg.setWidth minww="+minww);//~va40I~
     }                                                              //~v@@1M~
 //**********************************                               //~v@@1I~
 	private void setLayout(AlertDialog.Builder Pbuilder)           //~v@@1I~
@@ -410,7 +416,7 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
 //**********************************                               //~v@@1I~
 	private void setOnShowListenerMulti(AlertDialog Pdlg)               //~v@@1I~
     {                                                              //~v@@1I~
-    	if (Dump.Y) Dump.println("UMenuDlg.setOnShowListener");    //~v@@1I~
+    	if (Dump.Y) Dump.println("UMenuDlg.setOnShowListenerMulti");    //~v@@1I~//~vac5R~
         Pdlg.setOnShowListener(                                    //~v@@1I~
 			new DialogInterface.OnShowListener()                              //~v@@1I~
 			{                                                      //~v@@1I~

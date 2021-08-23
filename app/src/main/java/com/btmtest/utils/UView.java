@@ -1,5 +1,6 @@
-//*CID://+va40R~: update#= 295;                                    //~va40R~
+//*CID://+vac5R~: update#= 299;                                    //~vac5R~
 //**********************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/11/06 va30 change greenrobot EventCB to URunnable           //~va30I~
 //**********************************************************************//~va30I~
@@ -49,6 +50,9 @@ public class UView                                                 //~v@@@I~
     private static final int HIGHT_DPI_LOW=19;                     //~v@@@I~
     private static final int BASE_NEXUS7=800;                      //~9808I~
     private static final int MULTIWINDOW_SHIFT=50;                 //~0113I~
+                                                                   //~vac5I~
+//  private static final int DPI_USE_SMALL_FONT=360;               //+vac5R~
+    private static final int DPI_USE_SMALL_FONT=430;       //top 10 max is 424 at 2019//+vac5I~
 //    private static Stack<View> stackSnackbarLayout=new Stack<View>();//~v@@@R~
 //*************************                                        //~v@@@I~
 	public UView()                                                 //~v@@@I~
@@ -57,7 +61,7 @@ public class UView                                                 //~v@@@I~
 //*************************                                        //~@@@@I~
 	public static void fixOrientation(boolean Pfix)                      //~@@@@I~//~v@@@R~
     {                                                              //~@@@@I~
-        if (Dump.Y) Dump.println("UView:fixOrientation Pfix="+Pfix);//+va40I~
+        if (Dump.Y) Dump.println("UView:fixOrientation Pfix="+Pfix);//~va40I~
         int ori2=ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;      //~@@@@I~
     	if (Pfix)                                                  //~@@@@I~
         {                                                          //~@@@@I~
@@ -98,6 +102,7 @@ public class UView                                                 //~v@@@I~
         if (Dump.Y) Dump.println("UView: getScreenSize w="+p.x+",h="+p.y);//~1506R~//~@@@@R~//~1A6pR~//~v@@@R~
         AG.dip2pix=AG.resource.getDisplayMetrics().density;        //~1428I~
         AG.sp2pix=AG.resource.getDisplayMetrics().scaledDensity;   //~@@@@I~
+        AG.scrDencity=AG.resource.getDisplayMetrics().densityDpi;  //~vac5I~
         if (Dump.Y) Dump.println("UView:getScreenSize dp2pix="+AG.dip2pix+",sp2pix="+AG.sp2pix); //~1506R~//~@@@@R~//~v@@@R~//~9717R~
         AG.portrait=(AG.scrWidth<AG.scrHeight);                    //~1223R~
         getTitleBarHeight();                                       //~1413M~
@@ -108,7 +113,8 @@ public class UView                                                 //~v@@@I~
                 AG.scrNavigationbarRightWidth=AG.scrWidthReal-AG.scrWidth;    //navigationBar on the right//~9807I~
     }                                                              //~1122M~
     //*******************************************************      //~v@@@I~
-	public static void getScreenRealSize(Display Pdisplay)         //~v@@@I~
+//  public static void getScreenRealSize(Display Pdisplay)         //~v@@@I~//~vac5R~
+    private static void getScreenRealSize(Display Pdisplay)        //~vac5I~
     {                                                              //~v@@@I~
 		if (Build.VERSION.SDK_INT>=19)   //Navigationbar can be hidden//~v@@@R~
         {                                                          //~v@@@I~
@@ -117,7 +123,7 @@ public class UView                                                 //~v@@@I~
         	Pdisplay.getRealSize(p); //api17:4.2.2 JELLY bean mr1  //~v@@@R~
         	AG.scrWidthReal=p.x;                                   //~v@@@I~
         	AG.scrHeightReal=p.y;                                  //~v@@@I~
-	        if (Dump.Y) Dump.println("UView:getScreemRealSize getRealSize() w="+AG.scrWidthReal+",h="+AG.scrHeightReal);//~v@@@I~
+	        if (Dump.Y) Dump.println("UView:getScreenRealSize getRealSize() w="+AG.scrWidthReal+",h="+AG.scrHeightReal);//~v@@@I~//~va40R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
@@ -130,6 +136,12 @@ public class UView                                                 //~v@@@I~
         int ww=Math.min(AG.scrWidthReal,AG.scrHeightReal);         //~9809R~
         AG.swSmallDevice=ww<BASE_NEXUS7;                           //~9809I~
         AG.scaleSmallDevice=(double)ww/BASE_NEXUS7;               //~9809I~
+        if (AG.dip2pix!=0)                                         //~vac5I~
+        	AG.scrPortraitWidthDPI=(int)(ww/AG.dip2pix);                  //~vac5I~
+        else                                                       //~vac5I~
+        	AG.scrPortraitWidthDPI=ww;                             //~vac5I~
+        AG.swSmallFont=AG.scrPortraitWidthDPI<=DPI_USE_SMALL_FONT;  //~vac5I~
+	    if (Dump.Y) Dump.println("UView:getScreenRealSize swSmallDevice="+AG.swSmallDevice+",dip2pix="+AG.dip2pix+",swSmallFont="+AG.swSmallFont+",scrPortraitWidthDPI="+AG.scrPortraitWidthDPI);//~vac5I~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
     public static void getTitleBarHeight()                         //~1413R~

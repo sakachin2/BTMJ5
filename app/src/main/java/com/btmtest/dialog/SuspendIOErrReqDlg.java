@@ -1,5 +1,6 @@
-//*CID://+va02R~:                             update#=  770;       //~va02R~
+//*CID://+vac5R~:                             update#=  771;       //+vac5R~
 //*****************************************************************//~v101I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -41,6 +42,7 @@ import static com.btmtest.utils.Alert.*;
 public class SuspendIOErrReqDlg extends UFDlg                             //~v@@@R~//~9220R~//~9302R~//~9307R~//~9A18R~
 {                                                                  //~2C29R~
     protected static final int LAYOUTID=R.layout.suspenddlgioereq; //~9A19R~
+    protected static final int LAYOUTID_SMALLFONT=R.layout.suspenddlgioereq_theme;//+vac5I~
     protected static final int TITLEID=R.string.Title_SuspendIOErrReqDlg;//~9A19R~
     protected static final String HELPFILE="SuspendIOErrReqDlg";           //~9719R~//~9A19R~//~9A30R~//~0111R~
                                                                    //~9214I~
@@ -134,7 +136,8 @@ public class SuspendIOErrReqDlg extends UFDlg                             //~v@@
 			dlg.dismiss();                                         //~9A18I~
         }                                                          //~9A18I~
         dlg=new SuspendIOErrReqDlg();                              //~9A18I~
-    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9A19I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9A19I~//+vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_HELPBTN|FLAG_RULEBTN|FLAG_CLOSEBTN,//~9A19I~//~9A22R~
 				TITLEID,HELPFILE);                                 //~9A19I~
         dlg.posIOErr=Status.getSuspendByIOErr();	//pos seq      //~9A18I~
