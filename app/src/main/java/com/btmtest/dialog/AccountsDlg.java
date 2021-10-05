@@ -1,4 +1,4 @@
-//*CID://+vac9R~:                             update#= 1123;       //~vac9R~
+//*CID://+vac9R~:                             update#= 1124;       //~vac9R~
 //*****************************************************************//~v101I~
 //2021/08/18 vac9 AccountsDlg, avoid colomn shift by option, keep column same as title//~vac9I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
@@ -915,7 +915,7 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     @Override                                                      //~9321I~
     public void setButton()                                        //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("AccountsDlg.setButton");   //~9819I~//~9A31R~
+        if (Dump.Y) Dump.println("AccountsDlg.setButton swAllOK="+swAllOK);   //~9819I~//~9A31R~//+vac9R~
     	super.setButton();                                         //~9321I~
         if (swRequester)                                           //~9321I~
 	        btnTotal.setEnabled(swAllOK);                          //~9321I~

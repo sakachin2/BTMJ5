@@ -1,6 +1,9 @@
-//*CID://+va60R~:                             update#=   47;       //~va06R~//+va60R~
+//*CID://+vae9R~:                             update#=   52;       //~vae9R~
 //****************************************************************************//~1A0aI~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2021/09/19 vaea stop also non userBGM when pause                 //~vaeaI~
+//2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~1919I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/04/27 va06:BGM                                              //~va06I~
 //****************************************************************************//~va06I~
 package com.btmtest.utils.sound;                                         //~9C01I~//~9C03R~
@@ -9,6 +12,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.view.SoundEffectConstants;
 import android.os.Handler;
+import android.os.Looper;                                          //~va60I~
 
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.utils.Dump;
@@ -24,14 +28,15 @@ public class Sound                                                 //~9C01R~
     private AudioManager mgr;                                      //~9C02I~
     private boolean swSoundPool=true;                                      //~9C03I~
     private SPList SPL;                                            //~9C03I~
-    private BGMList BGM;                                           //~va06I~
+//  private BGMList BGM;                                           //~va06I~//~vaeaR~
+    public  BGMList BGM;                                           //~vaeaI~
     public Sound()                                                 //~9C01I~
     {                                                              //~9C01I~
         AG.aSound=this;                                            //~9C01I~
-        init();                                                    //+va60I~
-    }                                                              //+va60I~
-    public void init()                                                  //+va60I~
-    {                                                              //+va60I~
+        init();                                                    //~va60I~
+    }                                                              //~va60I~
+    public void init()                                                  //~va60I~
+    {                                                              //~va60I~
         if (swSoundPool)                                           //~9C03I~
         {                                                          //~9C03I~
         	SPL=new SPList(this);                                  //~9C03I~
@@ -46,6 +51,7 @@ public class Sound                                                 //~9C01R~
 //****************************                                     //~va06I~
     public void resetOption()                                      //~9C01I~
     {                                                              //~9C01I~
+    	if (Dump.Y) Dump.println("Sound.resetOption swSoundPool="+swSoundPool);//~va60I~
         if (swSoundPool)                                           //~9C03I~
         {                                                          //~9C03I~
         	SPL.resetOption();                                     //~9C03I~
@@ -58,7 +64,18 @@ public class Sound                                                 //~9C01R~
     	if (Dump.Y) Dump.println("Sound.resetOption swNoSound="+swNoSound+",volume="+vol);             //~9C01I~//~9C02I~
         SL.setVolume(vol);                                         //~9C02R~//~9C03R~
     }                                                              //~9C01I~
+//*******************************************************************//~1919I~
+//*from prefSetting at reinstalation recovery                      //~1919I~
+//*******************************************************************//~1919I~
+    public void recoverSound()                                     //~1919I~
+    {                                                              //~1919I~
+    	if (Dump.Y) Dump.println("Sound.recoverOption swSoundPool="+swSoundPool);//~1919I~
+        SPL.recoverOption();                                       //~1919I~
+      	BGM.recoverOption();                                       //~1919I~
+    }                                                              //~1919I~
 //****************************                                     //~va06I~
+//*from PrefSetting                                                //~1920I~
+//****************************                                     //~1920I~
     public void resetOptionBGM()                                   //~va06I~
     {                                                              //~va06I~
     	if (Dump.Y) Dump.println("Sound.resetOptionBGM");          //~va06I~
@@ -112,16 +129,16 @@ public class Sound                                                 //~9C01R~
 //********************************************************         //~9C03I~
     static public void play (int Psoundid,boolean Pbeep)           //~9C03I~
     {                                                              //~9C03I~
-//        AG.aSound.SPL.play(Psoundid,Pbeep);                         //~9C03I~//+va60R~
-          AG.aSound.playSPL(Psoundid,Pbeep);                       //+va60I~
+//        AG.aSound.SPL.play(Psoundid,Pbeep);                         //~9C03I~//~va60R~
+          AG.aSound.playSPL(Psoundid,Pbeep);                       //~va60I~
     }                                                              //~9C03I~
-//********************************************************         //+va60I~
-//  not static method to override by IT Mock                       //+va60I~
-//********************************************************         //+va60I~
-    public void playSPL (int Psoundid,boolean Pbeep)               //+va60I~
-    {                                                              //+va60I~
-        SPL.play(Psoundid,Pbeep);                                  //+va60I~
-    }                                                              //+va60I~
+//********************************************************         //~va60I~
+//  not static method to override by IT Mock                       //~va60I~
+//********************************************************         //~va60I~
+    public void playSPL (int Psoundid,boolean Pbeep)               //~va60I~
+    {                                                              //~va60I~
+        SPL.play(Psoundid,Pbeep);                                  //~va60I~
+    }                                                              //~va60I~
 //********************************************************         //~va06I~
 //    public static void playDelayed(int PdelayTime/*ms*/,int Psoundid,boolean Pbeep)//~va06R~
 //    {                                                              //~v@@@I~//~va06R~
@@ -171,14 +188,34 @@ public class Sound                                                 //~9C01R~
                 }                                                  //~va06I~
             }                                                      //~va06I~
         };                                                          //~va06I~
-        final Handler handler=new Handler();                       //~va06I~
+//      final Handler handler=new Handler();                       //~va06I~//~va60R~
+        final Handler handler=new Handler(Looper.getMainLooper());	//on MainThread//~va60I~
         handler.postDelayed(runnable,PdelayTime);                  //~va06I~
     }                                                              //~va06I~
 //********************************************************         //~va06I~
     static public void playBGM(int Psoundid)                       //~va06I~
     {                                                              //~va06I~
+        if (Dump.Y) Dump.println("Sound.playBGM");                 //~vae9I~
         AG.aSound.BGM.play(Psoundid);                              //~va06R~
     }                                                              //~va06I~
+//********************************************************         //~vae9I~
+    static public void playBGMTop()                                //~vae9I~
+    {                                                              //~vae9I~
+        if (Dump.Y) Dump.println("Sound.playBGMTop");              //~vae9I~
+        AG.aSound.BGM.playBGMTop();                                //+vae9R~
+    }                                                              //~vae9I~
+//********************************************************         //~vaeaR~
+    static public void onResume()                                  //~vaeaR~
+    {                                                              //~vaeaR~
+        if (Dump.Y) Dump.println("Sound.onResume");                //~vaeaR~
+        AG.aSound.BGM.onResume();                                  //~vaeaR~
+    }                                                              //~vaeaR~
+//********************************************************         //~vaeaR~
+    static public void onPause()                                   //~vaeaR~
+    {                                                              //~vaeaR~
+        if (Dump.Y) Dump.println("Sound.onPause");                 //~vaeaR~
+        AG.aSound.BGM.onPause();                                   //~vaeaR~
+    }                                                              //~vaeaR~
 //********************************************************         //~9C02I~
     private boolean playSoundEffect(String Pfile)            //~9C02I~
     {                                                              //~9C02I~

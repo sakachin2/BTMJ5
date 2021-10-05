@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  175;       //~@003R~//~9210R~
+//*CID://+1aj1R~:                             update#=  177;       //~1aj1R~
 //****************************************************************************//~v101I~
+//1aj1 2021/08/14 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~1aj1I~
 //@004:20181103 remains constant "AjagoBT"                         //~@004I~
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
 //****************************************************************************//~v101I~
@@ -19,6 +20,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Message;
+import android.os.Looper;                                          //+1aj1I~
                                                                    //~@003I~
 //import static com.btmtest.AG.*;                                  //~@003R~
 import java.lang.reflect.Method;
@@ -62,7 +64,7 @@ public class BTControl {                                           //~@@@@I~
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
     // Member object for the chat services
-    public  BTService mChatService = null;                  //~@@@@R~//~@@@2R~//~v101R~//+0123R~
+    public  BTService mChatService = null;                  //~@@@@R~//~@@@2R~//~v101R~//~0123R~
 	private Activity activity;                                     //~@@@@I~//~@@@2R~
 //  private Handler mHandler;                                      //~@@@@R~//~@003R~
     private BTHandler mHandler;                                    //~@003I~
@@ -73,7 +75,8 @@ public class BTControl {                                           //~@@@@I~
     {                                                              //~@@@@I~
     	activity=AG.aMainActivity;                                       //~@@@@I~
     	mConnectedDeviceName=null;	//called at main create        //~@@@2I~
-        mHandler=new BTHandler();	//on MainThread                //~@@@@I~
+//      mHandler=new BTHandler();	//on MainThread                //~@@@@I~//~1aj1R~
+        mHandler=new BTHandler(Looper.getMainLooper());	//on MainThread//~1aj1I~
     }                                                              //~@@@@I~
 //*************************************************************************//~@@@@I~
 //*create Adapter(bluetooth support chk)                           //~@@@@I~
@@ -183,6 +186,11 @@ public class BTControl {                                           //~@@@@I~
 //  private static class BTHandler extends Handler {               //~@@@@R~//~@003R~
     private static class BTHandler extends UHandler                //~@003I~
     {                                                              //~@003I~
+        public BTHandler(Looper Plooper)                           //~1aj1I~
+        {                                                          //~1aj1I~
+            super(Plooper);                                        //~1aj1I~
+        	if(Dump.Y) Dump.println("BTC.BTHandler constructor looper="+Plooper.toString());//~1aj1I~
+        }                                                          //~1aj1I~
     	//****************************************                 //~@003I~
     	@Override                                                  //~@003I~
         public boolean storeMsg(Message Pmsg)                             //~@003I~

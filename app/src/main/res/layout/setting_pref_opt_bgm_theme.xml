@@ -24,6 +24,22 @@
     			android:background="@color/bg_dialog_remarkable2"
                      android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
         />
+        <TextView
+            android:text="@string/Label_SoundVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+        />
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+                 android:layout_marginLeft="10px"
+        >
+            <include layout="@layout/spinbutton_theme"
+                android:id="@+id/llSBBGMVolume"
+            />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
          android:layout_width="fill_parent"
@@ -31,14 +47,6 @@
          android:orientation="horizontal"
          android:gravity="center_vertical"
     >
-<!--
-        <RadioGroup
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:id="@+id/rgBGM"
-            android:layout_width="wrap_content"
-        >
--->
         <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -63,16 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
-            <RadioButton
-                android:id="@+id/rbBGM4SeasonsFast"
-                android:text="@string/Label_BGM4SeasonsFast"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-            />
         </LinearLayout>
-<!--
-        </RadioGroup>
--->
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
@@ -87,34 +86,233 @@
              android:gravity="center_vertical"
         >
             <RadioButton
+                android:id="@+id/rbBGM4SeasonsFast"
+                android:text="@string/Label_BGM4SeasonsFast"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            />
+            <RadioButton
                 android:id="@+id/rbBGMSeriesK"
                 android:text="@string/Label_BGMSeriesK"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
         </LinearLayout>
-        <TextView
-            android:text="@string/Label_SoundVolume"
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:gravity="center_vertical"
+    >
+        <RadioButton
+            android:id="@+id/rbUserBGM"
+            android:text="@string/UserBGM"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
+        <CheckBox
+            android:id="@+id/cbUseUPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:text="@string/lbUseUPicker"
+            android:visibility="gone"
         />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:gravity="center_vertical"
+    >
+        <CheckBox
+            android:id="@+id/cbUserBGMNoRound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/UserBGMEachRound"
+            android:layout_marginLeft="10dp"
+        />
+        <TextView
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+            android:hint="@string/tvUserBGMSelection"
+        />                                     
+        <EditText
+             android:id="@+id/etUserBGMSelection"
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+            android:background="@color/editable"
+            android:inputType="number"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/etUserBGMSelectionHint"
+        />                                     
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:gravity="center_vertical"
+    >
         <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:orientation="horizontal"
-                 android:layout_marginLeft="10px"
+             android:gravity="center_vertical"
         >
-            <include layout="@layout/spinbutton_theme"
-                android:id="@+id/llSBBGMVolume"
+	        <TextView
+                android:text="0."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM0"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="1."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM1"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="2."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM2"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="3."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM3"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="4."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM4"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="5."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM5"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="6."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM6"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="7."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM7"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="8."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM8"
+            />
+        </LinearLayout>
+        <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:gravity="center_vertical"
+        >
+	        <TextView
+                android:text="9."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+            />
+            <include layout="@layout/setting_pref_opt_bgm_user"
+                    android:id="@+id/llUserBGM9"
             />
         </LinearLayout>
     </LinearLayout>
-<!--
-    <TextView
-        android:text="@string/Desc_BGM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-    />
--->
 </LinearLayout>

@@ -1,3 +1,4 @@
 # comment line, no space/comment is allowed after equation
+# do not define Saved, it is id of copy of asset
 preference=1
 Orientation=1

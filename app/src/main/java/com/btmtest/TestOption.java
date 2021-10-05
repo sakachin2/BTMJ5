@@ -1,6 +1,6 @@
-//*CID://+vacaR~: update#= 557;                                    //+vacaR~
+//*CID://+vacaR~: update#= 558;                                    //~vacaR~
 //**********************************************************************//~v@@@I~
-//2021/08/18 vaca test SmallFont dialog                            //+vacaI~
+//2021/08/18 vaca test SmallFont dialog                            //~vacaI~
 //2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -228,6 +228,7 @@ public class TestOption //extends Handler                          //~v@@@I~
         sst2="sst2-2";                                             //~v@@@I~
         Dump.println("TestOption appname="+AG.appName+",yourname="+AG.YourName);//~v@@@R~
         TODlg.prop2TO();                                           //~v@@@I~
+        Dump.open("Dump.txt",false/*sdcard*/);                 //~vad5I~//+vacaI~
     }                                                              //~v@@@I~
     public static int getTimingBTIOErr()                           //~v@@@I~
     {                                                              //~v@@@I~
@@ -255,11 +256,11 @@ public class TestOption //extends Handler                          //~v@@@I~
         WDA.disableWiFi();                                         //~v@@@I~
 //      WDA.enableWiFi();                                          //~v@@@R~
     }                                                              //~v@@@I~
-    public static void throwIOEBT()                                //+vacaI~
-    {                                                              //+vacaI~
-        if (Dump.Y) Dump.println("TestOption.throwIOEBT");         //+vacaI~
-        int idx=0;                                                 //+vacaI~
-        AG.aBTMulti.BTGroup.setIOErr(idx,true/*swOn*/);            //+vacaI~
-        SuspendIOErrReqDlg.newInstance(idx);                       //+vacaI~
-    }                                                              //+vacaI~
+    public static void throwIOEBT()                                //~vacaI~
+    {                                                              //~vacaI~
+        if (Dump.Y) Dump.println("TestOption.throwIOEBT");         //~vacaI~
+        int idx=0;                                                 //~vacaI~
+        AG.aBTMulti.BTGroup.setIOErr(idx,true/*swOn*/);            //~vacaI~
+        SuspendIOErrReqDlg.newInstance(idx);                       //~vacaI~
+    }                                                              //~vacaI~
 }                                                                  //~v@@@I~

@@ -1,5 +1,6 @@
-//*CID://+vac5R~:                             update#=  493;       //~vac5R~
+//*CID://+vae0R~:                             update#=  495;       //+vae0R~
 //*****************************************************************//~v101I~
+//2021/09/12 vae0 Scped for BTMJ5                                  //+vae0I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v101I~
@@ -14,6 +15,7 @@ import com.btmtest.R;
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.gui.UListView;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
+import com.btmtest.utils.UScoped;
 import com.btmtest.utils.Utils;
 
 import java.io.File;
@@ -47,6 +49,7 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("RuleFileDlg.defaultConstructor"); //~9614R~//~9616R~
         swU2S=true;	//display \\uxxxx by string                     //~9617R~
+        swScoped= UScoped.isScoped();    //protected on FileDialog  //+vae0I~
     }                                                              //~v@@@R~
 	//*****************************************************************//~9616I~
     public static RuleFileDlg newInstance(String Pfilter,boolean Pswload)//~9616I~
@@ -104,7 +107,7 @@ public class RuleFileDlg extends FileDialog                //~v@@@R~     //~9613
         return fnm;                                                //~9B09I~
     }                                                              //~9B09I~
     //*********************************************************************//~9B09I~
-    //*dialogToProperty to get Synchdte                            //~9B09I~
+    //*dialogToProperty to get Synchdate                            //~9B09I~//~vac5R~
     //*********************************************************************//~9B09I~
     protected boolean saveFile()                                   //~9B09I~
     {                                                              //~9B09I~

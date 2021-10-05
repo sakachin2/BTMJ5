@@ -1,5 +1,5 @@
 # comment line, no space/comment is allowed after equation
-#indicate file type
+#indicate file type, do not define SavedRule it is id of not asset
 rule=1
 Kuitan=1
 #index of 25000,27000,30000

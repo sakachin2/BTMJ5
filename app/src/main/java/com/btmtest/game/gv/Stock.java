@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 571;                                    //~v@@@R~//~v@11R~//~9214R~//~va60R~
+//*CID://+vaedR~: update#= 575;                                    //~vaedR~
 //**********************************************************************//~v101I~
+//2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //**********************************************************************//~1107I~
@@ -34,9 +35,13 @@ public class Stock                                                 //~v@@@R~
 	private static final int COLOR_NEXTONE_SHADOW=DiceBox.COLOR_FG_DISABLE;	//=Color.argb(0xa0,0x80,0x80,0x80);//~v@11I~
 	private static final int COLOR_NEXTONE_RING=Color.argb(0xff,0x00,0x00,0x00);//~v@11I~
     private static final int WIDTH_NEXTONE_RING=2;                 //~v@11R~
-    public  static final int SHIFT_BACK=6;                         //~v@@@I~//~9313R~
+//  public  static final int SHIFT_BACK=6;                         //~v@@@I~//~9313R~//~vaedR~
+    public  static final int SHIFT_BACK_STD=6;                     //~vaedI~
+    public  static final int SHIFT_BACK_SMALLDIP=2;                //~vaedI~
     public  static final int SHIFT_SIDE=2;                         //~v@@@I~//~9313R~
-    private static final int MARGIN_BG=4;                          //~v@@@R~
+//  private static final int MARGIN_BG=4;                          //~v@@@R~//+vaedR~
+    private static final int MARGIN_BG_STD=4;                      //+vaedI~
+    private static final int MARGIN_BG_SMALLDIP=2;                 //+vaedI~
     private static final int DORA_STOCKPOS=2;	//cutpos -2        //~v@@@I~
     public  static final int DORA_TDPOS=(10-1);   	//[9]:initial dora(backward by ctrKan from shuffeled TileData KEEP_LEFT(14)(2*5dora)+2*2(kan)//~v@@@R~//~9217R~
     private static final int DEALCTR=(PLAYERS*HANDCTR)/2;	//deal initally (4*(4*3+1))/2=26 stock//~v@@@R~
@@ -74,6 +79,7 @@ public class Stock                                                 //~v@@@R~
 //  private Rect[] rectCompleteDora=new Rect[MAXCTR_KAN];          //~9503I~//~0328R~
     private Rect[] rectCompleteDora=new Rect[MAXCTR_DORA];         //~0328I~
     private int ctrDoraComplete;                                   //~9503I~
+    private int SHIFT_BACK,MARGIN_BG;                              //+vaedR~
 //*************************                                        //~v@@@I~
 	public Stock()	//for IT                                       //~va60I~
     {                                                              //~va60I~
@@ -92,6 +98,16 @@ public class Stock                                                 //~v@@@R~
         pieceH=table.stockPieceH;                                  //~v@@@I~
 //      bmsssRiver=pieces.bitmapAllPiecesRiver;                    //~v@@@I~//~0216R~
         bmsssRiver=AG.bitmapAllPiecesRiver;                        //~0216I~
+        if (AG.swSmallDip)                                         //~vaedI~
+        {                                                          //+vaedI~
+            SHIFT_BACK=SHIFT_BACK_SMALLDIP;                        //~vaedI~
+            MARGIN_BG=MARGIN_BG_SMALLDIP;                          //+vaedI~
+        }                                                          //+vaedI~
+        else                                                       //~vaedI~
+        {                                                          //+vaedI~
+            SHIFT_BACK=SHIFT_BACK_STD;                             //~vaedI~
+            MARGIN_BG=MARGIN_BG_STD;                               //+vaedI~
+        }                                                          //+vaedI~
     }
 	//*********************************************************    //~v@@@I~
 	//*from GCanvas at init                                        //~v@@@I~
@@ -157,6 +173,10 @@ public class Stock                                                 //~v@@@R~
         p=pointsStock[PLAYER_LEFT];                                //~v@@@R~
         rects[PLAYER_LEFT]   =new Rect(p.x-diffB-mm,  p.y-diffS-mm,       p.x+hh+mm,       p.y+ll+mm);//~v@@@R~
         if (Dump.Y) Dump.println("Stock.getBGRect stocklength="+ll+",hh="+hh);//~v@@@M~
+        if (Dump.Y) Dump.println("Stock.getBGRect YOU="+rects[PLAYER_YOU].toString());//+vaedI~
+        if (Dump.Y) Dump.println("Stock.getBGRect RIGHT="+rects[PLAYER_RIGHT].toString());//+vaedI~
+        if (Dump.Y) Dump.println("Stock.getBGRect FACING="+rects[PLAYER_FACING].toString());//+vaedI~
+        if (Dump.Y) Dump.println("Stock.getBGRect LEFT="+rects[PLAYER_LEFT].toString());//+vaedI~
         return rects;                                              //~v@@@M~
     }                                                              //~v@@@M~
     //*************************************************************//~v@@@I~
@@ -816,7 +836,7 @@ public class Stock                                                 //~v@@@R~
 	        lastPosDora=p.x;                                       //~v@11I~
         }                                                          //~v@@@I~
         ctrKanDrawn=ctrKan;                                        //~v@@@I~
-        if (Dump.Y) Dump.println("Stock.drawDora ctrKanDrawn="+ctrKanDrawn);//+va60I~
+        if (Dump.Y) Dump.println("Stock.drawDora ctrKanDrawn="+ctrKanDrawn);//~va60I~
     }                                                              //~v@@@I~
     //*********************************************************    //~9214I~
     //*show hidden Dora(uradora)                                   //~9214I~

@@ -16,7 +16,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -30,7 +30,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/Func3"
@@ -42,7 +42,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/Func4"
@@ -54,7 +54,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/Func5"
@@ -66,7 +66,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/Func6"
@@ -78,7 +78,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/MenuInGame"
@@ -89,7 +89,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -103,7 +103,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -117,7 +117,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -141,7 +141,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/UserAction_MinusStop"
@@ -153,7 +153,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/UserAction_DrawnGame"
@@ -165,7 +165,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/UserAction_DlgComp"
@@ -176,7 +176,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -191,18 +191,18 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/UserAction_Reach_Open"
                         android:layout_width="@dimen/gvbtn_left_small"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:text="@string/Label_OpenReach_Vertical"
+                        android:text="@string/Label_Open_Vertical"
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -217,7 +217,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/action_cancel"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -231,7 +231,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -246,7 +246,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/action_cancel"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -261,7 +261,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
                  android:padding="2dp"
                  android:layout_marginTop="-4dp"
                  android:layout_marginBottom="-4dp"
@@ -276,7 +276,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
              <Button
                         android:id="@+id/UserAction_WaitOn"
@@ -288,6 +288,6 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons_land"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
             />
 </LinearLayout>

@@ -1,5 +1,8 @@
-//*CID://+DATER~: update#= 480;                                    //~v@@@R~//~9313R~
+//*CID://+vaegR~: update#= 509;                                    //~vaegR~
 //**********************************************************************//~v101I~
+//2021/09/28 vaeg enlarge nameplate for long device                //~vagdI~
+//2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
+//**********************************************************************//~vaedI~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -15,6 +18,7 @@ import static com.btmtest.game.gv.Pieces.*;//~v@@@I~
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 
 public class MJTable                                               //~v@@@R~
 {                                                                  //~0914I~
@@ -41,11 +45,15 @@ public class MJTable                                               //~v@@@R~
     private static final int    POINTSTICK_MARGIN=10;              //~v@@@R~
                                                                    //~v@@@I~
     private static final double P_MARGIN_BOTTOM           =     0.02;//~v@@@I~
+    private static final int    P_MARGIN_BOTTOM_DIP       =     0;	//dip;//~vaedI~
     private static final double P_MARGIN_TOP              =     0.05;//~v@@@R~//~v@@@R~
+    private static final int    P_MARGIN_TOP_DIP          =     0; //dip matgin on layout is minus//~vaedR~
 //  private static final double P_MARGIN_LEFT             =     0.00;//~v@@@R~
 //  private static final double P_MARGIN_RIGHT            =     0.00;//~v@@@R~
     private static final double P_MARGIN_LEFT             =     0.05;//~v@@@I~
+    private static final int    P_MARGIN_LEFT_DIP         =     8;  //dip//~vaedR~
     private static final double P_MARGIN_RIGHT            =     0.05;//for openReach//~v@@@R~
+    private static final int    P_MARGIN_RIGHT_DIP        =     8;  //dip//~vaedR~
     private static final double P_MARGIN_STOCK_TOP        =     0.01;//~v@@@R~
     private static final double P_MARGIN_STOCK_BOTTOM     =     0.01;//~v@@@I~
 //  private static final double P_MARGIN_STOCK_SIDE       =     0.02;//~v@@@R~
@@ -111,10 +119,13 @@ public class MJTable                                               //~v@@@R~
     private boolean swVerticalEarth=false;                         //~9317I~
     private int marginDiceBox;                                     //~9808I~
     public  int sizeMsgBar=SIZE_MSGBAR;                             //~9811I~
+    public  int shift_back;                                         //~vaedI~
 //*************************                                        //~v@@@I~
+//*from GameView                                                   //~vaegI~
+//*************************                                        //~vaegI~
 	public MJTable(int Pww,int Phh)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
-        if (Dump.Y) Dump.println("MJTable Constructor Pww="+Pww+",Phh="+Phh);         //~1506R~//~@@@@R~//~v@@@R~//~9807R~
+        if (Dump.Y) Dump.println("MJTable.Constructor Pww="+Pww+",Phh="+Phh);         //~1506R~//~@@@@R~//~v@@@R~//~9807R~//~1918R~
         AG.aMJTable=this;                                          //~v@@@I~
         WW=Pww;	//framelayout width                                //~v@@@R~
         HH=Phh;                                                    //~v@@@R~
@@ -125,6 +136,15 @@ public class MJTable                                               //~v@@@R~
     {                                                              //~v@@@I~
     	if (AG.swSmallDevice)                                      //~9811I~
         	sizeMsgBar*=AG.scaleSmallDevice;                       //~9811I~
+    	if (AG.swSmallDip)                                         //~vaedI~
+        {                                                          //~vaedI~
+        	shift_back=SHIFT_BACK_SMALLDIP;      //2               //~vaedI~
+        }                                                          //~vaedI~
+        else                                                       //~vaedI~
+        {                                                          //~vaedI~
+        	shift_back=SHIFT_BACK_STD;           //6               //~vaedI~
+        }                                                          //~vaedI~
+        if (Dump.Y) Dump.println("MJTable.init sizeMsgBar="+sizeMsgBar+",swSmappDpi="+AG.swSmallDip+",shift_back="+shift_back);//~vaedR~
 //  	marginDiceBox=AG.swSmallDevice ? DICEBOX_MARGIN_SMALL : DICEBOX_MARGIN;//~9808I~//~9809R~
     	marginDiceBox=AG.swSmallDevice ? (int)(DICEBOX_MARGIN*AG.scaleSmallDevice) : DICEBOX_MARGIN;//~9809I~
     	swPortrait=(HH>WW);                                        //~v@@@I~
@@ -137,6 +157,7 @@ public class MJTable                                               //~v@@@R~
         bottomButtonH =swPortrait ? AG.aGC.btnBottomH+sizeMsgBar : 0;//~9811I~
         topButtonH    =swPortrait ? AG.aGC.btnTopH : 0;                //~v@@@R~
         if (Dump.Y) Dump.println("MJTable.init GC.btnLeft="+AG.aGC.btnLeftW+",leftButtonW="+leftButtonW);//~9313I~
+        if (Dump.Y) Dump.println("MJTable.init GC.btnRight="+AG.aGC.btnRightW+",leftButtonW="+rightButtonW);//~vaedI~
         setGeometry();                                             //~v@@@I~
         updateGeometry();                                          //~v@@@I~
         pieces=new Pieces(this,WW,HH);                             //~v@@@M~
@@ -146,9 +167,34 @@ public class MJTable                                               //~v@@@R~
 	//***************************************************************//~v@@@I~
     private void setGeometry()                                     //~v@@@R~
     {                                                              //~v@@@I~
+        int dipmargin;                                             //~vaedI~
+      if (AG.swSmallDip)                                           //~vaedI~
+      {                                                            //~vaedI~
+        int dipMargin=P_MARGIN_BOTTOM_DIP;                         //~vaedI~
+        marginBottom       =(int)(swPortrait ? dipMargin : L_MARGIN_BOTTOM*HH);//~vaedI~
+      }                                                            //~vaedI~
+      else                                                         //~vaedI~
         marginBottom       =(int)((swPortrait ? P_MARGIN_BOTTOM        : L_MARGIN_BOTTOM        )*HH);//~v@@@R~
+      if (AG.swSmallDip)                                           //~vaedI~
+      {                                                            //~vaedI~
+        int dipMargin=P_MARGIN_TOP_DIP;                            //~vaedR~
+        marginTop          =(int)(swPortrait ? dipMargin : L_MARGIN_TOP*HH);//~vaedR~
+      }                                                            //~vaedI~
+      else                                                         //~vaedI~
         marginTop          =(int)((swPortrait ? P_MARGIN_TOP           : L_MARGIN_TOP           )*HH);//~v@@@I~
+      if (AG.swSmallDip)                                           //~vaedI~
+      {                                                            //~vaedI~
+        int dipMargin=P_MARGIN_LEFT_DIP;                           //~vaedI~
+        marginLeft         =(int)(swPortrait ? dipMargin : L_MARGIN_LEFT*WW);//~vaedI~
+      }                                                            //~vaedI~
+      else                                                         //~vaedI~
         marginLeft         =(int)((swPortrait ? P_MARGIN_LEFT          : L_MARGIN_LEFT          )*WW);//~v@@@I~
+      if (AG.swSmallDip)                                           //~vaedI~
+      {                                                            //~vaedI~
+        int dipMargin=P_MARGIN_RIGHT_DIP;                          //~vaedI~
+        marginRight        =(int)(swPortrait ? dipMargin : L_MARGIN_RIGHT*WW);//~vaedI~
+      }                                                            //~vaedI~
+      else                                                         //~vaedI~
         marginRight        =(int)((swPortrait ? P_MARGIN_RIGHT         : L_MARGIN_RIGHT         )*WW);//~v@@@I~
         marginStockTop     =(int)((swPortrait ? P_MARGIN_STOCK_TOP     : L_MARGIN_STOCK_TOP     )*HH);//~v@@@R~
         marginStockBottom  =(int)((swPortrait ? P_MARGIN_STOCK_BOTTOM  : L_MARGIN_STOCK_BOTTOM  )*HH);//~v@@@I~
@@ -161,11 +207,20 @@ public class MJTable                                               //~v@@@R~
         riverCtrX          =      (swPortrait ? TBL_RIVERCTR_X_P       : TBL_RIVERCTR_X_L);//~v@@@I~
         topSpace=marginTop+topButtonH;                             //~v@@@I~
         leftSpace=marginLeft+leftButtonW;                          //~v@@@I~
+//        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//+vaegR~
+//        {                                                        //+vaegR~
+//            if (!AG.portrait)   //landscape                      //+vaegR~
+//                leftSpace+=AG.scrNavigationbarLeftWidthA11;      //+vaegR~
+//            if (Dump.Y) Dump.println("MJTable.setGeometry A11 scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//+vaegR~
+//        }                                                        //+vaegR~
         rightSpace=marginRight+rightButtonW;                       //~v@@@I~
         if (Dump.Y) Dump.println("MJTable.setGeometry margin Bottom="+marginBottom+",top="+marginTop);//~v@@@I~
         if (Dump.Y) Dump.println("MJTable.setGeometry margin stockH="+stockH+",marginStockSide="+marginStockSide);//~v@@@R~
         if (Dump.Y) Dump.println("MJTable.setGeometry margin Stock top="+marginStockTop+",marginBottom="+marginStockBottom);//~v@@@I~
         if (Dump.Y) Dump.println("MJTable.setGeometry topButtonH="+topButtonH+",topSpace="+topSpace);//~v@@@R~
+        if (Dump.Y) Dump.println("MJTable.setGeometry leftSpace="+leftSpace+",marginLeft="+marginLeft);//~vaedI~
+        if (Dump.Y) Dump.println("MJTable.setGeometry rightSpace="+rightSpace+",margRight="+marginRight+",rightButtonW="+rightButtonW);//~vaegI~
+        if (Dump.Y) Dump.println("MJTable.setGeometry marginRiver="+marginRiver+",riverH="+riverH);//~vaegI~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~
 	//*called twice after handPieceH,riverPieceH reviced           //~v@@@R~
@@ -182,7 +237,8 @@ public class MJTable                                               //~v@@@R~
         stockFacingX       =stockX+stockLength-stockPieceW;           //right most piece//~v@@@R~
 //      stockFacingY       =topSpace+marginStockTop+stockH-stockPieceH+SHIFT_BACK;////~v@@@R~//~9313R~
         stockFacingY       =topSpace+(swPortrait ? P_MARGIN_EARTH_PAIR_BOTTOM : L_MARGIN_EARTH_PAIR_BOTTOM)//~9313I~
-								+riverPieceH+marginStockTop+SHIFT_BACK;////~9313R~
+//  							+riverPieceH+marginStockTop+SHIFT_BACK;////~9313R~//~vaedR~
+    							+riverPieceH+marginStockTop+shift_back;////~vaedI~
         riverFacingX       =riverX+riverLength-riverPieceW;        //~v@@@R~
         riverFacingY       =stockFacingY+stockPieceH+marginRiver+riverH-riverPieceH;  //left top of 1st tile//~v@@@R~//~9313R~
 //        riverLeftX         =leftSpace+marginStockSide+stockH+marginRiver+riverH-riverPieceH;//~v@@@R~
@@ -190,11 +246,15 @@ public class MJTable                                               //~v@@@R~
 //        riverRightX        =WW-(rightSpace+marginStockSide+stockH+marginRiver+riverH);//~v@@@R~
 //        riverRightY        =riverLeftY+riverLength-riverPieceW;    //left top of 1st tile//~v@@@R~
 //      stockLeftX         =leftSpace+marginStockSide+stockH-stockPieceH;////~v@@@R~
-        stockLeftX         =leftSpace+marginStockSide+stockH-stockPieceH+SHIFT_BACK;////~v@@@I~
+//      stockLeftX         =leftSpace+marginStockSide+stockH-stockPieceH+SHIFT_BACK;////~v@@@I~//~vaedR~
+//      stockLeftX         =leftSpace+marginStockSide+stockH-stockPieceH+shift_back;////~vaedI~//~vaegR~
+        stockLeftX         =leftSpace+marginStockSide+stockH-stockPieceH;////~vaegI~
 //      stockLeftY         =topSpace+(handY-(topSpace+stockLength))/2;//top most//~v@@@R~
         stockLeftY         =stockFacingY+stockPieceH+(stockY-(stockFacingY+stockPieceH))/2-stockLength/2;//~v@@@I~
 //      stockRightX        =WW-(rightSpace+marginStockSide+stockH);//~v@@@R~
-        stockRightX        =WW-(rightSpace+marginStockSide+stockH+SHIFT_BACK);//~v@@@I~
+//      stockRightX        =WW-(rightSpace+marginStockSide+stockH+SHIFT_BACK);//~v@@@I~//~vaedR~
+//      stockRightX        =WW-(rightSpace+marginStockSide+stockH+shift_back);//~vaedI~//~vaegR~
+        stockRightX        =WW-(rightSpace+marginStockSide+stockH);//~vaegI~
 //      stockRightY        =stockLeftY+stockLength-stockPieceW;       //bottom most//~v@@@R~
         stockRightY        =stockFacingY+stockPieceH+(stockY-(stockFacingY+stockPieceH))/2+stockLength/2-stockPieceW;//~v@@@R~
         riverLeftX         =leftSpace+marginStockSide+stockH+marginRiver+riverH-riverPieceH;//~v@@@I~
@@ -205,24 +265,25 @@ public class MJTable                                               //~v@@@R~
         setNamePlateRect();                                        //~v@@@I~
         if (Dump.Y) Dump.println("MJTable.updateGeometry topSpace="+topSpace+",marginStockTop="+marginStockTop+",bottom="+marginStockBottom+",stockH="+stockH+",stockPieceH="+stockPieceH);//~v@@@R~
         if (Dump.Y) Dump.println("MJTable.updateGeometry stockFacing X="+stockFacingX+",Y="+stockFacingY+",riverPieceH="+riverPieceH);//~v@@@I~//~9313R~
+        if (Dump.Y) Dump.println("MJTable.updateGeometry stockFacing X="+stockFacingX+",Y="+stockFacingY+",riverPieceH="+riverPieceH);//~vaegI~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~
 	public Rect[] getOpenRect()                                    //~v@@@I~
     {                                                              //~v@@@I~
-    	Rect[] rc=openRect;                                               //+0328I~
+    	Rect[] rc=openRect;                                               //~0328I~
         if (Dump.Y) Dump.println("MJTable.getOpenRect rc="+ Utils.toString(rc));//~0328I~
     	return rc;                                                 //~0328R~
     }                                                              //~v@@@I~
-	//***************************************************************//+0328I~
-	public Rect[] getOpenRectClone()                               //+0328I~
-    {                                                              //+0328I~
-    	Rect[] rc=new Rect[]{new Rect(openRect[0]),                //+0328I~
-    							new Rect(openRect[1]),             //+0328I~
-    							new Rect(openRect[2]),             //+0328I~
-    							new Rect(openRect[3])};            //+0328I~
-        if (Dump.Y) Dump.println("MJTable.getOpenRectClose rc="+ Utils.toString(rc));//+0328I~
-    	return rc;                                                 //+0328I~
-    }                                                              //+0328I~
+	//***************************************************************//~0328I~
+	public Rect[] getOpenRectClone()                               //~0328I~
+    {                                                              //~0328I~
+    	Rect[] rc=new Rect[]{new Rect(openRect[0]),                //~0328I~
+    							new Rect(openRect[1]),             //~0328I~
+    							new Rect(openRect[2]),             //~0328I~
+    							new Rect(openRect[3])};            //~0328I~
+        if (Dump.Y) Dump.println("MJTable.getOpenRectClose rc="+ Utils.toString(rc));//~0328I~
+    	return rc;                                                 //~0328I~
+    }                                                              //~0328I~
 	//***************************************************************//~v@@@I~
 	private void setOpenRect()                                     //~v@@@I~
     {                                                              //~v@@@I~
@@ -290,6 +351,12 @@ public class MJTable                                               //~v@@@R~
       }                                                            //~9317R~
       else                                                         //~9317I~
       {                                                            //~9317I~
+       if (AG.swLongDevice)                                        //~vaegR~
+       {                                                           //~vaegR~
+		setNamePlateRectLongDevice();                              //~vaegR~
+       }                                                           //~vaegR~
+       else                                                        //~vaegR~
+       {                                                           //~vaegR~
     //*right                                                       //~9317I~
         xx1=stockX+stockLength;                                    //~9317I~
         xx2=stockRightX+stockPieceH;                               //~9317R~
@@ -322,8 +389,65 @@ public class MJTable                                               //~v@@@R~
         r=new Rect(xx1,yy1,xx2,yy2);                               //~9317I~
         rectNamePlate[PLAYER_YOU]=r;                               //~9317I~
         if (Dump.Y) Dump.println("MJTable.setNamePlateRect you="+r.toString());//~9317I~
+       }                                                           //~vaegR~
       }                                                            //~9317I~
     }                                                              //~v@@@I~
+	//***************************************************************//~vaegR~
+	private void setNamePlateRectLongDevice()                      //~vaegR~
+    {                                                              //~vaegR~
+        Rect r;                                                    //~vaegR~
+        int xx1,yy1,xx2,yy2,len,margin;                            //~vaegR~
+        //**********************                                   //~vaegR~
+        if (AG.portrait)                                           //~vaegR~
+        	len=stockX;	//from left edge to left egde of stock You //~vaegR~
+        else                                                       //~vaegR~
+        	len=stockLeftY;	//from left edge to left egde of stock You//~vaegR~
+    	margin=P_MARGIN_LEFT_DIP;	//                             //~vaegR~
+    	len-=margin;                                               //~vaegR~
+        if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice portrait="+AG.portrait+",len="+len);//~vaegM~
+//      int limitRight=handX+handLength;                           //~vaegI~
+//      if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice limitRight="+limitRight+",handX="+handX+",handLength="+handLength);//~vaegI~
+        int limitRight=handX+Hands.getLengthHands(HANDCTR_TAKEN,handPieceW);//~vaegI~
+        if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice limitRight="+limitRight+",handX="+handX);//~vaegI~
+        //*right                                                   //~vaegR~
+            xx2=stockRightX+stockH;	//including shift_back         //~vaegR~
+            xx1=xx2-stockPieceH;                                   //~vaegR~
+            int hhName=stockPieceH;                                //~vaegI~
+        	if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice xx1="+xx1+",xx2="+xx2+",stockPieceH="+stockPieceH);//~vaegI~
+            if ((xx1-hhName)<=limitRight+1)                         //~vaegI~
+            	hhName=Math.max(stockH/2,(xx2-(limitRight+1))/2);  //~vaegR~
+        	if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice xx1="+xx1+",hhName="+hhName);//~vaegR~
+            xx1=xx2-hhName;                                        //~vaegI~
+	        yy1=stockRightY+stockPieceW;                           //~vaegR~
+            yy2=yy1+len;                                           //~vaegR~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~vaegR~
+            if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice right="+r.toString());//~vaegR~
+            rectNamePlate[PLAYER_RIGHT]=r;                         //~vaegR~
+        //*facing                                                  //~vaegR~
+            xx1=stockX+stockLength;                                //~vaegR~
+            xx2=xx1+len;                                           //~vaegR~
+            yy1=stockFacingY-shift_back;                           //~vaegR~
+            yy2=yy1+hhName;                                        //~vaegR~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~vaegR~
+            if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice facing="+r.toString());//~vaegR~
+            rectNamePlate[PLAYER_FACING]=r;                        //~vaegR~
+        //*left                                                    //~vaegR~
+            xx1=stockLeftX-shift_back;                             //~vaegR~
+            xx2=xx1+hhName;                                        //~vaegR~
+            yy2=stockLeftY-SHIFT_SIDE;                             //~vaegR~
+            yy1=yy2-len;                                           //~vaegR~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~vaegR~
+            if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice left="+r.toString());//~vaegR~
+            rectNamePlate[PLAYER_LEFT]=r;                          //~vaegR~
+        //*you                                                     //~vaegR~
+            xx2=stockX;                                            //~vaegR~
+            xx1=xx2-len;                                           //~vaegR~
+            yy2=stockY+stockH;                                     //~vaegR~
+            yy1=yy2-hhName;                                        //~vaegR~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~vaegR~
+            rectNamePlate[PLAYER_YOU]=r;                           //~vaegR~
+            if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice you="+r.toString());//~vaegR~
+    }                                                              //~vaegR~
 	//***************************************************************//~v@@@I~
 	private void setStarterPos()                                   //~v@@@I~
     {                                                              //~v@@@I~
@@ -522,7 +646,8 @@ public class MJTable                                               //~v@@@R~
         stockEarthPieceH=Pearthhh;                                 //~v@@@I~
         stockLength=(stockPieceW+STOCK_SPACING_X)*STOCKCTR_EACH;   //~v@@@I~
 //      stockH=stockPieceH+4;	//TODO                             //~v@@@I~//~9313R~
-        stockH=stockPieceH+SHIFT_BACK;                             //~9313I~//~0322R~
+//      stockH=stockPieceH+SHIFT_BACK;                             //~9313I~//~0322R~//~vaedR~
+        stockH=stockPieceH+shift_back;                             //~vaedI~
         if (Dump.Y) Dump.println("MJTables.setStockPieceSize stockH="+stockH+",ww="+stockPieceW+",hh="+stockPieceH+",len="+stockLength+",stockerath w="+stockEarthPieceW+",h="+stockEarthPieceH);//~v@@@I~//~9313R~
         updateGeometry();                                          //~v@@@I~
     }                                                              //~v@@@I~
@@ -542,6 +667,7 @@ public class MJTable                                               //~v@@@R~
 	public Point getEarthLinePos()                                 //~v@@@R~
     {                                                              //~v@@@I~
     	Point p=new Point(handX,handY);                            //~v@@@R~
+        if (Dump.Y) Dump.println("MJTables.getEarthLinePos pos="+p.toString());//~vaegI~
         return p;                                                  //~v@@@I~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~

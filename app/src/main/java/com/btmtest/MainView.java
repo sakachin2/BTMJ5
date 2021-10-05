@@ -1,5 +1,8 @@
-//*CID://+vac5R~: update#= 409;                                    //~vac5R~
+//*CID://+vaefR~: update#= 430;                                    //~vaefR~
 //**********************************************************************
+//2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
+//2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
+//2021/09/23 vaec main buttons for small device                    //~vaecI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //**********************************************************************//~va66I~
@@ -8,6 +11,7 @@ package com.btmtest;                                               //~v@21R~
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,7 @@ public class MainView                                   //~v@21R~  //~9620R~
     private static final int RID_TOPIMAGE=R.drawable.top_portrait; //~v@21I~
     private static final int MAIN_BUTTONS =R.layout.main_buttons;  //~v@21I~
     private static final int MAIN_BUTTONS_SMALLFONT =R.layout.main_buttons_smallfont;//~vac5I~
+    private static final int MAIN_BUTTONS_SMALLDEVICE =R.layout.main_buttons_smalldevice;//~vaecI~
 //    private static final int MAIN_MSGBAR =R.layout.main_msgbar;    //~9619I~//~9620R~
                                                                    //~v@21I~
     private FrameLayout frameLayout;                               //~v@21I~
@@ -99,8 +104,15 @@ public class MainView                                   //~v@21R~  //~9620R~
             else                                                   //~v@21I~
             {                                                      //~v@21I~
 	 	    	if (Dump.Y) Dump.println("MainView.setImage bmp Src WW="+bmpSrc.getWidth()+",HH="+bmpSrc.getHeight());//~v@21R~//~9620R~
-		        Bitmap bmpScaled=Bitmap.createScaledBitmap(bmpSrc,WW,HH,true/*filter*/);//~v@21I~
-	  		    if (Dump.Y) Dump.println("MainView.setImage bmpScaled WW="+WW+",HH="+HH);//~v@21I~//~9620R~
+                int hh=HH;                                         //~vac5I~
+//            	if (Build.VERSION.SDK_INT>=30)   //android30(R)    //~vac5R~//~vaefR~
+//  	        	hh+=AG.scrStatusBarHeight;                     //~vac5R~//~vaefR~
+              if (AG.swNewA10) //                                  //~vaeeR~
+	          	if (Build.VERSION.SDK_INT==29)   //for gesture navigationbar//~vaeeI~
+		        	hh+=AG.scrStatusBarHeight-AG.scrNavigationbarBottomHeight;//~vaeeI~
+//  	        Bitmap bmpScaled=Bitmap.createScaledBitmap(bmpSrc,WW,HH,true/*filter*/);//~v@21I~//~vac5R~
+    	        Bitmap bmpScaled=Bitmap.createScaledBitmap(bmpSrc,WW,hh,true/*filter*/);//~vac5I~
+	  		    if (Dump.Y) Dump.println("MainView.setImage bmpScaled scrWW="+WW+",scrHH="+HH+",scrStatusBarHeigh="+AG.scrStatusBarHeight+",hh="+hh+",scaledBMWidth="+bmpScaled.getWidth()+",scaledBMPHeight="+bmpScaled.getHeight()+",hh="+hh+",scrNavigationbarBottonHeight="+AG.scrNavigationbarBottomHeight);//~v@21I~//~9620R~//~vac5R~//~vaeeR~
                 bmpTop=bmpScaled;                                  //~v@21I~
                 UView.recycle(bmpSrc);                             //~v@21I~
             }                                                      //~v@21I~
@@ -150,10 +162,21 @@ public class MainView                                   //~v@21R~  //~9620R~
         FrameLayout.LayoutParams lp;                               //~v@21I~
         lp=new FrameLayout.LayoutParams(mp,wc);                    //~v@21I~
 //      btnsMain=AG.inflater.inflate(MAIN_BUTTONS,null);           //~v@21I~//~vac5R~
-        btnsMain=AG.inflater.inflate((AG.swSmallFont ? MAIN_BUTTONS_SMALLFONT : MAIN_BUTTONS),null);//~vac5I~
+//      btnsMain=AG.inflater.inflate((AG.swSmallFont ? MAIN_BUTTONS_SMALLFONT : MAIN_BUTTONS),null);//~vac5I~//~vaecR~
+        btnsMain=AG.inflater.inflate(AG.swSmallDevice ? MAIN_BUTTONS_SMALLDEVICE : ((AG.swSmallFont ? MAIN_BUTTONS_SMALLFONT : MAIN_BUTTONS)),null);//~vaecI~
         topMsgBar=(TextView)    UView.findViewById(btnsMain,R.id.TopMsgBar);//~9620I~
 //      lp.gravity=Gravity.BOTTOM|Gravity.CENTER;    //=layout_gravity//~v@21R~
         lp.gravity=Gravity.BOTTOM;    //=layout_gravity            //~v@21I~
+      if (AG.swNewA10)                                             //~vaeeR~
+	    if (Build.VERSION.SDK_INT==29)   //for gesture navigationbar//~vaeeI~
+        	lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeight);//~vaeeR~
+//        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//+vaefR~
+//         if (false)                                              //+vaefR~
+//          if (AG.swNavigationbarGestureMode)                     //+vaefR~
+//          {                                                      //+vaefR~
+//            if (Dump.Y) Dump.println("MainView.addButtons setMargin bottomHeightA11="+AG.scrNavigationbarBottomHeightA11);//+vaefR~
+//            lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeightA11);//+vaefR~
+//          }                                                      //+vaefR~
         btnsMain.setLayoutParams(lp);                              //~v@21I~
 //      btnsMain.setVisibility(View.INVISIBLE);                    //~v@21R~
 //      btnsMain.setVisibility(View.VISIBLE);                      //~v@21R~
@@ -162,8 +185,8 @@ public class MainView                                   //~v@21R~  //~9620R~
 //        ViewGroup.LayoutParams lpvg=btnsMain.getLayoutParams();  //~v@21R~
 //        if (Dump.Y) Dump.println("MainView.addButtons getlayoutparm ww="+lpvg.width+".hh="+lpvg.height);//~v@21R~//~9620R~
         if (Dump.Y) Dump.println("MainView.addButtons view ww="+btnsMain.getMeasuredWidth()+",hh="+btnsMain.getMeasuredHeight());//~v@21I~//~9620R~
-                                                                   //~v@21I~
         if (Dump.Y) Dump.println("MainView.addButtons btnsMain="+btnsMain.toString());//~v@21R~//~9620R~
+        if (Dump.Y) Dump.println("MainView.addButtons navigationBottomHeight="+AG.scrNavigationbarBottomHeight+",bottomA11="+AG.scrNavigationbarBottomHeightA11);;;//~vaefR~
     }                                                              //~v@21I~
 //    //*************************                                  //~v@21R~
 //    private void addButtons2()                                   //~v@21R~
@@ -213,8 +236,8 @@ public class MainView                                   //~v@21R~  //~9620R~
         btnHistory   =              UButton.bind(btnsMain,R.id.History,main);//~9614I~//~0119R~
         btnHelp      =              UButton.bind(btnsMain,R.id.Help,main);//~v@21R~//~0119R~
         btnTest1     =              UButton.bind(btnsMain,R.id.Test1,main);	//TODO test//~v@21I~//~0119R~
-//      if (AG.isDebuggable)                                       //~0316I~//+vac5R~
-//          btnTest1.setVisibility(View.VISIBLE);                  //~0316I~//+vac5R~
+//      if (AG.isDebuggable)                                       //~0316I~//~vac5R~
+//          btnTest1.setVisibility(View.VISIBLE);                  //~0316I~//~vac5R~
     }                                                              //~v@21I~
 	//*************************                                    //~v@21I~
     private void setButtonStatus(boolean PswConnected)             //~v@21I~
@@ -226,7 +249,6 @@ public class MainView                                   //~v@21R~  //~9620R~
 	//*************************************************************************//~v@21I~
     public void addImageView()                                     //~v@21R~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("MainView.addImageView");//~v@21R~//~9620R~
 //  	int lp=ViewGroup.LayoutParams.MATCH_PARENT;                //~v@21I~
 //  	int wc=ViewGroup.LayoutParams.WRAP_CONTENT;                //~v@21I~
 //  	int mp=ViewGroup.LayoutParams.MATCH_PARENT;                //~v@21I~
@@ -234,6 +256,8 @@ public class MainView                                   //~v@21R~  //~9620R~
 //      frameLayout.addView(this,lp,lp);                           //~v@21R~
 //      frameLayout.addView(this);                                 //~v@21R~
         frameLayout.addView(imageView);                            //~v@21I~
+        if (Dump.Y) Dump.println("MainView.addImageView after addView frameLayout=("+frameLayout.getWidth()+","+frameLayout.getHeight()+")");//~v@21R~//~9620R~//~vac5R~
+        if (Dump.Y) Dump.println("MainView.addImageView after addView imageView=("+imageView.getWidth()+","+imageView.getHeight()+")");//~vac5I~
     }                                                              //~v@21I~
 //    //*************************                                    //~9619I~//~9620R~
 //    private void addMsgBar()                                       //~9619I~//~9620R~
@@ -259,7 +283,7 @@ public class MainView                                   //~v@21R~  //~9620R~
     {                                                              //~v@21I~
 //      frameLayoutWW=PframeLayoutSize.x;                          //~v@21R~
 //      frameLayoutHH=PframeLayoutSize.y;                          //~v@21R~
-        if (Dump.Y) Dump.println("MainView.hideTopView");//~v@21R~ //~9620R~
+        if (Dump.Y) Dump.println("MainView.hideTopView title h="+titleMain.getHeight()+",w="+titleMain.getWidth());//~v@21R~ //~9620R~//~vac5R~
 //        swRestore=false;                                         //~v@21R~
         hideImage(true);                                           //~v@21I~
 	    hideButtons(true/*hide*/);                                 //~v@21I~

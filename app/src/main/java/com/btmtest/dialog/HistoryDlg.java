@@ -1,5 +1,8 @@
-//*CID://+vac5R~:                             update#=  591;       //~vac5R~
+//*CID://+vae0R~:                             update#=  612;       //~vae4R~//+vae0R~
 //*****************************************************************//~v101I~
+//2021/09/15 vae4 (Bug)No connection err if AG.Yourname="" at reload interrupted play alone game//~vae4I~
+//2021/09/12 vae0 Scped for BTMJ5                                  
+//2021/08/24 vad2 HistoryBS;add function to show detail            //~vad2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/13 va87 show B/S limited to a group                      //~va87I~
 //2021/04/06 va7a add function of show balance sheet               //~va7aI~
@@ -26,6 +29,7 @@ import com.btmtest.utils.Alert;
 import com.btmtest.utils.Alert2;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.gui.UButton;                                    //~v@@@R~
+import com.btmtest.utils.UScoped;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
@@ -66,12 +70,15 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
 //  private static HistoryData receivedHD;                         //~9825I~//~0111R~
     private UCheckBox cbMultiSelect;                               //~0114R~
     private boolean swMultiSelect;//~0114I~
+    private TextView tvCtrFileList;                                //~vad2I~
     //******************************************                   //~v@@@R~
     public HistoryDlg()                                            //~v@@@R~//~9613R~
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("HistoryDlg.defaultConstructor"); //~9614R~
         AG.aHistoryDlg=this;                                       //~9825I~
-        if (Dump.Y) Dump.println("HistoryDlg.defaultConstructor this="+Utils.toString(AG.aHistoryDlg));//~0112I~
+        swScoped= UScoped.isScoped();	//protected on FileDialog, History data on scoped storage if available//~vad2I~
+        swDiscendant=true;                                         //+vae0I~
+        if (Dump.Y) Dump.println("HistoryDlg.defaultConstructor swScoped="+swScoped);//~vad2R~
     }                                                              //~v@@@R~
     //*****************************                                //~9825I~
     @Override                                                      //~9825I~
@@ -114,6 +121,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
 //      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_SINGLE);//~0114I~//~vac5R~
         lvFilename=new UListView(Playoutview,R.id.FileList,(AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT : LISTVIEW_ROW_LAYOUTID),this,UListView.CHOICEMODE_SINGLE);//~vac5R~
 //      tvFolderName      =(TextView)UView.findViewById(Playoutview,R.id.FolderName);//~9615R~//~0114R~
+        tvCtrFileList=(TextView)    UView.findViewById(Playoutview,R.id.CtrFileList);//~vad2I~
         setInitialValue();                                         //~v@@@I~//~9614I~
     }                                                              //~v@@@M~
 	//************************************                         //~v@@@I~//~9614I~
@@ -126,6 +134,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         pathDataDir=AG.aHistory.pathDataDir;                       //~9614I~
         filenameFilter=getFilter();                                //~9824I~
         swSD=AG.aHistory.swSD;                                     //~9614I~
+        swScoped=AG.aHistory.swScoped;                             //~vad2I~
+        if (Dump.Y) Dump.println("HistoryDlg.setInitValue swSD="+swSD+",swScoped="+swScoped+",workDirSD="+workDirSD+",pathDataDir="+pathDataDir+",filetr="+filenameFilter);//~vad2R~
         setButtonVisibility();                                      //~v@@@I~//~9614I~
         setTitle();                                                //~0114R~
     }                                                              //~v@@@I~//~9614I~
@@ -133,7 +143,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     private void setTitle()                                        //~0114I~
     {                                                              //~0114I~
     	String path=swSD ? workDirSD : pathDataDir;                //~0114I~
-        if (Dump.Y) Dump.println("HistoryDlg:setTitle path="+path);//~0114I~
+        if (Dump.Y) Dump.println("HistoryDlg:setTitle swSD="+swSD+",path="+path);//~0114I~//~vad2R~
 //      Spanned s= Html.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//~va40R~
         Spanned s=Utils.fromHtml(Utils.getStr(R.string.Title_HistoryDlgFolder,path));//~va40I~
         getDialog().setTitle(s);                                               //~0114I~
@@ -152,6 +162,9 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     {                                                              //~v@@@I~//~9614I~
 	    containerFilename.setVisibility(View.GONE);	//avoid intercept by Dialog.UiThread;current dir is on entry "./"//~v@@@I~//~9614R~
         tvLabelFilter.setVisibility(View.VISIBLE);             //~v@@@R~//~9614R~
+        if (swScoped)                                              //~vad2I~
+            tvFileType.setText(Utils.getStr(R.string.FileTypeDocument));//~vad2I~
+        else                                                       //~vad2I~
         if (swSD)                                                  //~v@@@I~//~9614R~
             tvFileType.setText(Utils.getStr(R.string.FileTypeSD)); //~v@@@I~//~9614I~
         else                                                       //~v@@@I~//~9614R~
@@ -165,9 +178,11 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         super.updateList();                                        //~9615I~
         if (namelist==null)                                        //~9615I~
         	return;                                                //~9615I~
-        getHistoryData();                                          //~9615I~
+        getHistoryData();        //create Map at History           //~9615I~
 //      tvFolderName.setText(dirName);                             //~9615I~//~0114R~
 //      setTitle();                                                //~0114I~
+		int ctr=namelist.length;                                   //~vad2I~
+        tvCtrFileList.setText(Utils.getStr(R.string.Info_HistoryCtrDetail,ctr));//~vad2I~
     }                                                              //~9615I~
     //******************************************                   //~v@@@I~//~9614I~
     @Override                                                      //~v@@@I~//~9614I~
@@ -304,6 +319,9 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         {                                                          //~9825I~
             if (Dump.Y) Dump.println("HistoryDlg.chkSelection selectedctr="+ctr);//~9825I~
             getSelectedFilenameMulti(0);                           //~9825I~
+          if (swScoped)                                            //~vae0I~
+            hd=getHistoryDataScoped(selectedFilename);     //read scoped at History//~vae0R~
+          else                                                     //~vae0I~
             hd=getHistoryData(selectedFilename,selectedFile);      //~9825I~
             if (hd==null)                                          //~9825I~
             {                                                      //~9825I~
@@ -335,11 +353,20 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     //**********************************************************************//~9614I~
     private HistoryData getHistoryData(String Pfname,File Pfh)     //~9614I~
     {                                                              //~9614I~
+        if (Dump.Y) Dump.println("HistoryDlg.getHistoryData fname="+Pfname);//~vae0I~
     	HistoryData hd=AG.aHistory.getHistoryData(Pfname,Pfh);      //~9614I~
         return hd;                                            //~9614R~
     }                                                              //~9614I~
+    //**********************************************************************//~vae0I~
+    private HistoryData getHistoryDataScoped(String Pfname)        //~vae0I~
+    {                                                              //~vae0I~
+        if (Dump.Y) Dump.println("HistoryDlg.getHistoryDataScoped fname="+Pfname);//~vae0I~
+    	HistoryData hd=AG.aHistory.getHistoryData(Pfname,null);//~vae0R~
+        return hd;                                                 //~vae0I~
+    }                                                              //~vae0I~
     //**********************************************************************//~9615I~
-    private String[][] getHistoryData(String Pfname)               //~9615I~
+//  private String[][] getHistoryData(String Pfname)               //~9615I~//~vad2R~
+    public String[][] getHistoryData(String Pfname)                //~vad2R~
     {                                                              //~9615I~
     	HistoryData hd=AG.aHistory.getHistoryData(Pfname);         //~9615I~
         if (hd==null)                                              //~9615I~
@@ -350,13 +377,29 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     //*****************************************************************//~9615I~
     private void getHistoryData()                                  //~9615I~
     {                                                              //~9615I~
-    	for (int ii=0;ii<namelist.length;ii++)                     //~9615I~
+        if (Dump.Y) Dump.println("HistoryDlg.getHistortData swScoped="+swScoped);//~vae0I~
+    	if (swScoped)                                              //~vae0I~
+        {                                                          //~vae0I~
+        	getHistoryDataScoped();                                 //~vae0I~
+            return;                                                //~vae0I~
+        }                                                          //~vae0I~
+        for (int ii=0;ii<namelist.length;ii++)                     //~9615I~
         {                                                          //~9615I~
-        	File f=filelist[name2file[ii]];                        //~9615I~
+            File f=filelist[name2file[ii]];                        //~9615I~
             if (Dump.Y) Dump.println("HistoryDlg.getHistoryData fnm="+namelist[ii]+",file="+f.getName());//~9615I~
-	        getHistoryData(namelist[ii],f);                        //~9615I~
+            getHistoryData(namelist[ii],f); //no output            //~9615I~
         }                                                          //~9615I~
     }                                                              //~9615I~
+    //*****************************************************************//~vae0I~
+    private void getHistoryDataScoped()                            //~vae0I~
+    {                                                              //~vae0I~
+        if (Dump.Y) Dump.println("HistoryDlg.getHistortDataScoped");//~vae0I~
+        for (int ii=0;ii<namelist.length;ii++)                     //~vae0I~
+        {                                                          //~vae0I~
+            if (Dump.Y) Dump.println("HistoryDlg.getHistoryDataScoped fnm="+namelist[ii]);//~vae0I~
+            getHistoryDataScoped(namelist[ii]); //no output        //~vae0I~
+        }                                                          //~vae0I~
+    }                                                              //~vae0I~
     //*****************************************************************//~1A21I~//~9614I~
     @Override                                                      //~9614I~
     protected Integer[]  sortFileList()                                   //~1A21I~//~9614I~
@@ -421,6 +464,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
 //      TextView v2=(TextView)UView.findViewById(v,R.id.Timestamp);//~v@@@I~//~9614I~
         UListView.UListViewData ld=lvFilename.arrayData.get(Ppos);                      //~v@@@R~//~9614I~
         v1.setText(ld.itemtext);                                   //~v@@@R~//~9614I~
+        if (Dump.Y) Dump.println("HistoryDlg:getViewCustom itemText="+ld.itemtext);//~vac5I~
 //      v2.setText(ld.itemtext2);                                  //~v@@@R~//~9614I~
 //      if (ld.choosed)                                            //~v@@@I~//~9614I~//~0114R~
 		boolean swSelected;                                        //~0114I~
@@ -445,7 +489,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         return v;                                                  //~v@@@I~//~9614I~
     }                                                              //~v@@@I~//~9614I~
     //***********************************************              //~9615I~
-    private void setHD(View Pview,String[][] Phds)                      //~9615I~
+//  private void setHD(View Pview,String[][] Phds)                      //~9615I~//~vad2R~
+    public void setHD(View Pview,String[][] Phds)                  //~vad2R~
     {                                                              //~9615I~
         try                                                        //~9829I~
         {                                                          //~9829I~
@@ -543,11 +588,15 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         String[] names=Phds.HD[HDPOS_MEMBER];                      //~va66I~
         int ctrRobot=0;                                            //~va66I~
         int ctrFound=0;                                            //~va66I~
+        String yn=AG.YourName;                                     //~vae4I~
+        if (yn.equals(""))                                         //~vae4I~
+        	yn=robotYourNameDefaultConst[0];                //~vae4I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~va66I~
         {                                                          //~va66I~
             boolean swFound=false;                                 //~va66I~
             String name=names[ii];                                 //~va66I~
-            if (name.compareTo(AG.YourName)==0)                    //~va66I~
+//          if (name.compareTo(AG.YourName)==0)                    //~va66I~//~vae4R~
+            if (name.compareTo(yn)==0)                             //~vae4I~
             	ctrFound++;                                        //~va66I~
             else                                                   //~va66I~
             if (Accounts.isRobotName(name)>0)                      //~va66I~
@@ -576,7 +625,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             	rc=-1;     //err                                   //~va66I~
             }                                                      //~va66I~
         }                                                          //~va66I~
-		if (Dump.Y) Dump.println("HistoryDlg.chkMemberTrainingMode rc="+rc+",ctrRobot="+ctrRobot+",ctrFound="+ctrFound);//~va66I~
+		if (Dump.Y) Dump.println("HistoryDlg.chkMemberTrainingMode rc="+rc+",ctrRobot="+ctrRobot+",ctrFound="+ctrFound+",AG.YourName="+AG.YourName);//~va66I~//~vae0R~
         return rc;                                                 //~va66I~
     }                                                              //~va66I~
     //***********************************************              //~va66I~
@@ -684,7 +733,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
                  +name[1]+"="+strScore[1]+"\n"                     //~9825R~
                  +name[2]+"="+strScore[2]+"\n"                     //~9825R~
                  +name[3]+"="+strScore[3];                         //~9825I~
-		if (Dump.Y) Dump.println("HistoryDlg.getHistoryDataForConfirm rc="+rc);//~9825I~
+		if (Dump.Y) Dump.println("HistoryDlg.getHistoryDataForAlert rc="+rc);//~9825I~//~vae4R~
         return rc;                                                 //~9825I~
     }                                                              //~9825I~
     //***********************************************              //~9825I~

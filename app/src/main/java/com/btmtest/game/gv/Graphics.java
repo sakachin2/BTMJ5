@@ -1,4 +1,4 @@
-//*CID://+va40R~: update#= 411;                                    //~va40R~
+//*CID://+va40R~: update#= 412;                                    //~va40R~
 //**********************************************************************//~v101I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //**********************************************************************//~va40I~
@@ -517,7 +517,7 @@ public class Graphics //extends Handler                            //~v@@@R~
     //****************************************************         //~v@21I~
 	public static void drawCircle(Canvas Pcanvas,Point Ppos,int Pradius,int Pcolor)//~v@@@I~//~v@21R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Graphics.drawCircle color="+Integer.toHexString(Pcolor));//~v@@@I~
+        if (Dump.Y) Dump.println("Graphics.drawCircle color="+Integer.toHexString(Pcolor)+",pos="+Ppos.toString()+",radius="+Pradius);//~v@@@I~//+va40R~
         Paint p=new Paint();                                       //~v@@@I~
         p.setColor(Pcolor);                                        //~v@@@I~
         p.setAntiAlias(true);                                      //~v@@@I~
@@ -527,7 +527,7 @@ public class Graphics //extends Handler                            //~v@@@R~
     //****************************************************         //~v@21I~
 	private static void drawCircle(Canvas Pcanvas,Point Ppos,int Pradius,int Pcolor,int Pwidth)//~v@21R~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("Graphics.drawCircle with Paint");//~v@21I~
+        if (Dump.Y) Dump.println("Graphics.drawCircle with Paint width="+Pwidth+",pos="+Ppos.toString()+",radius="+Pradius);//~v@21I~//+va40R~
         Paint p=new Paint();                                       //~v@21I~
         p.setColor(Pcolor);                                        //~v@21I~
         p.setAntiAlias(true);                                      //~v@21I~
@@ -791,13 +791,13 @@ public class Graphics //extends Handler                            //~v@@@R~
         }                                                          //~9C02I~
     }                                                              //~9C02I~
     //****************************************************         //~va40I~
-	@SuppressWarnings("deprecation")                               //+va40I~
+	@SuppressWarnings("deprecation")                               //~va40I~
 	private static void drawText_From16(Canvas Pcanvas,String Ptext,float[] Ppos,Paint Ppaint)//~va40I~
     {                                                              //~va40I~
         if (Dump.Y) Dump.println("Graphics.drawText_From16");      //~va40I~
         Pcanvas.drawPosText(Ptext,Ppos,Ppaint);                    //~va40I~
     }                                                              //~va40I~
-	@SuppressWarnings("deprecation")                               //+va40I~
+	@SuppressWarnings("deprecation")                               //~va40I~
     //****************************************************         //~va40I~
 	private static void drawText_Bellow16(Canvas Pcanvas,String Ptext,float[] Ppos,Paint Ppaint)//~va40I~
     {                                                              //~va40I~

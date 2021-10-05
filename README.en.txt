@@ -18,10 +18,28 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
-V1.15 : 2021/08/23
-        .Correspond to narrow phone device with dpi over 360dp.
-        .Bugs
-         -Win-Anyway was allowed at before other player discards after drawn.
+V1.16 : 2021/10/05
+        .On Preference you can set any music in your device as BGM.
+		. Panel layout for tall phone device .
+		.For Android-R(11)
+    		External storage usage was changed at Android-11.
+			At (re-)installation, it is required to specify a folder to save game data.
+			Select "eMahjong" on the dialog shown next.
+			Make the folder on the dialog if not exists.
+*********************************************************************************************
+V1.16 : 2021/10/05
+        .On Preference, flip game buttons holizontaly for lefty.
+        .On Preference, you can set any music in your device as BGM.
+		.add function to Histor B/S dialog to show detail of games by the same members.
+		.For Android-R(11)
+    		External storage usage was changed at Android-11.
+			At (re-)installation, it is required to specify a folder to save game data.
+			Select "eMahjong" on the dialog shown next.
+			Make the folder on the dialog if not exists.
+			At 1st re-instalation of eMahjong only, old version data(history data and rule file) will be migrated to the folder.
+		. delete sg.rulefile(rule fule at interrupted) at the game completed.
+		. Panel layout for tall phone device .
+		. (Bug)Colud not play alone if not update on rule dialog.
 *********************************************************************************************
 V1.15 : 2021/08/23
         .Correspond to narrow phone device with dpi over 360dp.

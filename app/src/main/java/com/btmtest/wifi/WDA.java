@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pDevice;                       //~1A65R~
-//import android.net.wifi.WifiConfiguration;                       //~va40R~
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.view.View;
@@ -46,6 +45,7 @@ import com.btmtest.game.gv.GMsg;                                   //~9816I~
 import static com.btmtest.AG.*;
 import static com.btmtest.BT.Members.*;
 import static com.btmtest.StaticVars.AG;                           //~9721I~
+import static com.btmtest.dialog.PrefSettingEnum.*;
 import static com.btmtest.game.GConst.*;
 
 //@TargetApi(AG.ICE_CREAM_SANDWICH)   //api14                           //~1A65R~//~9721R~

@@ -1,5 +1,7 @@
-//*CID://+v@@@R~: update#= 391;                                    //~v@@@R~
+//*CID://+vaedR~: update#= 393;                                    //~v@@@R~//~vaedR~
 //**********************************************************************//~v101I~
+//2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
+//**********************************************************************//~vaedI~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -37,11 +39,12 @@ public class Pieces                                                //~v@@@R~
     public  static final double BIRD_RATEW=0.6;                    //~v@@@R~
     public  static final double BIRD_RATEH=0.6;                    //~v@@@R~
     public  static final int    BIRD_DIST=2;                       //~v@@@R~
-                                                                   //+v@@@I~
-    private static final int COMPLETE_STROKE_WIDTH=6;              //+v@@@I~
-    private static final double STROKE_WIDTH_RATE=0.1;             //+v@@@M~
-    private static final int    STROKE_WIDTH_MIN=4;                //+v@@@I~
-                                                                   //+v@@@M~
+                                                                   //~v@@@I~
+    private static final int COMPLETE_STROKE_WIDTH=6;              //~v@@@I~
+    private static final double STROKE_WIDTH_RATE=0.1;             //~v@@@M~
+    private static final int    STROKE_WIDTH_MIN=4;                //~v@@@I~
+    private static final int    STROKE_WIDTH_MIN_SMALLDIP=2;       //+vaedR~
+                                                                   //~v@@@M~
 //Small image                                                      //~v@@@R~
     //*standing                                                    //~v@@@I~
     private static final int[] resSmallManS={ //*standing          //~v@@@R~
@@ -1087,10 +1090,16 @@ public class Pieces                                                //~v@@@R~
         if (rc>byRate)                                             //~v@@@I~
         {                                                          //~v@@@I~
 	        rc=(byRate/2)*2;	//even number                      //~v@@@R~
+          if (AG.swSmallDip)                                       //~vaedI~
+          {                                                        //~vaedI~
+        	if (rc<STROKE_WIDTH_MIN_SMALLDIP)                      //~vaedI~
+            	rc=STROKE_WIDTH_MIN_SMALLDIP;                      //~vaedI~
+          }                                                        //~vaedI~
+          else                                                     //~vaedI~
         	if (rc<STROKE_WIDTH_MIN)                               //~v@@@I~
             	rc=STROKE_WIDTH_MIN;                               //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("Pieces.getStrokeWidth rc="+rc+",parmW="+PpieceW+",rate="+STROKE_WIDTH_RATE+",byRate="+byRate+",min="+STROKE_WIDTH_MIN);//~v@@@I~
+        if (Dump.Y) Dump.println("Pieces.getStrokeWidth rc="+rc+"swSmallDip="+AG.swSmallDip+",parmW="+PpieceW+",rate="+STROKE_WIDTH_RATE+",byRate="+byRate+",min="+STROKE_WIDTH_MIN);//~v@@@I~//+vaedR~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 }//class Pieces                                                    //~v@@@R~

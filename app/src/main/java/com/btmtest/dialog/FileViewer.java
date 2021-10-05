@@ -1,6 +1,7 @@
-//*CID://+vac5R~:                             update#=  193;       //+vac5R~
+//*CID://+vae0R~:                             update#=  194;       //~vac5R~//+vae0R~
 //*************************************************************************
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/09/12 vae0 Scped for BTMJ5                                  //+vae0I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //1A4z 2014/12/09 FileDialog:view file by click twice
 //*************************************************************************
 package com.btmtest.dialog;                                           //~1A4zR~
@@ -21,13 +22,14 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~//~1
 public class FileViewer extends UFDlg                                      //~1A4zR~
 {
     private static final int LAYOUTID=R.layout.fileviewer;
-    private static final int LAYOUTID_SMALLFONT=R.layout.fileviewer_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.fileviewer_theme;//~vac5I~
     private static final int TITLEID_VIEWER=R.string.Title_FileViewer;//~1A4zI~
     private static final int HELPTITLEID=R.string.HelpTitle_FileViewer;//~1A4zR~
     private static final String HELPFILE="FileViewer";         //~v@@@R~//~1A4zI~
     private static final String PARM_FILENAME="filename";          //~1A4zI~
     private static final String PARM_FULLPATH="fullpath";          //~1A4zI~
     private static final String PARM_U2S="U2S";                    //~1A4zI~
+    private static final String PARM_SCOPED="Scoped";              //+vae0I~
     private final static int    VIEWER_MAXSIZE=4096*16;            //~1A4zR~
     private final static int    TEXTVIEWID=R.id.FileContents;      //~1A4zI~
     private String fileName;
@@ -36,6 +38,7 @@ public class FileViewer extends UFDlg                                      //~1A
     private String fullpathName;//~1A4zI~
     private TextView tvFileContents;                               //~1A4zI~
     private boolean swU2S;  //display \\uxxxx to String             //~1A4zI~
+    private boolean swScoped;  //display \\uxxxx to String         //+vae0I~
 //************************************************                 //~1A4zI~
     public FileViewer()                                            //~1A4zI~
     {                                                              //~1A4zI~
@@ -49,8 +52,8 @@ public class FileViewer extends UFDlg                                      //~1A
         String fnm=pos>=0 ? Pfullpath.substring(pos+1) : Pfullpath;//~1A4zI~
         String title=Utils.getStr(TITLEID_VIEWER,fnm);             //~1A4zI~
 //  	UFDlg ufdlg=UFDlg.newInstance(dlg,title,LAYOUTID,          //~1A4zR~
-//  	UFDlg.setBundle(dlg,title,LAYOUTID,                        //~1A4zI~//+vac5R~
-    	UFDlg.setBundle(dlg,title,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,title,LAYOUTID,                        //~1A4zI~//~vac5R~
+    	UFDlg.setBundle(dlg,title,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
 //                  UFDlg.FLAG_CLOSEBTN,0,HELPFILE);               //~1A4zR~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELPTITLEID,HELPFILE);//~1A4zR~
 //  	dlg.ufdlg=ufdlg;                                           //~1A4zR~
@@ -61,12 +64,14 @@ public class FileViewer extends UFDlg                                      //~1A
     	return dlg;                                                //~1A4zI~
     }                                                              //~1A4zI~
     //************************************************             //~1A4zI~
-    public static FileViewer newInstance(String Pfname,String Pfullpath,boolean PswU2S)//~1A4zI~
+//  public static FileViewer newInstance(String Pfname,String Pfullpath,boolean PswU2S)//~1A4zI~//+vae0R~
+    public static FileViewer newInstance(String Pfname,String Pfullpath,boolean PswU2S,boolean PswScoped)//+vae0I~
     {                                                              //~1A4zI~
     	if (Dump.Y) Dump.println("FileViewer newInstance PswU2S="+PswU2S);//~1A4zI~
     	FileViewer dlg=newInstance(Pfname,Pfullpath);              //~1A4zI~
         Bundle b=dlg.bundle;                                       //~1A4zI~
         b.putBoolean(PARM_U2S,PswU2S);                             //~1A4zI~
+        b.putBoolean(PARM_SCOPED,PswScoped);                       //+vae0I~
     	return dlg;                                                //~1A4zI~
     }                                                              //~1A4zI~
     //******************************************                   //~1A4zI~
@@ -84,6 +89,7 @@ public class FileViewer extends UFDlg                                      //~1A
         fileName=b.getString(PARM_FILENAME,null);                  //~1A4zI~
         fullpathName=b.getString(PARM_FULLPATH,null);              //~1A4zI~
         swU2S=b.getBoolean(PARM_U2S,false);                         //~1A4zI~
+        swScoped=b.getBoolean(PARM_SCOPED,false);                  //+vae0I~
         tvFileContents=(TextView)UView.findViewById(Playoutview,R.id.FileContents);//~1A4zI~
      	if (Dump.Y) Dump.println("FileViewer.getComponent fname="+fileName+",fullpath="+fullpathName+",swU2S="+swU2S);//~1A4zR~
     }
@@ -111,6 +117,12 @@ public class FileViewer extends UFDlg                                      //~1A
     private String getFileContents()
     {
         BufferedReader br=null;                                    //~1A4zI~
+      if (swScoped)    //use scopedStorage dir                     //+vae0I~
+      {                                                            //+vae0I~
+      		br=AG.aUScoped.openInputDocumentBufferedReader(fileName);//+vae0I~
+      }                                                            //+vae0I~
+      else                                                         //+vae0I~
+      {                                                            //+vae0I~
         try                                                        //~1A4zR~
 		{                                                          //~1A4zI~
             FileReader fr = new FileReader(fullpathName);          //~1A4zR~
@@ -121,6 +133,7 @@ public class FileViewer extends UFDlg                                      //~1A
         	Dump.println(true,e,"FileViewer:openFile:"+fileName);  //~1A4zI~
         	return null;                                           //~1A4zI~
         }                                                          //~1A4zM~
+      }                                                            //+vae0I~
         StringBuffer sb = new StringBuffer("");                    //~1A4zR~
         readFile(br, VIEWER_MAXSIZE, sb);                          //~1A4zR~
         return new String(sb);

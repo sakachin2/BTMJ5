@@ -1,7 +1,7 @@
-//*CID://+va60R~: update#= 392;                                    //~v@@@R~//+va60R~
+//*CID://+va60R~: update#= 393;                                    //~v@@@R~//~va60R~
 //**********************************************************************//~v101I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
-//**********************************************************************//+va60I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//**********************************************************************//~va60I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.gv;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -40,12 +40,12 @@ public class GCanvas                                               //~v@@@I~
     private Graphics aGraphics;                                    //~v@@@I~
     private ICanvas iCanvas;                                       //~v@21I~//~v@@@M~
 //*************************                                        //~v@@@I~
-    public GCanvas(){}                    //for IT Mocking         //+va60I~
+    public GCanvas(){}                    //for IT Mocking         //~va60I~
 //  public GCanvas(SurfaceHolder Pholder,MJTable Ptable,int Pww,int Phh)//~v@@@R~
     public GCanvas(MJTable Ptable,int Pww,int Phh)                 //~v@@@I~
     {                                                              //~0914I~
 //  	if (Dump.Y) Dump.println("GCanvas constructor holder="+Pholder.toString());//~v@@@R~
-    	if (Dump.Y) Dump.println("GCanvas constructor");           //~v@@@I~
+    	if (Dump.Y) Dump.println("GCanvas constructor ww="+Pww+",hh="+Phh);           //~v@@@I~//+va60R~
     	AG.aGCanvas=this;                                          //~v@@@I~
         WW=Pww;                                                    //~v@@@M~
         HH=Phh;                                                    //~v@@@M~

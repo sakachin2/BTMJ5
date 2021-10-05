@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 582;                                    //~va60R~
+//*CID://+vaedR~: update#= 587;                                    //~vaedR~
 //**********************************************************************//~v101I~
+//2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
 //v@21  imageview                                                  //~v@21I~
@@ -87,10 +88,14 @@ public class DiceBox extends Thread                                //~v@@@R~
 	private static final int DBACTION_ENABLE=1;                    //~v@@@I~
 	private static final int EDGE_WIDTH=2;                         //~v@@@I~
 	private static final int LIGHT_RADIUS=20;                      //~v@@@R~
-	private static final int LIGHT_EDGE=4;                         //~v@@@R~
+//  private static final int LIGHT_EDGE=4;                         //~v@@@R~//~vaedR~
+    private static final int LIGHT_EDGE_STD=4;                     //~vaedR~
+    private static final int LIGHT_EDGE_SMALLDIP=2;                //~vaedR~
 	private static final int LIGHT_SWEEP_ANGLE=180;                //~v@@@I~
-	private static final int RADIUS_WAITING_CIRCLE=10;             //~v@11R~
-    private static final int RADIUS_STARTER_CIRCLE=10;             //~v@11R~
+//  private static final int RADIUS_WAITING_CIRCLE=10;             //~v@11R~//~vaedR~
+	private static final int RADIUS_WAITING_CIRCLE_STD=10;         //~vaedI~
+	private static final int RADIUS_WAITING_CIRCLE_SMALLDIP=4;     //+vaedR~
+    private static final int RADIUS_STARTER_CIRCLE=6;             //~v@11R~//+vaedR~
 	private static final int WIDTH_WAITING_RING=2;                 //~v@11I~
     private static final int WIDTH_STARTER_RING=2;                 //~v@11R~
 	private static final int DISTANCE_WAITING_CIRCLE=2;              //~v@11I~
@@ -157,6 +162,8 @@ public class DiceBox extends Thread                                //~v@@@R~
     private int posDrawnStarterMark=-1;                            //~v@11I~
     private int radiusLight;                                       //~v@11I~
     private int colorShadowLamp=COLOR_FG_DISABLE;                  //~va60R~
+	private int LIGHT_EDGE;                                        //~vaedR~
+	private int RADIUS_WAITING_CIRCLE;                             //~vaedI~
     // *************************                                        //~v@@@I~
 	public DiceBox() //default constructor for IT Mocking          //~va60I~
 	{                                                              //~va60I~
@@ -173,6 +180,16 @@ public class DiceBox extends Thread                                //~v@@@R~
         pieces = gcanvas.pieces;                                     //~v@@@I~
 //      bmsDice = pieces.bitmapDice;                               //~v@@@R~//~v@11R~
         bmsDice = AG.bitmapDice;                                   //~v@11I~
+        if (AG.swSmallDip)                                         //~vaedR~
+        {                                                          //~vaedR~
+			LIGHT_EDGE=LIGHT_EDGE_SMALLDIP;                        //~vaedR~
+			RADIUS_WAITING_CIRCLE=RADIUS_WAITING_CIRCLE_SMALLDIP;  //~vaedI~
+        }                                                          //~vaedR~
+        else                                                       //~vaedR~
+        {                                                          //~vaedR~
+			LIGHT_EDGE=LIGHT_EDGE_STD;                             //~vaedR~
+			RADIUS_WAITING_CIRCLE=RADIUS_WAITING_CIRCLE_STD;       //~vaedI~
+        }                                                          //~vaedR~
         possDice =table.getDicePos();                              //~v@@@I~
 		rectDiceBox=getDiceRect();                                 //~v@@@R~
         bgColor=COLOR_BG_DISABLE;	//initial                      //~v@@@R~
@@ -183,7 +200,7 @@ public class DiceBox extends Thread                                //~v@@@R~
         marginDice=(possDice[0].x-rectDiceBox.left)-2;             //~v@@@R~
 //      touchAllowance=(int)(LIGHT_RADIUS*2*TOUCH_ALLOWANCE);      //~v@@@I~//~v@11R~
         touchAllowance=(int)(radiusLight*2*TOUCH_ALLOWANCE);       //~v@11I~
-    	if (Dump.Y) Dump.println("DiceBox constructor marginDice="+marginDice+",touchAllowance="+touchAllowance);//~v@@@R~
+    	if (Dump.Y) Dump.println("DiceBox constructor marginDice="+marginDice+",touchAllowance="+touchAllowance+",LIGHT_EDGE="+LIGHT_EDGE);//~v@@@R~//~va60R~
     }
     //****************************************************************************************    //~v@@@I~//~v@21R~
     //*Lamp for take/discard                                       //~v@21I~
@@ -238,10 +255,17 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*for WaitingCircle                                           //~v@11I~
     	int d=RADIUS_WAITING_CIRCLE+DISTANCE_WAITING_CIRCLE;       //~v@11I~
         posLightWaiting=new Point[PLAYERS];                         //~v@11I~
+      	if (AG.swSmallDip)                                         //+vaedI~
+    		d=RADIUS_WAITING_CIRCLE;                               //+vaedI~
         posLightWaiting[0]=new Point(boxLight[0].right+d,boxLight[0].top+d);//~v@11I~
         posLightWaiting[1]=new Point(boxLight[1].left+d,boxLight[1].top-d);//~v@11R~
         posLightWaiting[2]=new Point(boxLight[2].left-d,boxLight[2].bottom-d);//~v@11R~
         posLightWaiting[3]=new Point(boxLight[3].right-d,boxLight[3].bottom+d);//~v@11R~
+        if (Dump.Y) Dump.println("DiceBox.getLightRect d="+d+",m="+m);//~va60I~
+        if (Dump.Y) Dump.println("DiceBox.getLightRect posLightWaiting[0]="+posLightWaiting[0]);//~va60I~
+        if (Dump.Y) Dump.println("DiceBox.getLightRect posLightWaiting[1]="+posLightWaiting[1]);//~va60I~
+        if (Dump.Y) Dump.println("DiceBox.getLightRect posLightWaiting[2]="+posLightWaiting[2]);//~va60I~
+        if (Dump.Y) Dump.println("DiceBox.getLightRect posLightWaiting[3]="+posLightWaiting[3]);//~va60I~
                                                                    //~v@11I~
 //        int ds=RADIUS_STARTER_CIRCLE+DISTANCE_STARTER_CIRCLE;    //~v@11R~
 //      posLightStarter=new Point[PLAYERS];                        //~v@11R~
@@ -409,9 +433,9 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@11I~
     public  void setWaiterLight(int Pplayer,boolean PswOn)         //~v@11I~
     {                                                              //~v@11I~
-        if (Dump.Y) Dump.println("DiceBox.setWaiterLight swOn="+PswOn+",player="+Pplayer);//~v@11I~
         Point p=posLightWaiting[Pplayer];
 		int r=RADIUS_WAITING_CIRCLE;                               //~v@11I~
+        if (Dump.Y) Dump.println("DiceBox.setWaiterLight swOn="+PswOn+",player="+Pplayer+",pos="+p.toString()+",radius="+r);//~v@11I~//~va60I~
         if (PswOn)                                                 //~v@11I~
         {                                                          //~v@11I~
 			Graphics.drawCircle(p,r,COLOR_WAITING_CIRCLE);         //~v@11R~
@@ -465,7 +489,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@@@I~
     private void drawLight(int Pplayer,int Pstat)                  //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("DiceBox.drawLight stat="+Pstat+",player="+Pplayer+",boxLight="+boxLight[Pplayer].toString());//~v@@@R~//~v@11R~//+va60R~
+        if (Dump.Y) Dump.println("DiceBox.drawLight stat="+Pstat+",player="+Pplayer+",boxLight="+boxLight[Pplayer].toString());//~v@@@R~//~v@11R~//~va60R~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],startAngleLight[Pplayer],Pstat);//~v@@@R~
         drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat);//~v@@@I~
         statusLight[Pplayer]=Pstat;                                //~v@@@I~
@@ -473,7 +497,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@21I~
     private void drawLightShadow(int Pplayer,int Pstat)            //~v@21I~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("DiceBox.drawLightShadow stat="+Pstat+",player="+Pplayer+",colorShadowLamp="+Integer.toHexString(colorShadowLamp));//+va60R~
+        if (Dump.Y) Dump.println("DiceBox.drawLightShadow stat="+Pstat+",player="+Pplayer+",colorShadowLamp="+Integer.toHexString(colorShadowLamp));//~va60R~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],startAngleLight[Pplayer],Pstat);//~v@21I~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat,(long)COLOR_FG_DISABLE);//~v@21R~//~v@11R~
 //      drawLight(boxLight[Pplayer],boxLightArc[Pplayer],boxLightArcInner[Pplayer],startAngleLight[Pplayer],Pstat); //no shadow, look at PLAYER_YOU of each//~v@11R~
@@ -484,7 +508,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@@@I~
     private void drawLightEdge(int Pplayer,int Pcolor)             //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("DiceBox.drawLightEdge player="+Pplayer+",color="+Integer.toHexString(Pcolor));//~v@@@I~//+va60R~
+        if (Dump.Y) Dump.println("DiceBox.drawLightEdge player="+Pplayer+",color="+Integer.toHexString(Pcolor));//~v@@@I~//~va60R~
         Graphics.drawArc(boxLight[Pplayer],boxLightArc[Pplayer],startAngleLight[Pplayer],LIGHT_SWEEP_ANGLE,Pcolor,LIGHT_EDGE);//~v@@@R~
     }                                                              //~v@@@I~
     //*********************************************************    //~v@21I~
@@ -628,7 +652,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@11I~
     public void setLightStarter(int Pplayer,boolean PswResetPrev)          //~v@11I~
     {                                                              //~v@11I~
-        if (Dump.Y) Dump.println("DiceBox.setLightStarter Pplayer="+Pplayer+",swResetPrev="+PswResetPrev+",currentStarter="+currentStarter+",posDrawnStarterMark="+posDrawnStarterMark);//+va60R~
+        if (Dump.Y) Dump.println("DiceBox.setLightStarter Pplayer="+Pplayer+",swResetPrev="+PswResetPrev+",currentStarter="+currentStarter+",posDrawnStarterMark="+posDrawnStarterMark);//~va60R~
 //      if (PswResetPrev)                                          //~v@11R~
         if (PswResetPrev && posDrawnStarterMark>=0)                //~v@11R~
         {                                                          //~v@11R~
@@ -640,7 +664,7 @@ public class DiceBox extends Thread                                //~v@@@R~
         }                                                          //~v@11R~
 //      setWaitingDice(Pplayer);                                   //~v@11R~
 //      drawLightEdge(Pplayer,COLOR_LIGHT_EDGE_STARTER);           //~v@11R~
-        if (Dump.Y) Dump.println("DiceBox.setLightStarter starterRelativePos="+AG.aAccounts.starterRelativePos);//+va60I~
+        if (Dump.Y) Dump.println("DiceBox.setLightStarter starterRelativePos="+AG.aAccounts.starterRelativePos);//~va60I~
 	  if (Pplayer==AG.aAccounts.starterRelativePos)	//1st starter pos//~v@11I~
          posDrawnStarterMark=-1;                                   //~v@11I~
       else                                                         //~v@11I~

@@ -1,5 +1,6 @@
-//*CID://+va8CR~: update#= 779;                                    //~va8CR~
+//*CID://+vaegR~: update#= 782;                                    //~vaegR~
 //**********************************************************************//~v101I~
+//2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/05/06 va8C (Bug)open hand image remains for not PLAYER_YOU after drawn last if called kan(TestOption:openHand)//~va8CI~
 //2021/04/04 va76 open test;robot hand corrupted display           //~va76I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
@@ -439,6 +440,15 @@ public class Hands                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Hands.getRectHands x1="+xx1+",y1="+yy1+",x2="+xx2+",y2="+yy2);//~v@@@R~
     	return new Rect(xx1,yy1,xx2,yy2);                          //~v@@@I~
     }                                                              //~v@@@I~
+	//*********************************************************    //~vaegI~
+	public static int getLengthHands(int Pctr,int PpieceW)         //~vaegI~
+    {                                                              //~vaegI~
+        int len=(PpieceW+PIECE_SPACING)*Pctr-PIECE_SPACING;        //+vaegI~
+        if (Tiles.isTakenStatus(Pctr))                             //+vaegI~
+        	len+=PIECE_SPACING_TAKEN-PIECE_SPACING;                //+vaegI~
+        if (Dump.Y) Dump.println("Hands.getLengthHands with parm pieceW="+PpieceW+",ctr="+Pctr+",len="+len);//+vaegI~
+    	return len;                                                //+vaegI~
+    }                                                              //~vaegI~
 	//*********************************************************    //~v@@@I~
 	public  int getLengthHands(int Pctr)                           //~v@@@I~//~v@@5R~
     {                                                              //~v@@@I~
@@ -446,7 +456,7 @@ public class Hands                                                 //~v@@@R~
 //      if ((Pctr-1)%PAIRCTR!=0)                                   //~v@@@R~
         if (Tiles.isTakenStatus(Pctr))                             //~v@@@I~
         	len+=PIECE_SPACING_TAKEN-PIECE_SPACING;                //~v@@@I~
-        if (Dump.Y) Dump.println("Hands.getLengthHands ctr="+Pctr+",len="+len);//~v@@@I~
+        if (Dump.Y) Dump.println("Hands.getLengthHands pieceW="+pieceW+",ctr="+Pctr+",len="+len);//~v@@@I~//+vaegR~
     	return len;                                                //~v@@@I~
     }                                                              //~v@@@I~
 //    //*********************************************************  //~v@@@R~
@@ -717,7 +727,7 @@ public class Hands                                                 //~v@@@R~
             r=getOpenShift(Pplayer);                               //~0329I~
             if (r==null)  //no earth                               //~0329R~
 	        	r=openRects0[Pplayer];                             //~0329R~
-//        if (false) //TODO test                                   //+va8CR~
+//        if (false) //TODO test                                   //~va8CR~
     		clearOpenRect(Pplayer);     //clear old range          //~va8CI~
 	        openRectShiftS[Pplayer]=r;  //to clear                 //~0329R~
         }                                                          //~0329I~

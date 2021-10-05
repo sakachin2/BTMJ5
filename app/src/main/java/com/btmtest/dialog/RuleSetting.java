@@ -1,6 +1,8 @@
-//*CID://+vac5R~:                             update#=  717;       //+vac5R~
+//*CID://+vaehR~:                             update#=  725;       //+vaehR~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/09/28 vaeh (Bug)syncDate is "Unknown" at first install, could not start training mode even runle dialog open/closed//+vaehI~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/08/02 vabs drop robot option to discard just taken,remains as test option//~vabsI~
 //2021/04/25 va8k KataAgari OK for all Draw(+pon/kan/chii) regardless fix option//~va8kI~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
@@ -34,6 +36,7 @@ import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.gui.USpinner;
 import com.btmtest.utils.UFile;
+import com.btmtest.utils.UScoped;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 import com.btmtest.game.Status;                                    //~9412I~
@@ -55,7 +58,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 	public  static final String PROP_NAME="RuleSetting";           //~9404I~
 	private static final int    TITLEID=R.string.Title_RuleSetting;//~v@@@I~
 	private static final int    LAYOUTID=R.layout.setting_rule;      //~v@@@I~//~9412R~
-	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_theme;//+vac5I~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_theme;//~vac5I~
 	private static final int    HELP_TITLEID=R.string.Title_RuleSetting;//~v@@@I~
 	private static final String HELPFILE="RuleSetting";       //~v@@@I~//~9412R~//~9515R~//~9615R~//~9C13R~
                                                                    //~9408I~
@@ -181,8 +184,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     {                                                              //~v@@@I~
         RuleSetting dlg=new RuleSetting();                         //~v@@@I~
 //      dlg.ufdlg=UFDlg.newInstance((UFDlg)dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@R~
-//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@I~//+vac5R~
-        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),           //SettingDlg//+vac5I~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,           //SettingDlg//~v@@@I~//~vac5R~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),           //SettingDlg//~vac5I~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                   //~v@@@I~//~9C13R~
         return dlg;                                                //~v@@@I~
@@ -798,11 +801,17 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         	changed++;                                             //~9629I~
         if (swChangedOperation)                                    //~9629I~
         	changed++;                                             //~9629I~
+	    if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))            //+vaehI~
+        {                                                          //+vaehI~
+            changed++;  //update AG.ruleSyncDate at saveSyncDate   //+vaehI~
+        	if (Dump.Y) Dump.println("RuleSetting.dialog2Properties suncdate is initial");//+vaehI~
+        }                                                          //+vaehI~
         if (changed!=0)                                            //~v@@@I~
         {                                                          //~9404I~
         	saveSyncDate();                                        //~9404I~
 	        swChanged=true;                                        //~v@@@I~
         }                                                          //~9404I~
+	    AG.swChangedRule|=swChanged;                               //~vae8I~
         return changed!=0;                                         //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
@@ -1017,6 +1026,49 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         	return;                                                //~9406I~
         AG.aRuleSetting.repaintOKNG();                             //~9406R~
     }                                                              //~9406I~
+    //*******************************************************************************//~vae8I~
+    //*from MainActivity->AG-->                                    //~vae8I~
+    //*******************************************************************************//~vae8I~
+    public static void recoverProp(String Pmember)                 //~vae8R~
+    {                                                              //~vae8I~
+    	if (Dump.Y) Dump.println("RuleSetting.recoverProp member="+Pmember);//~vae8R~
+        String fpath=PrefSetting.makeFullpath(Pmember);            //~vae8I~
+        if (fpath==null)                                           //~vae8I~
+        	return;                                                //~vae8I~
+        boolean rc=AG.ruleProp.loadProperties(fpath);              //~vae8I~
+    	if (Dump.Y) Dump.println("RuleSetting.recoverProp rc="+rc+",AG.ruleProp="+AG.ruleProp.toString());//~vae8I~
+        if (rc)                                                    //~vae8I~
+	        recoverSharedPreference();                             //~vae8I~
+    }                                                              //~vae8I~
+    //*******************************************************************************//~vae8I~
+    private static void recoverSharedPreference()                  //~vae8I~
+    {                                                              //~vae8I~
+    	if (Dump.Y) Dump.println("RuleSetting.recoverSharedPreference Nothing to do");//~vae8I~
+    }                                                              //~vae8I~
+    //*******************************************************************************//~vae8I~
+    //*from MainActivity->AG-->                                    //~vae8I~
+    //*******************************************************************************//~vae8I~
+    public static boolean saveProp(String Pmember)                    //~vae8R~
+    {                                                              //~vae8I~
+    	if (Dump.Y) Dump.println("RuleSetting.saveProp");          //~vae8I~
+        if (!AG.swChangedRule                                     //~vae8I~
+//      &&  !(AG.ruleProp.getParameter(getKeyRS(RSID_SAVED_RULE),"")).equals(""))	//not copy of asset//~vae8R~
+        )                                                          //~vae8I~
+        {                                                          //~vae8I~
+    		if (Dump.Y) Dump.println("RuleSetting.saveProp return false by swChangeRule");//~vae8I~
+        	return false;                                          //~vae8I~
+        }                                                          //~vae8I~
+//      AG.ruleProp.setParameter(getKeyRS(RSID_SAVED_RULE),"1");   //~vae8R~
+//      AG.swChangedRule=true;                                     //~vae8R~
+        String fpath=PrefSetting.makeFullpath(Pmember);                        //~vae8I~
+        boolean rc;                                                //~vae8I~
+        if (UScoped.isScoped())                                    //~vae8I~
+	        rc=AG.ruleProp.savePropertiesScoped(fpath,PROP_NAME,true/*swOverride*/);//~vae8I~
+        else                                                       //~vae8I~
+	        rc=AG.ruleProp.saveProperties(fpath,PROP_NAME);        //~vae8I~
+    	if (Dump.Y) Dump.println("RuleSetting.saveProp rc="+rc);   //~vae8I~
+        return rc;                                                 //~vae8I~
+    }                                                              //~vae8I~
     //*****************************************************************************************                       //~v@@@I~//~9403R~
     //*****************************************************************************************//~9403I~
     //*****************************************************************************************//~9403I~

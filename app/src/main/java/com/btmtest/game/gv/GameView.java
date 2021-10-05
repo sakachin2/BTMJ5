@@ -1,11 +1,14 @@
-//*CID://+v@21R~: update#= 350;                                    //~v@21R~//~va60R~//~v@21R~
+//*CID://+vaefR~: update#= 361;                                    //~vaefR~
 //**********************************************************************
+//2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
+//**********************************************************************//~vaefI~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen
 //**********************************************************************
 package com.btmtest.game.gv;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.HandlerThread;
 import android.os.Message;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -56,8 +59,8 @@ public class GameView extends AppCompatImageView                   //~v@21R~
 //    }                                                              //~v@@@I~//~v@21R~
 
     //*************************
-//  private void init(Context Pcontext)                            //~v@@@R~//+v@21R~
-    protected void init(Context Pcontext)	//protected for IT override//+v@21I~
+//  private void init(Context Pcontext)                            //~v@@@R~//~v@21R~
+    protected void init(Context Pcontext)	//protected for IT override//~v@21I~
     {
     	AG.aGameView=this;                                         //~v@@@R~
 //        AG.svContext=Pcontext;                                   //~v@21R~
@@ -72,16 +75,32 @@ public class GameView extends AppCompatImageView                   //~v@21R~
 //          setZOrderOnTop(true);                                  //~v@@@R~
 //          UView.getScreenSize();                                 //~v@@@R~
             WW = AG.scrWidthReal;                                  //~v@@@R~
-   			if (Dump.Y) Dump.println("GameView.init swPortrait="+AG.aGC.swPortrait+",scrWidthReal="+AG.scrWidthReal+",scrNavigationbarRightWidth="+AG.scrNavigationbarRightWidth+",scrWidth="+AG.scrWidth);//~v@21I~
+   			if (Dump.Y) Dump.println("GameView.init osVersion="+ Build.VERSION.SDK_INT+",swPortrait="+AG.aGC.swPortrait+",scrWidthReal="+AG.scrWidthReal+",scrNavigationbarRightWidth="+AG.scrNavigationbarRightWidth+",scrWidth="+AG.scrWidth);//~v@21I~//~vaefR~
             if (!AG.aGC.swPortrait)	//landscape                    //~v@@@I~
             {                                                      //~v@@@I~
 	            HH = AG.scrHeightReal;                             //~v@@@R~
-                WW-=AG.scrNavigationbarRightWidth;	//some device,navigationbar is onth right when landscape and could not hide//~v@21R~
+	    	  if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
+              {                                                    //~vaefR~
+//              	HH-=AG.scrNavigationbarBottomHeightA11;        //~vaefR~
+//	                WW-=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;	//some device,navigationbar is on the right when landscape and could not hide//~vaefR~
+//	                WW=AG.scrWidth;	//adjusted by ? login on UView.getScreenSize30//~vaefR~
+//	                WW-=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;	//some device has navigationbar space on the right when landscape and could not hide//+vaefR~
+//	                WW-=AG.scrNavigationbarRightWidthA11;          //~vaefR~
+  	                WW-=AG.aGC.marginLR;                           //+vaefI~
+		   			if (Dump.Y) Dump.println("GameView.init landscape A11 WW="+WW+",HH="+HH+",scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeightA11+",leftWidthA11="+AG.scrNavigationbarLeftWidthA11+",rightWidthA11="+AG.scrNavigationbarRightWidthA11);//~vaefR~
+              }                                                    //~vaefR~
+              else                                                 //~vaefI~
+                WW-=AG.scrNavigationbarRightWidth;	//some device,navigationbar is on the right when landscape and could not hide//~v@21R~
 //              swHideNavigationbar=true;                          //~v@@@I~//~v@21R~
             }                                                      //~v@@@I~
             else                                                   //~v@@@I~
             {                                                      //~v@@@I~
 	            HH = AG.scrHeight;                                 //~v@@@I~
+	    		if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+            	{                                                  //~vaefI~
+                	HH-=AG.scrNavigationbarBottomHeightA11;       //~vaefI~
+		   			if (Dump.Y) Dump.println("GameView.init portrait HH="+HH+",scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeightA11);//~vaefR~
+            	}                                                  //~vaefI~
             }                                                      //~v@@@I~
 //          UView.fixOrientation(true);
             table=new MJTable(WW,HH);                                //~v@@@R~

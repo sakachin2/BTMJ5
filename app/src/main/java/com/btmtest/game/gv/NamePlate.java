@@ -1,7 +1,8 @@
-//*CID://+va60R~: update#= 638;                                    //~v@@@R~//~v@21R~//~9317R~//+va60R~
+//*CID://+vaegR~: update#= 647;                                    //~vaegR~
 //**********************************************************************//~v101I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
-//**********************************************************************//+va60I~
+//2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
+//**********************************************************************//~va60I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -72,21 +73,25 @@ public class NamePlate                                             //~v@@@R~
     private boolean swNPLLand=false;                               //~9806I~
     private int[] newPosition;                                     //~0324I~
 //*************************                                        //~v@@@I~
-	public NamePlate()            //for IT Mock                    //+va60R~
+	public NamePlate()            //for IT Mock                    //~va60R~
     {                                                              //~0914I~
-    	if (Dump.Y) Dump.println("NamePlate.default constructor"); //+va60I~
-    }                                                              //+va60I~
-//*************************                                        //+va60I~
-	public NamePlate(GCanvas Pgcanvas)                             //+va60I~
-    {                                                              //+va60I~
-    	if (Dump.Y) Dump.println("NamePlate.constructor");         //~0217I~
+    	if (Dump.Y) Dump.println("NamePlate.defaultConstructor swLongDevice="+AG.swLongDevice); //~va60I~//~vaegR~
+        if (AG.swLongDevice)                                       //~vaegI~
+        	swNPL=false;	//nameplate is not near by dicebox     //~vaegI~
+    }                                                              //~va60I~
+//*************************                                        //~va60I~
+	public NamePlate(GCanvas Pgcanvas)                             //~va60I~
+    {                                                              //~va60I~
+    	if (Dump.Y) Dump.println("NamePlate.constructor swLongDevice="+AG.swLongDevice);         //~0217I~//~vaegR~
+        if (AG.swLongDevice)                                       //~vaegI~
+        	swNPL=false;	//nameplate is not near by dicebox     //~vaegI~
 	    recycle(AG.aNamePlate);                                    //~0217I~
     	AG.aNamePlate=this;                                        //~v@@@R~
         GCanvas gcanvas = Pgcanvas;                                          //~v@@@I~
         table = gcanvas.table;                                     //~v@@@I~
       if (AG.portrait || !swNPL)                                   //~9611R~
         rectPlate=table.rectNamePlate;                             //~v@@@I~
-      else                                                         //~9611I~
+      else                                                         //~vaegI~
         rectPlate=getRectPlateLandscape();                         //~9611I~
 //      memberName=AG.aGC.memberName;                              //~v@@@I~//~0305R~
 //      memberName=AG.aAccounts.getAccountNames();                 //~0305R~
@@ -229,7 +234,7 @@ public class NamePlate                                             //~v@@@R~
         Rect r=rectScore[PLAYER_YOU];                              //~9317I~
         int ww=r.right-r.left;                                     //~9317I~
         int hh=r.bottom-r.top;                                     //~9317I~
-        if (Dump.Y) Dump.println("NamePlate.createBMScore rectScore="+rectScore.toString()+",ww="+ww+",hh="+hh);       //~9317I~//~9611I~
+        if (Dump.Y) Dump.println("NamePlate.createBMScore rectScore="+r.toString()+",ww="+ww+",hh="+hh);       //~9317I~//~9611I~//~vaegR~
 //      Bitmap bm=Bitmap.createBitmap(ww,hh,Bitmap.Config.ARGB_8888);//~9317I~//~0216R~
         Bitmap bm=Graphics.createBitmap(ww,hh,Bitmap.Config.ARGB_8888);//~0216I~
         return bm;                                                 //~9317I~
@@ -442,6 +447,7 @@ public class NamePlate                                             //~v@@@R~
       }                                                            //~v@21I~
       else                                                         //~v@21I~
      {                                                             //~v@21I~
+	    if (Dump.Y) Dump.println("NamePlate.adjustRectHeight maxNPLhh="+maxNPLhh+",old minH="+minH);//~vaegI~
 	    if (!AG.portrait && swNPL)                                 //~9806I~
         {                                                          //~9806I~
 	        if (Dump.Y) Dump.println("NamePlate.adjustRectHeight Land and swNPL old minH="+minH);//~9806I~
@@ -450,7 +456,7 @@ public class NamePlate                                             //~v@@@R~
             	minH=(maxNPLhh-NPLAND_MARGIN_H*2)/2;               //~9806I~
 			    swNPLLand=true;                                    //~9806I~
             }                                                      //~9806I~
-	        if (Dump.Y) Dump.println("NamePlate.adjustRectHeight Land and swNPL minH="+minH+",maxNPLhh="+maxNPLhh);//~9806I~
+	        if (Dump.Y) Dump.println("NamePlate.adjustRectHeight Land and swNPL minH="+minH+",maxNPLhh="+maxNPLhh+",swNPLLand="+swNPLLand);//~9806I~//~vaegR~
         }                                                          //~9806I~
         minH-=TEXTBOX_MARGINH*2;                                   //~v@21R~
         minW-=TEXTBOX_MARGINW;                                     //~v@21R~
@@ -576,10 +582,14 @@ public class NamePlate                                             //~v@@@R~
         String s;//~9317I~
     //******************************                               //~v@@@I~
         s="123456";        //6 DBCS                         //~9317I~
+        if (Dump.Y) Dump.println("NamePlate.createBitmap swNPLLand="+swNPLLand+",swNPL="+swNPL+",textBoxH="+textBoxH+",scoreH="+scoreH+",nameH="+nameH+",plateW="+nameplateW+",plateH="+nameplateH);//~vaegI~
 //      adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW-TEXTBOX_MARGINH*2,textBoxH-TEXTBOX_MARGINH*2);//~9317I~//~9806R~
 	  if (swNPLLand)                                               //~9806I~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~9806I~
       else                                                         //~9806I~
+      if (AG.portrait && AG.swLongDevice)                          //+vaegR~
+        adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~vaegI~
+      else                                                         //~vaegI~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH-TEXTBOX_MARGINH*2);//~9806I~
         s="あいうえお";        //5 DBCS                            //~9317R~
 //      nameH=adjustTextSize(paint,s,TEXT_SIZE,textBoxW-TEXTBOX_MARGINH*2,textBoxH-TEXTBOX_MARGINH*2);//~9317M~//~9319R~
@@ -591,7 +601,8 @@ public class NamePlate                                             //~v@@@R~
 	        scoreH=nameH*3/2;                                            //~9317M~//~9319R~//~9410R~
         else                                                       //~9410I~
       	if (!swNPL)                                                //~9611I~
-	        scoreH=nameH*5/2;                                      //~9410R~
+//          scoreH=nameH*5/2;                                      //~9410R~//~vaegR~
+            scoreH=nameH;                                          //~vaegI~
         else                                                       //~9611I~
 //          scoreH=maxNPLhh-nameplateH-NPLAND_MARGIN_H*2;          //~9611R~//~9922R~
             scoreH=Math.min(maxNPLhh-nameplateH-NPLAND_MARGIN_H*2,nameH*3/2);//~9922I~

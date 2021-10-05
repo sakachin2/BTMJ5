@@ -34,4 +34,6 @@
     <color name="btn_notify">#ffffd000</color>    <!-- BG:yellow orange-->
     <color name="btn_normal_bg">#ffe0e0e0</color> 
     <color name="btn_normal_fg">#ff000000</color> 
+    <!--color name="upicker_list">@android:color/white</color-->
+    <color name="upicker_list">#ffc8ffc8</color>
 </resources>

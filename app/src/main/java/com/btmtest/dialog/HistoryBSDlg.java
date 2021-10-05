@@ -1,17 +1,23 @@
-//*CID://+vac5R~:                             update#=   45;       //~vac5R~
+//*CID://+vad4R~:                             update#=   65;       //~vad4R~
 //*****************************************************************
+//2021/08/25 vad4 (Bug)HistoryBS; when selected not completed game issues toast but have to dismiss dialog//~vad4I~
+//2021/08/25 vad3 (Bug)HistoryBS summary ctr                       //~vad3I~
+//2021/08/24 vad2 HistoryBS;add function to show detail            //~vad2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/13 va87 show B/S limited to a group                      //~va87I~
 //2021/04/06 va7a add function of show balance sheet
 //*****************************************************************
 package com.btmtest.dialog;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.btmtest.R;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.HistoryData;
+import com.btmtest.gui.UButton;
 import com.btmtest.gui.UListView;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
@@ -21,19 +27,20 @@ import java.util.HashMap;
 import java.util.Map;
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.game.GConst.*;
-import static com.btmtest.game.History.*;
 import static com.btmtest.game.HistoryData.*;
 
-public class HistoryBSDlg extends UFDlg                                         //~1406R~
+public class HistoryBSDlg extends UFDlg                                         //~1406R~//~vad2R~
     implements UListView.UListViewI                                //~1406I~
 {
     private static final int TITLEID=R.string.Title_HistoryBSDlg;  //~1406R~
     private static final int HELP_TITLEID=TITLEID;
     private static final String HELPFILE="HistoryBSDlg";           //~1406R~
     private static final int LAYOUTID=R.layout.historybsdlg;       //~1406R~
-    private static final int LAYOUTID_SMALLFONT=R.layout.historybsdlg_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.historybsdlg_theme;//~vac5I~
     private static final int LISTVIEW_ROW_LAYOUTID=R.layout.textrowlist_historybsdlg;//~1406R~//~vac5R~
     private static final int LISTVIEW_ROW_LAYOUTID_SMALLFONT=R.layout.textrowlist_historybsdlg_theme;//~vac5I~
+    private static final int LISTVIEW_ROW_LAYOUTID_DETAIL=R.layout.textrowlist_historydlg;//~vad2R~
+    private static final int LISTVIEW_ROW_LAYOUTID_SMALLFONT_DETAIL=R.layout.textrowlist_historydlg_theme;//~vad2R~
     private static final int ID_ALONE=1;                           //~1406I~
     private static final int ID_MATCH=2;                           //~1406I~
 
@@ -45,12 +52,16 @@ public class HistoryBSDlg extends UFDlg                                         
     private int ctrGameAlone,ctrGameMatch,ctrPending;              //~1406R~
     private UListView lvBS;                                        //~1406I~
     private TextView tvSummary;                                    //~1406I~
+    private TextView tvCtrFileList;                                //~vad2I~
     private String dateFrom="";                                    //~1408I~
     private int[] selectedList;                                    //~va87I~
     private int[] selectedMember;
     private String[] selectedMemberName=new String[PLAYERS];       //~va87I~
     private int ctrRobotSelectedGame,ctrSelectedMembers;           //~va87R~
     private HistoryData hdSelectedGame;//~va87I~
+    private LinearLayout llListView;                               //~vad2I~
+    private UListView lvFilename;                                  //~vad2R~
+    private int rowIDDetail,ctrAdd;                                //~vad2R~
     //******************************************
     public HistoryBSDlg()                                          //~1406R~
     {
@@ -62,8 +73,8 @@ public class HistoryBSDlg extends UFDlg                                         
     public static HistoryBSDlg newInstance(int[] PselectedList)    //~va87I~
     {
     	HistoryBSDlg dlg=new HistoryBSDlg();                       //~1406R~
-//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //+vac5R~
-    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);
         dlg.selectedList=PselectedList;                            //~va87I~
         if (Dump.Y) Dump.println("HistoryBSDlg.newInstance slectedLis=length="+PselectedList.length+"="+Utils.toString(PselectedList));//~va87R~
@@ -82,6 +93,7 @@ public class HistoryBSDlg extends UFDlg                                         
         makeBS();                                                  //~1406I~
         setupDialog();                                             //~1406I~
         setSummary();                                              //~1406I~
+        tvCtrFileList.setText(Utils.getStr(R.string.Info_HistoryCtrDetail,ctrAdd));//~vad2R~
     }                                                              //~1406I~
     //******************************************                   //~1406I~
     protected void getComponent(View PView)                        //~1406I~
@@ -90,6 +102,13 @@ public class HistoryBSDlg extends UFDlg                                         
 //      lvBS=new UListView(PView,R.id.lvBS,LISTVIEW_ROW_LAYOUTID,this/*UListViewI*/,UListView.CHOICEMODE_NONE);//~1406I~//~vac5R~
         lvBS=new UListView(PView,R.id.lvBS,(AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT : LISTVIEW_ROW_LAYOUTID),this/*UListViewI*/,UListView.CHOICEMODE_NONE);//~vac5I~
         tvSummary=(TextView)    UView.findViewById(PView,R.id.tvSummary);//~1406I~
+        llListView=(LinearLayout)    UView.findViewById(PView,R.id.llListView);//~vad2I~
+        rowIDDetail=AG.swSmallFont ? LISTVIEW_ROW_LAYOUTID_SMALLFONT_DETAIL : LISTVIEW_ROW_LAYOUTID_DETAIL;//~vad2I~
+        lvFilename=new UListView(PView,R.id.FileList,rowIDDetail,this,UListView.CHOICEMODE_NONE);//~vad2R~
+                                                                   //~vad2I~
+        UButton.bind(PView,R.id.ShowDetail,this);                  //~vad2I~
+        UButton.bind(PView,R.id.HideDetail,this);                  //~vad2I~
+        tvCtrFileList=(TextView)    UView.findViewById(PView,R.id.CtrFileList);//~vad2I~
     }                                                              //~1406I~
     //******************************************
 	@Override	//UFDlg
@@ -103,9 +122,12 @@ public class HistoryBSDlg extends UFDlg                                         
     private void makeBS()                                          //~1406R~
     {
         if (Dump.Y) Dump.println("HistoryBSDlg:makeBS");           //~1406I~
+        lvFilename.clearList();                                        //~vad2I~
     	HistoryData hd;                                            //~1406I~
         String[] namelist=HD.namelist;                               //~1406I~
+		if (Dump.Y) Dump.println("HistoryBSDlg:makeBS namelist="+Arrays.toString(namelist));//~vad2I~
         ctrGameAlone=0; ctrGameMatch=0; ctrPending=0;              //~1406R~
+        ctrAdd=0;                                                  //~vad2I~
         for (int ii=0;ii<namelist.length;ii++)                     //~1406I~
         {                                                          //~1406I~
     		hd=AG.aHistory.getHistoryData(namelist[ii]);    //get from Map//~1406I~
@@ -124,6 +146,8 @@ public class HistoryBSDlg extends UFDlg                                         
     	            continue;                                      //~va87I~
             }                                                      //~va87I~
             hd.setScores();                                        //~1406M~
+            addFileList(ii);                                       //~vad2I~
+            ctrAdd++;                                              //~vad2I~
 //          int ctrRobot=chkRobot(hd);                             //~1406I~//~va87R~
             if (ctrRobot==PLAYERS-1)                               //~1406I~
             {                                                      //~1406I~
@@ -151,12 +175,14 @@ public class HistoryBSDlg extends UFDlg                                         
       	for (int ii=0;ii<ctrSelectedMembers;ii++)                  //~va87R~
             names+=selectedMemberName[ii]+"  ";                    //~va87I~
         if (ctrSelectedMembers<PLAYERS)                            //~va87R~
-            names+=nameRobot+"("+ctrSelectedMembers+")";           //~va87R~
-        s=AG.resource.getString(R.string.Desc_BS_Summary_selected,names,ctrGameMatch,dateFrom);//~va87I~
+//          names+=nameRobot+"("+ctrSelectedMembers+")";           //~va87R~//~vad3R~
+            names+=nameRobot+"("+(PLAYERS-ctrSelectedMembers)+")"; //~vad3I~
+//      s=AG.resource.getString(R.string.Desc_BS_Summary_selected,names,ctrGameMatch,dateFrom);//~va87I~//~vad3R~
+        s=AG.resource.getString(R.string.Desc_BS_Summary_selected,names,ctrGameMatch+ctrGameAlone,dateFrom);//~vad3I~
       }                                                            //~va87I~
       else                                                         //~va87I~
         s=AG.resource.getString(R.string.Desc_BS_Summary,ctrGameAlone,ctrGameMatch,ctrPending,dateFrom);//~1408I~//~va87R~
-        if (Dump.Y) Dump.println("HistoryBSDlg.setSummary desc="+s);       //~1406I~//~1408I~
+        if (Dump.Y) Dump.println("HistoryBSDlg.setSummary ctrSelectedMembers="+ctrSelectedMembers+",desc="+s);       //~1406I~//~1408I~//~vad3R~
         tvSummary.setText(s);                                      //~1406I~
     }                                                              //~1406I~
     //***********************************************
@@ -185,6 +211,7 @@ public class HistoryBSDlg extends UFDlg                                         
         if (ctr>1)                                                 //~va87I~
         {                                                          //~va87I~
 	        UView.showToast(R.string.Err_BSMultipleSelected);      //~va87I~
+            dismiss();                                             //~vad4I~
         	return;                                                //~va87I~
         }                                                          //~va87I~
         else                                                       //~va87I~
@@ -206,6 +233,7 @@ public class HistoryBSDlg extends UFDlg                                         
         if (!hd.swComplete)                                        //~va87I~
         {                                                          //~va87I~
           	UView.showToast(R.string.Err_BS_NotCompleteSelected);  //~va87I~
+            dismiss();                                             //+vad4I~
           	return;                                                //~va87I~
         }                                                          //~va87I~
         ctrRobotSelectedGame=ctrRobot;                             //~va87I~
@@ -329,7 +357,9 @@ public class HistoryBSDlg extends UFDlg                                         
     public View getViewCustom(int Ppos, View Pview, ViewGroup Pparent)//~1406I~
     {                                                              //~1406I~
     //*******************                                          //~1406I~
-        if (Dump.Y) Dump.println("HistoryDlg:getViewCustom Ppos="+Ppos);//~1406I~
+        if (Dump.Y) Dump.println("HistoryDlg:getViewCustom Ppos="+Ppos+",view="+Utils.toString(Pview)+",parent="+Utils.toString(Pparent));//~vad2R~
+        if (Pparent.getId()==R.id.FileList)                        //~vad2R~
+        	return getViewCustomFileList(Ppos,Pview,Pparent);	   //~vad2I~
         View v=Pview;                                              //~1406I~
         if (v == null)                                             //~1406I~
         {                                                          //~1406I~
@@ -413,4 +443,76 @@ public class HistoryBSDlg extends UFDlg                                         
         	return "total="+total+",ctrOrder="+Arrays.toString(ctrOrder);//~1406I~
         }                                                          //~1406I~
     }                                                              //~1406I~
+    //******************************************                   //~vad2I~
+    @Override                                                      //~vad2I~
+    public void onClickOther(int Pbuttonid)                        //~vad2I~
+	{                                                              //~vad2I~
+        if (Dump.Y) Dump.println("HistoryBSDlg:onClickOther id="+Pbuttonid);//~vad2I~
+        switch(Pbuttonid)                                          //~vad2I~
+        {                                                          //~vad2I~
+        case R.id.ShowDetail:                                      //~vad2I~
+        	showDetail();                                          //~vad2I~
+            break;                                                 //~vad2I~
+        case R.id.HideDetail:                                      //~vad2I~
+        	hideDetail();                                          //~vad2I~
+            break;                                                 //~vad2I~
+        }                                                          //~vad2I~
+    }                                                              //~vad2I~
+    //******************************************                   //~vad2I~
+    private void hideDetail()                                      //~vad2I~
+	{                                                              //~vad2I~
+        if (Dump.Y) Dump.println("HistoryBSDlg:hideDetail");       //~vad2I~
+        llListView.setVisibility(View.GONE);                       //~vad2I~
+    }                                                              //~vad2I~
+    //******************************************                   //~vad2I~
+    private void showDetail()                                      //~vad2I~
+	{                                                              //~vad2I~
+        if (Dump.Y) Dump.println("HistoryBSDlg:showDetail");       //~vad2I~
+        llListView.setVisibility(View.VISIBLE);                    //~vad2I~
+    }                                                              //~vad2I~
+    //**********************************                           //~vad2I~
+    //* init ListView                                              //~vad2I~
+    //**********************************                           //~vad2I~
+    protected void addFileList(int Ppos)                           //~vad2I~
+    {                                                              //~vad2I~
+        UListView.UListViewData ld=HD.lvFilename.arrayData.get(Ppos);//~vad2I~
+        lvFilename.add(ld.itemtext,ld.itemtext2,0);                //~vad2I~
+        if (Dump.Y) Dump.println("HistoryBSDlg:addFileList pos="+Ppos+",itemtext="+ld.itemtext+",itemtext2="+ld.itemtext2);//~vad2I~
+    }                                                              //~vad2I~
+    //****************************************************************//~vad2I~
+    private View getViewCustomFileList(int Ppos, View Pview, ViewGroup Pparent)//~vad2R~
+    {                                                              //~vad2I~
+    //*******************                                          //~vad2I~
+        if (Dump.Y) Dump.println("HistoryBSDlg:getViewCustomFileList Ppos="+Ppos);//~vad2R~
+        View v=Pview;                                              //~vad2I~
+        try                                                        //~vad2I~
+        {                                                          //~vad2I~
+        	v=getViewCustomFileListBS(Ppos,Pview,Pparent);         //~vad2R~
+        }                                                          //~vad2I~
+		catch(Exception e)                                         //~vad2I~
+		{                                                          //~vad2I~
+        	Dump.println(e,"HistoryBSDlg getViewCustomFileList");  //~vad2I~
+        }                                                          //~vad2I~
+        return v;                                                  //~vad2I~
+    }                                                              //~vad2I~
+    private View getViewCustomFileListBS(int Ppos, View Pview, ViewGroup Pparent)//~vad2I~
+    {                                                              //~vad2I~
+    //*******************                                          //~vad2I~
+        if (Dump.Y) Dump.println("HistoryBSDlg:getViewCustomFileListBS Ppos="+Ppos);//~vad2I~
+        View v=Pview;                                              //~vad2I~
+        if (v == null)                                             //~vad2I~
+        {                                                          //~vad2I~
+            v=AG.inflater.inflate(lvFilename.rowId,null);          //~vad2I~
+        }                                                          //~vad2I~
+        TextView v1=(TextView)UView.findViewById(v,R.id.FileName); //~vad2I~
+        UListView.UListViewData ld=lvFilename.arrayData.get(Ppos); //~vad2I~
+        v1.setText(ld.itemtext);                                   //~vad2I~
+        if (Dump.Y) Dump.println("HistoryDlg:getViewCustom itemText="+ld.itemtext);//~vad2I~
+        v1.setBackgroundColor(lvFilename.bgColor);                 //~vad2I~
+        v1.setTextColor(Color.BLACK);                              //~vad2I~
+        String[][] hds=HD.getHistoryData(ld.itemtext);             //~vad2R~
+        if (hds!=null)                                             //~vad2I~
+	        HD.setHD(v,hds);                                       //~vad2R~
+        return v;                                                  //~vad2I~
+    }                                                              //~vad2I~
 }//class

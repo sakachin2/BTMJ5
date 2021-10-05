@@ -160,7 +160,7 @@
                         android:layout_width="@dimen/gvbtn_left"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:text="@string/Label_OpenReach_Vertical"
+                        android:text="@string/Label_Open_Vertical"
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"

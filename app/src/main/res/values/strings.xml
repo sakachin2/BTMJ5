@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.15</string>
+    <string name="app_version">v1.16</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -201,7 +201,8 @@
     <string name="Err_HistoryPropLoadFailed">Rule file read failed:%1$s.</string>
     <string name="Warn_ResumeDialogNoRuleFound">Resume request from server.
 					Rulefile used in the suspended game is not found.
-					Ask to server to \"Send\" the record of suspended game.</string>
+					Ask to server to Send the record of suspended game
+					using \"Send\" button on server\'s History dialog.</string>
     <string name="Prompt_InitialScore">InitialScore</string>
     <string name="Label_DupPoint">Counter:</string>
     <string name="Label_InitialScore">InitialScore</string>
@@ -576,9 +577,12 @@
 <!--BTMJ3-->
     <string name="Label_OrientationPortrait">Portrait</string>
     <string name="Label_OrientationLandscape">Landscape</string>
+    <string name="Label_OrientationLandscape2">Land.</string>
     <string name="Label_OrientationPortraitReverse">Port-Rev</string>
     <string name="Label_OrientationLandscapeReverse">Reverse Land.</string>
+    <string name="Label_OrientationLandscapeReverse2">Rev-Land.</string>
     <string name="Label_OrientationSelectMenu">Sel.EachTime</string>
+    <string name="Label_OrientationSelectMenu2">EachTime</string>
     <!--string name="Label_OrientationAtEndOfLandscape">Top panel</string-->
 	<string-array name="OrientationMenuDlg_Items"> 
 		<item>@string/Label_OrientationPortrait</item>
@@ -668,7 +672,9 @@
     <string name="Desc_KanDoraOpenTiming">\"Immediately\" means just after drawn Kan tile, witch only open KanDora for WinByKanTile.</string>
     <string name="Label_PaoFor">For</string>
     <string name="Label_OpenReach">OpenRi</string>
+    <string name="Label_Open">OpenRi</string>
     <string name="Label_OpenReach_Vertical">Open\nRiichi</string>
+    <string name="Label_Open_Vertical">Open\nRiichi</string>
     <string name="Label_ScoreAddTotal">Gain</string>
     <string name="Label_ScoreNewScore">Score</string>
     <string name="Label_ScoreMinusPay">TobiPz</string>
@@ -1277,9 +1283,12 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
 					(Note)---(n) : han(=rank). Usualy 1 rank down if not All-In-Hand with some exception. (+n): always along with other rank.</string>
     <string name="Desc_YakuLocal">See also topic of Yakuman, Hand of man, NagasiMangan. Otherwise, take agree in the group beforehand.</string>
     <string name="Label_SpritPos">Wareme(割れ目)</string>
-    <string name="Desc_SpritPos0">" = SplitPos : You will see \"割\" in End-of-Hand dialog."</string>
+    <!--string name="Desc_SpritPos0">" = SplitPos : You will see \"割\" in End-of-Hand dialog."</string-->
+    <string name="Desc_SpritPos0_1">" = SplitPos : You will see "</string>
+    <string name="Desc_SpritPos0_2">"割"</string>
+    <string name="Desc_SpritPos0_3">" in End-of-Hand dialog."</string>
     <string name="Label_SpritPosID">割</string>
-    <string name="Desc_SpritPos">"  (Player of wall broken position at start of a hand pays double.)"</string>
+    <string name="Desc_SpritPos">"  (Player of wall broken position at start of a hand pays/gains point doubled .)"</string>
     <string name="Desc_SpritPos2">Chombo, Noten penalty, CounterStick is not covered, Nagasimangan is covered if it is one of win by rule setting.\n
 						In case of Pao, Split applied after Pao penalty applied.
 						</string>
@@ -1306,7 +1315,8 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="WifiDirectGranted">WifiDirect is now available.</string>
     <!--string name="WifiDirectNotGranted">WifiDirect is not available.</string-->
     <string name="WifiDirectRequiresGranted">Permission of \"Access to location\" is required to use WifiDirect.</string>
-    <string name="ExternalStorageForSDRequiresGranted">No permission to \"Write to SD\", Internal data folder will be used which is cleared at reinstallation.</string>
+    <!--string name="ExternalStorageForSDRequiresGranted">No permission to \"Write to SD\", Internal data folder will be used which is cleared at reinstallation.</string-->
+    <string name="ExternalStorageForSDRequiresGranted">No permission to \"Write to External Storage\". Re-install to re-grant if re-popup denied.</string>
     <string name="ExternalStorageForSDGranted">Pemission of \"wrie to SD\" is allowed.</string>
     <string name="RemoteIP">WiFi</string>
     <string name="ErrNowBTConnected">Retry after once disconnect remaining Bluetooth connection.</string>
@@ -1531,4 +1541,50 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     			Notification of \"ron-able\" obeys this setting. But Robot calls \"Win\" only if check OK regardress this setting.</string>
     <string name="AE_NoReachErrToForce">Accepted only after failure of Riichi/OpenRiich.</string>
     <string name="AE_CancelAtFirst">\"Cancel\" is required for other action button highlighten.</string>
+    <string name="Label_LeftyPortrait">Reverse layout of bottom buttons when portrait mode.</string>
+    <string name="Label_LeftyLandscape">Eexchange left and right buttons when Landscape mode.</string>
+    <string name="Label_ShowDetail">Details</string>
+    <string name="Label_HideDetail">Hide</string>
+    <string name="Info_HistoryCtrDetail">Total %1$d games.</string>
+
+    <string name="RequestPickupDocumentSaveDir">External storage usage was changed at Android-11.\n
+At (re-)installation, it is required to specify a folder to save game data.\n
+Select \"%1$s\" on the dialog shown next.\n
+Make the folder on the dialog if not exists.\n
+At 1st re-instalation of eMahjong only, old version data(history data and rule file) will be migrated to the folder.
+	</string>
+    <string name="RequestPickupDocumentSaveDirCanceled">"It was canceled to set the folder to save game data.\n
+Restart this APP to try to set again.
+	</string>
+    <string name="RequestPickupDocumentSaveDirCanceledNoTryAgain">"Determined to use Internal Storage,\n
+Reinstall this APP to try to set again.
+	</string>
+    <string name="RequestPickupDocumentSaveDirInvalidSelection">"\"%1$s\" was selected, Specify \"%2$s\" as save folder.
+	</string>
+    <string name="ErrNoExternalStoragePermission">Not granted for External-Storage to access.</string>
+    <string name="ErrInvalidAudioSelection">%1$s is not Audio file</string>
+    <string name="Title_Picker">Picker : Audio File</string>
+    <string name="LabelUriDir">Media folder : </string>
+    <string name="ExternalStorageForSDRequiresGrantedRead">No permission to Read external storage.</string>
+
+    <string name="ErrNoScopedPermission">No write permission to External Scoped Storage. %1$s.</string>
+    <string name="ExternalStorageReadRequiresGranted">READ permission required for External Storage.</string>
+    <string name="ExternalStorageReadGranted">Granted External Storage READ permission.</string>
+    <string name="ScopedExternalStorageDeniedRead">External Storeage READ permission, it was denied.</string>
+    <string name="ScopedExternalStorageDeniedWrite">External storage WRITE permission, it was denied.</string>
+    <string name="ErrCanceledScopedPermission">Setting of data folder was canceled. Restart the App.</string>
+    <string name="NoTryAgain">Fix NO</string>
+    <string name="FileTypeDocument">Docs：</string>
+    <string name="Info_Transfered">%1$d / %2$d files on External Storage was migrated to Android-11 NEW Storage area.</string>
+    <string name="btnBGM">Set</string>
+    <string name="NoUserBGM">Not Set</string>
+    <string name="UserBGM">YourFavorite</string>
+    <string name="UserBGMEachRound">Change by round</string>
+    <string name="etUserBGMSelectionHint">Specify Play Sequence</string>
+    <string name="tvUserBGMSelection">Play Seq.:</string>
+    <string name="Err_PlaySeqNo">\"Play Seq\" err, \"Not Set" is specified.</string>
+    <string name="Err_NoPlaySeqNo">Specify \"Play Seq\".</string>
+    <string name="Delete2">Del</string>
+    <string name="lbUseUPicker">App\'s Picker</string>
+    <string name="ErrNotSelectedAudio">Select a music.</string>
 </resources>

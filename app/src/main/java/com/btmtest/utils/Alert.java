@@ -1,5 +1,6 @@
-//*CID://+va40R~: update#= 161;                                    //~va40R~
+//*CID://+vae1R~: update#= 162;                                    //+vae1R~
 //**********************************************************************//~1107I~
+//2021/09/13 vae1 (Bug)When 3 button,show only 2 button            //+vae1I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //@003:20181103 dismiss alert dialog when interrupted bt other appl//~@003R~
 //**********************************************************************//~1107I~
@@ -266,7 +267,8 @@ public class Alert extends DialogFragment                          //~v@@@R~
             else                                                   //~0411I~
             	labelID=R.string.Close;                            //~0411I~
 //          Pbuilder.setPositiveButton("Close",new DialogInterface.OnClickListener()//~1212I~//~0411R~
-            Pbuilder.setPositiveButton(Utils.getStr(labelID),new DialogInterface.OnClickListener()//~0411I~
+//          Pbuilder.setPositiveButton(Utils.getStr(labelID),new DialogInterface.OnClickListener()//~0411I~//+vae1R~
+            Pbuilder.setNeutralButton(Utils.getStr(labelID),new DialogInterface.OnClickListener()//+vae1I~
                                         {                          //~1212I~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~

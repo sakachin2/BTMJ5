@@ -1,4 +1,4 @@
-//*CID://+vac5R~:                             update#=  506;       //~vac5R~
+//*CID://+vac5R~:                             update#=  507;       //~vac5R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
@@ -61,6 +61,7 @@ import static com.btmtest.BT.Members.*;
 import static com.btmtest.BT.enums.ConnectionStatus.*;                //~v@@@I~
 import static com.btmtest.BT.enums.MsgIDConst.*;                      //~@002I~
 import static com.btmtest.BT.BTMulti.*;                            //~@002I~
+import static com.btmtest.dialog.PrefSettingEnum.*;
 import static com.btmtest.game.GConst.*;                                  //~9723I~
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@002I~
 import static com.btmtest.StaticVars.connectionStatus;             //~@002I~
@@ -673,8 +674,8 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         if (Dump.Y) Dump.println("BTCDialog displayRemoteDevice");//~1AbSI~//~v@@@R~
         if (DL==null)                                              //~v@@@I~
         {                                                          //~v@@@I~
-//      	DL=new ListBT(layoutView,RID_DEVICELIST,R.layout.textrowlist_bt);//~1A6fI~//~v@@@R~//+vac5R~
-        	DL=new ListBT(layoutView,RID_DEVICELIST,(AG.swSmallFont ? R.layout.textrowlist_bt_theme :R.layout.textrowlist_bt));//+vac5I~
+//      	DL=new ListBT(layoutView,RID_DEVICELIST,R.layout.textrowlist_bt);//~1A6fI~//~v@@@R~//~vac5R~
+        	DL=new ListBT(layoutView,RID_DEVICELIST,(AG.swSmallFont ? R.layout.textrowlist_bt_theme :R.layout.textrowlist_bt));//~vac5I~
         	DL.setBackground(COLOR_BG_DEVICE_LIST);                             //~3203I~//~3209R~//~@@@2R~//~v@@@R~
         }                                                          //~v@@@I~
         pairedDeviceList=AG.aBTI.getPairDeviceList();               //~1AbTI~//~v@@@R~
@@ -1589,7 +1590,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 				UView.showToast(R.string.ErrSpecifyYourname);      //~9722I~
             return null;                                           //~9722I~
         }                                                          //~9722I~
-        if (Dump.Y) Dump.println("BTCDialog.getYourName="+yourname);//~9722I~
+        if (Dump.Y) Dump.println("BTCDialog.getYourName="+yourname+",AG.YourName="+AG.YourName);//~9722I~//+vac5R~
         if (!yourname.equals(AG.YourName))                         //~9722I~
         {                                                          //~9722I~
         	AG.aBTCDialog.members.updateYourName(AG.YourName,yourname);           //~9905I~

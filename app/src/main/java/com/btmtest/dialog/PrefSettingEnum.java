@@ -1,5 +1,8 @@
-//*CID://+va9fR~: update#= 358;                                    //~va9fR~
+//*CID://+vae9R~: update#= 367;                                    //~vae9R~
 //**********************************************************************//~v101I~
+//2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vad1I~
+//2021/08/24 vad1 game buttons layout for lefty                    //~vad1I~
 //2021/06/17 va9f correct reason of reverse orientation did not work(fix orientation was called)//~va9fI~
 //                not work because onConfigurationChanged is not fired by RVERSE request//~va9fI~
 //2020/10/18 va18 option to diaplay WinAnyway button               //~va18I~
@@ -24,8 +27,11 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
         }                                                          //~9412I~
     }                                                              //~9412I~
     //*********************************************************************//~9412I~
+    public static final String PREFKEY_YOURNAME="YourName";        //~vad1I~
+    public static final String PREFKEY_SAVED   ="Saved";           //~vad1I~
+                                                                   //~vad1I~
     public static final int    PSID_ORIENTATION             =1;    //~9412I~
-//  public static final int    PSID_ORIENTATION_PORT_REV    =2;    //+va9fR~
+//  public static final int    PSID_ORIENTATION_PORT_REV    =2;    //~va9fR~
     public static final int    PSID_DEL_TILE_TAKEN          =10;   //~9412I~
     public static final int    PSID_NO_RELATED_RULE         =20;   //~9520I~
     public static final int    PSID_NOTAKE_BUTTON           =30;   //~9630I~
@@ -36,10 +42,49 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     public static final int    PSID_VOLUME                  =42;   //~9C02I~
     public static final int    PSID_VOLUME_BGM              =43;   //~va06I~
     public static final int    PSID_BGM                     =44;   //~va06I~
+    public static final int    PSID_LEFTY_PORTRAIT          =45;   //~vad1I~
+    public static final int    PSID_LEFTY_LANDSCAPE         =46;   //~vad1I~
+                                                                   //~vad1I~
+    public static final int    PSID_YOURNAME                =51;   //~vad1I~
+    public static final int    PSID_USERBGM0                =100;  //~vae9I~
+    public static final int    PSID_USERBGM1                =101;  //~vae9I~
+    public static final int    PSID_USERBGM2                =102;  //~vae9I~
+    public static final int    PSID_USERBGM3                =103;  //~vae9I~
+    public static final int    PSID_USERBGM4                =104;  //~vae9I~
+    public static final int    PSID_USERBGM5                =105;  //~vae9I~
+    public static final int    PSID_USERBGM6                =106;  //~vae9I~
+    public static final int    PSID_USERBGM7                =107;  //~vae9I~
+    public static final int    PSID_USERBGM8                =108;  //~vae9I~
+    public static final int    PSID_USERBGM9                =109;  //~vae9I~
+    public static final int    PSID_USERBGM_URI0            =110;  //~vae9I~
+    public static final int    PSID_USERBGM_URI1            =111;  //~vae9I~
+    public static final int    PSID_USERBGM_URI2            =112;  //~vae9I~
+    public static final int    PSID_USERBGM_URI3            =113;  //~vae9I~
+    public static final int    PSID_USERBGM_URI4            =114;  //~vae9I~
+    public static final int    PSID_USERBGM_URI5            =115;  //~vae9I~
+    public static final int    PSID_USERBGM_URI6            =116;  //~vae9I~
+    public static final int    PSID_USERBGM_URI7            =117;  //~vae9I~
+    public static final int    PSID_USERBGM_URI8            =118;  //~vae9I~
+    public static final int    PSID_USERBGM_URI9            =119;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE0          =120;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE1          =121;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE2          =122;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE3          =123;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE4          =124;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE5          =125;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE6          =126;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE7          =127;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE8          =128;  //~vae9I~
+    public static final int    PSID_USERBGM_TITLE9          =129;  //~vae9I~
+                                                                   //~vae9I~
+    public static final int    PSID_USERBGM_ROUND           =150;  //~vae9R~
+    public static final int    PSID_USERBGM_SELECTION       =151;  //~vae9I~
+    public static final int    PSID_USERBGM_UPICKER         =152;  //+vae9I~
+                                                                   //~vad1I~
     private static final PSEnumPair[] pairs=                       //~9412I~
     			{                                                  //~9412I~
     				new PSEnumPair(PSID_ORIENTATION          ,"Orientation"          ),//~9412I~
-//  				new PSEnumPair(PSID_ORIENTATION_PORT_REV ,"OrientationPortRev"   ),//+va9fR~
+//  				new PSEnumPair(PSID_ORIENTATION_PORT_REV ,"OrientationPortRev"   ),//~va9fR~
     				new PSEnumPair(PSID_DEL_TILE_TAKEN       ,"DeleteRiverTileTaken" ),//~9412I~
     				new PSEnumPair(PSID_NO_RELATED_RULE      ,"NoRelatedRule"        ),//~9520I~
     				new PSEnumPair(PSID_NOTAKE_BUTTON        ,"NoTakeButton"         ),//~9630I~
@@ -50,6 +95,44 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     				new PSEnumPair(PSID_VOLUME               ,"Volume"               ),//~9C02I~
     				new PSEnumPair(PSID_VOLUME_BGM           ,"BGMVol"               ),//~va06I~
     				new PSEnumPair(PSID_BGM                  ,"BGMType"              ),//~va06I~
+    				new PSEnumPair(PSID_LEFTY_PORTRAIT       ,"LeftyPort"            ),//~vad1I~
+    				new PSEnumPair(PSID_LEFTY_LANDSCAPE      ,"LeftyLand"            ),//~vad1I~
+                                                                   //~vad1I~
+    				new PSEnumPair(PSID_YOURNAME             ,PREFKEY_YOURNAME       ),//~vad1I~
+                                                                   //~vae9I~
+    				new PSEnumPair(PSID_USERBGM0             ,"UserBGM0"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM1             ,"UserBGM1"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM2             ,"UserBGM2"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM3             ,"UserBGM3"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM4             ,"UserBGM4"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM5             ,"UserBGM5"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM6             ,"UserBGM6"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM7             ,"UserBGM7"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM8             ,"UserBGM8"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM9             ,"UserBGM9"             ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI0         ,"UserBGMUri0"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI1         ,"UserBGMUri1"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI2         ,"UserBGMUri2"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI3         ,"UserBGMUri3"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI4         ,"UserBGMUri4"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI5         ,"UserBGMUri5"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI6         ,"UserBGMUri6"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI7         ,"UserBGMUri7"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI8         ,"UserBGMUri8"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_URI9         ,"UserBGMUri9"          ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE0       ,"UserBGMTitle0"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE1       ,"UserBGMTitle1"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE2       ,"UserBGMTitle2"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE3       ,"UserBGMTitle3"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE4       ,"UserBGMTitle4"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE5       ,"UserBGMTitle5"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE6       ,"UserBGMTitle6"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE7       ,"UserBGMTitle7"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE8       ,"UserBGMTitle8"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_TITLE9       ,"UserBGMTitle9"        ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_ROUND        ,"UserBGMRound"       ),//~vae9R~
+    				new PSEnumPair(PSID_USERBGM_SELECTION    ,"UserBGMSelection"     ),//~vae9I~
+    				new PSEnumPair(PSID_USERBGM_UPICKER      ,"UserBGMUPicker"       ),//+vae9I~
                 };                                                  //~9412I~
     //***********************************************************  //~@@@@I~//~9404R~
 //  private static final Map<Integer,String> ID2Key=new HashMap<Integer,String>();//~@@@@I~//~9404R~//~9615R~

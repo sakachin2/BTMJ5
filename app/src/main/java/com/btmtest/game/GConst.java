@@ -1,5 +1,9 @@
-//*CID://+vac5R~: update#= 369;                                    //~vac5R~
+//*CID://+vae9R~: update#= 375;                                    //~vae8R~//~vae9R~
 //**********************************************************************//~v101I~
+//2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
+//2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
+//1ak2 2021/09/04 access external audio file                       //~1ak2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/08/11 vac3 add BGM kouka                                    //~vaaRI~
 //2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
@@ -64,7 +68,7 @@ public class GConst                                                    //~v@@@R~
 	public static final int COLOR_EDITABLE_DISABLED =R.color.markabletext; //editabledisabled;//~v@11I~
                                                                    //~v@11I~
     public static final double RATE_SMALLDEVICE_WIDTH=0.95;       //~9818I~//~v@11I~
-    public static final double RATE_SMALLFONT_WIDTH=0.99;          //+vac5R~
+    public static final double RATE_SMALLFONT_WIDTH=0.99;          //~vac5R~
     public static final double RATE_SMALLDEVICE_WIDTH_LANDSCAPE=0.7;//~v@11R~
     public static final double RATE_MAX_WIDTH=0.95;                //~v@11I~
     public static final double RATE_SMALLFONT_MENUINGAME=0.7;      //~vac5I~
@@ -144,7 +148,11 @@ public class GConst                                                    //~v@@@R~
     public static             String[] robotYourNameDefault=new String[PLAYERS];//~va6eR~
     public static final String   strCancel=AG.resource.getString(R.string.Cancel);//~va68I~
                                                                    //~v@11I~
-	public static final String PREFKEY_YOURNAME="YourName";          //~v@@@I~//~v@11I~
+//  public static final String PREFKEY_YOURNAME="YourName";          //~v@@@I~//~v@11I~//~vae8R~
+    public static final String PREFKEY_BGM_STRURI="BGMStrUri";        //~1Ak2I~//~1ak2R~
+    public static final String PREFKEY_BGM_TITLE="BGMTitle";          //~1Ak2I~//~1ak2R~
+    public static final String PREFKEY_SD_XFER="SD_Xfer";          //~vae7I~
+                                                                   //~1ak2I~
 	public static final String ENCODING= "UTF-8";  //~v@11I~
 	public static final String TAB ="\t";                          //~v@11I~
 	public static final String CRLF="\n";                          //~v@11I~
@@ -166,20 +174,34 @@ public class GConst                                                    //~v@@@R~
     public static final int SOUNDID_CHII=7;                        //~v@11I~
     public static final int SOUNDID_DICE_ROLL=8;                   //~v@11I~
     public static final int SOUNDID_DICE_FIX=9;                    //~v@11I~
-    public static final int SOUNDID_BGM=10;                        //~va06R~
-    public static final int SOUNDID_BGM_TOP=11;                    //~va06R~
-    public static final int SOUNDID_BGM_GAME1SLOW=12;              //~va06I~
-    public static final int SOUNDID_BGM_GAME1FAST=13;              //~va06I~
-    public static final int SOUNDID_BGM_GAME2SLOW=14;              //~va06I~
-    public static final int SOUNDID_BGM_GAME2FAST=15;              //~va06I~
-    public static final int SOUNDID_BGM_GAME3SLOW=16;              //~va06I~
-    public static final int SOUNDID_BGM_GAME3FAST=17;              //~va06I~
-    public static final int SOUNDID_BGM_GAME4SLOW=18;              //~va06I~
-    public static final int SOUNDID_BGM_GAME4FAST=19;              //~va06I~
-    public static final int SOUNDID_BGM_EBURISHOU=20;              //~va6iI~
-    public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //~va6iI~
-    public static final int SOUNDID_BGM_TOUCHIKUKOUKA=22;          //~vac3R~
-    public static final int SOUNDID_BGM_KYOUTO=23;                 //~vac3I~
+//  public static final int SOUNDID_BGM=10;                        //~va06R~//~vae9R~
+//  public static final int SOUNDID_BGM_TOP=11;                    //~va06R~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME1SLOW=12;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME1FAST=13;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME2SLOW=14;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME2FAST=15;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME3SLOW=16;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME3FAST=17;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME4SLOW=18;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_GAME4FAST=19;              //~va06I~//~vae9R~
+//    public static final int SOUNDID_BGM_EBURISHOU=20;              //~va6iI~//~vae9R~
+//    public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //~va6iI~//~vae9R~
+//    public static final int SOUNDID_BGM_TOUCHIKUKOUKA=22;          //~vac3R~//~vae9R~
+//    public static final int SOUNDID_BGM_KYOUTO=23;                 //~vac3I~//~vae9R~
+    public static final int MAX_USERBGM=10;                        //+vae9I~
+    public static final int SOUNDID_BGM_TOP=MAX_USERBGM+1;         //+vae9R~
+    public static final int SOUNDID_BGM_GAME1SLOW    =SOUNDID_BGM_TOP+1;//~vae9I~
+    public static final int SOUNDID_BGM_GAME1FAST    =SOUNDID_BGM_TOP+2;//~vae9I~
+    public static final int SOUNDID_BGM_GAME2SLOW    =SOUNDID_BGM_TOP+3;//~vae9I~
+    public static final int SOUNDID_BGM_GAME2FAST    =SOUNDID_BGM_TOP+4;//~vae9I~
+    public static final int SOUNDID_BGM_GAME3SLOW    =SOUNDID_BGM_TOP+5;//~vae9I~
+    public static final int SOUNDID_BGM_GAME3FAST    =SOUNDID_BGM_TOP+6;//~vae9I~
+    public static final int SOUNDID_BGM_GAME4SLOW    =SOUNDID_BGM_TOP+7;//~vae9I~
+    public static final int SOUNDID_BGM_GAME4FAST    =SOUNDID_BGM_TOP+8;//~vae9I~
+    public static final int SOUNDID_BGM_EBURISHOU    =SOUNDID_BGM_TOP+9;//~vae9I~
+    public static final int SOUNDID_BGM_MIZUCHUKOUKA =SOUNDID_BGM_TOP+10;//~vae9I~
+    public static final int SOUNDID_BGM_TOUCHIKUKOUKA=SOUNDID_BGM_TOP+11;//~vae9I~
+    public static final int SOUNDID_BGM_KYOUTO       =SOUNDID_BGM_TOP+12;//~vae9I~
     //*******************************************                  //~v@11I~
     public GConst()                                                //~v@11I~
     {                                                              //~v@11I~

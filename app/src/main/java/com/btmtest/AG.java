@@ -1,5 +1,16 @@
-//*CID://+vac5R~:                             update#=  454;       //~vac5R~
+//*CID://+vaegR~:                             update#=  480;       //+vaegR~
 //******************************************************************************************************************//~v101R~
+//2021/09/28 vaeg enlarge nameplate for long device                //+vaegI~
+//2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
+//2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
+//2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
+//2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
+//2021/09/16 vae5 (Bug)Property of resumed game did not use sg.rulefile at interrupted.//~vae5I~
+//2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
+//1ak2 2021/09/04 access external audio file                       //~1ak2I~
+//1ak0 2021/08/26 androd11:externalStorage:ScopedStorage           //~1ak0I~
+//1aj0 2021/08/14 androd11(api30) deprecated at api30;getDefaultDisplay, display.getSize(), display/getMetrics()//~vaj0I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac4I~
 //2021/08/11 vac4 for safety initialize scaleSmallDevice(currently swSmallDevice is checked)//~vaa4I~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
@@ -18,13 +29,11 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Stack;
 
-//import android.app.ProgressDialog;                               //~va40R~
 import android.graphics.Bitmap;
 import android.os.Build;                                           //~vab0R~//~v101I~
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-//import android.app.FragmentManager;                              //~va40R~
 import androidx.fragment.app.FragmentManager;                     //~va40I~
 import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -83,7 +92,8 @@ import com.btmtest.utils.ProgDlg;
 import com.btmtest.utils.Prop;
 import com.btmtest.utils.UFile;
 import com.btmtest.utils.Utils;
-//import com.btmtest.game.MsgIO;                                     //~@@01R~
+import com.btmtest.utils.UScoped;                                  //~1ak0I~
+import com.btmtest.utils.UMediaStore;                              //~1ak2I~
 import com.btmtest.gui.CommonListener;                             //~@@01I~
 import com.btmtest.dialog.RuleSetting;                             //~@@01R~
 import com.btmtest.dialog.RuleSettingEnum;                         //~@@01I~
@@ -112,6 +122,7 @@ import com.btmtest.game.RA.RARon;                                  //~va60I~
 import com.btmtest.game.RA.RAReach;                                //~va60I~
                                                                    //~@@01I~
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@@01I~
+import static com.btmtest.dialog.PrefSettingEnum.*;
 import static com.btmtest.dialog.RuleSettingEnum.*;
 import static com.btmtest.game.GConst.*;
 
@@ -128,6 +139,10 @@ public class AG                                                    //~1107R~
                                                                    //~v@@@I~
 //    public static final int ACTIVITY_REQUEST_ENABLE_BT = 2;        //~v@@@I~//~@@01R~
 //    public static final int ACTIVITY_REQUEST_NFCBEAM   = 3;       //~1A6aI~//~1Ad7R~
+    public static final int ACTIVITY_REQUEST_PICKUP_AUDIO   = 10;  //~1Ak2I~//~1ak2I~
+    public static final int ACTIVITY_REQUEST_SCOPED    = 100;      //~1Ak0I~//~1ak0I~
+    public static final int ACTIVITY_REQUEST_SCOPED_OPEN_TREE = (ACTIVITY_REQUEST_SCOPED+1);//~1Ak0I~//~1ak0I~
+    public static final int ACTIVITY_REQUEST_SCOPED_LAST=110;      //~1Ak0I~//~1ak0I~
 //                                                                   //~1A6aI~//~1Ad7R~
 //    public final static String PKEY_PIECE_TYPE="PieceType";        //~@@@@R~//~1Ad7R~
 //    public final static String PKEY_BOARD_SIZE="BoardSize";       //~@@@@I~//~1Ad7R~
@@ -212,15 +227,23 @@ public class AG                                                    //~1107R~
 //    public static String    appVersion;                            //~1506I~//~1Ad7R~
     public  int       scrWidth,scrHeight;                    //~1428R~//~1Ad7R~//~v@@@R~//~@@01R~
     public  int       scrWidthReal,scrHeightReal;                  //~@@01R~
+    public  int       scrStatusBarHeight;	//API30, by insets     //~vaj0I~
     public  int       scrNavigationbarRightWidth;                  //~@@01I~
+    public  int       scrNavigationbarBottomHeight;                //~vaeeI~
+    public  int       scrNavigationbarBottomHeightA11;             //~vaefR~
+    public  int       scrNavigationbarLeftWidthA11;                //~vaefI~
+    public  int       scrNavigationbarRightWidthA11;               //~vaefI~
+    public  boolean   swNavigationbarGestureMode;                  //~vaefR~
     public  int       scrPortraitWW;	//width of top panel(portrait)//~@@01I~
     public  boolean   swSmallDevice;      //portrait screen width<800pixel//~@@01R~
+    public  boolean   swLongDevice;       //height>width*2         //+vaegI~
 //  public  double    scaleSmallDevice;   //portrait screen width/800pixel//~@@01I~//~vac4R~
     public  double    scaleSmallDevice=1.0;   //portrait screen width/800pixel//~vaa4I~
-    public  boolean   swSmallFont;        //portrait screen width<800pixel//+vac5M~
-    public  double    scaleSmallFont=1.0;        //portrait screen width<800pixel//+vac5M~
-    public  int       scrDencity;        //160:mdpi, 240:hdpi(*1.5), 320:xhdpi(*2), 480:xxhdpi(*3). 640:xxxhdpi(*4)//+vac5I~
-    public  int       scrPortraitWidthDPI;       //portrait        //+vac5I~
+    public  boolean   swSmallFont;        //portrait screen width<800pixel//~vac5M~
+    public  boolean   swSmallDip;         //portrait screen dip(ww/dip2pix)<=320//~vaedI~
+    public  double    scaleSmallFont=1.0;        //portrait screen width<800pixel//~vac5M~
+    public  int       scrDencity;        //160:mdpi, 240:hdpi(*1.5), 320:xhdpi(*2), 480:xxhdpi(*3). 640:xxxhdpi(*4)//~vac5I~
+    public  int       scrPortraitWidthDPI;       //portrait        //~vac5I~
 //    private static View      currentLayout;//~1120I~               //~1428R~//~1Ad7R~
 //    public static int       currentLayoutId;                       //~1428R~//~1Ad7R~
 //    public static boolean currentIsDialog;                         //~1428R~//~1Ad7R~
@@ -351,6 +374,7 @@ public class AG                                                    //~1107R~
 //  public  Prop ruleProp,opeProp,prefProp;                  //~v@@@I~//~@@01R~
     public  Prop opeProp;                                          //~@@01I~
     public  Prop ruleProp,prefProp;                                //~@@01I~
+    public  Prop savePropForResume;                                //~vae5I~
     public  CompleteDlg aCompleteDlg;                              //~@@01I~
 //  public  CompNotenDlg aCompNotenDlg;                            //~@@01R~
     public  MJTable aMJTable;                                      //~@@01I~
@@ -422,6 +446,13 @@ public class AG                                                    //~1107R~
     public boolean swTrainingMode;                                 //~va66R~
     public boolean swPlayAloneNotify;                              //~va70I~
     public boolean swPlayMatchNotify;                              //~vaa2I~
+	public UScoped aUScoped;                               //~1Ak0I~//~1ak0I~
+	public boolean swScoped;                               //~1Ak0I~//~1ak0I~
+	public boolean swScopedGranted;                                //~vae0I~
+	public UMediaStore aUMediaStore;                       //~1Ak2I~//~1ak2I~
+	public boolean swGrantedExternalStorageRead,swGrantedExternalStorageWrite;//~1Ak2R~//~1ak2I~
+	public boolean swChangedPreference,swChangedRule;              //~vae8R~
+	public boolean swNewA10=true;	//navigationbar hide logic for Android10//~vaeeI~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
 //************************************                             //~@@01I~
@@ -474,7 +505,10 @@ public class AG                                                    //~1107R~
                                                                    //~@@01I~
         isDebuggable=Utils.isDebuggable(context);             //~v107I~//~@@@@R~//~1Ad7R~
         if (isDebuggable)                                          //~@@01R~
-        	Dump.open("");	//write all to Terminal log,not exception only//~@@01R~
+        {                                                          //~vae8I~
+//      	Dump.open("");	//write all to Terminal log,not exception only//~@@01R~//~vae8R~
+			Dump.open("Dump.txt",false/*sdcard*/);                 //~vae8I~
+		}                                                          //~vae8I~
 //        startupCtr=Prop.getPreference(PKEY_STARTUPCTR,0);    //~v107I~//~@@@@R~//~1Ad7R~
 //        Prop.putPreference(PKEY_STARTUPCTR,startupCtr+1);    //~v107I~//~@@@@R~//~1Ad7R~
 //      fragmentManager=aMainActivity.getFragmentManager();        //~va40R~
@@ -519,7 +553,7 @@ public class AG                                                    //~1107R~
 		dirSep=p.getProperty("file.separator");                    //~v@@@I~
         createSettings();                                          //~@@01R~
         loadProp();                                                //~v@@@I~
-		new Sound();                                               //~@@01M~
+//  	new Sound();     //after USCoped init                      //~@@01M~//~vae9R~
     }                                                              //~1402I~//~1Ad7R~
 ////****************                                                 //~1126I~//~1Ad7R~
 ////*for Modal Dialog                                                //~1126I~//~1Ad7R~
@@ -554,6 +588,40 @@ public class AG                                                    //~1107R~
     	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))            //~@@01I~
 	        AG.ruleProp.setParameter(getKeyRS(RSID_SYNCDATE),PROP_INIT_SYNCDATE);//~@@01I~
     }                                                              //~v@@@I~
+//*************************************************************    //~vae8I~
+//*1st run after (re-)instlation before recoverProp                //~vae8I~
+//*************************************************************    //~vae8I~
+    public static boolean is1stRun()                               //~vae8I~
+    {                                                              //~vae8I~
+        boolean rc=Utils.getPreference(PREFKEY_SAVED,"").equals("");//~vae8I~
+        if (Dump.Y) Dump.println("AG.is1stRun rc="+rc);            //~vae8I~
+        return rc;
+    }                                                              //~vae8I~
+    public static void reset1stRun()                               //~vae8I~
+    {                                                              //~vae8I~
+        if (Dump.Y) Dump.println("AG.reset1stRun");         //~vae8I~
+        Utils.putPreference(PREFKEY_SAVED,"1");                    //~vae8I~
+    }                                                              //~vae8I~
+//*************************************************************    //~vae8I~
+//*from MainActivity                                               //~vae8I~
+//*************************************************************    //~vae8I~
+    public  void recoverProp()                                     //~vae8I~
+    {                                                              //~vae8I~
+        if (Dump.Y) Dump.println("AG.recoverProp");                //~vae8I~
+        if (is1stRun())                                            //~vae8R~
+        {                                                          //~vae8I~
+        	PrefSetting.recoverProp(prefFile);                     //~vae8R~
+        	RuleSetting.recoverProp(ruleFile);                     //~vae8R~
+        	reset1stRun();	//even failed, shared pref only,no need to prop//~vae8R~
+        }                                                          //~vae8I~
+    }                                                              //~vae8I~
+//*************************************************************    //~vae8I~
+    public  void saveProp()                                        //~vae8I~
+    {                                                              //~vae8I~
+        if (Dump.Y) Dump.println("AG.saveProp");                   //~vae8I~
+        PrefSetting.saveProp(prefFile);                                //~vae8I~
+        RuleSetting.saveProp(ruleFile);                                //~vae8I~
+    }                                                              //~vae8I~
 //*************************************************************    //~@@01I~
 //  private void createSettings()                                  //~@@01R~
     public  void createSettings() //public for androidTest         //~@@01I~

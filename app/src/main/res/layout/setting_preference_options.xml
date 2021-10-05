@@ -13,12 +13,22 @@
         />
     <LinearLayout
          android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="vertical"
     >
         <include layout="@layout/setting_pref_opt_orientation"
         />
     </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
@@ -66,6 +76,29 @@
 		                android:visibility="gone"
         />
     </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <CheckBox
+            android:id="@+id/cbLeftyPortrait"
+            android:text="@string/Label_LeftyPortrait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+        <CheckBox
+            android:id="@+id/cbLeftyLandscape"
+            android:text="@string/Label_LeftyLandscape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
     <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"

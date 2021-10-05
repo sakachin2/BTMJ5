@@ -1,6 +1,7 @@
-//*CID://+va60R~:                             update#=  110;       //~va40R~//+va60R~
+//*CID://+vae8R~:                             update#=  111;       //+vae8R~
 //*************************************************************************//~v106I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//+vae8I~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*************************************************************************//~va40I~
 package com.btmtest.utils.sound;                                         //~9C01I~//~9C03R~
@@ -51,11 +52,11 @@ public class SPList                                                //~9C03R~
     private boolean swNoSound,swBeep;                              //~9C03I~
     private SoundPool pool;//~9C03I~
     private int currentStreamID;                                   //~va06I~
-    //******************************************************************//+va60I~
-	public SPList() //for IT                                       //+va60I~
-	{                                                              //+va60I~
-        if (Dump.Y) Dump.println("SPList.default constructor");    //+va60I~
-	}                                                              //+va60I~
+    //******************************************************************//~va60I~
+	public SPList() //for IT                                       //~va60I~
+	{                                                              //~va60I~
+        if (Dump.Y) Dump.println("SPList.default constructor");    //~va60I~
+	}                                                              //~va60I~
     //******************************************************************//~9C03I~
 	public SPList (Sound Psound)                                   //~9C03I~
 	{                                                              //~9C03I~
@@ -119,6 +120,12 @@ public class SPList                                                //~9C03R~
         volume=PrefSetting.getSoundVolume();                       //~9C03I~
     	if (Dump.Y) Dump.println("Sound.resetOption swNoSound="+swNoSound+",volume="+volume);//~9C03I~
     }                                                              //~9C03I~
+    //******************************************************************//+vae8I~
+    public void recoverOption()                                    //+vae8I~
+    {                                                              //+vae8I~
+    	if (Dump.Y) Dump.println("Sound.recoverOption OLD swNoSound="+swNoSound+",volume="+volume);//+vae8I~
+        resetOption();                                             //+vae8I~
+    }                                                              //+vae8I~
     //******************************************************************//~9C03I~
 	public void setVolume(float Pvolume)                           //~9C03I~
     {                                                              //~9C03I~

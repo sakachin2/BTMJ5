@@ -1,5 +1,7 @@
-//*CID://+v@@@R~: update#= 244;                                    //~1AbSR~//~v@@@R~
+//*CID://+1ak3R~: update#= 245;                                    //+1ak3R~
 //**********************************************************************//~v105I~
+//1ak3 2021/09/10 picker(ACTION_PICK) for API30                    //+1ak3I~
+//**********************************************************************//+1ak3I~
 //*My ListView Adapter                                                     //~1107I~//~1109R~
 //**********************************************************************//~1107I~
 package com.btmtest.gui;                                   //~1107R~  //~1108R~//~1109R~//~1114R~//~v107R~//~1AbSR~//~v@@@R~
@@ -412,6 +414,7 @@ public class UListView                                                  //~1114 
             if (Dump.Y) Dump.println("Listview OnItemClick textview isInTouchMode="+Ptextview.isInTouchMode());//~1506R~
             if (listener!=null)                                    //~v@@@I~
 	            listener.onListItemClicked(Ppos,selectedpos);      //~v@@@I~
+    		onItemClicked(Ppos,selectedpos);                       //+1ak3I~
           }                                                        //~v107I~
           catch(Exception e)                                       //~v107I~
           {                                                        //~v107I~
@@ -421,6 +424,13 @@ public class UListView                                                  //~1114 
         }                                                          //~1115I~
 
     }//inner class                                                 //~1115I~
+//**********************************************************************//+1ak3I~
+//*for extender to override without thru interface                 //+1ak3I~
+//**********************************************************************//+1ak3I~
+    public void onItemClicked(int Ppos,int PoldSelected)           //+1ak3I~
+    {                                                              //+1ak3I~
+    	if (Dump.Y) Dump.println("UListView.onItemClicked pos="+Ppos+",posSelected="+PoldSelected);//+1ak3I~
+    }                                                              //+1ak3I~
 //**********************************************************************//~1307I~
 //*itemclicklistener  LONG                                         //~1307R~
 //**********************************************************************//~1307I~
@@ -601,7 +611,7 @@ public class UListView                                                  //~1114 
 	{                                                              //~v@@@I~
         if (Dump.Y) Dump.println("List:deselectAll");              //~v@@@I~
 		clearChoice(false/*not choosed*/);                         //~v@@@R~
-	    selectedpos=AdapterView.INVALID_POSITION;                  //+v@@@I~
+	    selectedpos=AdapterView.INVALID_POSITION;                  //~v@@@I~
     	notifyChanged();                                           //~v@@@I~
 	}                                                              //~v@@@R~
 //*****************                                                //~1220I~//~v@@@I~

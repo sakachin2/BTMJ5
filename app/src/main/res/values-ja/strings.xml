@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.15</string>
+    <string name="app_version">v1.16</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -204,7 +204,7 @@
     <string name="Err_HistoryPropLoadFailed">ルールファイルが読めません。%1$s</string>
     <string name="Warn_ResumeDialogNoRuleFound">サーバーから履歴からの再開要求がありましたが、
 			その時使用されたルールファイルが見つかりません。
-			サーバーに履歴ファイルを\"送信\"してもらってください。</string>
+			サーバーに履歴ダイアログ上から履歴ファイルを\"送信\"してもらってください。</string>
     <string name="Prompt_InitialScore">持ち点選択</string>
     <string name="Label_DupPoint">積み棒：場</string>
     <string name="Label_InitialScore">持ち点</string>
@@ -564,9 +564,12 @@
 <!--BTMJ3-->
     <string name="Label_OrientationPortrait">縦</string>
     <string name="Label_OrientationLandscape">横</string>
+    <string name="Label_OrientationLandscape2">横</string>
     <string name="Label_OrientationPortraitReverse">縦-上下逆</string>
     <string name="Label_OrientationLandscapeReverse">横-左右逆</string>
+    <string name="Label_OrientationLandscapeReverse2">横-逆向</string>
     <string name="Label_OrientationSelectMenu">毎回選択</string>
+    <string name="Label_OrientationSelectMenu2">毎回選択</string>
     <!--string name="Label_OrientationAtEndOfLandscape">トップ画面</string-->
 	<string-array name="OrientationMenuDlg_Items"> 
 		<item>@string/Label_OrientationPortrait</item>
@@ -656,8 +659,9 @@
     <string name="Desc_KanDoraOpenTiming">\"即\"とは嶺上牌ツモ後、\"即\"のケースのみ嶺上開花で槓ドラは表示される</string>
     <string name="Label_PaoFor">対</string>
     <string name="Label_OpenReach">オープンリ</string>
+    <string name="Label_Open">オープン</string>
     <!--string name="Label_OpenReach_Vertical">オー\nプ\nン\nリ</string-->
-    <string name="Label_OpenReach_Vertical">オ\n〡\nプ\nン</string>
+    <string name="Label_Open_Vertical">オ\n〡\nプ\nン</string>
     <string name="Label_ScoreAddTotal">得点</string>
     <string name="Label_ScoreNewScore">結果</string>
     <string name="Label_ScoreMinusPay">トビ賞</string>
@@ -1288,7 +1292,9 @@
     <string name="Label_YakuStandardList">タンヤオ、ピンフ、一盃口、ハイテイ、嶺上開花、ダブリー、槍槓\n対々和、三色同順、一気通貫、チャンタ、三暗刻、小三元、混老頭、三色同刻、三槓子\n混一色、ジュンチャン、二盃口\n清一色</string>
     <string name="Desc_YakuLocal">ローカル役については、役満、人和、流し満貫の項も参照。それ以外は事前に取り決めをしてください</string>
     <string name="Label_SpritPos">割れ目</string>
-    <string name="Desc_SpritPos0"> </string>
+    <string name="Desc_SpritPos0_1">"ダイアログ上で "</string>
+    <string name="Desc_SpritPos0_2">割</string>
+    <string name="Desc_SpritPos0_3">" で示されます"</string>
     <string name="Label_SpritPosID">割</string>
     <string name="Desc_SpritPos">（開門位置のプレーヤーとの得点の授受が倍）</string>
     <string name="Desc_SpritPos2">チョンボ、ノーテン罰符、積み棒は対象外、流し満貫は\"和了扱い\"なら対象。\n
@@ -1317,7 +1323,8 @@
     <string name="WifiDirectGranted">WifiDirectの使用が許可されました</string>
     <!--string name="WifiDirectNotGranted">WifiDirectの使用が許可されませんでした</string-->
     <string name="WifiDirectRequiresGranted">WifiDirectの使用には\"位置情報へのアクセスの許可\"が必要です</string>
-    <string name="ExternalStorageForSDRequiresGranted">\"SDカードへ書き込み\"が不許可なので内部ファイル（再導入で削除）に出力されます</string>
+    <!--string name="ExternalStorageForSDRequiresGranted">\"SDカードへ書き込み\"が不許可なので内部ファイル（再導入で削除）に出力されます</string-->
+    <string name="ExternalStorageForSDRequiresGranted">外部ストレージ書き込みが不許可。再表示なしの場合、許可するには再導入が必要です</string>
     <string name="ExternalStorageForSDGranted">SDカードへの書き込み権限が許可されました</string>
     <string name="RemoteIP">WiFi</string>
     <string name="ErrNowBTConnected">現在 Bluetooth 接続があります\n一旦 Bluetooth 接続を切ってリトライしてください</string>
@@ -1535,4 +1542,50 @@
 				ロンの通知もこの設定に従います。ロボットはこの設定にかかわらずチェックOKに限って上がりを宣言します。</string>
     <string name="AE_NoReachErrToForce">リーチ/オープンリーチ失敗の後でのみ有効です</string>
     <string name="AE_CancelAtFirst">オレンジボタン以外を押す場合は、先に取り消してください</string>
+    <string name="Label_LeftyPortrait">縦画面の時、下部のボタン列を逆向きにする</string>
+    <string name="Label_LeftyLandscape">横画面の時、左右のボタン列を入れ替える</string>
+    <string name="Label_ShowDetail">詳細表示</string>
+    <string name="Label_HideDetail">非表示</string>
+    <string name="Info_HistoryCtrDetail">計 %1$d ゲーム</string>
+
+    <string name="RequestPickupDocumentSaveDir">Android-11で外部ストレージの仕様が変更になりました。\n
+(再)インストールにより、ゲームデータの保存先を設定する必要があります。\n
+次に表示されるダイアログで \"%1$s\" を選択してください。\n
+初めての場合は、そのダイアログでそのフォルダーを作成してください。\n
+最初のAndroid-11版の再インストールの時のみ既存の履歴、ルールファイルが移行できます。
+	</string>
+    <string name="RequestPickupDocumentSaveDirCanceled">"ゲームデータの保存先の設定がキャンセルされました。\n
+再設定する場合は、アプリを再起動してください。
+	</string>
+    <string name="RequestPickupDocumentSaveDirCanceledNoTryAgain">"保存先が内部ファイルに決定されました。\n
+再設定する場合は、アプリを再インストールしてください。
+	</string>
+    <string name="RequestPickupDocumentSaveDirInvalidSelection">"\"%1$s\" が選択されました、ゲームデータの保存先は \"%2$s\" を選択してください。
+	</string>
+    <string name="ErrNoExternalStoragePermission">外部ストレージへのアクセス権限が有りません</string>
+    <string name="ErrInvalidAudioSelection">%1$s はオーディオファイルでは有りません</string>
+    <string name="Title_Picker">オーディオファイル選択</string>
+    <string name="LabelUriDir">メディアフォルダー : </string>
+    <string name="ExternalStorageForSDRequiresGrantedRead">外部ストレージの読み込み権限が有りません</string>
+
+    <string name="ErrNoScopedPermission">対象範囲別ストレージ書き込み権限が有りません。%1$s。</string>
+    <string name="ExternalStorageReadRequiresGranted">外部ストレージの読み込み権限が必要です</string>
+    <string name="ExternalStorageReadGranted">外部ストレージの読み込み権限が許可されました</string>
+    <string name="ScopedExternalStorageDeniedRead">外部ストレージの\"読み込み権限\"が許可されていません</string>
+    <string name="ScopedExternalStorageDeniedWrite">外部ストレージの\"書き込み権限\"が許可されていません</string>
+    <string name="ErrCanceledScopedPermission">データ保存先の設定がキャンセルされました。アプリを再起動してください。</string>
+    <string name="NoTryAgain">不許可で決定</string>
+    <string name="FileTypeDocument">Docs：</string>
+    <string name="Info_Transfered">旧版の外部ストレージの %1$d / %2$d ファイルを Android-11 新領域に引き継ぎました</string>
+    <string name="btnBGM">設定</string>
+    <string name="NoUserBGM">未設定</string>
+    <string name="UserBGM">お好み</string>
+    <string name="UserBGMEachRound">局毎に変える</string>
+    <string name="etUserBGMSelectionHint">演奏順を指定する</string>
+    <string name="tvUserBGMSelection">曲順：</string>
+    <string name="Err_PlaySeqNo">曲順の指定で未設定の曲番があります</string>
+    <string name="Err_NoPlaySeqNo">曲順を指定してください</string>
+    <string name="Delete2">削除</string>
+    <string name="lbUseUPicker">アプリのPicker</string>
+    <string name="ErrNotSelectedAudio">曲を選択してください</string>
 </resources>

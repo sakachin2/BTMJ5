@@ -16,7 +16,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -27,7 +27,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -38,7 +38,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -49,7 +49,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -60,7 +60,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -71,7 +71,7 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
              <Button
                         android:layout_width="@dimen/gvbtn_right_small"
@@ -83,6 +83,6 @@
                  android:textAllCaps="false"
                  android:backgroundTint="@color/action_cancel"
                  android:textColor="@color/btn_normal_fg"
-                            android:textSize="@dimen/smallfont_textsize_game_buttons"
+                            android:textSize="@dimen/smalldevice_textsize_game_buttons"
              />
 </LinearLayout>

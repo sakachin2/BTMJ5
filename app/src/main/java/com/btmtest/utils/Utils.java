@@ -1,5 +1,7 @@
-//*CID://+vaafR~: update#= 309;                                    //~vaafR~
+//*CID://+vae7R~: update#= 312;                                    //~vae7R~
 //**********************************************************************//~1107I~
+//2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
+//1ak2 2021/09/04 access external audio file                       //~1ak2I~
 //2021/07/01 vaaf Button BG color by span string because setbackgroundColor is expands button to its boundary.//~vaafI~
 //2021/06/16 vaa0 support <img> in htmlText                        //~vaa0I~
 //2021/04/06 va7b (Bug)HistryData setScore exception (out of bound)//~va7bI~
@@ -509,6 +511,11 @@ public class Utils                                            //~1309R~//~@@@@R~
 	{                                                              //~v@@@I~
     	return AG.resource.getString(Presid,P1,P2);                //~v@@@I~
     }                                                              //~v@@@I~
+//**********************                                           //~vae7I~
+    public static String getStr(int Presid,int P1,int P2)          //~vae7I~
+	{                                                              //~vae7I~
+    	return AG.resource.getString(Presid,P1,P2);                //~vae7I~
+    }                                                              //~vae7I~
 //**********************                                           //~v@@@I~
     public static String joinStr(String Pseparater,String[] Pstrarray)//~v@@@I~
 	{
@@ -551,13 +558,13 @@ public class Utils                                            //~1309R~//~@@@@R~
     {                                                              //~1402I~//~@@@@M~//~v@@@M~
     	SharedPreferences pref=getPreferenceName();                 //~1402I~//~@@@@M~//~v@@@M~
         String value=pref.getString(Pkey,Pdefault/*default value*/);//~1402R~//~@@@@M~//~v@@@M~
-        if (Dump.Y) Dump.println("getPreference:"+Pkey+"="+value); //~1506R~//~@@@@M~//~v@@@M~
+        if (Dump.Y) Dump.println("Utils.getPreference:"+Pkey+"="+value); //~1506R~//~@@@@M~//~v@@@M~//+vae7R~
         return value;                                              //~1402I~//~@@@@M~//~v@@@M~
     }//readwriteQNo                                                //~1402I~//~@@@@M~//~v@@@M~
     //******************                                           //~1402I~//~@@@@M~//~v@@@M~
     public static void putPreference(String Pkey,String Pvalue)        //~1402I~//~@@@@M~//~v@@@M~
     {                                                              //~1402I~//~@@@@M~//~v@@@M~
-        if (Dump.Y) Dump.println("putPreference:"+Pkey+"="+Pvalue);//~1506R~//~@@@@M~//~v@@@M~
+        if (Dump.Y) Dump.println("Utils.putPreference:"+Pkey+"="+Pvalue);//~1506R~//~@@@@M~//~v@@@M~//+vae7R~
     	SharedPreferences pref=getPreferenceName();                 //~1402I~//~@@@@M~//~v@@@M~
         SharedPreferences.Editor editor=pref.edit();               //~1402I~//~@@@@M~//~v@@@M~
         editor.putString(Pkey,Pvalue);                             //~1402I~//~@@@@M~//~v@@@M~
@@ -664,6 +671,21 @@ public class Utils                                            //~1309R~//~@@@@R~
         if (Dump.Y) Dump.println("Utils.parseInt Pstr="+Arrays.toString(Pstr)+",pos="+Ppos+",ctr="+Pctr+",default="+Pdefault+",out="+Arrays.toString(Pint));//~@@01I~
         return rc;                                                 //~@@01I~
     }                                                              //~@@01I~
+    //*************************************************            //~vak2I~//~1ak2I~
+    public static long parseLong(String Pstr,long Pdefault)        //~vak2I~//~1ak2I~
+    {                                                              //~vak2I~//~1ak2I~
+    	long ii;                                                   //~vak2I~//~1ak2I~
+        try                                                        //~vak2I~//~1ak2I~
+        {                                                          //~vak2I~//~1ak2I~
+    		ii=Long.parseLong(Pstr);                               //~vak2I~//~1ak2I~
+        }                                                          //~vak2I~//~1ak2I~
+        catch(Exception e)                                         //~vak2I~//~1ak2I~
+        {                                                          //~vak2I~//~1ak2I~
+        	if (Dump.Y) Dump.println("Utils.parseLong str="+Pstr+",e="+e.toString());//~vak2I~//~1ak2I~
+        	ii=Pdefault;                                           //~vak2I~//~1ak2I~
+        }                                                          //~vak2I~//~1ak2I~
+        return ii;                                                 //~vak2I~//~1ak2I~
+    }                                                              //~vak2I~//~1ak2I~
     //*************************************************            //~va7bI~
     //*return err ctr                                              //~va7bI~
     //*************************************************            //~va7bI~
@@ -793,15 +815,15 @@ public class Utils                                            //~1309R~//~@@@@R~
     //*************************************************            //~va40I~
     public static String toString(int[] Psa2,int PctrSplit)        //~va40I~
     {                                                              //~va40I~
-    	if (Psa2==null)                                            //+vaafI~
-        	return "null";                                         //+vaafI~
+    	if (Psa2==null)                                            //~vaafI~
+        	return "null";                                         //~vaafI~
     	return toString(Psa2,PctrSplit,Psa2.length);               //~va40I~
     }                                                              //~va40I~
     //*************************************************            //~vaafI~
     public static String toHexString(int[] Psa2,int PctrSplit)     //~vaafR~
     {                                                              //~vaafI~
-    	if (Psa2==null)                                            //+vaafI~
-        	return "null";                                         //+vaafI~
+    	if (Psa2==null)                                            //~vaafI~
+        	return "null";                                         //~vaafI~
     	return toHexString(Psa2,PctrSplit,Psa2.length);            //~vaafI~
     }                                                              //~vaafI~
     //*************************************************            //~vaafI~

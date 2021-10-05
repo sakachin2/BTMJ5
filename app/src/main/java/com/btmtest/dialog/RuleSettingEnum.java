@@ -1,6 +1,7 @@
-//*CID://+vacfR~: update#= 517;                                    //+vacfR~
+//*CID://+vae8R~: update#= 519;                                    //~vae8R~
 //**********************************************************************//~v101I~
-//2021/08/22 vacf vertical button label for landscape              //+vacfI~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
+//2021/08/22 vacf vertical button label for landscape              //~vacfI~
 //2021/08/02 vabu change default delaytime 2-->1 sec               //~vabuI~
 //2021/07/13 vaaF setting option of waittimeby 0.5 second          //~vaaFI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
@@ -252,7 +253,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
     public static final String[] rankDrawnMangan=AG.resource.getStringArray(R.array.DrawnManganRank);//~9413I~
     public static final String[] strsGameSetType=AG.resource.getStringArray(R.array.GameSetType);//~9501I~
-    public static final String[] strsGameSetTypeLand=AG.resource.getStringArray(R.array.GameSetTypeLand);//+vacfI~
+    public static final String[] strsGameSetTypeLand=AG.resource.getStringArray(R.array.GameSetTypeLand);//~vacfI~
     public static final int GST_E=0;                               //~9501I~
     public static final int GST_EE=1;                              //~9501I~
     public static final int GST_ES=2;                              //~9501I~

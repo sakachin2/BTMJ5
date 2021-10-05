@@ -1,6 +1,7 @@
-//*CID://+vabgR~: update#= 834;                                    //+vabgR~
+//*CID://+vae5R~: update#= 837;                                    //+vae5R~
 //**********************************************************************//~v101I~
-//2021/07/29 vabg (Bug)Test option set final game, 1st dealer is not east player//+vabgI~
+//2021/09/16 vae5 (Bug)Property of resumed game did not use sg.rulefile at interrupted.//+vae5I~
+//2021/07/29 vabg (Bug)Test option set final game, 1st dealer is not east player//~vabgI~
 //2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
 //2021/03/30 va72 (Bug)when multiron for reach tile,nemaplate win color shadow was lost by showscore from resetReachDone//~va72I~
 //2021/03/12 va6g (BUG)suspend/resume reach stick remains if last gane ended ron with anyone reach//~va6gI~
@@ -26,6 +27,7 @@ import com.btmtest.dialog.SuspendDlg;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.utils.Dump;
 import com.btmtest.BT.Members;                                     //~v@@@I~
+import com.btmtest.utils.Prop;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
@@ -157,7 +159,7 @@ public class Accounts                                              //~v@@@R~
         }                                                          //~va68I~
         if (rc==0)                                                 //~va68I~
         	rc=isRobotName_Old(Pname);                             //~va68I~
-        if (Dump.Y) Dump.println("Account.isRobotName rc="+rc+",Pname="+Pname);//~va68I~
+        if (Dump.Y) Dump.println("Accounts.isRobotName rc="+rc+",Pname="+Pname);//~va68I~//~vabgR~
         return rc;                                                 //~va68I~
     }                                                              //~va68I~
 //    //*****************************************************      //~0204R~
@@ -1281,9 +1283,9 @@ public class Accounts                                              //~v@@@R~
 //          int starter=getCurrentStarter();                       //~9922I~//~9923M~
 //          starter=Players.nextPlayer(starterRelativePos,AG.aStatus.gameCtrGame);//~9923M~
             starter=player;                                        //~9923I~
-            if (Dump.Y) Dump.println("Accounts.finalGameTest OLD AG,playerCurrent="+AG.aPlayers.playerCurrent);//+vabgI~
-            AG.aPlayers.playerCurrent=starter;                     //+vabgI~
-            if (Dump.Y) Dump.println("Accounts.finalGameTest enableDiceRelative starter="+starter+",gameCtr="+AG.aStatus.gameCtrGame+",AG,playerCurrent="+AG.aPlayers.playerCurrent);//+vabgR~
+            if (Dump.Y) Dump.println("Accounts.finalGameTest OLD AG,playerCurrent="+AG.aPlayers.playerCurrent);//~vabgI~
+            AG.aPlayers.playerCurrent=starter;                     //~vabgI~
+            if (Dump.Y) Dump.println("Accounts.finalGameTest enableDiceRelative starter="+starter+",gameCtr="+AG.aStatus.gameCtrGame+",AG,playerCurrent="+AG.aPlayers.playerCurrent);//~vabgR~
             if (Dump.Y) Dump.println("Accounts.finalGameTest currentAccountsByESWN="+Arrays.toString(currentAccountsByESWN));//~9923I~//~0222R~
 	        enableDiceRelative(starter);                           //~9922R~//~9923M~
     	AG.aRoundStat.newGame(false/*Psw1st*/,TestOption.finalGameCtrSet,TestOption.finalGameCtrGame,0/*dupctr*/);//~va60R~
@@ -1976,7 +1978,21 @@ public class Accounts                                              //~v@@@R~
 		if (Dump.Y) Dump.println("Accounts.resumeGame swServer="+PswServer+",hd="+Phd.toString());//~9901I~//~9902R~
         positionMoveResume(Phd);                                   //~9901I~
         positionMovedResume(Phd);                                  //~9901I~
+        loadResumeProperties(Phd);                                 //+vae5R~
     }                                                              //~9901I~
+	//******************************************************************************//+vae5R~
+    private  void loadResumeProperties(HistoryData Phd)            //+vae5R~
+    {                                                              //+vae5R~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties hd="+Phd.toString());//+vae5R~
+        Prop p=Phd.getRuleProp();                                  //+vae5R~
+        if (p==null)                                //already confirmed at ResumeDlg->HistoryData.getRuleProp//+vae5R~
+        {                                                          //+vae5R~
+        	if (Dump.Y) Dump.println("Accounts.loadResumeProperties canceled by prop get failed");//+vae5R~
+            return;                                                //+vae5R~
+        }                                                          //+vae5R~
+    	AG.savePropForResume=AG.ruleProp;                          //+vae5R~
+    	AG.ruleProp=p;                                             //+vae5R~
+    }                                                              //+vae5R~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~

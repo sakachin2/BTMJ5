@@ -34,7 +34,7 @@
         >
             <RadioButton
                 android:id="@+id/rbOriSelectMenu"
-                android:text="@string/Label_OrientationSelectMenu"
+                android:text="@string/Label_OrientationSelectMenu2"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
@@ -52,13 +52,13 @@
             />
             <RadioButton
                 android:id="@+id/rbOriLandscape"
-                android:text="@string/Label_OrientationLandscape"
+                android:text="@string/Label_OrientationLandscape2"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
             <RadioButton
                 android:id="@+id/rbOriLandscapeReverse"
-                android:text="@string/Label_OrientationLandscapeReverse"
+                android:text="@string/Label_OrientationLandscapeReverse2"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />

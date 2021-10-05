@@ -1,11 +1,13 @@
-//*CID://+vac5R~:                             update#=  298;       //~vac5R~
+//*CID://+vae0R~:                             update#=  328;       //~vae0R~
 //*************************************************************************//~v105I~
+//2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*************************************************************************//~v105I~
 package com.btmtest.dialog;                                           //~1108R~//~1109R~//~1A21R~//~v@@@R~
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -22,6 +24,7 @@ import com.btmtest.gui.UListView;
 import com.btmtest.gui.UButton;                                    //~v@@@M~
 import com.btmtest.utils.Alert;                                            //~1A21R~//~v@@@R~
 import com.btmtest.utils.UFile;                                             //~1A21R~//~v@@@R~
+import com.btmtest.utils.UScoped;
 import com.btmtest.utils.UView;                                            //~1A21R~//~v@@@R~
 import com.btmtest.utils.Dump;                                     //~v@@@I~
 import com.btmtest.utils.Utils;
@@ -56,8 +59,10 @@ public class FileDialog extends UFDlg                                      //~v@
     protected String dirName="";                                     //~1324R~//~v@@@R~
     public  String[] namelist=new String[0];                                      //~1319I~//~1402R~//~v@@@R~
 	protected File[] filelist;                                       //~1319I~//~v@@@R~
+    protected ArrayList<UScoped.TreeMember> filelistScoped;                //~vae0I~
 	protected int[]  name2file;                                      //~1330I~//~v@@@R~
 	protected File   selectedFile;                                   //~1403R~//~v@@@R~
+	protected UScoped.TreeMember  selectedFileScoped;                      //~vae0I~
     protected	String selectedFullpath;                           //~v@@@R~
 	protected String selectedFilename=null;                   //~1319I~//~1330R~//~v@@@R~
     private String saveFilename,saveFullpath;                                //~1402I~//~v@@@R~
@@ -76,6 +81,7 @@ public class FileDialog extends UFDlg                                      //~v@
     protected	boolean swDelete;                                  //~v@@@R~
     protected	boolean swU2S;                                     //~v@@@I~
     protected	boolean swDiscendant=false;                        //~v@@@I~
+    protected	boolean swScoped;  //scoed dir,set by extender     //~vae0R~
 //*****************************************************************//~1Ah9I~
 //*scheduled after FileDialog dismissed*************               //~1Ah9I~
 //*****************************************************************//~1Ah9I~
@@ -111,7 +117,7 @@ public class FileDialog extends UFDlg                                      //~v@
     	FileDialog dlg=new FileDialog();                           //~v@@@I~
 //  	UFDlg ufdlg=UFDlg.newInstance(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),LAYOUTID,//~v@@@R~
 //  	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),LAYOUTID,//~v@@@I~//~vac5R~
-    	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5R~
+    	UFDlg.setBundle(dlg,(Pswload?TITLEID_LOAD:TITLEID_SAVE),(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5R~
                     UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN,HELP_TITLEID,HELPFILE);//~v@@@R~
 //  	dlg.ufdlg=ufdlg;                                           //~v@@@R~
 //      Bundle b=ufdlg.bundle;                                     //~v@@@R~
@@ -172,23 +178,53 @@ public class FileDialog extends UFDlg                                      //~v@
 	//************************************                         //~v@@@I~
     protected void setInitialValue()                               //~v@@@R~
     {                                                              //~v@@@I~
-     	if (Dump.Y) Dump.println("FileDialog.setInitialValue");    //~v@@@I~
+//      int stat=UScoped.chkScoped();    //api>=30                 //~vae0R~
+     	if (Dump.Y) Dump.println("FileDialog.setInitialValue swScoped="+swScoped);    //~v@@@I~//~vae0R~
+//    if (stat>=0)    //api>=30                                    //~vae0R~
+      if (swScoped)   //scoped dir                                 //~vae0I~
+      {                                                            //~vae0I~
+//      if (stat==0)	//denied use scoped document dir           //~vae0R~
+//      	workDirSD=null;                                        //~vae0R~
+//      else            //allowd use scoped document dir           //~vae0R~
+//      {                                                          //~vae0R~
+	    	workDirSD=AG.aUScoped.getDirPath();                    //~vae0I~
+//      	swScoped=true;                                         //~vae0R~
+//      }                                                          //~vae0R~
+      }                                                            //~vae0I~
+      else                                                         //~vae0I~
         workDirSD=UFile.getSDPath(""); //"sdpath/appname"          //~v@@@R~
         if (workDirSD==null)                                       //~v@@@I~
             UView.showToast(R.string.NoSDCard);                    //~v@@@I~
+        else                                                       //~vae0I~
+        	swSD=true;                                             //~vae0I~
         pathDataDir=AG.context.getFilesDir().getAbsolutePath();    //~v@@@I~
         filenameFilter=getFilter();                                //~v@@@I~
         alertTitle=Utils.getStr(R.string.Title_FileDialog);        //~v@@@R~
         if (saveFilenameByID!=null)                                //~v@@@R~
 	        etFileName.setText(saveFilenameByID);                  //~v@@@R~
         setButtonVisibility();                                      //~v@@@I~
+     	if (Dump.Y) Dump.println("FileDialog.setInitialValue workDirSD="+workDirSD+",pathDataDir="+pathDataDir);//~vae0I~
     }                                                              //~v@@@I~
 	//************************************                         //~v@@@I~
-    public static String[] getFolder()                             //~v@@@I~
+//  public static String[] getFolder()                             //~v@@@I~//~vae0R~
+    public static String[] getFolder(boolean PswScoped)            //~vae0I~
     {                                                              //~v@@@I~
-        String workDirSD=UFile.getSDPath(""); //"sdpath/appname"   //~v@@@I~
-        if (workDirSD==null)                                       //~v@@@I~
-            UView.showToast(R.string.NoSDCard);                    //~v@@@I~
+     	if (Dump.Y) Dump.println("FileDialog.getFolder");          //~vac5I~
+//      String workDirSD=UFile.getSDPath(""); //"sdpath/appname"   //~v@@@I~//~vae0R~
+        String workDirSD;                                          //~vae0I~
+//      int stat=UScoped.chkScoped();    //api>=30                 //~vae0R~
+//      if (stat>=0)    //api>=30                                  //~vae0R~
+        if (PswScoped)    //use scoped storage                  //~vae0I~
+        {                                                          //~vae0I~
+//          if (stat==0)	//denied use scoped document dir       //~vae0R~
+//              workDirSD=null;                                    //~vae0R~
+//          else            //allowd use scoped document dir       //~vae0R~
+	            workDirSD=AG.aUScoped.getDirPath();                //~vae0I~
+        }                                                          //~vae0I~
+        else                                                       //~vae0I~
+        	workDirSD=UFile.getSDPath(""); //"sdpath/appname"      //~vae0I~
+//      if (workDirSD==null)                                       //~v@@@I~//~vae0R~
+//          UView.showToast(R.string.NoSDCard);                    //~v@@@I~//~vae0R~
 //      String pathDataDir=AG.context.getFilesDir().getAbsolutePath();//~v@@@R~
         File dir=AG.context.getFilesDir();                       //~v@@@I~
      	if (Dump.Y) Dump.println("FileDialog.getFolder getFilesDir="+dir.toString());//~v@@@I~
@@ -239,6 +275,9 @@ public class FileDialog extends UFDlg                                      //~v@
 	        	btnBackup.setEnabled(true);                        //~v@@@M~
             }                                                      //~v@@@M~
         }                                                          //~v@@@I~
+        if (swScoped)                                              //~vae0M~
+            tvFileType.setText(Utils.getStr(R.string.FileTypeDocument));//~vae0M~
+        else                                                       //~vae0M~
         if (swSD)                                                  //~v@@@I~
             tvFileType.setText(Utils.getStr(R.string.FileTypeSD)); //~v@@@I~
         else                                                       //~v@@@I~
@@ -259,6 +298,12 @@ public class FileDialog extends UFDlg                                      //~v@
     //**********************************                           //~1403I~
     protected void setList()                                         //~1403R~//~v@@@R~
     {                                                              //~1403I~
+		if (Dump.Y) Dump.println("FileDialog.setList swScoped="+swScoped);//~vae0I~
+    	if (swScoped)                                              //~vae0I~
+        {                                                          //~vae0I~
+        	setListScoped();                                       //~vae0I~
+            return;                                                //~vae0I~
+        }                                                          //~vae0I~
     	int initialSelected=-1;                                     //~v@@@I~
         int sz=namelist.length;                                    //~1411R~
         for (int ii=0;ii<sz;ii++)                                      //~1411I~
@@ -284,6 +329,35 @@ public class FileDialog extends UFDlg                                      //~v@
           	}                                                        //~1A4nI~//~v@@@R~
         }                                                          //~1411I~
     }                                                              //~1403I~
+    //**********************************                           //~vae0I~
+    protected void setListScoped()                                 //~vae0I~
+    {                                                              //~vae0I~
+		if (Dump.Y) Dump.println("FileDialog.setListScoped");      //~vae0I~
+    	int initialSelected=-1;                                    //~vae0I~
+        int sz=namelist.length;                                    //~vae0I~
+        for (int ii=0;ii<sz;ii++)                                  //~vae0I~
+        {                                                          //~vae0I~
+	        int filelistpos=name2file[ii];                         //~vae0I~
+        	UScoped.TreeMember tm=filelistScoped.get(filelistpos); //~vae0R~
+            String fnm=namelist[ii];                               //~vae0I~
+            if (defaultItemName!=null && defaultItemName.equals(fnm))//~vae0I~
+            {                                                      //~vae0I~
+                initialSelected=ii;                                //~vae0I~
+		        if (Dump.Y) Dump.println("FileDialog.setList initialSelected="+defaultItemName+",pos="+initialSelected);//~vae0I~
+	            defaultItemName=null;	//at initial only          //~vae0I~
+            }                                                      //~vae0I~
+            fnm=fnm.substring(0,fnm.length()-filterName.length()); //~vae0I~
+            String timestamp=tm.lastModified;                      //~vae0R~
+        	lvFilename.add(fnm,timestamp,0);                       //~vae0I~
+        }                                                          //~vae0I~
+        if (sz>0)                                                  //~vae0I~
+        {                                                          //~vae0I~
+		  	if (initialSelected>=0)                                //~vae0I~
+          	{                                                      //~vae0I~
+				lvFilename.setSelection(initialSelected);          //~vae0I~
+          	}                                                      //~vae0I~
+        }                                                          //~vae0I~
+    }                                                              //~vae0I~
     //****************************************************         //~v@@@I~
     //* file submenu selected;create submenu listview
     //****************************************************         //~v@@@I~
@@ -312,7 +386,7 @@ public class FileDialog extends UFDlg                                      //~v@
 //      namelist=null;                                     //~1323I~//~v@@@R~
         namelist=new String[0];                                    //~v@@@I~
     	String path=swSD ? workDirSD : pathDataDir;                //~v@@@R~
-        if (Dump.Y) Dump.println("createList path="+path);         //~1506R~
+        if (Dump.Y) Dump.println("FileDialog.createList swSD="+swSD+",swScoped="+swScoped+",path="+path);         //~1506R~//~vae0R~
         if (path==null                                             //~1323I~
         ||  path.equals("")                                        //~1323I~
         )                                                          //~1323I~
@@ -321,6 +395,12 @@ public class FileDialog extends UFDlg                                      //~v@
             return;                                            //~1323I~//~v@@@R~
         }                                                          //~1323I~
         dirName=path;                                              //~1402I~//~v@@@R~
+     if (swScoped)                                                 //~vae0I~
+     {                                                             //~vae0I~
+        createListScoped(path,filterName);                         //~vae0I~
+     }                                                             //~vae0I~
+     else                                                          //~vae0I~
+     {                                                             //~vae0I~
         try                                                        //~v@@@R~
 		{                                                          //~v@@@I~
         	if (Dump.Y) Dump.println("FileDialog path="+path);     //~1506R~
@@ -363,7 +443,39 @@ public class FileDialog extends UFDlg                                      //~v@
 //          namelist=null;                                         //~v@@@R~
             namelist=new String[0];                                //~v@@@I~
         }                                                          //~1319I~
+      }//!scoped                                                   //~vae0I~
     }//createList                                                  //~1402R~
+    //*****************************************************************//~vae0I~
+    protected void createListScoped(String Ppath,String Pfilter)   //~vae0I~
+    {                                                              //~vae0I~
+    //************************                                     //~vae0I~
+        if (Dump.Y) Dump.println("FileDialog.createListScoped path="+Ppath+",filter="+Pfilter);//~vae0I~
+        namelist=new String[0];                                    //~vae0I~
+        ArrayList<UScoped.TreeMember> filelist=AG.aUScoped.getTreeMember(Ppath,Pfilter);//~vae0I~
+        filelistScoped=filelist;                                   //~vae0I~
+            if(filelist==null||filelist.size()==0)                 //~vae0I~
+            {                                                      //~vae0I~
+				Alert.showMessage(alertTitle,AG.resource.getString(R.string.NoFileFound,filterName));//~vae0I~
+            }                                                      //~vae0I~
+            else                                                   //~vae0I~
+            {                                                      //~vae0I~
+                String name;                                       //~vae0I~
+            	int listctr=filelist.size();                       //~vae0I~
+            	name2file=new int[listctr];  //namelist->filelist  //~vae0I~
+                namelist=new String[listctr];                      //~vae0I~
+                Integer[] sortout=sortFileListScoped(); //sorted index to filelist//~vae0I~
+                for (int ii=0;ii<listctr;ii++)                     //~vae0I~
+                {                                                  //~vae0I~
+                	int idx=sortout[ii].intValue();                //~vae0I~
+                	UScoped.TreeMember file=filelistScoped.get(idx);                 //~vae0I~
+                    name=file.name;                              //~vae0I~
+                    name2file[ii]=idx;                             //~vae0I~
+                    namelist[ii]=name;                             //~vae0I~
+		        	if (Dump.Y) Dump.println("FileDialog.createListScoped sorted file="+name);//~vae0I~
+                }                                                  //~vae0I~
+		        if (Dump.Y) Dump.println("FileDialog.createListScoped sorted namelist="+Arrays.toString(namelist));//~vae0I~
+            }                                                      //~vae0I~
+    }//createList                                                  //~vae0I~
     //*****************************************************************//~1A21I~
     protected Integer[]  sortFileList()                                   //~1A21I~//~v@@@R~
     {                                                              //~1A21I~
@@ -407,6 +519,35 @@ public class FileDialog extends UFDlg                                      //~v@
             return rc;                                             //~1A21I~
         }                                                          //~1A21I~
     }                                                              //~1A21I~
+    //*****************************************************************//~vae0I~
+    protected Integer[]  sortFileListScoped()                      //~vae0I~
+    {                                                              //~vae0I~
+    	int filectr=filelistScoped.size();                         //~vae0I~
+    	Integer[] idx=new Integer[filectr];                        //~vae0I~
+        for (int ii=0;ii<filectr;ii++)                             //~vae0I~
+        	idx[ii]=ii;                                            //~vae0I~
+        if (Dump.Y) Dump.println("FileDialog.sortFileList ctr="+filectr);//~vae0I~
+    	Arrays.sort(idx,new DataComparatorScoped());               //~vae0I~
+        return idx;                                                //~vae0I~
+    }                                                              //~vae0I~
+    //**********************************                           //~vae0I~
+    class DataComparatorScoped implements Comparator<Integer>      //~vae0I~
+    {                                                              //~vae0I~
+        public int compare(Integer P1,Integer P2)                  //~vae0I~
+        {                                                          //~vae0I~
+        	int rc=0;                                              //~vae0I~
+        //*****************************                            //~vae0I~
+        	int i1=P1.intValue();                                  //~vae0I~
+        	int i2=P2.intValue();                                  //~vae0I~
+        	UScoped.TreeMember f1=filelistScoped.get(i1);                      //~vae0I~
+        	UScoped.TreeMember f2=filelistScoped.get(i2);                            //~vae0I~
+            rc=f1.name.compareTo(f2.name);                     //~vae0I~
+            if (swDiscendant)                                      //~vae0I~
+            	rc=-rc;                                            //~vae0I~
+            if (Dump.Y) Dump.println("FileDialog compare rc="+rc+",swDiscendant="+swDiscendant+",f1="+i1+"="+f1.name+",f2="+i2+"="+f2.name);//+vae0R~
+            return rc;                                             //~vae0I~
+        }                                                          //~vae0I~
+    }                                                              //~vae0I~
     //**********************************                           //~1402I~
     protected void updateList()                    //~1402I~       //~v@@@R~
     {                                                              //~1402I~
@@ -534,7 +675,7 @@ public class FileDialog extends UFDlg                                      //~v@
     //***********************                                                          //~1403I~//~v@@@M~
     	if (!getSelectedFilename(true/*toast if not selected*/))   //~v@@@R~
         	return;                                                //~v@@@M~
-        openFileViewer(selectedFilename,selectedFullpath);                               //~1A4zI~//~v@@@M~
+        openFileViewer(selectedFilename,selectedFullpath);         //~1A4zI~//~v@@@M~
     }                                                              //~1403I~//~v@@@M~
     //**********************************************************************//~1402I~
     //* delete                                                     //~1403R~
@@ -578,9 +719,18 @@ public class FileDialog extends UFDlg                                      //~v@
             {                                                      //~1A4nR~
     			if (getSelectedFilenameMulti(ii))                  //~v@@@R~
                 {                                                  //~1A4nR~
-        			boolean rc2=selectedFile.delete();                         //~1A4nR~//~v@@@R~
+//      			boolean rc2=selectedFile.delete();                         //~1A4nR~//~v@@@R~//~vae0R~
+        			boolean rc2;                                   //~vae0I~
+                  if (swScoped)                                    //~vae0I~
+                  {                                                //~vae0I~
+        			rc2=deleteScoped(selectedFileScoped);          //~vae0I~
+                  }                                                //~vae0I~
+        		  else                                             //~vae0I~
+                  {                                                //~vae0I~
+        			rc2=selectedFile.delete();                     //~vae0I~
+	        		if (Dump.Y) Dump.println("FileDialog deleted rc2="+rc2+",file="+selectedFile.getName());//~1A4nR~//~v@@@R~//~vae0M~
+                  }                                                //~vae0I~
                     delctr++;                                      //~1A4nR~
-	        		if (Dump.Y) Dump.println("FileDialog deleted rc2="+rc2+",file="+selectedFile.getName());//~1A4nR~//~v@@@R~
                 }                                                  //~1A4nR~
             }                                                      //~1A4nR~
         	String msg=Utils.getStr(R.string.FileDialogDeleted,delctr);//~1A4nR~//~v@@@R~
@@ -599,18 +749,18 @@ public class FileDialog extends UFDlg                                      //~v@
 	public boolean chkDuplicated(String Pfname)                     //~v@@@I~
     {                                                              //~v@@@I~
     	int ctr=namelist.length;                                   //~v@@@R~
-	    if (Dump.Y) Dump.println("chkDuplicated search="+Pfname+",namelistctr="+ctr);//~v@@@R~
+	    if (Dump.Y) Dump.println("FileDialog.chkDuplicated search="+Pfname+",namelistctr="+ctr);//~v@@@R~//~vae0R~
         String fnm=Pfname+filterName;                              //~v@@@I~
         for (int ii=0;ii<ctr;ii++)                                 //~v@@@I~
         {                                                          //~v@@@I~
-	    	if (Dump.Y) Dump.println("chkDuplicated ii="+ii+",name="+namelist[ii]);//~v@@@R~
+	    	if (Dump.Y) Dump.println("FileDialog.chkDuplicated ii="+ii+",name="+namelist[ii]);//~v@@@R~//~vae0R~
             String n=namelist[ii];                                 //~v@@@I~
         	if (n.equals(fnm))                                     //~v@@@R~
             {                                                      //~v@@@R~
                 return true;                                       //~v@@@R~
             }                                                      //~v@@@I~
         }                                                          //~v@@@I~
-	    if (Dump.Y) Dump.println("chkDuplicated not found");       //~v@@@I~
+	    if (Dump.Y) Dump.println("FileDialog.chkDuplicated not found");       //~v@@@I~//~vae0R~
     	return false;                                              //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
@@ -699,7 +849,8 @@ public class FileDialog extends UFDlg                                      //~v@
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("FileDialog:openFileViewer:filename="+Pfname);//~v@@@I~
 //      FileViewer.newInstance(Pfname,Pfullpath).show();           //~v@@@R~
-        FileViewer.newInstance(Pfname,Pfullpath,swU2S).show();     //~v@@@I~
+//      FileViewer.newInstance(Pfname,Pfullpath,swU2S).show();     //~v@@@I~//~vae0R~
+        FileViewer.newInstance(Pfname,Pfullpath,swU2S,swScoped).show();//~vae0I~
     }                                                              //~v@@@I~
     //**************************************                       //~v@@@I~
     private void callbackLoad(String Pfname,String Pfullpath)      //~v@@@R~
@@ -820,6 +971,7 @@ public class FileDialog extends UFDlg                                      //~v@
     //*************************************************************//~v@@@I~
     private boolean getSelectedFilename(boolean Pswmsg)            //~v@@@M~
     {                                                              //~v@@@M~
+        if (Dump.Y) Dump.println("FileDialog.getSelectedFilename swmsg="+Pswmsg);//~vae0I~
     	int ctr=multipleSelected.length;                           //~v@@@M~
         if (ctr==0)                                                //~v@@@M~
         {                                                          //~v@@@M~
@@ -835,9 +987,18 @@ public class FileDialog extends UFDlg                                      //~v@
         }                                                          //~v@@@M~
         int pos=multipleSelected[0];                               //~v@@@M~
         int filelistpos=name2file[pos];                            //~v@@@M~
+      if (swScoped)                                                //~vae0I~
+      {                                                            //~vae0I~
+        selectedFileScoped=filelistScoped.get(filelistpos);            //~vae0I~
+        selectedFilename=namelist[pos];                            //~vae0I~
+        selectedFullpath=AG.aUScoped.getFullpath(selectedFilename); //~vae0R~
+      }                                                            //~vae0I~
+      else                                                         //~vae0I~
+      {                                                            //~vae0I~
         selectedFile=filelist[filelistpos];                        //~v@@@M~
         selectedFilename=namelist[pos];                            //~v@@@M~
         selectedFullpath=selectedFile.getAbsolutePath();           //~v@@@M~
+      }                                                            //~vae0I~
         return true;                                               //~v@@@M~
     }                                                              //~v@@@M~
     //**********************************************************   //~v@@@M~
@@ -849,10 +1010,26 @@ public class FileDialog extends UFDlg                                      //~v@
         if (Ppos>=multipleSelected.length)                         //~v@@@M~
         	return false;                                          //~v@@@M~
         int filelistpos=name2file[pos];                            //~v@@@M~
+      if (swScoped)                                                //~vae0I~
+      {                                                            //~vae0I~
+        selectedFileScoped=filelistScoped.get(filelistpos);            //~vae0I~
+        selectedFilename=namelist[pos];                            //~vae0I~
+        selectedFullpath=selectedFilename;                         //~vae0I~
+      }                                                            //~vae0I~
+      else                                                         //~vae0I~
+      {                                                            //~vae0I~
         selectedFile=filelist[filelistpos];                        //~v@@@M~
         selectedFilename=namelist[pos];                            //~v@@@M~
         selectedFullpath=selectedFile.getAbsolutePath();           //~v@@@M~
-        if (Dump.Y) Dump.println("getSelectedFilename pos="+Ppos+",filename="+selectedFilename);//~v@@@M~
+      }                                                            //~vae0I~
+        if (Dump.Y) Dump.println("FileDialog.getSelectedFilenameMulti pos="+Ppos+",filename="+selectedFilename);//~v@@@M~//~vae0R~
         return true;                                               //~v@@@M~
     }                                                              //~v@@@M~
+    //**********************************************************   //~vae0I~
+    private boolean deleteScoped(UScoped.TreeMember Pmember)               //~vae0I~
+    {                                                              //~vae0I~
+        if (Dump.Y) Dump.println("getSelectedFilenameScoped");//~vae0I~
+        boolean rc=AG.aUScoped.deleteMember(Pmember.name);	       //~vae0R~
+        return rc;                                               //~vae0I~
+    }                                                              //~vae0I~
 }//class                                                           //~1318R~

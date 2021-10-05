@@ -1,5 +1,7 @@
-//*CID://+vac5R~:                             update#=  242;       //~vac5R~
+//*CID://+vae9R~:                             update#=  246;       //~vae9R~
 //*****************************************************************//~v101I~
+//2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
+//2021/09/15 vae3 UFDlg crashed at onActivityCreated, add try-catch//~vae3I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/29 va52 lint err(setStyle 1st parm)                      //~va52I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -55,12 +57,13 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
                                                                    //~vac5I~
     private static final int ID_SMALLFONT_BUTTON_WIDTH=R.dimen.smallfont_buttonheight_dialog_button;//~vac5I~
     private static final int ID_LAYOUT_BOTTOM_BUTTONS=R.id.llBottomButtons;//~vac5I~
-    private static final int ID_LAYOUT_TOP_BUTTONS=R.id.llTopButtons;//+vac5I~
+    private static final int ID_LAYOUT_TOP_BUTTONS=R.id.llTopButtons;//~vac5I~
                                                                    //~v@@@I~
 //  private static final int BASE_NEXUS7=800;                      //~v@@@R~
                                                                    //~v@@@I~
 	public 	Button btnClose,btnHelp,btnCancel,btnOK;               //~v@@@R~
 	public 	Button btnRule;                                        //~v@@@I~
+	protected 	Button btnClicked;                                 //~vae9I~
 	private LinearLayout llRelatedRule;                            //~v@@@I~
 	private boolean swNoRule;                                      //~v@@@I~
 	protected String helpFilename,title;                           //~v@@@R~
@@ -258,6 +261,8 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     //******************************************                   //~v@@@I~
     protected void setWidthOnResume(Dialog Pdlg)                   //~v@@@I~
     {                                                              //~v@@@I~
+      try                                                          //+vae9I~
+      {                                                            //+vae9I~
 		int ww=getDialogWidth();                                   //~v@@@R~
     	if (Dump.Y) Dump.println("UFDlg.setWidthOnResume ww="+ww); //~v@@@R~
         if (ww!=0)                                                 //~v@@@R~
@@ -266,6 +271,11 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 //	    	UView.setDialogWidthMatchParent(Pdlg);	//HW MediaPad T5(android8) expand dialog height,so set hight=wrap_content required//~9924I~//~9925R~
 //	    	UView.setDialogWidthWrapContent(Pdlg);	//HW MediaPad T5(android8) expand dialog height,so set hight=wrap_content required//~9925R~
   	    	UView.setDialogWidthMatchParentPortrait(Pdlg);	//HW MediaPad T5(android8) expand dialog height,so set hight=wrap_content required//~9925I~
+      }                                                            //+vae9I~
+      catch(Exception e)                                           //+vae9I~
+      {                                                            //+vae9I~
+      	Dump.println(e,"UFDlg.setWidthOnResume");           //+vae9I~
+      }                                                            //+vae9I~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@I~
     protected int getDialogWidth()                                 //~v@@@R~
@@ -453,7 +463,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
         {                                                          //~vac5I~
         	int hh=(int)(AG.resource.getDimension(ID_SMALLFONT_BUTTON_WIDTH));//~vac5I~
         	UButton.setSize(Playout,ID_LAYOUT_BOTTOM_BUTTONS,0/*keep current width value*/,hh,false/*PswDPI*/);//~vac5R~
-        	UButton.setSize(Playout,ID_LAYOUT_TOP_BUTTONS,0/*keep current width value*/,hh,false/*PswDPI*/);//+vac5I~
+        	UButton.setSize(Playout,ID_LAYOUT_TOP_BUTTONS,0/*keep current width value*/,hh,false/*PswDPI*/);//~vac5I~
         }                                                          //~vac5I~
 	}                                                              //~vac5I~
     //******************************************                   //~vac5I~
@@ -488,6 +498,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     public void onClickButton(Button Pbutton)                   //~v@@@R~
 	{                                                              //~v@@@I~
     	boolean rc=true;                                           //~v@@@I~
+        btnClicked=Pbutton;	//for identify button with same ID	   //~vae9I~
         if (Dump.Y) Dump.println("UFDlg:onClickButton:"+Pbutton.getText());//~v@@@I~//~va52R~
     	try                                                        //~v@@@I~
         {                                                          //~v@@@I~
@@ -524,7 +535,14 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 	{                                                              //~v@@@M~
         if (Dump.Y) Dump.println("UFDlg:onActivityCreated");       //~v@@@I~
     	super.onActivityCreated(Pbundle);                          //~v@@@M~
+      try                                                          //~vae3I~
+      {                                                            //~vae3I~
         RestoreInstanceState(Pbundle);                             //~v@@@M~
+      }                                                            //~vae3I~
+      catch(Exception e)                                           //~vae3I~
+      {                                                            //~vae3I~
+          Dump.println(e,"UFDlg:onActivityResult");                //~vae3R~
+      }                                                            //~vae3I~
      }                                                             //~v@@@M~
     //******************************************                   //~v@@@M~
     //*called after onPause                                        //~v@@@M~

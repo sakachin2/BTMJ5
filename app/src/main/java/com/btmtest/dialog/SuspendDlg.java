@@ -1,6 +1,7 @@
-//*CID://+vac5R~:                             update#= 1245;       //+vac5R~
+//*CID://+vae7R~:                             update#= 1246;       //+vae7R~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/09/17 vae7 (Bug)APlayAlone mode;Fix button on suspend dialog was disabled when clicked radio button/checkbox.//+vae7I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Rect;
@@ -40,7 +41,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
             implements UCheckBox.UCheckBoxI, URadioGroup.URadioGroupI//~0308I~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.suspenddlg;              //~9312R~//~9322R~//~9819R~
-    private static final int LAYOUTID_SMALLFONT=R.layout.suspenddlg_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.suspenddlg_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_SuspendDlgReq;//~9307I~//~9312R~//~9322R~//~9818R~//~9822R~
     private static final int TITLEID_RESP=R.string.Title_SuspendDlgResp;//~9822I~
     private static final String HELPFILE="SuspendDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9322R~//~9818R~
@@ -133,8 +134,8 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
     {                                                              //~9818I~
         if (Dump.Y) Dump.println("SuspendDlg.newInstance");        //~9818I~
     	SuspendDlg dlg=new SuspendDlg();                           //~9818I~
-//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9818I~//+vac5R~
-    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9818I~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~9818I~
 				TITLEID,HELPFILE);                                 //~9818I~
         dlg.lastScore=AG.aAccounts.score;                          //~9818I~
@@ -543,7 +544,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
     @Override                                                      //~9321I~
     public void setButton()                                        //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("SuspendDlg.setButton");    //~9819I~//~9A31R~
+        if (Dump.Y) Dump.println("SuspendDlg.setButton swAllOK="+swAllOK);    //~9819I~//~9A31R~//+vae7R~
     	super.setButton();                                         //~9321I~
         if (swRequester)                                           //~9321I~
 	        btnTotal.setEnabled(swAllOK);                          //~9321I~
@@ -571,6 +572,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
         if (swChanged)                                             //~0308I~
         {                                                          //~0308I~
 	        CMP.swSent=false;                                      //~0314I~
+          if (!AG.swTrainingMode)                                     //~va66I~//+vae7I~
             swAllOK=false;                                         //~0308I~
             resetRespStat();	//OKNGDlg                          //~0308I~
     		setButton();                                           //~0308I~
@@ -598,6 +600,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
         if (swChanged)                                             //~0308I~
         {                                                          //~0308I~
 	        CMP.swSent=false;                                      //~0314I~
+          if (!AG.swTrainingMode)                                  //+vae7I~
             swAllOK=false;                                         //~0308I~
             resetRespStat();	//OKNGDlg                          //~0308I~
     		setButton();                                           //~0308I~

@@ -1,7 +1,8 @@
-//*CID://+vac5R~: update#= 221;                                    //+vac5R~
+//*CID://+vae9R~: update#= 222;                                    //~vac5R~//+vae9R~
 //**********************************************************************//~1107I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
-//**********************************************************************//+vac5I~
+//2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //+vae9I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
+//**********************************************************************//~vac5I~
 package com.btmtest.dialog;                                                   //~1A65I~//~1Aa7R~//~@@@@R~
 
 import android.app.Dialog;
@@ -25,8 +26,8 @@ import static com.btmtest.StaticVars.AG;                           //~9721I~//~@
 public class AxeDlg extends UFDlg                              //~1830R~//~@@@@R~
     implements  UButton.UButtonI                                   //~@@@@I~
 {                                                                  //~0914I~
-//  private static final int buttonGroup          = R.id.DialogButtons;       //~1528I~//+vac5R~
-    private static final int buttonGroup          = R.id.llTopButtons; //for this LinearLayout, setButtonHeight at UFDlg//+vac5I~
+//  private static final int buttonGroup          = R.id.DialogButtons;       //~1528I~//~vac5R~
+    private static final int buttonGroup          = R.id.llTopButtons; //for this LinearLayout, setButtonHeight at UFDlg//~vac5I~
     public  static final String NO_TITLE="NoTitle";                //~vagFI~
 //  protected ViewGroup layoutView;    //of UFDlg                    //~1818R~//~@@@@R~
 //	protected AxeList axeList;                                     //~1818R~//~v1B6R~
@@ -143,6 +144,11 @@ public class AxeDlg extends UFDlg                              //~1830R~//~@@@@R
 	private void setButtonListenerAll(View Pview)             //~1602R~//~@@@@R~
     {                                                              //~1528I~
         ViewGroup vg=(ViewGroup)(Pview.findViewById(buttonGroup));//~1528I~
+        if (vg==null)                                              //+vae9I~
+        {                                                          //+vae9I~
+            if (Dump.Y) Dump.println("AxeDlg.setButtonListener llTopButtons not found");//+vae9I~
+            return;                                                //+vae9I~
+        }                                                          //+vae9I~
         int ctr=vg.getChildCount();                                //~1528I~
         for (int ii=0;ii<ctr;ii++)                                     //~1528I~
         {                                                          //~1528I~
@@ -157,7 +163,13 @@ public class AxeDlg extends UFDlg                              //~1830R~//~@@@@R
 //**********************************                               //~@@@@I~
 	protected void setButtonListenerAll(int Pbuttongroupid)	        //~1A65I~//~@@@@R~
     {                                                              //~1A65I~
+        if (Dump.Y) Dump.println("AxeDlg.setButtonListenerALL groupID="+Integer.toHexString(Pbuttongroupid));//+vae9I~
         ViewGroup vg=(ViewGroup)(layoutView.findViewById(Pbuttongroupid));//~1A65I~
+        if (vg==null)                                              //+vae9I~
+        {                                                          //+vae9I~
+            if (Dump.Y) Dump.println("AxeDlg.setButtonListenerALL buttongroup not found");//+vae9I~
+            return;                                                //+vae9I~
+        }                                                          //+vae9I~
         int ctr=vg.getChildCount();                                //~1A65I~
         for (int ii=0;ii<ctr;ii++)                                 //~1A65I~
         {                                                          //~1A65I~

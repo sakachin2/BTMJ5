@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=  462;       //~v@@@R~//~9404R~
+//*CID://+vae0R~:                             update#=  468;       //~vae0R~
 //*****************************************************************//~v101I~
+//2021/09/12 vae0 Scped for BTMJ5                                  //~vae0I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Point;
@@ -15,6 +16,7 @@ import com.btmtest.utils.Prop;                                     //~v@@@R~
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.gui.UButton;                                    //~v@@@R~
 import com.btmtest.utils.UFile;
+import com.btmtest.utils.UScoped;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
@@ -127,7 +129,7 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
             }                                                          //~9406I~//~9408R~
             showSyncStatus();                                   //~9405I~//~9406I~//~9408R~
         }                                                          //~9408I~
-		UFDlg.setButtonHeight(PView,R.id.llFile);                //+1816I~
+		UFDlg.setButtonHeight(PView,R.id.llFile);                //~1816I~
     }                                                              //~v@@@M~
     //******************************************                   //~v@@@I~
     @Override                                                      //~v@@@I~
@@ -389,6 +391,14 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
         if (Dump.Y) Dump.println("SettingDlg.saveProperties Pfnm="+Pfnm+",Pcmt="+Pcmt);//~9826R~
         AG.ruleProp.saveProperties(Pfnm,Pcmt);                     //~9826R~
     }                                                              //~9826R~
+    //*******************************************************      //~vae0I~
+    //*from History                                                //~vae0I~
+    //*******************************************************      //~vae0I~
+    public static void savePropertiesScoped(String Pmember,String Pcmt,boolean PswOverride)//+vae0R~
+    {                                                              //~vae0I~
+        if (Dump.Y) Dump.println("SettingDlg.savePropertiesScoped Pmember="+Pmember+",Pcmt="+Pcmt);//~vae0I~
+        AG.ruleProp.savePropertiesScoped(Pmember,Pcmt,PswOverride);//+vae0R~
+    }                                                              //~vae0I~
     //**************************************                       //~9616I~
     //* when agreed                                                //~9616I~
     //**************************************                       //~9616I~
@@ -432,6 +442,8 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     public boolean fileDialogSaveCB(String Pfullpath)              //~v@@@R~
     {                                                              //~v@@@I~
 		if (Dump.Y) Dump.println("SettingDlg.fileDialogSaveCB fnm="+Pfullpath+",swSaveDialog2Properties="+swSaveDialog2Properties);//~v@@@R~//~9405R~//~9B08R~//~9B09R~
+        if (UScoped.chkScoped()>0)                                   //~vae0I~
+            return fileDialogSaveCBScoped(Pfullpath);        //~vae0I~
         if (!swSaveDialog2Properties)                              //~9B09I~
 		    dialog2Properties(Pfullpath);	//update curProp                   //~v@@@I~//~9405R~//~9B09R~
         swSaveDialog2Properties=false;                             //~9B09I~
@@ -446,6 +458,23 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
 		if (Dump.Y) Dump.println("SettingDlg.fileDialogSave rc="+rc+",AG.ruleSyncDate="+AG.ruleSyncDate);//~9B08I~
         return rc;                                                 //~9B08I~
     }                                                              //~v@@@I~
+	//**********************************                           //~vae0I~
+    private boolean fileDialogSaveCBScoped(String Pfullpath)       //~vae0I~
+    {                                                              //~vae0I~
+		if (Dump.Y) Dump.println("SettingDlg.fileDialogSaveCBScoped fnm="+Pfullpath+",swSaveDialog2Properties="+swSaveDialog2Properties);//~vae0I~
+        if (!swSaveDialog2Properties)                              //~vae0I~
+		    dialog2Properties(Pfullpath);	//abstruct, to extender(RuleSettingDlg//~vae0I~
+        swSaveDialog2Properties=false;                             //~vae0I~
+        boolean rc=curProp.savePropertiesScoped(Pfullpath,propCmt,true/*swOverride*/);      //~9B08I~//~vae0R~
+//        if (rc)                                                  //~vae0I~
+//        {                                                        //~vae0I~
+//            String syncDate=curProp.getParameter(getKeyRS(RSID_SYNCDATE),"0");//~vae0I~
+//            if (Dump.Y) Dump.println("SettingDlg.fileDialogSave syncDate="+syncDate);//~vae0I~
+//            UFile.setLastModified(Pfullpath,Long.parseLong(syncDate,16));//~vae0I~
+//        }                                                        //~vae0I~
+		if (Dump.Y) Dump.println("SettingDlg.fileDialogSaveScoped rc="+rc+",AG.ruleSyncDate="+AG.ruleSyncDate);//~vae0I~
+        return rc;                                                 //~vae0I~
+    }                                                              //~vae0I~
 	//*******************************************************************//~9B09I~
 	//*return syncdate by yyyy/MM/dd-HH.mm.ss                      //~9B09I~
 	//*******************************************************************//~9B09I~

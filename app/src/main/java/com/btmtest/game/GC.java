@@ -1,7 +1,11 @@
-//*CID://+vacfR~: update#= 811;                                    //~vacfR~
+//*CID://+vaefR~: update#= 840;
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2021/09/27 vaef gesture navigation mode from android11
+//2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
+//2021/08/24 vad1 game buttons layout for lefty                    //~vad1I~
+//2021/08/22 vad0 button size for small device but not small dpi   //~vad0I~
 //2021/08/22 vacf vertical button label for landscape              //~vacfI~
 //2021/08/21 vacd (Bug)PlayAlone mode; at blocked by Ron issued, Discard btn reset Cancel btn and issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vacdI~
 //2021/08/18 vacb Win btn do AinAny after WinAny button.           //~vacbI~
@@ -39,6 +43,7 @@ package com.btmtest.game;                                         //~1107R~  //~
 
 import com.btmtest.BT.BTControl;
 import com.btmtest.BT.BTMulti;
+import com.btmtest.MainActivity;
 import com.btmtest.MainView;
 import com.btmtest.R;
 import com.btmtest.TestOption;
@@ -65,10 +70,9 @@ import com.btmtest.utils.EventCB;
 import com.btmtest.utils.URunnable;
 import com.btmtest.utils.UView;//~v@@@R~
 
-import static android.util.TypedValue.COMPLEX_UNIT_PX;
+import static android.util.TypedValue.*;
 import static com.btmtest.AG.*;
 import static com.btmtest.BT.enums.MsgIDConst.*;
-import static com.btmtest.dialog.PrefSetting.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.Status.*;//~v@@@I~
 import com.btmtest.game.gv.GameView;                               //~v@@@I~
@@ -86,17 +90,9 @@ import static com.btmtest.utils.Alert.*;
 import static com.btmtest.game.UAD2Touch.*;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Message;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
 
@@ -104,7 +100,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class GC implements UButton.UButtonI                        //~v@@@R~
    							,Alert.AlertI                          //~9B25I~
@@ -114,10 +109,19 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int BUTTONS_LEFT  =R.layout.gvbuttons_left ;//~v@@@I~
     private static final int BUTTONS_RIGHT_SMALL =R.layout.gvbuttons_right_small;//~9808I~
     private static final int BUTTONS_LEFT_SMALL  =R.layout.gvbuttons_left_small ;//~9808I~
+    private static final int BUTTONS_RIGHT_SMALLFONT =R.layout.gvbuttons_right_smallfont;//~vad0I~
+    private static final int BUTTONS_LEFT_SMALLFONT  =R.layout.gvbuttons_left_smallfont ;//~vad0I~
     private static final int BUTTONS_TOP   =R.layout.gvbuttons_top  ;//~v@@@I~
     private static final int BUTTONS_BOTTOM=R.layout.gvbuttons_bottom;//~v@@@I~
     private static final int BUTTONS_TOP_SMALL   =R.layout.gvbuttons_top_small  ;//~9808I~
     private static final int BUTTONS_BOTTOM_SMALL=R.layout.gvbuttons_bottom_small;//~9808I~
+    private static final int BUTTONS_TOP_SMALLFONT   =R.layout.gvbuttons_top_smallfont  ;//~vad0I~
+    private static final int BUTTONS_BOTTOM_SMALLFONT=R.layout.gvbuttons_bottom_smallfont;//~vad0I~
+                                                                   //~vad1I~
+    private static final int BUTTONS_BOTTOM_REV=R.layout.gvbuttons_bottom_rev;//~vad1I~
+    private static final int BUTTONS_BOTTOM_SMALL_REV=R.layout.gvbuttons_bottom_small_rev;//~vad1I~
+    private static final int BUTTONS_BOTTOM_SMALLFONT_REV=R.layout.gvbuttons_bottom_smallfont_rev;//~vad1I~
+                                                                   //~vad1I~
     private static final int LAYOUTID_BUTTONS1=R.id.GameViewButtons1;  //~v@@@I~
     private static final int LAYOUTID_BUTTONS2=R.id.GameViewButtons2;  //~v@@@I~
                                                                    //~v@@@I~
@@ -216,6 +220,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	private boolean swShownBtnCancel;                              //~vaahI~
 	private boolean swChankan;                                     //~vaaVI~
 	private boolean swWinAnywayPushed,swWinAnywayActive;           //~vacbR~
+	private boolean swLeftyPortrait,swLeftyLandscape;              //~vad1I~
+	public int marginLR;                                           //~vaefI~
 //*************************                                        //~v@@@I~
 	public GC()                             //for IT override      //~va60I~
     {                                                              //~va60I~
@@ -237,16 +243,29 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //          UView.fixOrientation(true);                            //~v@@@I~//~va9fR~
 	    	UView.getScreenSize();                                 //~v@@@I~
             swPortrait=AG.scrWidth<AG.scrHeight;                   //~v@@@I~
-            btnLeftW =(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_left_small :R.dimen.gvbtn_left);//~9808M~
-            btnRightW=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_right_small:R.dimen.gvbtn_right);//~9808M~
-            btnTopH   =(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_top_small   :R.dimen.gvbtn_top);//~9808I~
-            btnBottomH=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_bottom_small:R.dimen.gvbtn_bottom);//~9808I~
-        	if(Dump.Y) Dump.println("GC.init dimen dWidth left="+btnLeftW+",right="+btnRightW);//~9808R~
+            swLeftyPortrait=PrefSetting.isLeftyPortrait();         //~vad1I~
+            swLeftyLandscape=PrefSetting.isLeftyLandscape();       //~vad1I~
+//          btnLeftW =(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_left_small :R.dimen.gvbtn_left);//~9808M~//~vad0R~
+//          btnRightW=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_right_small:R.dimen.gvbtn_right);//~9808M~//~vad0R~
+//          btnTopH   =(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_top_small   :R.dimen.gvbtn_top);//~9808I~//~vad0R~
+//          btnBottomH=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_bottom_small:R.dimen.gvbtn_bottom);//~9808I~//~vad0R~
+            btnLeftW  =(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_left_smallfont//~vad0I~
+							: (AG.swSmallDevice ? R.dimen.gvbtn_left_small : R.dimen.gvbtn_left));//~vad0I~
+            btnRightW =(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_right_smallfont//~vad0I~
+							: (AG.swSmallDevice ? R.dimen.gvbtn_right_small:R.dimen.gvbtn_right));//~vad0I~
+            btnTopH   =(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_top_smallfont//~vad0I~
+							: (AG.swSmallDevice?R.dimen.gvbtn_top_small   :R.dimen.gvbtn_top));//~vad0I~
+            btnBottomH=(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_bottom_smallfont//~vad0I~
+							: (AG.swSmallDevice?R.dimen.gvbtn_bottom_small:R.dimen.gvbtn_bottom));//~vad0I~
+                                                                   //~vad0I~
+        	if(Dump.Y) Dump.println("GC.init dimen Width left="+btnLeftW+",right="+btnRightW);//~9808R~//~vacfR~
+        	if(Dump.Y) Dump.println("GC.init dimen Height top="+btnTopH+",bottom="+btnBottomH);//~vacfI~
 //            chkLayoutSize();                                       //~v@@@R~//~9411R~
         	if(Dump.Y) Dump.println("GC.init swPortrait="+swPortrait+",ww="+AG.scrWidth+",hh="+AG.scrHeight+",swTrainingMode="+AG.swTrainingMode);//~v@@@I~//~vaa2R~
 //          new Accounts();                                        //~v@@@R~
 //          new Status();                                          //~v@@@R~
             new Rule();                                            //~v@@@I~//~9C01R~
+            AG.aRule.swLeftButtons=swLeftyLandscape;               //~vad1M~
             new Players();                                         //~v@@@I~
             new RoundStat();                                       //~va60I~
             new Tiles();                                           //~v@@@I~
@@ -394,6 +413,18 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	private void init2()                                           //~v@@@R~
     {                                                              //~1120I~//~1122M~
         if (Dump.Y) Dump.println("GC.init2 swTrainingMode="+AG.swTrainingMode);                       //~v@@@I~//~vaa2R~
+        marginLR=0;                                                //~vaefI~
+        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+        {                                                          //~vaefI~
+        	if (!swPortrait)	//landscape                            //+vaefR~
+            {                                                      //~vaefI~
+                if (true)   //TODO test                            //~vaefI~
+                    marginLR=AG.scrNavigationbarRightWidthA11;     //~vaefI~
+                else                                               //~vaefI~
+                    marginLR=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;//~vaefI~
+            }                                                      //~vaefI~
+            if (Dump.Y) Dump.println("GC.init2 portrait="+AG.portrait+",marginLR="+marginLR+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefI~
+        }                                                          //~vaefI~
         try                                                        //~1109I~//~1120M~//~1122M~
         {                                                          //~1109I~//~1120M~//~1122M~
         	gameView=new GameView(AG.context);                     //~v@@@R~
@@ -445,42 +476,87 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         {                                                          //~v@@@I~
             lp=new FrameLayout.LayoutParams(mp,wc);                //~v@@@I~//~9630R~
 //          btns1=AG.inflater.inflate(BUTTONS_TOP,null);            //~v@@@I~//~9808R~
-            btns1=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_TOP_SMALL:BUTTONS_TOP,null);//~9808I~
+//          btns1=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_TOP_SMALL:BUTTONS_TOP,null);//~9808I~//~vad0R~
+            btns1=AG.inflater.inflate(AG.swSmallFont ? BUTTONS_TOP_SMALLFONT : (AG.swSmallDevice ? BUTTONS_TOP_SMALL : BUTTONS_TOP),null);//~vad0I~
             lp.gravity=Gravity.TOP|Gravity.LEFT;                   //~v@@@R~
             btns1.setLayoutParams(lp);                             //~v@@@R~
             frame.addView(btns1);                                  //~v@@@R~
                                                                    //~v@@@I~
             lp=new FrameLayout.LayoutParams(mp,wc);                //~v@@@I~//~9630R~
 //          btns2=AG.inflater.inflate(BUTTONS_BOTTOM,null);        //~v@@@R~//~9808R~
-            btns2=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_BOTTOM_SMALL:BUTTONS_BOTTOM,null);//~9808I~
+//          btns2=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_BOTTOM_SMALL:BUTTONS_BOTTOM,null);//~9808I~//~vad0R~
+          if (swLeftyPortrait)                                     //~vad1I~
+            btns2=AG.inflater.inflate(AG.swSmallFont ? BUTTONS_BOTTOM_SMALLFONT_REV : (AG.swSmallDevice ? BUTTONS_BOTTOM_SMALL_REV : BUTTONS_BOTTOM_REV),null);//~vad1I~
+          else                                                     //~vad1I~
+            btns2=AG.inflater.inflate(AG.swSmallFont ? BUTTONS_BOTTOM_SMALLFONT : (AG.swSmallDevice ? BUTTONS_BOTTOM_SMALL : BUTTONS_BOTTOM),null);//~vad0I~
             lp.gravity=Gravity.BOTTOM|Gravity.CENTER;    //=layout_gravity//~v@@@R~
+//        //TODO test                                              //~vacfR~
+//            Button b=(Button)UView.findViewById(btns2,R.id.UserAction_Ron);//TODO test//~vacfR~
+//            if (Dump.Y) Dump.println("GC.addButton portrait getlayoutParams.Height="+b.getLayoutParams().height);//~vacfR~
+//            ViewGroup.MarginLayoutParams mlp=(ViewGroup.MarginLayoutParams)b.getLayoutParams();//~vacfR~
+//            if (Dump.Y) Dump.println("GC.addButton portrait bottom margin lrtb="+mlp.leftMargin+","+mlp.rightMargin+","+mlp.topMargin+","+mlp.bottomMargin);//~vacfR~
+//            LinearLayout ll=(LinearLayout)UView.findViewById(btns2,R.id.GameViewButtons2);//~vacfR~
+//            if (Dump.Y) Dump.println("GC.addButton portrait bottom btns="+Utils.toString(ll));//~vacfR~
+//            if (Dump.Y) Dump.println("GC.addButton portrait bottom getlayoutParams="+Utils.toString(ll.getLayoutParams()));//~vacfR~
+//        //TODO test                                              //~vacfR~
+	    	if (Build.VERSION.SDK_INT==29)   //for gesture navigationbar//~vaeeI~
+      	  	  if (AG.swNewA10)                                         //~vaeeR~
+        		lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeight);//~vaeeI~
             btns2.setLayoutParams(lp);                             //~v@@@R~
             frame.addView(btns2);                                  //~v@@@R~
 //          btns2.setBackgroundDrawable(null);                     //~v@@@R~
+			if (Dump.Y) Dump.println("GC.addButton portrait bottom buttons MesuredHeight="+btns2.getMeasuredHeight()+",layoutHeight="+btns2.getHeight());//~vacfI~
+			if (Dump.Y) Dump.println("GC.addButton portrait scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeight);//~vaefI~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
-            lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@M~//~9807R~
+//          lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@M~//~9807R~//~vaefR~
+            int hh2=mp;                                            //~vaefI~
+//      	if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+//          	hh2=AG.scrHeightReal-AG.scrNavigationPillBottomHeightA11;//~vaefI~
+            lp=new FrameLayout.LayoutParams(wc,hh2);               //~vaefI~
 //          btns1=AG.inflater.inflate(BUTTONS_LEFT,null);          //~v@@@I~//~9808R~
-            btns1=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_LEFT_SMALL:BUTTONS_LEFT,null);//~9808I~
+//          btns1=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_LEFT_SMALL:BUTTONS_LEFT,null);//~9808I~//~vad0R~
+            btns1=AG.inflater.inflate(AG.swSmallFont ? BUTTONS_LEFT_SMALLFONT : (AG.swSmallDevice ? BUTTONS_LEFT_SMALL:BUTTONS_LEFT),null);//~vad0I~
             if (AG.aRule.swLeftButtons)	//gambutton to left edge   //~v@@@M~
             	lp.gravity=Gravity.RIGHT;    //=layout_gravity     //~v@@@M~
             else                                                   //~v@@@M~
             	lp.gravity=Gravity.LEFT;    //=layout_gravity      //~v@@@M~
+//      	if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+//          	lp.gravity|=Gravity.CENTER_VERTICAL;    //=layout_gravity//~vaefI~
+//          	lp.gravity|=Gravity.TOP;                           //~vaefI~
+//            if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
+//            {                                                    //~vaefR~
+//                lp.setMargins(AG.scrNavigationbarLeftWidthA11/*left*/,0/*top*/,0/*right*/,0/*bottom*/);//~vaefR~
+//                if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin w="+lp.width+",h="+lp.height+"scrnavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~
+//            }                                                    //~vaefR~
             btns1.setLayoutParams(lp);                             //~v@@@I~
+			if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin btn w="+btns1.getWidth()+",h="+btns1.getHeight());//~vaefI~
             frame.addView(btns1);                                  //~v@@@I~
                                                                    //~v@@@I~
-            lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@R~
+//          lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@R~//~vaefR~
+            lp=new FrameLayout.LayoutParams(wc,hh2);               //~vaefI~
 //          btns2=AG.inflater.inflate(BUTTONS_RIGHT,null);         //~v@@@R~//~9808R~
-            btns2=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_RIGHT_SMALL:BUTTONS_RIGHT,null);//~9808I~
+//          btns2=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_RIGHT_SMALL:BUTTONS_RIGHT,null);//~9808I~//~vad0R~
+            btns2=AG.inflater.inflate(AG.swSmallFont ? BUTTONS_RIGHT_SMALLFONT : (AG.swSmallDevice ? BUTTONS_RIGHT_SMALL : BUTTONS_RIGHT),null);//~vad0I~
             if (AG.aRule.swLeftButtons)	//gambutton to left edge	   //~v@@@I~
             	lp.gravity=Gravity.LEFT|Gravity.CENTER;   //=layout_gravity//~v@@@I~
             else                                                   //~v@@@I~
             	lp.gravity=Gravity.RIGHT|Gravity.CENTER;   //=layout_gravity//~v@@@I~
+//      	if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+//          	lp.gravity|=Gravity.CENTER_VERTICAL;    //=layout_gravity//~vaefI~
+//          	lp.gravity|=Gravity.TOP;                           //~vaefI~
+            if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
+            {                                                      //~vaefR~
+                lp.setMargins(0/*left*/,0/*top*/,marginLR/*right*/,0/*bottom*/);//~vaefI~
+                if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin w="+lp.width+",h="+lp.height+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~
+            }                                                      //~vaefR~
             btns2.setLayoutParams(lp);                             //~v@@@R~
+			if (Dump.Y) Dump.println("GC.addButton landscape layout after setMarginRight marginLR="+marginLR+",btn w="+btns2.getWidth()+",h="+btns2.getHeight());//~vaefR~
             frame.addView(btns2);                                   //~v@@@R~
 //          btnLeftW=btns1.getMeasuredWidth();                     //~9808I~
 //          btnRightW=btns2.getMeasuredWidth();                    //~9808I~
+			if (Dump.Y) Dump.println("GC.addButton landscape scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeightA11+",right="+AG.scrNavigationbarRightWidthA11+",left="+AG.scrNavigationbarLeftWidthA11);//~vaefR~
                                                                    //~v@@@I~
         }                                                          //~v@@@I~
     Button b1=                                                     //~9B20I~
@@ -1923,67 +1999,67 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     public static void playSound(int PctrGame)                     //~va06I~
     {                                                              //~va06I~
         if (Dump.Y) Dump.println("GC.playSound ctrGame="+PctrGame);//~va06I~
-        int typeBGM=PrefSetting.getBGMType();                      //~va06I~
-        int soundID;                                               //~va06I~
-        switch (typeBGM)                                           //~va06I~
-        {                                                          //~va06I~
-        case PS_BGM_NO:                                            //~va06I~
-        	soundID=-1;                                            //~va06I~
-            break;                                                 //~va06I~
-        case PS_BGM_4SEASONS:                                      //~va06I~
-            switch (PctrGame%PLAYERS)                              //~va06I~
-            {                                                      //~va06I~
-            case 0:                                                //~va06I~
-                soundID=SOUNDID_BGM_GAME1SLOW;                     //~va06I~
-                break;                                             //~va06I~
-            case 1:                                                //~va06I~
-                soundID=SOUNDID_BGM_GAME2SLOW;                     //~va06I~
-                break;                                             //~va06I~
-            case 2:                                                //~va06I~
-                soundID=SOUNDID_BGM_GAME3SLOW;                     //~va06I~
-                break;                                             //~va06I~
-            default:                                               //~va06I~
-                soundID=SOUNDID_BGM_GAME4SLOW;                     //~va06I~
-            }                                                      //~va06I~
-            break;                                                 //~va06I~
-        case PS_BGM_4SEASONS_FAST:                                 //~va06I~
-            switch (PctrGame%PLAYERS)                              //~va06I~
-            {                                                      //~va06I~
-            case 0:                                                //~va06I~
-                soundID=SOUNDID_BGM_GAME1FAST;                     //~va06I~
-                break;                                             //~va06I~
-            case 1:                                                //~va06I~
-                soundID=SOUNDID_BGM_GAME2FAST;                     //~va06I~
-                break;                                             //~va06I~
-            case 2:                                                //~va06I~
-                soundID=SOUNDID_BGM_GAME3FAST;                     //~va06I~
-                break;                                             //~va06I~
-            default:                                               //~va06I~
-                soundID=SOUNDID_BGM_GAME4FAST;                     //~va06I~
-            }                                                      //~va06I~
-            break;                                                 //~va06I~
-        case PS_BGM_SERIESK:                                       //~vac3I~
-            switch (PctrGame%PLAYERS)                              //~vac3I~
-            {                                                      //~vac3I~
-            case 0:                                                //~vac3I~
-                soundID=SOUNDID_BGM_EBURISHOU;                      //~vac3I~
-                break;                                             //~vac3I~
-            case 1:                                                //~vac3I~
-                soundID=SOUNDID_BGM_MIZUCHUKOUKA;                  //~vac3I~
-                break;                                             //~vac3I~
-            case 2:                                                //~vac3I~
-                soundID=SOUNDID_BGM_TOUCHIKUKOUKA;                 //~vac3I~
-                break;                                             //~vac3I~
-            case 3:                                                //~vac3I~
-                soundID=SOUNDID_BGM_KYOUTO;                       //~vac3I~
-                break;                                             //~vac3I~
-            default:                                               //~vac3I~
-	        	soundID=SOUNDID_BGM_TOP;                           //~vac3I~
-            }                                                      //~vac3I~
-            break;                                                 //~vac3I~
-        default:                                                   //~va06I~
-        	soundID=SOUNDID_BGM_TOP;                               //~va06I~
-        }                                                          //~va06I~
+//        int typeBGM=PrefSetting.getBGMType();                      //~va06I~//~vad1R~
+//        int soundID;                                               //~va06I~//~vad1R~
+//        switch (typeBGM)                                           //~va06I~//~vad1R~
+//        {                                                          //~va06I~//~vad1R~
+//        case PS_BGM_NO:                                            //~va06I~//~vad1R~
+//            soundID=-1;                                            //~va06I~//~vad1R~
+//            break;                                                 //~va06I~//~vad1R~
+//        case PS_BGM_4SEASONS:                                      //~va06I~//~vad1R~
+//            switch (PctrGame%PLAYERS)                              //~va06I~//~vad1R~
+//            {                                                      //~va06I~//~vad1R~
+//            case 0:                                                //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME1SLOW;                     //~va06I~//~vad1R~
+//                break;                                             //~va06I~//~vad1R~
+//            case 1:                                                //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME2SLOW;                     //~va06I~//~vad1R~
+//                break;                                             //~va06I~//~vad1R~
+//            case 2:                                                //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME3SLOW;                     //~va06I~//~vad1R~
+//                break;                                             //~va06I~//~vad1R~
+//            default:                                               //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME4SLOW;                     //~va06I~//~vad1R~
+//            }                                                      //~va06I~//~vad1R~
+//            break;                                                 //~va06I~//~vad1R~
+//        case PS_BGM_4SEASONS_FAST:                                 //~va06I~//~vad1R~
+//            switch (PctrGame%PLAYERS)                              //~va06I~//~vad1R~
+//            {                                                      //~va06I~//~vad1R~
+//            case 0:                                                //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME1FAST;                     //~va06I~//~vad1R~
+//                break;                                             //~va06I~//~vad1R~
+//            case 1:                                                //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME2FAST;                     //~va06I~//~vad1R~
+//                break;                                             //~va06I~//~vad1R~
+//            case 2:                                                //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME3FAST;                     //~va06I~//~vad1R~
+//                break;                                             //~va06I~//~vad1R~
+//            default:                                               //~va06I~//~vad1R~
+//                soundID=SOUNDID_BGM_GAME4FAST;                     //~va06I~//~vad1R~
+//            }                                                      //~va06I~//~vad1R~
+//            break;                                                 //~va06I~//~vad1R~
+//        case PS_BGM_SERIESK:                                       //~vac3I~//~vad1R~
+//            switch (PctrGame%PLAYERS)                              //~vac3I~//~vad1R~
+//            {                                                      //~vac3I~//~vad1R~
+//            case 0:                                                //~vac3I~//~vad1R~
+//                soundID=SOUNDID_BGM_EBURISHOU;                      //~vac3I~//~vad1R~
+//                break;                                             //~vac3I~//~vad1R~
+//            case 1:                                                //~vac3I~//~vad1R~
+//                soundID=SOUNDID_BGM_MIZUCHUKOUKA;                  //~vac3I~//~vad1R~
+//                break;                                             //~vac3I~//~vad1R~
+//            case 2:                                                //~vac3I~//~vad1R~
+//                soundID=SOUNDID_BGM_TOUCHIKUKOUKA;                 //~vac3I~//~vad1R~
+//                break;                                             //~vac3I~//~vad1R~
+//            case 3:                                                //~vac3I~//~vad1R~
+//                soundID=SOUNDID_BGM_KYOUTO;                       //~vac3I~//~vad1R~
+//                break;                                             //~vac3I~//~vad1R~
+//            default:                                               //~vac3I~//~vad1R~
+//                soundID=SOUNDID_BGM_TOP;                           //~vac3I~//~vad1R~
+//            }                                                      //~vac3I~//~vad1R~
+//            break;                                                 //~vac3I~//~vad1R~
+//        default:                                                   //~va06I~//~vad1R~
+//            soundID=SOUNDID_BGM_TOP;                               //~va06I~//~vad1R~
+//        }                                                          //~va06I~//~vad1R~
 //        if (typeBGM!=PS_BGM_NO)                                    //~va6iI~//~vac3R~
 //        {                                                          //~va6iI~//~vac3R~
 //            Rect r=Status.getGameSeq();                        //~va06I~//~va6iR~//~vac3R~
@@ -1994,6 +2070,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //            if (gameCtrSet==1 && PctrGame==0)  //1st round of sounth rotation//~va6iR~//~vac3R~
 //                soundID=SOUNDID_BGM_EBURISHOU;                     //~va6iR~//~vac3R~
 //        }                                                          //~va6iI~//~vac3R~
+		int soundID=PrefSetting.getSoundID();                      //~vad1I~
       if (soundID!=-1)                                             //~va61I~
         Sound.playBGM(soundID);                                    //~va06I~
     }                                                              //~va06I~
@@ -2296,7 +2373,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             strGST= RuleSettingEnum.strsGameSetType[intGST];       //~vacfI~
         else                                                       //~vacfI~
             strGST= RuleSettingEnum.strsGameSetTypeLand[intGST];   //~vacfI~
-		if (Dump.Y) Dump.println("GC.showGameType intGst="+intGST+",strGst="+strGST);//+vacfI~
+		if (Dump.Y) Dump.println("GC.showGameType intGst="+intGST+",strGst="+strGST);//~vacfI~
         Pbtn.setText(strGST);                                      //~vaahI~
     }                                                              //~vaahI~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

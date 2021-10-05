@@ -35,6 +35,9 @@
                  android:layout_weight="1"
                  android:textAllCaps="false"
                             android:textSize="@dimen/smallfont_textsize_main_buttons"
+                 android:padding="2dp"
+                 android:layout_marginTop="-4dp"
+                 android:layout_marginBottom="-4dp"
             />
              <Button
                         android:id="@+id/Settings"
@@ -44,6 +47,9 @@
                  android:layout_weight="1"
                  android:textAllCaps="false"
                             android:textSize="@dimen/smallfont_textsize_main_buttons"
+                 android:padding="2dp"
+                 android:layout_marginTop="-4dp"
+                 android:layout_marginBottom="-4dp"
             />
              <Button
                         android:id="@+id/Test1"
@@ -54,6 +60,9 @@
                  android:visibility="gone"
                  android:textAllCaps="false"
                             android:textSize="@dimen/smallfont_textsize_main_buttons"
+                 android:padding="2dp"
+                 android:layout_marginTop="-4dp"
+                 android:layout_marginBottom="-4dp"
             />
             <Button
                         android:id="@+id/StartGame"
@@ -63,6 +72,9 @@
                  android:layout_weight="1"
                  android:textAllCaps="false"
                             android:textSize="@dimen/smallfont_textsize_main_buttons"
+                 android:padding="2dp"
+                 android:layout_marginTop="-4dp"
+                 android:layout_marginBottom="-4dp"
             />
             <Button
                         android:id="@+id/History"
@@ -72,6 +84,9 @@
                  android:layout_weight="1"
                  android:textAllCaps="false"
                             android:textSize="@dimen/smallfont_textsize_main_buttons"
+                 android:padding="2dp"
+                 android:layout_marginTop="-4dp"
+                 android:layout_marginBottom="-4dp"
             />
             <Button
                         android:id="@+id/Help"
@@ -81,6 +96,9 @@
                  android:layout_weight="1"
                  android:textAllCaps="false"
                             android:textSize="@dimen/smallfont_textsize_main_buttons"
+                 android:padding="2dp"
+                 android:layout_marginTop="-4dp"
+                 android:layout_marginBottom="-4dp"
             />
         </LinearLayout>
 </LinearLayout>

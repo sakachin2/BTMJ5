@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 161;                                    //~va60R~
+//*CID://+1aj1R~: update#= 162;                                    //+1aj1R~
 //**********************************************************************
+//1aj1 2021/08/14 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//+1aj1I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //@@02 20181106 UHandler on subthread
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
@@ -17,7 +18,7 @@ import android.os.Message;                                         //~@003I~
 
 import java.util.ArrayList;
 
-import static com.btmtest.TestOption.*;                            //+va60R~
+import static com.btmtest.TestOption.*;                            //~va60R~
 
 //*****************************************                        //~@003I~
 ////usage                                                          //~@003I~
@@ -39,11 +40,11 @@ public abstract class UHandler extends Handler                            //~@00
     protected abstract boolean storeMsg(Message msg);              //~@003I~
     protected abstract void handleMsg(Message msg);                //~@003R~
 //**********************************                               //~@003R~
-    public UHandler()                                              //~@@02R~
-    {                                                              //~@@02I~
-//      super();                                                   //~@@02R~
-        if (Dump.Y) Dump.println("UHandler constructor main looper");//~@@02R~
-    }                                                              //~@@02I~
+//    public UHandler()                                              //~@@02R~//+1aj1R~
+//    {                                                              //~@@02I~//+1aj1R~
+////      super();                                                   //~@@02R~//+1aj1R~
+//        if (Dump.Y) Dump.println("UHandler constructor main looper");//~@@02R~//+1aj1R~
+//    }                                                              //~@@02I~//+1aj1R~
 //**********************************                               //~@@02I~
     public UHandler(Looper Plooper)                                //~@@02I~
     {                                                              //~@@02I~

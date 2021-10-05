@@ -1,5 +1,11 @@
-//*CID://+va42R~:                             update#=   82;       //~va42R~
+//*CID://+vae0R~:                             update#=  118;       //~vae8R~//+vae0R~
 //************************************************************************//~v102I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
+//2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
+//2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
+//1ak2 2021/09/04 access external audio file                       //~1ak2I~
+//1ak1 2021/08/27 write Dump.txt to internal cache, it ca be pull by run-as cmd//~1ak1I~
+//2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
 //2020/11/19 va42 At Android10, mkdir /sdcard/eMahjong fails       //~va42I~
 //                manifest: application-->requestLagacyExternalStorage="true" (ignored when target=androd11)//~va42I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -13,6 +19,7 @@ import com.btmtest.R;                                              //~v@@@I~
 
 import static android.os.Environment.*;
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@@I~
+import static com.btmtest.game.GConst.*;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -44,6 +51,7 @@ public class UFile                                                 //~v@@@R~
 //    private static boolean swSDAvailable=true;                  //~1313I~//~v@@@R~
 //    private static String dirSD;                              //~1425R~//~v@@@R~
 //    private static int rawFileId;                                  //~1425R~//~v@@@R~
+	private static boolean swLegacy;                               //~vae7I~
 //********************************************************         //~1401I~
 //*to intercept FileOuputStream of Global                          //~1401I~
 //* return FileOutputStream for cfgfile on /data/data              //~1401I~
@@ -208,7 +216,7 @@ public class UFile                                                 //~v@@@R~
         String txt;                                                //~v@@@I~
     	InputStream is;                                            //~v@@@I~
     //***************************                                  //~v@@@I~
-        if (Dump.Y) Dump.println("getHelpFileText:"+Pfilename);    //~v@@@I~
+        if (Dump.Y) Dump.println("UFile.getHelpFileText:"+Pfilename);    //~v@@@I~//~vae0R~
     	String fnm="helptexts/"+Pfilename+AG.helpFileSuffix+".txt";//~v@@@R~
 //  	String txt=loadAssetTextFile(fnm,null/*encoding=utf8*/);   //~v@@@R~
     	if (AG.helpFileSuffix.equals(""))                          //~v@@@I~
@@ -232,7 +240,7 @@ public class UFile                                                 //~v@@@R~
     	InputStream is;                                            //~v@@@I~
         String txt;                                                //~v@@@I~
     //***************************                                  //~v@@@I~
-        if (Dump.Y) Dump.println("getHelpFileText:"+Pfilename);    //~v@@@I~
+        if (Dump.Y) Dump.println("UFile.getHelpFileText:"+Pfilename);    //~v@@@I~//~vae0R~
     	String fnm="helptexts/"+Pfilename+AG.helpFileSuffix+Pextension;//~v@@@I~
 //  	String txt=loadAssetTextFile(fnm,null/*encoding=utf8*/,PswNFMsg);//~v@@@I~
     	if (AG.helpFileSuffix.equals(""))                          //~v@@@I~
@@ -262,7 +270,7 @@ public class UFile                                                 //~v@@@R~
     	String encoding=Pencoding;                                  //~v@@@I~
         if (encoding==null)                                        //~v@@@I~
         	encoding="UTF-8";                                      //~v@@@I~
-        if (Dump.Y) Dump.println("loadAssetTextFile:"+Pfnm);       //~v@@@I~
+        if (Dump.Y) Dump.println("UFile.loadAssetTextFile:"+Pfnm);       //~v@@@I~//~vae0R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
         	final AssetManager mgr=AG.context.getAssets();          //~v@@@I~
@@ -332,9 +340,9 @@ public class UFile                                                 //~v@@@R~
         }                                                          //~1511I~//~v@@@R~
         catch(Exception e)                                         //~1511I~//~v@@@R~
         {                                                          //~1511I~//~v@@@R~
-            if (Dump.Y) Dump.println("openAssetFile failed:"+Pfilename);//~1511I~//~v@@@I~
+            if (Dump.Y) Dump.println("UFile.openAssetFile failed:"+Pfilename);//~1511I~//~v@@@I~//~vae0R~
         	if (Pshowexception)                                    //~v@@@I~
-	            Dump.println(e,"openAssetFile:"+Pfilename);        //~v@@@I~
+	            Dump.println(e,"UFile.openAssetFile:"+Pfilename);        //~v@@@I~//~vae0R~
             is=null;                                               //~1511I~//~v@@@R~
         }                                                          //~1511I~//~v@@@R~
         return is;                                                 //~1511I~//~v@@@R~
@@ -497,7 +505,7 @@ public class UFile                                                 //~v@@@R~
         boolean success=true;                                      //~v@@@I~
         byte [] buff;                                              //~v@@@I~
     //*********************                                        //~v@@@I~
-        if (Dump.Y) Dump.println("copyFile:src="+Psrc+",tgt="+Ptgt);//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.copyFile:src="+Psrc+",tgt="+Ptgt);//~v@@@I~//~vae0R~
                                                                    //~v@@@I~
 		FileInputStream fis=newFileInputStream(Psrc);              //~v@@@I~
         if (fis==null)                                             //~v@@@I~
@@ -534,7 +542,7 @@ public class UFile                                                 //~v@@@R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
             fis.close();                                           //~v@@@I~
-	        if (Dump.Y) Dump.println("closed src="+Psrc);          //~v@@@I~
+	        if (Dump.Y) Dump.println("UFile.closed src="+Psrc);          //~v@@@I~//~vae0R~
         }                                                          //~v@@@I~
         catch(IOException e)                                       //~v@@@I~
         {                                                          //~v@@@I~
@@ -544,7 +552,7 @@ public class UFile                                                 //~v@@@R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
             fos.close();                                           //~v@@@I~
-	        if (Dump.Y) Dump.println("closed tgt="+Ptgt);          //~v@@@I~
+	        if (Dump.Y) Dump.println("UFile.closed tgt="+Ptgt);          //~v@@@I~//~vae0R~
         }                                                          //~v@@@I~
         catch(IOException e)                                       //~v@@@I~
         {                                                          //~v@@@I~
@@ -561,10 +569,10 @@ public class UFile                                                 //~v@@@R~
     public static boolean copyFileTimestamp(String Psrc,String Ptgt)//~v@@@I~
     {                                                              //~v@@@I~
     	boolean success;                                           //~v@@@I~
-        if (Dump.Y) Dump.println("copyFileTimestamp:src="+Psrc+",tgt="+Ptgt);//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.copyFileTimestamp:src="+Psrc+",tgt="+Ptgt);//~v@@@I~//~vae0R~
 		File src=new File(Psrc);                                   //~v@@@I~
 		File tgt=new File(Ptgt);                                   //~v@@@I~
-        if (Dump.Y) Dump.println("timestamp before src="+src.lastModified()+",tgt="+tgt.lastModified());//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.copyFileTimestamp timestamp before src="+src.lastModified()+",tgt="+tgt.lastModified());//~v@@@I~//~vae0R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
 	        success=tgt.setLastModified(src.lastModified());         //~v@@@I~
@@ -574,8 +582,8 @@ public class UFile                                                 //~v@@@R~
             Dump.println(false,e,"copyFileTimestamp src="+Psrc+",tgt="+Ptgt);//~v@@@I~
             success=false;                                         //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("copyFileTimestamp rc="+success+",src="+Psrc+",tgt="+Ptgt);//~v@@@I~
-        if (Dump.Y) Dump.println("timestamp after src="+src.lastModified()+",tgt="+tgt.lastModified());//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.copyFileTimestamp rc="+success+",src="+Psrc+",tgt="+Ptgt);//~v@@@I~//~vae0R~
+        if (Dump.Y) Dump.println("UFile.copyFileTimestamp timestamp after src="+src.lastModified()+",tgt="+tgt.lastModified());//~v@@@I~//~vae0R~
         return success;                                            //~v@@@I~
     }                                                              //~v@@@I~
 //********************************************************         //~1511I~//~v@@@R~
@@ -590,7 +598,7 @@ public class UFile                                                 //~v@@@R~
         boolean success=true;                                      //~1511I~//~v@@@R~
         byte [] buff;                                              //~1511I~//~v@@@R~
     //*********************                                        //~1511I~//~v@@@R~
-        if (Dump.Y) Dump.println("copyToDataDir:SD="+Pfname+",data="+PfnameData);//~1511I~//~v@@@R~
+        if (Dump.Y) Dump.println("UFile.copyToDataDir:SD="+Pfname+",data="+PfnameData);//~1511I~//~v@@@R~//~vae0R~
         is=openAssetFile(Pfname,true);                                  //~1511I~//~v@@@R~
         if (is==null)                                              //~1511I~//~v@@@R~
             return false;                                          //~1511I~//~v@@@R~
@@ -679,12 +687,18 @@ public class UFile                                                 //~v@@@R~
     public static FileOutputStream openOutputSD(String Pdir,String Pfname)//~1313I~//~v@@@R~
     {                                                              //~1313I~//~v@@@R~
         String fnm,path;                                           //~1313I~//~v@@@R~
-        if (Dump.Y) Dump.println("openOutputSD dir="+Pdir+",file="+Pfname);//~1313I~//~1506R~//~v@@@R~
+        if (Dump.Y) Dump.println("UFile.openOutputSD swScoped="+AG.swScoped+",dir="+Pdir+",file="+Pfname);//~1313I~//~1506R~//~v@@@R~//~1ak1R~//~vae0R~
+      if (AG.swScoped) //android11 api30                           //~1ak1I~
+      {                                                            //~1ak1I~
+        if (Dump.Y) Dump.println("Ufile.openOutputSD@@@@ not avilable for Android 11,use UScoped.openOutputSD");//~1ak1I~//~vae0R~
+        path=null;                                                 //~1ak1I~
+      }                                                            //~1ak1I~
+      else                                                         //~1ak1I~
         path=getSDPath(Pdir);                                      //~1313R~//~v@@@R~
         if (path==null) //no SDCard available                          //~1313I~//~v@@@R~
             return openOutputData(Pfname);    //to /data/data/<pkg>/files                     //~1313I~//~v@@@R~
         fnm=path+AG.dirSep+Pfname;      //~1313R~                  //~v@@@R~
-        if (Dump.Y) Dump.println("openoutputDataSD on SDcard fnm="+fnm);                       //~1313I~//~1506R~//~v@@@R~
+        if (Dump.Y) Dump.println("UFile.openoutputDataSD on SDcard fnm="+fnm);                       //~1313I~//~1506R~//~v@@@R~//~vae0R~
         FileOutputStream out=null;                                 //~v@@@R~
         try {                                                      //~v@@@R~
             out = new FileOutputStream(fnm);                       //~v@@@R~
@@ -724,12 +738,16 @@ public class UFile                                                 //~v@@@R~
     public static InputStream openInputSD(String Pfname,boolean Pshowexception)           //~1327I~//~v@@@R~
     {                                                              //~1327I~//~v@@@R~
         String fnm;                                           //~1327I~//~v@@@R~
-        if (Dump.Y) Dump.println("open Input SD="+Pfname);         //~1506R~//~v@@@R~
+        if (Dump.Y) Dump.println("UFile.openInputSD swScoped="+AG.swScoped+",fnm="+Pfname);         //~1506R~//~v@@@R~//~1ak1R~//~vae0R~
+        if (AG.swScoped) //android11 api30                         //~1ak1I~
+        {                                                          //~1ak1I~
+        	return UScoped.openInputSD(Pfname);                    //~1ak1I~
+        }                                                          //~1ak1I~
         fnm=getSDPath(Pfname);                                      //~1327I~//~v@@@R~
         if (fnm==null)  //no SDCard available                      //~1327I~//~v@@@R~
             return null;                                           //~1327I~//~v@@@R~
                                         //~1327I~                  //~v@@@R~
-        if (Dump.Y) Dump.println("openInputSD fnm="+fnm);                       //~1327I~//~1506R~//~v@@@R~
+        if (Dump.Y) Dump.println("UFile.openInputSD fnm="+fnm);                       //~1327I~//~1506R~//~v@@@R~//~vae0R~
         FileInputStream is=null;                                   //~1327I~//~v@@@R~
         try                                                        //~1327I~//~v@@@R~
         {                                                          //~1327I~//~v@@@R~
@@ -737,7 +755,7 @@ public class UFile                                                 //~v@@@R~
         }                                                          //~1327I~//~v@@@R~
         catch (Exception e)                            //~1327I~   //~v@@@R~
         {                                                          //~1327I~//~v@@@R~
-            if (Dump.Y) Dump.println("openInputSD:"+fnm);//~v107I~ //~v@@@I~
+            if (Dump.Y) Dump.println("UFile.openInputSD:"+fnm);//~v107I~ //~v@@@I~//~vae0R~
         	if (Pshowexception)                                    //~v@@@I~
 	            Dump.println(e,"openInputSD:"+fnm);                //~v@@@R~
         }                                                          //~1327I~//~v@@@R~
@@ -786,15 +804,17 @@ public class UFile                                                 //~v@@@R~
 //***********************************                              //~v@@@I~
     public static FileOutputStream openOutputData(String Pfname,int Pmode)//~v@@@R~
     {                                                              //~v@@@I~
-    	if (Dump.Y) Dump.println("UFile.openOutputData file="+Pfname+",mode="+Pmode);//~v@@@R~
+        String member=getMemberName(Pfname);                       //~vae8R~
+    	if (Dump.Y) Dump.println("UFile.openOutputData file="+Pfname+",mode="+Pmode+",member="+member);//~v@@@R~//~vae8R~
 	    FileOutputStream out=null;	//FileOutputStream extend OutputStream//~v@@@I~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
-            out=AG.context.openFileOutput(Pfname,Pmode);           //~v@@@I~
+//          out=AG.context.openFileOutput(Pfname,Pmode);           //~v@@@I~//~vae8R~
+            out=AG.context.openFileOutput(member,Pmode);           //~vae8I~
         }                                                          //~v@@@I~
         catch (Exception e)                                        //~v@@@I~
         {                                                          //~v@@@I~
-            Dump.println(e,"UFile.openOutputData:"+Pfname+",mode="+Pmode);//~v@@@R~
+            Dump.println(e,"UFile.openOutputData:"+Pfname+",mode="+Pmode+",member="+member);//~v@@@R~//~vae8R~
         }//catch                                                   //~v@@@I~
     	return out;                                                //~v@@@I~
     }                                                              //~v@@@I~
@@ -802,7 +822,7 @@ public class UFile                                                 //~v@@@R~
     public static boolean writeOutputFiles(String Pfname,byte[] Pbytedata)//~1511R~//~v@@@R~
     {                                                              //~1312I~
     	boolean rc=false;                                          //~1511I~
-    	if (Dump.Y) Dump.println("writeOutputFiles file="+Pfname);//~1506R~//~v@@@R~
+    	if (Dump.Y) Dump.println("UFile.writeOutputFiles file="+Pfname);//~1506R~//~v@@@R~//~vae0R~
 		FileOutputStream os=openOutputData(Pfname);                    //~1312I~//~v@@@R~
         if (os==null)                                              //~1312I~
         	return rc;                                             //~1511R~
@@ -818,6 +838,25 @@ public class UFile                                                 //~v@@@R~
         }//catch                                                   //~1312I~
         return rc;                                                 //~1511I~
     }                                                              //~1312I~
+//***********************************                              //~1ak1I~//~vad5I~
+    public static FileOutputStream openOutputDataCacheDir(String Pfname)//~1ak1R~//~vad5I~
+    {                                                              //~1ak1I~//~vad5I~
+    	if (Dump.Y) Dump.println("UFile.openOutputDataCacheDir file="+Pfname);//~1ak1R~//~vad5I~
+    	File fd;                                                   //~1ak1I~//~vad5I~
+    	fd=AG.context.getCacheDir();                               //~1ak1R~//~vad5I~
+    	if (Dump.Y) Dump.println("UFile.openOutputDataCacheDir cacheDir="+fd.getAbsolutePath()+",file="+Pfname);//~1ak1I~//~vad5I~
+	    FileOutputStream out=null;	//FileOutputStream extend OutputStream//~1ak1I~//~vad5I~
+        try                                                        //~1ak1I~//~vad5I~
+        {                                                          //~1ak1I~//~vad5I~
+        	File f= new File(fd,Pfname);                          //~1ak1I~//~vad5I~
+            out=new FileOutputStream(f);                           //~1ak1I~//~vad5I~
+        }                                                          //~1ak1I~//~vad5I~
+        catch (Exception e)                                        //~1ak1I~//~vad5I~
+        {                                                          //~1ak1I~//~vad5I~
+            Dump.println(e,"UFile.openOutputDataCacheDir "+fd.getAbsolutePath()+"/"+Pfname);//~1ak1I~//~vad5I~
+        }//catch                                                   //~1ak1I~//~vad5I~
+    	return out;                                                //~1ak1I~//~vad5I~
+    }                                                              //~1ak1I~//~vad5I~
 //*******************************                                  //~1313I~
 //*SD card                      *                                  //~1313I~
 //*Manifest setting                                                //~1313I~
@@ -825,33 +864,43 @@ public class UFile                                                 //~v@@@R~
 //*******************************                                  //~1313I~
     public static boolean isSDMounted()                            //~1313I~
     {                                                              //~1313I~
-		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);//~1313I~
+        if (Dump.Y) Dump.println("UFile.isSDMounted swLegacy="+swLegacy+",swScoped="+AG.swScoped);//~vae7I~
+//  	return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);//~1313I~//~1ak1R~
+        boolean rc;                                                //~1ak1I~
+//      if (AG.swScoped) //android11 api30                         //~1ak1I~//~vae7R~
+        if (!swLegacy && AG.swScoped) //android11 api30            //~vae7I~
+        	rc=UScoped.isSDMounted();                              //~1ak1I~
+        else                                                       //~1ak1I~
+    		rc=Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);//~1ak1I~
+        if (Dump.Y) Dump.println("UFile.isSDMounted rc="+rc);      //~1ak1I~
+        return rc;                                                 //~1ak1I~
     }                                                              //~1313I~
 //*******************************                                  //~v@@@I~//~va40R~//~va42R~
-	@SuppressWarnings("deprecation")                               //+va42I~
+	@SuppressWarnings("deprecation")                               //~va42I~
     @TargetApi(19)     //KitKat                                    //~v@@@I~//~va40R~//~va42R~
-    private static String getPublicPath19()                         //~v@@@I~//~va40R~//+va42R~
+    private static String getPublicPath19()                         //~v@@@I~//~va40R~//~va42R~
     {                                                              //~v@@@I~//~va40R~//~va42R~
         String path=Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS).getPath();//~v@@@I~//~va40R~//~va42R~
-        if (Dump.Y) Dump.println("Ufile.getPublicPath19 ="+path);  //~v@@@I~//~va40R~//~va42R~
+        if (Dump.Y) Dump.println("UFile.getPublicPath19 ="+path);  //~v@@@I~//~va40R~//~va42R~
         return path;                                               //~v@@@I~//~va40R~//~va42R~
     }                                                              //~v@@@I~//~va40R~//~va42R~
-	@SuppressWarnings("deprecation")                               //+va42I~
-    private static String getPublicPath()                           //~v@@@I~//~va40R~//+va42R~
+	@SuppressWarnings("deprecation")                               //~va42I~
+    private static String getPublicPath()                           //~v@@@I~//~va40R~//~va42R~
     {                                                              //~v@@@I~//~va40R~//~va42R~
         String path=Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM).getPath();//traditional picture and video//~v@@@I~//~va40R~//~va42R~
-        if (Dump.Y) Dump.println("Ufile.getPublicPath ="+path);    //~v@@@I~//~va40R~//~va42R~
+        if (Dump.Y) Dump.println("UFile.getPublicPath ="+path);    //~v@@@I~//~va40R~//~va42R~
         return path;                                               //~v@@@I~//~va40R~//~va42R~
     }                                                              //~v@@@I~//~va40R~//~va42R~
-	@SuppressWarnings("deprecation")                               //+va42I~
-    private static String getExternalPath()                        //+va42I~
-    {                                                              //+va42I~
-        String path=Environment.getExternalStorageDirectory().getPath();//+va42I~
-        if (Dump.Y) Dump.println("Ufile.getExternbalPath="+path);  //+va42I~
-        return path;                                               //+va42I~
-    }                                                              //+va42I~
+	@SuppressWarnings("deprecation")                               //~va42I~
+    private static String getExternalPath()                        //~va42I~
+    {                                                              //~va42I~
+        String path=Environment.getExternalStorageDirectory().getPath();//~va42I~
+        if (Dump.Y) Dump.println("UFile.getExternbalPath="+path);  //~va42I~
+        return path;                                               //~va42I~
+    }                                                              //~va42I~
 //**************************************************************** //~v@@@I~
-    public static String[] getSDPaths()                            //~v@@@I~
+//  public static String[] getSDPaths()                            //~v@@@I~//~vae0R~
+    private static String[] getSDPaths()                           //~vae0I~
     {                                                              //~v@@@I~
         String path;                                               //~v@@@I~
     	List<String> list=new ArrayList<>();                       //~v@@@I~
@@ -863,22 +912,22 @@ public class UFile                                                 //~v@@@R~
 //            path=getPublicPath();                                  //~v@@@I~//~va40R~
 //        list.add(path);                                            //~v@@@I~//~va40R~
         list.add("/sdcard");                                       //~v@@@I~
-        if (AG.osVersion<=29) //allow on 29:android10 by manifest: application-->requestLagacyExternalStorage="true" (ignored when target=androd11)//+va42I~
-        {                                                          //+va42I~
-        	path=getExternalPath();                                 //+va42R~
-        	list.add(path);                                        //+va42R~
-	        if (Dump.Y) Dump.println("Ufile.getSDPaths getExternalStorageDirectory="+path);//+va42I~
-        }                                                          //+va42I~
+        if (AG.osVersion<=29) //allow on 29:android10 by manifest: application-->requestLagacyExternalStorage="true" (ignored when target=androd11)//~va42I~
+        {                                                          //~va42I~
+        	path=getExternalPath();                                 //~va42R~
+        	list.add(path);                                        //~va42R~
+	        if (Dump.Y) Dump.println("UFile.getSDPaths getExternalStorageDirectory="+path);//~va42I~
+        }                                                          //~va42I~
         if (AG.osVersion>=19) // Kitkat android 4.4                //~va42M~
             path=getPublicPath19();                                //~va42M~
         else                                                       //~va42M~
             path=getPublicPath();                                  //~va42M~
-        if (Dump.Y) Dump.println("Ufile.getSDPaths getExternalStoragePublicDirectory="+path);//~va42M~
+        if (Dump.Y) Dump.println("UFile.getSDPaths getExternalStoragePublicDirectory="+path);//~va42M~
         list.add(path);                                            //~va42M~
                                                                    //~v@@@I~
         String[] ar=new String[list.size()];                       //~v@@@I~
         list.toArray(ar);                                          //~v@@@I~
-        if (Dump.Y) Dump.println("Ufile.getSDPaths ="+ Arrays.toString(ar));//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.getSDPaths ="+ Arrays.toString(ar));//~v@@@I~
 		return ar;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 //**************************************************************** //~v@@@I~
@@ -886,8 +935,17 @@ public class UFile                                                 //~v@@@R~
     {                                                              //~1313I~
 		String path;                                               //~1313I~
     //************                                                 //~1313I~
+        if (Dump.Y) Dump.println("UFile.getSDPath swLegacy="+swLegacy+",swScoped="+AG.swScoped+",swSDAvailable="+AG.swSDAvailable+",fnm="+Pfile);//~1ak1I~//~vae0R~//~vae7R~
+      if (!swLegacy)                                               //~vae7I~
+      {                                                            //~vae7I~
+        if (AG.swScoped) //android11 api30                         //~1ak1I~
+        {                                                          //~1ak1I~
+        	return UScoped.getSDPath(Pfile);                       //~1ak1I~
+        }                                                          //~1ak1I~
+      }                                                            //~vae7I~
         if (!AG.swSDAvailable)                                     //~1313I~//~v@@@R~
         	return null;                                           //~1313I~
+        if (Dump.Y) Dump.println("UFile.getSDPath AG.dirSD="+AG.dirSD);//~vae0I~
         path=AG.dirSD;                                           //~1313I~//~v@@@R~
         if (path==null)                                            //~1313I~
         {                                                          //~1313I~
@@ -905,25 +963,25 @@ public class UFile                                                 //~v@@@R~
           {                                                        //~v@@@I~
 //      	path=Environment.getExternalStorageDirectory().getPath()+System.getProperty("file.separator")+approot;//~v@@@I~
         	path=paths[ii]+System.getProperty("file.separator")+approot;//~v@@@I~
-        	if (Dump.Y) Dump.println("Ufile.getSDPath path="+path);//~v@@@I~
+        	if (Dump.Y) Dump.println("UFile.getSDPath path="+path);//~v@@@I~
             File f=new File(path);
         	if (!f.exists())	                                   //~1313I~
             {                                                      //~1313I~
-	        	if (Dump.Y) Dump.println("Ufile.getSDPath not Exist="+path);//~v@@@I~
+	        	if (Dump.Y) Dump.println("UFile.getSDPath not Exist="+path);//~v@@@I~
             	if (!f.mkdir())                                 //~1313I~
                 {                                                  //~1313I~
 //  	        	AG.swSDAvailable=false;                        //~1313I~//~v@@@R~
-			        if (Dump.Y) Dump.println("getSDpath mkdir failed:"+path);//~1506R~
+			        if (Dump.Y) Dump.println("UFile.getSDpath mkdir failed:"+path);//~1506R~//~vae0R~
 //      			return null;                                   //~1313I~//~v@@@R~
                     continue;                                      //~v@@@I~
                 }                                                  //~1313I~
-			    if (Dump.Y) Dump.println("getSDpath mkdir OK:"+path);//~va42I~
+			    if (Dump.Y) Dump.println("UFile.getSDpath mkdir OK:"+path);//~va42I~//~vae0R~
 	            swOK=true;                                         //~v@@@I~
                 break;                                             //~v@@@I~
             }                                                      //~1313I~
             else                                                   //~v@@@I~
             {                                                      //~v@@@I~
-	        	if (Dump.Y) Dump.println("Ufile.getSDPath Exist="+path);//~v@@@I~
+	        	if (Dump.Y) Dump.println("UFile.getSDPath Exist="+path);//~v@@@I~
 	            swOK=true;                                         //~v@@@I~
                 break;                                             //~v@@@I~
             }                                                      //~v@@@I~
@@ -934,14 +992,14 @@ public class UFile                                                 //~v@@@R~
 				return null;                                       //~v@@@I~
             }                                                      //~v@@@I~
         	AG.dirSD=path;                                       //~1313I~//~v@@@R~
-            if (Dump.Y) Dump.println("SDcard dir="+path);                       //~1313I~//~1506R~
+            if (Dump.Y) Dump.println("UFile.getSDpath SDcard dir="+path);                       //~1313I~//~1506R~//~vae0R~
 		}                                                          //~1313I~
         if (!Pfile.equals(""))                                     //~1313I~
         	if (Pfile.startsWith(AG.dirSep))                            //~1412I~//~v@@@R~
         		path+=Pfile;                                       //~1412I~
             else                                                   //~1412I~
         		path+=AG.dirSep+Pfile;                                   //~1412R~//~v@@@R~
-        if (Dump.Y) Dump.println("Ufile.GetSDpath:"+path);               //~1506R~//~va42R~
+        if (Dump.Y) Dump.println("UFile.GetSDpath:"+path);               //~1506R~//~va42R~
         return path;                                               //~1313R~
     }                                                              //~1313I~
 //**********************************************************************//~1402I~
@@ -952,7 +1010,7 @@ public class UFile                                                 //~v@@@R~
         File f;                                                    //~1402I~
         boolean rc;                                                //~1402I~
     //**********************                                       //~1402I~
-    	if (Dump.Y) Dump.println("makePath:"+Ppath);               //~1506R~
+    	if (Dump.Y) Dump.println("UFile.makePath:"+Ppath);               //~1506R~//~vae0R~
         f=new File(Ppath);                                             //~1402I~
         if (f.exists())                                            //~1402I~
         	if (f.isDirectory())                                   //~1402I~
@@ -964,7 +1022,7 @@ public class UFile                                                 //~v@@@R~
         	f.mkdirs();	//create also parent path                  //~1402R~
             rc=true;                                               //~1402I~
         }                                                          //~1402I~
-    	if (Dump.Y) Dump.println("makePath:rc"+rc);                //~1506R~
+    	if (Dump.Y) Dump.println("UFile.makePath:rc"+rc);                //~1506R~//~vae0R~
         return rc;                                                 //~1402R~
     }                                                              //~1402I~
 //**********************************************************************//~v@@@I~
@@ -972,18 +1030,18 @@ public class UFile                                                 //~v@@@R~
 //**********************************************************************//~v@@@I~
     public static String makePathName(String Pfullpath,String Ptgtdir)//~v@@@I~
     {                                                              //~v@@@I~
-    	if (Dump.Y) Dump.println("makePathName fullpath="+Pfullpath+",tgtdir="+Ptgtdir);//~v@@@I~
+    	if (Dump.Y) Dump.println("UFile.makePathName fullpath="+Pfullpath+",tgtdir="+Ptgtdir);//~v@@@I~//~vae0R~
         File f=new File(Pfullpath);                                //~v@@@I~
         String fnm=f.getName();                                    //~v@@@I~
         fnm=Ptgtdir+AG.dirSep+fnm;                                 //~v@@@I~
-    	if (Dump.Y) Dump.println("makePathName fullpath="+Pfullpath+",tgtdir="+Ptgtdir+",out="+fnm);//~v@@@I~
+    	if (Dump.Y) Dump.println("UFile.makePathName fullpath="+Pfullpath+",tgtdir="+Ptgtdir+",out="+fnm);//~v@@@I~//~vae0R~
         return fnm;                                                //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
 	public static String makeFullpath(String Ppath,String Pfile,String Pext)//~v@@@I~
     {                                                              //~v@@@I~
     	String path=Ppath+AG.dirSep+Pfile+Pext;                   //~v@@@I~
-	    if (Dump.Y) Dump.println("makeFullpath="+path+",parmDir="+Ppath+",file="+Pfile+",ext="+(Pext==null?"null":Pext));//~v@@@I~
+	    if (Dump.Y) Dump.println("UFile.makeFullpath="+path+",parmDir="+Ppath+",file="+Pfile+",ext="+(Pext==null?"null":Pext));//~v@@@I~//~vae0R~
     	return path;                                               //~v@@@I~
     }                                                              //~v@@@I~
 //**********************************************************************//~v@@@I~
@@ -997,11 +1055,11 @@ public class UFile                                                 //~v@@@R~
         	path=AG.context.getFilesDir().getAbsolutePath();       //~v@@@I~
 	        if (Pfilename!=null)                                   //~v@@@I~
     	    	path+=AG.dirSep+Pfilename;                         //~v@@@R~
-	    	if (Dump.Y) Dump.println("getFilesPath:"+path);        //~v@@@I~
+	    	if (Dump.Y) Dump.println("UFile.getFilesPath:"+path);        //~v@@@I~//~vae0R~
         }                                                          //~v@@@I~
         catch (Exception e)                                        //~v@@@I~
         {                                                          //~v@@@I~
-            Dump.println("getFilesPath"+Pfilename);                   //~v@@@I~
+            Dump.println("UFile.getFilesPath"+Pfilename);                   //~v@@@I~//~vae0R~
         }//catch                                                   //~v@@@I~
         return path;                                               //~v@@@I~
     }                                                              //~v@@@I~
@@ -1011,9 +1069,11 @@ public class UFile                                                 //~v@@@R~
     public static boolean isExistInFiles(String Pfilename)         //~v@@@R~
     {                                                              //~v@@@I~
     	boolean rc=false;                                           //~v@@@I~
+        String member=getMemberName(Pfilename);                    //~vae8R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
-        	FileInputStream fis=AG.context.openFileInput(Pfilename);//~v@@@I~
+//      	FileInputStream fis=AG.context.openFileInput(Pfilename);//~v@@@I~//~vae8R~
+        	FileInputStream fis=AG.context.openFileInput(member);  //~vae8I~
             fis.close();
             rc=true;//~v@@@I~
         }                                                          //~v@@@I~
@@ -1022,9 +1082,9 @@ public class UFile                                                 //~v@@@R~
         }//catch
         catch (Exception e)
         {
-            Dump.println(e,"isExistInDataDir:"+Pfilename);// ~v@@@I~
+            Dump.println(e,"isExistInDataDir:"+Pfilename+",member="+member);// ~v@@@I~//~vae8R~
         }
-        if (Dump.Y) Dump.println("isExistInDataDir:"+Pfilename+"="+rc);//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.isExistInDataDir:"+Pfilename+"="+rc+",member="+member);//~v@@@I~//~vae0R~//~vae8R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 //**********************************************************************//~v@@@I~
@@ -1032,15 +1092,17 @@ public class UFile                                                 //~v@@@R~
 //**********************************************************************//~v@@@I~
     public static FileInputStream openInputData(String Pfilename)  //~v@@@R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("openInputData:"+Pfilename);      //~v@@@R~
+        String member=getMemberName(Pfilename);                    //~vae8R~
+        if (Dump.Y) Dump.println("UFile.openInputData:"+Pfilename+",member="+member);      //~v@@@R~//~vae0R~//~vae8R~
         FileInputStream fis=null;                                  //~v@@@I~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
-        	fis=AG.context.openFileInput(Pfilename);               //~v@@@I~
+//      	fis=AG.context.openFileInput(Pfilename);               //~v@@@I~//~vae8R~
+        	fis=AG.context.openFileInput(member);                  //~vae8I~
         }                                                          //~v@@@I~
         catch (Exception e)                                        //~v@@@I~
         {                                                          //~v@@@I~
-            Dump.println(e,"openInputData:"+Pfilename);            //~v@@@R~
+            Dump.println(e,"openInputData:"+Pfilename+",member="+member);            //~v@@@R~//~vae8R~
         }//catch                                                   //~v@@@I~
         return fis;                                                //~v@@@I~
     }                                                              //~v@@@I~
@@ -1051,7 +1113,7 @@ public class UFile                                                 //~v@@@R~
     {                                                              //~v@@@I~
 	    long t=0;                                                  //~v@@@I~
         String ts="Unknown";                                       //~v@@@R~
-        if (Dump.Y) Dump.println("getLastModified file="+Pfile.getAbsolutePath());//~v@@@I~
+        if (Dump.Y) Dump.println("UFile.getLastModified file="+Pfile.getAbsolutePath());//~v@@@I~//~vae0R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
 	        t=Pfile.lastModified();                                //~v@@@R~
@@ -1137,29 +1199,88 @@ public class UFile                                                 //~v@@@R~
 //**********************************************************************//~v@@@I~
     public static boolean chkWritableSD()                          //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UFile.chkWritableSD");            //~v@@@I~
+        if (Dump.Y) Dump.println("UFile.chkWritableSD swScoped="+AG.swScoped);            //~v@@@I~//~1ak1R~
+//      if (UScoped.isScoped())                                    //~1ak1I~//~vae0R~
+        int stat=UScoped.chkScoped();                              //~vae0I~
+        if (stat>=0)	//api30                                    //~vae0I~
+        {                                                          //~1ak2R~
+//      	return UScoped.chkWritableSD();                        //~1ak1I~//~1ak2R~
+//      	boolean rc2=UScoped.chkWritableSD();                   //~1ak2R~//~vae0R~
+//          if (Dump.Y) Dump.println("UFile.chkWritableSD rc2="+rc2);//~1ak2R~//~vae0R~
+//          return rc2; TODO test      //permission not required for scoped storage//~1ak2R~
+        	UScoped.chkWritableSD();                               //~vae0I~
+            return stat>0;     //0:grant request not yet completed //~vae0I~
+        }                                                          //~1ak2R~
         if (!chkGrantedSD())                                       //~v@@@I~
+        {                                                          //~vae0I~
+	        AG.swSDAvailable=false;  //no writepermission          //~vae0I~
         	return false;                                          //~v@@@I~
+        }                                                          //~vae0I~
         AG.swSDAvailable=true;                                     //~v@@@I~
 	    String path=getSDPath("");                                 //~v@@@I~
         boolean rc=path!=null;                                     //~v@@@I~
-        if (Dump.Y) Dump.println("UFile.chkWritableSD rc="+rc+",path="+Utils.toString(path));//~v@@@I~
+        if (!rc)                                                   //~vae0I~
+	        AG.swSDAvailable=false;                                //~vae0I~
+        if (Dump.Y) Dump.println("UFile.chkWritableSD swSDAvailable="+AG.swSDAvailable+",rc="+rc+",path="+Utils.toString(path));//~v@@@I~//~vae0R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+//**********************************************************************//~vae0I~
+//*from Uscoped at granted scoped storage                          //~vae0I~
+//**********************************************************************//~vae0I~
+    public static boolean chkExternalStoragePermissionOnScoped()      //~vae0I~//~vae7R~
+    {                                                              //~vae0I~
+        if (Dump.Y) Dump.println("UFile.chkExternalPermissionOnScoped swScoped="+AG.swScoped);//~vae0I~
+        boolean rc=UView.isPermissionGrantedExternalStorageRead(); //~vae0I~
+        AG.swGrantedExternalStorageRead=rc;                        //~vae0I~
+        if (!rc)                                                   //~vae0I~
+		    UView.requestPermissionExternalStorageRead(MainActivity.PERMISSION_EXTERNAL_STORAGE_READ);//~vae0I~
+        return rc;                                                 //~vae7I~
+    }                                                              //~vae0I~
 //**********************************                               //~v@@@I~
     private static boolean chkGrantedSD()                          //~v@@@I~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("UFile.chkGrantedSD");            //~v@@@I~
 		boolean rc=UView.isPermissionGrantedExternalStorage();     //~v@@@I~
+        boolean rc2=UView.isPermissionGrantedExternalStorageRead();//~1ak2I~
+        AG.swGrantedExternalStorageWrite=rc;                       //~1ak2I~
+        AG.swGrantedExternalStorageRead=rc2;                       //~1ak2I~
+//      boolean swDenied=UView.isPermissionDeniedExternalStorage();//once denied request callback NG without popup dialog,so always issue request//~vae0R~
+      	if (AG.osVersion>=30) //scoped storage	//no chk write permission for scoped storage//~1ak2I~
+        {                                                          //~vae0I~
+//            swDenied=UView.isPermissionDeniedExternalStorageRead();//~vae0I~
+        	rc=rc2;                                                //~1ak2I~
+        }                                                          //~vae0I~
+//      else                                                       //~1ak2I~//~vae0R~
+//    	if (AG.osVersion>=29) //scoped storage	//no chk write permission for scoped storage//~1ak2I~//~vae0R~
+//      {                                                          //~vae0I~
+//          swDenied=UView.isPermissionDeniedExternalStorageRead();//~vae0I~
+//      	rc=rc2;	//chk read only                                //~1ak2I~//~vae0R~
+//      }                                                          //~vae0I~
+//      else            //Write permission means read permission   //~1ak2I~//~vae0R~
+//      	rc=rc & rc2;                                           //~1ak2I~//~vae0R~
         if (!rc)                                                   //~v@@@I~
         {                                                          //~v@@@I~
+          if (AG.osVersion>=30) //scoped storage	//no chk write permission for scoped storage//~vae0I~
+          {                                                        //~vae0I~
+//          if (swDenied)                                          //~vae0R~
+//      	  	UView.showToastLong(R.string.ScopedExternalStorageDeniedRead);//~vae0R~
+//          else                                                   //~vae0R~
+		    	UView.requestPermissionExternalStorageRead(MainActivity.PERMISSION_EXTERNAL_STORAGE_READ);//~vae0I~
+          }                                                        //~vae0I~
+          else                                                     //~vae0I~
+          {                                                        //~vae0I~
+//          if (swDenied)                                          //~vae0R~
+//      	  	UView.showToastLong(R.string.ScopedExternalStorageDeniedWrite);//~vae0R~
+//          else                                                   //~vae0R~
 		    UView.requestPermissionExternalStorage(MainActivity.PERMISSION_EXTERNAL_STORAGE);//~v@@@I~
+          }                                                        //~vae0I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("MenuDialogConnect rc="+rc);      //~v@@@I~
+        if (Dump.Y) Dump.println("UFile.chkGrantedSD swGrantedExternalStorage=rc="+rc);//~1ak2I~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 //*************************************************************************//~v@@@I~
 //* from Main.onRequestPermissionResult                            //~v@@@I~
+//* for WRITE permission                                           //~vae0I~
 //*************************************************************************//~v@@@I~
     public static void grantedExternalStorage(boolean PswGranted)  //~v@@@I~
     {                                                              //~v@@@I~
@@ -1171,6 +1292,174 @@ public class UFile                                                 //~v@@@R~
             return;                                                //~v@@@I~
         }	                                                       //~v@@@I~
 		UView.showToast(R.string.ExternalStorageForSDGranted);     //~v@@@I~
-    	chkWritableSD();                                           //~v@@@I~
+//  	chkWritableSD();                                           //~v@@@I~//~vae0R~
+        AG.swSDAvailable=true;                                     //~vae0I~
     }                                                              //~v@@@I~
+//    public static void grantedExternalStorage(boolean PswGranted,boolean PswGrantedRead)//~1ak2I~//~vae0R~
+//    {                                                              //~1ak2I~//~vae0R~
+//        boolean rc;                                                //~1ak2I~//~vae0R~
+//        if (Dump.Y) Dump.println("UFile.grantedExternalStorage osVersion="+AG.osVersion+",PswGranted="+PswGranted+",PswGrantedRead="+PswGrantedRead);//~1ak2I~//~vae0R~
+//        if (AG.osVersion>=30) //scoped storage                     //~1ak2I~//~vae0R~
+//        {                                                          //~1ak2I~//~vae0R~
+//            if (PswGrantedRead)                                    //~1ak2I~//~vae0R~
+//            {                                                      //~1ak2I~//~vae0R~
+//                UView.showToastLong(R.string.ExternalStorageForSDRequiresGrantedRead);//~1ak2I~//~vae0R~
+//                return;                                            //~1ak2I~//~vae0R~
+//            }                                                      //~1ak2I~//~vae0R~
+//        }                                                          //~1ak2I~//~vae0R~
+//        else                                                       //~1ak2I~//~vae0R~
+//        {                                                          //~1ak2I~//~vae0R~
+//            if (!PswGrantedRead)                                   //~1ak2I~//~vae0R~
+//            {                                                      //~1ak2I~//~vae0R~
+//                UView.showToastLong(R.string.ExternalStorageForSDRequiresGrantedRead);//~1ak2I~//~vae0R~
+//                return;                                            //~1ak2I~//~vae0R~
+//            }                                                      //~1ak2I~//~vae0R~
+//            if (!PswGranted)                                       //~1ak2I~//~vae0R~
+//            {                                                      //~1ak2I~//~vae0R~
+//              if (AG.osVersion<29) //allow on 29:android10 by manifest: application-->requestLagacyExternalStorage="true" (ignored when target=androd11)//~1ak2I~//~vae0R~
+//              {                                                    //~1ak2I~//~vae0R~
+//                UView.showToastLong(R.string.ExternalStorageForSDRequiresGranted);//~1ak2I~//~vae0R~
+//                return;                                            //~1ak2I~//~vae0R~
+//              }                                                    //~1ak2I~//~vae0R~
+//            }                                                      //~1ak2I~//~vae0R~
+//        }                                                          //~1ak2I~//~vae0R~
+//        UView.showToast(R.string.ExternalStorageForSDGranted);     //~1ak2I~//~vae0R~
+//        chkWritableSD();                                           //~1ak2I~//~vae0R~
+//    }                                                              //~1ak2I~//~vae0R~
+//*************************************************************************//~vae0I~
+//* from Main.onRequestPermissionResult                            //~vae0I~
+//* for READ permission                                            //~vae0I~
+//*************************************************************************//~vae0I~
+    public static void grantedExternalStorageRead(boolean PswGranted)//~1ak2I~
+    {                                                              //~1ak2I~
+    	boolean rc;                                                //~1ak2I~
+        if (Dump.Y) Dump.println("UFile.grantedExternalStorageRead PswGranted="+PswGranted);//~1ak2I~
+        if (!PswGranted)                                           //~1ak2I~
+        {                                                          //~1ak2I~
+//        	UView.showToastLong(R.string.ExternalStorageForSDRequiresGranted);//~1ak2I~//~vae0R~
+          	UView.showToastLong(R.string.ExternalStorageReadRequiresGranted);//~vae0I~
+            return;                                                //~1ak2I~
+        }                                                          //~1ak2I~
+//  	UView.showToast(R.string.ExternalStorageForSDGranted);     //~1ak2I~//~vae0R~
+    	UView.showToast(R.string.ExternalStorageReadGranted);      //~vae0I~
+//  	chkWritableSD();                                           //~1ak2I~//~vae0R~
+        AG.swGrantedExternalStorageRead=true;                      //+vae0I~
+    }                                                              //~1ak2I~
+//*************************************************************************//~vae7I~
+    public static void transferSDToScoped()                        //~vae7I~
+    {                                                              //~vae7I~
+		boolean xfered=Utils.getPreference(PREFKEY_SD_XFER,false);   //~@@01I~//~vae7I~
+        if (Dump.Y) Dump.println("UFile.transferSDToScoped preference SD_XFER="+xfered);//~vae7R~
+        if (xfered)                                             //~vae7I~
+        	return;                                                //~vae7I~
+        boolean rc=true;                                           //~vae7M~
+      try                                                          //~vae7I~
+      {                                                            //~vae7I~
+        String path=getSDPathLegacy();                             //~vae7I~
+    	File[] filelist=listFiles(path);                           //~vae7I~
+        if (filelist==null)                                        //~vae7I~
+        	return;                                                //~vae7I~
+//    if (true)   //TODO test                                      //~vae7R~
+//    	rc&=transferToScoped(filelist[0]);                         //~vae7R~
+//    else                                                         //~vae7R~
+        int ctrOK=0;                                               //~vae7I~
+        int ctrlist=0;                                             //~vae7I~
+        for (File f:filelist)                                      //~vae7I~
+        {                                                          //~vae7I~
+        	if (Dump.Y) Dump.println("UFile.transferSDToScoped name="+f.getName());//~vae7I~
+            boolean rc2=transferToScoped(f);                       //~vae7R~
+            ctrlist++;                                             //~vae7I~
+            if (rc2)                                               //~vae7I~
+            	ctrOK++;                                           //~vae7I~
+            rc&=rc2;                                               //~vae7I~
+        }                                                          //~vae7I~
+        UView.showToastLong(Utils.getStr(R.string.Info_Transfered,ctrOK,ctrlist));//~vae7I~
+      }                                                            //~vae7I~
+	  catch(Exception e)                                           //~vae7I~
+	  {                                                            //~vae7I~
+        Dump.println(e,"UFile.transferSDScoped");                  //~vae7I~
+      }                                                            //~vae7I~
+		Utils.putPreference(PREFKEY_SD_XFER,true); //only one even failed//~vae7R~
+        if (Dump.Y) Dump.println("UFile.transferSDToScoped exit rc="+rc);//~vae7R~
+    }                                                              //~vae7I~
+//**************************************************************** //~vae7I~
+    private static String getSDPathLegacy()                        //~vae7I~
+    {                                                              //~vae7I~
+    //************                                                 //~vae7I~
+        if (Dump.Y) Dump.println("UFile.getSDPathLegacy");         //~vae7I~
+        swLegacy=true;                                             //~vae7I~
+    	String path=getSDPath("");                                  //~vae7I~
+        swLegacy=false;                                            //~vae7I~
+        if (Dump.Y) Dump.println("UFile.getSDPathLegacy path="+path);//~vae7I~
+        return path;                                               //~vae7I~
+    }                                                              //~vae7I~
+//*************************************************************************//~vae7I~
+//*if uninstalled at api30, you can not list the sdcard            //~vae7I~
+//*************************************************************************//~vae7I~
+    private static File[] listFiles(String Ppath)                  //~vae7I~
+    {                                                              //~vae7I~
+        if (Dump.Y) Dump.println("UFile.listFiles path="+Ppath);   //~vae7I~
+        File dir=new File(Ppath);                                  //~vae7I~
+		File[] filelist=null;                                      //~vae7I~
+        try                                                        //~vae7I~
+		{                                                          //~vae7I~
+		    if (Dump.Y) Dump.println("UFile.listFiles isExist="+dir.exists()+",isDir="+dir.isDirectory()+",isFile="+dir.isFile()+",canonicalPath="+dir.getCanonicalPath());//~vae7R~
+			filelist=dir.listFiles();                       //~vae7I~
+        }                                                          //~vae7I~
+        catch(SecurityException e)                                 //~vae7I~
+        {                                                          //~vae7I~
+        	Dump.println(e,"UFile.listFiles");                     //~vae7I~
+        }                                                          //~vae7I~
+		catch(Exception e)                                         //~vae7I~
+		{                                                          //~vae7I~
+        	Dump.println(e,"UFile.listFiles");                     //~vae7I~
+        }                                                          //~vae7I~
+        if(filelist==null||filelist.length==0)                     //~vae7I~
+        {                                                          //~vae7I~
+		    if (Dump.Y) Dump.println("UFile.listFiles list="+Utils.toString(filelist)+",length="+(filelist==null ? 0 : filelist.length));//~vae7R~
+			return null;                                           //~vae7I~
+        }                                                          //~vae7I~
+		if (Dump.Y) Dump.println("UFile.listFiles ctr="+filelist.length);//~vae7I~
+        return filelist;                                           //~vae7I~
+    }                                                              //~vae7I~
+//*************************************************************************//~vae7I~
+    private static boolean transferToScoped(File Pfile)            //~vae7I~
+    {                                                              //~vae7I~
+    	boolean rc=false;                                          //~vae7I~
+//      if (true)  //TODO test                                     //~vae7R~
+//      {                                                          //~vae7R~
+//  	    if (Dump.Y) Dump.println("UFile.trabsferToScoped return false for TEST");//~vae7R~
+//          return false;                                          //~vae7R~
+//      }                                                          //~vae7R~
+		if (Dump.Y) Dump.println("UFile.transferToScoped file="+Pfile.getName()+",abs="+Pfile.getAbsolutePath());//~vae7I~
+		if (Dump.Y) Dump.println("UFile.transferToScoped canRead="+Pfile.canRead()+",length="+Pfile.length());//~vae7I~
+        int rc2=AG.aUScoped.writeDocumentFromFile(Pfile.getAbsolutePath());  //copy if not exist; exist means picker setected sdcard//~vae7R~
+        if (Dump.Y) Dump.println("UFile.trabsferToScoped rc="+rc);
+        if (rc2==0) //copyed                                       //~vae7R~
+        {                                                          //~vae7I~
+            try                                                    //~vae7I~
+            {                                                      //~vae7I~
+                Pfile.delete();                                    //~vae7R~
+        		if (Dump.Y) Dump.println("UFile.trabsferToScoped deleted fpath="+Pfile.getName());//~vae7R~
+            }                                                      //~vae7I~
+            catch(Exception e)                                     //~vae7I~
+            {                                                      //~vae7I~
+                Dump.println(e,"UFile.transferToScoped delete Old="+Pfile.getName());//~vae7R~
+            }                                                      //~vae7I~
+            rc=true;                                               //~vae7I~
+        }                                                          //~vae7I~
+        else                                                       //~vae7I~
+        if (rc2==1)//exist                                         //~vae7I~
+            rc=true;                                               //~vae7I~
+		if (Dump.Y) Dump.println("UFile.transferToScoped rc="+rc+",file="+Pfile.getName());//~vae7I~
+        return rc;
+    }                                                              //~vae7I~
+//*************************************************************************//~vae8I~
+    private static String getMemberName(String Ppath)              //~vae8I~
+    {                                                              //~vae8I~
+        int pos=Ppath.lastIndexOf("/");                            //~vae8I~
+    	String member=Ppath.substring(pos+1);                      //~vae8I~
+		if (Dump.Y) Dump.println("UFile.getMemberName path="+Ppath+",member="+member);//~vae8I~
+        return member;                                             //~vae8I~
+    }                                                              //~vae8I~
 }//class                                                           //~1110I~

@@ -1,6 +1,7 @@
-//*CID://+vabsR~:                             update#=  558;       //+vabsR~
+//*CID://+vad5R~:                             update#=  559;       //+vad5R~
 //*****************************************************************//~v101I~
-//2021/08/02 vabs drop robot option to discard just taken,remains as test option//+vabsI~
+//2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //+vad5I~
+//2021/08/02 vabs drop robot option to discard just taken,remains as test option//~vabsI~
 //2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -150,7 +151,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DEALMINKANHONOR_SAMECOLOR="DealMinkanHonorSameColor"       ;//~vaa6I~
     private static final String DEALMINKANRON          ="DealMinKanRon"         ;//~vaa6I~
     private static final String ROBOTDISCARDTILE       ="RobotDiscardTile";//~va8xI~
-    private static final String NOTHINKROBOT           ="NoThinkRobot";//+vabsI~
+    private static final String NOTHINKROBOT           ="NoThinkRobot";//~vabsI~
                                                                    //~v@@@I~
     private static final int[] rbIDFirstDealer=new int[]{R.id.rbFirstDealer0,R.id.rbFirstDealer1,R.id.rbFirstDealer2,R.id.rbFirstDealer3,R.id.rbFirstDealer4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrSet=new int[]{R.id.rbFinalSet1,R.id.rbFinalSet2,R.id.rbFinalSet3,R.id.rbFinalSet4};//~v@@@I~
@@ -199,7 +200,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbDealShanponReach;                          //~vaa6I~
     private UCheckBox cbDealRonTaken1st,cbRonRiver,cbDealAnkanFix1,cbDealSakiduke2hanTake;                //~va66R~//~va8xR~
     private UCheckBox cbDealMinKanRon,cbDealMinkanHonor,cbDealMinkanHonorSameColor;//~vaa6R~
-    private UCheckBox cbOpenHand,cbRobotDiscardTile,cbNoThinkRobot;                                  //~va65I~//~va8xR~//+vabsR~
+    private UCheckBox cbOpenHand,cbRobotDiscardTile,cbNoThinkRobot;                                  //~va65I~//~va8xR~//~vabsR~
     private UCheckBox cbRobotDiscardButton;                        //~va66I~
     private UCheckBox cbDealMultiRon,cbDealSingleRon;              //~va66I~
     private Prop prop;                                             //~v@@@I~
@@ -303,7 +304,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealAtodukeTakeSameColor  =new UCheckBox(PView,R.id.cbDealAtodukeTakeSameColor);//~va66I~
     	cbDealSakiduke2hanTake  =new UCheckBox(PView,R.id.cbDealSakiduke2hanTake);//~va8xI~
     	cbRobotDiscardTile =new UCheckBox(PView,R.id.cbRobotDiscardTile);//~va8xI~
-    	cbNoThinkRobot =new UCheckBox(PView,R.id.cbNoThinkRobot);  //+vabsI~
+    	cbNoThinkRobot =new UCheckBox(PView,R.id.cbNoThinkRobot);  //~vabsI~
     	cbDealAtodukeTakeYakuhai    =new UCheckBox(PView,R.id.cbDealAtodukeTakeYakuhai  );//~va66I~
     	cbDealAnkanFix1    =new UCheckBox(PView,R.id.cbDealAnkanFix1);//~va8xI~
     	cbDealMinkanHonor  =new UCheckBox(PView,R.id.cbDealMinkanHonor);//~vaa6I~
@@ -455,7 +456,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealAtodukeTakeSameColor.setStateInt(Pprop.getParameter(DEALATODUKETAKESAMECOLOR,0));//~va66I~
     	cbDealSakiduke2hanTake.setStateInt(Pprop.getParameter(DEALSAKIDUKE2HANTAKE,0));//~va8xI~
     	cbRobotDiscardTile.setStateInt(Pprop.getParameter(ROBOTDISCARDTILE,0));//~va8xI~
-    	cbNoThinkRobot.setStateInt(Pprop.getParameter(NOTHINKROBOT,0));//+vabsI~
+    	cbNoThinkRobot.setStateInt(Pprop.getParameter(NOTHINKROBOT,0));//~vabsI~
     	cbDealAtodukeTakeYakuhai.setStateInt(Pprop.getParameter(DEALATODUKETAKEYAKUHAI,0));//~va66I~
     	cbDealAnkanFix1.setStateInt(Pprop.getParameter(DEALANKANFIX1,0));//~va8xI~
     	cbDealMinkanHonor.setStateInt(Pprop.getParameter(DEALMINKANHONOR,0));//~vaa6I~
@@ -556,7 +557,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
         if (Pprop.getParameter(DUMP_SDCARD,0)!=0)                  //~0A08I~
         {                                                          //~0A08I~
 			TestOption.option2|=TO2_DUMP_SDCARD;                   //~0A08I~
-            Dump.open("Dump.txt",true/*sdcard*/);                  //~0A08I~
+//          Dump.open("Dump.txt",true/*sdcard*/);                  //~0A08I~//+vad5R~
+            Dump.open("Dump.txt",false/*sdcard*/);                 //+vad5I~
         }                                                          //~0A08I~
         else                                                       //~0A08I~
 			TestOption.option2&=~TO2_DUMP_SDCARD;                   //~0A08I~//~va65R~
@@ -922,10 +924,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option3|=TO3_ROBOT_DISCARD_TILE;            //~va8xI~
         else                                                       //~va8xI~
 			TestOption.option3&=~TO3_ROBOT_DISCARD_TILE;           //~va8xI~
-        if (Pprop.getParameter(NOTHINKROBOT,0)!=0)                 //+vabsI~
-			TestOption.option5|=TO5_NOTHINK_ROBOT;                 //+vabsI~
-        else                                                       //+vabsI~
-			TestOption.option5&=~TO5_NOTHINK_ROBOT;                //+vabsI~
+        if (Pprop.getParameter(NOTHINKROBOT,0)!=0)                 //~vabsI~
+			TestOption.option5|=TO5_NOTHINK_ROBOT;                 //~vabsI~
+        else                                                       //~vabsI~
+			TestOption.option5&=~TO5_NOTHINK_ROBOT;                //~vabsI~
         if (Pprop.getParameter(DEALATODUKETAKEYAKUHAI,0)!=0)       //~va66I~
 			TestOption.option3|=TO3_DEAL_ATODUKE_TAKE_YAKUHAI;     //~va66I~
         else                                                       //~va66I~
@@ -1077,7 +1079,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DEALATODUKETAKESAMECOLOR,cbDealAtodukeTakeSameColor.getStateInt());//~va66I~
         changed+=updateProp(DEALSAKIDUKE2HANTAKE,cbDealSakiduke2hanTake.getStateInt());//~va8xI~
         changed+=updateProp(ROBOTDISCARDTILE,cbRobotDiscardTile.getStateInt());//~va8xI~
-        changed+=updateProp(NOTHINKROBOT,cbNoThinkRobot.getStateInt());//+vabsI~
+        changed+=updateProp(NOTHINKROBOT,cbNoThinkRobot.getStateInt());//~vabsI~
         changed+=updateProp(DEALATODUKETAKEYAKUHAI,cbDealAtodukeTakeYakuhai.getStateInt());//~va66I~
         changed+=updateProp(DEALANKANFIX1,cbDealAnkanFix1.getStateInt());//~va8xI~
         changed+=updateProp(DEALMINKANHONOR,cbDealMinkanHonor.getStateInt());//~vaa6I~

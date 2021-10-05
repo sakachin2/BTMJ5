@@ -1,5 +1,8 @@
-//*CID://+va40R~:                                   update#=   53; //~va40R~
+//*CID://+vaebR~:                                   update#=   57; //~vaebR~
 //***********************************************                  //~@@@1I~
+//2021/09/21 vaeb try not cache but file, cache miss line?         //~vaebI~
+//1ak2 2021/09/04 access external audio file                       //~1ak2I~
+//2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1Ad8 2015/07/21 (Asgts)//1A4h 2014/12/03 catch OutOfMemory(Ajagot1w)//1B0g//~1Ad8I~
 //1Ab9 2015/05/09 Dump byte[]                                      //~1Ab9I~
@@ -73,8 +76,8 @@ public class Dump
 	public static void open(PrintWriter Ppw)                       //~va40I~
 	{                                                              //~va40I~
 		Out=Ppw;                                                   //~va40I~
-        Terminal=false;                                            //+va40I~
-		Y = true; //call Dump                                      //+va40I~
+        Terminal=false;                                            //~va40I~
+		Y = true; //call Dump                                      //~va40I~
     }                                                              //~va40I~
     //**************************************************************//~1Ad8I~
 	public static void open(String file)                           //~1Ad8R~
@@ -108,7 +111,9 @@ public class Dump
 					out = UFile.openOutputSD("",file); // /sdcard//~1Ad8I~
                 else                                               //~1Ad8I~
 //  				out = UFile.openOutputData(file, Context.MODE_WORLD_READABLE); // ../files//~1Ad8R~//~va40R~
-    				out = openOutputData(file);                    //~va40I~
+//  				out = openOutputData(file);                    //~va40I~//~vad5R~
+                    out=UFile.openOutputDataCacheDir(file);  // ../cache//~1Ak1I~//~vad5I~//+vaebR~
+//  				out = openOutputData(file);                    //+vaebR~
 				if (out != null)                                     //~1Ad8R~
 				{//~1313R~                                         //~1Ad8R~
 					Out = new PrintWriter(new OutputStreamWriter(out, "UTF-8"), true/*autoFlash*/);//~1227I~//~1309R~//~1Ad8R~
@@ -316,6 +321,29 @@ public class Dump
 			pw.close();                                            //~1B0gI~//~1Ad8I~
         }                                                          //~1B0gI~//~1Ad8I~
 	}                                                              //~1B0gI~//~1Ad8I~
+    //**************************************************************//~1Ad8I~//~1ak2I~
+	public synchronized static void println(NoClassDefFoundError e,String s)//~1Ak2I~//~1ak2I~
+	{                                                              //~1Ak2I~//~1ak2I~
+	    String tidts=Utils.getThreadTimeStamp();                   //~1Ak2I~//~1ak2I~
+        if (Terminal)                                              //~1Ak2I~//~1ak2I~
+        {                                                          //~1Ak2I~//~1ak2I~
+            StringWriter sw=new StringWriter();                    //~1Ak2I~//~1ak2I~
+            PrintWriter pw= new PrintWriter(sw);                   //~1Ak2I~//~1ak2I~
+            e.printStackTrace(pw);                                 //~1Ak2I~//~1ak2I~
+			System.out.println(tidts+"Dump.Exception:"+s+"\n"+sw.toString());//~1Ak2I~//~1ak2I~
+			pw.close();                                            //~1Ak2I~//~1ak2I~
+        }                                                          //~1Ak2I~//~1ak2I~
+        else                                                       //~1Ak2I~//~1ak2I~
+  		if (Out!=null)                                             //~1Ak2I~//~1ak2I~
+        {                                                          //~1Ak2I~//~1ak2I~
+            StringWriter sw=new StringWriter();                    //~1Ak2I~//~1ak2I~
+            PrintWriter pw= new PrintWriter(sw);                   //~1Ak2I~//~1ak2I~
+            e.printStackTrace(pw);                                 //~1Ak2I~//~1ak2I~
+			Out.println(tidts+"Dump.Exception:"+s+"\n"+sw.toString());//~1Ak2I~//~1ak2I~
+			Out.flush();                                           //~1Ak2I~//~1ak2I~
+			pw.close();                                            //~1Ak2I~//~1ak2I~
+        }                                                          //~1Ak2I~//~1ak2I~
+	}                                                              //~1Ak2I~//~1ak2I~
     //**************************************************************//~1Ad8I~
 	/** dump a string without linefeed */
 	public static void print (String s)

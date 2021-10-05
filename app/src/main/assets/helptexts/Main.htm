@@ -24,8 +24,18 @@ Suspend and resume is supported.
 <BR>
 Device is required portrait width 600 pixels over and 800 pixels is recommended.
 <BR>
-From Android6.0(Marshmallow), you will be asked to allow the permission of "Write to external storage".
-Give the permission for saving Rule file and Game-Record file.
+From Android-6.0(Marshmallow), you will be asked to allow the permission of "Write to external storage".
+Give the permission for saving Rule files and History-Record files.
+Without permission, those are saved to internal storage which are cleared at re-installation.
+If you denied with "Don't ask again", re-installation required to allow the permission again. 
+<BR>
+From Android-11, you will be asked to specify the folder in external storage at first startup after (re-)installation.
+Select "eMahjong". If it not exist, make the folder using the dialog. Old data will be migrated to the folder.
+"Cancel":ask at restart, "Fix NO":ask again after reinstall.
+If not granted, saved to internal folder which cleared at re-installation.
+<BR>
+Additinally you will be asked to allow READ permission to listup audio file for BGM.
+<BR>
 And permission:ACCESS_FINE_LOCTION is required to use WiFi-Direct. Allow it.
 <BR>
 <BR>
@@ -59,10 +69,13 @@ Someone has to become <BIG><B>Server</B></BIG>, the others(called <BIG><B>Client
 <BR>
 <B>RuleSettings</B>：Set "Rounds" of game, "PlacingPrize", "Yakitori", "Wareme", "Tobi",...
 <BR>
+It is required to open Rule setting dialog, update and push OK once after installation before start game.  
+<BR>
 By child dialog, set rule related to <B>Yaku</B> and <B>Operation</B>.
 <BR>
 After rule was synchronized among all players,<B>Game</B> can be start.
- If rule was changed, <B>Send</B> it to all clients to obtain O.K.'ing.
+ At first time of connection and after rule was changed Warning "Runle unmatch" will be issued.
+ Open <B>Settings</B> dialog and <B>Send</B> it to all clients to obtain O.K.'ing.
  Rule files can be saved/reloaded, select a file suitable for the group each.
 <BR>
 Game advances by claiming and O.K.'ing by dialogs sent and received at each scene.
@@ -107,4 +120,4 @@ Note.
     1. draw tile:pick up a tile from wall.    2. drawn hand:shot in which no one won.
 <BR>
 <BR>
-<SMALL>Main 2021/04/17</SMALL>
+<SMALL>Main 2021/10/05</SMALL>
