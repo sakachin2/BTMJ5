@@ -1,4 +1,4 @@
-//*CID://+va11R~: update#= 794;                                    //~va11R~
+//*CID://+va11R~: update#= 800;
 //**********************************************************************//~v101I~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
@@ -35,12 +35,17 @@ public class Pair                                                  //~va11R~
                                                                    //~va11I~
         if (Dump.Y) Dump.println("Pair.constructor "+toString(this));//~va11R~
     }                                                              //~va11I~
+   //**********************************************************    //~vafiR~
+    public String toString()                                              //~vafiR~
+    {                                                              //~vafiR~
+    	return toString(this);                                     //~vafiR~
+    }                                                              //~vafiR~
    //**********************************************************    //~va11I~
     public static String toString(Pair Ppair)                      //~va11R~
     {                                                              //~va11R~
     	if (Ppair==null)                                           //~va11I~
         	return "null";                                         //~va11I~
-        return "typePair="+Ppair.typePair+",type="+Ppair.type+",number="+Ppair.number+",dupCtr="+Ppair.dupCtr+",flag=0x"+Integer.toHexString(Ppair.flag)+",swHand="+Ppair.swHand+"\n"//+va11R~
+        return "typePair="+Ppair.typePair+",type="+Ppair.type+",number="+Ppair.number+",dupCtr="+Ppair.dupCtr+",flag=0x"+Integer.toHexString(Ppair.flag)+",swHand="+Ppair.swHand+"\n"//~va11R~
         		+",parent="+(Ppair.parent==null?"null":"type="+Ppair.parent.type+",number="+Ppair.parent.number)+"\n"//~va11R~
         		+",pairSame="+(Ppair.pairSame==null?"null":"type="+Ppair.pairSame.type+",number="+Ppair.pairSame.number)+"\n"//~va11R~
         		+",pairSeq="+(Ppair.pairSeq==null?"null":"type="+Ppair.pairSeq.type+",number="+Ppair.pairSeq.number);//~va11I~

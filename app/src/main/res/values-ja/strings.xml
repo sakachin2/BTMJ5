@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.16</string>
+    <string name="app_version">v1.17</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -438,6 +438,7 @@
 		<item>@string/NormalGainPao</item>
 	</string-array>
 	<string-array name="OrderPrize"> 
+		<item>なし</item>
 		<item> 5 - 10</item>
 		<item>10 - 20</item>
 		<item>10 - 30</item>
@@ -986,6 +987,8 @@
     <string name="Err_TryBackButtonFromServer">サーバーから操作してください</string>
     <string name="Err_GameStatusForMenuInGame">配牌前です</string>
     <string name="Err_GameStatusForMenuInGameUseBackButton">配牌前です。\"戻る\"ボタンで戻れます</string>
+    <string name="Err_ConfirmReturnBeforeDealClientIOErr">配牌前の接続障害がありました。中断しますか？</string>
+    <string name="Err_ConfirmReturnInGameClientIOErr">ゲーム中の接続障害がありました。\n接続を回復すれば続行できますが、中断しますか？</string>
     <string name="Err_ConfirmReturn">ゲーム開始前です。中断しますか</string>
     <string name="Err_AlreadyShowing">表示中です</string>
     <string name="Err_SendAfterSyncAll">全員同意の後はサーバーのみ再送できます</string>
@@ -1588,4 +1591,8 @@
     <string name="Delete2">削除</string>
     <string name="lbUseUPicker">アプリのPicker</string>
     <string name="ErrNotSelectedAudio">曲を選択してください</string>
+    <string name="Err_AppDestroyedUnexpectedly">アプリケーションが強制終了されました!!!</string>
+    <string name="Err_AppDestroyedUnexpectedlyRestart">アプリケーションが強制終了されました!!!\n
+		構成（言語、フォントサイズなど）の変更、メモリー負荷などの理由が考えられます。\n
+		リスタートはサポートしていません。</string>
 </resources>

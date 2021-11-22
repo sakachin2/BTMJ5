@@ -319,22 +319,70 @@
                     android:text="Skip Rule Sync"
                 />
                 <CheckBox
+                    android:id="@+id/cbDealKuikaeChk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Kuikae chk"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealStraight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一通"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealStraightChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一通 チー"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3SameSeq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="三色"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealTanyao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タンヤオ"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealTanyaoPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タンヤオ ポン"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealChantaChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チャンタチー"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealChantaPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チャンタ ポン"
+                />
+                <CheckBox
                     android:id="@+id/cbDealAnkanFix1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal Ankan as Fix1"
+                    android:text="役牌　暗槓"
                 />
                 <CheckBox
                     android:id="@+id/cbDealMinkanHonor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal Minkan Honor"
+                    android:text="役牌　明槓"
                 />
                 <CheckBox
                     android:id="@+id/cbDealMinkanHonorSameColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal Minkan Honor SameColor Intent"
+                    android:text="役牌　明槓　一色"
                 />
                 <CheckBox
                     android:id="@+id/cbDealMinKanRon"
@@ -346,13 +394,13 @@
                     android:id="@+id/cbDealSameColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal Same Color"
+                    android:text="一色"
                 />
                 <CheckBox
                     android:id="@+id/cbDealAtodukeTakeSameColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal Atoduke Take Same Color"
+                    android:text="一色 後付け"
                 />
                 <CheckBox
                     android:id="@+id/cbDealSakiduke2hanTake"
@@ -442,13 +490,13 @@
                     android:id="@+id/cbPonDealAllSame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Pon for toitoi"
+                    android:text="トイトイ ポン"
                 />
                 <CheckBox
                     android:id="@+id/cbDealIntentAllSame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Intent AllSame"
+                    android:text="トイトイ インテント"
                 />
                 <CheckBox
                     android:id="@+id/cbDealIntentTanyao"
@@ -514,7 +562,7 @@
                     android:id="@+id/cbPonChiiDeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Pon then Chii for Tenpai"
+                    android:text="ポン、打牌がポンとロン"
                 />
                 <CheckBox
                     android:id="@+id/cbPonChiiDealSelectDora"
@@ -550,25 +598,25 @@
                     android:id="@+id/cbKanRinshanRonDeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Rinshan Ron"
+                    android:text="嶺上開花"
                 />
                 <CheckBox
                     android:id="@+id/cbKanDeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Kan(reset other deal if set on)"
+                    android:text="加槓"
                 />
                 <CheckBox
                     android:id="@+id/cbKanDealAnkan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Ankan(reset other deal if set on)"
+                    android:text="暗槓"
                 />
                 <CheckBox
                     android:id="@+id/cbKanDealChankan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal for Chanken(reset other deal if set on)"
+                    android:text="槍槓"
                 />
                 <CheckBox
                     android:id="@+id/cbDealRonTaken1st"
@@ -604,7 +652,7 @@
                     android:id="@+id/cbDealDoubleReachPonHonor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pon Honor for double reach"
+                    android:text="役牌２ でチー"
                 />
                 <CheckBox
                     android:id="@+id/cbRonRiver"
@@ -616,7 +664,13 @@
                     android:id="@+id/cbDeal13Orphan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 13Orphan Kokusi"
+                    android:text="国士無双"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealYakuman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="その他役満"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal7PairTanyao"
@@ -658,7 +712,7 @@
                     android:id="@+id/cbDeal3Dragon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal intent 3dragon"
+                    android:text="Deal intent 小三元"
                 />
                 <CheckBox
                     android:id="@+id/cbPon_Test"
@@ -688,7 +742,7 @@
                     android:id="@+id/cbChankan13Orphan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chankan ankan Ron 13 Orphan kukushi"
+                    android:text="国士 槍槓"
                 />
                 <CheckBox
                     android:id="@+id/cbWaitSelectPon"
@@ -767,13 +821,19 @@
                     android:id="@+id/cbSetPositionClient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="set start position eswn of Client by First Dealer"
+                    android:text="クライアント はサーバーの下家"
                 />
                 <CheckBox
                     android:id="@+id/cbSetPositionClientFacing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="set start position eswn of Client by First Dealer Toimen"
+                    android:text="クライアントはサーバーの対面"
+                />
+                <CheckBox
+                    android:id="@+id/cbSetPositionClientPrev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="クライアントはサーバーの上家"
                 />
                 <CheckBox
                     android:id="@+id/cbSetDupCtr"

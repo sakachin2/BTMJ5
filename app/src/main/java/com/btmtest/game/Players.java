@@ -1,4 +1,4 @@
-//*CID://+vaceR~: update#= 866;                                    //~vaceR~
+//*CID://+vaceR~: update#= 867;                                    //~vaceR~
 //**********************************************************************//~v101I~
 //2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//~vaceR~
 //2021/06/30 vaad (Bug)PlayAlone mode,did not notify kan if kan not in deal. maintaine ItsHand also for MatcNotify mode//~vaadI~
@@ -845,7 +845,7 @@ public class Players                                               //~v@@@R~
                 }                                                  //~9225M~
                 break;                                             //~v@@@R~
             case GCM_RON:                                          //~v@@@R~
-//          case GCM_RON_ANYWAY:           //GCM_RON is parm from UserAction//+vaceR~
+//          case GCM_RON_ANYWAY:           //GCM_RON is parm from UserAction//~vaceR~
             	typeAction=AT_STD;                                 //~9B14I~
                 emsg=AG.aUADelayed.isYourTurn(PactionID,Pplayer);  //~9C06I~
                 if (emsg!=0)                                       //~9C06I~
@@ -1209,7 +1209,8 @@ public class Players                                               //~v@@@R~
 		return discard(true/*PswLight*/,Pplayer,Ptd);              //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
-	public boolean discard(boolean PswLight,int Pplayer,TileData Ptd)//~v@@@I~
+//  public boolean discard(boolean PswLight,int Pplayer,TileData Ptd)//~v@@@I~//+vaceR~
+    private boolean discard(boolean PswLight,int Pplayer,TileData Ptd)//+vaceI~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Players.discard swLight="+PswLight+",player="+Pplayer+",Ptd="+Ptd.toString());//~v@@@R~
 //        if (swLastActionIsDiscard)                               //~v@@@R~
@@ -2367,7 +2368,7 @@ public class Players                                               //~v@@@R~
         //*********************************************************************//~vaadI~
         public boolean takePonChiiOtherOnClient(TileData[] Ptds,int PactionID)//~v@@@I~
         {                                                          //~v@@@I~
-            if (Dump.Y) Dump.println("Player.takePonChiiOnOtherClient player="+player+",Ptds="+TileData.toString(Ptds));//~v@@@I~
+            if (Dump.Y) Dump.println("Player.takePonChiiOnOtherClient player="+player+",actionID="+PactionID+",Ptds="+TileData.toString(Ptds));//~v@@@I~//+vaceR~
             if (player==PLAYER_YOU)                                //~v@@@I~
         		takePonChii(Ptds,PactionID);                       //~v@@@I~
             else                                                   //~v@@@I~

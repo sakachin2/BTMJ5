@@ -1,5 +1,8 @@
-//*CID://+va91R~: update#= 807;                                    //~va94R~//+va91R~
+//*CID://+vag0R~: update#= 818;                                    //~vag0R~
 //**********************************************************************//~v101I~
+//2021/11/06 vag0 (Bug)Kan call is not shanten up                  //~vag0I~
+//2021/11/06 vafz (Bug of evaluate Pon/Chii ronvalue);add Pair for earth for the pon/chii
+//2021/11/01 vafi (Bug)number of pauir was not top; it cause of failure chanta,straight,3sameseq...//~vafiI~
 //2021/06/12 va94 (Bug)point calc ron at take same should be *2    //~va94I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/26 va8r (Bug)Fu is 110 for pinfu tsumo under punfu-tsumo=yes//~va8rI~
@@ -10,20 +13,19 @@
 //**********************************************************************//~va11I~
 package com.btmtest.game.UA;                                       //~va11R~
 
-import com.btmtest.TestOption;
 import com.btmtest.dialog.CompReqDlg;
-import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
-import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~//~va11I~
 
+import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.Tiles.*;
 import static com.btmtest.game.UA.Pair.*;
@@ -388,7 +390,7 @@ public class UARonData                                             //~va11R~
     //******************************************                   //~va11I~
     private int getAmmount(int PrankBase)                          //~va11R~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonData.getAmmount rankBase="+PrankBase);//~va11R~
+        if (Dump.Y) Dump.println("UARonData.getAmmount rankBase="+PrankBase+",ctrPatternMax="+ctrPatternMix);//~va11R~//+vag0R~
         int amtMax=0;                                              //~va11I~
         int rankMax=0;                                             //~va11I~
         for (int ii=0;ii<ctrPatternMix;ii++)                       //~va11I~
@@ -398,7 +400,7 @@ public class UARonData                                             //~va11R~
 	            pt=Utils.roundUp(pt,10);                           //~va11R~
 	    	intRankS[ii]+=PrankBase;                               //~va11R~
 	    	int rank=intRankS[ii];                                 //~va11I~
-        	if (Dump.Y) Dump.println("UARonData.getAmmount rank="+rank);//~va11I~
+        	if (Dump.Y) Dump.println("UARonData.getAmmount ii="+ii+",rank="+rank);//~va11I~//+vag0R~
 //          if (rank>=MIN_RANK_YAKUMAN)                            //~va11R~
     		if (rank>=MIN_RANK_YAKUMAN && RuleSettingYaku.isYakumanByRank())//~va11I~
             {                                                      //~va11I~
@@ -439,6 +441,8 @@ public class UARonData                                             //~va11R~
         return amt;                                                //~va11I~
     }                                                              //~va11I~
     //******************************************                   //~va11I~
+    //*from UARDT.getAmmount                                       //~vafiI~
+    //******************************************                   //~vafiI~
 //  public void makePattern()                                      //~va11R~
     public void makePattern(Pair[] PpairSEarth)                    //~va11I~
     {                                                              //~va11I~
@@ -460,15 +464,60 @@ public class UARonData                                             //~va11R~
             {                                                      //~va11I~
                 TileData td=tds[0];                                //~va11I~
                 int typePair=PT_NOTNUM;                            //~va11I~
+                int numTop=td.number;
                 if (td.type<PIECE_NUMBERTYPECTR)                   //~va11I~
                 	if ((td.flag & TDF_CHII)!=0)	//            =0x40;  //pair by CHII//~va11I~
+                    {                                              //~vafiI~
 		                typePair=PT_NUMSEQ;                        //~va11I~
+        				numTop=TN9;                            //~vafiI~
+                        for (TileData td2:tds)                      //~vafiI~
+	                        numTop=Math.min(numTop,td2.number);     //~vafiR~
+                    }                                              //~vafiI~
                     else                                           //~va11I~
+                    {                                              //~vafiI~
 		                typePair=PT_NUMSAME;                       //~va11I~
-				Pair pair=new Pair(typePair,td.type,td.number,tds.length,td.flag);//~va11R~
+                    }                                              //~vafiI~
+//  			Pair pair=new Pair(typePair,td.type,td.number,tds.length,td.flag);//~va11R~//~vafiR~
+    			Pair pair=new Pair(typePair,td.type,numTop,tds.length,td.flag);//~vafiI~
                 list[ctr++]=pair;                                  //~va11I~
             }                                                      //~va11I~
         }                                                          //~va11I~
         return list;
     }                                                              //~va11I~
+    //******************************************                   //~vafiI~
+    public static Pair[] getPairEarth(TileData[][] PtdSS,int Paction,int PposTop,int Pflag)//~vafiI~
+    {                                                              //~vafiI~
+        if (Dump.Y) Dump.println("UARonData.getPairEarth action="+Paction+",PposTop="+PposTop+",flag="+Integer.toString(Pflag));//~vafiI~
+        Pair[] list=getPairEarth(PtdSS);                           //~vafiI~
+        int num=PposTop%CTR_NUMBER_TILE;                           //~vafiR~
+        int type=PposTop/CTR_NUMBER_TILE;                          //~vafiR~
+        int typePair=PT_NOTNUM;                                    //~vafiI~
+        int flag=Pflag;                                            //~vafiI~
+        if (Paction==GCM_CHII)                                     //~vafiI~
+        	flag|=TDF_CHII;                                        //~vafiI~
+        else                                                       //~vafiI~
+        if (Paction==GCM_KAN)                                      //~vag0I~
+        	flag|=TDF_KAN_RIVER;                                   //~vag0I~
+        else                                                       //~vag0I~
+        	flag|=TDF_PON;                                         //~vafiI~
+                                                                   //~vafiI~
+        if (type<PIECE_NUMBERTYPECTR)                              //~vafiI~
+        {                                                          //~vafiI~
+            if (Paction==GCM_CHII)                                 //~vafiI~
+                typePair=PT_NUMSEQ;                                //~vafiI~
+            else                                                   //~vafiI~
+                typePair=PT_NUMSAME;                               //~vafiI~
+        }                                                          //~vafiI~
+        int numTop=num;                                            //~vafiI~
+//    	Pair pair=new Pair(typePair,type,numTop,PAIRCTR,Pflag);    //~vafiI~//~vag0R~
+      	Pair pair=new Pair(typePair,type,numTop,(Paction==GCM_KAN ? PAIRCTR_KAN : PAIRCTR),Pflag);//~vag0I~
+        for (int ii=0;ii<list.length;ii++)                         //~vafzR~
+        	if (list[ii]==null)                                    //~vafzI~
+            {                                                      //~vafzI~
+        		list[ii]=pair;                                            //~vafiI~//~vafzR~
+                break;                                             //~vafzI~
+            }                                                      //~vafzI~
+        if (Dump.Y) Dump.println("UARonData.getPairEarth exit Pairs="+Pair.toString(list));//~vafiI~//~vafzR~
+        return list;                                               //~vafiI~
+    }                                                              //~vafiI~
 }                                                                  //~va11I~

@@ -1,6 +1,12 @@
-//*CID://+vabmR~: update#= 320;                                    //~vabcR~//+vabmR~
+//*CID://+vaghR~: update#= 338;                                    //~vaghR~
 //**********************************************************************
-//2021/07/29 vabm skip reach for shanpon to change ryanmen         //+vabmI~
+//2021/11/12 vagh support INTENT_4ANKO                             //~vaghI~
+//2021/11/08 vag7 INTENT_ALLSAME;triplet>=1 and (triplet+pair)>=4 and no seq meld//~vag7I~
+//2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
+//2021/10/28 vafc pon/chii call for INTENT_TANYAO                  //~vafcI~
+//2021/10/28 vafb evaluate INTENT_3SAMESEQ                         //~vafbR~
+//2021/10/27 vaf9 evaluate INTENT_STRAIGHT                         //~vaf9I~
+//2021/07/29 vabm skip reach for shanpon to change ryanmen         //~vabmI~
 //2021/07/27 vabc defuse decision of chanta                        //~vabcI~
 //2021/07/27 vabb evaluate value of allsame; more minus for trplet over pair//~vabbI~
 //2021/07/25 vab9 gnore shanten Up/Down if once called pon/chii according intent//~vab9I~
@@ -57,6 +63,10 @@ public class RAConst                                               //~1130R~
     public static final int DV_SAMECOLOR_WORD =  -10000;
     public static final int DV_NOT_SAMECOLOR  =  200000;   //counter value for shanten up//~1310R~
     public static final int DV_SAMECOLOR_OTHER=  -10000;
+    public static final int DV_STRAIGHT       =  -10000;           //~vaf9I~
+    public static final int DV_STRAIGHT_CALLED= -200000;   //over hanmax,after issued chii by intent straight//~vaf9I~//~vafbR~
+    public static final int DV_3SAMESEQ       =  -10000;           //~vafbI~
+    public static final int DV_3SAMESEQ_CALLED= -200000;   //over hanmax,after issued chii by intent 3sameseq(3shiki)//~vafbR~
     public static final int DV_7PAIR          =  -30000;
     public static final int DV_7PAIR3         =  -20000;           //~1216I~
     public static final int DV_OTHER_SAMECOLOR=  -10000;	//*caution_level by other intent of samecolor//~1217R~
@@ -64,6 +74,8 @@ public class RAConst                                               //~1130R~
     public static final int DV_13ORPHAN       =DV_KEEP ;
     public static final int DV_13ORPHAN_OTHER =  -30000;
     public static final int DV_NOT_TANYAO     =   10000;
+    public static final int DV_TANYAO_CALLED  = -200000;           //~vafcR~
+    public static final int DV_CHANTA_CALLED  = -200000;           //~vaffI~
 //  public static final int DV_NOT_TANYAO_AFTER_CALL=20000; //once called pon/chii//~1219I~//~1221R~//~vaaMR~
 //  public static final int DV_NOT_TANYAO_AFTER_CALL=110000;//not plus for chanta but minus for tanyao tile //once called pon/chii//~vaaMI~//~vab9R~
     public static final int DV_NOT_CHANTA     =   10000;           //~1217I~
@@ -139,9 +151,12 @@ public class RAConst                                               //~1130R~
     public static final int HV_SET_INTENT_SAMECOLOR_OTHER2  =2;	//other color limit is <=2  when ctrTaken>6//~1308I~
     public static final int HV_SET_INTENT_3DRAGON           =6;	//dragon trplet*3+pair*2+orphan*1>=6//~1307I~
 //  public static final int HV_SET_INTENT_ALLSAME_VALUE     =9;	    //limit of determin toitoi intent by VALUE_PAIR*pair+VALUE_PON*(pon+kan)>=9//~1308R~//~vabaR~
-    public static final int HV_SET_INTENT_ALLSAME_VALUE     =8;	    //limit of determin toitoi intent by VALUE_PAIR*pair+VALUE_PON*(pon+kan)>=8//~vabaI~
-    public static final int HV_SET_INTENT_ALLSAME_VALUE_PAIR=1;    //~1217R~
-    public static final int HV_SET_INTENT_ALLSAME_VALUE_PON =3;
+//  public static final int HV_SET_INTENT_ALLSAME_VALUE     =8;	    //limit of determin toitoi intent by VALUE_PAIR*pair+VALUE_PON*(pon+kan)>=8//~vabaI~//~vag7R~
+//  public static final int HV_SET_INTENT_ALLSAME_VALUE_PAIR=1;    //~1217R~//~vag7R~
+//  public static final int HV_SET_INTENT_ALLSAME_VALUE_PON =3;    //~vag7R~
+    public static final int HV_SET_INTENT_ALLSAME_VALUE_PAIR=4;   //ALLSAME requires (triplet+pair)>=4//~vag7I~
+    public static final int HV_SET_INTENT_ALLSAME_VALUE_PON =1;   //ALLSAME requires triplet>=1//~vag7I~
+    public static final int HV_SET_INTENT_ALLSAME_VALUE_4ANKO=2;  //for INTENT_4ANKO//~vaghI~
     public static final int HV_SET_INTENT_TAKE_13ORPHAM  =1;	//select 13 orphan at 1st take//~1121I~//~1213R~
     public static final int HV_SET_INTENT_MAX_SHANTEN_13ORPHAN=4;	//set intent 13 orphan if <=4 shanten//~1213I~//~1214R~
     public static final int HV_NOIGNORE_SHANTEN_DOWN        =4;	//not ignore shantenDown at discard if currentshanten<=4//~1302R~
@@ -170,6 +185,7 @@ public class RAConst                                               //~1130R~
     public static final int HV_CTR_CHK_OTHER_13ORPHAN       =8; 	//at 8 discard chk other 13orphan//~1215I~
     public static final int HV_CTR_OTHER_13ORPHAN           =1; 	//at 8 discard chk other 13orphan discard >1 19ji//~1215I~
     public static final int HV_TIME_TO_CALL                 =3;		//<=3 save to call up to 3 tiles take//~1206I~
+    public static final int HV_TIME_TO_CALL_4ANKO           =8;		//if ctrTaken<=8, no call Pon if INTENT_4ANKO//+vaghI~
     public static final int HV_PARENT_1STCALL_SHANTEN       =3;		//if parent shanten<=3, call PON at 1st discard//~1305I~
 
     public static final int HV_CTR_TO_WAIT_REACH_EARLY      =8;    // if ctrTaken<8 wait winning tile>=4//~1215I~//~1216R~//~1218R~
@@ -181,9 +197,11 @@ public class RAConst                                               //~1130R~
     public static final int HV_CTR_DORA_FOR_PONCHII_SHANTEN1=2;    // if dora>=2 call pon/chii if shanten=1//~vaaiI~
     public static final int HV_CTR_DORA_FOR_PONCHII_SHANTEN2=3;    // if dora>=3 call pon/chii if shanten=2//~vaaiR~
     public static final int HV_INTENT_SAMECOLOR_SHANTEN     =3;    // set intent if shanten<=3//~1218I~//~1308R~
+    public static final int HV_INTENT_STRAIGHT_CTRTYPE      =7;    // intent straight if more tile<=2//~vaf9I~
+    public static final int HV_INTENT_3SAMESEQ_CTRTYPE      =7;    // intent 3sameseq if more tile<=2//~vafbI~
     public static final int HV_CTRWIN_TO_REACH_EARLY         =4;    // if wintile>=4 do reach in early phase//~1215I~
     public static final int HV_CTRWIN_TO_REACH_ONE_TYPE      =4;    //wintile<4 for penchan kanchan tanki//~1224I~
-    public static final int HV_CTRWIN_TO_REACH_SKIP_SHANPON  =4;    //wintile<4 for shanpon skip reach//+vabmI~
+    public static final int HV_CTRWIN_TO_REACH_SKIP_SHANPON  =4;    //wintile<4 for shanpon skip reach//~vabmI~
     public static final int HV_CTRWIN_TO_REACH               =2;    // if wintile>=2 do reach//~1215I~
     public static final int HV_CTRWIN_TO_REACH_2ND           =5;    // if wintile>=5 do reach if other player reached//~1306I~//~1309R~
     public static final int HV_CTRWIN_TO_REACH_7PAIR         =2;    // if wintile>=2 do reach//~1224I~
@@ -261,6 +279,9 @@ public class RAConst                                               //~1130R~
 	public static final int INTENT_GIVEUP         =0x2000; //select genbutu//~1217I~
 	public static final int INTENT_CHANTA         =0x4000;         //~1307R~
 	public static final int INTENT_3DRAGON        =0x8000;         //~1307I~
+	public static final int INTENT_STRAIGHT      =0x10000; //straight man/pin/sou//~vaf9R~
+	public static final int INTENT_3SAMESEQ      =0x20000; //3sameseq//~vafbI~
+	public static final int INTENT_4ANKO         =0x40000; //4 conceild triplet//~vaghI~
                                                                    //~1115I~//~1130M~
 	public static final int CALLSTAT_REACH              =0x01; //reach called//~1115R~//~1130M~
 	public static final int CALLSTAT_SAME               =0x02; //many call PON/KAN//~1115R~//~1130M~

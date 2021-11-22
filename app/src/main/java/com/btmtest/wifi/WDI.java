@@ -1,5 +1,7 @@
-//*CID://+DATER~:                             update#=  122;       //~1Ac4R~//~1Ad2R~//~9712R~
+//*CID://+vaf0R~:                             update#=  123;       //+vaf0R~
 //*************************************************************************//~1A65I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//+vaf0I~
+//*************************************************************************//+vaf0I~
 package com.btmtest.wifi;                                               //~v@@@I~//~9719I~
 
 import static com.btmtest.AG.*;
@@ -35,12 +37,12 @@ public class WDI                                                   //~9719R~
         if (Dump.Y) Dump.println("WDI:startRemoteIP remoteStatus="+AG.RemoteStatus);//~9719I~//~9722M~
     	if (AG.aWDI==null)                                         //~9722I~
         	new WDI();                                     //~9722I~//~9728R~
-//        if ((AG.RemoteStatus & RS_BT)!=0) //chked alread atMenuDialogConnection//+0118R~
-//        {                                                          //~9719I~//+0118R~
-////          new Message(this,R.string.ErrNowBTConnected);          //~9719R~//+0118R~
-//            Alert.showMessage(0/*title*/,R.string.ErrNowBTConnected);//~9719I~//+0118R~
-//            return;                                                //~9719I~//+0118R~
-//        }                                                          //~9719I~//+0118R~
+//        if ((AG.RemoteStatus & RS_BT)!=0) //chked alread atMenuDialogConnection//~0118R~
+//        {                                                          //~9719I~//~0118R~
+////          new Message(this,R.string.ErrNowBTConnected);          //~9719R~//~0118R~
+//            Alert.showMessage(0/*title*/,R.string.ErrNowBTConnected);//~9719I~//~0118R~
+//            return;                                                //~9719I~//~0118R~
+//        }                                                          //~9719I~//~0118R~
     	if (isAliveOtherSession(AST_WD,false/*dupok*/))         //~1A8gR~//~9719I~//~9722R~
             return;                                                //~1A8gR~//~9719I~
 		new IPConnectionWD();	//open dialog              //~1A90I~   //~9719R~//~9722R~
@@ -109,7 +111,9 @@ public class WDI                                                   //~9719R~
     //******************************************                   //~0113I~
     public static void shownBTCD()                                 //~0113I~
     {                                                              //~0113I~
-        if (Dump.Y) Dump.println("WDI.shownBTCD");                 //~0113I~
+        if (Dump.Y) Dump.println("WDI.shownBTCD AG="+Utils.toString(AG));                 //~0113I~//+vaf0R~
+        if (AG==null)                                              //+vaf0I~
+        	return;                                                //+vaf0I~
     	if (AG.aWDI!=null && AG.aWDI.WDIR!=null)                   //~0113I~
     		AG.aWDI.WDIR.shownBTCD();                              //~0113I~
     }                                                              //~0113I~

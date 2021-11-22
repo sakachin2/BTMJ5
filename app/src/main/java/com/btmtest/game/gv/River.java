@@ -1,5 +1,6 @@
-//*CID://+vaa6R~: update#= 598;                                    //~vaa6R~
+//*CID://+vagqR~: update#= 602;                                    //~vagqR~
 //**********************************************************************//~v101I~
+//2021/11/13 vagq TestOption Client position previous              //~vagqI~
 //2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/04/11 va81 (Bug)In notify mode,btn si not highlighen when take//~va81I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -428,6 +429,7 @@ public class River                                                 //~v@@@R~
 	private void drawDiscarded(boolean Pswerase)                    //~v@@@R~//~0401R~
     {                                                              //~v@@@I~
         TileData td=players.tileLastDiscarded;                     //~v@@@R~
+        if (Dump.Y) Dump.println("River.drawDiscarded swErase="+Pswerase+",lastDiscarded="+Utils.toString(td));//~vagqI~
         if (td==null)                                              //~v@@@I~
         {                                                          //~v@@@I~
 	        if (Dump.Y) Dump.println("River.drawDiscarded tile=null Pswerase="+Pswerase);//~v@@@I~
@@ -492,7 +494,7 @@ public class River                                                 //~v@@@R~
 	        if (Dump.Y) Dump.println("River.drawDiscarded tile=null");//~v@@@I~
         	return;                                                //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("River.drawDiscarded tile type="+td.type+",num="+td.number+",flag="+td.flag);//~v@@@I~
+        if (Dump.Y) Dump.println("River.drawDiscarded tile type="+td.type+",num="+td.number+",flag="+Integer.toHexString(td.flag));//~v@@@I~//~vagqR~
 //      int player=td.getPlayer();                                 //~v@@@R~
         int player=Pplayer;                                        //~v@@@I~
         int pos=players.getDiscardedCtr(player)-1;                 //~v@@@I~
@@ -592,7 +594,7 @@ public class River                                                 //~v@@@R~
     public TileData eraseTaken()                                   //~v@@@R~
     {                                                              //~v@@@I~
         TileData td=players.tileLastDiscarded;                     //~v@@@R~
-        if (Dump.Y) Dump.println("River.eraseTaken");              //~v@@@I~
+        if (Dump.Y) Dump.println("River.eraseTaken lastDiscarded="+Utils.toString(td));              //~v@@@I~//+vagqR~
         if (td!=null && (td.flag & TDF_TAKEN_RIVER)!=0)            //~v@@@R~
         {                                                          //~v@@@I~
         	drawDiscarded(true/*erase*/);                          //~v@@@R~
@@ -918,7 +920,7 @@ public class River                                                 //~v@@@R~
             if (TestOption.firstDealer!=0                          //~vaa6R~
 	        && posClient!=-1)                                      //~vaa6I~
             {                                                      //~vaa6I~
-                if (Dump.Y) Dump.println("River.getPlayerPosition ClientNext old posPlayer="+Arrays.toString(posPlayer));//+vaa6R~
+                if (Dump.Y) Dump.println("River.getPlayerPosition ClientNext old posPlayer="+Arrays.toString(posPlayer));//~vaa6R~
     	    	int posTo;                                         //~vaa6I~
 		        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//~vaa6I~
                 {                                                  //~vaa6I~
@@ -935,29 +937,52 @@ public class River                                                 //~v@@@R~
                 if (Dump.Y) Dump.println("River.getPlayerPosition Client posFrom="+posFrom+",posTo="+posTo+",new posPlayer="+Arrays.toString(posPlayer));//~vaa6R~
             }                                                      //~vaa6I~
         }                                                          //~vaa6I~
-        if ((TestOption.option4 & TestOption.TO4_INITIAL_POSITION_CLIENT_FACING)!=0)//+vaa6I~
-        {                                                          //+vaa6I~
-            if (Dump.Y) Dump.println("River.getPlayerPosition ClientFacing firstDealer="+TestOption.firstDealer+",posClient="+posClient);//+vaa6I~
-            if (TestOption.firstDealer!=0                          //+vaa6I~
-	        && posClient!=-1)                                      //+vaa6I~
-            {                                                      //+vaa6I~
-                if (Dump.Y) Dump.println("River.getPlayerPosition Client old posPlayer="+Arrays.toString(posPlayer));//+vaa6I~
-    	    	int posTo;                                         //+vaa6I~
-		        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//+vaa6I~
-                {                                                  //+vaa6I~
-    	    		posTo=TestOption.firstDealer+1; 	//move to  next of next of dealer//+vaa6I~
-                    if (posTo>=PLAYERS)                            //+vaa6I~
-                        posTo-=PLAYERS;                            //+vaa6I~
-                }                                                  //+vaa6I~
-                else                                               //+vaa6I~
-    	    		posTo=TestOption.firstDealer-1; 	//move to  //+vaa6I~
-                int posFrom=posClient;                             //+vaa6I~
-                int oldTo=posPlayer[posTo];                        //+vaa6I~
-                posPlayer[posTo]=posPlayer[posFrom];               //+vaa6I~
-                posPlayer[posFrom]=oldTo;                          //+vaa6I~
-                if (Dump.Y) Dump.println("River.getPlayerPosition Client posFrom="+posFrom+",posTo="+posTo+",new posPlayer="+Arrays.toString(posPlayer));//+vaa6I~
-            }                                                      //+vaa6I~
-        }                                                          //+vaa6I~
+        if ((TestOption.option4 & TestOption.TO4_INITIAL_POSITION_CLIENT_FACING)!=0)//~vaa6I~
+        {                                                          //~vaa6I~
+            if (Dump.Y) Dump.println("River.getPlayerPosition ClientFacing firstDealer="+TestOption.firstDealer+",posClient="+posClient);//~vaa6I~
+            if (TestOption.firstDealer!=0                          //~vaa6I~
+	        && posClient!=-1)                                      //~vaa6I~
+            {                                                      //~vaa6I~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client old posPlayer="+Arrays.toString(posPlayer));//~vaa6I~
+    	    	int posTo;                                         //~vaa6I~
+		        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//~vaa6I~
+                {                                                  //~vaa6I~
+    	    		posTo=TestOption.firstDealer+1; 	//move to  next of next of dealer//~vaa6I~
+                    if (posTo>=PLAYERS)                            //~vaa6I~
+                        posTo-=PLAYERS;                            //~vaa6I~
+                }                                                  //~vaa6I~
+                else                                               //~vaa6I~
+    	    		posTo=TestOption.firstDealer-1; 	//move to  //~vaa6I~
+                int posFrom=posClient;                             //~vaa6I~
+                int oldTo=posPlayer[posTo];                        //~vaa6I~
+                posPlayer[posTo]=posPlayer[posFrom];               //~vaa6I~
+                posPlayer[posFrom]=oldTo;                          //~vaa6I~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client posFrom="+posFrom+",posTo="+posTo+",new posPlayer="+Arrays.toString(posPlayer));//~vaa6I~
+            }                                                      //~vaa6I~
+        }                                                          //~vaa6I~
+        if ((TestOption.option5 & TestOption.TO5_INITIAL_POSITION_CLIENT_PREV)!=0)//~vagqI~
+        {                                                          //~vagqI~
+            if (Dump.Y) Dump.println("River.getPlayerPosition ClientPrev firstDealer="+TestOption.firstDealer+",posClient="+posClient);//~vagqI~
+            if (TestOption.firstDealer!=0                          //~vagqI~
+	        && posClient!=-1)                                      //~vagqI~
+            {                                                      //~vagqI~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client old posPlayer="+Arrays.toString(posPlayer));//~vagqI~
+    	    	int posTo;                                         //~vagqI~
+		        if ((TestOption.option2 & TestOption.TO2_INITIAL_POSITION)!=0)//~vagqI~
+                {                                                  //~vagqI~
+    	    		posTo=TestOption.firstDealer+2; 	//move to  next of next of next of dealer//~vagqI~
+                    if (posTo>=PLAYERS)                            //~vagqI~
+                        posTo-=PLAYERS;                            //~vagqI~
+                }                                                  //~vagqI~
+                else                                               //~vagqI~
+    	    		posTo=TestOption.firstDealer-1; 	//move to  //~vagqI~
+                int posFrom=posClient;                             //~vagqI~
+                int oldTo=posPlayer[posTo];                        //~vagqI~
+                posPlayer[posTo]=posPlayer[posFrom];               //~vagqI~
+                posPlayer[posFrom]=oldTo;                          //~vagqI~
+                if (Dump.Y) Dump.println("River.getPlayerPosition Client posFrom="+posFrom+",posTo="+posTo+",new posPlayer="+Arrays.toString(posPlayer));//~vagqI~
+            }                                                      //~vagqI~
+        }                                                          //~vagqI~
 	    if (Dump.Y) Dump.println("River.getPlayerPosition posPlayer="+Arrays.toString(posPlayer));//~v@@@I~
         return posPlayer;                                          //~v@@@I~
     }                                                              //~v@@@I~

@@ -1,6 +1,8 @@
-//*CID://+va8nR~: update#= 200;                                    //+va8nR~
+//*CID://+vagiR~: update#= 202;                                    //+vagiR~
 //**********************************************************************
-//2021/04/26 va8n release INTENT_GIVEUP_WEAK when shaten reached to 0//+va8nI~
+//2021/11/12 vagi (Bug)chk Other;Other Reach is ignoreed when less remaining tile//+vagiI~
+//2021/11/01 vafm (Bug)getCtrEarthChanta returns >0 even tanyao earth exist(chanta and tanyao)//~vafmI~
+//2021/04/26 va8n release INTENT_GIVEUP_WEAK when shaten reached to 0//~va8nI~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 //*Smart discard, check other player status
@@ -28,7 +30,8 @@ public class RADSOther
 	private RoundStat RS;
 	private RADiscard RAD;
 	private RADSmart RADS;
-    private int ctrPairOther,statPairOther;
+//  private int ctrPairOther,statPairOther;                        //~vafmR~
+    private int ctrPairOther;                                      //~vafmI~
     private int[] itsStatPairOther;
     private int[] itsMarkPlayer=new int[PLAYERS];
     private int[] itsHandValueMark=new int[HANDCTR_TAKEN];         //~1220I~
@@ -60,7 +63,7 @@ public class RADSOther
     {
 //      Point p=new Point();                                       //~1222R~
         //************************************
-        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer myShanten="+PmyShanten+",hanMax="+PhanMax+",ctrWinTile="+PctrWinTile+",ewnDiscard="+PeswnDiscard+",RADS.myShanten="+RADS.myShanten);//~1216R~//~1220R~//~1303R~
+        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer myShanten="+PmyShanten+",hanMax="+PhanMax+",ctrWinTile="+PctrWinTile+",eswnDiscard="+PeswnDiscard+",RADS.myShanten="+RADS.myShanten);//~1216R~//~1220R~//~1303R~//+vagiR~
         ctrHand=PctrHand;
                                                                    //~1121I~
         itsHand=PitsHand;                                          //~1121M~
@@ -79,9 +82,11 @@ public class RADSOther
         Point p=new Point();                                       //~1121I~//~1222R~
         int ctrOtherReach=0;                                       //~1223I~
         //************************************                     //~1121I~
-        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer myShanten="+PmyShanten+",hanmax="+PhanMax+",ctrWintile="+PctrWinTile+",eswnDiscard="+PeswnDiscard+",RADS.myShanten="+RADS.myShanten);//~1121I~//~1216R~
+        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer entry myShanten="+PmyShanten+",hanmax="+PhanMax+",ctrWintile="+PctrWinTile+",eswnDiscard="+PeswnDiscard+",RADS.myShanten="+RADS.myShanten);//~1121I~//~1216R~//+vagiR~
 		int ctrDora=RADS.getCtrDoraInHandAndEarth(PeswnDiscard);   //~1314I~
         cutEswn=AG.aAccounts.getCutEswn();                            //~1311I~
+        int intent=RS.RSP[PeswnDiscard].getIntent();               //+vagiI~
+        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer ctrDora="+ctrDora+",cutEswn="+cutEswn+",intent="+Integer.toHexString(intent));//+vagiI~
         Arrays.fill(itsMarkPlayer,0);                              //~1121I~
         int ctrOtherReacher=RS.getCtrOtherReach(PeswnDiscard);     //~1310I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~1121I~
@@ -90,7 +95,7 @@ public class RADSOther
             	continue;                                          //~1121I~
         	itsStatPairOther=RS.RSP[ii].getPairStatistic(p);       //~1121I~
         	ctrPairOther=p.x;                                      //~1121I~
-        	statPairOther=p.y;                                     //~1121I~
+//      	statPairOther=p.y;                                     //~1121I~//~vafmR~
             itsStatDiscard=RS.RSP[ii].getDiscardStatistic();       //~1121I~
             if (RADS.myShanten>1)                                  //~1121I~
             {                                                      //~1121I~
@@ -101,31 +106,35 @@ public class RADSOther
 //          if (PhanMax<HV_HAN_MARKOTHER)   //4:if less than mangan(4han), hanMax is set if shanten==0//~1121I~//~1216R~//~1314R~
             if (PhanMax<HV_HAN_MARKOTHER   //4:if less than mangan(4han), hanMax is set if shanten==0//~1314I~
 			&&  ctrDora<HV_DORA_MARKOTHER)   //<3, if dora>=3 ignore other//~1314I~
-			    chkOtherPlayerMark(ii,PmyShanten,PhanMax,PctrWinTile,ctrOtherReacher);                            //~1121I~//~1216R~//~1310R~
+//  		    chkOtherPlayerMark(ii,PmyShanten,PhanMax,PctrWinTile,ctrOtherReacher);                            //~1121I~//~1216R~//~1310R~//+vagiR~
+    		    chkOtherPlayerMark(ii,PmyShanten,PhanMax,PctrWinTile,ctrOtherReacher,intent);//+vagiI~
+            else                                                   //+vagiI~
+            if ((intent & INTENT_GIVEUP)!=0)                       //+vagiI~
+			    chkOtherPlayerMark(ii,PmyShanten,PhanMax,PctrWinTile,ctrOtherReacher,intent);//+vagiI~
             if ((itsMarkPlayer[ii] & OTHER_MARK_REACH)!=0)         //~1223I~
             	if (ii!=PeswnDiscard)                              //~1223I~
                 	ctrOtherReach++;                               //~1223I~
         }                                                          //~1121I~
         //set value                                                //~1217I~
-        int intent=RS.RSP[PeswnDiscard].getIntent();                      //~1223I~
+//      int intent=RS.RSP[PeswnDiscard].getIntent();                      //~1223I~//+vagiR~
         if (ctrOtherReach>=HV_GIVEUP_BY_MULTIPLE_REACH)   //     =2;      //when other reach player>=2 set intent giveup//~1223I~
         	intent|=INTENT_GIVEUP;                                 //~1223I~
         int remainingTile=RAUtils.getCtrRemain();                  //~1224I~
         if (remainingTile<HV_CTR_UPTO_DRAW)            // 4*4         //~1224I~//~1302R~//~1311R~
         {                                                          //~1224I~
-        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer set giveup before myShanten="+PmyShanten+",remain="+remainingTile+",intent="+Integer.toHexString(intent));//+va8nI~
+        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer set giveup before myShanten="+PmyShanten+",remain="+remainingTile+",intent="+Integer.toHexString(intent));//~va8nI~
             if (PmyShanten>1)                                      //~1224I~
     	    	intent|=INTENT_GIVEUP;                             //~1224I~
             else                                                   //~1224I~
             if (PmyShanten==1)                                     //~1224I~
-            {                                                      //+va8nI~
-    	    	intent&=~INTENT_GIVEUP;                        //~1224I~//+va8nR~
-    	    	intent|=INTENT_GIVEUP_WEAK;                        //+va8nI~
-            }                                                      //+va8nI~
-            else                                                   //+va8nI~
-            if (PmyShanten==0)                                     //+va8nI~
-    	    	intent&=~INTENT_GIVEUP_WEAK;                       //+va8nI~
-        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer@@@@ set giveup by remainingTile and shanten after intent="+Integer.toHexString(intent));//~1224I~//+va8nR~
+            {                                                      //~va8nI~
+    	    	intent&=~INTENT_GIVEUP;                        //~1224I~//~va8nR~
+    	    	intent|=INTENT_GIVEUP_WEAK;                        //~va8nI~
+            }                                                      //~va8nI~
+            else                                                   //~va8nI~
+            if (PmyShanten==0)                                     //~va8nI~
+    	    	intent&=~INTENT_GIVEUP_WEAK;                       //~va8nI~
+        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer@@@@ set giveup by remainingTile and shanten after intent="+Integer.toHexString(intent));//~1224I~//~va8nR~
         }                                                          //~1224I~
         RS.RSP[PeswnDiscard].setIntent(intent);                    //~1224I~
     	Arrays.fill(itsHandValueMarkSumm,0);                      //~1302I~
@@ -289,10 +298,12 @@ public class RADSOther
         }
     }
     //***********************************************************************
-    private void chkOtherPlayerMark(int Peswn/*other than me*/,int PmyShanten,int PhanMax,int PctrWinTile,int PctrOtherReacher)//~1216R~//~1220R~//~1310R~
+//  private void chkOtherPlayerMark(int Peswn/*other than me*/,int PmyShanten,int PhanMax,int PctrWinTile,int PctrOtherReacher)//~1216R~//~1220R~//~1310R~//+vagiR~
+    private void chkOtherPlayerMark(int Peswn/*other than me*/,int PmyShanten,int PhanMax,int PctrWinTile,int PctrOtherReacher,int Pintent)//+vagiI~
     {
-        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark eswn="+Peswn+",shanten="+PmyShanten+",hanMax="+PhanMax+",ctrWinTile="+PctrWinTile+",ctrPairOther="+ctrPairOther+", RADS.myShanten="+RADS.myShanten+",ctrOtherReacher="+PctrOtherReacher);//~1216R~//~1314R~
+        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark eswn="+Peswn+",shanten="+PmyShanten+",hanMax="+PhanMax+",ctrWinTile="+PctrWinTile+",ctrPairOther="+ctrPairOther+", RADS.myShanten="+RADS.myShanten+",ctrOtherReacher="+PctrOtherReacher+",intent="+Integer.toHexString(Pintent));//~1216R~//~1314R~//+vagiR~
         if (ctrPairOther>=HV_MARK_CALL)     //>=3 earth            //~1216R~//~1224R~
+        {                                                          //+vagiI~
             if (PctrWinTile<HV_MARK_IGNORE_WINTILE)     //ignore other player reach if wintile>=4//~1216I~//~1220R~
             {                                                          //~1216I~//~1220R~
                                     if ((TestOption.option2 & TO2_ROBOT_TOAST)!=0)//~1214I~//~1216I~//~1220R~
@@ -300,6 +311,7 @@ public class RADSOther
                 if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark@@@@ mark by ctrEarth eswn="+Peswn+",ctrPairOther="+ctrPairOther);//~1216R~//~1220R~
                 itsMarkPlayer[Peswn]|=OTHER_MARK_EARTH;                //~1219R~//~1220R~
             }                                                          //~1216I~//~1220R~
+        }                                                          //+vagiI~
         else                                                       //~1220I~
         if (ctrPairOther>0)     //any erth                         //~1220I~
         	if (chkEarthDoraWord(Peswn))                           //~1220I~
@@ -318,6 +330,7 @@ public class RADSOther
             ||  PmyShanten>0 && RAUtils.getCtrRemain()<HV_SET_GIVEUP_REMAINING  //     =8;   //giveup at remaining<4 if shanten>0//~1311I~//~1314R~
             ||  PctrOtherReacher>=HV_GIVEUP_BY_MULTIPLE_REACH   //     =2;      //when other reach player>=2 set intent giveup//~1310I~
             ||  Peswn==ESWN_E || Peswn==cutEswn                   //mark reach if dealer or cutpos//~1315I~
+            ||  (Pintent & INTENT_GIVEUP)!=0                     //mark REACH if already giveup//+vagiI~
             )                                                      //~1307I~
             {                                                          //~1216I~//~1220R~
                                     if ((TestOption.option2 & TO2_ROBOT_TOAST)!=0)//~1216I~//~1220R~
@@ -327,7 +340,7 @@ public class RADSOther
                 if ((RS.RSP[Peswn].callStatus & CALLSTAT_REACH_ONESHOT)!=0)//~1219I~//~1220R~
                     itsMarkPlayer[Peswn]|=OTHER_MARK_REACH_ONESHOT;    //~1219I~//~1220R~
             }                                                          //~1216I~//~1220R~
-            if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark other rech chk shanten="+PmyShanten+",otherEswn="+Peswn+",ctrWinTile="+PctrWinTile+",PctrOtherReacher="+PctrOtherReacher+",ctrRemain="+RAUtils.getCtrRemain()+",callStatus="+Integer.toHexString(RS.RSP[Peswn].callStatus));//~1314I~
+            if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark other reach chk shanten="+PmyShanten+",otherEswn="+Peswn+",ctrWinTile="+PctrWinTile+",PctrOtherReacher="+PctrOtherReacher+",ctrRemain="+RAUtils.getCtrRemain()+",callStatus="+Integer.toHexString(RS.RSP[Peswn].callStatus));//~1314I~//+vagiR~
         }                                                          //~1223I~
 //      int remainingTile=PIECE_TILECTR-RS.ctrTakenAll-TILECTR_KEEPLEFT;
 //        int remainingTile=RAUtils.getCtrRemain();                //~1224R~
@@ -340,7 +353,7 @@ public class RADSOther
 //        }                                                          //~1216I~//~1224R~
 //      if (itsMarkPlayer[Peswn]!=0)                               //~1217R~
 //      	setMarkOtherPlayer(Peswn,PmyShanten,PhanMax);          //~1216R~//~1217R~
-	    if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark itsMarkPlayer="+Arrays.toString(itsMarkPlayer));//~1216I~
+	    if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerMark itsMarkPlayer=0x"+Utils.toHexString(itsMarkPlayer));//~1216I~//+vagiR~
     }
     //***********************************************************************//~1220M~
     private boolean chkEarthDoraWord(int Peswn)                    //~1220M~

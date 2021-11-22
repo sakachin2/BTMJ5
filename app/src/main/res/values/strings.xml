@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.16</string>
+    <string name="app_version">v1.17</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -999,6 +999,8 @@
     <string name="Err_TryBackButtonFromServer">Try on server.</string>
     <string name="Err_GameStatusForMenuInGame">Before dealing tiles.</string>
     <string name="Err_GameStatusForMenuInGameUseBackButton">Before dealing tiles. Use \"Back\" button to return.</string>
+    <string name="Err_ConfirmReturnBeforeDealClientIOErr">Connection failure before dealng tiles, do you stop the game?</string>
+    <string name="Err_ConfirmReturnInGameClientIOErr">Connection lost.\nDo you stop the game though you can restart the game after reconnected?</string>
     <string name="Err_ConfirmReturn">Game not yet started, do you stop the game?</string>
     <string name="Err_AlreadyShowing">Already showing.</string>
     <string name="Err_SendAfterSyncAll">Only server can send again after agreement by all gotten.</string>
@@ -1587,4 +1589,8 @@ Reinstall this APP to try to set again.
     <string name="Delete2">Del</string>
     <string name="lbUseUPicker">App\'s Picker</string>
     <string name="ErrNotSelectedAudio">Select a music.</string>
+    <string name="Err_AppDestroyedUnexpectedly">Application was forced to destry!!!</string>
+    <string name="Err_AppDestroyedUnexpectedlyRestart">Application was forced to destry!!!\n
+    	It may be caused by ConfigurationChange(Language, FontSize etc.) or MemoryConstraints.\n
+    	Restart is not supported.</string>
 </resources>

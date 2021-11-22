@@ -1,5 +1,7 @@
-//*CID://+v@@@R~: update#= 336;                                    //~v@@@I~
+//*CID://+vaf0R~: update#= 337;                                    //+vaf0R~
 //**********************************************************************//~v@@@I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//+vaf0I~
+//**********************************************************************//+vaf0I~
 //StaticVars                                                       //~v@@@R~
 //* staric valiable remains after Destry,need to reset at createActivity//~v@@@I~
 //*                                                                //~v@@@I~
@@ -35,6 +37,14 @@ public class StaticVars                                            //~v@@@R~
                                                                    //~v@@@I~
 	    connectionStatus=CS_UNKNOWN;                               //~v@@@I~
     }                                                              //~v@@@I~
+//*********************************************                    //+vaf0I~
+	public StaticVars(MainActivity Pmain,AG Pag)                   //+vaf0I~
+    {                                                              //+vaf0I~
+        AG=Pag;                                                    //+vaf0I~
+//      AG.init(Pmain);                                            //+vaf0I~
+//      resetPieces();                                             //+vaf0I~
+//      connectionStatus=CS_UNKNOWN;                               //+vaf0I~
+    }                                                              //+vaf0I~
 //*********************************************                    //~v@@@I~
 //*Pieces                                                          //~v@@@I~
 //*********************************************                    //~v@@@I~
@@ -49,10 +59,10 @@ public class StaticVars                                            //~v@@@R~
 	    oldScale=0.0;                                              //~v@@@I~
     	oldDiceWidth=0;                                            //~v@@@I~
     }                                                              //~v@@@I~
-//*********************************************                    //+v@@@I~
-	public static void onDestroy()                                 //+v@@@I~
-    {                                                              //+v@@@I~
-	    AG=null;                                                   //+v@@@I~
-	    connectionStatus=null;	//BTCDialog                        //+v@@@I~
-    }                                                              //+v@@@I~
+//*********************************************                    //~v@@@I~
+	public static void onDestroy()                                 //~v@@@I~
+    {                                                              //~v@@@I~
+	    AG=null;                                                   //~v@@@I~
+	    connectionStatus=null;	//BTCDialog                        //~v@@@I~
+    }                                                              //~v@@@I~
 }                                                                  //~v@@@I~

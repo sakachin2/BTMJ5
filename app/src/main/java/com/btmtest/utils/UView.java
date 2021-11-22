@@ -1,5 +1,6 @@
-//*CID://+vaegR~: update#= 360;                                    //~vaegR~
+//*CID://+vaf0R~: update#= 363;                                    //~vaf0R~
 //**********************************************************************//~v101I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
@@ -486,6 +487,11 @@ public class UView                                                 //~v@@@I~
     {                                                              //~v@@@M~
 		showToastLong(Presid,"");                                  //~v@@@M~
     }                                                              //~v@@@M~
+//**********************************************************       //~vaf0I~
+    public static void showToastLongDirect(int Presid)             //~vaf0I~
+    {                                                              //~vaf0I~
+		showToastLongDirect(Presid,"");                            //~vaf0I~
+    }                                                              //~vaf0I~
 //**********************************************************       //~v@@@M~
     public static void showToast(int Presid,String Ptext)          //~v@@@M~
     {                                                              //~v@@@M~
@@ -506,6 +512,25 @@ public class UView                                                 //~v@@@I~
 //  	EventBus.getDefault().post(new EventToast(msg,true));      //~va30R~
     	EventCB.post(new EventToast(msg,true));                    //~va30I~
     }                                                              //~v@@@M~
+//**********************************************************       //~vaf0I~
+    public static void showToastLongDirect(int Presid,String Ptext)//~vaf0I~
+    {                                                              //~vaf0I~
+        String msg=Utils.getStr(Presid)+Ptext;                     //~vaf0I~
+    	if (Dump.Y) Dump.println("showToastLongDirect msg="+msg);  //~vaf0I~
+        new EventToast(msg,true/*long*/).showToast();              //~vaf0I~
+    }                                                              //~vaf0I~
+//**********************************************************       //~vaf0I~
+    public static void showToastLongDirect(String Ptext)           //~vaf0I~
+    {                                                              //~vaf0I~
+    	if (Dump.Y) Dump.println("showToastLongDirect text="+Ptext);//~vaf0I~
+        new EventToast(Ptext,true/*long*/).showToast();            //~vaf0I~
+    }                                                              //~vaf0I~
+//**********************************************************       //+vaf0I~
+    public static void showToastLongDirect(Context Pcontext,String Ptext)//+vaf0I~
+    {                                                              //+vaf0I~
+    	if (Dump.Y) Dump.println("showToastLongDirect text="+Ptext);//+vaf0I~
+        new EventToast(Ptext,true/*long*/).showToast(Pcontext);    //+vaf0I~
+    }                                                              //+vaf0I~
 //**********************************************************       //~v@@@M~
     public static void showToast(String Ptext)                     //~v@@@M~
     {                                                              //~v@@@M~

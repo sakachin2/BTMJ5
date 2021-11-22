@@ -1,6 +1,6 @@
-//*CID://+vae5R~: update#= 837;                                    //+vae5R~
+//*CID://+vae5R~: update#= 838;                                    //~vae5R~
 //**********************************************************************//~v101I~
-//2021/09/16 vae5 (Bug)Property of resumed game did not use sg.rulefile at interrupted.//+vae5I~
+//2021/09/16 vae5 (Bug)Property of resumed game did not use sg.rulefile at interrupted.//~vae5I~
 //2021/07/29 vabg (Bug)Test option set final game, 1st dealer is not east player//~vabgI~
 //2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
 //2021/03/30 va72 (Bug)when multiron for reach tile,nemaplate win color shadow was lost by showscore from resetReachDone//~va72I~
@@ -294,6 +294,8 @@ public class Accounts                                              //~v@@@R~
 		return player;                                             //~9306I~
     }                                                              //~9306I~
     //**************************************************           //~9306I~
+    //*if dealer is robot,next humean in counterclockwise          //+vae5I~
+    //**************************************************           //+vae5I~
     public int getCurrentDealerReal()                              //~9306I~
     {                                                              //~9306I~
         int playerE=eswnToPlayer(0/*East*/);   //East:Dealer       //~9306I~
@@ -950,6 +952,7 @@ public class Accounts                                              //~v@@@R~
     }                                                              //~v@@@I~
     //**************************************************************           //~va60I~
     //*get real player of dealer if player is robot,else return -1 //~va60I~
+    //*if dealer is robot,next humean in counterclockwise          //+vae5I~
     //**************************************************************           //~va60I~
     public int/*player*/ getRealDealerForRobot(int Pplayer)        //~va60I~
     {                                                              //~va60I~
@@ -1978,21 +1981,21 @@ public class Accounts                                              //~v@@@R~
 		if (Dump.Y) Dump.println("Accounts.resumeGame swServer="+PswServer+",hd="+Phd.toString());//~9901I~//~9902R~
         positionMoveResume(Phd);                                   //~9901I~
         positionMovedResume(Phd);                                  //~9901I~
-        loadResumeProperties(Phd);                                 //+vae5R~
+        loadResumeProperties(Phd);                                 //~vae5R~
     }                                                              //~9901I~
-	//******************************************************************************//+vae5R~
-    private  void loadResumeProperties(HistoryData Phd)            //+vae5R~
-    {                                                              //+vae5R~
-		if (Dump.Y) Dump.println("Accounts.loadResumeProperties hd="+Phd.toString());//+vae5R~
-        Prop p=Phd.getRuleProp();                                  //+vae5R~
-        if (p==null)                                //already confirmed at ResumeDlg->HistoryData.getRuleProp//+vae5R~
-        {                                                          //+vae5R~
-        	if (Dump.Y) Dump.println("Accounts.loadResumeProperties canceled by prop get failed");//+vae5R~
-            return;                                                //+vae5R~
-        }                                                          //+vae5R~
-    	AG.savePropForResume=AG.ruleProp;                          //+vae5R~
-    	AG.ruleProp=p;                                             //+vae5R~
-    }                                                              //+vae5R~
+	//******************************************************************************//~vae5R~
+    private  void loadResumeProperties(HistoryData Phd)            //~vae5R~
+    {                                                              //~vae5R~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties hd="+Phd.toString());//~vae5R~
+        Prop p=Phd.getRuleProp();                                  //~vae5R~
+        if (p==null)                                //already confirmed at ResumeDlg->HistoryData.getRuleProp//~vae5R~
+        {                                                          //~vae5R~
+        	if (Dump.Y) Dump.println("Accounts.loadResumeProperties canceled by prop get failed");//~vae5R~
+            return;                                                //~vae5R~
+        }                                                          //~vae5R~
+    	AG.savePropForResume=AG.ruleProp;                          //~vae5R~
+    	AG.ruleProp=p;                                             //~vae5R~
+    }                                                              //~vae5R~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~

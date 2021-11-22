@@ -18,6 +18,62 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.17 : 2021/11/19
+        .Deal with Google Console Crash Repoer(occures when App is destroyed and restart, restrt will not be supported).
+        .Strengthen smart Robot, effectively use Pon/Chii.
+        .Bugs
+         -Kuikae("Violation o Same-Meld") may be issued mistakenly.
+         -Misjudgement of Yaku for some tiles pattern.
+
+*********************************************************************************************
+V1.17 : 2021/11/19
+        .Deal with Google Console Crash Repoer(occures when App is destroyed and restart, restrt will not be supported).
+        .For Robot, accidental Yaku such as Chankan(Ron for Kan call) is out of 1 han constraint.
+        .Strengthen smart Robot.
+         -When aiming Big/Small-3Dragon, force Ppn/Chii call regarless Shanten-Down.
+         -Avoid to call Riichi Pao condition is pending.
+         -Consider possibility of 3-Same-Sequence/Straight/Tanyao/Chanta at Calling Pon/Chii and Selection of tile to discard.
+         -Without possibility of 3-Same-Sequence/Straight/Tanyao/Chanta, Calling Pon/Chii depends  Honor-tile you have.
+         -When calling Pon/Chii for 3-Same-Sequence/Straight, take Rule of Sakiduke(Timing of fix Yaku) into account.
+         -Confirm to meet the condition of 1/2 han constraint rule when becomming Tenpai by the call Pon/Chii.
+         -Confirm to meet the condition of 1/2 han constraint rule at 1st call.
+         -Do not aim to Chanta if you have a Tanyao meld.
+         -If Yaku is fixed by Honor tile, call Pon/Chii considering Dora tile counter you have.
+         -For Big/Little 3-Dragon, add the condition of one triplet from White/Green/Red, avoid to call Kan and ignore to aim Chanta.
+         -When aiming Flush, condition whether to call or not at eraly timing depends to the count of Dora of not all but of that color.
+         -At early timing of the round, determine to aim to Flush if shanten<=3.
+         -Avoid Chii when aiming to ToiToi(All Triplet).
+         -Avoid to call Kan to number tile if all-in-hand and avoid to call Kan if other player called Riichi already.
+         -When aiming Flush, force Pon/Chii regardless Shnten-Down, and Chii has priority over Pon if both possible.
+         -For aiming ToiToi(All Triplet), add the condition of one triplet you have.
+         -For aiming Flush, add the condition of no Meld of other color.
+         -Force call Kan at taken if you have already fixed 1 han by Honor tile or all-in-hand status.
+         -Robot will call Chankan(Ron call for the tile called Kan).
+         -Refrain fron call Pon if there is possibility of 4 Anko(Conceiled triplet)
+         -Select Reacher's discarded itself if giveup by short remaining tile count.
+         -For aiming Chanta, take tile counter of 4/5/6 into account.
+         -For aiming Tanyao, take honor tile meld into account.
+         -For aiming Flush, take into account whether the honor tile's count is one or multiple.
+
+        .Bugs
+         -On Client device, it could not back to top panel by Back button if connection failure occured at before dealing tiles.
+         -Message line on top panel may overflow to 2nd line.
+         -Kuikae("Violation o Same-Meld") may be issued mistakenly.
+         -Checking Dora tile opened was delayed to the first discard timing, it impacts to the determination about whether Robot should call Pon/Chii or not.
+         -Earth melds was not considered to determination of aiming Chanta or Tanyao.
+         -Miss Yaku of Chanta when 1/9 number tile is the pillow.
+         -Misjudgement of Yaku may occurs if Chii was called.
+         -Shanten calculation error in some case, it is bad effect to selection of tile to discard.
+         -Ankan(Conceiled-Kan) did not display Red5-tile.
+         -Count of Dora on Earth was not considered to determine about whether Robot should call Pon/Chii,
+         -Robot's Chankan-Ron was notified under the Sakiduke-Rule.
+         -Notify-Pon appears and remains on next round if the tile is also winning tile of Robot's win.
+         -Misjudge as Mixed Chanta even the head is Tanyao tile.
+         -Misjudge Yaku using not whole but partial meld.
+         -Did not say Furiten when the winning tile is all exposed.
+         -In Japanese environment, OrderPrize applyed 1 ran up over rule setting.
+         -option to keep tile on river called, no shade on client.
+
 V1.16 : 2021/10/05
         .On Preference you can set any music in your device as BGM.
 		. Panel layout for tall phone device .
@@ -26,7 +82,6 @@ V1.16 : 2021/10/05
 			At (re-)installation, it is required to specify a folder to save game data.
 			Select "eMahjong" on the dialog shown next.
 			Make the folder on the dialog if not exists.
-*********************************************************************************************
 V1.16 : 2021/10/05
         .On Preference, flip game buttons holizontaly for lefty.
         .On Preference, you can set any music in your device as BGM.

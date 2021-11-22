@@ -1,5 +1,6 @@
-//*CID://+va65R~: update#= 702;                                    //~va65R~
+//*CID://+vag9R~: update#= 704;                                    //~vag9R~
 //**********************************************************************//~v101I~
+//2021/11/08 vag9 Ankan on Earth;display Red5 if option active(it may be disappear by facedown tile)//~vag9I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
 //**********************************************************************//~va65I~
 //utility around screen                                            //~v@@@I~
@@ -165,9 +166,24 @@ public class Earth                                                 //~v@@@R~
     //*******************************************************************//~v@@@I~
     public TileData[] sortPairKanTaken(TileData[] Ptds)            //~v@@@I~
     {                                                              //~v@@@I~
+        if (Dump.Y) Dump.println("Earth.sortPairKanTaken entry="+TileData.toString(Ptds));//+vag9I~
         int ctr=Ptds.length;                                       //~v@@@I~
+        TileData tdWk;                                             //+vag9I~
+        if (Ptds[0].isRed5())                                      //~vag9I~
+        {                                                          //+vag9I~
+        	tdWk=Ptds[1];                                          //+vag9I~
+        	Ptds[1]=Ptds[0];	                                   //~vag9I~
+        	Ptds[0]=tdWk;                                          //+vag9I~
+        }                                                          //+vag9I~
+        if (Ptds[ctr-1].isRed5())                                  //~vag9I~
+        {                                                          //+vag9I~
+        	tdWk=Ptds[2];                                          //+vag9I~
+        	Ptds[2]=Ptds[ctr-1];                                   //~vag9I~
+        	Ptds[ctr-1]=tdWk;                                      //+vag9I~
+        }                                                          //+vag9I~
         Ptds[0].setKanFaceDown();                                    //~v@@@I~
         Ptds[ctr-1].setKanFaceDown();                                //~v@@@I~
+        if (Dump.Y) Dump.println("Earth.sortPairKanTaken exit="+TileData.toString(Ptds));//+vag9I~
         return Ptds;                                               //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
@@ -297,8 +313,8 @@ public class Earth                                                 //~v@@@R~
         if (players.isOpen(Pplayer))                               //~v@@@I~
         	hands.clearOpenRect(Pplayer);                                //~v@@@I~
         else                                                       //~va65I~
-//      if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
-        if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+//      if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//~va65R~
+        if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//~va65I~
         	hands.clearOpenRect(Pplayer);                          //~va65I~
         tds=sortPairTile(tds,Pplayer);                             //~v@@@R~
         Rect rectPair=getRectPair(Pplayer,tds);                    //~v@@@R~
@@ -340,8 +356,8 @@ public class Earth                                                 //~v@@@R~
         if (players.isOpen(Pplayer))                               //~v@@@I~
 	        hands.drawOpen(Pplayer,null/*taken tile*/);                  //~v@@@I~
         else                                                       //~va65I~
-//      if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//+va65R~
-        if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//+va65I~
+//      if ((TestOption.option2 & TO2_OPENHAND)!=0 && AG.swTrainingMode && AG.aAccounts.isRobotPlayer(Pplayer))//~va65R~
+        if ((TestOption.option2 & TO2_OPENHAND)!=0                      && AG.aAccounts.isRobotPlayer(Pplayer))//~va65I~
 	        hands.drawOpen(Pplayer,null/*taken tile*/);            //~va65I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~

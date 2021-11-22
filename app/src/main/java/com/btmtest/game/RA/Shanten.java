@@ -1,4 +1,4 @@
-//*CID://+va60R~:                             update#=   79;       //~1107I~//~va60R~
+//*CID://+va60R~:                             update#=   80;       //~1107I~//~va60R~
 //*******************************************************          //~1107I~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //*******************************************************          //~va60I~
@@ -322,9 +322,9 @@ private int getShanten_Normal(int PmaxMeld)                 //~1106R~//~va60R~
     shanten=getShanten_NormalSub(PmaxMeld);                        //~1106R~
     if (ctrOrphan!=0)                                                 //~va60I~
 		restoreOrphan(itsTile);                                    //~va60I~
-    if (Dump.Y) Dump.println("Shanten.getShanten_Normal exit itsTile="+ Utils.toString(itsTile,9));//~va60R~
 	rc=Math.min(rc,shanten);                                       //~1106I~
 	rc=rc-(CTR_MAXMELD-PmaxMeld)*2;                                //~1106R~
+    if (Dump.Y) Dump.println("Shanten.getShanten_Normal exit rc="+rc+",maxMeld="+PmaxMeld+",itsTile="+ Utils.toString(itsTile,9));//+va60I~
     return rc;                                                     //~1106R~
 }                                                                  //~1106I~
 //*******************************************************          //~1106I~
@@ -346,7 +346,7 @@ public int getShanten_13Orphan(int[] PitsTile)                           //~1106
         	pending13Orphan=pos;                                   //~va60I~
     }                                                              //~1106I~
     int rc=13-(ctrOrphan+(head!=0 ? 1 : 0));                       //~1106R~
-    if (Dump.Y) Dump.println("Shanten.getShanten_13Orphan rc="+rc);//+va60I~
+    if (Dump.Y) Dump.println("Shanten.getShanten_13Orphan rc="+rc);//~va60I~
     return rc;                                                     //~1106I~
 }                                                                  //~1106I~
 //*******************************************************          //~va60I~

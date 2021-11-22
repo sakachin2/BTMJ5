@@ -1,5 +1,7 @@
-//*CID://+vaefR~:                             update#= 353;        //~vaefR~
+//*CID://+vaf0R~:                             update#= 382;        //~vaf0R~
 //**********************************************************************//~@@@@I~
+//2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
 //2021/09/21 vaeb try not cache but file, cache miss line?         //~vaebI~
@@ -55,6 +57,7 @@ import com.btmtest.game.HistoryData;
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;                             //~9412R~
 import com.btmtest.game.gv.Pieces;
+import com.btmtest.utils.AlertDlg;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Alert;                                    //~8B07I~
 import com.btmtest.gui.UButton;//~8B05I~
@@ -89,6 +92,8 @@ public class MainActivity extends AppCompatActivity
 		implements URunnable.URunnableI, UButton.UButtonI//~v@@@R~ //~@@@@I~
                ,Alert.AlertI                                        //~9611I~//~0119I~
 {                                                                  //~8B05I~
+	private static final String CN="MainActivity.";                //~vaf0I~
+//    private static final String BUNDLE_AG="AG";                  //~vaf0R~
     private static final int HELP_TITLEID=R.string.Title_Help_Main;//~8C29I~
     private static final String HELPFILE="Main";              //~8C29R~//~9C13R~
 //  private static final int MAIN_BUTTONS =R.layout.main_buttons;  //~8C29R~//~9807R~
@@ -127,16 +132,36 @@ public class MainActivity extends AppCompatActivity
     {
 //  	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);//~9610R~
 //  	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);//~9610I~
-        super.onCreate(savedInstanceState);
+//        AG ag=restoreInstanceState(savedInstanceState);          //~vaf0R~
+//      if (Utils.isDebuggable((Context)this)) Dump.printlnLog("MainActivity.onCreate bundle="+Utils.toString(savedInstanceState));//~vaf3I~//~vaf0R~
+//      Dump.printlnLog("MainActivity.onCreate DEBUG="+BuildConfig.DEBUG+",bundle="+Utils.toString(savedInstanceState));//~vaf0R~
+        if (BuildConfig.DEBUG) Dump.printlnLog("MainActivity.onCreate bundle="+Utils.toString(savedInstanceState));//~vaf0I~
+        if (savedInstanceState!=null)                              //~vaf0R~
+        {                                                          //~vaf0R~
+            if (BuildConfig.DEBUG) Dump.printlnLog("MainActivity.onCreate Restart");//~vaf0R~
+////          UView.showToastLongDirect((Context)this,Utils.getStr(getResources(),R.string.Err_AppDestroyedUnexpectedlyRestart));//~vaf0R~
+//            issueDestroyedWarningRestart();                      //~vaf0R~
+        }                                                          //~vaf0R~
+//      super.onCreate(savedInstanceState);                        //~vaf0R~
+        super.onCreate(null);                                      //~vaf0I~
 //      AG.init(this);                                             //~8B05I~//~9103R~
         Dump.openExOnlyTerminal();	//write exception only to Terminal//~0124I~
+//      if (ag!=null)                                              //~vaf0R~
+//        new StaticVars(this,ag);    //new AG().init(this);       //~vaf0R~
+//      else                                                       //~vaf0R~
         new StaticVars(this);	//new AG().init(this);             //~9103I~
         new TestOption();                                          //~vae0I~
+        if (savedInstanceState!=null)                              //~vaf0I~
+        {                                                          //~vaf0I~
+//          UView.showToastLongDirect((Context)this,Utils.getStr(getResources(),R.string.Err_AppDestroyedUnexpectedlyRestart));//~vaf0I~
+            issueDestroyedWarningRestart();                        //~vaf0I~
+        }                                                          //~vaf0I~
+        if (Dump.Y) Dump.println("MainActivity.onCreate bundle="+Utils.toString(savedInstanceState));//~vaf0I~
      try                                                           //~vae0I~
      {                                                             //~vae0I~
         setFullscreen(true/*onCreate*/);                                           //~8B06I~//~8C29R~//~9103R~//~1ak4R~
 //      Dump.open("");	//write all to log , move to AG                         //~8B05I~//~0124R~
-        if (Dump.Y) Dump.println("MainActivity.onCReate");                 //~9102I~//~1ak4R~
+        if (Dump.Y) Dump.println("MainActivity.onCreate");                 //~9102I~//~1ak4R~//~vaf0R~
         View mainView=AG.inflater.inflate(MAIN_LAYOUT,null);//~8B05I~//~8C29R~
 //      AG.mainView=mainView;                                      //~8B07I~//~9620R~
         frameLayout=(FrameLayout)UView.findViewById(mainView,R.id.FrameLayout);//~8B06I~//~8C29R~
@@ -297,7 +322,7 @@ public class MainActivity extends AppCompatActivity
     @Override                                                      //~8B05I~
     public void onStart()                                          //~8B05I~
     {                                                              //~8B05I~
-        if(Dump.Y) Dump.println("MainActivity:onStart");           //~8B05I~
+        if(Dump.Y) Dump.println("MainActivity.onStart");           //~8B05I~//~vaf0R~
         super.onStart();                                           //~8B05I~
         swStopped=false;                                           //~9A22I~
 //		registerEventBus(true);                                    //~va30R~
@@ -308,7 +333,7 @@ public class MainActivity extends AppCompatActivity
     @Override                                                      //~9A22I~
     public void onStop()                                           //~9A22I~
     {                                                              //~9A22I~
-        if(Dump.Y) Dump.println("MainActivity:onStop");            //~9A22I~
+        if(Dump.Y) Dump.println("MainActivity.onStop");            //~9A22I~//~vaf0R~
 //  	registerEventBus(false);                                   //~9A22R~
         swStopped=true; //keep registered and ignore except IOErr  //~9A22I~
         super.onStop();                                            //~9A22I~
@@ -316,7 +341,7 @@ public class MainActivity extends AppCompatActivity
 	//*************************                                    //~8B05I~
     @Override                                                      //~8B05I~
     protected void onResume() {                                    //~8B05I~
-        if(Dump.Y) Dump.println("MainActivity:onResume");          //~8B05I~
+        if(Dump.Y) Dump.println("MainActivity.onResume");          //~8B05I~//~vaf0R~
         super.onResume();                                          //~8B05I~
         swPaused=false;                                            //~9A22I~
       try                                                          //~9719I~
@@ -333,7 +358,7 @@ public class MainActivity extends AppCompatActivity
 	        AG.aGC.onResume();                                         //~8B06I~//~9101R~
 		if (AG.aIPSubThread!=null)                                 //~9A02I~
 	        AG.aIPSubThread.onResume();                            //~9A02I~
-        if(Dump.Y) Dump.println("MainActivity:onResume swIOErr="+swIOErr+",msgIOErr="+msgIOErr);//~9A22I~
+        if(Dump.Y) Dump.println("MainActivity.onResume swIOErr="+swIOErr+",msgIOErr="+msgIOErr);//~9A22I~//~vaf0R~
         if (swIOErr)	//ioerr received at task is background     //~9A22I~
         {                                                          //~9A22I~
         	swIOErr=false;                                         //~9A22M~
@@ -347,13 +372,13 @@ public class MainActivity extends AppCompatActivity
       }                                                            //~9719I~
       catch(Exception e)                                           //~9719I~
       {                                                            //~9719I~
-      	Dump.println(e,"MainActivity:onResume");                   //~9719I~
+      	Dump.println(e,"MainActivity.onResume");                   //~9719I~//~vaf0R~
       }                                                            //~9719I~
     }                                                              //~8B05I~
 	//*************************                                    //~8B05I~
     @Override                                                      //~8B05I~
     protected void onPause() {                                     //~8B05I~
-        if(Dump.Y) Dump.println("MainActivity:onPause");           //~8B05I~
+        if(Dump.Y) Dump.println("MainActivity.onPause");           //~8B05I~//~vaf0R~
     	try                                                        //~9719I~//~0113M~
         {                                                          //~9719I~//~0113M~
 //      AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~//~va41R~
@@ -375,13 +400,19 @@ public class MainActivity extends AppCompatActivity
         }                                                          //~9719I~
         catch(Exception e)                                         //~9719I~
         {                                                          //~9719I~
-        	Dump.println(e,"MainActivity:onPause");                //~9719I~
+        	Dump.println(e,"MainActivity.onPause");                //~9719I~//~vaf0R~
         }                                                          //~9719I~
     }                                                              //~8B05I~
 	//*************************                                    //~8B05I~
     @Override                                                      //~8B05I~
     protected void onDestroy() {                                   //~8B05I~
-        if(Dump.Y) Dump.println("MainActivity:onDestroy");         //~8B05I~
+        if(Dump.Y) Dump.println("MainActivity.onDestroy AG.status="+AG.status);         //~8B05I~//~vaf0R~
+        if (AG.status!=AG.STATUS_STOPFINISH)                       //~vaf0I~
+        {                                                          //~vaf0I~
+//  		UView.showToastLongDirect(R.string.Err_AppDestroyedUnexpectedly);//~vaf0R~
+    		issueDestroyedWarning();                               //~vaf0I~
+        }                                                          //~vaf0I~
+//        AG.popFragment();                                        //~vaf0R~
 	    AG.aCSI.onDestroy();                                       //~9B05I~
 //        registerEventBus(false);                                 //~va30R~
 		if (AG.aGC!=null)                                          //~9101I~
@@ -391,6 +422,7 @@ public class MainActivity extends AppCompatActivity
 		if (AG.aSound!=null)                                       //~va06I~
 	        AG.aSound.stopAll();                                   //~va06I~
         UMediaStore.onDestroy();                                   //~vae2I~
+        if(Dump.Y) Dump.println("MainActivity.onDestroy call super.onDestroy");//~vaf0R~
         super.onDestroy();                                         //~8B05I~
 //        if (true)                                                  //~9103I~//~9105R~
 //        {                                                          //~9103I~//~9105R~
@@ -405,13 +437,14 @@ public class MainActivity extends AppCompatActivity
 //        }                                                          //~8C30I~//~9105R~
 		StaticVars.onDestroy();                                    //~0216I~
 		Dump.close();                                              //~vaebR~
+        TestOption.swActivityDestroyed=true;	//notify to ITMainActivity//+vaf0I~
     }                                                              //~8B05I~
 	//*************************                                    //~8B26I~
     @Override                                                      //~8B26I~
     public void onWindowFocusChanged(boolean PhasFocus)         //~8B26I~
     {                                                              //~8B26I~
         super.onWindowFocusChanged(PhasFocus);                     //~8B26I~
-        if(Dump.Y) Dump.println("MainActivity:onWindowFocusChanged focus="+PhasFocus+",ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~8B26I~//~vaeeR~
+        if(Dump.Y) Dump.println("MainActivity.onWindowFocusChanged focus="+PhasFocus+",ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~8B26I~//~vaeeR~//~vaf0R~
 //        hideNavigationBar(true);    //done if portrait             //~8B26I~//~8C29R~
         if (PhasFocus)  //navigationbar reappear when dialog opend //~9511R~
         	hideNavigationBar(true);                               //~9511I~
@@ -550,7 +583,7 @@ public class MainActivity extends AppCompatActivity
 	{                                                              //~8B05I~
     	boolean rc=true;                                           //~8B05I~
         AG.aMainView.clearMsg();                                   //~9621I~
-        if (Dump.Y) Dump.println("MainActivity:onClickButton"+Pbutton.getText());//~8B05I~
+        if (Dump.Y) Dump.println("MainActivity.onClickButton"+Pbutton.getText());//~8B05I~//~vaf0R~
         int id=Pbutton.getId();                                    //~8B05I~
         switch(id)                                                 //~8B05I~
         {                                                          //~8B05I~
@@ -647,6 +680,7 @@ public class MainActivity extends AppCompatActivity
     }                                                              //~8B05I~
 //**********************************************************       //~8B05I~
 //*finish process                                                  //~8B05I~
+//*from Utils.stopFinish<--Alert.exit reply                        //~vaf0I~
 //**********************************************************       //~8B05I~
     public void destroyClose()                                     //~@@@@I~//~@@@2I~//~@@@@I~//~v@@@I~//~@@@@I~
     {                                                              //~@@@@I~//~@@@2I~//~@@@@I~//~v@@@I~//~@@@@I~
@@ -752,8 +786,8 @@ public class MainActivity extends AppCompatActivity
 //**********************************************************       //~v@@@I~//~8C30I~
     public void onEventMainThread(EventCB Pevent)                  //~v@@@R~//~8C30I~
     {                                                              //~v@@@I~//~8C30I~
-        if(Dump.Y) Dump.println("MainActivity:onEventMainThread eventCB action="+Pevent.action);//~v@@@I~//~8C30I~
-        if(Dump.Y) Dump.println("MainActivity:swPaused="+swPaused+",swStopped="+swStopped);//~9A22R~
+        if(Dump.Y) Dump.println("MainActivity.onEventMainThread eventCB action="+Pevent.action);//~v@@@I~//~8C30I~//~vaf0R~
+        if(Dump.Y) Dump.println("MainActivity.onEventMainThread swPaused="+swPaused+",swStopped="+swStopped);//~9A22R~//~vaf0R~
         try                                                        //~9901I~
         {                                                          //~9901I~
             if (!isEventAcceptable(Pevent))                              //~9A22I~
@@ -815,7 +849,7 @@ public class MainActivity extends AppCompatActivity
         {                                                          //~9901I~
         	Dump.println(e,"onEvendMainThread");                   //~9901I~
         }                                                          //~9901I~
-        if(Dump.Y) Dump.println("MainActivity:onEventMainThread eventCB return");//~v@@@I~//~8C30I~
+        if(Dump.Y) Dump.println("MainActivity.onEventMainThread eventCB return");//~v@@@I~//~8C30I~//~vaf0R~
     }                                                              //~v@@@I~//~8C30I~
 //**********************************************************       //~8C30I~
 	private void startGame(boolean PswChkSetting)                                       //~8C30I~//~9101R~
@@ -1116,22 +1150,22 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 swNavigationbarGestureMode="+AG.swNavigationbarGestureMode+",portrait="+AG.portrait);//~vaefI~
 //      if (true) //follow system setting gesture or 3 button      //~1ak4R~//~vaefR~
 //      	return; //if hide navigation,statusbar pull down override framelayout and dose not up never(Top panel title disappear)//~1ak4R~//~vaefR~
-//      if (AG.portrait || !AG.swNavigationbarGestureMode)         //+vaefR~
-//      {                                                          //+vaefR~
-//      	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 nop by portrait or not Gesture mode");//+vaefR~
-//      	return;                                                //+vaefR~
-//      }                                                          //+vaefR~
+//      if (AG.portrait || !AG.swNavigationbarGestureMode)         //~vaefR~
+//      {                                                          //~vaefR~
+//      	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 nop by portrait or not Gesture mode");//~vaefR~
+//      	return;                                                //~vaefR~
+//      }                                                          //~vaefR~
         WindowInsetsController ic=AG.activity.getWindow().getInsetsController();//~1ak4R~
         if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 WindowInsetsControler="+Utils.toString(ic));//~1ak4I~
         if (ic!=null)                                              //~1ak4R~
         {                                                          //~1ak4R~
-		  if (AG.portrait)                                         //+vaefI~
-          {                                                        //+vaefI~
-	        ic.show(WindowInsets.Type.navigationBars());           //+vaefI~
-	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 portraite always show");//+vaefI~
-		  }                                                        //+vaefI~
-          else                                                     //+vaefI~
-          {                                                        //+vaefI~
+		  if (AG.portrait)                                         //~vaefI~
+          {                                                        //~vaefI~
+	        ic.show(WindowInsets.Type.navigationBars());           //~vaefI~
+	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 portraite always show");//~vaefI~
+		  }                                                        //~vaefI~
+          else                                                     //~vaefI~
+          {                                                        //~vaefI~
         	if (PswHide)                                           //~1ak4R~
             {                                                      //~1ak4R~
 	        	ic.hide(WindowInsets.Type.navigationBars());       //~1ak4R~
@@ -1147,8 +1181,8 @@ public class MainActivity extends AppCompatActivity
 //              int a=APPEARANCE_LIGHT_STATUS_BARS;                //~1ak4I~//~vaefR~
 //          	ic.setSystemBarsAppearance(a,a);                   //~1ak4I~//~vaefR~
             }                                                      //~1ak4I~
-          }                                                        //+vaefI~
-        }                                                            //~1ak4I~//+vaefR~
+          }                                                        //~vaefI~
+        }                                                            //~1ak4I~//~vaefR~
     }                                                              //~1ak4R~
 	//*************************                                    //~8B26I~//~9102I~
 //  public static void hideNavigationBar(boolean PswHide)                 //~8B26R~//~9102I~//~1ak4R~
@@ -1524,10 +1558,10 @@ public class MainActivity extends AppCompatActivity
 	@Override                                                      //~v107I~//~1ak5I~
     public void onActivityResult(int requestCode, int resultCode, Intent data)//~1ak2R~
 	{                                                              //~1ak2I~
-        if(Dump.Y) Dump.println("MainActivity:onActivityResult req="+requestCode+",result="+ resultCode);//~v107I~//~1A6aR~//~1ak5I~
+        if(Dump.Y) Dump.println("MainActivity.onActivityResult req="+requestCode+",result="+ resultCode);//~v107I~//~1A6aR~//~1ak5I~//~vaf0R~
       if (requestCode==AG.ACTIVITY_REQUEST_PICKUP_AUDIO)           //~1Ak2I~//~1ak2I~
       {                                                            //~1Ak2I~//~1ak2I~
-        if(Dump.Y) Dump.println("MainActivity:onActivityResult AUDIO");//~1ak2I~
+        if(Dump.Y) Dump.println("MainActivity.onActivityResult AUDIO");//~1ak2I~//~vaf0R~
         UMediaStore.onActivityResult(requestCode,resultCode,data); //~1Ak2I~//~1ak2I~
       }                                                            //~1Ak2I~//~1ak2I~
       else                                                         //~1Ak2I~//~1ak2I~
@@ -1555,4 +1589,48 @@ public class MainActivity extends AppCompatActivity
         if(Dump.Y) Dump.println("MainActivity:saveProp");          //~vae8I~
         AG.saveProp();                                             //~vae8I~
     }                                                              //~vae8I~
+    //******************************************                   //~vaf0I~
+	@Override                                                      //~vaf0I~
+    public void onSaveInstanceState(Bundle Pbundle)                //~vaf0I~
+	{                                                              //~vaf0I~
+        if (Dump.Y) Dump.println(CN+"onSaveInstanciate bundle"+Utils.toString(Pbundle));//~vaf0R~
+		super.onSaveInstanceState(Pbundle);                        //~vaf0I~
+//        Pbundle.putObject(BUNDLE_AG,AG);                         //~vaf0R~
+    }                                                              //~vaf0I~
+    //******************************************                   //~vaf0I~
+	@Override                                                      //~vaf0I~
+    public void onRestoreInstanceState(Bundle Pbundle)             //~vaf0I~
+	{                                                              //~vaf0I~
+        if (Dump.Y) Dump.println(CN+"onRestoreInstance bundle"+Utils.toString(Pbundle));//~vaf0R~
+		super.onSaveInstanceState(Pbundle);                        //~vaf0I~
+//      AG ag=Pbundle.getObject(BUNDLE_AG");                       //~vaf0R~
+//      StaticVars.AG=ag;                                          //~vaf0I~
+    }                                                              //~vaf0I~
+//    //******************************************                 //~vaf0R~
+//    public AG restoreInstanceState(Bundle Pbundle)               //~vaf0R~
+//    {                                                            //~vaf0R~
+//        if (Dump.Y) Dump.println(CN+"RestoreInstance bundle"+Utils.toString(Pbundle));//~vaf0R~
+//        if (Pbundle==null)                                       //~vaf0R~
+//            return null;                                         //~vaf0R~
+//        AG ag=Pbundle.getObject(BUNDLE_AG);                      //~vaf0R~
+//        if (Dump.Y) Dump.println(CN+"RestoreInstance "+BUDLE_AG+"="+Utils.toString(ag));//~vaf0R~
+//        return ag;                                               //~vaf0R~
+//    }                                                            //~vaf0R~
+	private void issueDestroyedWarning()                           //~vaf0I~
+    {                                                              //~vaf0I~
+        if (Dump.Y) Dump.println(CN+"issueDestroyWarning");        //~vaf0I~
+//        int msgid=R.string.Err_AppDestroyedUnexpectedly;         //~vaf0R~
+////      Alert.showMessage(AG.appName,Utils.getStr(msgid));       //~vaf0R~
+//        AlertDlg.showMessage(AG.appName,Utils.getStr(msgid));    //~vaf0R~
+  		UView.showToastLongDirect(R.string.Err_AppDestroyedUnexpectedly);//~vaf0I~
+	}                                                              //~vaf0I~
+	private void issueDestroyedWarningRestart()                    //~vaf0I~
+    {                                                              //~vaf0I~
+        if (Dump.Y) Dump.println(CN+"issueDestroyWarning");        //~vaf0I~
+//        UView.showToastLongDirect((Context)this,Utils.getStr(getResources(),R.string.Err_AppDestroyedUnexpectedlyRestart));//~vaf0I~
+        int msgid=R.string.Err_AppDestroyedUnexpectedlyRestart;    //~vaf0I~
+		String appName=((Context)this).getText(R.string.app_name).toString();//~vaf0I~
+		String msg=((Context)this).getText(msgid).toString();      //~vaf0I~
+        AlertDlg.showMessageMainThread(appName,msg);               //~vaf0R~
+	}                                                              //~vaf0I~
 }

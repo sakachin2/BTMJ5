@@ -8,7 +8,6 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
-            android:background="@color/getvalue"
     >
         <TextView
             android:layout_height="wrap_content"
@@ -21,7 +20,6 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
-            android:background="@color/getvalue"
     >
         <RadioGroup
             android:orientation="horizontal"
@@ -53,7 +51,6 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
-            android:background="@color/getvalue"
     >
         <CheckBox
             android:id="@+id/cbYaku7Pair4Pair"

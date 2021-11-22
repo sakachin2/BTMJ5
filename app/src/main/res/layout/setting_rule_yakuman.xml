@@ -14,13 +14,13 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_Yakuman"
             android:textSize="@dimen/textview_middle"
+    			android:background="@color/descriptiononly"
         />
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="vertical"
-            android:background="@color/getvalue"
     >
         <LinearLayout
              android:layout_width="wrap_content"
@@ -81,7 +81,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Label_KokusiAnkanRon"
-    			android:background="@color/descriptiononly"
         />
         <!--CheckBox
             android:id="@+id/cbYakuman_OpenReachRon"
@@ -127,13 +126,13 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
             android:orientation="horizontal"
-                android:background="@color/getvalue"
         >
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/Label_Yakuman_Renho"
                 android:textSize="@dimen/textview_middle"
+    			android:background="@color/descriptiononly"
             />
             <TextView
                 android:layout_height="wrap_content"
@@ -165,53 +164,4 @@
                 android:text="@string/Desc_Yakuman_Renho"
         />
     </LinearLayout>
-<!--
-    <LinearLayout
-         android:layout_width="fill_parent"
-         android:layout_height="2px"
-                android:background="@color/separater"
-    />
-    <LinearLayout
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-        android:orientation="vertical"
-    >
-        <LinearLayout
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-        >
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                    android:text="@string/Label_Yakuman13NoPair"
-            android:textSize="@dimen/textview_middle"
-            />
-            <CheckBox
-                android:id="@+id/cbYakuman_13NoPair"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Label_Yes"
-            />
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                    android:text="@string/Label_Yakuman14NoPair"
-            android:textSize="@dimen/textview_middle"
-            android:layout_marginLeft="20dp"
-            />
-            <CheckBox
-                android:id="@+id/cbYakuman_14NoPair"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Label_Yes"
-            />
-        </LinearLayout>
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-                android:text="@string/Desc_Yakuman13NoPair"
-        />
-    </LinearLayout>
--->
 </LinearLayout>

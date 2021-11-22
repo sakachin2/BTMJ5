@@ -8,21 +8,22 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
-            android:background="@color/getvalue"
     >
+     <!--       android:background="@color/getvalue"-->
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
                 android:text="@string/Label_Yaku7Pair"
             android:textSize="@dimen/textview_middle"
+    			android:background="@color/descriptiononly"
         />
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
-            android:background="@color/getvalue"
     >
+       <!--     android:background="@color/getvalue" -->
         <RadioGroup
             android:orientation="horizontal"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-//*CID://+vaauR~: update#= 574;                                    //~vaauR~
+//*CID://+vaauR~: update#= 576;                                    //~vaauR~
 //**********************************************************************//~v101I~
 //2021/07/08 vaau split test deal to TilesTest.java                //~vaauI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
@@ -72,7 +72,13 @@ public class Tiles                                 //~v@@@R~
     	posNextTile=TILECTR_KEEPLEFT+PLAYERS*HANDCTR;              //~v@@@R~
         if (Dump.Y) Dump.println("Tiles.init posNextTile="+posNextTile);//~9225I~
       	if (AG.isDebuggable)                                       //~vaauI~
+        {                                                          //~vaauI~
+          if (TestOption.aTilesTest!=null)                         //+vaauI~
+		    aTilesTest=TestOption.aTilesTest;                      //+vaauI~
+          else                                                     //+vaauI~
 	        aTilesTest=new TilesTest();                            //~vaauI~
+            aTilesTest.init(this);                                 //~vaauI~
+        }                                                          //~vaauI~
     }                                                              //~v@@@I~
     //*************************                                    //~9503I~
     public void newGame()                                          //~9503I~
@@ -248,12 +254,12 @@ public class Tiles                                 //~v@@@R~
                         break;                                     //~1315I~
                 }                                                  //~v@@@R~//~v@@5R~
             }                                                      //~v@@@R~
-            if ((TestOption.option2 & TestOption.TO2_SETDORA)!=0)//~0A12I~//~0A14R~//+vaauR~
-            {                                                      //~0A12I~//+vaauR~
-//              testSetDora(out);                                  //~0A12I~//~vaauR~-//+vaauR~
-                if (aTilesTest!=null)                              //+vaauR~
-                    aTilesTest.testSetDora(out);                   //+vaauR~
-            }                                                      //~0A12I~//+vaauR~
+            if ((TestOption.option2 & TestOption.TO2_SETDORA)!=0)//~0A12I~//~0A14R~//~vaauR~
+            {                                                      //~0A12I~//~vaauR~
+//              testSetDora(out);                                  //~0A12I~//~vaauR~-//~vaauR~
+                if (aTilesTest!=null)                              //~vaauR~
+                    aTilesTest.testSetDora(out);                   //~vaauR~
+            }                                                      //~0A12I~//~vaauR~
                                                                    //~0A12I~
             shuffledTileData = out;                                  //~v@@@R~
         }//synch                                                   //~v@@@I~

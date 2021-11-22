@@ -1,6 +1,8 @@
-//*CID://+vaegR~:                             update#=  480;       //+vaegR~
+//*CID://+vaf0R~:                             update#=  488;       //~vaf0R~
 //******************************************************************************************************************//~v101R~
-//2021/09/28 vaeg enlarge nameplate for long device                //+vaegI~
+//2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
+//2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
@@ -25,6 +27,7 @@
 //********************                                             //~1107I~
 package com.btmtest;                                               //~1Ad8I~//~1Ad7I~
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Stack;
@@ -34,6 +37,8 @@ import android.os.Build;                                           //~vab0R~//~v
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;                     //~va40I~
 import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -42,6 +47,7 @@ import android.os.HandlerThread;                                   //~@@01I~
 
 import com.btmtest.BT.BTI;                                         //~@@01R~
 import com.btmtest.BT.BTMulti;                                     //~v@@@I~//~@@01R~
+import com.btmtest.dialog.UFDlg;
 import com.btmtest.game.UA.UARonValue;
 import com.btmtest.game.UA.UAReachChk;                             //~va27I~
 import com.btmtest.game.UA.UARon;                                  //~@@01I~
@@ -236,7 +242,7 @@ public class AG                                                    //~1107R~
     public  boolean   swNavigationbarGestureMode;                  //~vaefR~
     public  int       scrPortraitWW;	//width of top panel(portrait)//~@@01I~
     public  boolean   swSmallDevice;      //portrait screen width<800pixel//~@@01R~
-    public  boolean   swLongDevice;       //height>width*2         //+vaegI~
+    public  boolean   swLongDevice;       //height>width*2         //~vaegI~
 //  public  double    scaleSmallDevice;   //portrait screen width/800pixel//~@@01I~//~vac4R~
     public  double    scaleSmallDevice=1.0;   //portrait screen width/800pixel//~vaa4I~
     public  boolean   swSmallFont;        //portrait screen width<800pixel//~vac5M~
@@ -453,6 +459,7 @@ public class AG                                                    //~1107R~
 	public boolean swGrantedExternalStorageRead,swGrantedExternalStorageWrite;//~1Ak2R~//~1ak2I~
 	public boolean swChangedPreference,swChangedRule;              //~vae8R~
 	public boolean swNewA10=true;	//navigationbar hide logic for Android10//~vaeeI~
+//    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //+vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
 //************************************                             //~@@01I~
@@ -507,7 +514,8 @@ public class AG                                                    //~1107R~
         if (isDebuggable)                                          //~@@01R~
         {                                                          //~vae8I~
 //      	Dump.open("");	//write all to Terminal log,not exception only//~@@01R~//~vae8R~
-			Dump.open("Dump.txt",false/*sdcard*/);                 //~vae8I~
+//  		Dump.open("Dump.txt",false/*sdcard*/);                 //~vae8I~//~vaf1R~
+        	Dump.open("");	//write all to Terminal log,not exception only//~vaf1I~
 		}                                                          //~vae8I~
 //        startupCtr=Prop.getPreference(PKEY_STARTUPCTR,0);    //~v107I~//~@@@@R~//~1Ad7R~
 //        Prop.putPreference(PKEY_STARTUPCTR,startupCtr+1);    //~v107I~//~@@@@R~//~1Ad7R~
@@ -675,4 +683,34 @@ public class AG                                                    //~1107R~
     {                                                              //~va40I~
         return AG.resource.getColor(Pcolor);                    //~va40I~
     }                                                              //~va40I~
+////*************************************************************  //~vaf0R~
+//    public void stackFragment(UFDlg Pdf)                         //~vaf0R~
+//    {                                                            //~vaf0R~
+//        listUFDlg.add(Pdf);                                      //~vaf0R~
+//        if (Dump.Y) Dump.println("AG.stackFragment UFDlg="+Pdf.toString()+",listSize="+listUFDlg.size());//~vaf0R~
+//    }                                                            //~vaf0R~
+////*************************************************************  //~vaf0R~
+//    public boolean removeFragment(UFDlg Pdf)                     //~vaf0R~
+//    {                                                            //~vaf0R~
+//        if (Dump.Y) Dump.println("AG.removeFragment UFDlg="+Pdf.toString());//~vaf0R~
+//        boolean rc=listUFDlg.remove(Pdf);                        //~vaf0R~
+//        if (Dump.Y) Dump.println("AG.removeFragment rc="+rc+",size="+listUFDlg.size());//~vaf0R~
+//        return rc;                                               //~vaf0R~
+//    }                                                            //~vaf0R~
+////*************************************************************  //~vaf0R~
+//    public boolean popFragment()                                 //~vaf0R~
+//    {                                                            //~vaf0R~
+//        int sz=listUFDlg.size();                                 //~vaf0R~
+//        if (Dump.Y) Dump.println("AG.popFragment size="+sz);     //~vaf0R~
+//        boolean rc=false;                                        //~vaf0R~
+//        if (sz!=0)                                               //~vaf0R~
+//        {                                                        //~vaf0R~
+//            UFDlg df=listUFDlg.get(sz-1);                        //~vaf0R~
+//            df.dismissPop();                                     //~vaf0R~
+//            if (Dump.Y) Dump.println("AG.popFragment issue dismiss UFDlg="+df.toString());//~vaf0R~
+//            rc=true;                                             //~vaf0R~
+//        }                                                        //~vaf0R~
+//        if (Dump.Y) Dump.println("AG.popFragment rc="+rc);       //~vaf0R~
+//        return rc;                                               //~vaf0R~
+//    }                                                            //~vaf0R~
 }//class AG                                                        //~1107R~

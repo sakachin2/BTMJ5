@@ -1,5 +1,6 @@
-//*CID://+va99R~: update#= 639;                                    //~va99R~
+//*CID://+vaf5R~: update#= 640;                                    //+vaf5R~
 //**********************************************************************//~v101I~
+//2021/10/23 vaf5 (Bug)TTop panel msgbar overflow, adjust textsize //+vaf5I~
 //2021/06/17 va99 protect loop by msgBar size                      //~va99I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -16,6 +17,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.Matrix;                                    //~0215I~
+import android.util.TypedValue;
 
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.game.GCMsgID.*;
@@ -710,8 +712,8 @@ public class GMsg                                                  //~v@@@R~
         rectB2TText.right=yy0+strw;                                //~0215I~
     }                                                              //~0215I~
     //********************************************                 //~v@@@I~
-//  private void drawMsgbarVertical(String Pmsg)                   //~v@@@R~//+va99R~
-    protected void drawMsgbarVertical(String Pmsg)	//protected for IT Mock//+va99I~
+//  private void drawMsgbarVertical(String Pmsg)                   //~v@@@R~//~va99R~
+    protected void drawMsgbarVertical(String Pmsg)	//protected for IT Mock//~va99I~
     {                                                              //~v@@@I~
         int color=colorHL==0 ? COLOR_BG_TABLE : colorHL;           //~v@@@I~
 	    drawMsgbarVerticalWidthBG(Pmsg,color);                     //~v@@@I~
@@ -931,4 +933,26 @@ public class GMsg                                                  //~v@@@R~
         if (Dump.Y) Dump.println("GMsg.parseSendMsg ints="+Arrays.toString(ints));//~0224I~
         return ints;                                               //~0224I~
     }                                                              //~0224I~
+    //*********************************************************    //+vaf5I~
+    public static float adjustTextSize(float PpixTextSize,int Pwidth,String Pmsg)//+vaf5I~
+    {                                                              //+vaf5I~
+        if (Dump.Y) Dump.println("GMsg.adjustTextSize pixTextSize="+PpixTextSize+",layoutWidth="+Pwidth);//+vaf5I~
+        Paint paint=new Paint();                                         //+vaf5I~
+        int maxW=(int)(Pwidth*MSGH_ALLOWANCE);                            //+vaf5I~
+        int unit= TypedValue.COMPLEX_UNIT_PX;                       //+vaf5I~
+        float sz=PpixTextSize;                                     //+vaf5I~
+        for (;;)                                                   //+vaf5I~
+        {                                                          //+vaf5I~
+            paint.setTextSize(sz);                            //+vaf5I~
+            int strsz=(int)paint.measureText(Pmsg);                //+vaf5I~
+            if (Dump.Y) Dump.println("GMsg.adjustTextSize sz="+sz+",strsz="+strsz);//+vaf5I~
+            if (strsz<maxW)                                        //+vaf5I~
+                break;                                             //+vaf5I~
+            if (sz<=4.0)                                           //+vaf5I~
+            	break;                                             //+vaf5I~
+            sz-=4;                                                 //+vaf5I~
+        }                                                          //+vaf5I~
+        if (Dump.Y) Dump.println("GMsg.adjustTextSize rc="+sz);    //+vaf5I~
+        return sz;                                                 //+vaf5I~
+    }                                                              //+vaf5I~
 }//class GMsg                                                 //~dataR~//~@@@@R~//~v@@@R~

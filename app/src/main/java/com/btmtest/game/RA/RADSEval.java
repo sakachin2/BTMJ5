@@ -1,8 +1,14 @@
-//*CID://+vabqR~: update#= 387;                                    //~vabqR~
+//*CID://+vafnR~: update#= 431;                                    
 //**********************************************************************
+//2021/11/01 vafn chk ronable(inclucding 2han constraint) required if shanten up to 0 in Not AllInHand//~vafnI~
+//2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
+//2021/10/28 vafc pon/chii call for INTENT_TANYAO                  //~vafbI~
+//2021/10/28 vafb evaluate INTENT_3SAMESEQ                         //~vafbI~
+//2021/10/27 vaf9 evaluate INTENT_STRAIGHT                         //~vaf9I~
+//2021/10/26 vaf6 (Bug)have to ignore shanten Down for INTENT_3DRAGON//~vaf6I~
 //2021/07/29 vabq (Bug)evaluate NextTake should evaluate for same pos except TN5(may be red5), and should set amtHanMax if not sey itsHanAmt=0.//~vabqI~
 //2021/07/27 vabb evaluate value of allsame; more minus for trplet over pair//~vabbI~
-//2021/07/25 vab9 gnore shanten Up/Down if once called pon/chii according intent//~vab9I~
+//2021/07/25 vab9 ignore shanten Up/Down if once called pon/chii according intent//~vab9I~//~vabqR~
 //2021/07/25 vab5 itsHandValue up by hanMaxed should be by rank exceptDora//~vab3I~
 //2021/07/25 vab3 selectrMeld;select if possibility of dor even not red5 exist//~vab3I~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
@@ -14,6 +20,8 @@
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
+import android.graphics.Point;
+
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
@@ -22,6 +30,7 @@ import com.btmtest.utils.Utils;
 import java.util.Arrays;
 
 import static com.btmtest.StaticVars.AG;
+import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.RA.RAConst.*;                           //~va60I~
 import static com.btmtest.game.Tiles.*;
@@ -145,7 +154,7 @@ public class RADSEval
     	hanMax=0;
         int posOld=-1;                                             //~1220R~
         int amtOld=-1;                                             //~vabqI~
-        int hanOld=-1;                                             //+vabqI~
+        int hanOld=-1;                                             //~vabqI~
         ctrWait1=0;                                                //~vaaEI~
         boolean swChkIntent=chkIntentTryDiscard(intent);                 //~vab9I~
         int addByForceIntent=0;                                    //~vabbI~
@@ -204,15 +213,15 @@ public class RADSEval
 //              han=evaluateNextTake(ii,pos,shanten);	//han at ron if shanten=0;//~1122R~//~1127R~//~1220R~
                 han=evaluateNextTake(ii,pos,PmyShanten,swSameAsPrev,intent);	//han at ron if shanten=0;//~1127I~//~1220R~//~1309R~
                 if (swSameAsPrev)                                  //~vabqI~
-                {                                                  //+vabqI~
+                {                                                  //~vabqI~
                 	amtHanMax=amtOld;                              //~vabqI~
-                    han=hanOld;                                    //+vabqI~
-                }                                                  //+vabqI~
+                    han=hanOld;                                    //~vabqI~
+                }                                                  //~vabqI~
                 amt=amtHanMax;  //output of evaluateNextTake       //~vaajI~
 //          }                                                      //~1220I~//~1309R~
             posOld=pos;                                            //~1220R~
             amtOld=amt;                                            //~vabqI~
-            hanOld=han;                                            //+vabqI~
+            hanOld=han;                                            //~vabqI~
 //          if (han>hanMax)	//shanten=0 and winnable, shanten is upped or same as previous; if same value is not up,so evaluate by han//~1220R~//~vaajR~
 //          {                                                      //~1220I~//~vaajR~
 //          	hanMax=han;                                        //~vaajR~
@@ -259,6 +268,14 @@ public class RADSEval
 	        evaluateWait1();                                       //~vaaEI~
         if (PmyShanten==0 && (intent & INTENT_7PAIR)!=0)           //~1307I~
 	      	evaluateDiscard7Pair();                                //~1307I~
+        if ((intent & INTENT_STRAIGHT)!=0)                         //~vaf9R~
+        	evaluateIntentStraight(itsHandPos,ctrHand,itsHand);    //~vaf9R~
+        if ((intent & INTENT_3SAMESEQ)!=0)                         //~vafbI~
+        	evaluateIntent3SameSeq(itsHandPos,ctrHand,itsHand);    //~vafbI~
+        if ((RS.getIntentCalled(eswnDiscard) & INTENT_TANYAO)!=0)  //~vafcI~
+        	evaluateIntentTanyaoCalled(itsHandPos,ctrHand,itsHand);//~vafcI~
+        if ((RS.getIntentCalled(eswnDiscard) & INTENT_CHANTA)!=0)  //~vaffI~
+        	evaluateIntentChantaCalled(itsHandPos,ctrHand,itsHand);//~vaffI~
 //      if (RADS.swDoReach)                                        //~1122I~//~1309R~
 //          hanMax=RADS.hanMaxReach;                               //~1122I~//~1309R~
         RADSO.chkOtherPlayer(PmyShanten,hanMax,maxWinTile,eswnDiscard,itsHand,ctrHand);//~1216R~
@@ -359,7 +376,7 @@ public class RADSEval
 //      if (Dump.Y) Dump.println("RADSEval.AddByIgnoreRonValuechk old="+itsHandValue[Pidx]);//~vabbR~
 //      itsHandValue[Pidx]+=v;                                     //~vabbR~
 //      if (Dump.Y) Dump.println("RADSEval.chkShantenAtDiscard eswn="+eswnDiscard+",idx="+Pidx+",pos="+Ppos+",v="+v+",new HandValue="+itsHandValue[Pidx]);//~vabbR~
-        if (Dump.Y) Dump.println("RADSEval.chkShantenAtDiscard eswn="+eswnDiscard+",addValue="+v+",DV_SHANTEN_DOWN="+DV_SHANTEN_DOWN+",DV_SHANTEN_UP="+DV_SHANTEN_UP+",DV_SHANTEN_UP_TILE="+DV_SHANTEN_UP_TILE+",ctrUpTile="+ctrTileUp);//~vabbI~
+        if (Dump.Y) Dump.println("RADSEval.addByIgnoreRonValue eswn="+eswnDiscard+",addValue="+v+",DV_SHANTEN_DOWN="+DV_SHANTEN_DOWN+",DV_SHANTEN_UP="+DV_SHANTEN_UP+",DV_SHANTEN_UP_TILE="+DV_SHANTEN_UP_TILE+",ctrUpTile="+ctrTileUp);//~vabbI~//~vaf6R~
         return v;                                                  //~vabbI~
     }                                                              //~vabbI~
     //***********************************************************************
@@ -435,7 +452,7 @@ public class RADSEval
 //  private void evaluateIntent(int Pidx/*in tdsHand*/,int Ppos/*in itsHand*/)//~vabbR~
     private void evaluateIntent(int Pidx/*in tdsHand*/,int Ppos/*in itsHand*/,int PaddByForceIntent)//~vabbI~
     {
-        if (Dump.Y) Dump.println("RADSEval.evaluateIntent idx="+Pidx+",pos="+Ppos+",eswnDiscard="+eswnDiscard+",myIntent=x"+Integer.toHexString(RADS.myIntent));//~1131R~//~1213R~//~1215R~//~vaajR~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent idx="+Pidx+",pos="+Ppos+",eswnDiscard="+eswnDiscard+",myIntent=x"+Integer.toHexString(RADS.myIntent)+",PaddByForceIntent="+PaddByForceIntent);//~1131R~//~1213R~//~1215R~//~vaajR~//~vaf6R~
 //      int intent=RSP.intent;                                     //~1302R~
         int intent=RSP.getIntent();                                //~1302I~
         if ((intent & INTENT_7PAIR)!=0)
@@ -479,19 +496,24 @@ public class RADSEval
         else                                                       //~1213I~
         {                                                          //~1213I~
         	addByForceIntentStandard=PaddByForceIntent;            //~vabbI~
-        	if ((intent & INTENT_TANYAO)!=0)                       //~1213R~
+//      	if ((intent & INTENT_TANYAO)!=0)                       //~1213R~//~vafcR~
+        	if ((intent & INTENT_TANYAO)!=0 && (RSP.getIntentCalled() & INTENT_TANYAO)==0)//~vafcI~
 //      		setValueTanyao(false/*sw13Orphan*/,true/*swMe*/);  //~1213R~
         		setValueTanyao(false/*sw13Orphan*/,true/*swMe*/,Pidx,Ppos);//~1213I~
             else                                                   //~1217I~
-        	if ((intent & INTENT_CHANTA)!=0)                       //~1217I~
+//      	if ((intent & INTENT_CHANTA)!=0)                       //~1217I~//~vaffR~
+        	if ((intent & INTENT_CHANTA)!=0 && (RSP.getIntentCalled() & INTENT_CHANTA)==0)//~vaffI~
         		setValueChanta(true/*swMe*/,Pidx,Ppos);            //~1217I~
         	if ((RADS.myIntent & INTENT_SAMECOLOR_ANY)!=0)         //~1213R~
 //      		setValueSameColor(true/*swMe*/);                   //~1213R~
         		setValueSameColor(true/*swMe*/,Pidx,Ppos);          //~1213I~
         	if ((RADS.myIntent & INTENT_ALLSAME)!=0)    //toitoi   //~1218I~
         		setValueAllSame(true/*swMe*/,Pidx,Ppos);           //~1218I~
+        	if ((RADS.myIntent & INTENT_3DRAGON)!=0)    //toitoi   //~vaf6I~
+        		setValue3Dragon(true/*swMe*/,Pidx,Ppos);           //~vaf6I~
         	addByForceIntentStandard=0;                            //~vabbI~
         }                                                          //~1213I~
+	    if (Dump.Y) Dump.println("RADSEval.evaluateIntent exit idx="+Pidx+",handVal="+itsHandValue[Pidx]);//~vaf6I~
     }
     //***********************************************************************//~vaaCI~
     private void evaluateIntent7PairAdditional(int Pintent,boolean PswDora,int Pidx/*in tdsHand*/,int Ppos/*in itsHand*/)//~vaaCR~
@@ -514,7 +536,7 @@ public class RADSEval
         if (!PswDora)                                             //~vaaCI~
         {                                                          //~vaaCI~
             if (RAUtils.isTanyaoTile(Ppos))                        //~vaaCI~
-			    setValueChanta(true/*swMe*/,Pidx,Ppos);   //add to tanyao tile,select 1/9/ji//~vaaCR~
+    		    setValueChanta(true/*swMe*/,Pidx,Ppos);   //add to tanyao tile,select 1/9/ji//~vaaCR~
         }                                                          //~vaaCI~
         if (Ppos>=OFFS_WORDTILE)                                   //~vaaCI~
             if (RAUtils.chkValueWordTile(Ppos,eswnDiscard)>0)      //~vaaCI~
@@ -664,7 +686,7 @@ public class RADSEval
         }                                                          //~1213I~
         else                                                       //~vabbI~
         	itsHandValue[Pidx]+=addByForceIntentStandard;	       //~vabbI~
-        if (Dump.Y) Dump.println("RADSEval.setValueTanyao after itsHandValue="+itsHandValue[Pidx]+",addbyForceIntentStandard="+addByForceIntentStandard);//~1213I~//~1214R~//~vaajR~//~vabbR~
+        if (Dump.Y) Dump.println("RADSEval.setValueTanyao after itsHandValue="+itsHandValue[Pidx]+",addByForceIntentStandard="+addByForceIntentStandard);//~1213I~//~1214R~//~vaajR~//~vabbR~//~vafcR~
     }                                                              //~1213I~
     //***********************************************************************//~1217I~
     private void setValueChanta(boolean PswMe,int Pidx,int Ppos)   //~1217I~
@@ -675,7 +697,7 @@ public class RADSEval
         if (type!=TT_JI && num>2 && num<6)      //456              //~1217I~
         {                                                          //~1217I~
 //          if (RSP.swAllInHand)                                   //~1220I~//~vab9R~
-        		itsHandValue[Pidx]+=DV_NOT_CHANTA;                     //~1217I~//~1220R~
+        		itsHandValue[Pidx]+=DV_NOT_CHANTA;        //+10000             //~1217I~//~1220R~
 //          else                                                   //~1220I~//~vab9R~
 //              itsHandValue[Pidx]+=DV_NOT_CHANTA_AFTER_CALL;	//20000//~1220R~//~1221R~//~vab9R~
         }                                                          //~1217I~
@@ -728,6 +750,222 @@ public class RADSEval
         }                                                          //~1213I~
         if (Dump.Y) Dump.println("RADSEval.setValueSameColor pos="+Ppos+",itsHandValue["+Pidx+"]="+itsHandValue[Pidx]+",addbyForceIntentStandard="+addByForceIntentStandard+",DV_NOT_SAMECOLOR="+DV_NOT_SAMECOLOR);//~1213R~//~1214R~//~vaajR~//~vabbR~
     }                                                              //~1213I~
+    //***********************************************************************//~vaf9I~
+    private void evaluateIntentStraight(int[] PitsHandPos,int PctrHand,int[] PitsHand)//~vaf9R~
+    {                                                              //~vaf9I~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraight itsHandPos="+Utils.toString(PitsHandPos,-1,PctrHand)+",itsHand="+Utils.toString(PitsHand,9));//~vaf9I~//~vafbR~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraight old itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vaf9I~//~vafbR~
+        int color,type;                                                 //~vaf9I~
+        color=RS.getColorStraight(eswnDiscard);                    //~vaf9R~
+        Point p=RS.getEarthColorStraight(eswnDiscard);             //~vafbI~
+        int numTop=p==null ? -1 : p.y;                             //~vafbI~
+        for (int ii=0;ii<PctrHand;ii++)                            //~vaf9I~
+        {                                                          //~vaf9I~
+        	int pos=PitsHandPos[ii];                               //~vaf9I~
+            type=pos/CTR_NUMBER_TILE;                              //~vaf9I~
+            int num=pos%CTR_NUMBER_TILE;                           //~vafbI~
+            if (type==color)                                       //~vaf9I~
+            {                                                      //~vaf9I~
+            	if (numTop>=0 && num>=numTop && num<numTop+3)      //~vafbI~
+                	continue;                                      //~vafbI~
+	            int ctrTile=PitsHand[pos];                         //~vaf9I~
+            	if (ctrTile==2)                                    //~vaf9R~
+                {                                                  //~vaf9I~
+			    	evaluateIntentStraightAdjustRed5(PitsHandPos,PctrHand,ii,pos);      //~vaf9I~
+	        		continue;                                      //~vaf9I~
+                }                                                  //~vaf9I~
+        		if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraight more not discardable idx="+ii+",pos="+pos+",old itsHhandValue="+itsHandValue[ii]);//~vaf9I~//~vafbR~
+	            itsHandValue[ii]+=DV_STRAIGHT;   //-10,000 not more discardable//~vaf9R~
+        		if (!RSP.swAllInHand)                               //~vaf9I~//~vafbR~
+		            itsHandValue[ii]+=DV_STRAIGHT_CALLED;   //-10,000 not more discardable//~vaf9I~
+        		if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraight more not discardable swAllInHand="+RSP.swAllInHand+",idx="+ii+",pos="+pos+",new itsHhandValue="+itsHandValue[ii]);//~vaf9R~//~vafbR~
+            }                                                      //~vaf9I~
+        }                                                          //~vaf9I~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraight new itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vaf9I~//~vafbR~
+    }                                                              //~vaf9I~
+    //***********************************************************************//~vafbI~
+    private void evaluateIntent3SameSeq(int[] PitsHandPos,int PctrHand,int[] PitsHand)//~vafbI~
+    {                                                              //~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeq itsHandPos="+Utils.toString(PitsHandPos,-1,PctrHand)+",itsHand="+Utils.toString(PitsHand,9));//~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeq old itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vafbI~
+        int numTop=RS.getNum3SameSeq(eswnDiscard);                 //~vafbI~
+        int num,type;                                              //~vafbI~
+        for (int ii=0;ii<PctrHand;ii++)                            //~vafbI~
+        {                                                          //~vafbI~
+        	int pos=PitsHandPos[ii];                               //~vafbI~
+            if (pos>=OFFS_WORDTILE)                                //~vafbI~
+            	continue;                                          //~vafbI~
+            num=pos%CTR_NUMBER_TILE;                               //~vafbI~
+            if (num>=numTop && num<numTop+PAIRCTR)                 //~vafbI~
+            {                                                      //~vafbI~
+	            int ctrTile=PitsHand[pos];                         //~vafbI~
+            	if (ctrTile==2)                                    //~vafbI~
+                {                                                  //~vafbI~
+			    	evaluateIntent3SameSeqAdjustRed5(PitsHandPos,PctrHand,ii,pos,numTop);//~vafbR~
+	        		continue;                                      //~vafbI~
+                }                                                  //~vafbI~
+        		if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeq more not discardable idx="+ii+",pos="+pos+",old itsHhandValue="+itsHandValue[ii]);//~vafbI~
+	            itsHandValue[ii]+=DV_3SAMESEQ;   //-10,000 not more discardable//~vafbI~
+        		if (!RSP.swAllInHand)                              //~vafbI~
+		            itsHandValue[ii]+=DV_3SAMESEQ_CALLED;   //-10,000 not more discardable//~vafbI~
+        		if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeq more not discardable swAllInHand="+RSP.swAllInHand+",idx="+ii+",pos="+pos+",new itsHhandValue="+itsHandValue[ii]);//~vafbI~
+            }                                                      //~vafbI~
+        }                                                          //~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeq new itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vafbI~
+    }                                                              //~vafbI~
+    //***********************************************************************//~vafcI~
+    private void evaluateIntentTanyaoCalled(int[] PitsHandPos,int PctrHand,int[] PitsHand)//~vafcI~
+    {                                                              //~vafcI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentTanyaoCalled itsHandPos="+Utils.toString(PitsHandPos,-1,PctrHand)+",itsHand="+Utils.toString(PitsHand,9));//~vafcR~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentTanyaoCalled old itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vafcR~
+        int num,type;                                              //~vafcI~
+        for (int ii=0;ii<PctrHand;ii++)                            //~vafcI~
+        {                                                          //~vafcI~
+        	int pos=PitsHandPos[ii];                               //~vafcI~
+            if (RAUtils.isTanyaoTile(pos))                         //~vafcI~
+            {                                                      //~vafcI~
+		        if (Dump.Y) Dump.println("RADSEval.evaluateIntentTanyaoCalled old itsHandValue["+ii+"]="+itsHandValue[ii]);//~vafcR~
+		    	itsHandValue[ii]+=DV_TANYAO_CALLED;   //-20,000 not more discardable//~vafcI~
+		        if (Dump.Y) Dump.println("RADSEval.evaluateIntentTanyaoCalled not more discardable pos="+pos+",new itsHandValue["+ii+"]="+itsHandValue[ii]);//~vafcR~
+            }                                                      //~vafcI~
+        }                                                          //~vafcI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentTantaoCalled new itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vafcI~//~vaffR~
+    }                                                              //~vafcI~
+    //***********************************************************************//~vaffI~
+    private void evaluateIntentChantaCalled(int[] PitsHandPos,int PctrHand,int[] PitsHand)//~vaffI~
+    {                                                              //~vaffI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentChantaCalled itsHandPos="+Utils.toString(PitsHandPos,-1,PctrHand)+",itsHand="+Utils.toString(PitsHand,9));//~vaffI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentChantaCalled old itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vaffI~
+        int num,type;                                              //~vaffI~
+        for (int ii=0;ii<PctrHand;ii++)                            //~vaffI~
+        {                                                          //~vaffI~
+        	int pos=PitsHandPos[ii];                               //~vaffI~
+            if (RAUtils.isChantaMeldTile(pos,0/*Pon and Chii*/))   //~vaffR~
+            {                                                      //~vaffI~
+		        if (Dump.Y) Dump.println("RADSEval.evaluateIntentChantaCalled old itsHandValue["+ii+"]="+itsHandValue[ii]);//~vaffI~
+		    	itsHandValue[ii]+=DV_TANYAO_CALLED;   //-20,000 not more discardable//~vaffI~
+		        if (Dump.Y) Dump.println("RADSEval.evaluateIntentChataCalled not more discardable pos="+pos+",new itsHandValue["+ii+"]="+itsHandValue[ii]);//~vaffI~
+            }                                                      //~vaffI~
+        }                                                          //~vaffI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentChantaCalled new itsHandValue="+Utils.toString(itsHandValue,-1,PctrHand));//~vaffI~
+    }                                                              //~vaffI~
+    //***********************************************************************//~vaf9I~
+    //*select Red5 for sameTileCtr==2                              //~vaf9I~
+    //***********************************************************************//~vaf9I~
+    private void evaluateIntentStraightAdjustRed5(int[] PitsHandPos,int PctrHand,int Pidx,int Ppos)//~vaf9I~
+    {                                                              //~vaf9I~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 Pidx="+Pidx+",Ppos="+Ppos);//~vaf9I~//~vafbR~
+		TileData td1,td2=null;                                     //~vaf9I~
+        boolean red51,red52=false;
+        int idxAdjust=-1,idx2=-1,idxAnother=-1;            //~vaf9I~//~vafbR~
+        int numTop=((Ppos%CTR_NUMBER_TILE)/PAIRCTR)*PAIRCTR;        //~vafbI~
+		td1=RADS.tdsHand[Pidx];   //evaluateHand is not called     //~vaf9I~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 numTop="+numTop+",td1="+td1.toString());//~vaf9I~//~vafbR~
+		red51=td1.isRed5();                                        //~vaf9I~
+        int num=td1.number;                                        //~vafbI~
+        for (int ii=Pidx+1;ii<PctrHand;ii++)                       //~vaf9I~
+        {                                                          //~vaf9I~
+        	if (PitsHandPos[ii]==Ppos)	//2nd of dup tile          //~vaf9I~
+            {                                                      //~vaf9I~
+				td2=RADS.tdsHand[ii];   //evaluateHand is not called//~vaf9I~
+				red52=td2.isRed5();                                //~vaf9I~
+                idx2=ii;                                           //~vaf9I~
+		        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 idx2="+idx2+",td2="+td2.toString());//~vaf9R~//~vafbR~
+            }                                                      //~vaf9I~
+        }                                                          //~vaf9I~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 idx2="+idx2+",red51="+red51+",red52="+red52);//~vaf9I~//~vafbR~
+        if (td2!=null)                                             //~vaf9I~
+        {                                                          //~vaf9I~
+            idxAnother=idx2;                                       //~vafbI~
+			if (red51 && !red52)                                   //~vaf9I~
+            	idxAdjust=Pidx;                                    //~vaf9I~
+            else                                                   //~vaf9I~
+			if (!red51 && red52)                                   //~vaf9I~
+            {                                                      //~vafbI~
+                idxAnother=Pidx;                                   //~vafbI~
+            	idxAdjust=idx2;                                    //~vaf9I~
+            }                                                      //~vafbI~
+            else                                                   //~vaf9I~
+            	idxAdjust=Pidx;                                    //~vaf9I~
+        }                                                          //~vaf9I~
+        if (idxAdjust!=-1)                                         //~vaf9I~
+        {                                                          //~vaf9I~
+	    	itsHandValue[idxAdjust]+=DV_STRAIGHT;   //-10,000 not more discardable//~vaf9I~
+        	if (!RSP.swAllInHand)                                   //~vaf9I~//~vafbR~
+		    	itsHandValue[idxAdjust]+=DV_STRAIGHT_CALLED;   //-200,000 not more discardable//~vaf9I~//~vafbR~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 more not discardable pos="+Ppos+",idxAdjust="+idxAdjust+",new itsHandValue="+itsHandValue[idxAdjust]);//~vaf9R~//~vafbR~
+        }                                                          //~vaf9I~
+        if (idxAnother!=-1 && (num==numTop || num==numTop+2))      //~vafbI~
+        {                                                          //~vafbI~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 more discardable Another pos="+Ppos+",idxAnother="+idxAnother+",old itsHandValue="+itsHandValue[idxAnother]);//~vafbI~
+        	if (!RSP.swAllInHand)                                  //~vafbI~
+		    	itsHandValue[idxAnother]+=-DV_STRAIGHT_CALLED;   //+200,000 more discardable//~vafbI~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntentStraightAdjustRed5 more discardable swAllInHand="+RSP.swAllInHand+",pos="+Ppos+",idxAnother="+idxAnother+",new itsHandValue="+itsHandValue[idxAnother]);//~vafbI~
+        }                                                          //~vafbI~
+    }                                                              //~vaf9I~
+    //***********************************************************************//~vafbI~
+    //*select Red5 for sameTileCtr==2                              //~vafbI~
+    //***********************************************************************//~vafbI~
+    private void evaluateIntent3SameSeqAdjustRed5(int[] PitsHandPos,int PctrHand,int Pidx,int Ppos,int PnumTop)//~vafbR~
+    {                                                              //~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 Pidx="+Pidx+",Ppos="+Ppos+",numTop="+PnumTop);//~vafbR~
+		TileData td1,td2=null;                                     //~vafbI~
+        boolean red51,red52=false;                                 //~vafbI~
+        int idxAdjust=-1,idx2=-1,idxAnother=-1;                    //~vafbR~
+		td1=RADS.tdsHand[Pidx];   //evaluateHand is not called     //~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 td1="+td1.toString());//~vafbI~
+		red51=td1.isRed5();                                        //~vafbI~
+        int num=td1.number;                                        //~vafbI~
+        for (int ii=Pidx+1;ii<PctrHand;ii++)                       //~vafbI~
+        {                                                          //~vafbI~
+        	if (PitsHandPos[ii]==Ppos)	//2nd of dup tile          //~vafbI~
+            {                                                      //~vafbI~
+				td2=RADS.tdsHand[ii];   //evaluateHand is not called//~vafbI~
+				red52=td2.isRed5();                                //~vafbI~
+                idx2=ii;                                           //~vafbI~
+		        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 idx2="+idx2+",td2="+td2.toString());//~vafbI~
+            }                                                      //~vafbI~
+        }                                                          //~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 idx2="+idx2+",red51="+red51+",red52="+red52);//~vafbI~
+        if (td2!=null)                                             //~vafbI~
+        {                                                          //~vafbI~
+            idxAnother=idx2;                                        //~vafbI~
+			if (red51 && !red52)                                   //~vafbI~
+            	idxAdjust=Pidx;                                    //~vafbI~
+            else                                                   //~vafbI~
+			if (!red51 && red52)                                   //~vafbI~
+            {                                                      //~vafbI~
+            	idxAdjust=idx2;                                    //~vafbI~
+                idxAnother=Pidx;                                   //~vafbI~
+            }                                                      //~vafbI~
+            else                                                   //~vafbI~
+            	idxAdjust=Pidx;                                    //~vafbI~
+        }                                                          //~vafbI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 idxAdjust="+idxAdjust+",idxAnother="+idxAnother);//~vafbI~
+        if (idxAdjust!=-1)                                         //~vafbI~
+        {                                                          //~vafbI~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 more not discardable pos="+Ppos+",idxAdjust="+idxAdjust+",old itsHandValue="+itsHandValue[idxAdjust]);//~vafbI~
+	    	itsHandValue[idxAdjust]+=DV_3SAMESEQ;   //-10,000 not more discardable//~vafbI~
+        	if (!RSP.swAllInHand)                                  //~vafbR~
+		    	itsHandValue[idxAdjust]+=DV_3SAMESEQ_CALLED;   //-200,000 not more discardable//~vafbR~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 more not discardable swAllInHand="+RSP.swAllInHand+",pos="+Ppos+",idxAdjust="+idxAdjust+",new itsHandValue="+itsHandValue[idxAdjust]);//~vafbR~
+        }                                                          //~vafbI~
+        if (idxAnother!=-1 && (num==PnumTop || num==PnumTop+2))    //~vafbI~
+        {                                                          //~vafbI~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 more discardable Another pos="+Ppos+",idxAnother="+idxAnother+",old itsHandValue="+itsHandValue[idxAnother]);//~vafbI~
+        	if (!RSP.swAllInHand)                                  //~vafbI~
+		    	itsHandValue[idxAnother]+=-DV_3SAMESEQ_CALLED;   //+200,000 more discardable//~vafbR~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateIntent3SameSeqAdjustRed5 more discardable swAllInHand="+RSP.swAllInHand+",pos="+Ppos+",idxAnother="+idxAnother+",new itsHandValue="+itsHandValue[idxAnother]);//~vafbI~
+        }                                                          //~vafbI~
+    }                                                              //~vafbI~
+    //***********************************************************************//~vaf6I~
+    private void setValue3Dragon(boolean PswMe,int Pidx,int Ppos)  //~vaf6I~
+    {                                                              //~vaf6I~
+	    if (Dump.Y) Dump.println("RADSEval.evaluateIntent 3dragon idx="+Pidx+",old handVal="+itsHandValue[Pidx]);//~vaf6I~
+        if (Ppos>=OFFS_WORDTILE_DRAGON)                            //~vaf6I~
+        	itsHandValue[Pidx]+=addByForceIntentStandard*2;	//minus to ignore shanten Up/Down//~vaf6R~
+        if (Dump.Y) Dump.println("RADSEval.setValue3Dragon pos="+Ppos+",itsHandValue["+Pidx+"]="+itsHandValue[Pidx]+",addbyForceIntentStandard="+addByForceIntentStandard);//~vaf6I~
+    }                                                              //~vaf6I~
     //***********************************************************************
     //*chk shanten up by next take
     //*if myShanten>=1
@@ -763,7 +1001,7 @@ public class RADSEval
         amtHanMax=amt;                                             //~vaajI~
 //      if (Dump.Y) Dump.println("RADSEval.evaluateNextTake exit old pos="+Ppos+",itsHandValue["+Pidx+"]="+itsHandValue[Pidx]);//~1216I~//~1220R~//~1303R~//~vaajR~
 //      itsHandValue[Pidx]+=ctrWinningTileTryNext*DV_BY_CTR_WINTILE;//100,000//~1216R~//~1220R~//~1303R~
-//      if (Dump.Y) Dump.println("RADSEval.evaluateNextTake exit eswn="+eswnDiscard+",ctrWinningTileTryNext="+ctrWinningTileTryNext+",itsHandValue["+Pidx+"]="+itsHandValue[Pidx]);//~1216R~//~1220R~//~1301R~//~1303R~//~vaajR~
+        if (Dump.Y) Dump.println("RADSEval.evaluateNextTake exit eswn="+eswnDiscard+",ctrWinningTileTryNext="+ctrWinningTileTryNext+",itsHandValue["+Pidx+"]="+itsHandValue[Pidx]);//~vaffR~
         if (Dump.Y) Dump.println("RADSEval.evaluateNextTake exit pos="+Ppos+",han="+han+",amtHanMax="+Integer.toHexString(amtHanMax));//~vaajR~//~vaanR~//~vaaKR~
         return han;
     }
@@ -861,7 +1099,7 @@ public class RADSEval
     //***********************************************************************
     private int tryNextTake(int Pidx/*idx of tdsHand try to discard*/,int Ppos/*of tdsHand[Pidx]*/,int Pshanten,int PctrHand,int Pintent)//~1126R~//~1309R~
     {
-        if (Dump.Y) Dump.println("RADSEval.tryNextTake idx="+Pidx+",pos="+Ppos+",shanten="+Pshanten+",ctrHand="+PctrHand);//~1131R~//~vaajR~
+        if (Dump.Y) Dump.println("RADSEval.tryNextTake entry eswn="+eswnDiscard+",Pidx="+Pidx+",pos="+Ppos+",shanten="+Pshanten+",ctrHand="+PctrHand+",itsHand="+Utils.toString(itsHand,9));//~vaffR~
         if (Dump.Y) Dump.println("RADSEval.tryNextTake before itsExposed="+Utils.toString(RS.itsExposed,9));//~1218R~//~vaajR~
         if (Dump.Y) Dump.println("RADSEval.tryNextTake old    itsHandValue="+itsHandValue[Pidx]);//~1127R~//~1131R~//~1220I~//~vaajR~
         int hanMax=0;
@@ -906,7 +1144,7 @@ public class RADSEval
 		        if (Dump.Y) Dump.println("RADSEval.tryNextTake eswn="+eswnDiscard+",old ctrTileShantenUP="+ctrTileShantenUp+",pos="+ii);//~1218I~//~1220R~//~vaajR~
                 if (shantenUp>0)                                   //~1220I~
 	                ctrTileShantenUp+=ctrRemain;                       //~1218R~//~1220R~
-		        if (Dump.Y) Dump.println("RADSEval.tryNextTake Pidx="+Pidx+",Ppos="+Ppos+",new ctrTileShantenUP="+ctrTileShantenUp+",pos="+ii);//~1218R~//~vaajR~
+		        if (Dump.Y) Dump.println("RADSEval.tryNextTake eswn="+eswnDiscard+",Pidx="+Pidx+",Ppos="+Ppos+",new ctrTileShantenUP="+ctrTileShantenUp+",pos="+ii);//~vaffR~
               for(;;)                                              //~1130I~
               {                                                    //~1130I~
 //          	if (shantenUp>shantenUpMax)                        //~1127I~//~1218R~
@@ -955,7 +1193,7 @@ public class RADSEval
             else                                                   //~1220I~
             {                                                      //~1220I~
                 ctrShantenDownCase++;                              //~1220I~
-				if (Dump.Y) Dump.println("RADSEval.tryNextTake shantenDown pos="+Ppos+",idx="+Pidx+",shanten="+shanten+",Pshanten="+Pshanten);//~1220I~//~vaajR~
+				if (Dump.Y) Dump.println("RADSEval.tryNextTake eswn="+eswnDiscard+",shantenDown pos="+Ppos+",idx="+Pidx+",shanten="+shanten+",Pshanten="+Pshanten);//~vaffR~
             }                                                      //~1220I~
         	itsHand[ii]--;
         }
@@ -978,10 +1216,86 @@ public class RADSEval
             ctrWinningTileTryNext=0;                               //~1220I~
         }                                                          //~1220I~
         amtMax=amtMx;                                              //~vaajI~
-        if (Dump.Y) Dump.println("RADSEval.tryNextTake eswnDiscard="+eswnDiscard+",Pidx="+Pidx+",Ppos="+Ppos+",hanMax="+hanMax+",amtMax="+amtMax+",ctrTileShanteUp="+ctrTileShantenUp+",ctrWinningTile="+ctrWinningTile);//~1127R~//~1131R~//~1213R~//~1216R~//~1218R~//~vaajR~
-        if (Dump.Y) Dump.println("RADSEval.tryNextTake ctrWinlistTryNexttake="+ctrWinListTryNextTake);//~vaaEI~
+        if (Dump.Y) Dump.println("RADSEval.tryNextTake exit eswnDiscard="+eswnDiscard+",Pidx="+Pidx+",Ppos="+Ppos+",hanMax="+hanMax+",amtMax="+amtMax+",ctrTileShanteUp="+ctrTileShantenUp+",ctrWinningTile="+ctrWinningTile);//~1127R~//~1131R~//~1213R~//~1216R~//~1218R~//~vaajR~//~vafbR~
+        if (Dump.Y) Dump.println("RADSEval.tryNextTake exit ctrWinlistTryNexttake="+ctrWinListTryNextTake+",ctrShantenDownCase="+ctrShantenDownCase);//~vaffR~
         return hanMax;
     }
+    //***********************************************************************//~vafcR~
+    //*get max Amt for winlist                                     //~vafcR~
+    //***********************************************************************//~vafcR~
+    public Point evaluateWinListCall(int Peswn,int[] PitsHand,int PctrHand,int[] PitsWin)//~vafcR~
+    {                                                              //~vafcR~
+        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall entry eswn="+Peswn+",itsWin="+Utils.toString(PitsWin)+",ctrHand="+PctrHand+",PitsHand="+Utils.toString(PitsHand,9));//~vafcR~
+        int posMaxAmt=-1;                                          //~vafcR~
+        int amtMx=0;                                               //~vafcR~
+        //*******************                                      //~vafcR~
+        int player=RS.RSP[Peswn].player;                           //~vafcR~
+        for (int ii=0;ii<PitsWin.length;ii++)                      //~vafcR~
+        {                                                          //~vafcR~
+        	int pos=PitsWin[ii];                                       //~vafcR~
+	        if (Dump.Y) Dump.println("RADSEval.evaluateWinList posWin="+pos);//~vafcR~
+	        Point hanAndAmt=AG.aRARon.getRonValueEvaluateCall(player,PitsHand,pos);//~vafcR~
+        	int amt=hanAndAmt.y;	//output of RARon.getRonValue()//~vafcR~
+            if (amt>amtMx)                                         //~vafcR~
+            {                                                      //~vafcR~
+            	amtMx=amt;                                         //~vafcR~
+                posMaxAmt=pos;                                     //~vafcR~
+            }                                                      //~vafcR~
+        }                                                          //~vafcR~
+        Point posAndAmt=new Point(posMaxAmt,amtMx);                //~vafcR~
+        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall exit posAndAmt="+posAndAmt.toString());//~vafcR~
+        return posAndAmt;                                          //~vafcR~
+    }                                                              //~vafcR~
+    //***********************************************************************//~vafnI~
+    //*get max Amt for winlist                                     //~vafnI~
+    //***********************************************************************//~vafnI~
+    public boolean evaluateWinListCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int PposTop,int[] PitsWin)//~vafnR~
+    {                                                              //~vafnI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall entry eswn="+Peswn+",itsWin="+Utils.toString(PitsWin)+",ctrHand="+PctrHand+",PitsHand="+Utils.toString(PitsHand,9));//~vafnI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall action="+Paction+",posTop="+PposTop);//~vafnI~
+        boolean rc=true;                                           //~vafnI~
+        int player=RS.RSP[Peswn].player;                           //~vafnI~
+        for (int ii=0;ii<PitsWin.length;ii++)                      //~vafnI~
+        {                                                          //~vafnI~
+        	int pos=PitsWin[ii];                                   //~vafnI~
+	        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable posWin="+pos);//~vafnI~
+	        Point hanAndAmt=AG.aRARon.getRonValueEvaluateCall2nd(player,PitsHand,pos,Paction,PposTop);//~vafnR~
+        	int amt=hanAndAmt.y;	//output of RARon.getRonValue()//~vafnI~
+            if (amt==0)	//ewve on 2 hanconstraint                  //~vafnI~
+            {                                                      //~vafnI~
+            	rc=false;                                          //~vafnI~
+            	break;                                             //~vafnI~
+            }                                                      //~vafnI~
+        }                                                          //~vafnI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable exit rc="+rc);//~vafnI~
+        return rc;                                                 //~vafnI~
+    }                                                              //~vafnI~
+    //***********************************************************************//~vafnI~
+    //*get max Amt for winlist,return 0 if amt=0 pattern exist     //~vafnI~
+    //***********************************************************************//~vafnI~
+    public int evaluateFixedCallRonableWinList(int Peswn,int[] PitsHand,int PctrHand,int Paction,int PposTop,int[] PitsWin)//~vafnI~
+    {                                                              //~vafnI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateFixedCallRonableWinList entry eswn="+Peswn+",itsWin="+Utils.toString(PitsWin)+",ctrHand="+PctrHand+",PitsHand="+Utils.toString(PitsHand,9));//~vafnI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateFixedCallRonableWinList action="+Paction+",posTop="+PposTop);//~vafnI~
+        boolean rc=true;                                           //~vafnI~
+        int player=RS.RSP[Peswn].player;                           //~vafnI~
+        int amtMax=0;                                              //~vafnI~
+        for (int ii=0;ii<PitsWin.length;ii++)                      //~vafnI~
+        {                                                          //~vafnI~
+        	int pos=PitsWin[ii];                                   //~vafnI~
+	        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable posWin="+pos);//~vafnI~
+	        Point hanAndAmt=AG.aRARon.getRonValueEvaluateCall2nd(player,PitsHand,pos,Paction,PposTop);//~vafnI~
+        	int amt=hanAndAmt.y;	//output of RARon.getRonValue()//~vafnI~
+            if (amt==0)	//ewve on 2 hanconstraint                  //~vafnI~
+            {                                                      //~vafnI~
+            	amtMax=0;                                          //~vafnI~
+            	break;                                             //~vafnI~
+            }                                                      //~vafnI~
+            amtMax=Math.max(amtMax,amt);                           //~vafnI~
+        }                                                          //~vafnI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateFixedCallRonableWinList exit amtMax="+amtMax);//~vafnI~
+        return amtMax;                                                 //~vafnI~
+    }                                                              //~vafnI~
     //***********************************************************************
     private int getRonValue(int[] PitsHand,int Ppos)
     {
@@ -1093,8 +1407,9 @@ public class RADSEval
         else                                                       //~vab9I~
         if ((Pintent & (INTENT_3DRAGON))!=0)                       //~vab9I~
         {                                                          //~vab9I~
-	        if (Dump.Y) Dump.println("RADSEval.chkIntentTryDiscard no chkIntent by Yakuman(3DRAGON) intent");//~vab9I~
-        	swChkIntent=false;	//no intent                        //~vab9I~
+	        if (Dump.Y) Dump.println("RADSEval.chkIntentTryDiscard chkIntent by Yakuman(3DRAGON) intent");//~vab9I~//~vaf6R~
+//      	swChkIntent=false;	//no intent                        //~vab9I~//~vaf6R~
+        	swChkIntent=true;   //ignore shanten down(keep dragon tile)//~vaf6I~
         }                                                          //~vab9I~
         else                                                       //~vab9I~
         if (RSP.isFixedFirst())                                    //~vab9M~

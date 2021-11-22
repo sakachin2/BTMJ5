@@ -1,6 +1,8 @@
-//*CID://+vaaQR~: update#= 901;                                    //+vaaQR~
+//*CID://+vafrR~: update#= 913;                                    //~vafrR~
 //**********************************************************************//~v101I~
-//2021/07/17 vaaQ (Bug)honchan decision; not cheked pillow is terminal//+vaaQI~
+//2021/11/14 vagr (Bug of vafh)determins honchan when pillow:tanyao//~vafrI~
+//2021/11/01 vafh bug for HonChanta(TerminalMix)                   //~vafhI~
+//2021/07/17 vaaQ (Bug)honchan decision; not cheked pillow is terminal//~vaaQI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/07 va7d (Bug)misjudge 3shiki for 234 man 234234(pin 1peiko)//~va7dI~
 //2021/03/09 va6d (BUG)mixFlush allows other color pillow          //~va26I~
@@ -84,7 +86,7 @@ public class UARank                                                //~va11R~
         ronType=UARV.ronType;                                      //~va11I~
         ronNumber=UARV.ronNumber;                                  //~va11I~
         pairEarth=UARV.pairEarth;                                  //~va91M~
-        if (Dump.Y) Dump.println("UARank.init typeYAkuFix="+typeYakuFix+",intNotAllHand="+intNotAllHand+",ronType="+ronType+",ronNumber="+ronNumber+",pairEarth count="+pairEarth.length);//~va91I~
+        if (Dump.Y) Dump.println("UARank.init typeYAkuFix="+typeYakuFix+",intNotAllHand="+intNotAllHand+",ronType="+ronType+",ronNumber="+ronNumber+",pairEarth count="+(pairEarth==null ? 0 : pairEarth.length));//~va91I~//~vafrR~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va11I~
 	//*from UARonDataTree.getAmmount                               //~va11R~
@@ -108,6 +110,7 @@ public class UARank                                                //~va11R~
         eswnHonor=UARDT.eswn;                                      //~va91I~
         roundHonor=UARDT.round;                                    //~va91I~
         if (Dump.Y) Dump.println("UARank.init getRankStandard eswnHonor="+eswnHonor+",roundHonor="+roundHonor);//~va91I~
+        if (Dump.Y) Dump.println("UARank.init getRankStandard statusPillow="+statusPillow+",typePillow="+typePillow+",numberPillow="+numberPillow+",swTanyao="+swTanyao+",swHonor="+swHonor);//~vaaQI~
                                                                    //~va11I~
         setRank();                                                 //~va11I~
                                                                    //~va11I~
@@ -143,6 +146,7 @@ public class UARank                                                //~va11R~
         	intRankS[idxPairNumSS]=rank;                           //~va11R~
         	intRankFixErrS[idxPairNumSS]=rankFixErr;               //~va91I~
         	longRankS[idxPairNumSS]=longRank;                         //~va11R~
+        	if (Dump.Y) Dump.println("UARank.setRank idxPairNumSS="+idxPairNumSS+",longRank="+longRank.toStringName());//+vafrI~
         	longRankFixErrS[idxPairNumSS]=longRankFixErr;          //~va91I~
             idxPairNumSS++;                                        //~va11R~
         }                                                          //~va11I~
@@ -834,13 +838,13 @@ public class UARank                                                //~va11R~
         {                                                          //~va11I~
         	if (pair.typePair==PT_NUMSAME)                         //~va11I~
             	ctr++;                                             //~va11I~
-	    	if (Dump.Y) Dump.println("UARank.chkAllSame ctr="+ctr+",pair="+Pair.toString(pair));//~va11I~
+	    	if (Dump.Y) Dump.println("UARank.chkAllSame Num ctr="+ctr+",pair="+Pair.toString(pair));//~va11I~//~vafhR~
         }                                                          //~va11I~
         if (ctrPairNotNum!=0)                                      //~va11I~
             for (Pair pair:pairNotNum)     //earth and hand        //~va11R~
             {                                                      //~va11I~
            		ctr++;                                             //~va11R~
-		    	if (Dump.Y) Dump.println("UARank.chkAllSame ctr="+ctr+",pair="+Pair.toString(pair));//~va11I~
+		    	if (Dump.Y) Dump.println("UARank.chkAllSame NotNum ctr="+ctr+",pair="+Pair.toString(pair));//~va11I~//~vafhR~
             }                                                      //~va11I~
         if (ctr==PAIRS_MAX)                                         //~va11R~
         {                                                          //~va11I~
@@ -860,8 +864,11 @@ public class UARank                                                //~va11R~
         }                                                          //~va11I~
     	int rc=0;                                                  //~va11I~
         int ctr=0;                                                 //~va11I~
-//  	if (ctrPairNotNum!=0/*mix*/ || statusPillow==STP_NOTNUM || statusPillow==STP_HONOR)//~va11R~//+vaaQR~
-    	if (statusPillow!=STP_TANYAO && ctrPairNotNum!=0/*mix*/)   //+vaaQI~
+//  	if (ctrPairNotNum!=0/*mix*/ || statusPillow==STP_NOTNUM || statusPillow==STP_HONOR)//~va11R~//~vaaQR~
+	    if (Dump.Y) Dump.println("UARank.chkTerminalMix statusPillow="+statusPillow+",ctrPairNotNum="+ctrPairNotNum);//~vaaQI~
+//  	if (statusPillow!=STP_TANYAO && ctrPairNotNum!=0/*mix*/)   //~vaaQI~//~vafhR~
+//  	if (statusPillow==STP_NOTNUM/*eswn*/||statusPillow==STP_HONOR || ctrPairNotNum!=0)//~vafhI~//~vafrR~
+    	if (statusPillow!=STP_TANYAO && (statusPillow!=STP_TERMINAL || ctrPairNotNum!=0/*mix*/))//~vafrR~
         {                                                          //~va11I~
         	if (chkTerminalNum())                                  //~va11I~
             {                                                      //~va11I~
@@ -881,9 +888,11 @@ public class UARank                                                //~va11R~
         boolean swSeq=false;                                       //~va11I~
         for (Pair pair:pairNumS)                                   //~va11R~
         {                                                          //~va11I~
+    		if (Dump.Y) Dump.println("UARank.chkTerminalNum pair="+pair.toString());//~vafhI~
             int num=pair.number;                                   //~va11I~
             if (pair.typePair==PT_NUMSAME)                         //~va11I~
             {                                                      //~va11I~
+	    		if (Dump.Y) Dump.println("UARank.chkTerminalNum PT_SAME num="+num);//~vafhI~
                 if (num!=0 && num!=8)                         //~va11I~
                 {                                                  //~va11I~
                 	rc=false;                                      //~va11I~
@@ -892,6 +901,7 @@ public class UARank                                                //~va11R~
             }                                                      //~va11I~
             else                                                   //~va11I~
             {                                                      //~va11I~
+	    		if (Dump.Y) Dump.println("UARank.chkTerminalNum Not PT_SAME num="+num);//~vafhI~
                 if (num!=0 && num!=6)                         //~va11I~
                 {                                                  //~va11I~
                 	rc=false;                                      //~va11I~
@@ -1006,6 +1016,7 @@ public class UARank                                                //~va11R~
     	if (Dump.Y) Dump.println("UARank.chkSameSeq rc="+rc+",yaku="+yaku);//~va11R~
     	return rc;                                                 //~va11I~
     }                                                              //~va11I~
+    //****************************************************************//~vaaQI~
     private int chkTerminal()        //junchanta                   //~va11I~
     {                                                              //~va11I~
         if (swTanyao)                                              //~va11I~
@@ -1015,6 +1026,7 @@ public class UARank                                                //~va11R~
         }                                                          //~va11I~
     	int rc=0;                                                  //~va11R~
         int ctr=0;                                                 //~va11I~
+    	if (Dump.Y) Dump.println("UARank.chkTerminal ctrPairNotNum="+ctrPairNotNum+",statusPillow="+statusPillow);//~vafhI~
     	if (ctrPairNotNum==0 && statusPillow==STP_TERMINAL)        //~va11R~
         {                                                          //~va11I~
         	if (chkTerminalNum())                                  //~va11I~
@@ -1030,6 +1042,7 @@ public class UARank                                                //~va11R~
     }                                                              //~va11I~
     private int chkFlushMix()        //honitsu                     //~va11I~
     {                                                              //~va11I~
+	    if (Dump.Y) Dump.println("UARank.chkFlushMix entry swTanyao="+swTanyao+",statusPillow="+statusPillow+",ctrPairNotNum="+ctrPairNotNum);//~vafrI~
         if (swTanyao)                                              //~va11I~
         {                                                          //~va11I~
 	    	if (Dump.Y) Dump.println("UARank.chkFlushMix tanyao rc=0");//~va11R~
@@ -1052,6 +1065,7 @@ public class UARank                                                //~va11R~
     //***********************************                          //~va11I~
     private boolean chkFlushNum(boolean PswMix)                    //~va11R~
     {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("UARank.chkFlushNum swMix="+PswMix+",typePillow="+typePillow);//~vafrI~
     	boolean rc=true;                                           //~va11I~
         int type;                                                  //~va11R~
         if (PswMix)                                                //~va11I~
@@ -1063,8 +1077,10 @@ public class UARank                                                //~va11R~
         }                                                          //~va26I~
         else                                                       //~va11I~
         	type=typePillow;                                       //~va11I~
+        if (Dump.Y) Dump.println("UARank.chkFlushNum pairNumS="+Pair.toString(pairNumS));//~vafrI~
         for (Pair pair:pairNumS)                                   //~va11R~
         {                                                          //~va11I~
+    		if (Dump.Y) Dump.println("UARank.chkFlushNum pair.type="+pair.type+",pair="+pair.toString());//~vafrI~
         	if (type<0)                                            //~va11I~
             {                                                      //~va11I~
             	type=pair.type;                                    //~va11I~
@@ -1199,6 +1215,7 @@ public class UARank                                                //~va11R~
     private int chkFlush()			//chinitsu                     //~va11I~
     {                                                              //~va11I~
         int rc=0;                                                  //~va11I~
+	    if (Dump.Y) Dump.println("UARank.chkFlush entry statusPillow="+statusPillow+",ctrPairNotNum="+ctrPairNotNum);//~vafrI~
     	if (ctrPairNotNum==0)                                      //~va11R~
         {                                                          //~va11I~
         	if (chkFlushNum(false/*mixed*/))                       //~va11R~

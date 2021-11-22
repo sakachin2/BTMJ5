@@ -1,5 +1,7 @@
-//*CID://+vae7R~: update#= 312;                                    //~vae7R~
+//*CID://+vaf0R~: update#= 315;                                    //~vaf0R~
 //**********************************************************************//~1107I~
+//2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
 //1ak2 2021/09/04 access external audio file                       //~1ak2I~
 //2021/07/01 vaaf Button BG color by span string because setbackgroundColor is expands button to its boundary.//~vaafI~
@@ -31,6 +33,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;                         //~v107R~
 import android.content.pm.PackageManager;                          //~v107R~
 import android.content.pm.PackageManager.NameNotFoundException;    //~v107R~
+import android.content.res.Resources;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -61,7 +64,8 @@ import static com.btmtest.AG.*;//~v@21I~//~@@01I~
 public class Utils                                            //~1309R~//~@@@@R~
 {                                                                  //~0914I~
     public static final String	IPA_NA="N/A";                      //~1A05I~
-	private static final String sharedPreferenceName=AG.appName+"-PrivatePreference";//~@@@@I~//~v@@@I~//~@@01R~
+//  private static final String sharedPreferenceName=AG.appName+"-PrivatePreference";//~@@@@I~//~v@@@I~//~@@01R~//~vaf3R~
+    private static       String sharedPreferenceName;              //~vaf3I~
 //**********************************                               //~@@@@I~
 //*from Alert,replyed Yes                                          //~@@@@I~
 //**********************************                               //~@@@@I~
@@ -489,6 +493,13 @@ public class Utils                                            //~1309R~//~@@@@R~
         	return "";                                             //~@@01I~
     	return AG.resource.getString(Presid);                      //~v@@@R~
     }                                                              //~v@@@I~
+//**********************                                           //~vaf0I~
+    public static String getStr(Resources Presource, int Presid)    //~vaf0I~
+	{                                                              //~vaf0I~
+    	if (Presid==0)                                             //~vaf0I~
+        	return "";                                             //~vaf0I~
+    	return Presource.getString(Presid);                        //~vaf0I~
+    }                                                              //~vaf0I~
 //**********************                                           //~va11I~
     public static Spanned getStrHtml(int Presid)                   //~va11I~
     {                                                              //~va11I~
@@ -558,13 +569,13 @@ public class Utils                                            //~1309R~//~@@@@R~
     {                                                              //~1402I~//~@@@@M~//~v@@@M~
     	SharedPreferences pref=getPreferenceName();                 //~1402I~//~@@@@M~//~v@@@M~
         String value=pref.getString(Pkey,Pdefault/*default value*/);//~1402R~//~@@@@M~//~v@@@M~
-        if (Dump.Y) Dump.println("Utils.getPreference:"+Pkey+"="+value); //~1506R~//~@@@@M~//~v@@@M~//+vae7R~
+        if (Dump.Y) Dump.println("Utils.getPreference:"+Pkey+"="+value); //~1506R~//~@@@@M~//~v@@@M~//~vae7R~
         return value;                                              //~1402I~//~@@@@M~//~v@@@M~
     }//readwriteQNo                                                //~1402I~//~@@@@M~//~v@@@M~
     //******************                                           //~1402I~//~@@@@M~//~v@@@M~
     public static void putPreference(String Pkey,String Pvalue)        //~1402I~//~@@@@M~//~v@@@M~
     {                                                              //~1402I~//~@@@@M~//~v@@@M~
-        if (Dump.Y) Dump.println("Utils.putPreference:"+Pkey+"="+Pvalue);//~1506R~//~@@@@M~//~v@@@M~//+vae7R~
+        if (Dump.Y) Dump.println("Utils.putPreference:"+Pkey+"="+Pvalue);//~1506R~//~@@@@M~//~v@@@M~//~vae7R~
     	SharedPreferences pref=getPreferenceName();                 //~1402I~//~@@@@M~//~v@@@M~
         SharedPreferences.Editor editor=pref.edit();               //~1402I~//~@@@@M~//~v@@@M~
         editor.putString(Pkey,Pvalue);                             //~1402I~//~@@@@M~//~v@@@M~
@@ -589,6 +600,8 @@ public class Utils                                            //~1309R~//~@@@@R~
     //******************                                           //~v107I~//~@@@@M~//~v@@@M~
     private static SharedPreferences getPreferenceName()                   //~1402I~//~@@@@M~//~v@@@M~
     {                                                              //~1402I~//~@@@@M~//~v@@@M~
+        if (sharedPreferenceName==null)                            //~vaf3I~
+	        sharedPreferenceName=AG.appName+"-PrivatePreference";  //~vaf3I~
         return AG.context.getSharedPreferences(sharedPreferenceName,Context.MODE_PRIVATE);//~@@@@I~//~v@@@M~
     }                                                              //~1402I~//~@@@@M~//~v@@@M~
     //******************                                           //~v@@@I~
@@ -1233,11 +1246,11 @@ public class Utils                                            //~1309R~//~@@@@R~
     public static int[][] cloneArray2(int[][] Pfrom)               //~vai3R~//~va11I~
     {                                                              //~vai3I~//~va11I~
     	int[][] to=Pfrom.clone();                                  //~vai3I~//~va11I~
-    	if (Dump.Y) Dump.println("cloneArray2 clone 2demension 1dimen clone array="+Utils.toString(to));//~vai3I~//~va11I~
+    	if (Dump.Y) Dump.println("Utils.cloneArray2 clone 2dimension 1dimen clone array="+Utils.toString(to));//~vai3I~//~va11I~//+vaf0R~
     	int sz1=Pfrom.length;                                      //~vai3I~//~va11I~
         for (int ii=0;ii<sz1;ii++)                                 //~vai3I~//~va11I~
         	to[ii]=Pfrom[ii].clone();                              //~vai3I~//~va11I~
-    	if (Dump.Y) Dump.println("cloneArray2 clone 2demension return array="+Utils.toString(to));//~vai3I~//~va11I~
+    	if (Dump.Y) Dump.println("Utils.cloneArray2 clone 2dimension return array="+Utils.toString(to));//~vai3I~//~va11I~//+vaf0R~
         return to;                                                 //~vai3I~//~va11I~
     }                                                              //~vai3I~//~va11I~
 //***********                                                      //~va11I~

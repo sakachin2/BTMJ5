@@ -1,5 +1,6 @@
-//*CID://+vac5R~:                             update#=  884;       //~vac5R~
+//*CID://+vaf2R~:                             update#=  885;       //+vaf2R~
 //*****************************************************************//~v101I~
+//2021/10/22 vaf2 static variable to AG or final                   //+vaf2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //~vab6I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
@@ -68,14 +69,14 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private static final int POINT_RANKM  =8000;
     private static final int POINT_RANKM_SHORT=7680;//~9212I~      //~9213R~
 //  private static final int POINT_RANK_YM=40;                     //~9224I~//~va11R~
-    public  static int RANKID_YAKUMAN=40;                          //~va11M~
-    public  static int RANKID_YAKUMAN15=60;                        //~va11M~
-    public  static int RANKID_YAKUMAN2=80;                         //~va11M~
-    public  static int RANKID_YAKUMAN3=120;                        //~va11M~
-    public  static int RANKID_YAKUMAN4=160;                        //~va11M~
-    public  static int RANKID_YAKUMAN5=200;                        //~va11I~
-    public  static int RANKID_YAKUMAN6=240;                        //~va11I~
-    public  static int RANKID_YAKUMAN7=280;                        //~va11I~
+    public  static final int RANKID_YAKUMAN=40;                          //~va11M~//+vaf2R~
+    public  static final int RANKID_YAKUMAN15=60;                        //~va11M~//+vaf2R~
+    public  static final int RANKID_YAKUMAN2=80;                         //~va11M~//+vaf2R~
+    public  static final int RANKID_YAKUMAN3=120;                        //~va11M~//+vaf2R~
+    public  static final int RANKID_YAKUMAN4=160;                        //~va11M~//+vaf2R~
+    public  static final int RANKID_YAKUMAN5=200;                        //~va11I~//+vaf2R~
+    public  static final int RANKID_YAKUMAN6=240;                        //~va11I~//+vaf2R~
+    public  static final int RANKID_YAKUMAN7=280;                        //~va11I~//+vaf2R~
 //  private static final int[] intsPoint={20,25,30,40,50,60,70,80,90,100,110};//~9212R~//~va11R~
     private static final int[] intsPoint={0,20,25,30,40,50,60,70,80,90,100,110};//~va11I~
     private static final int POINTIDX_7PAIR2=2;                    //~va16I~
@@ -99,18 +100,18 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //    private static int RANKIDX_YAKUMAN4=12;                      //~va11R~
 //    private static int RANKIDX_YAKUMAN5=13;                      //~va11R~
 //    private static int RANKIDX_YAKUMAN6=14;                      //~va11R~
-    public  static int RANKIDX_MANGAN=5;         //4han            //~va11I~
-    public  static int RANKIDX_HANEMAN=6;        //6han            //~va11I~
-    public  static int RANKIDX_MANGAN2=7;        //8han            //~va11I~
-    public  static int RANKIDX_MANGAN3=8;        //11han           //~va11I~
-    public  static int RANKIDX_YAKUMAN=9;        //13han           //~va11I~
-    private static int RANKIDX_YAKUMAN15=10;                       //~va11I~
-    private static int RANKIDX_YAKUMAN2=11;                        //~va11I~
-    private static int RANKIDX_YAKUMAN3=12;                        //~va11I~
-    private static int RANKIDX_YAKUMAN4=13;                        //~va11I~
-    private static int RANKIDX_YAKUMAN5=14;                        //~va11I~
-    private static int RANKIDX_YAKUMAN6=15;                        //~va11I~
-    private static int RANKIDX_YAKUMAN7=16;                        //~va11I~
+    public  static final int RANKIDX_MANGAN=5;         //4han            //~va11I~//+vaf2R~
+    public  static final int RANKIDX_HANEMAN=6;        //6han            //~va11I~//+vaf2R~
+    public  static final int RANKIDX_MANGAN2=7;        //8han            //~va11I~//+vaf2R~
+    public  static final int RANKIDX_MANGAN3=8;        //11han           //~va11I~//+vaf2R~
+    public  static final int RANKIDX_YAKUMAN=9;        //13han           //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN15=10;                       //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN2=11;                        //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN3=12;                        //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN4=13;                        //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN5=14;                        //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN6=15;                        //~va11I~//+vaf2R~
+    private static final int RANKIDX_YAKUMAN7=16;                        //~va11I~//+vaf2R~
     private static final int COLOR_YOU=Color.argb(0xff,0x00,0xbf,0xff); //deep sky blue//~9311I~
     private static final int COLOR_REPLY_BEFORESEND=Color.argb(0xff,0x1b,0xa4,0xd7);//sky blue//~9227R~
     private static final int COLOR_REPLY_OK=Color.argb(0xff,0x00,0xff,0x00);//~9227I~
@@ -295,10 +296,10 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         	int ww=getTilesWidth();                                //~9927R~
         	ww+=AG.dialogPaddingHorizontal; //dialog shrink by padding,add to fully include tiles//~9927R~
 //        }                                                        //~9927R~
-        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swPortrait="+AG.portrait+",ww="+ww+",padding="+AG.dialogPaddingHorizontal);//+vac5I~
-        if (AG.swSmallFont && AG.portrait)                         //+vac5I~
-            ww=Math.max(ww,(int)(AG.scrWidth*RATE_SMALLFONT_WIDTH));       //+vac5I~
-        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swSmallFont="+AG.swSmallFont+",swPortrait="+AG.portrait+",ww="+ww);//~9812R~//~9925R~//+vac5R~
+        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swPortrait="+AG.portrait+",ww="+ww+",padding="+AG.dialogPaddingHorizontal);//~vac5I~
+        if (AG.swSmallFont && AG.portrait)                         //~vac5I~
+            ww=Math.max(ww,(int)(AG.scrWidth*RATE_SMALLFONT_WIDTH));       //~vac5I~
+        if (Dump.Y) Dump.println("CompReqDlg.getDialogWidth swSmallFont="+AG.swSmallFont+",swPortrait="+AG.portrait+",ww="+ww);//~9812R~//~9925R~//~vac5R~
         return ww;                                               //~9812R~//~9925R~
     }                                                            //~9812R~//~9925R~
     //******************************************                   //~9410I~

@@ -1,5 +1,7 @@
-//*CID://+va11R~: update#= 795;                                    //~va11R~
+//*CID://+vaguR~: update#= 805;                                    //~vaguR~
 //**********************************************************************//~v101I~
+//2021/11/15 vagu (Bug)mix paring loose pair when PIN is 2 pattern; e.g)MAN 123,567(1 pattern) and PIN 55777789(2 pattern), it loose man meld and say flush of PIN//~vaguI~
+//                if PIN 123,567(1 pattern) and MAN 55777789(2 pattern), no problem//~vaguI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.UA;                                       //~va11R~
@@ -146,7 +148,7 @@ public class UAPair                                                //~va11R~
     }                                                              //~va11I~
     public Pair add(Pair Pparent,int PtypePair,int Ptype,int Pnumber,boolean PswHand)//~va11I~
     {                                                              //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.add typePair="+PtypePair+",type="+type+",number="+Pnumber+",swHand="+PswHand+",parent="+Pair.toString(Pparent));//+va11R~
+    	if (Dump.Y) Dump.println("UAPair.add typePair="+PtypePair+",type="+type+",number="+Pnumber+",swHand="+PswHand+",parent="+Pair.toString(Pparent));//~va11R~
         if (Pparent==null)                                         //~va11I~
         	return add(PtypePair,Ptype,Pnumber,PswHand);           //~va11R~
 	    Pair pair=new Pair(PtypePair,Ptype,Pnumber,PswHand);       //~va11I~
@@ -196,13 +198,14 @@ public class UAPair                                                //~va11R~
     //******************************************************************//~va11I~
     public void makeNumPattern(int Ptype,Pair Ptop)                //~va11R~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UAPair.makeNumPattern Ptype="+Ptype);//~va11R~
+        if (Dump.Y) Dump.println("UAPair.makeNumPattern Ptype="+Ptype+",top="+Utils.toString(Ptop));//~va11R~
         if (Ptop==null)                                            //~va11R~
             return;                                                //~va11I~
     	Pair cpos=Ptop;                                            //~va11R~
     	for (;;)                                                   //~va11I~
         {                                                          //~va11I~
     		Pair bottom=getDown(cpos);                             //~va11R~
+	        if (Dump.Y) Dump.println("UAPair.makeNumPattern Ptype="+Ptype+",top="+Ptop.toString()+"\n,bottom="+bottom.toString());//~va11R~
             if (bottom==null)                                      //~va11I~
             	break;                                             //~va11I~
 	        setNumPattern(Ptype,Ptop,bottom);                      //~va11I~
@@ -210,22 +213,25 @@ public class UAPair                                                //~va11R~
             if (cpos==null)                                        //~va11I~
             	break;                                             //~va11I~
         }                                                          //~va11I~
+        if (Dump.Y) Dump.println("UAPair.makeNumPattern exit Ptype="+Ptype);//~va11I~
     }                                                              //~va11I~
     //******************************************************************//~va11I~
     private Pair getDown(Pair Pcpos)                               //~va11R~
     {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("UAPair.getDown entry Pcpos="+Utils.toString(Pcpos));//~va11I~
         Pair cpos=Pcpos;                                           //~va11R~
         if (cpos.pairSame!=null)                                   //~va11I~
             cpos=getDown(cpos.pairSame);                           //~va11I~
         else                                                       //~va11I~
         if (cpos.pairSeq!=null)                                    //~va11I~
             cpos=getDown(cpos.pairSeq);                            //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.getDown Pcpos="+Utils.toString(Pcpos)+",rc="+Utils.toString(cpos));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.getDown exit Pcpos="+Utils.toString(Pcpos)+"\n,rc=cpos="+Utils.toString(cpos));//~va11R~
         return cpos;                                               //~va11I~
     }                                                              //~va11I~
     //***************************************************          //~va11I~
     private Pair getUp(Pair Pcpos)                                 //~va11R~
     {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("UAPair.getUp entry Pcpos="+Utils.toString(Pcpos));//~va11I~
     	Pair next=null;                                            //~va11R~
     	Pair up=Pcpos.parent;                                      //~va11R~
         if (up!=null)                                              //~va11R~
@@ -235,7 +241,7 @@ public class UAPair                                                //~va11R~
             else                                                   //~va11I~
 				next=getUp(up);                                    //~va11I~
         }                                                          //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.getUp Pcpos="+Utils.toString(Pcpos)+",rc="+Utils.toString(next));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.getUp exit Pcpos="+Utils.toString(Pcpos)+"\n,rc=next="+Utils.toString(next));//~va11R~
         return next;                                               //~va11I~
     }                                                              //~va11I~
     //***************************************************          //~va11M~
@@ -253,7 +259,8 @@ public class UAPair                                                //~va11R~
             pair=up;                                               //~va11I~
         }                                                          //~va11M~
         pairSSS[Ptype][ctrPairSSS[Ptype]++]=pairS;                 //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.setPattern return "+toStringPattern());//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.setNumPattern type="+Ptype+",top="+Ptop.toString()+"\n,bottom="+Pbottom.toString()+",ctrPairSSS="+Utils.toString(ctrPairSSS));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.setNumPattern return "+toStringPattern());//~va11I~
     }                                                              //~va11M~
     //******************************************************************//~va11I~
     private void addEarth(Pair[] PpairS)                           //~va11R~
@@ -304,15 +311,17 @@ public class UAPair                                                //~va11R~
     	if (Dump.Y) Dump.println("UAPair.appendEarth return PpairSS="+Pair.toString(pairSS));//~va11R~
     }                                                              //~va11I~
     //******************************************************************//~va11I~
-    private void mixPatternNum()                                   //~va11R~
+//  private void mixPatternNum()                                   //~va11R~//~vaguR~
+    private void mixPatternNum_Old()                               //~vaguI~
     {                                                              //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.mixPattern mixPatternNUM ctrPairSSS="+ Arrays.toString(ctrPairSSS));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.mixPatternNum entry ctrPairSSS="+ Arrays.toString(ctrPairSSS));//~va11R~//~vaguR~
     	int ctrTotal=1;                                            //~va11I~
     	for (int ii=0;ii<PIECE_NUMBERTYPECTR;ii++)                     //~va11I~
         {	                                                       //~va11I~
     		int ctr=ctrPairSSS[ii];                                //~va11I~
             ctrTotal*=Math.max(1,ctr);                             //~va11I~
         }                                                          //~va11I~
+    	if (Dump.Y) Dump.println("UAPair.mixPattern ctrTotal="+ctrTotal);//~va11I~
 	    mixedSS=new Pair[ctrTotal][];                              //~va11R~
         int ctrMixedSS=0;                                              //~va11I~
         for (;;)                                                   //~va11I~
@@ -358,24 +367,102 @@ public class UAPair                                                //~va11R~
                         break;                                     //~va11I~
                 }
             }//~va11I~
+	    	if (Dump.Y) Dump.println("UAPair.mixPatternNum forLoop ctrMix="+ctrMix+",ctrSelctr="+Utils.toString(ctrSelect));//~va11I~//~vaguR~
         }                                                          //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.mixPattern ctrMixedSS="+ctrMixedSS+",mixedSS="+Pair.toString(mixedSS));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.mixPatternNum ctrMixedSS="+ctrMixedSS+",mixedSS="+Pair.toString(mixedSS));//~va11R~
     }                                                              //~va11I~
+    //******************************************************************//~vaguI~
+    private void mixPatternNum()                                   //+vaguR~
+    {                                                              //~vaguI~
+    	if (Dump.Y) Dump.println("UAPair.mixPatternNum entry ctrPairSSS="+ Arrays.toString(ctrPairSSS));//~vaguI~
+    	int ctrTotal=1;                                            //~vaguI~
+    	for (int ii=0;ii<PIECE_NUMBERTYPECTR;ii++)                 //~vaguI~
+        {                                                          //~vaguI~
+    		int ctr=ctrPairSSS[ii];                                //~vaguI~
+            ctrTotal*=Math.max(1,ctr);                             //~vaguI~
+        }                                                          //~vaguI~
+    	if (Dump.Y) Dump.println("UAPair.mixPattern ctrTotal="+ctrTotal);//~vaguI~
+	    mixedSS=new Pair[ctrTotal][];                              //~vaguI~
+        int ctrMixedSS=0;                                          //~vaguI~
+        boolean swPin=false,swSou=false;                           //~vaguI~
+		Pair[] mixS;                                               //~vaguI~
+      	Pair[] pairS_MAN,pairS_PIN,pairS_SOU;                      //~vaguI~
+        int ctrMix;                                                //~vaguI~
+//      for (int ii=0;ii<ctrPairSSS[TT_MAN];ii++)                  //+vaguR~
+        for (int ii=0;ii==0 || ii<ctrPairSSS[TT_MAN];ii++)         //+vaguI~
+        {                                                          //~vaguI~
+        	pairS_MAN=selectPair(TT_MAN,ii);                       //~vaguR~
+//          for (int jj=0;jj<ctrPairSSS[TT_PIN];jj++)    //by Pin pair//+vaguR~
+            for (int jj=0;jj==0 || jj<ctrPairSSS[TT_PIN];jj++)    //by Pin pair//+vaguI~
+            {                                                      //~vaguI~
+	        	pairS_PIN=selectPair(TT_PIN,jj);                   //~vaguR~
+                for (int kk=0;kk<ctrPairSSS[TT_SOU];kk++)  //by Sou pair//~vaguR~
+                {                                                  //~vaguI~
+		        	pairS_SOU=selectPair(TT_SOU,kk);               //~vaguR~
+                    if (pairS_SOU==null)                           //~vaguI~
+                    	break;                                     //~vaguI~
+				    mixS=new Pair[PAIRS_MAX];                      //~vaguI~
+			        ctrMix=0;                                      //~vaguI~
+                    if (pairS_MAN!=null)                           //~vaguI~
+                		ctrMix=appendMix(mixS,ctrMix,pairS_MAN);         //MAN//~vaguI~
+                    if (pairS_PIN!=null)                           //~vaguI~
+                		ctrMix=appendMix(mixS,ctrMix,pairS_PIN);         //MAN//~vaguI~
+                	ctrMix=appendMix(mixS,ctrMix,pairS_SOU);         //MAN//~vaguI~
+	                ctrMixedSS=addMix(ctrMixedSS,mixS);            //~vaguI~
+	                swSou=true;                                    //~vaguI~
+                }                                                  //~vaguI~
+                if (swSou)   //Pin appended with Sou               //+vaguM~
+                	continue;                                      //+vaguM~
+                //*no Sou pair                                     //+vaguI~
+                if (pairS_PIN==null)                               //+vaguR~
+                	break;                                         //~vaguI~
+				mixS=new Pair[PAIRS_MAX];                          //~vaguI~
+			    ctrMix=0;                                          //~vaguI~
+	            if (pairS_MAN!=null)                               //~vaguI~
+    	            ctrMix=appendMix(mixS,ctrMix,pairS_MAN);         //MAN//~vaguI~
+                ctrMix=appendMix(mixS,ctrMix,pairS_PIN);         //MAN//~vaguI~
+	            ctrMixedSS=addMix(ctrMixedSS,mixS);                //~vaguI~
+	            swPin=true;                                        //~vaguI~
+            }                                                      //~vaguI~
+	    	if (Dump.Y) Dump.println("UAPair.mixPatternNum swPin="+swPin+",wsSou="+swSou+",pairS_MAN="+Pair.toString(pairS_MAN));//~vaguI~
+            if (swPin || swSou)                                    //+vaguM~
+            	continue;                                          //+vaguM~
+            if (pairS_MAN==null)                                   //~vaguI~
+                break;                                             //~vaguI~
+            mixS=new Pair[PAIRS_MAX];                              //~vaguI~
+			ctrMix=0;                                              //~vaguI~
+            ctrMix=appendMix(mixS,ctrMix,pairS_MAN);         //MAN //~vaguI~
+	        ctrMixedSS=addMix(ctrMixedSS,mixS);                    //~vaguI~
+        }                                                          //~vaguI~
+    	if (Dump.Y) Dump.println("UAPair.mixPatternNum ctrMixedSS="+ctrMixedSS+",mixedSS="+Pair.toString(mixedSS));//~vaguI~
+    }                                                              //~vaguI~
     //*************************************************************//~va11I~
     private Pair[] selectPair(int Ptype)                           //~va11R~
     {                                                              //~va11I~
+     	if (Dump.Y) Dump.println("UAPair.selectPair entry type="+Ptype+",ctrSelect[Ptype]="+ctrSelect[Ptype]+",pairSSS[Ptype]="+Pair.toString(pairSSS[Ptype]));//~va11R~
     	Pair[] pairS=null;                                         //~va11R~
     	if (ctrSelect[Ptype]<ctrPairSSS[Ptype])                    //~va11I~
         {                                                          //~va11I~
         	pairS=pairSSS[Ptype][ctrSelect[Ptype]++];            //~va11I~
         }                                                          //~va11I~
-     	if (Dump.Y) Dump.println("UAPair.selectPair type="+Ptype+",ctr="+ctrSelect[Ptype]+",pair="+Pair.toString(pairS));//~va11R~
+     	if (Dump.Y) Dump.println("UAPair.selectPair exit type="+Ptype+",ctrSelect[Ptype]="+ctrSelect[Ptype]+",pair="+Pair.toString(pairS));//~va11R~
         return pairS;
     }                                                              //~va11I~
+    //*************************************************************//~vaguI~
+    private Pair[] selectPair(int Ptype,int Pidx)                  //~vaguI~
+    {                                                              //~vaguI~
+    	Pair[] pairS=null;                                         //~vaguI~
+    	if (Pidx<ctrPairSSS[Ptype])                                //~vaguI~
+        {                                                          //~vaguI~
+        	pairS=pairSSS[Ptype][Pidx];                            //~vaguI~
+        }                                                          //~vaguI~
+     	if (Dump.Y) Dump.println("UAPair.selectPair exit type="+Ptype+",idx="+Pidx+",ctrPairSSS[Ptype]="+ctrPairSSS[Ptype]+",pairS="+Pair.toString(pairS));//~vaguI~
+        return pairS;                                              //~vaguI~
+    }                                                              //~vaguI~
     //*************************************************************//~va11I~
     private int appendMix(Pair[] PpairSOut,int Pctr,Pair[] PpairSIn)//~va11R~
     {                                                              //~va11I~
-    	if (Dump.Y) Dump.println("UPair.appendMix Pctr="+Pctr+",pairSIn="+Pair.toString(PpairSIn));//~va11I~
+    	if (Dump.Y) Dump.println("UPair.appendMix entry Pctr="+Pctr+",pairSIn="+Pair.toString(PpairSIn));//~va11R~
     	int ctr=Pctr;
     	for (int ii=0;ii<PpairSIn.length;ii++)
         {                                                          //~va11I~
@@ -383,16 +470,17 @@ public class UAPair                                                //~va11R~
             	break;                                             //~va11I~
 	    	PpairSOut[ctr++]=PpairSIn[ii];                         //~va11I~
         }                                                          //~va11I~
-    	if (Dump.Y) Dump.println("UPair.appendMix ctr="+ctr+",pairS="+Pair.toString(PpairSOut));//~va11R~
+    	if (Dump.Y) Dump.println("UPair.appendMix exit ctr="+ctr+",pairS="+Pair.toString(PpairSOut));//~va11R~
         return ctr;                                                //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
     private int addMix(int Pctr,Pair[] PpairS)                     //~va11R~
     {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("UAPair.addMix entry Pctr="+Pctr+",PpairS="+Pair.toString(PpairS));//~va11I~
         int ctr=Pctr;
         Pair[] pairS=shrinkPairS(PpairS,-1);                       //~va11R~
     	mixedSS[ctr++]=pairS;                                      //~va11R~
-    	if (Dump.Y) Dump.println("UAPair.addMix ctr="+ctr+",pairS="+Pair.toString(pairS));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.addMix exit ctr="+ctr+",mixedSS="+Pair.toString(mixedSS));//~va11R~
         return ctr;                                                //~va11I~
     }                                                              //~va11I~
     //*************************************************************//~va11I~
@@ -400,6 +488,7 @@ public class UAPair                                                //~va11R~
     //*************************************************************//~va11I~
     private static Pair[] shrinkPairS(Pair[] PpairS,int Pctr)      //~va11R~
     {                                                              //~va11I~
+    	if (Dump.Y) Dump.println("UAPair.shrinkPairS entry ctr="+Pctr+",PpairS="+Pair.toString(PpairS));//~va11I~
     	int ctr=Pctr;                                              //~va11I~
     	if (ctr==-1)                                               //~va11I~
         {                                                          //~va11I~
@@ -422,7 +511,7 @@ public class UAPair                                                //~va11R~
         }                                                          //~va11I~
         else                                                       //~va11I~
         	pairS=PpairS;                                          //~va11I~
-    	if (Dump.Y) Dump.println("UAPair.shrinkPairS ctr="+Pctr+",src="+Pair.toString(PpairS)+",out="+Pair.toString(pairS));//~va11R~
+    	if (Dump.Y) Dump.println("UAPair.shrinkPairS exit ctr="+Pctr+",out PairS="+Pair.toString(pairS));//~va11R~
         return pairS;                                              //~va11I~
     }                                                              //~va11I~
 }//class                                                           //~v@@@R~

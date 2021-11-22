@@ -1,5 +1,7 @@
-//*CID://+vacaR~: update#= 558;                                    //~vacaR~
+//*CID://+vagvR~: update#= 571;                                    //~vagvR~
 //**********************************************************************//~v@@@I~
+//2021/11/15 vagv move TilesTest to debug dir                      //~vagvI~
+//2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
 //2021/08/18 vaca test SmallFont dialog                            //~vacaI~
 //2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
@@ -20,6 +22,7 @@ package com.btmtest;                                               //~v@@@I~
 import com.btmtest.BT.BTControl;
 import com.btmtest.dialog.SuspendIOErrReqDlg;
 import com.btmtest.dialog.TODlg;                                             //~v@@@I~
+import com.btmtest.game.TilesTest;                                 //~vagvI~
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.AG.*;//~v@@@R~
 
@@ -30,6 +33,8 @@ import com.btmtest.wifi.WDA;
 //~v@@@I~
 public class TestOption //extends Handler                          //~v@@@I~
 {                                                                  //~v@@@I~
+    public static TilesTest aTilesTest;                            //~vagvI~
+    public static boolean swActivityDestroyed;                      //~vagvI~
     public static final int TO_HIDE_BUTTON  =0x01;                 //~v@@@R~
     public static final int TO_CONNECTED    =0x02;                 //~v@@@R~
     public static final int TO_ENDGAME      =0x04;                 //~v@@@R~
@@ -150,7 +155,17 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO5_DEAL_INTENT_TANYAO             =  0x00000002;//~vaa6I~
     public static final int TO5_DEAL_INTENT_CHANTA             =  0x00000004;//~vaa6I~
     public static final int TO5_DEAL_SHANPON_REACH             =  0x00000008;//~vaa6R~
-    public static final int TO5_NOTHINK_ROBOT                    =  0x00000010;//~vaa6R~
+    public static final int TO5_NOTHINK_ROBOT                  =  0x00000010;//~vaa6R~//~vaf1R~
+    public static final int TO5_KUIKAE_CHK                     =  0x00000020;//~vaf1I~
+    public static final int TO5_DEAL_STRAIGHT                  =  0x00000040;//~vaf1I~
+    public static final int TO5_DEAL_STRAIGHT_CHII             =  0x00000080;//~vaf1I~
+    public static final int TO5_DEAL_3SAMESEQ                  =  0x00000100;//~vaf1I~
+    public static final int TO5_DEAL_TANYAO                    =  0x00000200;//~vaf1I~
+    public static final int TO5_DEAL_TANYAO_PON                =  0x00000400;//~vaf1I~
+    public static final int TO5_DEAL_CHANTA                    =  0x00000800;//~vaf1I~
+    public static final int TO5_DEAL_CHANTA_PON                =  0x00001000;//~vaf1I~
+    public static final int TO5_INITIAL_POSITION_CLIENT_PREV   =  0x00002000;//~vaf1I~
+    public static final int TO5_DEAL_OTHER_YAKUMAN             =  0x00004000;//+vagvI~
     public static int option2;                                     //~v@@@I~
     public static int option3;                                     //~va66I~
     public static int option4;                                     //~vaa6I~
@@ -228,7 +243,8 @@ public class TestOption //extends Handler                          //~v@@@I~
         sst2="sst2-2";                                             //~v@@@I~
         Dump.println("TestOption appname="+AG.appName+",yourname="+AG.YourName);//~v@@@R~
         TODlg.prop2TO();                                           //~v@@@I~
-        Dump.open("Dump.txt",false/*sdcard*/);                 //~vad5I~//+vacaI~
+      if ((option2 & TO2_DUMP_SDCARD)!=0)      //else continue to terminal//~vaf1I~
+        Dump.open("Dump.txt",false/*sdcard*/);                 //~vad5I~//~vacaI~
     }                                                              //~v@@@I~
     public static int getTimingBTIOErr()                           //~v@@@I~
     {                                                              //~v@@@I~

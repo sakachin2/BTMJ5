@@ -1,5 +1,6 @@
-//*CID://+vaaRR~: update#= 722;                                    //~vaaRR~
+//*CID://+vagfR~: update#= 724;                                    //~vagfR~
 //**********************************************************************//~v101I~
+//2021/11/10 vagf (Bug)Robot could not by chankan                  //~vagfI~
 //2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
 //                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
 //                Consequently CompReqDlg shows Not ronable format.//~vaaRI~
@@ -197,10 +198,10 @@ public class UARon                                                 //~v@@@R~//~v
     private int getLooser()                                        //~vaaRI~
     {                                                              //~vaaRI~
     	int rc;                                                    //~vaaRI~
-    	if (PLS.getCurrentPlayerTaking()==-1)   //discrded         //+vaaRI~
-			rc=PLS.playerLastDiscarded;                            //+vaaRM~
-        else		//current player taking                        //+vaaRR~
-        	rc=PLS.getCurrentPlayer();                             //+vaaRM~
+    	if (PLS.getCurrentPlayerTaking()==-1)   //discrded         //~vaaRI~
+			rc=PLS.playerLastDiscarded;                            //~vaaRM~
+        else		//current player taking                        //~vaaRR~
+        	rc=PLS.getCurrentPlayer();                             //~vaaRM~
         if (Dump.Y) Dump.println("UARon.getLooser rc="+rc);        //~vaaRI~
         return rc;
     }                                                              //~vaaRI~
@@ -700,7 +701,7 @@ public class UARon                                                 //~v@@@R~//~v
         chkKan();    //chankan                                     //~va11I~
     }                                                              //~va11I~
     //*************************************************************************//~va49I~
-    //*From UARonnValue, for Robot player to evaluate ronValue     //~va49I~
+    //*From UARonValue, for Robot player to evaluate ronValue     //~va49I~//~vagfR~
     //*************************************************************************//~va49I~
     public void chkEnvironmentYaku(boolean PswAllInHand,TileData PtdRonLast,boolean PswTaken,int Pplayer)//~va49I~
     {                                                              //~va49I~
@@ -722,6 +723,26 @@ public class UARon                                                 //~v@@@R~//~v
         chkLastTile();	//hitei hotei                              //~va49I~//~va85R~
         chkKan();    //chankan                                     //~va49I~//~va85R~
     }                                                              //~va49I~
+    //*************************************************************************//~vagfI~
+    //*From UARonValue, for Robot player to evaluate ronValue      //~vagfI~
+    //*************************************************************************//~vagfI~
+    public void chkEnvironmentYaku(boolean PswAllInHand,TileData PtdRonLast,boolean PswTaken,int Pplayer,int PenvironmentYaku)//~vagfI~
+    {                                                              //~vagfI~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku PenvironmentYaku="+PenvironmentYaku+",player="+Pplayer+",swAllInHand="+PswAllInHand+",ptdLast="+TileData.toString(PtdRonLast));//~vagfI~
+        completeTD=PtdRonLast;                                     //~vagfI~
+        currentEswn=Accounts.playerToEswn(Pplayer);                //~vagfI~
+        completeType=PLS.getPlayerCompleteFlag(Pplayer);           //~vagfI~
+        swTake=PswTaken;                                           //~vagfI~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku currentEswn="+currentEswn+",swTake="+swTake+",tdRon="+TileData.toString(completeTD));//~vagfI~
+    	if (chkTimingYakuman())                                    //~vagfI~
+        	return;                                                //~vagfI~
+        chkReach(Pplayer);  //reach, double-reach, open-reach and taken jasut after reach//~vagfI~
+        chkTaken(PswAllInHand);  //tsumo                           //~vagfI~
+        chkLastTile();	//hitei hotei                              //~vagfI~
+//      chkKan();    //chankan                                     //~vagfI~
+		if (PenvironmentYaku!=0)                                   //+vagfI~
+			UARV.addOtherYaku(PenvironmentYaku,1/*han*/); //add chankan//+vagfR~
+    }                                                              //~vagfI~
     //*************************************************************************//~va11I~
     private boolean chkTimingYakuman()                             //~va11I~
     {                                                              //~va11I~

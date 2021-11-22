@@ -1,4 +1,4 @@
-//*CID://+va95R~: update#= 754;                                    //~va95R~
+//*CID://+va95R~: update#= 756;                                    //~va95R~
 //**********************************************************************//~v101I~
 //2021/06/13 va95 (Bug)MakeParing misses NumSeq evaluation for 333 case(3-Same(3anko) and 3Seq(1peiko+)//~va95I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
@@ -111,11 +111,14 @@ public class UARonChk                                                //~v@@@R~//
 //        return rc;//~9C12I~                                      //~va60R~
 //    }                                                              //~9C12I~//~va60R~
 	//*************************************************************************//~9C12I~
+	//*chk 7pair/13all/13nopair and standard pairing in allin hand //+va95I~
+	//*************************************************************************//+va95I~
 //  private boolean chkCompleteSub()                               //~va20R~
 //  protected boolean chkCompleteSub()                             //~va20I~//~va83R~
 //  private   boolean chkCompleteSub()                             //~va83I~//~va91R~
     protected boolean chkCompleteSub()  //protected for ITUAxxx    //~va91I~
     {                                                              //~9C12I~
+        if (Dump.Y) Dump.println("UARonChk.chkCompleteSub entry"); //~va95I~
         boolean rc=isStandardPairing();                                     //~9C11I~//~9C12R~
         sw13_14NoPair=false;                                       //~va11I~
         if (!rc)                                                   //~9C11I~
@@ -271,7 +274,7 @@ public class UARonChk                                                //~v@@@R~//
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
-	//*from UARonValue.chkRonValueSub to chk tenho/chiiho for Human player                            //~va11I~//~va83R~
+	//*from UARonValue.chkRonValueSub to chk tenho/chiiho/13orphan/13nopair/7pair for Human player                            //~va11I~//~va83R~//+va95R~
 	//*************************************************************************//~va11I~
 //  public boolean chkRonnable()                                   //~va11R~//~va83R~
     protected boolean chkRonnable()                                //~va83I~
@@ -687,7 +690,7 @@ public class UARonChk                                                //~v@@@R~//
 //          	restorePillow(p);                                  //~va22R~
                 dupCtr[p.x][p.y]++; //restore 1/2 of pillow        //~va22I~
         }                                                          //~9C11I~
-        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc+",rule-swIs14NoPair="+swIs14NoPair);//~va22R~//+va95R~
+        if (Dump.Y) Dump.println("UARonChk.is13NoPair rc="+rc+",rule-swIs14NoPair="+swIs14NoPair);//~va22R~//~va95R~
         return rc;                                                 //~9C11I~
     }                                                              //~9C11I~
 	//*************************************************************************//~va83I~

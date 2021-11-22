@@ -1,6 +1,6 @@
-//*CID://+va70R~: update#= 440;                                    //+va70R~
+//*CID://+va70R~: update#= 441;                                    //~va70R~
 //**********************************************************************
-//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//+va70I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/01/07 va60 CalcShanten
 //**********************************************************************
 package com.btmtest.game.RA;
@@ -124,26 +124,26 @@ public class RADSENum                                              //~1225R~
         if (Dump.Y) Dump.println("RADSENum.evaluateTileNumberMeld intent="+Integer.toHexString(Pintent)+",idx="+Pidx+",type="+Ptd.type+",num="+num+",v="+v+",itsHandValueMeld="+itsHandValueMeld[Pidx]);//~1214I~//~1225R~
         return v;                                                  //~1214I~
     }                                                              //~1214I~
-    //***********************************************************************//+va70R~
-    //*from RADSEval.evaluateTile                                  //+va70R~
-    //***********************************************************************//+va70R~
-    public int evaluateForReach(int Ppos,int Pintent,TileData PtdDiscard)//+va70R~
-    {                                                              //+va70R~
-    	int v=0;                                                   //+va70R~
-        if (PtdDiscard.isRed5())                                   //+va70R~
-        {                                                          //+va70R~
-            v+=DV_DORA;                                            //+va70R~
-	        if (Dump.Y) Dump.println("RADSENum.evaluateTileForReach Red5 by red5="+v);//+va70R~
-        }                                                          //+va70R~
-        int num=PtdDiscard.number;                                 //+va70R~
-        if ((Pintent & INTENT_CHANTA)!=0)                          //+va70R~
-	        v+=DVS_NUMBER_WEIGHT_CHANTA[num];                      //+va70R~
-        else                                                       //+va70R~
-	        v+=DVS_NUMBER_WEIGHT[num];                             //+va70R~
-        v+=Utils.getRandom(DV_WORD_RANDOM_MAX);   //add 0->9 randomly//+va70R~
-        if (Dump.Y) Dump.println("RADSENum.evaluateTileForReach intent="+Integer.toHexString(Pintent)+",type="+PtdDiscard.type+",num="+num+",v="+v);//+va70R~
-        return v;                                                  //+va70R~
-    }                                                              //+va70R~
+    //***********************************************************************//~va70R~
+    //*from RADSEval.evaluateTile                                  //~va70R~
+    //***********************************************************************//~va70R~
+    public int evaluateForReach(int Ppos,int Pintent,TileData PtdDiscard)//~va70R~
+    {                                                              //~va70R~
+    	int v=0;                                                   //~va70R~
+        if (PtdDiscard.isRed5())                                   //~va70R~
+        {                                                          //~va70R~
+            v+=DV_DORA;                                            //~va70R~
+	        if (Dump.Y) Dump.println("RADSENum.evaluateTileForReach Red5 by red5="+v);//~va70R~
+        }                                                          //~va70R~
+        int num=PtdDiscard.number;                                 //~va70R~
+        if ((Pintent & INTENT_CHANTA)!=0)                          //~va70R~
+	        v+=DVS_NUMBER_WEIGHT_CHANTA[num];                      //~va70R~
+        else                                                       //~va70R~
+	        v+=DVS_NUMBER_WEIGHT[num];                             //~va70R~
+        v+=Utils.getRandom(DV_WORD_RANDOM_MAX);   //add 0->9 randomly//~va70R~
+        if (Dump.Y) Dump.println("RADSENum.evaluateTileForReach intent="+Integer.toHexString(Pintent)+",type="+PtdDiscard.type+",num="+num+",v="+v);//~va70R~
+        return v;                                                  //~va70R~
+    }                                                              //~va70R~
     //***********************************************************************//~1216I~
     //*insert take into itsHandPos                                 //~1216I~
     //***********************************************************************//~1216I~
@@ -590,6 +590,7 @@ public class RADSENum                                              //~1225R~
         	int base=itsHandPosMeld[ii];                           //~1227I~
 //          if (base>0)  //not part of meld      4:num orphan     //~1227I~//~1302R~
 //          	base=0;                                            //~1227I~//~1302R~
+        	if (Dump.Y) Dump.println("RADSENum.setHandValue idx="+ii+",old="+itsHandValue[ii]+",base="+base+",DV_NUMBER_CONTID="+DV_NUMBER_CONTID);//+va70I~
             itsHandValue[ii]+=base*DV_NUMBER_CONTID;                //~1227I~//~1228R~//~1309R~
         }                                                          //~1227I~
         if (Dump.Y) Dump.println("RADSENum.setHandValue itsHandPosMeld="+Utils.toStringMax(itsHandPosMeld,ctrHand)+"\n,itsHandValue="+Utils.toStringMax(itsHandValue,ctrHand));//~1227R~//~1301R~

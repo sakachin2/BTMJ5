@@ -1,6 +1,14 @@
-//*CID://+vabpR~: update#= 286;                                    //+vabpR~
+//*CID://+vafpR~: update#= 323;                                    //+vafpR~
 //**********************************************************************//~v101I~
-//2021/07/29 vabp (Bug of vaad) at human take, not notified Ron    //+vabpI~
+//2021/11/01 vafp (Bug)ctrHand decreased duplecatedly; shanten calc failed.//~vafpI~
+//2021/11/01 vafm (Bug)getCtrEarthChanta returns >0 even tanyao earth exist(chanta and tanyao)//~vafmI~
+//2021/11/01 vafk INTENT_3SAMESEQ; 2nd call if once called according FixedFirst rule//~vafkI~
+//2021/10/28 vafc pon/chii call for INTENT_TANYAO                  //~vafcI~
+//2021/10/28 vafb evaluate INTENT_3SAMESEQ                         //~vaf9I~
+//2021/10/27 vaf9 evaluate INTENT_STRAIGHT                         //~vaf9I~
+//2021/10/26 vaf8 skip reach if PAO status exist                   //~vaf6I~
+//2021/10/26 vaf6 (Bug)have to ignore shanten Down for INTENT_3DRAGON//~vaf6I~
+//2021/07/29 vabp (Bug of vaad) at human take, not notified Ron    //~vabpI~
 //2021/07/28 vabd (Bug)chanta decision missing chk Earth           //~vabdI~
 //2021/07/25 vab7 skip reach if other called open reach            //~vab7I~
 //2021/07/23 vaaX PlayAlone mode;rinshan ron is not notified(ctrHand was not maintained at Kan)//~vaaXI~
@@ -194,6 +202,46 @@ public class RoundStat                                               //~v@@@R~//
         if (Dump.Y) Dump.println("RoundStat.isDiscardableAll rc="+swDiscardableAll);//~1126I~
         return swDiscardableAll;                                   //~1126I~
     }                                                              //~1126I~
+    //******************************************************************//~vaf6I~
+    //*chk other players pao, if openReach option is on return false even if openreach not called//~vaf6I~
+    //******************************************************************//~vaf6I~
+    public boolean isDiscardableAllExceptOpenReach(int PeswnPlayer)//~vaf6I~
+    {                                                              //~vaf6I~
+    	boolean rc=true;                                           //~vaf6I~
+	    if (paoEswn3Dragon>=0 && paoEswn3Dragon!=PeswnPlayer)       //~vaf6I~
+        	rc=false;                                              //~vaf6I~
+        else                                                       //~vaf6I~
+    	if (paoEswn4Wind>=0 && paoEswn4Wind!=PeswnPlayer)          //~vaf6I~
+        	rc=false;                                              //~vaf6I~
+        else                                                       //~vaf6I~
+    	if (paoEswn4Kan>=0 && paoEswn4Kan!=PeswnPlayer)            //~vaf6I~
+        	rc=false;                                              //~vaf6I~
+        else                                                       //~vaf6I~
+        if (RuleSettingYaku.isAvailableOpenReach())       //openreach available//~vaf6I~
+        	rc=false;                                     //return NOT isDiscardableAll//~vaf6I~
+        if (Dump.Y) Dump.println("RoundStat.isDiscardableAllExceptOpenReach rc="+rc+"PeswnPlayer="+PeswnPlayer+",paoEswn3Dragon="+paoEswn3Dragon+",paoEswn4Wind="+paoEswn4Wind);//~vaf6I~
+        return rc;
+    }                                                              //~vaf6I~
+    //******************************************************************//~vaf8R~
+    //*chk other players pao, if pending pao avaoi reach           //~vaf8R~
+    //******************************************************************//~vaf8R~
+    public boolean chkPaoForReach(int PeswnPlayer)                 //~vaf8R~
+    {                                                              //~vaf8R~
+    	boolean rc=true;                                           //~vaf8R~
+	    if (paoEswn3Dragon>=0 && paoEswn3Dragon!=PeswnPlayer)      //~vaf8R~
+        	rc=false;                                              //~vaf8R~
+        else                                                       //~vaf8R~
+    	if (paoEswn4Wind>=0 && paoEswn4Wind!=PeswnPlayer)          //~vaf8R~
+        	rc=false;                                              //~vaf8R~
+        else                                                       //~vaf8R~
+    	if (paoEswn4Kan>=0 && paoEswn4Kan!=PeswnPlayer)            //~vaf8R~
+        	rc=false;                                              //~vaf8R~
+ //     else                                                       //~vaf8R~
+ //     if (RuleSettingYaku.isAvailableOpenReach())       //openreach available//~vaf8R~
+ //     	rc=false;                                     //return NOT isDiscardableAll//~vaf8R~
+        if (Dump.Y) Dump.println("RoundStat.chakPaoForReach rc="+rc+"PeswnPlayer="+PeswnPlayer+",paoEswn3Dragon="+paoEswn3Dragon+",paoEswn4Wind="+paoEswn4Wind);//~vaf8R~
+        return rc;                                                 //~vaf8R~
+    }                                                              //~vaf8R~
 //    //*****************************************************        //~va60I~//~1112R~
 //    public TileData[][] getTdssHandEswn(int Peswn)                 //~va60I~//~1112R~
 //    {                                                              //~va60I~//~1112R~
@@ -626,6 +674,76 @@ public class RoundStat                                               //~v@@@R~//
     {                                                              //~1311I~
         return RSP[Peswn].chkFuritenSelfBeforeReach(Ppos);         //~1311I~
     }                                                              //~1311I~
+    //*********************************************************    //~vaf9I~
+    public boolean isAllInHand(int Peswn)                              //~vaf9I~
+    {                                                              //~vaf9I~
+        if (Dump.Y) Dump.println("RoundStat.isAllInHand eswn="+Peswn+",rc="+RSP[Peswn].swAllInHand);//~vaf9I~
+        return RSP[Peswn].swAllInHand;                             //~vaf9I~
+    }                                                              //~vaf9I~
+    //*********************************************************    //~vaf9R~
+    public void setColorStraight(int Peswn,int Pcolor)             //~vaf9R~
+    {                                                              //~vaf9R~
+        if (Dump.Y) Dump.println("RoundStat.setColorStraight eswn="+Peswn+",color="+Pcolor);//~vaf9R~
+        RSP[Peswn].colorStraight=Pcolor;                           //~vaf9R~
+    }                                                              //~vaf9R~
+    //*********************************************************    //~vaf9R~
+    public int getColorStraight(int Peswn)                         //~vaf9R~
+    {                                                              //~vaf9R~
+        int color=RSP[Peswn].colorStraight;                        //~vaf9R~
+        if (Dump.Y) Dump.println("RoundStat.getColorStraight eswn="+Peswn+",color="+color);//~vaf9R~
+        return color;                                              //~vaf9R~
+    }                                                              //~vaf9R~
+    //*********************************************************    //~vaf9R~
+    //*chk for 1st call, color and num of earth                    //~vafkR~
+    //*********************************************************    //~vafcI~
+    public Point getEarthColorStraight(int Peswn)                  //~vaf9R~
+    {                                                              //~vaf9R~
+    	Point p=RSP[Peswn].getEarthColorStraight();                //~vaf9R~
+        if (Dump.Y) Dump.println("RoundStat.getEarthColorStraight eswn="+Peswn+",rc="+Utils.toString(p));//~vaf9R~
+        return p;                                                  //~vaf9R~
+    }                                                              //~vaf9R~
+    //*********************************************************    //~vafbI~
+    public void setNum3SameSeq(int Peswn,int Pnum)                 //~vafbI~
+    {                                                              //~vafbI~
+        if (Dump.Y) Dump.println("RoundStat.setNum3SameSeq eswn="+Peswn+",num="+Pnum);//~vafbI~
+        RSP[Peswn].num3SameSeq=Pnum;                               //~vafbI~
+    }                                                              //~vafbI~
+    //*********************************************************    //~vafbI~
+    public int getNum3SameSeq(int Peswn)                           //~vafbI~
+    {                                                              //~vafbI~
+        int num=RSP[Peswn].num3SameSeq;                            //~vafbI~
+        if (Dump.Y) Dump.println("RoundStat.getNum3SameSeq eswn="+Peswn+",num="+num);//~vafbI~
+        return num;                                                //~vafbI~
+    }                                                              //~vafbI~
+    //*********************************************************    //~vafbI~
+    public int getEarthNum3SameSeq(int Peswn)                    //~vafbI~
+    {                                                              //~vafbI~
+    	int num=RSP[Peswn].getEarthNum3SameSeq();                  //~vafbI~
+        if (Dump.Y) Dump.println("RoundStat.getEarthNum3SameSeq eswn="+Peswn+",num="+num);//~vafbI~
+        return num;                                                  //~vafbI~
+    }                                                              //~vafbI~
+    //*********************************************************    //~vafkI~
+    public Point getEarthColorAndNum3SameSeq(int Peswn)            //~vafkI~
+    {                                                              //~vafkI~
+    	Point p=RSP[Peswn].getEarthColorAndNum3SameSeq();          //~vafkI~
+        if (Dump.Y) Dump.println("RoundStat.getEarthColorAndNum3SameSeq eswn="+Peswn+",colorAndNum="+Utils.toString(p));//~vafkI~
+        return p;                                                  //~vafkI~
+    }                                                              //~vafkI~
+    //*********************************************************    //~vafcI~
+    public int setIntentCalled(int Peswn,int Pintent)              //~vafcI~
+    {                                                              //~vafcI~
+        RSP[Peswn].callStatusIntent|=Pintent;                      //~vafcI~
+        int rc=RSP[Peswn].callStatusIntent;                        //~vafcI~
+        if (Dump.Y) Dump.println("RoundStat.setIntentCalled eswn="+Peswn+",intent="+Integer.toHexString(Pintent)+",rc="+Integer.toHexString(rc));//~vafcI~
+        return rc;
+    }                                                              //~vafcI~
+    //*********************************************************    //~vafcI~
+    public int getIntentCalled(int Peswn)                          //~vafcI~
+    {                                                              //~vafcI~
+        int rc=RSP[Peswn].callStatusIntent;                        //~vafcI~
+        if (Dump.Y) Dump.println("RoundStat.getIntentCalled eswn="+Peswn+",rc="+Integer.toHexString(rc));//~vafcI~
+        return rc;                                                //~vafcI~
+    }                                                              //~vafcI~
 //******************************************************************************//~v@@@I~//~1128R~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
@@ -652,7 +770,7 @@ public class RoundStat                                               //~v@@@R~//
 	    private int[] itsShanten=new int[CTR_SHANTENTYPE];  	//normal,13orphan, 7pair//~va60R~//~1114R~
 	    private int[] itsPaoCheck=new int[CTR_TILETYPE-OFFS_WORDTILE];  	//word tile//~va60R~//~1114R~
         private int pao3Dragon,pao4Wind,pao4Kan;                           //~va60I~//~1114R~
-        private int statusHand;                                    //~1114R~
+//      private int statusHand;    //not used                      //~1114R~//~vaf8R~
         private boolean swIsFuritenRon;                            //~1306I~
         public  int intent;                                        //~1121R~
       	public int ctrTaken,ctrDiscarded,ctrChii,ctrPon,ctrKan;          //~1114I~//~1115R~
@@ -664,6 +782,9 @@ public class RoundStat                                               //~v@@@R~//
 		public boolean swAllInHand;	//also true if ankan only      //~1120I~
 		private int ctrFixedFirst;                                     //~va8uI~
 		private int ctrEarthTanyao,ctrEarthChanta;                 //~vabdR~
+		private int colorStraight=-1;                              //~vaf9R~
+		private int num3SameSeq=-1;                                //~vafbI~
+		private int callStatusIntent;  //called Pon/Chii by Tanyao,..//~vafcI~
         //*****************************************************    //~v@@@I~
         public RSPlayer(int Peswn,int Pplayer,boolean PswRobot)                                 //~v@@@I~//~va60R~
         {                                                          //~v@@@I~
@@ -686,13 +807,13 @@ public class RoundStat                                               //~v@@@R~//
         	if (Dump.Y) Dump.println("RoundStat.getShanten eswn="+eswn+",shanten="+rc+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~1125I~
         	return rc;                                             //~1125I~
     	}                                                          //~1125I~
-        //*****************************************************    //+vabpI~
-	    public int getShanten()                                    //+vabpI~
-    	{                                                          //+vabpI~
-        	int rc=getShanten(itsHand,ctrHand);                    //+vabpI~
-        	if (Dump.Y) Dump.println("RoundStat.getShanten eswn="+eswn+",player="+player+",shanten="+rc);//+vabpI~
-        	return rc;                                             //+vabpI~
-    	}                                                          //+vabpI~
+        //*****************************************************    //~vabpI~
+	    public int getShanten()                                    //~vabpI~
+    	{                                                          //~vabpI~
+        	int rc=getShanten(itsHand,ctrHand);                    //~vabpI~
+        	if (Dump.Y) Dump.println("RoundStat.getShanten eswn="+eswn+",player="+player+",shanten="+rc);//~vabpI~
+        	return rc;                                             //~vabpI~
+    	}                                                          //~vabpI~
         //*****************************************************    //~1303I~
 	    public int getCurrentShanten()                             //~1303I~
     	{                                                          //~1303I~
@@ -741,7 +862,7 @@ public class RoundStat                                               //~v@@@R~//
 //          tdssHand[Ppos][Ptd.ctrRemain]=Ptd;                     //~va60I~//~1112R~
 //            if (Ptd.isRed5())                                      //~va60M~//~1129R~
 //                itsHandRed[Ppos]++;                                //~va60R~//~1129R~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.addHandTile eswn="+eswn+",itsHand="+Utils.toString(itsHand,9));//~vaadI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.addHandTile eswn="+eswn+",itsHand="+Utils.toString(itsHand,9));//~vaadI~//~vaftR~
         }                                                          //~va60I~
         //*****************************************************    //~va60I~
         private void removeHandTile(int Ppos,TileData Ptd)          //~va60R~//~1112R~
@@ -752,7 +873,7 @@ public class RoundStat                                               //~v@@@R~//
 //          tdssHand[Ppos][Ptd.ctrRemain]=null;                    //~va60I~//~1112R~
 //            if (Ptd.isRed5())                                      //~va60I~//~1129R~
 //                itsHandRed[Ppos]--;                                //~va60R~//~1129R~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.removeHandTile eswn="+eswn+",itsHand="+Utils.toString(itsHand,9));//~vaadI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.removeHandTile eswn="+eswn+",itsHand="+Utils.toString(itsHand,9));//~vaadI~//~vaftR~
         }                                                          //~va60I~
 //        //*****************************************************    //~va60I~//~1112R~
 //        private void setPairTile(int Ppos,TileData Ptd)             //~va60R~//~1112R~
@@ -900,7 +1021,8 @@ public class RoundStat                                               //~v@@@R~//
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setSetShantenAtReach eswn="+eswn+",player="+player);//~vaaPI~
         }                                                          //~vaaPI~
         //*****************************************************    //~va60I~
-        //*on server for all player including robot, on client PLAYER_YOU only//~vaadI~
+        //*called from Players.discard after tdsHand updated       //~vafpR~
+        //*on server for all player including robot, on client PLAYER_YOU only//~vafpI~
         //*****************************************************    //~vaadI~
         public void discard(int Ppos,TileData Ptd)                 //~va60I~
         {                                                          //~va60I~
@@ -918,7 +1040,8 @@ public class RoundStat                                               //~v@@@R~//
           {                                                        //~vaadI~
 	        setStatistic(itsDiscardStatus,Ppos,1/*Pctr*/);  //for also human        //~1217I~//~1223I~
           }                                                        //~vaadI~
-	        ctrHand=AG.aPlayers.getHands(player).length;  //agter removed from Hand by Pon/Kan/Chii//~1201I~//~1223M~
+//          ctrHand=AG.aPlayers.getHands(player).length;  //after removed from Hand by Pon/Kan/Chii//~1201I~//~1223M~//~vafpR~
+            //ctrhand maintaind only by removeHandTile and addHandTile//~vafpI~
 //      	ctrDiscarded++;                                        //~1114I~//~1201M~//~1223M~//~1311R~
 	   		itsDiscardedSelf[ctrDiscarded++]=Ppos; //players discarded in the seq of discard,to chk furiten from reach/my discarded//~1311I~
             if (!swRobot)                                          //~1201I~
@@ -943,7 +1066,7 @@ public class RoundStat                                               //~v@@@R~//
             if (!swThinkRobot)                                     //~1201I~
             	return;                                             //~1201I~
 	    	setCurrentShanten();                                   //~1201I~
-            if (Dump.Y) Dump.println("RoundStat.RSPlayer.discard hand="+Utils.toString(itsHand,9));//~va60R~
+            if (Dump.Y) Dump.println("RoundStat.RSPlayer.discard ctrHand="+ctrHand+",itsHand="+Utils.toString(itsHand,9));//~va60R~//~vafmR~
             if (Dump.Y) Dump.println("RoundStat.RSPlayer.discard eswn="+eswn+",itsDiscarded="+Utils.toString(itsDiscarded,9));//~va60R~//~1223R~
         }                                                          //~va60I~
         //*****************************************************    //~1118I~
@@ -986,7 +1109,7 @@ public class RoundStat                                               //~v@@@R~//
             return rc;                                             //~1130I~
         }                                                          //~1130I~
         //*****************************************************    //~va8uI~
-        private int getCtrFixedInHand()                        //~va8uI~
+        public  int getCtrFixedInHand()                        //~va8uI~//~vafpR~
         {                                                          //~va8uI~
         	int rc;                                                //~va8uI~
 //          if (!swRobot)                                          //~va8uI~//~vaadR~
@@ -1085,6 +1208,73 @@ public class RoundStat                                               //~v@@@R~//
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeChii eswn="+eswn+",ctrChii="+ctrChii+",Ptds="+TileData.toString(Ptds));//~va60R~//~1114R~
             itsPairStatus[ctrPairStatus++]=getPairStatus(PS_SEQ,Ptds);//~1114I~
         }                                                          //~va60I~
+        //*****************************************************    //~vaf9R~
+        public Point getEarthColorStraight()                       //~vaf9R~
+        {                                                          //~vaf9R~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthColorStraight eswn="+eswn+",player="+player+",ctrChii="+ctrChii);//~vaf9R~//~vafbR~
+            int num=CTR_NUMBER_TILE,type=-1;                       //~vaf9R~
+            Point p=null;                                          //~vaf9R~
+            TileData[][] tdss=AG.aPlayers.getEarth(player);        //~vaf9R~
+            if (AG.aPlayers.getCtrPair(player)==1 && ctrChii==1)                      //~vaf9R~//~vafbR~
+            {                                                      //~vaf9R~
+            	TileData[] tds=tdss[0];                            //~vaf9R~
+                for (TileData td:tds)                              //~vaf9R~
+                	if ((td.flag & TDF_CHII)!=0)                   //~vaf9R~
+                    	if (td.number<num)                         //~vaf9R~
+                        	num=td.number;                         //~vaf9R~
+                if (num==TN1 || num==TN4 || num==TN7)              //~vaf9R~
+                	p=new Point(tds[0].type,num);                  //~vaf9R~
+            }                                                      //~vaf9R~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthColorStraignt eswn="+eswn+",rc="+Utils.toString(p));//~vaf9R~
+            return p;
+        }                                                          //~vaf9R~
+        //*****************************************************    //~vafbI~
+        public int getEarthNum3SameSeq()                         //~vafbI~
+        {                                                          //~vafbI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthNum3SameSeq eswn="+eswn+",player="+player+",ctrChii="+ctrChii);//~vafbR~
+            int num=-1;                                            //~vafbI~
+            TileData[][] tdss=AG.aPlayers.getEarth(player);        //~vafbI~
+            if (AG.aPlayers.getCtrPair(player)==1 && ctrChii==1)   //~vafbI~
+            {                                                      //~vafbI~
+            	TileData[] tds=tdss[0];                            //~vafbI~
+                for (TileData td:tds)                              //~vafbI~
+                {                                                  //~vafbI~
+	        		if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthNum3SameSeq td="+td.toString());//~vafbI~
+                	if ((td.flag & TDF_CHII)!=0)                   //~vafbI~
+                    	if (num<0 || td.number<num)                //~vafbI~
+                        	num=td.number;                         //~vafbI~
+                }                                                  //~vafbI~
+            }                                                      //~vafbI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthNum3SameSeq eswn="+eswn+",num="+num);//~vafbR~
+            return num;                                            //~vafbI~
+        }                                                          //~vafbI~
+        //*****************************************************    //~vafkI~
+        public Point getEarthColorAndNum3SameSeq()                 //~vafkI~
+        {                                                          //~vafkI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthColorAndNum3SameSeq eswn="+eswn+",player="+player+",ctrChii="+ctrChii);//~vafkI~
+            Point p=null;                                          //~vafkI~
+            int num=-1;                                            //~vafkI~
+            int type=-1;                                           //~vafkI~
+            TileData[][] tdss=AG.aPlayers.getEarth(player);        //~vafkI~
+            if (AG.aPlayers.getCtrPair(player)==1 && ctrChii==1)   //~vafkI~
+            {                                                      //~vafkI~
+            	TileData[] tds=tdss[0];                            //~vafkI~
+                for (TileData td:tds)                              //~vafkI~
+                {                                                  //~vafkI~
+	        		if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthColorAndNum3SameSeq td="+td.toString());//~vafkR~
+                	if ((td.flag & TDF_CHII)!=0)                   //~vafkI~
+                    	if (num<0 || td.number<num)                //~vafkI~
+                        {                                          //~vafkI~
+                        	num=td.number;                         //~vafkI~
+                            type=td.type;                          //~vafkI~
+                        }                                          //~vafkI~
+                }                                                  //~vafkI~
+                if (num!=-1)                                       //~vafkI~
+                	p=new Point(type,num);                         //~vafkI~
+            }                                                      //~vafkI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getEarthColorAndNum3SameSeq eswn="+eswn+",colorAndNum="+Utils.toString(p));//~vafkR~
+            return p;                                              //~vafkI~
+        }                                                          //~vafkI~
         //*****************************************************    //~va60I~
         public void takePon(int Ppos,TileData[] Ptds)              //~va60I~
         {                                                          //~va60I~
@@ -1318,29 +1508,37 @@ public class RoundStat                                               //~v@@@R~//
             return flag;
         }                                                          //~1114I~
         //*****************************************************************//~1114I~
+        //*set PS_TANYAO/PS_CHANTA                                 //~vafmI~
+        //*****************************************************************//~vafmI~
         private int getPairStatus()                                //~1114I~
         {                                                          //~1114I~
         	int stat=0;                                            //~1114I~
             ctrEarthChanta=0; ctrEarthTanyao=0;                    //~vabdI~
             if (ctrPairStatus!=0)                                  //~1122I~
             {                                                      //~1122I~
-                boolean swTanyao=true,swAllSeq=true,swAllSame=true;//~1122R~
+//              boolean swTanyao=true,swAllSeq=true,swAllSame=true;//~1122R~//~vafmR~
+                boolean               swAllSeq=true,swAllSame=true;//~vafmI~
                 for (int ii=0;ii<ctrPairStatus;ii++)                   //~1114I~//~1122R~
                 {                                                      //~1114I~//~1122R~
+		        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getPairStatus itsPairStatus["+ii+"]="+Integer.toHexString(itsPairStatus[ii]));//~vafmI~
                     if ((itsPairStatus[ii] & PS_CHANTA)!=0)               //~1114I~//~1122R~
                     {                                              //~vabdI~
-                        swTanyao=false;                                //~1114I~//~1122R~
+                		stat|=PS_CHANTA;                           //~vafmI~
+//                      swTanyao=false;                                //~1114I~//~1122R~//~vafmR~
                         ctrEarthChanta++;                          //~vabdI~
                     }                                              //~vabdI~
                     else                                           //~vabdI~
+                    {                                              //~vafmI~
+                		stat|=PS_TANYAO;                           //~vafmI~
                         ctrEarthTanyao++;                          //~vabdI~
+                    }                                              //~vafmI~
                                                                    //~vabdI~
                     if ((itsPairStatus[ii] & PS_SEQ)==0)                  //~1114I~//~1122R~
                         swAllSeq=false;                                //~1114I~//~1122R~
                     else                                           //~1122I~
                         swAllSame=false;                          //~1122I~
                 }                                                      //~1114I~//~1122R~
-                stat|=swTanyao ? PS_TANYAO : PS_CHANTA;               //~1114I~//~1122R~
+//              stat|=swTanyao ? PS_TANYAO : PS_CHANTA;               //~1114I~//~1122R~//~vafmR~
                 stat|=swAllSeq ? PS_ALLSEQ : 0;                        //~1114I~//~1122R~
                 stat|=swAllSame ? PS_ALLSAME : 0;                 //~1122I~
             }                                                      //~1122I~
@@ -1359,20 +1557,23 @@ public class RoundStat                                               //~v@@@R~//
         public boolean isPairChantaAll()                                      //~1114I~//~1118R~
         {                                                          //~1114I~
         	int stat=getPairStatus();                              //~1114I~
-            boolean rc=(stat & PS_CHANTA)!=0;                      //~1114I~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isPairChantaAll rc="+rc);//~1114I~//~1217R~
+//          boolean rc=(stat & PS_CHANTA)!=0;                      //~1114I~//~vafmR~
+            boolean rc=(stat & PS_CHANTA)!=0 && (stat & PS_TANYAO)==0;//~vafmI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isPairChantaAll rc="+rc);//~1114I~//~1217R~//~vafmR~
             return rc;
         }                                                          //~1114I~
         //*****************************************************************//~1217I~
         public boolean isPairChantaAllOrNoPair()                   //~1217I~
         {                                                          //~1217I~
         	int stat=getPairStatus();                              //~1217I~
-            boolean rc=ctrPairStatus==0 || (stat & PS_CHANTA)!=0;  //~1217I~
+//          boolean rc=ctrPairStatus==0 || (stat & PS_CHANTA)!=0;  //~1217I~//~vafmR~
+            boolean rc=ctrPairStatus==0 ||                         //~vafmI~
+                      ((stat & PS_CHANTA)!=0 && (stat & PS_TANYAO)==0);//~vafmI~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isPairChantaAllOrNoPair rc="+rc);//~1217I~
             return rc;                                             //~1217I~
         }                                                          //~1217I~
         //*****************************************************************//~vabdI~
-        //*return eath pair ctr or -1 if not chanta pair exist     //~vabdI~
+        //*return eath pair ctr or -1 if not chanta pair exist,-2 mixed     //~vabdI~//~vafmR~
         //*****************************************************************//~vabdI~
         public int getCtrEarthChanta()                             //~vabdI~
         {                                                          //~vabdI~
@@ -1380,17 +1581,22 @@ public class RoundStat                                               //~v@@@R~//
             int rc=0;                                              //~vabdI~
             if (ctrPairStatus!=0)                                  //~vabdI~
 				if ((stat & PS_CHANTA)!=0)                         //~vabdI~
+                {                                                  //~vafmI~
                 	rc=ctrEarthChanta;                             //~vabdI~
+                    if ((stat & PS_TANYAO)!=0)   //both exist      //~vafmI~
+                    	rc=-2;                                     //~vafmI~
+                }                                                  //~vafmI~
                 else                                               //~vabdI~
                 	rc=-1;                                         //~vabdI~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getCtrEarthChanta rc="+rc);//~vabdI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getCtrEarthChanta stat=0x"+Integer.toHexString(stat)+",rc="+rc);//~vabdI~//~vafmR~
             return rc;                                             //~vabdI~
         }                                                          //~vabdI~
         //*****************************************************************//~1114I~
         public boolean isPairTanyaoAll()                                      //~1114I~//~1118R~
         {                                                          //~1114I~
         	int stat=getPairStatus();                              //~1114I~
-            boolean rc=(stat & PS_CHANTA)==0;                      //~1114I~
+//          boolean rc=(stat & PS_CHANTA)==0;                      //~1114I~//~vafmR~
+            boolean rc=(stat & PS_CHANTA)==0 && (stat & PS_TANYAO)!=0;//~vafmI~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isPairTanyaoAll rc="+rc);//~1114I~//~1217R~
             return rc;
         }                                                          //~1114I~
@@ -1398,7 +1604,9 @@ public class RoundStat                                               //~v@@@R~//
         public boolean isPairTanyaoAllOrNoPair()                   //~1217R~
         {                                                          //~1217I~
         	int stat=getPairStatus();                              //~1217I~
-            boolean rc=ctrPairStatus==0 || (stat & PS_CHANTA)==0;  //~1217I~
+//          boolean rc=ctrPairStatus==0 || (stat & PS_CHANTA)==0;  //~1217I~//~vafmR~
+            boolean rc=ctrPairStatus==0 ||                         //~vafmI~
+                      ((stat & PS_CHANTA)==0 && (stat & PS_TANYAO)!=0);//~vafmI~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isPairTanyaoAllOrNoPair rc="+rc);//~1217I~
             return rc;                                             //~1217I~
         }                                                          //~1217I~
@@ -1608,7 +1816,7 @@ public class RoundStat                                               //~v@@@R~//
             ctrHand=tdsHand.length;                                //~va89R~
             RAUtils.countTile(tdsHand,itsHand);                    //~va89R~
             int shanten=getShanten(itsHand,ctrHand);               //~va89R~
-            if (Dump.Y) Dump.println("RoundStat.getShantenYou eswn="+eswn+",player="+player+",shanten="+shanten);//~va89R~//~va8jR~
+            if (Dump.Y) Dump.println("RoundStat.getShantenYou eswn="+eswn+",player="+player+",ctrHand="+ctrHand+",shanten="+shanten);//~va89R~//~va8jR~//~vafmR~
             return shanten;                                        //~va89I~
         }                                                          //~va89I~
         //***********************************************************************//~va8jI~
@@ -1618,8 +1826,15 @@ public class RoundStat                                               //~v@@@R~//
             TileData[] tdsHand=AG.aPlayers.getHands(PLAYER_YOU);   //~va8jI~
             ctrHand=tdsHand.length;                                //~va8jI~
             RAUtils.countTile(tdsHand,itsHand);                    //~va8jI~
-            if (Dump.Y) Dump.println("RoundStat.getItsHandYou eswn="+eswn+",player="+player+",ctrJHand="+ctrHand+",itsHand="+Utils.toString(itsHand,9));//~va8jI~
+            if (Dump.Y) Dump.println("RoundStat.getItsHandYou eswn="+eswn+",player="+player+",ctrHand="+ctrHand+",itsHand="+Utils.toString(itsHand,9));//~va8jI~//~vafmR~
             return itsHand;                                        //~va8jI~
         }                                                          //~va8jI~
+        //*********************************************************//~vafcI~
+        public int getIntentCalled()                               //~vafcI~
+        {                                                          //~vafcI~
+            int rc=callStatusIntent;                               //~vafcI~
+            if (Dump.Y) Dump.println("RoundStat.getIntentCalled RSP eswn="+eswn+",rc="+Integer.toHexString(rc));//~vafcI~
+            return rc;                                             //~vafcI~
+        }                                                          //~vafcI~
 	}//class RSPlayer                                              //~va60M~
 }//class RoundStat                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~

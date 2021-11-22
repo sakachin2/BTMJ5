@@ -1,5 +1,6 @@
-//*CID://+vaefR~: update#= 430;                                    //~vaefR~
+//*CID://+vaf5R~: update#= 432;                                    //~vaf5R~
 //**********************************************************************
+//2021/10/23 vaf5 (Bug)TTop panel msgbar overflow, adjust textsize //~vaf5I~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
 //2021/09/23 vaec main buttons for small device                    //~vaecI~
@@ -12,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.btmtest.game.gv.GMsg;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
@@ -55,6 +58,7 @@ public class MainView                                   //~v@21R~  //~9620R~
 //  private int frameLayoutHH,frameLayoutWW;                       //~v@21R~
 //    private boolean swRestore;                                   //~v@21R~
     private String strMsgBar;                                      //~9621I~
+    private float pixelTextSize;                                   //+vaf5I~
     //**************************************************************//~v@@@R~
     public MainView(MainActivity Pmain,FrameLayout PframeLayout)//~v@21R~//~9620R~
     {
@@ -170,13 +174,13 @@ public class MainView                                   //~v@21R~  //~9620R~
       if (AG.swNewA10)                                             //~vaeeR~
 	    if (Build.VERSION.SDK_INT==29)   //for gesture navigationbar//~vaeeI~
         	lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeight);//~vaeeR~
-//        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//+vaefR~
-//         if (false)                                              //+vaefR~
-//          if (AG.swNavigationbarGestureMode)                     //+vaefR~
-//          {                                                      //+vaefR~
-//            if (Dump.Y) Dump.println("MainView.addButtons setMargin bottomHeightA11="+AG.scrNavigationbarBottomHeightA11);//+vaefR~
-//            lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeightA11);//+vaefR~
-//          }                                                      //+vaefR~
+//        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
+//         if (false)                                              //~vaefR~
+//          if (AG.swNavigationbarGestureMode)                     //~vaefR~
+//          {                                                      //~vaefR~
+//            if (Dump.Y) Dump.println("MainView.addButtons setMargin bottomHeightA11="+AG.scrNavigationbarBottomHeightA11);//~vaefR~
+//            lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeightA11);//~vaefR~
+//          }                                                      //~vaefR~
         btnsMain.setLayoutParams(lp);                              //~v@21I~
 //      btnsMain.setVisibility(View.INVISIBLE);                    //~v@21R~
 //      btnsMain.setVisibility(View.VISIBLE);                      //~v@21R~
@@ -184,9 +188,11 @@ public class MainView                                   //~v@21R~  //~9620R~
                                                                    //~v@21I~
 //        ViewGroup.LayoutParams lpvg=btnsMain.getLayoutParams();  //~v@21R~
 //        if (Dump.Y) Dump.println("MainView.addButtons getlayoutparm ww="+lpvg.width+".hh="+lpvg.height);//~v@21R~//~9620R~
+    	pixelTextSize=topMsgBar.getTextSize();                     //+vaf5I~
         if (Dump.Y) Dump.println("MainView.addButtons view ww="+btnsMain.getMeasuredWidth()+",hh="+btnsMain.getMeasuredHeight());//~v@21I~//~9620R~
         if (Dump.Y) Dump.println("MainView.addButtons btnsMain="+btnsMain.toString());//~v@21R~//~9620R~
         if (Dump.Y) Dump.println("MainView.addButtons navigationBottomHeight="+AG.scrNavigationbarBottomHeight+",bottomA11="+AG.scrNavigationbarBottomHeightA11);;;//~vaefR~
+        if (Dump.Y) Dump.println("MainView.addButtons msgbar textsize="+pixelTextSize);//+vaf5I~
     }                                                              //~v@21I~
 //    //*************************                                  //~v@21R~
 //    private void addButtons2()                                   //~v@21R~
@@ -467,7 +473,8 @@ public class MainView                                   //~v@21R~  //~9620R~
         AG.aMainView.strMsgBar=Pmsg;                                             //~9621I~
         if (AG.isMainThread())                                     //~9621I~
         {                                                          //~9621I~
-	        AG.aMainView.topMsgBar.setText(Pmsg);           //~9619I~  //~9620R~//~9621R~
+//	        AG.aMainView.topMsgBar.setText(Pmsg);           //~9619I~  //~9620R~//~9621R~//~vaf5R~
+  	        AG.aMainView.drawMsgAdjusted(Pmsg);                    //~vaf5I~
 	        if (Dump.Y) Dump.println("MainView.drawMsg setText msg="+Pmsg);//~9621I~
         }                                                          //~9621I~
         else                                                       //~9621I~
@@ -481,7 +488,8 @@ public class MainView                                   //~v@21R~  //~9620R~
                         try                                            //~9305I~//~9621I~
                         {                                              //~9305I~//~9621I~
                             if (Dump.Y) Dump.println("MainView.drawMsg runonUiThread.run");//~9305I~//~9314R~//~9621R~
-    				        AG.aMainView.topMsgBar.setText(AG.aMainView.strMsgBar);//~9621R~
+//  				        AG.aMainView.topMsgBar.setText(AG.aMainView.strMsgBar);//~9621R~//~vaf5R~
+    				        AG.aMainView.drawMsgAdjusted(AG.aMainView.strMsgBar);//~vaf5I~
                         }                                              //~9305I~//~9621I~
                         catch(Exception e)                             //~9305I~//~9621I~
                         {                                              //~9305I~//~9621I~
@@ -516,4 +524,28 @@ public class MainView                                   //~v@21R~  //~9620R~
         if (Dump.Y) Dump.println("MainView.enableStartGame enable="+PswEnable);//~9620R~
     	btnStartGame.setEnabled(PswEnable);                        //~9620I~
     }                                                              //~9620I~
+    //******************************************                   //~vaf5I~
+    private void  drawMsgAdjusted(String Pmsg)                     //~vaf5I~
+    {                                                              //~vaf5I~
+        if (Dump.Y) Dump.println("MainView.drawMsgAdjusted msg="+Pmsg);//~vaf5I~
+        if (Pmsg.equals(""))                                       //~vaf5I~
+        {                                                          //~vaf5I~
+			topMsgBar.setText(Pmsg);                               //~vaf5I~
+            return;                                                //~vaf5I~
+        }                                                          //~vaf5I~
+//      float pixelTextSize=topMsgBar.getTextSize();               //+vaf5R~
+        int pixelWW=topMsgBar.getWidth();                          //~vaf5I~
+        float pixelTextSizeNew= GMsg.adjustTextSize(pixelTextSize,pixelWW,Pmsg);//~vaf5I~
+        int unit= TypedValue.COMPLEX_UNIT_PX;                       //~vaf5I~
+        if (pixelTextSizeNew!=pixelTextSize)                       //~vaf5I~
+        {                                                          //~vaf5I~
+        	if (Dump.Y) Dump.println("MainView.drawMsgAdjusted setTextSize="+pixelTextSizeNew);//+vaf5I~
+	        topMsgBar.setTextSize(unit,pixelTextSizeNew);          //~vaf5I~
+        }                                                          //~vaf5I~
+		topMsgBar.setText(Pmsg);                                   //~vaf5I~
+//      if (pixelTextSizeNew!=pixelTextSize)                       //+vaf5R~
+//      {                                                          //+vaf5R~
+//          topMsgBar.setTextSize(unit,pixelTextSize);             //+vaf5R~
+//      }                                                          //+vaf5R~
+    }                                                              //~vaf5I~
 }//class MainView                                       //~v@21R~  //~9620R~

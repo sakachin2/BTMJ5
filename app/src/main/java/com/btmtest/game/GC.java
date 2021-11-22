@@ -1,7 +1,9 @@
-//*CID://+vaefR~: update#= 840;
+//*CID://+vagnR~: update#= 844;                                    //+vagnR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2021/11/13 vagn (Bug)GC buttons remains active because Robot Ron did not stop Notifing Pon to human//+vagnI~
+//2021/10/23 vaf4 (Bug)Could not back to top at before game start on client when ioerr occured. msg issued "try from server"//~vaf4I~
 //2021/09/27 vaef gesture navigation mode from android11
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
 //2021/08/24 vad1 game buttons layout for lefty                    //~vad1I~
@@ -368,10 +370,22 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	public void newGame()                                          //~va70I~
     {                                                              //~va70I~
         if(Dump.Y) Dump.println("GC.newGame");                     //~va70I~
-        statusPlayAlone=0;                                         //~va70R~
+//      statusPlayAlone=0;                                         //~va70R~//+vagnR~
         swChankan=false;                                           //~vaaVI~
-		swShownBtnCancel=false;                                    //~vaahI~
+//  	swShownBtnCancel=false;                                    //~vaahI~//+vagnR~
+        resetButton();                                             //+vagnI~
     }                                                              //~va70I~
+//***********************************************************      //+vagnI~
+	private void resetButton()                                     //+vagnI~
+    {                                                              //+vagnI~
+        if (Dump.Y) Dump.println("GC.resetButton swShownBtnCancel="+swShownBtnCancel+",statusPlayAlone="+statusPlayAlone);//+vagnI~
+        if (statusPlayAlone!=0)                                    //+vagnI~
+        {                                                          //+vagnI~
+    		updateActionBtn2Touch(statusPlayAlone,BTN_STATUS_DISABLE_CANCEL,COLOR_NORMAL);//+vagnI~
+			statusPlayAlone=0;                                     //+vagnI~
+        }                                                          //+vagnI~
+		resetPendingPlayMatchNotify(0/*PmsgID*/);                  //+vagnI~
+    }                                                              //+vagnI~
 //***********************************************************      //~9621R~
 //*from BTMulti when Date Synched OK                               //~9621I~
 //***********************************************************      //~9621I~
@@ -416,7 +430,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         marginLR=0;                                                //~vaefI~
         if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
         {                                                          //~vaefI~
-        	if (!swPortrait)	//landscape                            //+vaefR~
+        	if (!swPortrait)	//landscape                            //~vaefR~
             {                                                      //~vaefI~
                 if (true)   //TODO test                            //~vaefI~
                     marginLR=AG.scrNavigationbarRightWidthA11;     //~vaefI~
@@ -1906,6 +1920,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 			if (BTMulti.isServerDevice())                          //~va02I~
         		UView.showToast(R.string.Info_GameEnded);          //~va02I~
             else                                                   //~va02I~
+        	if (isConnectionLost()) //connection err occured on client//~vaf4I~
+			    confirmEndGameReturn(R.string.Err_ConfirmReturnInGameClientIOErr);//~vaf4I~
+            else                                                   //~vaf4I~
 			    UView.showToast(R.string.Err_TryBackButtonFromServer);	//do connection failure//~va02I~
             return;                                          //~va02I~
         }                                                          //~va02I~
@@ -1917,6 +1934,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 			if (BTMulti.isServerDevice())                          //~va02I~
 			    confirmEndGameReturn(R.string.Err_ConfirmReturn);  //~va02R~
             else                                                   //~va02I~
+        	if (isConnectionLost()) //connection err occured on client//~vaf4R~
+			    confirmEndGameReturn(R.string.Err_ConfirmReturnBeforeDealClientIOErr);//~vaf4I~
+            else                                                   //~vaf4I~
 			    UView.showToast(R.string.Err_TryBackButtonFromServer);	//do connection failure//~va02I~
             return;                                                //~va02M~
 		}                                                          //~va02M~

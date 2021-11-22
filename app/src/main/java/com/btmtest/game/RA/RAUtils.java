@@ -1,5 +1,9 @@
-//*CID://+vab3R~: update#= 152;                                    //~vab3R~
+//*CID://+vag8R~: update#= 166;                                    //~vag8R~
 //**********************************************************************//~v101I~
+//2021/11/08 vag8 INTENT_ALLSAME;avoid when othercolor meld exist  //~vag7I~
+//2021/11/08 vag7 INTENT_ALLSAME;triplet>=1 and (triplet+pair)>=4 and no seq meld//~vag7I~
+//2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
+//2021/10/28 vafc pon/chii call for INTENT_TANYAO                  //~vafcI~
 //2021/07/25 vab3 selectrMeld;select if possibility of dor even not red5 exist//~vab3I~
 //2021/07/12 vaaE select word tile to discard if winlist=1 also for NOT reach//~vaaEI~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
@@ -11,6 +15,7 @@ import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
+import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.RA.RAConst.*;                           //~va60I~
 import static com.btmtest.game.Tiles.*;
@@ -77,6 +82,37 @@ public class RAUtils                                               //~v@@@R~//~v
 	    System.arraycopy(Pdupctr[TT_JI],0,PitsTile,PIECE_NUMBERTYPECTR*PIECE_NUMBERCTR,PIECE_NOTNUM_CTR);//~va60I~
         if (Dump.Y) Dump.println("RAUtils.countTile Pdupctr(from)="+Utils.toString(Pdupctr)+",PitsTile(to)="+Utils.toString(PitsTile,9));//~va60R~//~1116R~//~1119R~
     }                                                              //~va60I~
+    //*****************************************************        //~vafcI~
+    public static int selectTile(int[] PitsHand,int Ptype,boolean Pyes)//~vafcI~
+    {                                                              //~vafcI~
+    	int rc=-1;                                                 //~vafcI~
+        for (int ii=0;ii<CTR_TILETYPE;ii++)                        //~vafcI~
+        {                                                          //~vafcI~
+        	if (PitsHand[ii]==0)                                   //~vafcI~
+            	continue;                                          //~vafcI~
+        	if (Ptype==CSI_TANYAO)                                 //~vafcI~
+            {                                                      //~vafcI~
+            	if (isTanyaoTile(ii))                              //~vafcI~
+                {                                                  //~vafcI~
+            		if (Pyes)                                      //~vafcI~
+                    {                                              //~vafcI~
+                    	rc=ii;                                     //~vafcI~
+                        break;                                     //~vafcI~
+                    }                                              //~vafcI~
+                }                                                  //~vafcI~
+            	else                                               //~vafcI~
+                {                                                  //~vafcI~
+            		if (!Pyes)                                     //~vafcI~
+                    {                                              //~vafcI~
+                    	rc=ii;                                     //~vafcI~
+                        break;                                     //~vafcI~
+                    }                                              //~vafcI~
+                }                                                  //~vafcI~
+            }                                                      //~vafcI~
+        }                                                          //~vafcI~
+        if (Dump.Y) Dump.println("RAUtils.selectTile Ptype="+Ptype+",Pyes="+Pyes+",rc="+rc+",itsHand="+Utils.toString(PitsHand,9));//~vafcR~
+        return rc;                                                 //~vafcI~
+    }                                                              //~vafcI~
     //*****************************************************        //~1116I~
     public static void countTile(int[] PitsTile/*from*/,int [][] Pdupctr/*to*/)//~1116I~
     {                                                              //~1116I~
@@ -138,6 +174,32 @@ public class RAUtils                                               //~v@@@R~//~v
         if (Dump.Y) Dump.println("RAUtils.isTanyaoTile pos="+Ppos+",rc="+rc);//~1118I~//~1119I~
         return rc;                                                 //~1118I~//~1119M~
     }                                                              //~1118I~//~1119M~
+    //***********************************************************************//~vaffR~
+    public static boolean isChantaMeldTile(int Ppos,int Paction)   //~vaffR~
+    {                                                              //~vaffR~
+    	boolean rc=false;                                             //~vaffR~
+        int num=Ppos%CTR_NUMBER_TILE;                              //~vaffI~
+        if (Paction==GCM_CHII || Paction==0)                       //~vaffR~
+        {                                                          //~vaffI~
+            if (Ppos<OFFS_WORDTILE)                                //~vaffR~
+            {                                                      //~vaffR~
+            	if (num<=TN3 || num>=TN7)                          //~vaffI~
+                	rc=true;                                       //~vaffI~
+            }                                                      //~vaffR~
+        }                                                          //~vaffI~
+        if (Paction==GCM_PON || Paction==0)                        //~vaffI~
+        {                                                          //~vaffI~
+            if (Ppos<OFFS_WORDTILE)                                //~vaffI~
+            {                                                      //~vaffI~
+                if (num==TN1 || num==TN9)                          //~vaffR~
+                	rc=true;                                       //~vaffI~
+            }                                                      //~vaffI~
+            else                                                   //~vaffI~
+            	rc=true;                                           //~vaffI~
+        }                                                          //~vaffI~
+        if (Dump.Y) Dump.println("RAUtils.isChantaMeldTile action="+Paction+",pos="+Ppos+",num="+num+",rc="+rc);//~vaffR~
+        return rc;                                                 //~vaffR~
+    }                                                              //~vaffR~
     //***********************************************************************//~1118I~//~1119M~
     //*rc:dragon:2, wind=3, round=2, round+wind=5, get han by ctr/2//~1224I~
     //***********************************************************************//~1118I~//~1119M~
@@ -164,7 +226,7 @@ public class RAUtils                                               //~v@@@R~//~v
     	        rc+=2;                                             //~1118I~//~1119M~//~1215R~
             if (windPos==Peswn)          //wind of you                //~1118I~//~1119M~//~1125R~
                 rc+=3;                                             //~1118I~//~1119M~//~1215R~
-        	if (Dump.Y) Dump.println("RAUtils.chkValueWordTile tile wind="+windPos+",round="+AG.aRoundStat.windRound);//+vab3R~
+        	if (Dump.Y) Dump.println("RAUtils.chkValueWordTile tile wind="+windPos+",round="+AG.aRoundStat.windRound);//~vab3R~
         }                                                          //~1118I~//~1119M~
         if (Dump.Y) Dump.println("RAUtils.chkValueWordTile Ppos="+Ppos+",eswn="+Peswn+",rc="+rc);//~1118R~//~1119I~//~1125R~
         return rc;                                                  //~1118I~//~1119M~
@@ -383,4 +445,68 @@ public class RAUtils                                               //~v@@@R~//~v
         if (Dump.Y) Dump.println("RAUtils.isSingle rc="+rc+",pos="+Ppos);//~vaaEI~
         return rc;                                                 //~vaaEI~
     }                                                              //~vaaEI~
-}//class RAUtils                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~//~1119R~
+    //*********************************************************    //~vag7R~
+    //*count seq meld not including pair or triplet                //~vag7R~//+vag8R~
+    //*********************************************************    //~vag7R~
+    public static int getCtrSeqMeld(int[] PitsHand)                //~vag7R~
+    {                                                              //~vag7R~
+        if (Dump.Y) Dump.println("RAUtils.getCtrSeqMeld itsHand="+Utils.toString(PitsHand,9));//~vag7R~
+    	int ctrSeq=0;                                              //~vag7R~
+        for (int pos=0;pos<OFFS_WORDTILE;pos+=CTR_NUMBER_TILE)     //~vag7R~
+        {                                                          //~vag7R~
+        	int ctrCont=0;                                         //~vag7R~
+        	for (int posNum=pos,ii=TN1;ii<=TN9;posNum++,ii++)        //~vag7R~//~vag8R~
+            {                                                      //~vag7R~
+            	if (PitsHand[posNum]==1)                           //~vag7R~//~vag8R~
+                {                                                  //~vag7R~
+                	ctrCont++;                                     //~vag7R~
+                    if (ctrCont==PAIRCTR)                          //~vag7R~
+                    {                                              //~vag7R~
+                    	ctrSeq++;	                               //~vag7R~
+                        ctrCont=0;                                 //~vag7R~
+                    }                                              //~vag7R~
+                }                                                  //~vag7R~
+                else                                               //~vag7R~
+                	ctrCont=0;                                     //~vag7R~
+            }                                                      //~vag7R~
+        }                                                          //~vag7R~
+        if (Dump.Y) Dump.println("RAUtils.getCtrSeqMeld rc="+ctrSeq);//~vag7R~
+        return ctrSeq;                                             //~vag7R~
+    }                                                              //~vag7R~
+    //*********************************************************    //~vag8I~
+    //*count other color meld for samecolor intent                 //~vag8I~
+    //*********************************************************    //~vag8I~
+    public static int getCtrOtherColorMeld(int Ptype,int[] PitsHand)//~vag8I~
+    {                                                              //~vag8I~
+        if (Dump.Y) Dump.println("RAUtils.getCtrOtherColorMeld type="+Ptype+",itsHand="+Utils.toString(PitsHand,9));//~vag8I~
+    	int ctrSeq=0;                                              //~vag8I~
+        int ctrTriplet=0;                                          //~vag8I~
+        for (int pos=0,color=0;pos<OFFS_WORDTILE;pos+=CTR_NUMBER_TILE,color++)//~vag8R~
+        {                                                          //~vag8I~
+        	if (color==Ptype)                                      //~vag8I~
+            	continue;                                          //~vag8I~
+        	int ctrCont=0;                                         //~vag8I~
+        	for (int posNum=pos,ii=TN1;ii<=TN9;posNum++,ii++)      //~vag8I~
+            {                                                      //~vag8I~
+            	if (PitsHand[posNum]==1)                           //~vag8R~
+                {                                                  //~vag8I~
+                	ctrCont++;                                     //~vag8I~
+                    if (ctrCont==PAIRCTR)                          //~vag8I~
+                    {                                              //~vag8I~
+                    	ctrSeq++;                                  //~vag8I~
+                        ctrCont=0;                                 //~vag8I~
+                    }                                              //~vag8I~
+                }                                                  //~vag8I~
+                else                                               //~vag8I~
+                {                                                  //~vag8I~
+                	ctrCont=0;                                     //~vag8M~
+	            	if (PitsHand[posNum]>=PAIRCTR)                 //~vag8I~
+    	            	ctrTriplet++;                              //~vag8I~
+                }                                                  //~vag8I~
+            }                                                      //~vag8I~
+        }                                                          //~vag8I~
+        int rc=ctrSeq+ctrTriplet;                                  //~vag8I~
+        if (Dump.Y) Dump.println("RAUtils.getCtrOtherColorMeld rc="+rc+",ctrSeq="+ctrSeq+",ctrTriplet="+ctrTriplet);//~vag8R~
+        return rc;                                                 //~vag8I~
+    }                                                              //~vag8I~
+}//class RAUtils                                                   //~vag7R~

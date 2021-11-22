@@ -1,5 +1,6 @@
-//*CID://+vae9R~:                             update#=  246;       //~vae9R~
+//*CID://+vaf0R~:                             update#=  260;       //~vaf0R~
 //*****************************************************************//~v101I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/15 vae3 UFDlg crashed at onActivityCreated, add try-catch//~vae3I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
@@ -74,6 +75,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     public String tagSuffix="";                                    //~v@@@R~
     protected Dialog androidDlg;                                     //~v@@@I~//~9303R~//~v@@@I~
 //  protected boolean swNarrow;                                    //~v@@@R~
+//  protected boolean swDismissPop;                                //+vaf0R~
 	//**********************************                           //~v@@@I~
 	public UFDlg()                                                 //~v@@@R~
 	{                                                              //~3105R~
@@ -205,6 +207,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 //          setStyle(DialogFragment.STYLE_NORMAL,0);               //~9923I~
             setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogThemeCustomWithTitle); //TODO test//~9923I~
         }                                                          //~9923I~
+//        AG.stackFragment(this);                                  //~vaf0R~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@I~
   	@Override                                                      //~v@@@I~
@@ -261,8 +264,8 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     //******************************************                   //~v@@@I~
     protected void setWidthOnResume(Dialog Pdlg)                   //~v@@@I~
     {                                                              //~v@@@I~
-      try                                                          //+vae9I~
-      {                                                            //+vae9I~
+      try                                                          //~vae9I~
+      {                                                            //~vae9I~
 		int ww=getDialogWidth();                                   //~v@@@R~
     	if (Dump.Y) Dump.println("UFDlg.setWidthOnResume ww="+ww); //~v@@@R~
         if (ww!=0)                                                 //~v@@@R~
@@ -271,11 +274,11 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 //	    	UView.setDialogWidthMatchParent(Pdlg);	//HW MediaPad T5(android8) expand dialog height,so set hight=wrap_content required//~9924I~//~9925R~
 //	    	UView.setDialogWidthWrapContent(Pdlg);	//HW MediaPad T5(android8) expand dialog height,so set hight=wrap_content required//~9925R~
   	    	UView.setDialogWidthMatchParentPortrait(Pdlg);	//HW MediaPad T5(android8) expand dialog height,so set hight=wrap_content required//~9925I~
-      }                                                            //+vae9I~
-      catch(Exception e)                                           //+vae9I~
-      {                                                            //+vae9I~
-      	Dump.println(e,"UFDlg.setWidthOnResume");           //+vae9I~
-      }                                                            //+vae9I~
+      }                                                            //~vae9I~
+      catch(Exception e)                                           //~vae9I~
+      {                                                            //~vae9I~
+      	Dump.println(e,"UFDlg.setWidthOnResume");           //~vae9I~
+      }                                                            //~vae9I~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@I~
     protected int getDialogWidth()                                 //~v@@@R~
@@ -550,7 +553,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
 	@Override                                                      //~v@@@M~
     public void onSaveInstanceState(Bundle Pbundle)                //~v@@@M~
 	{                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("UFDlg:onSaveInstanciate bundle!=null="+(Pbundle!=null));//~v@@@I~
+        if (Dump.Y) Dump.println("UFDlg:onSaveInstance bundle="+Utils.toString(Pbundle));//~v@@@I~//~vaf0R~
 		super.onSaveInstanceState(Pbundle);                        //~v@@@M~
     }                                                              //~v@@@M~
     //***********************************************************  //~v@@@M~
@@ -559,7 +562,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     //***********************************************************  //~v@@@M~
     public void RestoreInstanceState(Bundle Pbundle)               //~v@@@M~
 	{                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("UFDlg:RestoreInstanciate bundle not null="+(Pbundle!=null));//~v@@@R~
+        if (Dump.Y) Dump.println("UFDlg:RestoreInstance bundle not null="+(Pbundle!=null));//~v@@@R~//~vaf0R~
         setupDialog(Pbundle);                                      //~v@@@I~
     }                                                              //~v@@@M~
     //***********************************************************  //~v@@@I~
@@ -580,10 +583,19 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     @Override                                                      //~v@@@I~
     public void onDismiss(DialogInterface Pdialog)                 //~v@@@I~
  	{                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UFDlg:onDismiss");               //~v@@@I~
+        if (Dump.Y) Dump.println("UFDlg:onDismiss");               //+vaf0R~
+//        AG.removeFragment(this);                                 //~vaf0R~
+      try                                                          //~vaf0I~
+      {                                                            //~vaf0I~
+//     if (!swDismissPop)                                          //+vaf0R~
         remove(this);                                                  //~v@@@I~//~9903R~
         onDismissDialog();                                         //~v@@@I~
 //      remove();                                                  //~v@@@R~
+      }                                                            //~vaf0I~
+      catch (Exception e)                                          //~vaf0I~
+      {                                                            //~vaf0I~
+        Dump.println(e,"UFDlg:onDismiss Pdialog="+Pdialog.toString());//~vaf0I~
+      }                                                            //~vaf0I~
     }                                                              //~v@@@I~
     //*****************************                                //~v@@@I~
     protected void onDismissDialog()                               //~v@@@R~
@@ -645,8 +657,46 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
             return;                                                //~v@@@I~
         }                                                          //~9904I~
         ft.remove(Pdlg);                                           //~v@@@I~//~9903R~
-        ft.commit();                                               //~v@@@I~
-        fm.popBackStack();                                         //~v@@@I~
+//      ft.commit();                                               //~v@@@I~//~vaf0R~
+        commit(fm,ft);                                                //~vaf0I~
+//      fm.popBackStack();                                         //~v@@@I~//~vaf0R~
+        popBackStack(fm);                                          //~vaf0I~
 	    if (Dump.Y) Dump.println("UFDlg.remove exit");             //~9904I~
     }                                                              //~v@@@I~
+//**********************************                               //~vaf0I~
+    private static void commit(FragmentManager Pfm,FragmentTransaction Pft)//~vaf0I~
+    {                                                              //~vaf0I~
+    	boolean swSaved=Pfm.isStateSaved();                         //~vaf0I~
+    	if (Dump.Y) Dump.println("UFDlg.commit isStateSaved="+swSaved);//~vaf0I~
+        if (!swSaved)                                              //~vaf0I~
+        	Pft.commit();                                          //~vaf0I~
+        else                                                       //~vaf0I~
+        	Pft.commitNowAllowingStateLoss();                      //~vaf0I~
+	    if (Dump.Y) Dump.println("UFDlg.commit exit");             //~vaf0I~
+    }                                                              //~vaf0I~
+//**********************************                               //~vaf0I~
+    private static void popBackStack(FragmentManager Pfm)          //~vaf0I~
+    {                                                              //~vaf0I~
+    	boolean swSaved=Pfm.isStateSaved();                        //~vaf0I~
+    	if (Dump.Y) Dump.println("UFDlg.popBackStack isStateSaved="+swSaved);//~vaf0I~
+        if (!swSaved)                                              //~vaf0I~
+			Pfm.popBackStack();                                    //~vaf0I~
+	    if (Dump.Y) Dump.println("UFDlg.popBackStack exit");       //~vaf0I~
+    }                                                              //~vaf0I~
+////**********************************                             //~vaf0R~
+////* from AG.popFragment                                          //~vaf0R~
+////**********************************                             //~vaf0R~
+//    public void dismissPop()                                     //~vaf0R~
+//    {                                                            //~vaf0R~
+//        FragmentManager fm=getFragmentManager();                 //~vaf0R~
+//        boolean swSaved=fm.isStateSaved();                       //~vaf0R~
+//        if (Dump.Y) Dump.println("UFDlg.dismissPop swSaved="+swSaved+",this="+this.toString());//~vaf0R~
+//        if (!swSaved)                                            //~vaf0R~
+//        {                                                        //~vaf0R~
+//            swDismissPop=true;                                   //~vaf0R~
+//            dismiss();                                           //~vaf0R~
+//            if (Dump.Y) Dump.println("UFDlg.dismissPop after issue dismiss");//~vaf0R~
+//        }                                                        //~vaf0R~
+//        if (Dump.Y) Dump.println("UFDlg.dismissPop exit");       //~vaf0R~
+//    }                                                            //~vaf0R~
 }//class                                                           //~v@@@R~

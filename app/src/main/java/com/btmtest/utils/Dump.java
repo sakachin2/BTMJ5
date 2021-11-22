@@ -1,5 +1,6 @@
-//*CID://+vaebR~:                                   update#=   57; //~vaebR~
+//*CID://+vaf3R~:                                   update#=   58; //+vaf3R~
 //***********************************************                  //~@@@1I~
+//2021/10/22 vaf3 Dump to logcat unconditionally before open       //+vaf3I~
 //2021/09/21 vaeb try not cache but file, cache miss line?         //~vaebI~
 //1ak2 2021/09/04 access external audio file                       //~1ak2I~
 //2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
@@ -112,8 +113,8 @@ public class Dump
                 else                                               //~1Ad8I~
 //  				out = UFile.openOutputData(file, Context.MODE_WORLD_READABLE); // ../files//~1Ad8R~//~va40R~
 //  				out = openOutputData(file);                    //~va40I~//~vad5R~
-                    out=UFile.openOutputDataCacheDir(file);  // ../cache//~1Ak1I~//~vad5I~//+vaebR~
-//  				out = openOutputData(file);                    //+vaebR~
+                    out=UFile.openOutputDataCacheDir(file);  // ../cache//~1Ak1I~//~vad5I~//~vaebR~
+//  				out = openOutputData(file);                    //~vaebR~
 				if (out != null)                                     //~1Ad8R~
 				{//~1313R~                                         //~1Ad8R~
 					Out = new PrintWriter(new OutputStreamWriter(out, "UTF-8"), true/*autoFlash*/);//~1227I~//~1309R~//~1Ad8R~
@@ -163,6 +164,14 @@ public class Dump
             System.out.println(tidts+":"+s);                         //~1425I~//~v@@@R~//~1Ad8R~
         }                                                          //~1425I~
 	}
+    //**************************************************************//+vaf3I~
+    //*uncoditionally write log                                    //+vaf3I~
+    //**************************************************************//+vaf3I~
+	public static void printlnLog(String s)                        //+vaf3I~
+	{                                                              //+vaf3I~
+	    String tidts=Utils.getThreadTimeStamp();                   //+vaf3I~
+        System.out.println(tidts+":"+s);                           //+vaf3I~
+	}                                                              //+vaf3I~
     //**************************************************************//~1Ad8I~
     private static void byte2string(StringBuffer Psb,int Poutoffs,byte[] Pbytes,int Pinpoffs,int Plen)//~1Ab9I~
     {                                                              //~1Ab9I~

@@ -1,5 +1,6 @@
-//*CID://+dateR~:                             update#=  129;       //~1108I~
+//*CID://+dateR~:                             update#=  130;       //~1108I~
 //******************************************************************//~0B03I~
+//2021/11/01 vafh (Bug) for HonChanta(TerminalMix)                 //+1B01I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //******************************************************************//~0B03I~
 //*test data:androidTest\assets\calshan_input1                     //~1108I~
@@ -343,8 +344,8 @@ public class ITMock                                          //~0B03R~//~1108R~/
             else                                                       //~v@@@I~//~1122I~
             {                                                          //~v@@@I~//~1122I~
                 swReceived=false;                                      //~v@@@I~//~1122I~
-                if (!getActionInfo(actionID,player,parm,strParm))      //~9426I~//~1122I~
-                    return;                                      //~v@@@I~//~1122I~
+//              if (!getActionInfo(actionID,player,parm,strParm))      //~9426I~//~1122I~//+1B01R~
+//                  return;                                      //~v@@@I~//~1122I~//+1B01R~
                 if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //~0205I~//~1122I~
                     actionID=GCM_RON;                                  //~0205I~//~1122I~
             }                                                          //~v@@@I~//~1122I~
@@ -748,8 +749,8 @@ public class ITMock                                          //~0B03R~//~1108R~/
             setNextLine(false);                                    //~1125I~
         }                                                              //~v@@@I~//~1123I~
         //*********************************************************//~1617I~
-        @Override                                                  //+1617I~
-        public void drawMsgbarVertical(String Ptext)               //+1617R~
+        @Override                                                  //~1617I~
+        public void drawMsgbarVertical(String Ptext)               //~1617R~
         {                                                          //~1617I~
             if (Dump.Y) Dump.println("Mock_GMsg.drawMsgBar msg="+Ptext);//~1617I~
         }                                                          //~1617I~

@@ -1,5 +1,6 @@
-//*CID://+vaa2R~: update#= 646;                                    //~vaa2R~
+//*CID://+vaf7R~: update#= 651;                                    //~vaf7R~
 //**********************************************************************//~v101I~
+//2021/10/26 vaf7 (Bug)kuikae chk; inhibit other size only when ryanmen chii//~vaf7I~
 //2021/06/28 vaa5 (Bug)Dump at canceled Kan at 1st take because lastDiscarded is null//~vaa5I~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/05/02 va8y (Bug)Kuikae err chk should check type also.      //~va8yI~
@@ -378,10 +379,10 @@ public class UADiscard                                             //~v@@@R~
 			if (Pplayer==PLAYER_YOU)                               //~v@@6I~
 	    	    UADelayed.postDelayedActionMsg(100,GCM_TAKE,null); //~v@@6R~
         }                                                          //~v@@6I~
-        if (AG.swPlayMatchNotify)                                  //+vaa2I~
-        {                                                          //+vaa2I~
-           	AG.aRACall.nextPlayerPlayMatchNotify(PswServer,Pplayer,td);//+vaa2I~
-        }                                                          //+vaa2I~
+        if (AG.swPlayMatchNotify)                                  //~vaa2I~
+        {                                                          //~vaa2I~
+           	AG.aRACall.nextPlayerPlayMatchNotify(PswServer,Pplayer,td);//~vaa2I~
+        }                                                          //~vaa2I~
         setTimeout(PswServer,Pplayer/*nextPlayer*/);    //timeout to take by nextplayer//~v@@6R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
@@ -547,21 +548,29 @@ public class UADiscard                                             //~v@@@R~
         }                                                          //~va15I~
         TileData[] lastPair=earth[ctrPair-1];                      //~va15I~
         TileData tdRiver=null;                                     //~va15I~
-        int posRiver=0;                                            //~va15I~
+//      int posRiver=0;                                            //~va15I~//~vaf7R~
+		int numHand1=-1,numHand2=-1;                               //~vaf7I~
         for (TileData td:lastPair)                                 //~va15I~
         {                                                          //~va15I~
 	        if ((td.flag & TDF_TAKEN_RIVER)!=0)                    //~va15I~
             {                                                      //~va15I~
             	tdRiver=td;	                                       //~va15I~
-                break;                                             //~va15I~
+//              break;                                             //~va15I~//~vaf7R~
             }                                                      //~va15I~
-            posRiver++;                                            //~va15I~
+            else                                                   //~vaf7I~
+            if (numHand1==-1)                                      //~vaf7I~
+            	numHand1=td.number;                                //~vaf7I~
+            else                                                   //~vaf7I~
+            if (numHand2==-1)                                      //~vaf7I~
+            	numHand2=td.number;                                //~vaf7I~
+//          posRiver++;                                            //~va15I~//~vaf7R~
         }                                                          //~va15I~
         if (tdRiver==null)                                         //~va15I~
         {                                                          //~va15I~
 	        if (Dump.Y) Dump.println("UADiscard.isSameMeld @@@@err no River tile found");//~va15I~
         	return false;                                          //~va15I~
         }                                                          //~va15I~
+	    if (Dump.Y) Dump.println("UADiscard.isSameMeld tdRiver="+tdRiver.toString()+",numHand1="+numHand1+",numHand2="+numHand2);//~vaf7I~
         if (PtileSelected.type==tdRiver.type && PtileSelected.number==tdRiver.number)//~va15I~
         {	                                                       //~va15I~
 	        if (Dump.Y) Dump.println("UADiscard.isSameMeld same tile");//~va15I~
@@ -578,18 +587,23 @@ public class UADiscard                                             //~v@@@R~
         {                                                          //~va15I~
           if (PtileSelected.type==tdRiver.type)                    //~va8yI~
           {                                                        //~va8yI~
-        	if (posRiver==0)	//left side eat                    //~va15I~
+        	int numRiver=tdRiver.number;                            //~vaf7I~
+//      	if (posRiver==0)	//left side eat                    //~va15I~//~vaf7R~
+        	if (numRiver<numHand1 && numRiver<numHand2)	//left side eat//~vaf7I~
             {                                                      //~va15I~
-            	if (PtileSelected.number==tdRiver.number+3)        //~va15I~
+//          	if (PtileSelected.number==tdRiver.number+3)        //~va15I~//~vaf7R~
+            	if (PtileSelected.number==numRiver+3)              //~vaf7I~
                 {                                                  //~va15I~
 			        if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit right");//~va15I~
         		    rc=true;                                       //~va15I~
                 }                                                  //~va15I~
             }                                                      //~va15I~
             else                                                   //~va15I~
-        	if (posRiver==2)	//right side eat                   //~va15I~
+//      	if (posRiver==2)	//right side eat                   //~va15I~//~vaf7R~
+        	if (numRiver>numHand1 && numRiver>numHand2)	//right side eat//~vaf7I~
             {                                                      //~va15I~
-            	if (PtileSelected.number==tdRiver.number-3)        //~va15I~
+//          	if (PtileSelected.number==tdRiver.number-3)        //~va15I~//~vaf7R~
+            	if (PtileSelected.number==numRiver-3)              //~vaf7I~
                 {                                                  //~va15I~
 			        if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit left");//~va15I~
         		    rc=true;                                       //~va15I~
@@ -625,7 +639,7 @@ public class UADiscard                                             //~v@@@R~
         PposNotDiscardable[0]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number;//~va60I~
         if (typeSameMeld==EATCHANGE_EXCEPTIT || action==GCM_PON)   //~va60I~
         {                                                          //~va60I~
-	        if (Dump.Y) Dump.println("UADiscard.isSameMeld OK by prohibit itself only");//~va60I~
+	        if (Dump.Y) Dump.println("UADiscard.isSameMeld OK by prohibit itself only PposNotDiscardable"+ Utils.toStringMax(PposNotDiscardable,1));//~vaf7R~
         	return 1;                                              //~va60I~
         }                                                          //~va60I~
         TileData[][] earth=PLS.getEarth(Pplayer);                  //~va60I~
@@ -638,15 +652,22 @@ public class UADiscard                                             //~v@@@R~
         }                                                          //~va60I~
         TileData[] lastPair=earth[ctrPair-1];                      //~va60I~
         TileData tdRiver=null;                                     //~va60I~
-        int posRiver=0;                                            //~va60I~
+//      int posRiver=0;                                            //~va60I~//~vaf7R~
+		int numHand1=-1,numHand2=-1;                               //~vaf7I~
         for (TileData td:lastPair)                                 //~va60I~
         {                                                          //~va60I~
 	        if ((td.flag & TDF_TAKEN_RIVER)!=0)                    //~va60I~
             {                                                      //~va60I~
             	tdRiver=td;                                        //~va60I~
-                break;                                             //~va60I~
+//              break;                                             //~va60I~//~vaf7R~
             }                                                      //~va60I~
-            posRiver++;                                            //~va60I~
+            else                                                   //~vaf7I~
+            if (numHand1==-1)                                      //~vaf7I~
+            	numHand1=td.number;                                //~vaf7I~
+            else                                                   //~vaf7I~
+            if (numHand2==-1)                                      //~vaf7I~
+            	numHand2=td.number;                                //~vaf7I~
+//          posRiver++;                                            //~va60I~//~vaf7R~
         }                                                          //~va60I~
         if (tdRiver==null                                          //~va60I~
         ||  tdDiscarded.type!=tdRiver.type || tdDiscarded.number!=tdRiver.number//~va60I~
@@ -657,26 +678,31 @@ public class UADiscard                                             //~v@@@R~
             return 1;                                              //~va60I~
         }                                                          //~va60I~
         rc=1;                                                      //~va60I~
-        if (posRiver==0)    //left side eat                        //~va60I~
+        int numRiver=tdRiver.number;                                //~vaf7I~
+//      if (posRiver==0)    //left side eat                        //~va60I~//~vaf7R~
+        if (numRiver<numHand1 && numRiver<numHand2)	//left side eat//~vaf7I~
         {                                                          //~va60I~
-            if (tdDiscarded.number<=TN6)                           //~va60I~
+            if (tdDiscarded.number<=TN6)                           //~va60I~//+vaf7R~
             {                                                      //~va60I~
                 if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit right");//~va60I~
-		        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number+3;//~va60I~
+//  	        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number+3;//~va60I~//~vaf7R~
+    	        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+numRiver+3;//~vaf7I~
                 rc++;                                              //~va60I~
             }                                                      //~va60I~
         }                                                          //~va60I~
         else                                                       //~va60I~
-        if (posRiver==2)    //right side eat                       //~va60I~
+//      if (posRiver==2)    //right side eat                       //~va60I~//~vaf7R~
+        if (numRiver>numHand1 && numRiver>numHand2)	//right side eat//~vaf7I~
         {                                                          //~va60I~
-            if (tdDiscarded.number>=TN4)                           //~va60I~
+            if (tdDiscarded.number>=TN4)                           //~va60I~//+vaf7R~
             {                                                      //~va60I~
-                if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit left");//~va60I~
-		        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number-3;//~va60I~
+                if (Dump.Y) Dump.println("UADiscard.getSameMeld err by prohibit left");//~va60I~//~vaf7R~
+//  	        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number-3;//~va60I~//~vaf7R~
+    	        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+numRiver-3;//~vaf7I~
                 rc++;                                              //~va60I~
             }                                                      //~va60I~
         }                                                          //~va60I~
-        if (Dump.Y) Dump.println("UADiscard.isSameMeld rc="+rc+",PposNotDiscardable"+ Utils.toStringMax(PposNotDiscardable,rc));//~va60I~
+        if (Dump.Y) Dump.println("UADiscard.getSameMeld rc="+rc+",PposNotDiscardable"+ Utils.toStringMax(PposNotDiscardable,rc));//~va60I~//~vaf7R~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~
 //    //*************************************************************************//~va70R~

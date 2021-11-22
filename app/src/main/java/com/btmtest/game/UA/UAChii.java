@@ -1,6 +1,7 @@
-//*CID://+va60R~: update#= 624;                                    //~9B30R~//+va60R~
+//*CID://+vagzR~: update#= 625;                                    //+vagzR~
 //**********************************************************************//~v101I~
-//2021/01/07 va60 CalcShanten (smart Robot)                        //+va60I~
+//2021/11/18 vagz AT Chii called,discarded tile did not change to shaded even no erase option.//+vagzI~
+//2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
 //**********************************************************************//~1107I~
@@ -368,6 +369,7 @@ public class UAChii                                                //~v@@@R~
         {                                                          //~v@@@I~
             tds=getReceivedPair(PintParm,PARMPOS_TD,PAIRCTR);      //~v@@@I~
 //          tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded();       //~v@@@R~
+            tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded();       //+vagzI~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("UAChii.takeChii tds="+TileData.toString(tds));//~v@@@R~
 //      UAPon.setDiscardedPlayer(tds);                            //~v@@@R~//~v@@6R~
@@ -422,7 +424,7 @@ public class UAChii                                                //~v@@@R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
-    public   String makeMsgDataToServer(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@R~//+va60R~
+    public   String makeMsgDataToServer(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@R~//~va60R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("UAChii.makeMsgDataToServer ctr="+Pctr);//~v@@@R~
 ////      int eswn=AG.aAccounts.playerToEswn(Pplayer);             //~v@@@R~

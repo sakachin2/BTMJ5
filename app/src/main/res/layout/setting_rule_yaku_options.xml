@@ -49,7 +49,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:orientation="horizontal"
-                android:background="@color/getvalue"
+    			android:background="@color/descriptiononly"
             >
                 <CheckBox
                     android:id="@+id/cbKuitan"
@@ -62,7 +62,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:orientation="horizontal"
-                android:background="@color/getvalue"
+    			android:background="@color/descriptiononly"
             >
                 <CheckBox
                     android:id="@+id/cbPinfuTaken"
@@ -75,7 +75,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:orientation="horizontal"
-                android:background="@color/getvalue"
+    			android:background="@color/descriptiononly"
             >
                 <CheckBox
                     android:id="@+id/cbDoublePillow"
