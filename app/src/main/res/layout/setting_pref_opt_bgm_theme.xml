@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM0"
             />
         </LinearLayout>
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM1"
             />
         </LinearLayout>
@@ -198,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM2"
             />
         </LinearLayout>
@@ -214,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM3"
             />
         </LinearLayout>
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM4"
             />
         </LinearLayout>
@@ -246,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM5"
             />
         </LinearLayout>
@@ -262,7 +262,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM6"
             />
         </LinearLayout>
@@ -278,7 +278,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM7"
             />
         </LinearLayout>
@@ -294,7 +294,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM8"
             />
         </LinearLayout>
@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
             />
-            <include layout="@layout/setting_pref_opt_bgm_user"
+            <include layout="@layout/setting_pref_opt_bgm_user_theme"
                     android:id="@+id/llUserBGM9"
             />
         </LinearLayout>

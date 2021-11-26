@@ -1,5 +1,6 @@
-//*CID://+vae8R~: update#= 519;                                    //~vae8R~
+//*CID://+vah3R~: update#= 523;                                    //~vah3R~
 //**********************************************************************//~v101I~
+//2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //2021/08/22 vacf vertical button label for landscape              //~vacfI~
 //2021/08/02 vabu change default delaytime 2-->1 sec               //~vabuI~
@@ -264,6 +265,11 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final String[] rankRenho=AG.resource.getStringArray(R.array.RenhoRank);//~9517I~
     public static final int RENHORANK_DEFAULT=rankRenho.length-1;  //~9517I~
     public static final int[] intsRankRenho={0,RANKIDX_MANGAN,RANKIDX_HANEMAN,RANKIDX_MANGAN2,RANKIDX_MANGAN3,RANKIDX_YAKUMAN};//~va11I~
+    public static final int[] rbsFuritenReach=new int[]{R.id.rbFuritenReachNo,R.id.rbFuritenReachYes,R.id.rbFuritenReachReject};//~vah3I~
+    public static final int FURITEN_REACH_NO=0;                    //~vah3I~
+    public static final int FURITEN_REACH_YES=1;                   //~vah3I~
+    public static final int FURITEN_REACH_REJECT=2;                //~vah3I~
+    public static final int FURITEN_REACH_DEFAULT=FURITEN_REACH_NO;//~vah3I~
                                                                    //~9412I~
     public static final int    RSID_SYNCDATE              =1;               //~@@@@I~//~9404R~
     public static final int    RSID_SYNCDATE_FORMATTED    =2;      //~9405I~
@@ -323,11 +329,12 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9B13I~
                                                                    //~9413I~
     public static final int    RSID_REACH_OPEN            =160;    //~9427I~
-    public static final int    RSID_REACH_MISSING         =161;    //~9427I~
+//  public static final int    RSID_REACH_MISSING         =161;    //~9427I~//~vah3R~
     public static final int    RSID_ANKAN_AFTER_REACH     =162;    //~9530I~
     public static final int    RSID_OPENREACH_PAY         =163;    //~0329I~
     public static final int    RSID_OPENREACH_ROBOT       =164;    //~0329I~
     public static final int    RSID_ONESHOT               =165;    //~va11I~
+    public static final int    RSID_REACH_FURITEN         =166;    //~vah3I~
                                                                    //~9427I~
     public static final int    RSID_MINUSSTOP_ROBOT       =170;     //~9404I~//~9429I~
     public static final int    RSID_ROBOT_PAY             =171;    //~9429I~
@@ -497,11 +504,12 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_SCORE_TO_POINT       ,"ScoreToPoint"         ),//~9416I~
                                                                    //~9413I~
     				new RSEnumPair(RSID_REACH_OPEN           ,"OpenReach"            ),//~9427I~
-    				new RSEnumPair(RSID_REACH_MISSING        ,"MissingReach"         ),//~9427I~
+//  				new RSEnumPair(RSID_REACH_MISSING        ,"MissingReach"         ),//~9427I~//+vah3R~
     				new RSEnumPair(RSID_ANKAN_AFTER_REACH    ,"AnkanReach"           ),//~9530I~
     				new RSEnumPair(RSID_OPENREACH_PAY        ,"OpenReachPay"         ),//~0329I~
     				new RSEnumPair(RSID_OPENREACH_ROBOT      ,"OpenReachRobot"        ),//~0329I~
     				new RSEnumPair(RSID_ONESHOT              ,"OneShot"               ),//~va11I~
+    				new RSEnumPair(RSID_REACH_FURITEN        ,"FuritenReach"         ),//~vah3I~
                                                                    //~9427I~
     				new RSEnumPair(RSID_MINUSSTOP_ROBOT      ,"MinusStopRobot"       ),//~9404I~//~9429M~
     				new RSEnumPair(RSID_ROBOT_PAY            ,"RobotPay"             ),//~9429I~

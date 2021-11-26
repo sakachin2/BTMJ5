@@ -1,6 +1,7 @@
-//*CID://+vac5R~:                             update#=  509;       //+vac5R~
+//*CID://+vah3R~:                             update#=  510;       //+vah3R~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/11/22 vah3 add Furiten reach reject option                  //+vah3I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/06/26 vaa0 support <img> in htmlText                        //~vaa0I~
 //2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
@@ -42,7 +43,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 {                                                                  //~2C29R~
   	private static final int    TITLEID=R.string.Label_YakuList;   //~v@@@R~
 	private static final int    LAYOUTID=R.layout.setting_rule_yaku;//~v@@@R~
-	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_yaku_theme;//+vac5I~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_yaku_theme;//~vac5I~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingYaku";        //~v@@@R~
     //**********************************************************   //~v@@@R~
@@ -67,6 +68,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private UButtonRG bg8Continue;                                 //~v@@@I~
     private URadioGroup rgYakuFix,rgYakuFix2;                      //~v@@@R~
     private URadioGroup rgYakuFixMultiwaitTake;                    //~va91I~
+    private URadioGroup rgFuritenReach;                            //+vah3I~
 //  private UCheckBox  cbYakuFix1;                                 //~va11R~
     private UCheckBox  cbOpenReach,cbMissingReach,cbAnkanAfterReach;//~v@@@R~
     private UCheckBox  cbOneShot;                                  //~va11I~
@@ -84,8 +86,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     public static RuleSettingYaku newInstance(RuleSetting Pparent) //~v@@@R~
     {                                                              //~v@@@I~
         RuleSettingYaku dlg=new RuleSettingYaku();                 //~v@@@R~
-//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~//+vac5R~
-        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~//~vac5R~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                        //~v@@@R~
         dlg.RSD=Pparent;                                           //~v@@@I~
@@ -173,7 +175,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         spnRenhoRank.setArray(rankRenho);                          //~v@@@I~
     //*Reach                                                       //~v@@@I~
         cbOpenReach=new UCheckBox(PView,R.id.cbOpenReach);         //~v@@@I~
-        cbMissingReach=new UCheckBox(PView,R.id.cbMissingReach);   //~v@@@I~
+//      cbMissingReach=new UCheckBox(PView,R.id.cbMissingReach);   //~v@@@I~//+vah3R~
+        rgFuritenReach=new URadioGroup(PView,R.id.rgFuritenReach,0,rbsFuritenReach);   //+vah3I~
         cbOneShot=new UCheckBox(PView,R.id.cbOneShot);             //~va11I~
     	cbAnkanAfterReach=new UCheckBox(PView,R.id.cbAnkanAfterReach);//~v@@@I~
         rgOpenReach=new URadioGroup(PView,R.id.rgOpenReach,0/*listenerParm*/,rbsOpenReach);//~0329I~
@@ -265,7 +268,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         spnRenhoRank.select(Pprop.getParameter(getKeyRS(RSID_RENHORANK),RENHORANK_DEFAULT),swFixed);//~v@@@I~
     //*Reach                                                       //~v@@@I~
         cbOpenReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_OPEN),0/*defaultIdx*/),swFixed);//~v@@@I~
-        cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~v@@@I~
+//      cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~v@@@I~//+vah3R~
+        rgFuritenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_REACH_FURITEN),FURITEN_REACH_DEFAULT),swFixed);//+vah3I~
         cbOneShot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ONESHOT),1/*defaultIdx*/),swFixed);//~va11I~
         cbAnkanAfterReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_ANKAN_AFTER_REACH),1/*default ON*/),swFixed);//~v@@@I~
         rgOpenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_OPENREACH_PAY),OPENREACH_DEFAULT),swFixed);//~0329I~
@@ -327,7 +331,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_RENHORANK),spnRenhoRank.getSelectedIndex());//~v@@@I~
     //*Reach                                                       //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_REACH_OPEN),cbOpenReach.getStateInt());//~v@@@I~
-        changed+=updateProp(getKeyRS(RSID_REACH_MISSING),cbMissingReach.getStateInt());//~v@@@I~
+//      changed+=updateProp(getKeyRS(RSID_REACH_MISSING),cbMissingReach.getStateInt());//~v@@@I~//+vah3R~
+        changed+=updateProp(getKeyRS(RSID_REACH_FURITEN),rgFuritenReach.getCheckedID());//+vah3I~
         changed+=updateProp(getKeyRS(RSID_ONESHOT),cbOneShot.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_ANKAN_AFTER_REACH),cbAnkanAfterReach.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_OPENREACH_PAY),rgOpenReach.getCheckedID());//~0329I~
@@ -739,9 +744,26 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     //**************************************                       //~va8jI~
     public static boolean isFuritenReachOK()                       //~va8jI~
     {                                                              //~va8jI~
-		int def=0;	//false                                        //~va8jI~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_MISSING),def)!=0;//~va8jI~
+		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //+vah3R~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_MISSING),def)!=0;//~va8jI~//+vah3R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_YES;//+vah3I~
     	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachOK rc="+rc);//~va8jI~
         return rc;                                                 //~va8jI~
     }                                                              //~va8jI~
+    //**************************************                       //+vah3I~
+    public static boolean isFuritenReachNo()                       //+vah3I~
+    {                                                              //+vah3I~
+		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //+vah3I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_NO;//+vah3I~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachNo rc="+rc);//+vah3I~
+        return rc;                                                 //+vah3I~
+    }                                                              //+vah3I~
+    //**************************************                       //+vah3I~
+    public static boolean isFuritenReachReject()                   //+vah3I~
+    {                                                              //+vah3I~
+		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //+vah3I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_REJECT;//+vah3I~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachReject rc="+rc);//+vah3I~
+        return rc;                                                 //+vah3I~
+    }                                                              //+vah3I~
 }//class                                                           //~v@@@R~

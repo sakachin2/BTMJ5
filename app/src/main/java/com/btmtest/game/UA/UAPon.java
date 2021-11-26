@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 614;                                    //~va60R~
+//*CID://+vah0R~: update#= 616;                                    //~vah0R~
 //**********************************************************************//~v101I~
+//2021/11/18 vah0 delete unused UnitTest data statement            //~vah0I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -97,11 +98,11 @@ public class UAPon                                                 //~v@@@R~
 //      TileData[] tds=Accounts.getHands();                        //~v@@@I~//~v@@5R~
         TileData[] tds=AG.aHands.getHands(PLAYER_YOU);            //~v@@5I~
 	    getTouchSelection();                                       //~9C05I~
-        if ((TestOption.option & TestOption.TO_PON_TEST)!=0) //TODO           //~v@@@I~//~9C04R~
-        {                                                          //~9C04R~
-            rc=selectInfoTest(tds,td);                             //~v@@@I~//~9C04R~
-        }                                                          //~9C04R~
-        else                                                       //~v@@@I~//~9C04R~
+//        if ((TestOption.option & TestOption.TO_PON_TEST)!=0) //TODO           //~v@@@I~//~9C04R~//~vah0R~
+//        {                                                          //~9C04R~//~vah0R~
+//            rc=selectInfoTest(tds,td);                             //~v@@@I~//~9C04R~//~vah0R~
+//        }                                                          //~9C04R~//~vah0R~
+//        else                                                       //~v@@@I~//~9C04R~//~vah0R~
         	rc=selectInfo(tds,td);                                 //~v@@@R~
         if (Dump.Y) Dump.println("UAPon.selectInfo rc="+rc);       //~9C05I~
         if (rc!=-1) //could not make pair                          //~9B24I~
@@ -282,7 +283,7 @@ public class UAPon                                                 //~v@@@R~
     	boolean swDraw;                                            //~v@@@R~
         TileData[] tds;                                            //~v@@@R~
     //***********************                                      //~v@@@I~
-        if (Dump.Y) Dump.println("UAPon.takePon swServer="+PswServer+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~v@@@R~//~9B21R~
+        if (Dump.Y) Dump.println("UAPon.takePon swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~v@@@R~//~9B21R~//+vah0R~
 //      AG.aUADelayed.actionDone(GCM_PON,PswServer,PswReceived,Pplayer);//~9B21I~//~9B27R~
         if (!PswReceived)                                          //~v@@@I~
         {                                                          //~v@@@I~
@@ -326,7 +327,7 @@ public class UAPon                                                 //~v@@@R~
       	if (PswServer)                                             //~va60I~
         	r=ACC.getRobot(Pplayer);                               //~va60I~
       if (r!=null)                                                 //~va60I~
-        r.takePon(Pplayer);	//do discrd                            //+va60R~
+        r.takePon(Pplayer);	//do discrd                            //~va60R~
       else                                                         //~va60I~
         UA.UAT.setAutoDiscardTimeout(PswServer,Pplayer,GCM_PON);	//autodiscard timeout//~v@@6I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_PON)//~v@@6I~
@@ -424,169 +425,169 @@ public class UAPon                                                 //~v@@@R~
         swSelectedMulti=AG.aHandsTouch.getSelectedMulti();         //~v@@6I~
         if (Dump.Y) Dump.println("UAPon.getTouchSelection swSelectMulti="+Arrays.toString(swSelectedMulti));//~v@@6I~
     }                                                              //~v@@6I~
-	//*************************************************************************//~v@@@M~
-	//*Test TODO                                                   //~v@@@M~
-	//*************************************************************************//~v@@@M~
-    private int  selectInfoTest(TileData[] Ptds, TileData Ptd)     //~v@@@M~
-    {                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("UAPon.selectInfoTest river td="+Ptd.toString());//~v@@@M~
-        utPon();                                                   //~v@@@M~
-        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~
-        tds[0]=Ptds[0];                                            //~v@@@M~
-        tds[1]=Ptds[1];                                            //~v@@@M~
-        tdsPair=tds;                                               //~v@@@M~
-        int rc=0;                                                  //~9C05I~
-        if ((TestOption.option2 & TestOption.TO2_WAITSELECT_PON)!=0) //TODO//~9C05I~//~9C12R~
-        {                                                          //~9C05I~
-//      	getTouchSelection();                                   //~9C05R~
-			if (AG.aHandsTouch.getPosOld()==1)                     //~9C07I~
-            	rc=0;                                              //~9C07I~
-            else                                                   //~9C07I~
-            if (swSelectedMulti!=null && !swSelectedMulti[0])      //~9C05R~
-       		 	rc=1;	//wait multi selecion                      //~9C05R~
-        }                                                          //~9C05I~
-        if (Dump.Y) Dump.println("UAPon.selectInfoTest rc="+rc+",testoption2="+Integer.toHexString(TestOption.option2));//~9C05I~
-        return rc;                                                  //~v@@@M~//~9C05R~
-     }                                                             //~v@@@M~
-	//*************************************************************************//~v@@@M~
-	//*For UnitTest                                                //~v@@@M~
-	//*************************************************************************//~v@@@M~
-    public void utPon()                                            //~v@@@M~
-    {                                                              //~v@@@M~
-    	boolean swDraw;                                            //~v@@@M~
-        TileData[] tds;
-        int rc;//~v@@@M~
-        TileData td=new TileData(0,4);                             //~v@@@M~
-    //***********************                                      //~v@@@M~
-        if (Dump.Y) Dump.println("UAPon.utPon swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~
-    	boolean[] swSelectedMultiSV=swSelectedMulti;               //~9C05I~
-    	swSelectedMulti=new boolean[HANDCTR];                      //~v@@6I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@6I~
-//*1                                                               //~v@@6I~
-        tds=new TileData[3];                                       //~v@@@M~
-        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~
-        tds[2]=new TileData(0,5,false,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-1 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*2                                                               //~v@@6I~
-        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,true, 1);                          //~v@@@M~
-        tds[2]=new TileData(0,5,false,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-2 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*3                                                               //~v@@6I~
-        tds[0]=new TileData(0,4,true, 0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,true, 1);                          //~v@@@M~
-        tds[2]=new TileData(0,5,false,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-3 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*4                                                               //~v@@6I~
-        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~
-        tds[2]=new TileData(0,4,false,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-4 rc="+rc);          //~v@@6I~//~9C05R~
-//*5                                                                   //~v@@@M~//~v@@6R~
-        tds[0]=new TileData(0,4,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~
-        tds[2]=new TileData(0,4,false,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-5 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*6                                                               //~v@@6I~
-        tds[0]=new TileData(0,4,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~
-        tds[2]=new TileData(0,4,true ,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-6 rc="+rc);          //~v@@6I~//~9C05R~
-//*7                                                               //~v@@6I~
-                                                                   //~v@@@M~
-        tds[0]=new TileData(0,4,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~
-        tds[2]=new TileData(0,4,false,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@6I~
-        if (Dump.Y) Dump.println("UAPon.utPon-7 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*8                                                               //~v@@6I~
-//      tds[0].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//      tds[1].setSelected(false);                                 //~v@@@M~//~v@@6R~
-//      tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=true;                                   //~v@@6R~
-        swSelectedMulti[1]=false;                                  //~v@@6R~
-        swSelectedMulti[2]=false;                                  //~v@@6R~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-8 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*9                                                               //~v@@6I~
-//      tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~
-//      tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//      tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=false;                                  //~v@@6R~
-        swSelectedMulti[1]=true;                                   //~v@@6R~
-        swSelectedMulti[2]=false;                                  //~v@@6R~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-9 rc="+rc);          //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*10                                                              //~v@@6I~
-//        tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~
-//        tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//        tds[2].setSelected(true);                                  //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=false;                                  //~v@@6R~
-        swSelectedMulti[1]=true;                                   //~v@@6R~
-        swSelectedMulti[2]=true;                                   //~v@@6R~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-10 rc="+rc);         //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*11                                                              //~v@@6I~
-        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~
-        tds[1]=new TileData(0,4,true ,1);                          //~v@@@M~
-        tds[2]=new TileData(0,4,true ,2);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-11 rc="+rc);         //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*12                                                              //~v@@6I~
-//        tds[0].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//        tds[1].setSelected(false);                                 //~v@@@M~//~v@@6R~
-//        tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=true;                                   //~v@@6R~
-        swSelectedMulti[1]=false;                                  //~v@@6R~
-        swSelectedMulti[2]=false;                                  //~v@@6R~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-12 rc="+rc);         //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*13                                                              //~v@@6I~
-//      tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~
-//      tds[1].setSelected(true );                                 //~v@@@M~//~v@@6R~
-//      tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=false;                                  //~v@@6I~
-        swSelectedMulti[1]=true;                                   //~v@@6I~
-        swSelectedMulti[2]=false;                                  //~v@@6I~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-13 rc="+rc);         //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//*14                                                              //~v@@6I~
-//        tds[0].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//        tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//        tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=true;                                   //~v@@6R~
-        swSelectedMulti[1]=true;                                   //~v@@6R~
-        swSelectedMulti[2]=false;                                  //~v@@6R~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-14 rc="+rc);         //~v@@6I~//~9C05R~
-                                                                   //~v@@@M~
-//        tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~
-//        tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~
-//        tds[2].setSelected(true);                                  //~v@@@M~//~v@@6R~
-        swSelectedMulti[0]=false;                                  //~v@@6R~
-        swSelectedMulti[1]=true;                                   //~v@@6R~
-        swSelectedMulti[2]=true;                                   //~v@@6R~
-    	rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~
-        if (Dump.Y) Dump.println("UAPon.utPon-15 rc="+rc);         //~v@@6I~//~9C05R~
-    	swSelectedMulti=swSelectedMultiSV;                         //~9C05I~
-        if (Dump.Y) Dump.println("UAPon.utPon exit swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~
-    }                                                              //~v@@@M~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    //*Test TODO                                                   //~v@@@M~//~vah0R~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    private int  selectInfoTest(TileData[] Ptds, TileData Ptd)     //~v@@@M~//~vah0R~
+//    {                                                              //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.selectInfoTest river td="+Ptd.toString());//~v@@@M~//~vah0R~
+//        utPon();                                                   //~v@@@M~//~vah0R~
+//        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~//~vah0R~
+//        tds[0]=Ptds[0];                                            //~v@@@M~//~vah0R~
+//        tds[1]=Ptds[1];                                            //~v@@@M~//~vah0R~
+//        tdsPair=tds;                                               //~v@@@M~//~vah0R~
+//        int rc=0;                                                  //~9C05I~//~vah0R~
+//        if ((TestOption.option2 & TestOption.TO2_WAITSELECT_PON)!=0) //TODO//~9C05I~//~9C12R~//~vah0R~
+//        {                                                          //~9C05I~//~vah0R~
+////          getTouchSelection();                                   //~9C05R~//~vah0R~
+//            if (AG.aHandsTouch.getPosOld()==1)                     //~9C07I~//~vah0R~
+//                rc=0;                                              //~9C07I~//~vah0R~
+//            else                                                   //~9C07I~//~vah0R~
+//            if (swSelectedMulti!=null && !swSelectedMulti[0])      //~9C05R~//~vah0R~
+//                rc=1;   //wait multi selecion                      //~9C05R~//~vah0R~
+//        }                                                          //~9C05I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.selectInfoTest rc="+rc+",testoption2="+Integer.toHexString(TestOption.option2));//~9C05I~//~vah0R~
+//        return rc;                                                  //~v@@@M~//~9C05R~//~vah0R~
+//     }                                                             //~v@@@M~//~vah0R~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    //*For UnitTest                                                //~v@@@M~//~vah0R~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    public void utPon()                                            //~v@@@M~//~vah0R~
+//    {                                                              //~v@@@M~//~vah0R~
+//        boolean swDraw;                                            //~v@@@M~//~vah0R~
+//        TileData[] tds;                                          //~vah0R~
+//        int rc;//~v@@@M~                                         //~vah0R~
+//        TileData td=new TileData(0,4);                             //~v@@@M~//~vah0R~
+//    //***********************                                      //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~//~vah0R~
+//        boolean[] swSelectedMultiSV=swSelectedMulti;               //~9C05I~//~vah0R~
+//        swSelectedMulti=new boolean[HANDCTR];                      //~v@@6I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@6I~//~vah0R~
+////*1                                                               //~v@@6I~//~vah0R~
+//        tds=new TileData[3];                                       //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,5,false,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-1 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*2                                                               //~v@@6I~//~vah0R~
+//        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,true, 1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,5,false,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-2 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*3                                                               //~v@@6I~//~vah0R~
+//        tds[0]=new TileData(0,4,true, 0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,true, 1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,5,false,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-3 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*4                                                               //~v@@6I~//~vah0R~
+//        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,4,false,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-4 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+////*5                                                                   //~v@@@M~//~v@@6R~//~vah0R~
+//        tds[0]=new TileData(0,4,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,4,false,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-5 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*6                                                               //~v@@6I~//~vah0R~
+//        tds[0]=new TileData(0,4,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,4,true ,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-6 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+////*7                                                               //~v@@6I~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(0,4,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,4,false,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@6I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-7 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*8                                                               //~v@@6I~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////      tds[1].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+////      tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[1]=false;                                  //~v@@6R~//~vah0R~
+//        swSelectedMulti[2]=false;                                  //~v@@6R~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-8 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*9                                                               //~v@@6I~//~vah0R~
+////      tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////      tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=false;                                  //~v@@6R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[2]=false;                                  //~v@@6R~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-9 rc="+rc);          //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*10                                                              //~v@@6I~//~vah0R~
+////        tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[2].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=false;                                  //~v@@6R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@6R~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-10 rc="+rc);         //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*11                                                              //~v@@6I~//~vah0R~
+//        tds[0]=new TileData(0,4,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(0,4,true ,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(0,4,true ,2);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-11 rc="+rc);         //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*12                                                              //~v@@6I~//~vah0R~
+////        tds[0].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[1].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[1]=false;                                  //~v@@6R~//~vah0R~
+//        swSelectedMulti[2]=false;                                  //~v@@6R~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-12 rc="+rc);         //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*13                                                              //~v@@6I~//~vah0R~
+////      tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+////      tds[1].setSelected(true );                                 //~v@@@M~//~v@@6R~//~vah0R~
+////      tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=false;                                  //~v@@6I~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@6I~//~vah0R~
+//        swSelectedMulti[2]=false;                                  //~v@@6I~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-13 rc="+rc);         //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////*14                                                              //~v@@6I~//~vah0R~
+////        tds[0].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[2].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[2]=false;                                  //~v@@6R~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-14 rc="+rc);         //~v@@6I~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////        tds[0].setSelected(false);                                 //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[1].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+////        tds[2].setSelected(true);                                  //~v@@@M~//~v@@6R~//~vah0R~
+//        swSelectedMulti[0]=false;                                  //~v@@6R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@6R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@6R~//~vah0R~
+//        rc=selectInfo(tds,td);                                        //~v@@@M~//~v@@6R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon-15 rc="+rc);         //~v@@6I~//~9C05R~//~vah0R~
+//        swSelectedMulti=swSelectedMultiSV;                         //~9C05I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAPon.utPon exit swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~//~vah0R~
+//    }                                                              //~v@@@M~//~vah0R~
 }//class                                                           //~v@@@R~

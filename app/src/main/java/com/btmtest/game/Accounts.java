@@ -1,5 +1,6 @@
-//*CID://+vae5R~: update#= 838;                                    //~vae5R~
+//*CID://+vah2R~: update#= 839;                                    //+vah2R~
 //**********************************************************************//~v101I~
+//2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//+vah2I~
 //2021/09/16 vae5 (Bug)Property of resumed game did not use sg.rulefile at interrupted.//~vae5I~
 //2021/07/29 vabg (Bug)Test option set final game, 1st dealer is not east player//~vabgI~
 //2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
@@ -294,8 +295,8 @@ public class Accounts                                              //~v@@@R~
 		return player;                                             //~9306I~
     }                                                              //~9306I~
     //**************************************************           //~9306I~
-    //*if dealer is robot,next humean in counterclockwise          //+vae5I~
-    //**************************************************           //+vae5I~
+    //*if dealer is robot,next humean in counterclockwise          //~vae5I~
+    //**************************************************           //~vae5I~
     public int getCurrentDealerReal()                              //~9306I~
     {                                                              //~9306I~
         int playerE=eswnToPlayer(0/*East*/);   //East:Dealer       //~9306I~
@@ -952,7 +953,7 @@ public class Accounts                                              //~v@@@R~
     }                                                              //~v@@@I~
     //**************************************************************           //~va60I~
     //*get real player of dealer if player is robot,else return -1 //~va60I~
-    //*if dealer is robot,next humean in counterclockwise          //+vae5I~
+    //*if dealer is robot,next humean in counterclockwise          //~vae5I~
     //**************************************************************           //~va60I~
     public int/*player*/ getRealDealerForRobot(int Pplayer)        //~va60I~
     {                                                              //~va60I~
@@ -1851,6 +1852,17 @@ public class Accounts                                              //~v@@@R~
         }                                                          //~9316I~
         if (Dump.Y) Dump.println("Accounts.updateScore newScore="+Arrays.toString(score));//~9316I~
     }                                                              //~9312I~
+    //**************************************************           //+vah2I~
+    public  void updateScore(int[] Pscore/*eswnSeq*/,int[] Pammount/*eswnSeq*/)//+vah2I~
+    {                                                              //+vah2I~
+        if (Dump.Y) Dump.println("Accounts.updateScore To Parm Score oldScore(PositionSeq)="+Arrays.toString(score)+",add(EswnSeq)="+Arrays.toString(Pammount));//+vah2I~
+        for (int ii=0;ii<PLAYERS;ii++)     //account sequence      //+vah2I~
+        {                                                          //+vah2I~
+            int idx=currentEswnToPosition(ii);                     //+vah2I~
+            Pscore[ii]=score[idx]+Pammount[ii];                    //+vah2I~
+        }                                                          //+vah2I~
+        if (Dump.Y) Dump.println("Accounts.updateScore To Parm Score newScore="+Arrays.toString(Pscore));//+vah2I~
+    }                                                              //+vah2I~
     //**************************************************           //~9321I~
     public  void setScore(int[] Ptotal/*indexSeq*/)                 //~9321I~
     {                                                              //~9321I~

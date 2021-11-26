@@ -1,6 +1,8 @@
-//*CID://+vagzR~: update#= 625;                                    //+vagzR~
+//*CID://+vah4R~: update#= 629;                                    //~vah4R~
 //**********************************************************************//~v101I~
-//2021/11/18 vagz AT Chii called,discarded tile did not change to shaded even no erase option.//+vagzI~
+//2021/11/26 vah4 (Bug by vagz)At client, Chii 1 with having 123 put earth   121//~vah4I~
+//2021/11/18 vah0 delete unused UnitTest data statement            //~vah0I~
+//2021/11/18 vagz AT Chii called,discarded tile did not change to shaded even no erase option.//~vagzI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -98,11 +100,11 @@ public class UAChii                                                //~v@@@R~
         TileData td=PLS.getLastDiscarded();                        //~v@@@R~
         TileData[] tds=AG.aHands.getHands(PLAYER_YOU);            //~v@@5I~
 	    getTouchSelection();                                       //~v@@@I~
-        if ((TestOption.option & TestOption.TO_CHII_TEST)!=0) //TODO//~v@@@R~
-        {
-            rc=selectInfoTest(tds, td);                       //~v@@@R~
-        }
-        else                                                       //~v@@@I~
+//        if ((TestOption.option & TestOption.TO_CHII_TEST)!=0) //TODO//~v@@@R~//~vah0R~
+//        {                                                        //~vah0R~
+//            rc=selectInfoTest(tds, td);                       //~v@@@R~//~vah0R~
+//        }                                                        //~vah0R~
+//        else                                                       //~v@@@I~//~vah0R~
         	rc=selectInfo(tds,td);                           //~v@@@R~
         if (rc!=-1)                                                //~v@@@I~
         {                                                          //~v@@@I~
@@ -369,7 +371,7 @@ public class UAChii                                                //~v@@@R~
         {                                                          //~v@@@I~
             tds=getReceivedPair(PintParm,PARMPOS_TD,PAIRCTR);      //~v@@@I~
 //          tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded();       //~v@@@R~
-            tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded();       //+vagzI~
+//          tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded(); //PAIRPOS_RIVER_TAKEN(=2) is Pon Only//~vagzI~//+vah4R~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("UAChii.takeChii tds="+TileData.toString(tds));//~v@@@R~
 //      UAPon.setDiscardedPlayer(tds);                            //~v@@@R~//~v@@6R~
@@ -485,526 +487,526 @@ public class UAChii                                                //~v@@@R~
 //        UserAction.showInfoAllEswn(opt,Utils.getStr(R.string.UserAction_Chii));//~v@@@R~
 //        UADL.postDelayedActionMsg(delayChii,GCM_CHII,null);      //~v@@@R~
 //    }                                                            //~v@@@R~
-	//*************************************************************************//~v@@@M~
-	//*Test TODO                                                   //~v@@@M~
-	//*************************************************************************//~v@@@M~
-    private int selectInfoTest(TileData[] Ptds, TileData Ptd)      //~v@@@M~
-    {                                                              //~v@@@M~
-    	utChii();                                                  //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.selectInfoTest river td="+Ptd.toString());//~v@@@M~
-        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~
-        tds[0]=Ptds[0];                                            //~v@@@M~
-        tds[1]=Ptds[1];                                            //~v@@@M~
-        tds[2]=Ptd;                                                //~v@@@M~
-        int rc=0;                                                  //~v@@@M~
-        tdsPair=tds;                                               //~v@@@M~
-        if ((TestOption.option2 & TestOption.TO2_WAITSELECT_CHII)!=0) //TODO//~9C05I~//~9C12R~
-        {                                                          //~9C05I~
-//      	getTouchSelection();                                   //~9C05R~
-//          if (true)   //TEST                                     //~9C07I~//~9C12R~
-//              rc=0;                                              //~9C07I~//~9C12R~
-//          else                                                   //~9C07I~//~9C12R~
-			if (AG.aHandsTouch.getPosOld()==1)                     //~9C07I~
-            	rc=0;                                              //~9C07I~
-            else                                                   //~9C07I~
-            if (swSelectedMulti!=null && !swSelectedMulti[0])      //~9C05R~
-	        	rc=1;	//wait multi selecion                      //~9C05R~
-        }                                                          //~9C05I~
-        if (Dump.Y) Dump.println("UAChii.selectInfoTest rc="+rc+",testoption2="+Integer.toHexString(TestOption.option2));//~9C05I~
-        return rc;                                                 //~v@@@M~
-    }                                                              //~v@@@M~
-	//*************************************************************************//~v@@@M~
-	//*For UnitTest                                                //~v@@@M~
-	//*************************************************************************//~v@@@M~
-    public void utChii()                                           //~v@@@M~
-    {                                                              //~v@@@M~
-    	boolean swDraw;                                            //~v@@@M~
-        TileData[] tds=new TileData[8];                            //~v@@@M~
-        TileData td;                                               //~v@@@M~
-        int rc;                                                    //~v@@@M~
-    //***********************                                      //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~
-    	boolean[] swSelectedMultiSV=swSelectedMulti;               //~9C05I~
-    	swSelectedMulti=new boolean[HANDCTR];                      //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-    //*1                                                           //~v@@@M~
-        td=new TileData(1,0,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(2,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(2,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(3,0,false,4);                          //~v@@@M~
-        tds[5]=new TileData(3,0,false,4);                          //~v@@@M~
-        tds[6]=new TileData(3,0,false,4);                          //~v@@@M~
-        tds[7]=new TileData(3,0,false,4);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-1 rc="+rc);         //~v@@@M~//~9C05R~
-    //*2                                                           //~v@@@M~
-        td=new TileData(1,0,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,4,false,2);                          //~v@@@M~
-        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-2 rc="+rc);         //~v@@@M~//~9C05R~
-    //*3                                                           //~v@@@M~
-        td=new TileData(1,0,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,1,false,2);                          //~v@@@M~
-        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-3 rc="+rc);         //~v@@@M~//~9C05R~
-    //*4                                                           //~v@@@M~
-        td=new TileData(1,0,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-4 rc="+rc);         //~v@@@M~//~9C05R~
-    //*5                                                           //~v@@@M~
-        td=new TileData(1,8,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,6,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,7,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,8,false,2);                          //~v@@@M~
-        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-5 rc="+rc);         //~v@@@M~//~9C05R~
-    //*6                                                           //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-6 rc="+rc);         //~v@@@M~//~9C05R~
-    //*7                                                           //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,3,false,3);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-7 rc="+rc);         //~v@@@M~//~9C05R~
-    //*8                                                           //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,3,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-8 rc="+rc);         //~v@@@M~//~9C05R~
-    //*9                                                           //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,1,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,false,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-9 rc="+rc);         //~v@@@M~//~9C05R~
-    //*10                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,1,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,false,4);                          //~v@@@M~
-        tds[5]=new TileData(1,3,false,5);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-10 rc="+rc);        //~v@@@M~//~9C05R~
-    //*11                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,true ,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~
-        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~
-        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~
-        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-11 rc="+rc);        //~v@@@M~//~9C05R~
-    //*12                                                          //~v@@@M~
-        td=new TileData(1,1,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~
-        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~
-        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~
-        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-12 rc="+rc);        //~v@@@M~//~9C05R~
-    //*13                                                          //~v@@@M~
-        td=new TileData(1,1,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~
-        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~
-        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~
-        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@I~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@I~
-        if (Dump.Y) Dump.println("UAChii.utChii-13 rc="+rc);        //~v@@@M~//~9C05R~
-    //*13-2                                                        //~v@@@M~
-        td=new TileData(1,1,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~
-        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~
-        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~
-        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@I~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@I~
-        if (Dump.Y) Dump.println("UAChii.utChii-13-2 rc="+rc);      //~v@@@M~//~9C05R~
-    //*14                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-14 rc="+rc);        //~v@@@M~//~9C05R~
-    //*15                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(1,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-15 rc="+rc);        //~v@@@M~//~9C05R~
-    //*16                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(1,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-//      tds[5].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-        swSelectedMulti[5]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-16 rc="+rc);        //~v@@@M~//~9C05R~
-    //*17                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-17 rc="+rc);        //~v@@@M~//~9C05R~
-    //*18                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-//      tds[2].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-        swSelectedMulti[2]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-18 rc="+rc);        //~v@@@M~//~9C05R~
-    //*19                                                          //~v@@@M~
-        td=new TileData(1,2,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-//      tds[2].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-        swSelectedMulti[2]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-19 rc="+rc);        //~v@@@M~//~9C05R~
-    //*20                                                          //~v@@@M~
-        td=new TileData(1,4,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,2,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,3,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,6,false,3);                          //~v@@@M~
-        tds[4]=new TileData(2,1,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-20 rc="+rc);        //~v@@@M~//~9C05R~
-                                                                   //~v@@@M~
-    //*21                                                          //~v@@@M~
-        td=new TileData(1,3,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,4,false,3);                          //~v@@@M~
-        tds[4]=new TileData(2,1,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-//      tds[2].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-        swSelectedMulti[2]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-21 rc="+rc);        //~v@@@M~//~9C05R~
-                                                                   //~v@@@M~
-    //*22                                                          //~v@@@M~
-        td=new TileData(1,3,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,3,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,4,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(1,5,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-22 rc="+rc);        //~v@@@M~//~9C05R~
-    //*23                                                          //~v@@@M~
-        td=new TileData(1,1,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~
-        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~
-        tds[4]=new TileData(1,3,true ,4);                          //~v@@@M~
-        tds[5]=new TileData(2,1,false,5);                          //~v@@@M~
-        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-//      tds[2].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-        swSelectedMulti[2]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-23 rc="+rc);        //~v@@@M~//~9C05R~
-    //*24                                                          //~v@@@M~
-        td=new TileData(1,3,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~
-        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~
-        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~
-        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-    	rc=selectInfo(tds,td);                                     //~v@@@M~
-        if (Dump.Y) Dump.println("UAChii.utChii-24 rc="+rc);        //~v@@@M~//~9C05R~
-    //*25                                                          //~v@@@M~
-        td=new TileData(1,3,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~
-        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~
-        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~
-        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[3].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[3]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-25 rc="+rc);        //~v@@@M~//~9C05R~
-                                                                   //~v@@@M~
-    //*26                                                          //~v@@@M~
-        td=new TileData(1,3,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~
-        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~
-        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~
-        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-26 rc="+rc);        //~v@@@M~//~9C05R~
-    //*27                                                          //~v@@@M~
-        td=new TileData(1,3,false,8);                              //~v@@@M~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~
-        tds[1]=new TileData(1,2,true ,1);                          //~v@@@M~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~
-        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~
-        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~
-        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~
-        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~
-                                                                   //~v@@@M~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-27 rc="+rc);        //~v@@@M~//~9C05R~
-    //*28                                                          //~v@@@I~
-        td=new TileData(1,3,false,8);                              //~v@@@I~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~
-        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~
-        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~
-        tds[3]=new TileData(1,5,true ,3);                          //~v@@@I~
-        tds[4]=new TileData(1,6,false,4);                          //~v@@@I~
-        tds[5]=new TileData(1,7,false,5);                          //~v@@@I~
-        tds[6]=new TileData(1,8,false,6);                          //~v@@@I~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~
-                                                                   //~v@@@I~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        if (Dump.Y) Dump.println("UAChii.utChii-28 rc="+rc);        //~v@@@I~//~9C05R~
-    //*29                                                          //~v@@@I~
-        td=new TileData(1,3,false,8);                              //~v@@@I~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~
-        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~
-        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~
-        tds[3]=new TileData(1,5,true ,3);                          //~v@@@I~
-        tds[4]=new TileData(1,6,false,4);                          //~v@@@I~
-        tds[5]=new TileData(1,7,false,5);                          //~v@@@I~
-        tds[6]=new TileData(1,8,false,6);                          //~v@@@I~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~
-                                                                   //~v@@@I~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-29 rc="+rc);        //~v@@@I~//~9C05R~
-    //*29-2                                                        //~v@@@I~
-        td=new TileData(1,3,false,8);                              //~v@@@I~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~
-        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~
-        tds[2]=new TileData(1,2,false,2);                          //~v@@@I~
-        tds[3]=new TileData(1,4,false,3);                          //~v@@@I~
-        tds[4]=new TileData(1,5,true ,4);                          //~v@@@I~
-        tds[5]=new TileData(1,6,false,5);                          //~v@@@I~
-        tds[6]=new TileData(1,7,false,6);                          //~v@@@I~
-        tds[7]=new TileData(1,8,false,7);                          //~v@@@I~
-                                                                   //~v@@@I~
-//      tds[0].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[0]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-29-2 rc="+rc);      //~v@@@I~//~9C05R~
-    //*30                                                          //~v@@@I~
-        td=new TileData(1,3,false,8);                              //~v@@@I~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~
-        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~
-        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~
-        tds[3]=new TileData(1,6,true ,3);                          //~v@@@I~
-        tds[4]=new TileData(1,7,false,4);                          //~v@@@I~
-        tds[5]=new TileData(1,8,false,5);                          //~v@@@I~
-        tds[6]=new TileData(1,9,false,6);                          //~v@@@I~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~
-                                                                   //~v@@@I~
-//      tds[2].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[2]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-30 rc="+rc);        //~v@@@I~//~9C05R~
-    //*31                                                          //~v@@@I~
-        td=new TileData(1,3,false,8);                              //~v@@@I~
-        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~
-        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~
-        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~
-        tds[3]=new TileData(1,6,true ,3);                          //~v@@@I~
-        tds[4]=new TileData(1,7,false,4);                          //~v@@@I~
-        tds[5]=new TileData(1,8,false,5);                          //~v@@@I~
-        tds[6]=new TileData(1,9,false,6);                          //~v@@@I~
-        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~
-                                                                   //~v@@@I~
-//      tds[1].setSelected(true);                                  //~v@@@R~
-//      tds[2].setSelected(true);                                  //~v@@@R~
-        swSelectedMulti[1]=true;                                   //~v@@@R~
-        swSelectedMulti[2]=true;                                   //~v@@@R~
-    	rc=selectInfo(tds,td);                                     //~v@@@I~
-        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~
-        if (Dump.Y) Dump.println("UAChii.utChii-31 rc="+rc);        //~v@@@I~//~9C05R~
-    //*32                                                          //~9C04I~
-        td=new TileData(1,3,false,8);                              //~9C04I~
-        tds[0]=new TileData(1,2,false,1);                          //~9C04R~
-        tds[1]=new TileData(1,2,false,1);                          //~9C04R~
-        tds[2]=new TileData(1,2,false,1);                          //~9C04R~
-        tds[3]=new TileData(1,3,false,1);                          //~9C04R~
-        tds[4]=new TileData(1,4,true,2);                           //~9C04R~
-        tds[5]=new TileData(1,4,true,2);                           //~9C04R~
-        tds[6]=new TileData(2,6,true ,3);                          //~9C04R~
-        tds[7]=new TileData(2,6,true ,3);                          //~9C04I~
-    	rc=selectInfo(tds,td);                                     //~9C04I~
-        Arrays.fill(swSelectedMulti,false);                        //~9C04I~
-        if (Dump.Y) Dump.println("UAChii.utChii-32 rc="+rc);        //~9C04I~//~9C05R~
-    //*33                                                          //~9C04I~
-        td=new TileData(1,3,false,8);                              //~9C04I~
-        tds[0]=new TileData(1,2,false,1);                          //~9C04I~
-        tds[1]=new TileData(1,2,false,1);                          //~9C04I~
-        tds[2]=new TileData(1,2,false,1);                          //~9C04I~
-        tds[3]=new TileData(1,3,false,1);                          //~9C04I~
-        tds[4]=new TileData(1,4,true,2);                           //~9C04I~
-        tds[5]=new TileData(1,4,false,2);                          //~9C04I~
-        tds[6]=new TileData(2,6,true ,3);                          //~9C04I~
-        tds[7]=new TileData(2,6,true ,3);                          //~9C04I~
-    	rc=selectInfo(tds,td);                                     //~9C04I~
-        Arrays.fill(swSelectedMulti,false);                        //~9C04I~
-        if (Dump.Y) Dump.println("UAChii.utChii-33 rc="+rc);        //~9C04R~//~9C05R~
-                                                                   //~9C05I~
-    	swSelectedMulti=swSelectedMultiSV;                         //~9C05I~
-        if (Dump.Y) Dump.println("UAChii.utChii exit swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~
-    }                                                              //~v@@@M~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    //*Test TODO                                                   //~v@@@M~//~vah0R~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    private int selectInfoTest(TileData[] Ptds, TileData Ptd)      //~v@@@M~//~vah0R~
+//    {                                                              //~v@@@M~//~vah0R~
+//        utChii();                                                  //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.selectInfoTest river td="+Ptd.toString());//~v@@@M~//~vah0R~
+//        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~//~vah0R~
+//        tds[0]=Ptds[0];                                            //~v@@@M~//~vah0R~
+//        tds[1]=Ptds[1];                                            //~v@@@M~//~vah0R~
+//        tds[2]=Ptd;                                                //~v@@@M~//~vah0R~
+//        int rc=0;                                                  //~v@@@M~//~vah0R~
+//        tdsPair=tds;                                               //~v@@@M~//~vah0R~
+//        if ((TestOption.option2 & TestOption.TO2_WAITSELECT_CHII)!=0) //TODO//~9C05I~//~9C12R~//~vah0R~
+//        {                                                          //~9C05I~//~vah0R~
+////          getTouchSelection();                                   //~9C05R~//~vah0R~
+////          if (true)   //TEST                                     //~9C07I~//~9C12R~//~vah0R~
+////              rc=0;                                              //~9C07I~//~9C12R~//~vah0R~
+////          else                                                   //~9C07I~//~9C12R~//~vah0R~
+//            if (AG.aHandsTouch.getPosOld()==1)                     //~9C07I~//~vah0R~
+//                rc=0;                                              //~9C07I~//~vah0R~
+//            else                                                   //~9C07I~//~vah0R~
+//            if (swSelectedMulti!=null && !swSelectedMulti[0])      //~9C05R~//~vah0R~
+//                rc=1;   //wait multi selecion                      //~9C05R~//~vah0R~
+//        }                                                          //~9C05I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.selectInfoTest rc="+rc+",testoption2="+Integer.toHexString(TestOption.option2));//~9C05I~//~vah0R~
+//        return rc;                                                 //~v@@@M~//~vah0R~
+//    }                                                              //~v@@@M~//~vah0R~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    //*For UnitTest                                                //~v@@@M~//~vah0R~
+//    //*************************************************************************//~v@@@M~//~vah0R~
+//    public void utChii()                                           //~v@@@M~//~vah0R~
+//    {                                                              //~v@@@M~//~vah0R~
+//        boolean swDraw;                                            //~v@@@M~//~vah0R~
+//        TileData[] tds=new TileData[8];                            //~v@@@M~//~vah0R~
+//        TileData td;                                               //~v@@@M~//~vah0R~
+//        int rc;                                                    //~v@@@M~//~vah0R~
+//    //***********************                                      //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~//~vah0R~
+//        boolean[] swSelectedMultiSV=swSelectedMulti;               //~9C05I~//~vah0R~
+//        swSelectedMulti=new boolean[HANDCTR];                      //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//    //*1                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,0,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(2,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(3,0,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(3,0,false,4);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(3,0,false,4);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(3,0,false,4);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-1 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*2                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,0,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,4,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-2 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*3                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,0,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,1,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-3 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*4                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,0,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-4 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*5                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,8,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,6,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,7,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,8,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-5 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*6                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,0,false,3);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-6 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*7                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,3,false,3);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-7 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*8                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,3,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-8 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*9                                                           //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,1,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-9 rc="+rc);         //~v@@@M~//~9C05R~//~vah0R~
+//    //*10                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,1,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,3,false,5);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-10 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*11                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,true ,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-11 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*12                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,1,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-12 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*13                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,1,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@I~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-13 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*13-2                                                        //~v@@@M~//~vah0R~
+//        td=new TileData(1,1,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,true ,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(2,3,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(2,3,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,4,false,5);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@I~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-13-2 rc="+rc);      //~v@@@M~//~9C05R~//~vah0R~
+//    //*14                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-14 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*15                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-15 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*16                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[5].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[5]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-16 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*17                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-17 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*18                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[2].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-18 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*19                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,2,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,2,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[2].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-19 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*20                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,4,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,2,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,3,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,6,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(2,1,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-20 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+//    //*21                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,4,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(2,1,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,3,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[2].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-21 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+//    //*22                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,3,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,4,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,5,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-22 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*23                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,1,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,0,true ,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,0,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,0,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,1,false,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,3,true ,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(2,1,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(2,3,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[2].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-23 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*24                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@M~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-24 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*25                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[3].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[3]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-25 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+//    //*26                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,1,false,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-26 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*27                                                          //~v@@@M~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@M~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@M~//~vah0R~
+//        tds[1]=new TileData(1,2,true ,1);                          //~v@@@M~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@M~//~vah0R~
+//        tds[3]=new TileData(1,4,true ,3);                          //~v@@@M~//~vah0R~
+//        tds[4]=new TileData(1,4,false,4);                          //~v@@@M~//~vah0R~
+//        tds[5]=new TileData(1,4,false,5);                          //~v@@@M~//~vah0R~
+//        tds[6]=new TileData(1,8,false,6);                          //~v@@@M~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@M~//~vah0R~
+//                                                                   //~v@@@M~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-27 rc="+rc);        //~v@@@M~//~9C05R~//~vah0R~
+//    //*28                                                          //~v@@@I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@I~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~//~vah0R~
+//        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~//~vah0R~
+//        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~//~vah0R~
+//        tds[3]=new TileData(1,5,true ,3);                          //~v@@@I~//~vah0R~
+//        tds[4]=new TileData(1,6,false,4);                          //~v@@@I~//~vah0R~
+//        tds[5]=new TileData(1,7,false,5);                          //~v@@@I~//~vah0R~
+//        tds[6]=new TileData(1,8,false,6);                          //~v@@@I~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~//~vah0R~
+//                                                                   //~v@@@I~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-28 rc="+rc);        //~v@@@I~//~9C05R~//~vah0R~
+//    //*29                                                          //~v@@@I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@I~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~//~vah0R~
+//        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~//~vah0R~
+//        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~//~vah0R~
+//        tds[3]=new TileData(1,5,true ,3);                          //~v@@@I~//~vah0R~
+//        tds[4]=new TileData(1,6,false,4);                          //~v@@@I~//~vah0R~
+//        tds[5]=new TileData(1,7,false,5);                          //~v@@@I~//~vah0R~
+//        tds[6]=new TileData(1,8,false,6);                          //~v@@@I~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~//~vah0R~
+//                                                                   //~v@@@I~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-29 rc="+rc);        //~v@@@I~//~9C05R~//~vah0R~
+//    //*29-2                                                        //~v@@@I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@I~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~//~vah0R~
+//        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~//~vah0R~
+//        tds[2]=new TileData(1,2,false,2);                          //~v@@@I~//~vah0R~
+//        tds[3]=new TileData(1,4,false,3);                          //~v@@@I~//~vah0R~
+//        tds[4]=new TileData(1,5,true ,4);                          //~v@@@I~//~vah0R~
+//        tds[5]=new TileData(1,6,false,5);                          //~v@@@I~//~vah0R~
+//        tds[6]=new TileData(1,7,false,6);                          //~v@@@I~//~vah0R~
+//        tds[7]=new TileData(1,8,false,7);                          //~v@@@I~//~vah0R~
+//                                                                   //~v@@@I~//~vah0R~
+////      tds[0].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[0]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-29-2 rc="+rc);      //~v@@@I~//~9C05R~//~vah0R~
+//    //*30                                                          //~v@@@I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@I~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~//~vah0R~
+//        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~//~vah0R~
+//        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~//~vah0R~
+//        tds[3]=new TileData(1,6,true ,3);                          //~v@@@I~//~vah0R~
+//        tds[4]=new TileData(1,7,false,4);                          //~v@@@I~//~vah0R~
+//        tds[5]=new TileData(1,8,false,5);                          //~v@@@I~//~vah0R~
+//        tds[6]=new TileData(1,9,false,6);                          //~v@@@I~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~//~vah0R~
+//                                                                   //~v@@@I~//~vah0R~
+////      tds[2].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-30 rc="+rc);        //~v@@@I~//~9C05R~//~vah0R~
+//    //*31                                                          //~v@@@I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~v@@@I~//~vah0R~
+//        tds[0]=new TileData(1,1,false,0);                          //~v@@@I~//~vah0R~
+//        tds[1]=new TileData(1,2,true ,1);                          //~v@@@I~//~vah0R~
+//        tds[2]=new TileData(1,4,false,2);                          //~v@@@I~//~vah0R~
+//        tds[3]=new TileData(1,6,true ,3);                          //~v@@@I~//~vah0R~
+//        tds[4]=new TileData(1,7,false,4);                          //~v@@@I~//~vah0R~
+//        tds[5]=new TileData(1,8,false,5);                          //~v@@@I~//~vah0R~
+//        tds[6]=new TileData(1,9,false,6);                          //~v@@@I~//~vah0R~
+//        tds[7]=new TileData(2,4,false,7);                          //~v@@@I~//~vah0R~
+//                                                                   //~v@@@I~//~vah0R~
+////      tds[1].setSelected(true);                                  //~v@@@R~//~vah0R~
+////      tds[2].setSelected(true);                                  //~v@@@R~//~vah0R~
+//        swSelectedMulti[1]=true;                                   //~v@@@R~//~vah0R~
+//        swSelectedMulti[2]=true;                                   //~v@@@R~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~v@@@I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~v@@@R~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-31 rc="+rc);        //~v@@@I~//~9C05R~//~vah0R~
+//    //*32                                                          //~9C04I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~9C04I~//~vah0R~
+//        tds[0]=new TileData(1,2,false,1);                          //~9C04R~//~vah0R~
+//        tds[1]=new TileData(1,2,false,1);                          //~9C04R~//~vah0R~
+//        tds[2]=new TileData(1,2,false,1);                          //~9C04R~//~vah0R~
+//        tds[3]=new TileData(1,3,false,1);                          //~9C04R~//~vah0R~
+//        tds[4]=new TileData(1,4,true,2);                           //~9C04R~//~vah0R~
+//        tds[5]=new TileData(1,4,true,2);                           //~9C04R~//~vah0R~
+//        tds[6]=new TileData(2,6,true ,3);                          //~9C04R~//~vah0R~
+//        tds[7]=new TileData(2,6,true ,3);                          //~9C04I~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~9C04I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~9C04I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-32 rc="+rc);        //~9C04I~//~9C05R~//~vah0R~
+//    //*33                                                          //~9C04I~//~vah0R~
+//        td=new TileData(1,3,false,8);                              //~9C04I~//~vah0R~
+//        tds[0]=new TileData(1,2,false,1);                          //~9C04I~//~vah0R~
+//        tds[1]=new TileData(1,2,false,1);                          //~9C04I~//~vah0R~
+//        tds[2]=new TileData(1,2,false,1);                          //~9C04I~//~vah0R~
+//        tds[3]=new TileData(1,3,false,1);                          //~9C04I~//~vah0R~
+//        tds[4]=new TileData(1,4,true,2);                           //~9C04I~//~vah0R~
+//        tds[5]=new TileData(1,4,false,2);                          //~9C04I~//~vah0R~
+//        tds[6]=new TileData(2,6,true ,3);                          //~9C04I~//~vah0R~
+//        tds[7]=new TileData(2,6,true ,3);                          //~9C04I~//~vah0R~
+//        rc=selectInfo(tds,td);                                     //~9C04I~//~vah0R~
+//        Arrays.fill(swSelectedMulti,false);                        //~9C04I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii-33 rc="+rc);        //~9C04R~//~9C05R~//~vah0R~
+//                                                                   //~9C05I~//~vah0R~
+//        swSelectedMulti=swSelectedMultiSV;                         //~9C05I~//~vah0R~
+//        if (Dump.Y) Dump.println("UAChii.utChii exit swSelectedMulti="+Arrays.toString(swSelectedMulti));//~9C05I~//~vah0R~
+//    }                                                              //~v@@@M~//~vah0R~
 }//class                                                           //~v@@@R~

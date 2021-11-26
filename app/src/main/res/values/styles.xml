@@ -87,13 +87,15 @@
     </style>
     <style name="DialogThemeCustomNarrowSmallFont" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
     	<item name="android:buttonStyle">@style/CustomButtonStyleHLDSmallFont</item>
-    	<item name="android:radioButtonStyle">@style/CustomRBStyleHLDSmallFont</item>
-    	<item name="android:checkboxStyle">@style/CustomCBStyleHLDSmallFont</item>
+    	<item name="android:radioButtonStyle">@style/CustomRBStyleHLDSmallFontSmallButton</item>
+    	<item name="android:checkboxStyle">@style/CustomCBStyleHLDSmallFontSmallButton</item>
     	<item name="android:textViewStyle">@style/CustomTVStyleHLDSmallFont</item>
     	<item name="android:windowTitleStyle">@style/CustomTitleStyleHLDSmallFont</item>
     	<item name="android:editTextStyle">@style/CustomETStyleHLDSmallFont</item>
     	<item name="android:spinnerStyle">@style/CustomSPStyleHLDSmallFont</item>
     </style>
+    <!--item name="android:checkboxStyle">@style/CustomCBStyleHLDSmallFont</item-->
+    <!--item name="android:radioButtonStyle">@style/CustomRBStyleHLDSmallFont</item-->
     <!--style name="DialogThemeCustomWithTitle" parent="@style/Theme.AppCompat.Light.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
     <!--style name="DialogThemeCustomWithTitle" parent="@style/Theme.DeviceDefault.Light.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
     <!--style name="DialogThemeCustomWithTitle" parent="@android:style/Theme.Holo.Dialog"--> <!--titlever missing on HUAWEI T5 android8.0-->
@@ -124,6 +126,10 @@
         <!--item name="android:scaleX">0.7</item-->
         <!--item name="android:scaleY">0.7</item-->
     </style>
+    <style name="CustomRBStyleHLDSmallFontSmallButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textSize">@dimen/smallfont_textsize_dialog_radiobutton</item>
+        <item name="android:button">@drawable/radiobutton_smallfont</item>
+    </style>
     <style name="CustomCBStyleHLD" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">@dimen/cb_textsize</item>
     </style>
@@ -131,6 +137,10 @@
         <!--item name="android:scaleX">0.7</item-->
         <!--item name="android:scaleY">0.7</item-->
         <item name="android:textSize">@dimen/smallfont_textsize_dialog_checkbox</item>
+    </style>
+    <style name="CustomCBStyleHLDSmallFontSmallButton" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textSize">@dimen/smallfont_textsize_dialog_checkbox</item>
+        <item name="android:button">@drawable/checkbox_smallfont_button</item>
     </style>
     <style name="CustomTVStyleHLD" >
         <item name="android:textSize">@dimen/tv_textsize</item>

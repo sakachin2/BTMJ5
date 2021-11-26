@@ -54,13 +54,51 @@
             android:layout_width="wrap_content"
     			android:background="@color/descriptiononly"
         />
-        <CheckBox
+        <!--CheckBox
             android:id="@+id/cbMissingReach"
             android:text="@string/UserAction_Reach_Missing_YN"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-        />
+        /-->
     </LinearLayout>  <!--line1-->
+    <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_FuritenReach"
+            android:layout_gravity="center_vertical"
+        />
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:id="@+id/rgFuritenReach"
+            android:layout_width="wrap_content"
+        >
+            <RadioButton
+                android:id="@+id/rbFuritenReachNo"
+                android:text="@string/Label_FuritenReachNo"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+    			android:background="@color/descriptiononly"
+            />
+            <RadioButton
+                android:id="@+id/rbFuritenReachYes"
+                android:text="@string/Label_FuritenReachYes"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            />
+            <RadioButton
+                android:id="@+id/rbFuritenReachReject"
+                android:text="@string/Label_FuritenReachReject"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            />
+        </RadioGroup>
+    </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"

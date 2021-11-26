@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.17</string>
+    <string name="app_version">v1.18</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -392,7 +392,8 @@
     <string name="NotAgreed">Inv.</string>
     <string name="Agreed">Agreed</string>
     <string name="NoGame">DrawWithNotTenpai</string>
-    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.</string>
+    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.\n
+\"Furiten Riichi\":\"No\"/\"Reject\" is checked only when \"Confirm Tenpai\" of Oper setting is ON.</string>
     <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
     <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
     <string name="Label_ReachLimitOpenChombo">Continue as Chombo</string>
@@ -732,7 +733,11 @@
     <string name="UserAction_Reach_Open">OpenRiichi</string>
     <string name="UserAction_Reach_Open_YN">Allow OpenRiichi</string>
     <string name="Desc_OpenReach">(Set additional options bellow if Robot is included.)</string>
-    <string name="UserAction_Reach_Missing_YN">Allow Furiten</string>
+    <!--string name="UserAction_Reach_Missing_YN">Allow Furiten</string-->
+    <string name="Label_FuritenReach">Furiten Riichi</string>
+    <string name="Label_FuritenReachNo">No</string>
+    <string name="Label_FuritenReachYes">Yes(Self-Pick only)</string>
+    <string name="Label_FuritenReachReject">Reject</string>
     <string name="UserAction_ReachReset">Canceled Riichi.</string>
     <string name="Label_AnkanAfterReach">Allow Ankan after Riichi.</string>
     <string name="UserAction_WaitOn">Wait!</string>

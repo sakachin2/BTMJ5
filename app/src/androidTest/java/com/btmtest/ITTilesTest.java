@@ -1,5 +1,6 @@
-//*CID://+vaauR~: update#= 721;                                    //~vaauR~
+//*CID://+vah0R~: update#= 728;                                    //~vah0R~
 //**********************************************************************//~v101I~
+//2021/11/19 vah1 complete vagv(delete from main/java)             //~vah0I~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vaauI~
 //2021/07/08 vaau split test deal to TilesTest.java                //~vaauI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
@@ -31,7 +32,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
 {                                                                  //~0914I~
     private TileData[] shuffledTileData;                           //~vaauI~
     private boolean swTestDeal;                                    //~vaauI~
-    private boolean swUseRed5;                                     //~vaauI~
+//  private boolean swUseRed5;                                     //~vaauI~//~vah0R~
     //*********************************************************************//~v@@@I~
 //  public TilesTest()                                                 //~v@@@R~//~va8xR~//~vaauR~
     public ITTilesTest()                                           //~vaauI~
@@ -57,7 +58,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
     //*****************************************************************//~v@@@I~
     public boolean shuffleTest()                                   //~vaauR~
     {                                                              //~vaauI~
-        if (Dump.Y) Dump.println("ITTilesTest.shuffleTest shuffledTileData="+TileData.toString(shuffledTileData));//+vaauI~
+        if (Dump.Y) Dump.println("ITTilesTest.shuffleTest shuffledTileData="+TileData.toString(shuffledTileData));//~vaauI~
 	    shuffleTestSub();                                           //~vaauI~
         if (swTestDeal)	//deal was set                             //~vaauI~
         {                                                          //~vaauI~
@@ -168,6 +169,8 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         {	shuffleNoPairTest(1); return;}                         //~1412R~
         if ((TestOption.option4 & TestOption.TO4_DEAL_13ORPHAN)!=0)//~vaauI~
         {	shuffleFreeWanpai(101); return;}                       //~vaauI~
+        if ((TestOption.option5 & TestOption.TO5_DEAL_OTHER_YAKUMAN)!=0)//~vaauI~
+        {	shuffleFreeWanpai(1011); return;}                      //~vaauI~
         if ((TestOption.option4 & TestOption.TO4_DEAL_7PAIR_TANYAO)!=0)//~vaauI~
         {	shuffleFreeWanpai(102); return;}                       //~vaauI~
         if ((TestOption.option4 & TestOption.TO4_DEAL_7PAIR_CHANTA)!=0)//~vaauI~
@@ -1280,7 +1283,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
     //*****************************************************************//~1501I~
     public void shuffleNoPairTest(int Pcase)                       //~1412I~
     {                                                              //~1412I~
-        if (Dump.Y) Dump.println("shuffleNoPairTest case="+Pcase); //~1412I~
+        if (Dump.Y) Dump.println("ITTilesTest.shuffleNoPairTest case="+Pcase); //~1412I~//~vah0R~
         	int[][] itsDeal;                                       //~1412I~
         	int[] itsDealTake;                                     //~1412I~
             ArrayList<TileData> al = deepCopyToArrayList();        //~1412I~
@@ -1372,15 +1375,15 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         if (Pcase==411) //samecolor                                //~1427I~
         {                                                          //~1427I~
         	itsDeal=new int[][]{                                   //~1427I~
-            						{ 3, 4, 5,  0, 1, 2,  6,11,11, 12,18, 19},//~1427I~//~vaauR~
+            						{ 3, 4, 5,  0, 1, 2,  6,11,12, 13,18, 19},//~1427I~//~vaauR~//~vah0R~
             						{ 1, 2, 3,  4, 5, 6,  4, 0, 6, 20,22, 23},//~1427I~//~vaauR~
             						{16,17, 3, 19,20,20, 23,25,26, 26,27, 27},//~1427I~//~1430R~//~vaauR~
-            						{ 0, 1, 2, 16,17,11, 12,28,17, 18,20, 21},//~1427I~//~vaauR~
+            						{ 0, 1, 2, 16,17,11, 12,28,17, 18,22, 21},//~1427I~//~vaauR~//~vah0R~
             					};                                 //~1427I~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~1427I~
-        	itsDealTake=new int[]{29,29,32,30};                    //~1427R~//~vaauR~
+        	itsDealTake=new int[]{20,29,32,30};                    //~1427R~//~vaauR~//~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1427I~
-        	itsDealTake=new int[]{30,30,32,29};                    //~vaauR~
+        	itsDealTake=new int[]{ 0,30,32, 6};                    //~vaauR~//+vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
         }                                                          //~1427I~
         else                                                       //~1501I~
@@ -1539,7 +1542,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
     //*****************************************************************//~vaauI~
     public void shuffleFreeWanpai(int Pcase)                       //~vaauI~
     {                                                              //~vaauI~
-        if (Dump.Y) Dump.println("shuffleFreeWanpai case="+Pcase); //~vaauI~
+        if (Dump.Y) Dump.println("shuffleFreeWanpai test case="+Pcase); //~vaauI~//~vagvR~//~vaauI~
         	int[][] itsDeal;                                       //~vaauI~
         	int[] itsDealTake;                                     //~vaauI~
             ArrayList<TileData> al = deepCopyToArrayList();        //~vaauI~
@@ -1561,6 +1564,21 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         	itsDealTake=new int[]{ 0,32,24,25};                    //~vaauI~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
         	itsDealTake=new int[]{ 0, 1,12,13};                    //~vaauI~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
+        }                                                          //~vaauI~
+        else                                                       //~vaauI~
+        if (Pcase==1011) //Other Yakuman                           //~vaauI~
+        {                                                          //~vaauI~
+        	itsDeal=new int[][]{                                   //~vaauI~
+            						{19,20,21, 23,23,23, 25,25,25, 19,20, 21}, //all green without dragon//~vaauI~
+            						{10,11,12, 17,17,17, 27,27,31, 31,32, 33},//~vaauI~
+            						{ 9,12,15, 22,22,22, 24,24,24, 26,26,26 },//~vaauI~
+            						{10,13,16,  2, 2, 2,  4, 4, 4,  5, 5,32 },//~vaauI~
+            					};                                 //~vaauI~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vaauI~
+        	itsDealTake=new int[]{19,10,24,28};                    //~vaauI~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
+        	itsDealTake=new int[]{28,19,12,13};                    //~vaauI~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
         }                                                          //~vaauI~
         else                                                       //~vaauI~

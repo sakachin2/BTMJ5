@@ -71,6 +71,7 @@
     <dimen name="smallfont_textsize_listitem_small">10sp</dimen>
     <dimen name="smallfont_buttonheight_dialog_button">36dp</dimen>
     <dimen name="smallfont_buttonheight_spinbutton">36dp</dimen>
+    <dimen name="smallfont_buttonheight_smallbutton">36dp</dimen>
     <dimen name="smallfont_buttonwidth_spinbutton">30dp</dimen>
     <dimen name="smallfont_buttonwidth_spinner">100dp</dimen>
 </resources>

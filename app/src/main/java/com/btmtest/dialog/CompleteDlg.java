@@ -1,6 +1,7 @@
-//*CID://+vac5R~:                             update#= 1112;       //+vac5R~
+//*CID://+vah2R~:                             update#= 1114;       //~vah2R~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//~vah2I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //2020/10/13 va16 do not show hidden dora when reach was not declared//~va03I~
@@ -71,7 +72,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private static final int TITLEID_REQ=R.string.Title_CompleteDlgReq;   //~9224I~//~9314R~
     private static final int TITLEID_RESP=R.string.Title_CompleteDlgResp;//~9314I~
     private static final int LAYOUTID=R.layout.completedlg;        //~9224I~
-    private static final int LAYOUTID_SMALLFONT=R.layout.completedlg_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.completedlg_theme;//~vac5I~
     private static final String HELPFILE="CompleteDlg";            //~9224I~
                                                                    //~9224I~
     private static final int COMPTYPE_NONE=0;                      //~9211I~
@@ -153,7 +154,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //    private TextView tvAmmount1,tvAmmount2,tvAmmount3,tvAmmount4;  //~9213I~//~9315R~
     private TextView tvCompType;                                   //~9218I~//~9219R~//~9223R~
     private TextView[] tvsName,tvsEswn,tvsAmmount,tvsCompType;                            //~9212R~//~9213R~//~9315R~
-    private TextView[] tvsSpritPosID;                              //~9531I~
+    private TextView[] tvsTotal;                                   //~vah2R~
+    private TextView[] tvsSpritPosID;                              //~vah2I~
     private URadioGroup[] rgsPaoEswn;                              //~9224I~
 //  private UCheckBox[] cbsPaoEswn,cbsCompType;                     //~9224I~//~9315R~//~9601R~
     private UCheckBox[] cbsCompType;                               //~9601I~
@@ -192,6 +194,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private int[] amtsError=new int[PLAYERS];                              //~9219I~//~9424R~
     private int[] amtPao=new int[PLAYERS];                                //~9219I~
     private int[] amtTotal=new int[PLAYERS];                    //~9219I~
+    private int[] amtScore=new int[PLAYERS];//eswnSeq              //+vah2I~
     private int[] paoLooser=new int[]{-1,-1,-1,-1};                      //~9225I~//~9601R~
     private int[] paoGainer=new int[]{-1,-1,-1,-1};                      //~9225I~//~9601R~
     private int[] paoRank=new int[PLAYERS];                        //~9225I~
@@ -262,8 +265,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~v@@@I~//~9226R~
     	dlg=new CompleteDlg();                                     //~v@@@I~
 //  	dlg.ufdlg=UFDlg.newInstance(dlg,TITLEID,LAYOUTID,          //~9224R~//~9227R~
-//  	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~//+vac5R~
-    	UFDlg.setBundle(dlg,TITLEID_REQ,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID_REQ,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
 				FLAG_OKBTN | FLAG_CANCELBTN | FLAG_CLOSEBTN | FLAG_HELPBTN | FLAG_RULEBTN,//~v@@@I~//~9314R~//~9708R~
 				TITLEID_REQ/*helptitleid*/,HELPFILE);         //~v@@@I~//~9224R~
         AG.aCompleteDlg=dlg;                                       //~v@@@I~
@@ -282,8 +285,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~9225I~//~9226R~
     	dlg=new CompleteDlg();                                     //~9225I~
 //  	dlg.ufdlg=UFDlg.newInstance(dlg,TITLEID,LAYOUTID,          //~9225I~//~9227R~
-//  	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~//+vac5R~
-    	UFDlg.setBundle(dlg,TITLEID_REQ,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,TITLEID_REQ,LAYOUTID,                      //~9227R~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID_REQ,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
 				FLAG_OKBTN | FLAG_CANCELBTN | FLAG_CLOSEBTN | FLAG_HELPBTN | FLAG_RULEBTN,//~9225I~//~9316R~//~9708R~
 				TITLEID_REQ/*helptitleid*/,HELPFILE);                  //~9225I~
         AG.aCompleteDlg=dlg;                                       //~9225I~
@@ -539,6 +542,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //        cbsCompType=new UCheckBox[]{cbCT1,cbCT2,cbCT3,cbCT4};      //~9315I~//~9528R~
           tvsName=new TextView[PLAYERS];                           //~9528I~
           tvsAmmount=new TextView[PLAYERS];                        //~9528I~
+          tvsTotal=new TextView[PLAYERS];                          //~vah2I~
           tvsCompType=new TextView[PLAYERS];                       //~9528I~
           tvsEswn=new TextView[PLAYERS];                           //~9528I~
           tvsSpritPosID=new TextView[PLAYERS];                     //~9531I~
@@ -548,6 +552,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 			LinearLayout   ll=(LinearLayout)UView.findViewById(PView,llsCompResultID[ii]);//~9528I~
 			tvsName[ii]      =(TextView)    UView.findViewById(ll,R.id.memberName);//~9528I~
 			tvsAmmount[ii]   =(TextView)    UView.findViewById(ll,R.id.ammountESWN);//~9528I~
+			tvsTotal[ii]   =(TextView)      UView.findViewById(ll,R.id.totalESWN);//~vah2I~
 			tvsCompType[ii]  =(TextView)    UView.findViewById(ll,R.id.tvComp);//~9528I~
 			tvsEswn[ii]      =(TextView)    UView.findViewById(ll,R.id.nameESWN);//~9528I~
 			tvsSpritPosID[ii]=(TextView)    UView.findViewById(ll,R.id.tvSpritPosID);//~9531I~
@@ -994,13 +999,21 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmount amtsError="+Arrays.toString(amtsError));//~9223R~//~9424R~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmount amtPao="+Arrays.toString(amtPao));//~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmount amtTotal="+Arrays.toString(amtTotal));//~9223I~
+        getScore(amtScore,amtTotal);                               //+vah2I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9223I~
         {                                                          //~9223I~
         	idx=eswnToIdx(ii);                                     //~9223I~
 			tvsAmmount[idx].setText(Integer.toString(amtTotal[ii]));//~9223R~
+			tvsTotal[idx].setText(Integer.toString(amtScore[ii])); //+vah2R~
         }                                                          //~9223I~
         savePayTo(amtsPayed);                                      //~9403I~
     }                                                              //~9403I~
+    //******************************************                   //+vah2I~
+    private void getScore(int[] Pscore,int[]PamtTotal)             //+vah2I~
+    {                                                              //+vah2I~
+    	if (Dump.Y) Dump.println("CompleteDlg.getScore PamtTotal="+Arrays.toString(PamtTotal)+",score="+Arrays.toString(Pscore));//+vah2I~
+        AG.aAccounts.updateScore(Pscore,PamtTotal);                //+vah2I~
+    }                                                              //+vah2I~
     //******************************************                   //~9403I~
     private void savePayTo(int[][] PamtNormalPay)                  //~9403I~
     {                                                              //~9403I~
@@ -1054,10 +1067,12 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     {                                                              //~9320I~
     	int idx;                                                   //~9320I~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmountReceived rcv_amtTotal="+Arrays.toString(rcv_amtTotal));//~9320I~
+        getScore(amtScore,rcv_amtTotal);                           //+vah2I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9320I~
         {                                                          //~9320I~
         	idx=eswnToIdx(ii);                                     //~9320I~
 			tvsAmmount[idx].setText(Integer.toString(rcv_amtTotal[ii]));//~9320I~
+			tvsTotal[idx].setText(Integer.toString(amtScore[ii])); //+vah2R~
         }                                                          //~9320I~
         getErrCompleteReceived();                                  //~9420I~
 		CMP.setAmtError(swsErrLooser,amtsError);                    //~9420R~//~9424R~

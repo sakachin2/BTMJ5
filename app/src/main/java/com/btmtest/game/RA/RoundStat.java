@@ -1,5 +1,6 @@
-//*CID://+vafpR~: update#= 323;                                    //+vafpR~
+//*CID://+vah3R~: update#= 324;                                    //~vafpR~//+vah3R~
 //**********************************************************************//~v101I~
+//2021/11/22 vah3 add Furiten reach reject option                  //+vah3I~
 //2021/11/01 vafp (Bug)ctrHand decreased duplecatedly; shanten calc failed.//~vafpI~
 //2021/11/01 vafm (Bug)getCtrEarthChanta returns >0 even tanyao earth exist(chanta and tanyao)//~vafmI~
 //2021/11/01 vafk INTENT_3SAMESEQ; 2nd call if once called according FixedFirst rule//~vafkI~
@@ -87,6 +88,7 @@ public class RoundStat                                               //~v@@@R~//
 	public boolean swReachOneShot;                                 //~1219I~
 	public boolean swYakuFixLast;                                  //~va8cI~
 	public boolean swFuritenReachOK;                               //~va8jR~
+	public boolean swFuritenReachReject;                           //+vah3I~
 //*************************                                        //~v@@@I~
 	public RoundStat()                                               //~v@@@R~//~va60R~
     {                                                              //~0914I~
@@ -135,6 +137,7 @@ public class RoundStat                                               //~v@@@R~//
         constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~
 		swYakuFixLast=RuleSettingYaku.isYakuFixLast();             //~va8cI~
 		swFuritenReachOK=RuleSettingYaku.isFuritenReachOK();       //~va8jR~
+		swFuritenReachReject=RuleSettingYaku.isFuritenReachReject();//+vah3I~
     }                                                              //~1118I~
     //*********************************************************    //~v@@@I~
     //*reset each round                                            //~1126I~

@@ -18,14 +18,21 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.18 : 2021/11/26
+        .Bug of mistaken meld of Chii.
+        .Add setting option of "Reject Furiten Riichi"
+*********************************************************************************************
+V1.18 : 2021/11/26
+        .On "#nd-Of-Hand" dialog, show total score as the result.
+        .Add setting option of "Reject Furiten Riichi"
+        .Bug of mistaken meld of Chii.
+
 V1.17 : 2021/11/19
         .Deal with Google Console Crash Repoer(occures when App is destroyed and restart, restrt will not be supported).
         .Strengthen smart Robot, effectively use Pon/Chii.
         .Bugs
          -Kuikae("Violation o Same-Meld") may be issued mistakenly.
          -Misjudgement of Yaku for some tiles pattern.
-
-*********************************************************************************************
 V1.17 : 2021/11/19
         .Deal with Google Console Crash Repoer(occures when App is destroyed and restart, restrt will not be supported).
         .For Robot, accidental Yaku such as Chankan(Ron for Kan call) is out of 1 han constraint.

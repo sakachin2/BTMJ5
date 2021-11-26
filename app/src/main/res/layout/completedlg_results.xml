@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 >   <!--show 4 members gain and loss-->
+    <include layout="@layout/completedlg_result_title"
+    />
     <include layout="@layout/completedlg_result"
             android:id="@+id/llcomp_result1"
     />

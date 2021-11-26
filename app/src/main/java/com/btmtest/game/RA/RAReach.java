@@ -1,5 +1,6 @@
-//*CID://+vagwR~: update#= 196;                                    //~vagwR~
+//*CID://+vah3R~: update#= 198;                                    //~vah3R~
 //**********************************************************************
+//2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/11/16 vagw (Bug)Not checked as Furiten if exaused           //~vagwI~
 //2021/10/26 vaf8 skip reach if PAO status exist                   //~vaf8I~
 //2021/07/29 vabm skip reach for shanpon to change ryanmen         //~vabmI~
@@ -668,7 +669,7 @@ public class RAReach
     private boolean chkFuritenReach(int PplayerEswn,int[] PitsWin,int PctrWin,int PposDiscard)//~va8jR~
     {                                                              //~va8jI~
         //************************                                 //~va8jI~
-        if (Dump.Y) Dump.println("RAReach.chkFuritenReach swFuritenReachOK="+RS.swFuritenReachOK+",playerEswn="+PplayerEswn+",posDiscard="+PposDiscard+",itsWin="+Utils.toStringMax(PitsWin,PctrWin));//~va8jR~
+        if (Dump.Y) Dump.println("RAReach.chkFuritenReach swFuritenReachOK="+RS.swFuritenReachOK+",swFuritenReachReject="+RS.swFuritenReachReject+",playerEswn="+PplayerEswn+",posDiscard="+PposDiscard+",itsWin="+Utils.toStringMax(PitsWin,PctrWin));//~va8jR~//~vah3R~
         boolean rc=false;                                          //~va8jI~
         if (!RS.swFuritenReachOK)                                  //~va8jI~
         {                                                          //~va8jI~
@@ -738,7 +739,7 @@ public class RAReach
     //*********************************************************    //~vagwI~
     public boolean[] getBtsWinListNoChkEmpty(int[] PitsHand,int PctrHand)//~vagwI~
     {                                                              //~vagwI~
-    	getBtsWinListNoChkEmpty(PitsHand,PctrHand,btsWinWork);     //+vagwR~
+    	getBtsWinListNoChkEmpty(PitsHand,PctrHand,btsWinWork);     //~vagwR~
         if (Dump.Y) Dump.println("RAReach.getBtsWinListNoChkEmpty return btsWinWork="+Utils.toString(btsWinWork,9));//~vagwI~
         return btsWinWork;                                         //~vagwI~
     }                                                              //~vagwI~
@@ -752,18 +753,18 @@ public class RAReach
         if (Dump.Y) Dump.println("RAReach.getBtsWinList set mode ctrWin="+ctrWin+",return btsWinWork="+Utils.toString(btsWinWork,9));
         return ctrWin;
     }
-    //*********************************************************    //+vagwI~
-    //*set list of win tile pos list                               //+vagwI~
-    //*********************************************************    //+vagwI~
-    public int getBtsWinListNoChkEmpty(int[] PitsHand,int PctrHand,boolean[] PbtsWin)//+vagwI~
-    {                                                              //+vagwI~
-        Arrays.fill(PbtsWin,false);                                //+vagwI~
-        swNoChkEmpty=true;                                         //+vagwI~
-	    int ctrWin=getBtsWinListMerge(PitsHand,PctrHand,PbtsWin);  //+vagwI~
-        swNoChkEmpty=false;                                        //+vagwI~
-        if (Dump.Y) Dump.println("RAReach.getBtsWinListNoChkEmpty set mode ctrWin="+ctrWin+",return btsWinWork="+Utils.toString(btsWinWork,9));//+vagwI~
-        return ctrWin;                                             //+vagwI~
-    }                                                              //+vagwI~
+    //*********************************************************    //~vagwI~
+    //*set list of win tile pos list                               //~vagwI~
+    //*********************************************************    //~vagwI~
+    public int getBtsWinListNoChkEmpty(int[] PitsHand,int PctrHand,boolean[] PbtsWin)//~vagwI~
+    {                                                              //~vagwI~
+        Arrays.fill(PbtsWin,false);                                //~vagwI~
+        swNoChkEmpty=true;                                         //~vagwI~
+	    int ctrWin=getBtsWinListMerge(PitsHand,PctrHand,PbtsWin);  //~vagwI~
+        swNoChkEmpty=false;                                        //~vagwI~
+        if (Dump.Y) Dump.println("RAReach.getBtsWinListNoChkEmpty set mode ctrWin="+ctrWin+",return btsWinWork="+Utils.toString(btsWinWork,9));//~vagwI~
+        return ctrWin;                                             //~vagwI~
+    }                                                              //~vagwI~
     //*********************************************************
     //*set list of win tile pos list,merge without clear
     //*********************************************************
@@ -965,7 +966,8 @@ public class RAReach
     {                                                              //~va8jI~
     	boolean rc;                                                //~va8jI~
         if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait swTrainingMode="+AG.swTrainingMode+",actionID="+PactionID+",PtdDiscard="+PtdDiscard.toString());//~va8jI~
-        if (!AG.swTrainingMode)                                    //~va8jI~
+//      if (!AG.swTrainingMode)                                    //~va8jI~//+vah3R~
+        if (!RS.swFuritenReachReject)                              //+vah3I~
         	return true;    //do Reach                             //~va8jI~
         int hanReach=AG.aPlayers.is1stTake() ? 2 : 1;		//dounble reach 2 han and reach 1 han//~va8jI~
         if (PactionID==GCM_REACH_OPEN)                             //~va8jI~

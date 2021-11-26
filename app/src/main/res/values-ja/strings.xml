@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.17</string>
+    <string name="app_version">v1.18</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -385,7 +385,8 @@
     <string name="NotAgreed">無効</string>
     <string name="Agreed">有効</string>
     <string name="NoGame">ノーテン流れ</string>
-    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。</string>
+    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。\n
+\"フリテン立直\"の\"なし\"、\"不可\"は操作の設定で\"テンパイ確認\"：有りの場合にのみチェックされます。</string>
     <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
     <string name="Label_ReachLimitOpenYakuman">役満払い</string>
     <string name="Label_ReachLimitOpenChombo">チョンボで続行</string>
@@ -721,7 +722,11 @@
     <string name="UserAction_Reach_Open">オープンリーチ</string>
     <string name="UserAction_Reach_Open_YN">オープン立直あり</string>
     <string name="Desc_OpenReach">ボット入りのときは下記、追加の設定あり</string>
-    <string name="UserAction_Reach_Missing_YN">フリテン立直あり</string>
+    <!--string name="UserAction_Reach_Missing_YN">フリテン立直あり</string-->
+    <string name="Label_FuritenReach">フリテン立直</string>
+    <string name="Label_FuritenReachNo">なし（和了できない）</string>
+    <string name="Label_FuritenReachYes">あり（自摸のみ）</string>
+    <string name="Label_FuritenReachReject">不可（できない）</string>
     <string name="UserAction_ReachReset">リーチを取り消しました</string>
     <string name="Label_AnkanAfterReach">立直後の暗槓あり</string>
     <string name="UserAction_WaitOn">ち待</string>
