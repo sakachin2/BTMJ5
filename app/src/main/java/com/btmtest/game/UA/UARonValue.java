@@ -1,5 +1,6 @@
-//*CID://+vagfR~: update#= 960;                                    //~vag0R~//~vagfR~
+//*CID://+vajaR~: update#= 963;                                    //~vajaR~
 //**********************************************************************//~v101I~
+//2022/01/23 vaja Not Notify Chankan to human                      //~vajaI~
 //2021/11/10 vagf (Bug)Robot could not by chankan                  //~vagfI~
 //2021/11/06 vag0 (Bug)Kan call is not shanten up                  //~vag0I~
 //2021/11/06 vafz (Bug of evaluate Pon/Chii ronvalue);add Pair for earth for the pon/chii//~vafzI~
@@ -88,7 +89,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     public Pair[] pairEarth;                                       //~va11I~
     private boolean swRonnable;                                    //~va11I~
     private boolean swYakuOtherEnvironment;                        //~va11I~
-    public boolean swRobot;                                               //~1130I~//~1217R~
+//  public boolean swRobot;                                               //~1130I~//~1217R~//~vajaR~
+    private boolean swRobot;                                       //~vajaI~
     public boolean swEmulation;                                    //~va60I~
     public int[] itsDoraOpen;                                      //~1217I~
     public int    ctrDoraOpen;                                      //~1217I~
@@ -175,6 +177,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     //*************************************************************************//~va8jI~
     //*from RAReach.chkMultiWait(<--UAReach.chkTenpai) to chk kataagari; dupCtr was already setup//~va8jR~//~va9bR~
     //*rc=-1:not ronnable,1:1han constraint, 2:2han constrint, 0 ok//~va8jI~
+    //*for human selectInfo                                        //+vajaI~
     //*************************************************************************//~va8jI~
     public int chkRankReachExceptDora(int Pplayer,TileData PtdWin,boolean PswCheckFix2,int[] PitsHand)//~va8jR~
     {                                                              //~va8jI~
@@ -315,6 +318,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     }                                                              //~vagfI~
     //*************************************************************************//~vafcI~
     //*from RARon to get value of emulated Ron after call Pon/Chii //~vafcI~
+    //*for Robot                                                   //~vajaI~
     //*************************************************************************//~vafcI~
     public RonResult getValueEvaluateCall(int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon)//~vafcI~
     {                                                              //~vafcI~
@@ -332,6 +336,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     }                                                              //~vafcI~
     //*************************************************************************//~vafnI~
     //*from RARon to get value of emulated Ron after 2nd call Pon/Chii//~vafnI~
+    //*for Robot                                                   //~vajaI~
     //*************************************************************************//~vafnI~
     public RonResult getValueEvaluateCall2nd(int Pplayer,int[] PitsHand/*34entry*/,TileData PtdRon,int Paction,int PposTop)//~vafnI~//~vafzR~
     {                                                              //~vafnI~
@@ -506,8 +511,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     	ronResult=new RonResult(0,0,0,new Rank());                                 //~va11R~
     	swYakuman=false;                                           //~va11I~
 		swTanyao=false;                                            //~va11I~
-        if (Dump.Y) Dump.println("UARonValue.chkRonValueSub entry swRobot="+swRobot+",dupctr="+Utils.toString(dupCtr));//~va24R~//+vagfR~
-        if (Dump.Y) Dump.println("UARonValue.chkRonValueSub entry dupctrAll="+Utils.toString(dupCtrAll));//+vagfI~
+        if (Dump.Y) Dump.println("UARonValue.chkRonValueSub entry swRobot="+swRobot+",dupctr="+Utils.toString(dupCtr));//~va24R~//~vagfR~
+        if (Dump.Y) Dump.println("UARonValue.chkRonValueSub entry dupctrAll="+Utils.toString(dupCtrAll));//~vagfI~
 //        if (!swCheckRonable)   //ronchk not done                 //~va11R~
 //        {                                                        //~va11R~
 //            swRonnable=chkRonnable();                            //~va11R~

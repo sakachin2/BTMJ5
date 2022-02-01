@@ -1,4 +1,4 @@
-//*CID://+vaedR~: update#= 587;                                    //~vaedR~
+//*CID://+vaedR~: update#= 592;                                    //~vaedR~
 //**********************************************************************//~v101I~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -94,8 +94,8 @@ public class DiceBox extends Thread                                //~v@@@R~
 	private static final int LIGHT_SWEEP_ANGLE=180;                //~v@@@I~
 //  private static final int RADIUS_WAITING_CIRCLE=10;             //~v@11R~//~vaedR~
 	private static final int RADIUS_WAITING_CIRCLE_STD=10;         //~vaedI~
-	private static final int RADIUS_WAITING_CIRCLE_SMALLDIP=4;     //+vaedR~
-    private static final int RADIUS_STARTER_CIRCLE=6;             //~v@11R~//+vaedR~
+	private static final int RADIUS_WAITING_CIRCLE_SMALLDIP=4;     //~vaedR~
+    private static final int RADIUS_STARTER_CIRCLE=6;             //~v@11R~//~vaedR~
 	private static final int WIDTH_WAITING_RING=2;                 //~v@11I~
     private static final int WIDTH_STARTER_RING=2;                 //~v@11R~
 	private static final int DISTANCE_WAITING_CIRCLE=2;              //~v@11I~
@@ -122,7 +122,8 @@ public class DiceBox extends Thread                                //~v@@@R~
 //  private Point[] posLight;                                      //~v@@@I~//~v@11R~
     private Point[] posLightWaiting;                               //~v@11I~
     private Point[] posLightStarter;                               //~v@11R~
-    private Rect[]  boxLight;                                      //~v@@@I~
+    private Rect[]  boxLight;                                      //~v@@@I~//+vaedR~
+//  public  Rect[]  boxLight;  //TODO test                         //+vaedR~
     private RectF[]  boxLightArc;                                  //~v@@@I~
     private RectF[]  boxLightArcInner;                             //~v@@@I~
     private Canvas canvas;                                                 //~v@@@I~
@@ -255,8 +256,8 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*for WaitingCircle                                           //~v@11I~
     	int d=RADIUS_WAITING_CIRCLE+DISTANCE_WAITING_CIRCLE;       //~v@11I~
         posLightWaiting=new Point[PLAYERS];                         //~v@11I~
-      	if (AG.swSmallDip)                                         //+vaedI~
-    		d=RADIUS_WAITING_CIRCLE;                               //+vaedI~
+      	if (AG.swSmallDip)                                         //~vaedI~
+    		d=RADIUS_WAITING_CIRCLE;                               //~vaedI~
         posLightWaiting[0]=new Point(boxLight[0].right+d,boxLight[0].top+d);//~v@11I~
         posLightWaiting[1]=new Point(boxLight[1].left+d,boxLight[1].top-d);//~v@11R~
         posLightWaiting[2]=new Point(boxLight[2].left-d,boxLight[2].bottom-d);//~v@11R~
@@ -738,6 +739,7 @@ public class DiceBox extends Thread                                //~v@@@R~
 	        drawLightShadow(Pplayer,LST_WAITING_RESPONSE);         //~v@21M~
         else                                                       //~v@21I~
 	        drawLight(Pplayer,LST_WAITING_RESPONSE);               //~v@21M~
+        if (Dump.Y) Dump.println("DiceBox.setWaitingResponse player="+Pplayer+",statusLight="+Utils.toString(statusLight));//~vaedI~
     }                                                              //~v@21I~
     //*********************************************************    //~v@@@I~
     //*return waiting player count                                 //~v@@@I~
@@ -995,14 +997,17 @@ public class DiceBox extends Thread                                //~v@@@R~
 	//*********************************************************    //~v@@@I~
 	public int isTouched(int Pxx,int Pyy)                          //~v@@@R~
     {                                                              //~v@@@I~
+        if (Dump.Y) Dump.println("DiceBox.isTouched xx="+Pxx+",yy="+Pyy);//~vaedI~
     	int rc=ISTOUCH_NONE;                                       //~v@@@R~
         int stat=0;                                                //~v@@@R~
 	    if (swEnable && (Pxx>rectDiceBox.left && Pxx<rectDiceBox.right && Pyy>rectDiceBox.top && Pyy<rectDiceBox.bottom))//~v@@@R~
         	rc=ISTOUCH_DICE;                                       //~v@@@R~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
+        	if (Dump.Y) Dump.println("DiceBox.isTouched stat="+Utils.toString(statusLight));//~vaedI~
             for (int ii=0;ii<PLAYERS;ii++)                         //~v@@@I~
             {                                                      //~v@@@I~
+	        	if (Dump.Y) Dump.println("DiceBox.isTouched allowance="+touchAllowance+",boxLight="+boxLight[ii].toString());//~vaedI~
                 if (statusLight[ii]==LST_WAITING_RESPONSE          //~v@@@R~
                 ||   statusLight[ii]==LST_WAITING_ANYONE           //~v@@@R~
                 ||   statusLight[ii]==LST_DISCARD_TIMEOUT          //~v@11I~
@@ -1011,6 +1016,7 @@ public class DiceBox extends Thread                                //~v@@@R~
                     {	                                           //~v@@@I~
                     	rc=ii;                                     //~v@@@R~
                 		stat=statusLight[ii];                      //~v@@@R~
+			        	if (Dump.Y) Dump.println("DiceBox.isTouched on boxLight stat="+stat);//~vaedI~
                         break;                                     //~v@@@I~
                     }                                              //~v@@@I~
             }                                                      //~v@@@I~

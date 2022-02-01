@@ -1,6 +1,7 @@
-//*CID://+va9eR~:                             update#=  216;       //+va9eR~
+//*CID://+vai2R~:                             update#=  217;       //+vai2R~
 //*****************************************************************//~v101I~
-//2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//+va9eI~
+//2021/12/21 vai2 reject DrawnHW request before deal also in not first round(2nd round status may be (30-32:GS_READY_TO_NEXTGAME_...)//+vai2I~
+//2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9eI~
 //2020/11/21 va48 (Bug)gameover rejected on client after suspendgame//~va48I~
 //2020/05/08 va07:close menu in game when preference selected      //~va07I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02R~
@@ -46,11 +47,11 @@ public class MenuInGameDlg                                         //~v@@@R~
 	public static final int ITEMID_RETURN               =ITEMID_BASE+6;//~9903I~//~9A29R~//~9C04R~//~0206R~//~0304R~
 	public static final int ITEMID_IOERR                =ITEMID_BASE+7 ;//~9A18I~//~9A29R~//~9C04R~//~0206R~//~0304R~
     public static final int ITEMID_WIN_ANYWAY           =ITEMID_BASE+8 ;//~9C04R~//~0205R~//~0206R~//~0304R~
-    public static final int ITEMID_REACH_ANYWAY         =ITEMID_BASE+9 ;//+va9eI~
-    public static final int ITEMID_PREF_SETTING         =ITEMID_BASE+10;//~0205I~//~0206R~//~0304R~//+va9eR~
-	public static final int ITEMID_MENU_HELP            =ITEMID_BASE+11;//~v@@@I~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04I~//~0205R~//~0206R~//~0304R~//+va9eR~
-	public static final int ITEMID_HELP                 =ITEMID_BASE+12;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~//+va9eR~
-	public static final int ITEMID_CLOSE                =ITEMID_BASE+13;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~//+va9eR~
+    public static final int ITEMID_REACH_ANYWAY         =ITEMID_BASE+9 ;//~va9eI~
+    public static final int ITEMID_PREF_SETTING         =ITEMID_BASE+10;//~0205I~//~0206R~//~0304R~//~va9eR~
+	public static final int ITEMID_MENU_HELP            =ITEMID_BASE+11;//~v@@@I~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04I~//~0205R~//~0206R~//~0304R~//~va9eR~
+	public static final int ITEMID_HELP                 =ITEMID_BASE+12;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~//~va9eR~
+	public static final int ITEMID_CLOSE                =ITEMID_BASE+13;//~v@@@R~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04R~//~0205R~//~0206R~//~0304R~//~va9eR~
                                                                    //~v@@@I~
 	private UMenuDlg umdlg;                                        //~v@@@I~
 	private UMenuDlg.UMenuDlgI listener;                                    //~v@@@I~
@@ -131,6 +132,20 @@ public class MenuInGameDlg                                         //~v@@@R~
     	if (Dump.Y) Dump.println("MenuInGameDlg.isGaming rc="+rc); //~0206I~
         return rc;                                                 //~0206I~
     }                                                              //~0206I~
+//**********************************                               //+vai2I~
+	private boolean isGamingNotInterRound()                        //+vai2I~
+    {                                                              //+vai2I~
+    	boolean rc;                                                //+vai2I~
+        if (!Status.isGamingNow())                                 //+vai2I~
+        {                                                          //+vai2I~
+        	UView.showToast(R.string.Err_GameStatusForMenuInGame); //+vai2I~
+            rc=false;                                              //+vai2I~
+        }                                                          //+vai2I~
+        else                                                       //+vai2I~
+        	rc=true;                                               //+vai2I~
+    	if (Dump.Y) Dump.println("MenuInGameDlg.isGamingNotInterRound rc="+rc);//+vai2I~
+        return rc;                                                 //+vai2I~
+    }                                                              //+vai2I~
 //**********************************                               //~va02I~
 	private boolean isGaming(int Pmsgid)                           //~va02I~
     {                                                              //~va02I~
@@ -170,7 +185,8 @@ public class MenuInGameDlg                                         //~v@@@R~
             	doCompResult();                                    //~v@@@I~
                 break;                                             //~v@@@R~
 			case ITEMID_DRAWN_GAME:                                //~v@@@I~
-            	if (!isGaming())                                   //~0206I~
+//          	if (!isGaming())                                   //~0206I~//+vai2R~
+            	if (!isGamingNotInterRound())                      //+vai2I~
                 {
 	        		swDismiss=false;
                 	break;                                         //~0206I~
@@ -227,11 +243,11 @@ public class MenuInGameDlg                                         //~v@@@R~
                 	break;                                         //~0206I~
             	doWinAnyway();                                     //~0205I~
                 break;                                             //~0205I~
-			case ITEMID_REACH_ANYWAY:                              //+va9eI~
-            	if (!isGaming())                                   //+va9eI~
-                	break;                                         //+va9eI~
-            	doReachAnyway();                                   //+va9eI~
-                break;                                             //+va9eI~
+			case ITEMID_REACH_ANYWAY:                              //~va9eI~
+            	if (!isGaming())                                   //~va9eI~
+                	break;                                         //~va9eI~
+            	doReachAnyway();                                   //~va9eI~
+                break;                                             //~va9eI~
 			case ITEMID_MENU_HELP:                                 //~v@@@R~
             	doMenuHelp();                                      //~v@@@R~
                 break;                                             //~v@@@I~
@@ -320,12 +336,12 @@ public class MenuInGameDlg                                         //~v@@@R~
         if (Dump.Y) Dump.println("MenuInGameDlg.doWinAnyway");     //~0205I~
         swDismiss= UARon.winAnyway();                               //~0205I~
     }                                                              //~0205I~
-//**********************************                               //+va9eI~
-    private void doReachAnyway()                                   //+va9eI~
-    {                                                              //+va9eI~
-        if (Dump.Y) Dump.println("MenuInGameDlg.doReachAnyway");   //+va9eI~
-        swDismiss= UAReach.reachAnyway();                          //+va9eI~
-    }                                                              //+va9eI~
+//**********************************                               //~va9eI~
+    private void doReachAnyway()                                   //~va9eI~
+    {                                                              //~va9eI~
+        if (Dump.Y) Dump.println("MenuInGameDlg.doReachAnyway");   //~va9eI~
+        swDismiss= UAReach.reachAnyway();                          //~va9eI~
+    }                                                              //~va9eI~
 //**********************************                               //~9903I~
     private void doReturn()                                        //~9903I~
     {                                                              //~9903I~

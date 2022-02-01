@@ -1,6 +1,8 @@
-//*CID://+vaceR~: update#= 794;                                    //+vaceR~
+//*CID://+vaj7R~: update#= 798;                                    //~vaj7R~
 //**********************************************************************//~v101I~
-//2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//+vaceI~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
+//2022/01/19 vaj3 Gmsg:Reach should be show at discard             //~vaj3I~
+//2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//~vaceI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -210,8 +212,18 @@ public class UserAction       //~v@@@R~
     	int eswn=AG.aAccounts.playerToEswn(Pplayer);               //~v@@@I~
         String str=eswn+MSG_SEPAPP2+ACAction.strTD(Ptd)+MSG_SEPAPP2+Padditional;//~v@@@I~
         if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",eswn="+eswn+",str="+str+",additional="+Padditional);//~v@@@I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient with addidtional rc="+str);//~vaj7I~
         return str;                                                //~v@@@I~
     }                                                              //~v@@@I~
+	//*************************************************************************//~vaj7I~
+    public static String makeMsgDataToClient(int Pplayer,TileData Ptd,int Padditional,String Pmore)//~vaj7I~
+    {                                                              //~vaj7I~
+    	int eswn=AG.aAccounts.playerToEswn(Pplayer);               //~vaj7I~
+        String str=eswn+MSG_SEPAPP2+ACAction.strTD(Ptd)+MSG_SEPAPP2+Padditional+MSG_SEPAPP2+Pmore;//~vaj7I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",eswn="+eswn+",str="+str+",additional="+Padditional+",Pmore="+Pmore);//~vaj7I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient with additional and more rc="+str);//~vaj7I~
+        return str;                                                //~vaj7I~
+    }                                                              //~vaj7I~
 	//*************************************************************************//~v@@7I~
     public static String makeMsgDataToClient(int Pplayer,TileData Ptd)//~v@@7I~
     {                                                              //~v@@7I~
@@ -229,6 +241,16 @@ public class UserAction       //~v@@@R~
         if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",additional2="+Padditional2+",str="+str);//~v@@@R~
         return str;                                                //~v@@@I~
     }                                                              //~v@@@I~
+	//*************************************************************************//+vaj7I~
+	//*player on msg data is eswn of the player                    //+vaj7I~
+	//*************************************************************************//+vaj7I~
+    public  static String makeMsgDataToClient(int Pplayer,TileData Ptd,int Padditional,int Padditional2,String Pmore)//+vaj7I~
+    {                                                              //+vaj7I~
+        String str=makeMsgDataToClient(Pplayer,Ptd,Padditional)+MSG_SEPAPP2+Padditional2+MSG_SEPAPP2+Pmore;//+vaj7I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",additional2="+Padditional2+",str="+str);//+vaj7I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient with additional 1/2 and more rc="+str);//+vaj7I~
+        return str;                                                //+vaj7I~
+    }                                                              //+vaj7I~
 //    //*************************************************************************//~v@@@R~
 //    //*msgdata to server,data after eswn(eswn added at sendToServer()~v@@@R~//~v@@@R~
 //    //*************************************************************************//~v@@@R~
@@ -754,6 +776,7 @@ public class UserAction       //~v@@@R~
     {                                                              //~v@@@I~
     	if (!Status.isGaming())                                    //~v@@7I~
         {                                                          //~v@@7I~
+        	if (Dump.Y) Dump.println("UserAction.action return by ! isGaming actionID=msg.what="+Pmsg.what);//~vaceI~
         	return;                                                //~v@@7I~
         }                                                          //~v@@7I~
         boolean rc=false;                                          //~v@@@I~
@@ -781,14 +804,14 @@ public class UserAction       //~v@@@R~
         {                                                          //~v@@@I~
 			swReceived=false;                                      //~v@@@I~
 //      	if (!getActionInfo(actionID,player,parm))                 //~v@@@I~//~v@@7R~//~9426R~
-            int orgActionID=actionID;                              //+vaceI~
-            if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //+vaceI~
-                actionID=GCM_RON;                                  //+vaceI~
-//      	if (!getActionInfo(actionID,player,parm,strParm))      //~9426I~//+vaceR~
-        	if (!getActionInfo(actionID,player,parm,strParm,orgActionID))//+vaceI~
+            int orgActionID=actionID;                              //~vaceI~
+            if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //~vaceI~
+                actionID=GCM_RON;                                  //~vaceI~
+//      	if (!getActionInfo(actionID,player,parm,strParm))      //~9426I~//~vaceR~
+        	if (!getActionInfo(actionID,player,parm,strParm,orgActionID))//~vaceI~
         		return;                                      //~v@@@I~
-//          if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //~0205I~//+vaceR~
-//              actionID=GCM_RON;                                  //~0205I~//+vaceR~
+//          if (actionID==GCM_RON_ANYWAY)  //bypass rochk done     //~0205I~//~vaceR~
+//              actionID=GCM_RON;                                  //~0205I~//~vaceR~
         }                                                          //~v@@@I~
         if (isServer)                                              //~v@@@I~
         {                                                          //~v@@@I~
@@ -862,8 +885,8 @@ public class UserAction       //~v@@@R~
     //*On Server/Clinet, get info when button pushed                //~v@@@R~//~v@@7R~
     //*************************************************************************//~v@@@R~
 //  public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm)        //~v@@@R~//~v@@7R~//~9426R~
-//  public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm)//~9426I~//+vaceR~
-    private boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm,int PorgActionID)//+vaceI~
+//  public boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm)//~9426I~//~vaceR~
+    private boolean getActionInfo(int PactionID,int Pplayer,int[] PintParm,String[] PstrParm,int PorgActionID)//~vaceI~
     {                                                              //~v@@@R~
         boolean rc=true;                                           //~v@@@R~
         int playerTakeDiscardRobot=-1;                             //~va66R~
@@ -952,11 +975,11 @@ public class UserAction       //~v@@@R~
     		updateButtonStatusReach(PactionID);             //~9A30R~//~9A31R~
             break;                                                 //~9A30R~//~9A31R~
         case GCM_RON:                                              //~v@@@R~
-//      case GCM_RON_ANYWAY:                                       //~0205I~//+vaceR~
+//      case GCM_RON_ANYWAY:                                       //~0205I~//~vaceR~
 //          rc=complete(Pplayer);                                   //~v@@@R~//~v@@7R~
 //          rc=UAR.selectInfo(isServer,Pplayer,PintParm);                   //~9B23I~//~0205R~
-//          rc=UAR.selectInfo(PactionID,isServer,Pplayer,PintParm);//~0205I~//+vaceR~
-            rc=UAR.selectInfo(PorgActionID,isServer,Pplayer,PintParm);//+vaceI~
+//          rc=UAR.selectInfo(PactionID,isServer,Pplayer,PintParm);//~0205I~//~vaceR~
+            rc=UAR.selectInfo(PorgActionID,isServer,Pplayer,PintParm);//~vaceI~
             break;                                                 //~v@@@R~
         case GCM_OPEN:                                             //~v@@@R~
 //          rc=open(Pplayer);                                       //~v@@@R~//~v@@7R~
@@ -1506,6 +1529,7 @@ public class UserAction       //~v@@@R~
 	 	case GCM_NEXT_PLAYER_PONKAN:                               //~9629I~
 	 	case GCM_TIMEOUT_STOPAUTO:                                 //~9B29I~
 	 	case GCM_2TOUCH:                                           //~9C04I~
+	 	case GCM_REACH:                                            //~vaj3I~
 	    	if (Dump.Y) Dump.println("UserAction.resetGmsg bypass reset");//~9629I~
         	break;                                                 //~9629I~
         default:                                                   //~9629I~

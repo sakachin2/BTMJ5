@@ -1,6 +1,7 @@
-//*CID://+vaaWR~: update#= 701;                                    //+vaaWR~
+//*CID://+vajbR~: update#= 702;                                    //+vajbR~
 //**********************************************************************//~v101I~
-//2021/07/23 vaaW PlayAlone mode;hung 13orphan if not ankan ronable//+vaaWI~
+//2022/01/23 vajb (bug)err FuretenAfterReach was not set for chankan//+vajbI~
+//2021/07/23 vaaW PlayAlone mode;hung 13orphan if not ankan ronable//~vaaWI~
 //2021/07/23 vaaV PlayAlone mode;win btn after chankan cause err NotYourTurn//~vaaVI~
 //2021/07/19 vaaU chankan was not notified                         //~vaaUI~
 //2021/06/28 vaa5 (Bug)Dump at canceled Kan at 1st take because lastDiscarded is null//~vaa5I~
@@ -63,7 +64,7 @@ public class UAKan                                                 //~v@@@R~//~v
     private int selectedTilePos;                                   //~v@@6I~
     private boolean swSelectRequested;                             //~v@@6I~
 //    private int timeout;                                           //~9623I~
-//  private boolean swAnkanRon;                                            //~0405I~//+vaaWR~
+//  private boolean swAnkanRon;                                            //~0405I~//~vaaWR~
     private boolean swManualRobot;    //take by button in training mode//~va66R~
 //*************************                                        //~v@@@I~
 	public UAKan(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~v@@6R~
@@ -88,7 +89,7 @@ public class UAKan                                                 //~v@@@R~//~v
         isServer=Accounts.isServer();                              //~v@@@R~
 //      delayTake=OperationSetting.getDelayKanTake();              //~v@@6I~//~9209R~
 //        timeout=RuleSetting.getTimeoutTakeKan();                   //~9623I~
-//      swAnkanRon= RuleSettingYaku.isAvailableAnkanRon();          //~0405I~//+vaaWR~
+//      swAnkanRon= RuleSettingYaku.isAvailableAnkanRon();          //~0405I~//~vaaWR~
         if (AG.swTrainingMode)                                     //~va66I~
 	    	swManualRobot= RuleSettingOperation.isAllowRobotAllButton();//~va66R~
         if (Dump.Y) Dump.println("UAKan init isServer="+isServer); //~v@@@R~//~v@@6R~
@@ -286,7 +287,8 @@ public class UAKan                                                 //~v@@@R~//~v
 	//*************************************************************************//~0407I~
 	//*rc>0:multiple,0:match on a Pon,-1:no match with pon         //~0407I~
 	//*************************************************************************//~0407I~
-    public int chkEarth(int Pplayer)                               //~0407I~
+//  public int chkEarth(int Pplayer)                               //~0407I~//+vajbR~
+    private int chkEarth(int Pplayer)                              //+vajbI~
     {                                                              //~0407I~
         if (Dump.Y) Dump.println("UAKan.chkEarth player="+Pplayer+",selected="+TileData.toString(selectedTile));//~0407I~
         int rc=-1;                                                 //~0407I~
@@ -561,11 +563,11 @@ public class UAKan                                                 //~v@@@R~//~v
 //      setTimeout(PswServer,Pplayer);    //timeout to take wanpai //~9623I~//~0403R~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_KAN)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
-        if (Dump.Y) Dump.println("UAKan.takeKan kanType="+PLS.getKanType());//~0402I~//~va60R~//+vaaWR~
+        if (Dump.Y) Dump.println("UAKan.takeKan kanType="+PLS.getKanType());//~0402I~//~va60R~//~vaaWR~
 //      if (!tds[0].isKanRiver())                                  //~0403I~//~0405R~
         if (tds[0].isKanAdd()                                      //~0405I~
-//      ||  (tds[0].isKanTaken() && swAnkanRon)                    //~0405R~//+vaaWR~
-        ||  (tds[0].isKanTaken())                                  //+vaaWI~
+//      ||  (tds[0].isKanTaken() && swAnkanRon)                    //~0405R~//~vaaWR~
+        ||  (tds[0].isKanTaken())                                  //~vaaWI~
            )                                                       //~0405I~
         {                                                          //~0403I~
         	UADL.setRonable(true);     	//for dup ron availability,reset at take//~0402I~

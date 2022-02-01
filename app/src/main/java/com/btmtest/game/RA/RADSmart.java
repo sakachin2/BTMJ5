@@ -1,5 +1,11 @@
-//*CID://+vagyR~: update#= 410;                                    //~vagwR~//~vagyR~
+//*CID://+vaj5R~: update#= 427;                                    //~vaj5R~
 //**********************************************************************
+//2022/01/19 vaj5 Not ronable when furiten even if taken if furitenreachoption=No//~vaj5I~
+//2022/01/17 vaiz (Bug)chanta 7pair,missing set INTENT_CHANT when chant pair>=5//~vaizI~
+//2022/01/17 vaiw (bug)itsHandValue was not clearted before evaluateTile if SwDoReach was reset//~vaiwI~
+//2022/01/15 vaiq when callChii by samecolor,additional to shantendown,chk othercolor exist to discard//~vaiqI~
+//2022/01/14 vain consider orphan TN3/TN7 for INTENT_CHANTA        //~vainI~
+//2021/12/22 vai6 (Bug)isDoraOpen was not evaluated kan dora.(Ron value is OK)//~vai6I~
 //2021/11/18 vagy for INTENT_SAMECOLOR;take word pair only into acount//~vagyI~
 //2021/11/16 vagw (Bug)Not checked as Furiten if exaused           //~vagwI~
 //2021/11/15 vagt more ristriction for intent tanyao;chk honor tile pair//~vagtI~
@@ -262,7 +268,10 @@ public class RADSmart
         {
             tdDiscard = selectDiscardReach(myShanten);    //chk otherPlayer//~1309R~
             if (tdDiscard==null)                                   //~1309I~
+            {                                                      //~vaiwI~
             	swDoReach=false;                                   //~1309R~
+            	Arrays.fill(itsHandValue,DV_BASE); //avoid duplicated chkOther value by selectDiscardReach//~vaiwI~
+            }                                                      //~vaiwI~
         }
       if (!swDoReach)                                         //~1309I~
 	    tdDiscard=selectDiscard(myShanten);                                   //~1126I~//~1127R~//~1201R~
@@ -462,7 +471,7 @@ public class RADSmart
     	TileData tdDiscard;                                        //~1309I~
         int posOld,posNew;                                          //~1309I~
         //**************************                               //~1309I~
-        if (Dump.Y) Dump.println("RADSmart.selectDiscard swDoReach="+swDoReach);//~1309I~
+        if (Dump.Y) Dump.println("RADSmart.selectDiscardReach swDoReach="+swDoReach);//~1309I~//~vaiqR~
         tdDiscard=selectTile();                                    //~1309I~
         if (tdDiscard==null)                                       //~1309I~
         	return null;                                          //~1309I~
@@ -617,6 +626,7 @@ public class RADSmart
     //***********************************************************************
     //*get upper only considered next/conbutsu
     //*set array of (type,number)
+    //*set itsHandvalue for dora                                   //~vai6I~
     //***********************************************************************
     private void getDoraOpen()
     {
@@ -636,6 +646,18 @@ public class RADSmart
         }
         if (Dump.Y) Dump.println("RADSmart.getDoraOpen ctrDoraOpen="+ctrDoraOpen+",itsDoraOpen="+Arrays.toString(itsDoraOpen));
     }
+    //***********************************************************************//~vai6I~
+    //*no update itsHandValue                                      //~vai6I~
+    //***********************************************************************//~vai6I~
+    private void setItsDoraOpen()                                  //~vai6I~
+    {                                                              //~vai6I~
+        if (Dump.Y) Dump.println("RADSmart.setItsDoraOpen swUpdateDora="+RS.swUpdateDora);//~vai6I~
+        RS.swUpdateDora=false;                                     //~vai6I~
+        Arrays.fill(itsDoraOpen,0);                                //~vai6I~
+        ctrDoraOpen=AG.aUARonValue.UARDT.getDoraOpen(itsDoraOpen); //~vai6I~
+        swDoraOpened=true;                                         //~vai6I~
+        if (Dump.Y) Dump.println("RADSmart.setItsDoraOpen ctrDoraOpen="+ctrDoraOpen+",itsDoraOpen="+Arrays.toString(itsDoraOpen));//~vai6I~
+    }                                                              //~vai6I~
     //***********************************************************************
     private void setDoraOpen(int Ptype,int Pnum)
     {
@@ -644,8 +666,9 @@ public class RADSmart
         	TileData td=tdsHand[ii];
             if (Ptype==td.type && Pnum==td.number)
             {                                                      //~1220I~
+        		if (Dump.Y) Dump.println("RADSmart.setDoraOpen old itsHandValue["+ii+"]="+itsHandValue[ii]);//~vaiqI~
 	            itsHandValue[ii]+=DV_DORA;    //= -600             //~1220R~
-        		if (Dump.Y) Dump.println("RADSmart.setDoraOpen itsHandValue["+ii+"]="+itsHandValue[ii]);//~1220I~
+        		if (Dump.Y) Dump.println("RADSmart.setDoraOpen idx="+ii+",pos="+(Ptype*9+Pnum)+",new itsHandValue["+ii+"]="+itsHandValue[ii]);//~1220I~//~vaiqR~
             }                                                      //~1220I~
         }
         if (Dump.Y) Dump.println("RADSmart.setDoraOpen type="+Ptype+",num="+Pnum+",itsDoraOpen="+Utils.toStringMax(itsHandValue,ctrHand));//~1125R~//~1305R~
@@ -653,9 +676,14 @@ public class RADSmart
     //***********************************************************************//~1216I~
     public boolean isDoraOpen(TileData Ptd)                        //~1216I~
     {                                                              //~1216I~
+        if (Dump.Y) Dump.println("RADSmart.isDoraOpen swDoraOpened="+swDoraOpened+",swUpdateDora="+RS.swUpdateDora);//~vai6I~
     	boolean rc=false;                                          //~1216I~
         if (!swDoraOpened)                                         //~vafaI~
-    		getDoraOpen();                                         //~vafaI~
+//  		getDoraOpen();                                         //~vafaI~//~vai6R~
+    		setItsDoraOpen();//avoid update itsHandValue           //~vai6I~
+        else                                                       //~vai6I~
+    	if (RS.swUpdateDora)                                       //~vai6I~
+    		setItsDoraOpen();                                      //~vai6R~
         for (int ii=0;ii<ctrDoraOpen;ii++)	//conver to pos        //~1216I~
         {                                                          //~1216I~
         	if (Ptd.type==itsDoraOpen[ii+ii] && Ptd.number==itsDoraOpen[ii+ii+1])//~1216I~
@@ -665,7 +693,7 @@ public class RADSmart
             }                                                      //~1216I~
             	                                                   //~1216I~
         }                                                          //~1216I~
-        if (Dump.Y) Dump.println("RADSmart.isDoraOpen rc="+rc+",type="+Ptd.type+",num="+Ptd.number+",itsDoraOpen="+Utils.toString(itsDoraOpen));//~1216I~//~vaamR~
+        if (Dump.Y) Dump.println("RADSmart.isDoraOpen rc="+rc+",type="+Ptd.type+",num="+Ptd.number+",ctrDoraOpen="+ctrDoraOpen+",itsDoraOpen="+Utils.toString(itsDoraOpen));//~1216I~//~vaamR~//~vai6R~
         return rc;
     }                                                              //~1216I~
     //***********************************************************************//~vagbI~
@@ -764,7 +792,11 @@ public class RADSmart
     private boolean isDoraOpenChanta()                             //~1221I~
     {                                                              //~1221I~
         if (!swDoraOpened)                                         //~vafaI~
-    		getDoraOpen();                                         //~vafaI~
+//    		getDoraOpen();                                         //~vafaI~//~vai6R~
+      		setItsDoraOpen();   //avoid update itsHandValue        //~vai6I~
+        else                                                       //~vai6I~
+    	if (RS.swUpdateDora)                                       //~vai6I~
+      		setItsDoraOpen();                                      //~vai6I~
     	boolean rc=false;                                          //~1221I~
         for (int ii=0;ii<ctrDoraOpen;ii++)	//conver to pos        //~1221I~
         {                                                          //~1221I~
@@ -784,7 +816,11 @@ public class RADSmart
     public boolean isDoraOpen(int Ppos)                            //~1220I~
     {                                                              //~1220I~
         if (!swDoraOpened)                                         //~vafaI~
-    		getDoraOpen();                                         //~vafaI~
+//  		getDoraOpen();                                         //~vafaI~//~vai6R~
+    		setItsDoraOpen();   //avoid update itshandvalue        //~vai6I~
+        else                                                       //~vai6I~
+    	if (RS.swUpdateDora)                                       //~vai6I~
+    		setItsDoraOpen();                                      //~vai6I~
     	boolean rc=false;                                          //~1220I~
         int type=Ppos/CTR_NUMBER_TILE; int num=Ppos%CTR_NUMBER_TILE;//~1220I~
         for (int ii=0;ii<ctrDoraOpen;ii++)	//conver to pos        //~1220I~
@@ -796,15 +832,15 @@ public class RADSmart
             }                                                      //~1220I~
                                                                    //~1220I~
         }                                                          //~1220I~
-        if (Dump.Y) Dump.println("RADSmart.isDoraOpen rc="+rc+",pos="+Ppos+",type="+type+",num="+num+",itsDoraOpen="+Utils.toString(itsDoraOpen,-1,ctrDoraOpen));//~1220I~
+        if (Dump.Y) Dump.println("RADSmart.isDoraOpen rc="+rc+",pos="+Ppos+",type="+type+",num="+num+",ctDoraOpen="+ctrDoraOpen+",itsDoraOpen="+Utils.toString(itsDoraOpen));//~1220I~//~vai6R~
         return rc;                                                 //~1220I~
     }                                                              //~1220I~
     //***********************************************************************//~vaaLR~
     public boolean isDoraOpenCurrent(int Ppos)                     //~vaaLR~
     {                                                              //~vaaLR~
         if (Dump.Y) Dump.println("RADSmart.isDoraOpenCurrent swUpdateDora="+RS.swUpdateDora);//~vaaLR~
-    	if (RS.swUpdateDora)                                       //~vaaLR~
-    		getDoraOpen();                                         //~vaaLR~
+//  	if (RS.swUpdateDora)                                       //~vaaLR~//~vai6R~
+//  		getDoraOpen();       //will be done at itsDoraOpen     //~vaaLR~//~vai6R~
 		boolean rc=isDoraOpen(Ppos);                               //~vaaLR~
         if (Dump.Y) Dump.println("RADSmart.isDoraOpenCurrent rc="+rc+",pos="+Ppos);//~vaaLR~
         return rc;                                                 //~vaaLR~
@@ -879,7 +915,7 @@ public class RADSmart
     //***********************************************************************//~1213I~
     public  boolean chkFuriten(int PeswnOther,int[] PitsHand,int PctrHand)//~1213I~
     {                                                              //~1213I~
-        if (Dump.Y) Dump.println("RADSmart.chkFuriten eswnOther="+PeswnOther+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9,PctrHand));//~1213I~//~1306R~
+        if (Dump.Y) Dump.println("RADSmart.chkFuriten eswnOther="+PeswnOther+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~1213I~//~1306R~//~vaj5R~
     	boolean rc=false;                                          //~1213I~
 //  	getWinList(PitsHand,PctrHand);                             //~1213I~//~vagwR~
     	getWinListNoChkEmpty(PitsHand,PctrHand);                   //~vagwI~
@@ -914,8 +950,11 @@ public class RADSmart
         	if (btsWin[ii])                                        //~va8fI~
             {                                                      //~va8fI~
 //          	if (RS.isFuritenRon(Peswn,ii))                     //~va8fI~//~va96R~
-            	if (!PswTake && RS.isFuritenRon(Peswn,ii))         //~va96I~
+//          	if (!PswTake && RS.isFuritenRon(Peswn,ii))         //~va96I~//~vaj5R~
+            	if (!PswTake && RS.isFuritenRon(Peswn,ii)          //+vaj5I~
+        		||   PswTake && RS.RSP[Peswn].isReachStatusErrFuriten())//+vaj5I~
                 {                                                  //~va8fI~
+				    if (Dump.Y) Dump.println("RADSmart.chkFuritenMultiWait Furiten");//~vaj5I~
         	    	AG.aRARon.setRonableMultiWaitCBFuriten(ii/*pos of Ron Tile*/);//~va96R~
                     swFuriten=true;	                               //~va96I~
                 	rc=true;                                       //~va8fI~
@@ -1091,8 +1130,8 @@ public class RADSmart
         return rc;                                                 //~1215I~
     }                                                              //~1215I~
     //***********************************************************************//~1218I~
-//  private boolean chkSameColorTrend(int Ptype,int Pshanten,int PctrType,int PctrWordDup,int PctrOther,int PctrTaken)//~1218I~//+vagyR~
-    private boolean chkSameColorTrend(int Ptype,int Pshanten,int PctrType,int PctrWordDup,int PctrOther,int PctrWordSingle,int PctrTaken)//+vagyI~
+//  private boolean chkSameColorTrend(int Ptype,int Pshanten,int PctrType,int PctrWordDup,int PctrOther,int PctrTaken)//~1218I~//~vagyR~
+    private boolean chkSameColorTrend(int Ptype,int Pshanten,int PctrType,int PctrWordDup,int PctrOther,int PctrWordSingle,int PctrTaken)//~vagyI~
     {                                                              //~1218I~
         if (Dump.Y) Dump.println("RADSmart.chkSameColorTrend entry type="+Ptype+",shanten="+Pshanten);//~vafgI~
     	boolean rc;                                                //~1219I~
@@ -1127,10 +1166,10 @@ public class RADSmart
             {                                                          //~1218I~//~1219R~
 //              rc=PctrOther<PctrType && (PctrOther-PctrWordDup)<limit;//~1218I~//~1219R~//~1308R~
 //              rc=PctrOther<PctrType && PctrOther<=limit;         //~1308I~//~vagyR~
-                rc=PctrOther<(PctrType+PctrWordDup) && PctrOther<=limit && (PctrOther+PctrWordSingle)<=(limit+1);//+vagyR~
+                rc=PctrOther<(PctrType+PctrWordDup) && PctrOther<=limit && (PctrOther+PctrWordSingle)<=(limit+1);//~vagyR~
             }                                                          //~1218I~//~1219R~
         }                                                          //~1219I~
-        if (Dump.Y) Dump.println("RADSmart.chkSameColorTrend rc="+rc+",old intent=x"+Integer.toHexString(intent)+",ctrTaken="+PctrTaken+",limit="+limit+",type="+Ptype+",shanten="+Pshanten+",ctrType="+PctrType+",ctrWordDup="+PctrWordDup+",ctrOther="+PctrOther+",ctrWordSingle="+PctrWordSingle);//~1218I~//~1219R~//~1308R~//+vagyR~
+        if (Dump.Y) Dump.println("RADSmart.chkSameColorTrend rc="+rc+",old intent=x"+Integer.toHexString(intent)+",ctrTaken="+PctrTaken+",limit="+limit+",type="+Ptype+",shanten="+Pshanten+",ctrType="+PctrType+",ctrWordDup="+PctrWordDup+",ctrOther="+PctrOther+",ctrWordSingle="+PctrWordSingle);//~1218I~//~1219R~//~1308R~//~vagyR~
         return rc;                                                 //~1218I~
     }                                                              //~1218I~
     //***********************************************************************//~1131I~
@@ -1138,7 +1177,7 @@ public class RADSmart
     //***********************************************************************//~1131I~
     private int chkIntentSameColor(int PctrTaken,int Pshanten)                   //~1131I~//~1215R~//~1218R~
     {                                                              //~1131I~
-        if (Dump.Y) Dump.println("RADSmart.chkIntentSameColor eswn="+eswnDiscard+",ctrTaken="+PctrTaken+",shanten="+Pshanten);//~1215I~//~1218R~//+vagyR~
+        if (Dump.Y) Dump.println("RADSmart.chkIntentSameColor eswn="+eswnDiscard+",ctrTaken="+PctrTaken+",shanten="+Pshanten);//~1215I~//~1218R~//~vagyR~
 		int ctrMan,ctrPin,ctrSou/*,ctrWord,ctrAll*/,ctrWordDup;               //~1215I~//~1218R~
 		int ctrWord,ctrWordSingle;                                 //~vagyI~
         int intent=0;                                              //~1131I~
@@ -1150,12 +1189,12 @@ public class RADSmart
         ctrWordDup=itsStatHand[CSI_WORD_DUP];	//decrese if word pair exist; 1 for pair and tripret,2 for 2 pair,...//~vagyI~
         ctrWord=itsStatHand[CSI_WORD];	//total word tile          //~vagyI~
         ctrWordSingle=ctrWord-ctrWordDup;                          //~vagyI~
-        if (Dump.Y) Dump.println("RADSmart.chkIntentSameColor ctrWordSingle="+ctrWordSingle+",ctrWordDup="+ctrWordDup+",ctrWord="+ctrWord);//+vagyR~
+        if (Dump.Y) Dump.println("RADSmart.chkIntentSameColor ctrWordSingle="+ctrWordSingle+",ctrWordDup="+ctrWordDup+",ctrWord="+ctrWord);//~vagyR~
 //      int limit=HV_SET_INTENT_SAMECOLOR-PctrTaken/3;    //other color <4//~1215R~//~1218R~
 //      if ((ctrPin+ctrSou)<ctrMan && (ctrPin+ctrSou-ctrWordDup)<limit && chkEarthDiscard(TT_MAN))      //~1215R~//~1217R~//~1218R~
 		int color=-1;                                              //~vag8I~
 //      if (chkSameColorTrend(TT_MAN,Pshanten,ctrMan,ctrWordDup,ctrPin+ctrSou,PctrTaken))//~1218I~//~vagyR~
-        if (chkSameColorTrend(TT_MAN,Pshanten,ctrMan,ctrWordDup,ctrPin+ctrSou,ctrWordSingle,PctrTaken))//+vagyR~
+        if (chkSameColorTrend(TT_MAN,Pshanten,ctrMan,ctrWordDup,ctrPin+ctrSou,ctrWordSingle,PctrTaken))//~vagyR~
         {                                                          //~1214I~
             intent=INTENT_SAMECOLOR_MAN;                           //~1131I~
             color=TT_MAN;                                          //~vag8I~
@@ -1163,7 +1202,7 @@ public class RADSmart
         else                                                       //~1131I~
 //      if ((ctrSou+ctrMan)<ctrPin && (ctrSou+ctrMan-ctrWordDup)<limit && chkEarthDiscard(TT_PIN))                                 //~1131I~//~1215R~//~1217R~//~1218R~
 //      if (chkSameColorTrend(TT_PIN,Pshanten,ctrPin,ctrWordDup,ctrSou+ctrMan,PctrTaken))//~1218I~//~vagyR~
-        if (chkSameColorTrend(TT_PIN,Pshanten,ctrPin,ctrWordDup,ctrSou+ctrMan,ctrWordSingle,PctrTaken))//+vagyR~
+        if (chkSameColorTrend(TT_PIN,Pshanten,ctrPin,ctrWordDup,ctrSou+ctrMan,ctrWordSingle,PctrTaken))//~vagyR~
         {                                                          //~1214I~
             intent=INTENT_SAMECOLOR_PIN;                           //~1131I~
             color=TT_PIN;                                          //~vag8I~
@@ -1171,7 +1210,7 @@ public class RADSmart
         else                                                       //~1131I~
 //      if ((ctrMan+ctrPin)<ctrSou && (ctrMan+ctrPin-ctrWordDup)<limit && chkEarthDiscard(TT_SOU))                                 //~1131I~//~1215R~//~1217R~//~1218R~
 //      if (chkSameColorTrend(TT_SOU,Pshanten,ctrSou,ctrWordDup,ctrMan+ctrPin,PctrTaken))//~1218I~//~vagyR~
-        if (chkSameColorTrend(TT_SOU,Pshanten,ctrSou,ctrWordDup,ctrMan+ctrPin,ctrWordSingle,PctrTaken))//+vagyR~
+        if (chkSameColorTrend(TT_SOU,Pshanten,ctrSou,ctrWordDup,ctrMan+ctrPin,ctrWordSingle,PctrTaken))//~vagyR~
         {                                                          //~1214I~
             intent=INTENT_SAMECOLOR_SOU;                           //~1131I~
             color=TT_SOU;                                          //~vag8I~
@@ -1190,6 +1229,26 @@ public class RADSmart
         if (Dump.Y) Dump.println("RADSmart.chkIntentSameColor intent="+Integer.toHexString(intent)+",man="+ctrMan+",pin="+ctrPin+",sou="+ctrSou+",ctrWordDup="+ctrWordDup+",HV_SET_INTENT_SAMECOLOR="+HV_SET_INTENT_SAMECOLOR);//~1131I~//~1217R~
         return intent;                                             //~1131I~
     }                                                              //~1131I~
+    //***********************************************************************//~vaiqI~
+    //*from RACall at samecolor intent to get other color count    //~vaiqI~
+    //***********************************************************************//~vaiqI~
+    public int getCtrOtherColorInHand(int Peswn,int Pintent)       //~vaiqI~
+    {                                                              //~vaiqI~
+        int[] itsStatHand=RS.RSP[Peswn].getHandStatisticSaved();   //~vaiqR~
+        int ctrMan=itsStatHand[CSI_MAN];                           //~vaiqI~
+        int ctrPin=itsStatHand[CSI_PIN];                           //~vaiqI~
+        int ctrSou=itsStatHand[CSI_SOU];                           //~vaiqI~
+        int ctrOther;                                              //~vaiqI~
+        if ((Pintent & INTENT_SAMECOLOR_MAN)!=0)                   //~vaiqI~
+        	ctrOther=ctrPin+ctrSou;                                //~vaiqI~
+        else                                                       //~vaiqI~
+        if ((Pintent & INTENT_SAMECOLOR_PIN)!=0)                   //~vaiqI~
+        	ctrOther=ctrSou+ctrMan;                                //~vaiqI~
+        else                                                       //~vaiqI~
+        	ctrOther=ctrMan+ctrPin;                                //~vaiqI~
+        if (Dump.Y) Dump.println("RADSmart.getCtrOtherColorInHand eswn="+Peswn+",intent="+Integer.toHexString(Pintent)+",ctrOther="+ctrOther);//~vaiqI~
+        return ctrOther;                                           //~vaiqI~
+    }                                                              //~vaiqI~
     //***********************************************************************//~vaf9I~
     //*set intent of straight if not samecolor                     //~vaf9I~
     //***********************************************************************//~vaf9I~
@@ -1374,9 +1433,10 @@ public class RADSmart
         if (ctrEarth!=0 && !RS.RSP[eswnDiscard].isPairSameAll())   //~1217I~
         	return 0;                                              //~1217I~
 //      int v=(ctrKan+ctrPon+ctrEarth)*HV_SET_INTENT_ALLSAME_VALUE_PON+ctrPair*HV_SET_INTENT_ALLSAME_VALUE_PAIR;//*3+*1//~1305R~//~vag7R~
-		//pon*3+pair*1>=8                                         //~1305I~//~1308R~//~vaaLR~
+//  	//pon*3+pair*1>=8                                         //~1305I~//~1308R~//~vaaLR~//~vaiqR~
         int ctrTriple=ctrKan+ctrPon+ctrEarth;                      //~vag7M~
         boolean swAllSame=ctrTriple>=HV_SET_INTENT_ALLSAME_VALUE_PON && (ctrTriple+ctrPair)>=HV_SET_INTENT_ALLSAME_VALUE_PAIR;//~vag7M~
+    	//* triplet>=1 && (triplet + pair)>=4                      //~vaiqI~
         if (swAllSame && RAUtils.getCtrSeqMeld(itsHand)>0)           //~vag7R~
         	swAllSame=false;                                       //~vag7I~
 //      v-=PctrTaken;                                              //~1131I~
@@ -1474,6 +1534,7 @@ public class RADSmart
 	    	ctrMeld3++;                                            //~vaadI~
             ctrMeld+=HV_INTENT_CHANTA_MELD_WEIGHT2; //4            //~vaadI~
         }                                                          //~vaadI~
+        int ctrTanyao=0;                                           //~vainI~
         for (int pos=0;pos<OFFS_WORDTILE;pos+=CTR_NUMBER_TILE)         //~1217I~
         {                                                          //~1217I~
         	ctr=itsHand[pos];                                      //~1217I~
@@ -1510,7 +1571,13 @@ public class RADSmart
             else                                                   //~vafgI~
 				if (itsHand[pos+1]!=0 && itsHand[pos+2]!=0 && itsHand[pos+3]==0)//~vafgR~
 	            	ctrMeld+=HV_INTENT_CHANTA_MELD_WEIGHT2; //4;   //~vafgI~
-            int ctrTanyao=itsHand[pos+TN4]+itsHand[pos+TN5]+itsHand[pos+TN6];//~vagsI~
+//          int ctrTanyao=itsHand[pos+TN4]+itsHand[pos+TN5]+itsHand[pos+TN6];//~vagsI~//~vainR~
+            ctrTanyao+=itsHand[pos+TN4]+itsHand[pos+TN5]+itsHand[pos+TN6];//~vainI~
+            if (itsHand[pos+TN3]!=0 && itsHand[pos+TN1]==0 && itsHand[pos+TN2]==0)//~vainI~
+            	ctrTanyao+=itsHand[pos+TN3];                       //~vainI~
+            if (itsHand[pos+TN7]!=0 && itsHand[pos+TN8]==0 && itsHand[pos+TN9]==0)//~vainI~
+            	ctrTanyao+=itsHand[pos+TN7];                       //~vainI~
+        	if (Dump.Y) Dump.println("RADSmart.chkChanta ctrTanyaoTile="+ctrTanyao+",shanten="+Pshanten);//~vainI~
             if (ctrTanyao>Pshanten)                                //~vagsI~
             {                                                      //~vagsI~
         		if (Dump.Y) Dump.println("RADSmart.chkChanta set False by ctrTanyao="+ctrTanyao+">shanten="+Pshanten);//~vagsI~
@@ -1665,8 +1732,11 @@ public class RADSmart
         	if (ctrPairChanta>=HV_INTENT_CTR_CHANTA_7PAIR           //4//~vaaCI~
         	&&  ctrSingleChanta>=HV_INTENT_CTR_CHANTA_7PAIR_SINGLE) //2//~vaaCI~
             	rc=true;                                           //~vaaCI~
-        if (Dump.Y) Dump.println("RADSmart.chkChanta itsHand="+Utils.toString(itsHand,9));//~vaaCI~
-        if (Dump.Y) Dump.println("RADSmart.chkChanta rc="+rc+",ctrPairTanyao="+ctrPairTanyao+",ctrPairChanta="+ctrPairChanta+",ctrSingleChanta="+ctrSingleChanta);//~vaaCI~
+            else                                                   //~vaizI~
+        	if (ctrPairChanta>HV_INTENT_CTR_CHANTA_7PAIR)           //>4; 5 or 6//~vaizI~
+            	rc=true;                                           //~vaizI~
+        if (Dump.Y) Dump.println("RADSmart.chkChanta7Pair itsHand="+Utils.toString(itsHand,9));//~vaaCI~//~vaizR~
+        if (Dump.Y) Dump.println("RADSmart.chkChanta7Pair rc="+rc+",ctrPairTanyao="+ctrPairTanyao+",ctrPairChanta="+ctrPairChanta+",ctrSingleChanta="+ctrSingleChanta);//~vaaCI~//~vaizR~
         return rc;                                                 //~vaaCI~
     }                                                              //~vaaCI~
     //***********************************************************************//~1221I~

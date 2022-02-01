@@ -1,5 +1,6 @@
-//*CID://+vah2R~:                             update#= 1114;       //~vah2R~
+//*CID://+vaj7R~:                             update#= 1117;       //+vaj7R~
 //*****************************************************************//~v101I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//+vaj7I~
 //2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//~vah2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -11,7 +12,6 @@ package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;                                      //~v@@@I~
@@ -46,6 +46,8 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v
 import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.Players.*;
+import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.UA.UAEndGame.*;
 import static com.btmtest.utils.Alert.*;
 import static com.btmtest.dialog.DrawnDlgHW.*;             //~9705I~//~9706R~
@@ -153,6 +155,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //    private TextView tvEswn1,tvEswn2,tvEswn3,tvEswn4;              //~9212R~//~9315R~
 //    private TextView tvAmmount1,tvAmmount2,tvAmmount3,tvAmmount4;  //~9213I~//~9315R~
     private TextView tvCompType;                                   //~9218I~//~9219R~//~9223R~
+    private TextView tvFuritenReach;                               //+vaj7R~
     private TextView[] tvsName,tvsEswn,tvsAmmount,tvsCompType;                            //~9212R~//~9213R~//~9315R~
     private TextView[] tvsTotal;                                   //~vah2R~
     private TextView[] tvsSpritPosID;                              //~vah2I~
@@ -194,7 +197,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private int[] amtsError=new int[PLAYERS];                              //~9219I~//~9424R~
     private int[] amtPao=new int[PLAYERS];                                //~9219I~
     private int[] amtTotal=new int[PLAYERS];                    //~9219I~
-    private int[] amtScore=new int[PLAYERS];//eswnSeq              //+vah2I~
+    private int[] amtScore=new int[PLAYERS];//eswnSeq              //~vah2I~
     private int[] paoLooser=new int[]{-1,-1,-1,-1};                      //~9225I~//~9601R~
     private int[] paoGainer=new int[]{-1,-1,-1,-1};                      //~9225I~//~9601R~
     private int[] paoRank=new int[PLAYERS];                        //~9225I~
@@ -378,6 +381,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 		setupResult(PView);                                         //~9315I~
                                                                    //~9218I~
         tvCompType      =(TextView)    UView.findViewById(PView,R.id.tvCompType);//~9218I~//~9219R~//~9223R~
+        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//+vaj7R~
                                                                    //~9212I~
         llGainer1        =(LinearLayout)UView.findViewById(PView,R.id.gainer1);//~9219I~//~9222R~
         llGainer2        =(LinearLayout)UView.findViewById(PView,R.id.gainer2);//~9222I~
@@ -999,21 +1003,21 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmount amtsError="+Arrays.toString(amtsError));//~9223R~//~9424R~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmount amtPao="+Arrays.toString(amtPao));//~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmount amtTotal="+Arrays.toString(amtTotal));//~9223I~
-        getScore(amtScore,amtTotal);                               //+vah2I~
+        getScore(amtScore,amtTotal);                               //~vah2I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9223I~
         {                                                          //~9223I~
         	idx=eswnToIdx(ii);                                     //~9223I~
 			tvsAmmount[idx].setText(Integer.toString(amtTotal[ii]));//~9223R~
-			tvsTotal[idx].setText(Integer.toString(amtScore[ii])); //+vah2R~
+			tvsTotal[idx].setText(Integer.toString(amtScore[ii])); //~vah2R~
         }                                                          //~9223I~
         savePayTo(amtsPayed);                                      //~9403I~
     }                                                              //~9403I~
-    //******************************************                   //+vah2I~
-    private void getScore(int[] Pscore,int[]PamtTotal)             //+vah2I~
-    {                                                              //+vah2I~
-    	if (Dump.Y) Dump.println("CompleteDlg.getScore PamtTotal="+Arrays.toString(PamtTotal)+",score="+Arrays.toString(Pscore));//+vah2I~
-        AG.aAccounts.updateScore(Pscore,PamtTotal);                //+vah2I~
-    }                                                              //+vah2I~
+    //******************************************                   //~vah2I~
+    private void getScore(int[] Pscore,int[]PamtTotal)             //~vah2I~
+    {                                                              //~vah2I~
+    	if (Dump.Y) Dump.println("CompleteDlg.getScore PamtTotal="+Arrays.toString(PamtTotal)+",score="+Arrays.toString(Pscore));//~vah2I~
+        AG.aAccounts.updateScore(Pscore,PamtTotal);                //~vah2I~
+    }                                                              //~vah2I~
     //******************************************                   //~9403I~
     private void savePayTo(int[][] PamtNormalPay)                  //~9403I~
     {                                                              //~9403I~
@@ -1067,12 +1071,12 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     {                                                              //~9320I~
     	int idx;                                                   //~9320I~
     	if (Dump.Y) Dump.println("CompleteDlg.setTotalAmmountReceived rcv_amtTotal="+Arrays.toString(rcv_amtTotal));//~9320I~
-        getScore(amtScore,rcv_amtTotal);                           //+vah2I~
+        getScore(amtScore,rcv_amtTotal);                           //~vah2I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9320I~
         {                                                          //~9320I~
         	idx=eswnToIdx(ii);                                     //~9320I~
 			tvsAmmount[idx].setText(Integer.toString(rcv_amtTotal[ii]));//~9320I~
-			tvsTotal[idx].setText(Integer.toString(amtScore[ii])); //+vah2R~
+			tvsTotal[idx].setText(Integer.toString(amtScore[ii])); //~vah2R~
         }                                                          //~9320I~
         getErrCompleteReceived();                                  //~9420I~
 		CMP.setAmtError(swsErrLooser,amtsError);                    //~9420R~//~9424R~
@@ -1318,7 +1322,30 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~9228I~
         if (reachctr==0)                                           //~9228I~
         	llllReachers.setVisibility(View.GONE);                 //~9228I~
+        else                                                       //+vaj7R~
+        	chkFuritenReach(tvFuritenReach);                       //+vaj7R~
     }                                                              //~9228I~
+    //******************************************                   //+vaj7R~
+    public static void chkFuritenReach(TextView PtvFuriten)        //+vaj7R~
+    {                                                              //+vaj7R~
+        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach");   //+vaj7R~
+        String msg="";                                             //+vaj7R~
+        for (int player=0;player<PLAYERS;player++)                 //+vaj7R~
+        {                                                          //+vaj7R~
+        	if (AG.aPlayers.getReachStatus(player)!=REACH_DONE)    //+vaj7R~
+            	continue;                                          //+vaj7R~
+	        int eswn=AG.aAccounts.playerToEswn(player);            //+vaj7R~
+            int callStatus=AG.aRoundStat.RSP[eswn].callStatus;     //+vaj7R~
+            if ((callStatus & CALLSTAT_REACH_ERRFURITEN)!=0)       //+vaj7R~
+            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReach);//+vaj7R~
+            else                                                   //+vaj7R~
+            if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)!=0)    //+vaj7R~
+            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReachAfter);//+vaj7R~
+        }                                                          //+vaj7R~
+        if (!msg.equals(""))                                       //+vaj7R~
+        	PtvFuriten.setText(msg);                               //+vaj7R~
+        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach msg="+msg);//+vaj7R~
+    }                                                              //+vaj7R~
 //    //******************************************                   //~9228I~//~9315R~
 //    private boolean updateCompType(int PviewID,int Ppos)          //~9228I~//~9315R~
 //    {                                                            //~9315R~

@@ -1,6 +1,7 @@
-//*CID://+vaf3R~:                                   update#=   58; //+vaf3R~
+//*CID://+vai3R~:                                   update#=   62; //~vai3R~
 //***********************************************                  //~@@@1I~
-//2021/10/22 vaf3 Dump to logcat unconditionally before open       //+vaf3I~
+//2021/12/23 vai7 Even not debug mode, write exception to terminal //~vai3I~
+//2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
 //2021/09/21 vaeb try not cache but file, cache miss line?         //~vaebI~
 //1ak2 2021/09/04 access external audio file                       //~1ak2I~
 //2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
@@ -155,8 +156,15 @@ public class Dump
 	    String tidts=null,tid;                                     //~v@@@I~
   		if (Out!=null)                                             //~1425R~
         {                                                          //~1425I~
+//    try           //TODO test                                    //+vai3R~
+//    {                                                            //+vai3R~
 	    	tidts=Utils.getThreadTimeStamp();          //~1425I~   //~v@@@R~
 			Out.println(tidts+":"+s);                              //~1425I~
+//    }                                                            //+vai3R~
+//    catch(Exception e)                                           //+vai3R~
+//    {                                                            //+vai3R~
+//        printlnLog("Dump.println e="+e);                         //+vai3R~
+//    }                                                            //+vai3R~
         }                                                          //~1425I~
   		if (Terminal)                                              //~1511R~
         {                                                          //~1425I~
@@ -164,14 +172,14 @@ public class Dump
             System.out.println(tidts+":"+s);                         //~1425I~//~v@@@R~//~1Ad8R~
         }                                                          //~1425I~
 	}
-    //**************************************************************//+vaf3I~
-    //*uncoditionally write log                                    //+vaf3I~
-    //**************************************************************//+vaf3I~
-	public static void printlnLog(String s)                        //+vaf3I~
-	{                                                              //+vaf3I~
-	    String tidts=Utils.getThreadTimeStamp();                   //+vaf3I~
-        System.out.println(tidts+":"+s);                           //+vaf3I~
-	}                                                              //+vaf3I~
+    //**************************************************************//~vaf3I~
+    //*uncoditionally write log                                    //~vaf3I~
+    //**************************************************************//~vaf3I~
+	public static void printlnLog(String s)                        //~vaf3I~
+	{                                                              //~vaf3I~
+	    String tidts=Utils.getThreadTimeStamp();                   //~vaf3I~
+        System.out.println(tidts+":"+s);                           //~vaf3I~
+	}                                                              //~vaf3I~
     //**************************************************************//~1Ad8I~
     private static void byte2string(StringBuffer Psb,int Poutoffs,byte[] Pbytes,int Pinpoffs,int Plen)//~1Ab9I~
     {                                                              //~1Ab9I~
@@ -291,7 +299,8 @@ public class Dump
         e.printStackTrace(pw);                                     //~1Ad8I~
 		String sst=sw.toString();                                 //~1Ad8I~
         pw.close();                                                //~1Ad8I~
-        if (Terminal)                                              //~1Ad8I~
+//      if (Terminal)                                              //~1Ad8I~//~vai3R~
+        if (Terminal || !AG.isDebuggable)                          //~vai3I~
         {                                                          //~1Ad8I~
 			System.out.println(tidts+"Dump.Exception:"+s+"\n"+sst);//~1Ad8R~
         }                                                          //~1Ad8I~
@@ -311,7 +320,8 @@ public class Dump
 	public synchronized static void println(OutOfMemoryError e,String s)//~1B0gI~//~1Ad8I~
 	{                                                              //~1B0gI~//~1Ad8I~
 	    String tidts=Utils.getThreadTimeStamp();              //~1B0gI~//~1Ad8I~
-        if (Terminal)                                              //~1Ad8I~
+//      if (Terminal)                                              //~1Ad8I~//~vai3R~
+        if (Terminal || !AG.isDebuggable)                          //~vai3I~
         {                                                          //~1Ad8I~
             StringWriter sw=new StringWriter();                    //~1Ad8I~
             PrintWriter pw= new PrintWriter(sw);                   //~1Ad8I~
@@ -334,7 +344,8 @@ public class Dump
 	public synchronized static void println(NoClassDefFoundError e,String s)//~1Ak2I~//~1ak2I~
 	{                                                              //~1Ak2I~//~1ak2I~
 	    String tidts=Utils.getThreadTimeStamp();                   //~1Ak2I~//~1ak2I~
-        if (Terminal)                                              //~1Ak2I~//~1ak2I~
+//      if (Terminal)                                              //~1Ak2I~//~1ak2I~//~vai3R~
+        if (Terminal || !AG.isDebuggable)                          //~vai3I~
         {                                                          //~1Ak2I~//~1ak2I~
             StringWriter sw=new StringWriter();                    //~1Ak2I~//~1ak2I~
             PrintWriter pw= new PrintWriter(sw);                   //~1Ak2I~//~1ak2I~
@@ -376,7 +387,7 @@ public class Dump
     //**************************************************************//~1Ad8I~
     public static void setOption(boolean Pflag)                    //~1507I~//~v@@@R~
     {                                                              //~1507I~//~v@@@R~
-        println("DumpOption Changed to"+Pflag);                    //~1507I~//~v@@@R~
+        println("DumpOption Changed to "+Pflag);                    //~1507I~//~v@@@R~//~vai3R~
         Y=Pflag;    //debug dump                                   //~1507I~//~v@@@R~
         exceptionOnly=!Pflag;                                      //~1507I~//~v@@@R~
     }                                                              //~1507I~//~v@@@R~

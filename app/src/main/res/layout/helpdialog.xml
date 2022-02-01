@@ -41,19 +41,21 @@
             android:id="@+id/llBottomButtons"          
         >
             <Button
+                android:id="@+id/Cancel"                    
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="@string/Label_YouTube"
+                android:layout_gravity="center"
+                    android:visibility="gone"
+             android:layout_weight="1"
+            />
+            <Button
                 android:id="@+id/Close"                    
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:text="@string/Close"
                 android:layout_gravity="center"
-            />
-            <Button
-                android:id="@+id/Cancel"                    
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:text="@string/Cancel"
-                android:layout_gravity="center"
-                    android:visibility="gone"
+             android:layout_weight="1"
             />
         </LinearLayout>
 </LinearLayout>

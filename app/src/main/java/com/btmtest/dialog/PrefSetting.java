@@ -1,5 +1,6 @@
-//*CID://+vae9R~:                             update#=  534;       //~vae9R~
+//*CID://+vai0R~:                             update#=  541;       //~vai0R~
 //*****************************************************************//~v101I~
+//2021/12/21 vai0 (Bug)Id of NoBGM was shown by Japanese on english env.//+vai0I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //1ak2 2021/09/04 access external audio file                       //~1ak2I~
@@ -89,7 +90,10 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
                                                                   PSID_USERBGM_URI5,PSID_USERBGM_URI6,PSID_USERBGM_URI7,PSID_USERBGM_URI8,PSID_USERBGM_URI9};//~vae9I~
     private static final int[] PSIDS_USERBGM_TITLE=new int[/*MAX_USERBGM*/]{PSID_USERBGM_TITLE0,PSID_USERBGM_TITLE1,PSID_USERBGM_TITLE2,PSID_USERBGM_TITLE3,PSID_USERBGM_TITLE4,//~vae9R~
                                                                   PSID_USERBGM_TITLE5,PSID_USERBGM_TITLE6,PSID_USERBGM_TITLE7,PSID_USERBGM_TITLE8,PSID_USERBGM_TITLE9};//~vae9I~
-    private static final String NOTITLE=Utils.getStr(R.string.NoUserBGM);//~vae9R~
+//  private static final String NOTITLE=Utils.getStr(R.string.NoUserBGM);//~vae9R~//~vai0R~
+    private              String NOTITLE;                           //~vai0I~
+    private static final String NOTITLE_ENG=Utils.getStr(R.string.NoUserBGMENG);//~vai0I~
+    private static final String NOTITLE_JPN=Utils.getStr(R.string.NoUserBGMJPN);//~vai0I~
                                                                    //~va06I~
     public static final int 	DEFAULT_VOLUME_MIN=0;              //~v@@@I~
     public static final int 	DEFAULT_VOLUME_MAX=10;             //~v@@@I~
@@ -159,7 +163,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     @Override
     protected void initLayout(View PView)                            //~v@@@I~
     {                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("PrefSetting.initLayout");        //~v@@@R~
+        NOTITLE=Utils.getStr(R.string.NoUserBGM);                  //~vai0I~
+        if (Dump.Y) Dump.println("PrefSetting.initLayout NOTITLE="+NOTITLE);        //~v@@@R~//~vai0R~
 //      swFixed=swFixedParm;                                       //~v@@@R~
         super.initLayoutUFDlg(PView);                              //~v@@@R~
         setupLayout(PView);                                        //~v@@@I~
@@ -203,9 +208,17 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	    	tvsUserBGMTitle[ii]=(TextView)UView.findViewById(ll,R.id.tvUserBGM);//~vae9R~
 	    	btnsUserBGM[ii]=UButton.bind(ll,R.id.btnUserBGM,this); //~vae9I~
 	    	btnsUserBGMDelete[ii]=UButton.bind(ll,R.id.btnUserBGMDelete,this);//~vae9I~
-	    	tvsUserBGMTitle[ii].setText(strsUserBGMTitle[ii]);         //~vae9I~
+//      	tvsUserBGMTitle[ii].setText(strsUserBGMTitle[ii]);         //~vae9I~//~vai0R~
+        	tvsUserBGMTitle[ii].setText(getDisplayNameUserBGM(strsUserBGMTitle[ii]));//~vai0I~
         }                                                          //~vae9I~
     }                                                              //~v@@@I~
+	//*********************************************************    //~vai0I~
+    private String getDisplayNameUserBGM(String Ptitle)            //~vai0I~
+    {                                                              //~vai0I~
+    	String displayName=(Ptitle==null || Ptitle.equals("")) ? NOTITLE : Ptitle;//~vai0R~
+        if (Dump.Y) Dump.println("PrefSetting.getDisplayNameUserBGM Ptitle="+Ptitle+",displayName="+displayName);//~vai0I~
+        return displayName;                                        //~vai0I~
+    }                                                              //~vai0I~
 	//*********************************************************    //~vae9R~
 	//*from UMediaStore                                            //~vae9I~
 	//*********************************************************    //~vae9I~
@@ -216,9 +229,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         for (int ii=0;ii<MAX_USERBGM;ii++)                         //~vae9I~
         {                                                          //~vae9I~
     		PstrsUri[ii]=Pprop.getParameter(getKeyPS(PSIDS_USERBGM_URI[ii]),"");//~vae9R~
-    		PstrsTitle[ii]=Pprop.getParameter(getKeyPS(PSIDS_USERBGM_TITLE[ii]),NOTITLE);//~vae9R~
-            if (PstrsTitle[ii].equals(NOTITLE))                    //~vae9I~
-    			PstrsUri[ii]="";                                   //~vae9I~
+//  		PstrsTitle[ii]=Pprop.getParameter(getKeyPS(PSIDS_USERBGM_TITLE[ii]),NOTITLE);//~vae9R~//~vai0R~
+//          if (PstrsTitle[ii].equals(NOTITLE))                    //~vae9I~//~vai0R~
+//  			PstrsUri[ii]="";                                   //~vae9I~//~vai0R~
+    		PstrsTitle[ii]=Pprop.getParameter(getKeyPS(PSIDS_USERBGM_TITLE[ii]),"");//~vai0I~
+            if (PstrsTitle[ii].equals(NOTITLE_ENG) || PstrsTitle[ii].equals(NOTITLE_JPN))//~vai0I~
+    			PstrsTitle[ii]="";                                 //~vai0I~
         }                                                          //~vae9I~
         if (Dump.Y) Dump.println("PrefSetting.setupUserBGM strUri="+Utils.toString(PstrsUri)+",title="+Utils.toString(PstrsTitle));//~vae9I~
     }                                                              //~vae9I~
@@ -305,7 +321,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     {                                                              //~vae9I~
         int num=userBGMButtonNumber;                               //~vae9I~
     	if (Dump.Y) Dump.println("RuleSetting.deleteBGM btnNo="+num+",title="+Utils.toString(strsUserBGMTitle)+",Puri="+Utils.toString(strsUserBGMUri));//~vae9I~
-	    strsUserBGMTitle[num]=NOTITLE;                             //~vae9I~
+//      strsUserBGMTitle[num]=NOTITLE;                             //~vae9I~//~vai0R~
+        strsUserBGMTitle[num]="";                                  //~vai0I~
 	    tvsUserBGMTitle[num].setText(NOTITLE);                     //~vae9I~
 	    strsUserBGMUri[num]="";                                    //~vae9I~
     }                                                              //~vae9I~
@@ -347,7 +364,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         	etUserBGMSelection.setEnabled(false);                  //~vae9I~
         for (int ii=0;ii<MAX_USERBGM;ii++)                         //~vae9R~
         {                                                          //~vae9I~
-	    	tvsUserBGMTitle[ii].setText(strsUserBGMTitle[ii]); //~vae9R~
+//      	tvsUserBGMTitle[ii].setText(strsUserBGMTitle[ii]); //~vae9R~//~vai0R~
+        	tvsUserBGMTitle[ii].setText(getDisplayNameUserBGM(strsUserBGMTitle[ii]));//~vai0I~
         }                                                          //~vae9I~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
@@ -407,14 +425,16 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	        swChanged=true;                                        //~v@@@I~
         }                                                          //~v@@@I~
         AG.swChangedPreference|=swChanged;                         //~vae8I~
-        swError|=chkPlaySeq(playSeq,strsUserBGMTitle);             //~vae9I~
+//      swError|=chkPlaySeq(playSeq,strsUserBGMTitle);             //~vae9I~//~vai0R~
+        swError|=chkPlaySeq(playSeq,strsUserBGMTitle,strsUserBGMUri);//~vai0I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties changed="+changed+",changedSound="+changedSound+",changedBGM="+changedBGM);//~v@@@I~//~va06R~
         return changed!=0;                                         //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************      //~vae9I~
-    private boolean chkPlaySeq(String PplaySeq,String[] Ptitle)    //~vae9I~
+//  private boolean chkPlaySeq(String PplaySeq,String[] Ptitle)    //~vae9I~//~vai0R~
+    private boolean chkPlaySeq(String PplaySeq,String[] Ptitle,String[] Puri)//~vai0I~
     {                                                              //~vae9I~
-        if (Dump.Y) Dump.println("PrefSetting.chkPlaySeq playseq="+PplaySeq+",title="+Utils.toString(Ptitle));//~vae9I~
+        if (Dump.Y) Dump.println("PrefSetting.chkPlaySeq playseq="+PplaySeq+",title="+Utils.toString(Ptitle)+",uri="+Utils.toString(Puri));//~vae9I~//~vai0R~
     	boolean rc=false;                                          //~vae9R~
     	if (PplaySeq.length()==0 && bgBGM.getChecked()==PS_BGM_USER)//~vae9R~
         {                                                          //~vae9I~
@@ -424,7 +444,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	for (int ii=0;ii<PplaySeq.length();ii++)                     //~vae9I~
         {                                                          //~vae9I~
         	int num=Character.getNumericValue(PplaySeq.charAt(ii));//~vae9I~
-            if (Ptitle[num]==null || Ptitle[num].equals(NOTITLE))  //~vae9I~
+//          if (Ptitle[num]==null || Ptitle[num].equals(NOTITLE))  //~vae9I~//~vai0R~
+            if (Puri[num]==null || Puri[num].equals(""))           //~vai0I~
             {                                                      //~vae9I~
             	rc=true;                                           //~vae9I~
                 break;                                             //~vae9I~
@@ -755,12 +776,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("PrefSetting.isUseUPicker rc="+rc);//~vae9I~
         return rc;                                                 //~vae9I~
     }                                                              //~vae9I~
-    //*******************************************************************************//~1ak2I~
-    public void setBGMTitle(String Ptitle,String PstrUri)          //~1ak2I~
-    {                                                              //~1ak2I~
-    	if (Dump.Y) Dump.println("PrefSetting.setBGMTitle title="+Ptitle+",strUti="+PstrUri);//~1ak2I~
-        //TODO                                                     //~1ak2I~
-    }                                                              //~1ak2I~
+//    //*******************************************************************************//~1ak2I~//~vai0R~
+//    public void setBGMTitle(String Ptitle,String PstrUri)          //~1ak2I~//~vai0R~
+//    {                                                              //~1ak2I~//~vai0R~
+//        if (Dump.Y) Dump.println("PrefSetting.setBGMTitle title="+Ptitle+",strUti="+PstrUri);//~1ak2I~//~vai0R~
+//        //TODO                                                     //~1ak2I~//~vai0R~
+//    }                                                              //~1ak2I~//~vai0R~
 //*************************************************************    //~vae9I~
     public static int getSoundID()                                 //~vae9I~
     {                                                              //~vae9I~
@@ -866,12 +887,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("PrefSetting.getSoundIDUser rc="+rc+",soundID="+soundID+",selection="+selection);//~vae9I~
         return rc;                                                 //~vae9I~
     }                                                              //~vae9I~
-    public static int getSoundIDUser(int PplaySeq)                 //+vae9I~
-    {                                                              //+vae9I~
-        String selection=getBGMUserSelection();                    //+vae9I~
-        int len=selection.length();                                //+vae9I~
-        int rc=(PplaySeq>=len) ? -1 : Character.getNumericValue(selection.charAt(PplaySeq));//+vae9I~
-        if (Dump.Y) Dump.println("PrefSetting.getSoundIDUser playseq="+PplaySeq+",rc="+rc+",selection="+selection);//+vae9I~
-        return rc;                                                 //+vae9I~
-    }                                                              //+vae9I~
+    public static int getSoundIDUser(int PplaySeq)                 //~vae9I~
+    {                                                              //~vae9I~
+        String selection=getBGMUserSelection();                    //~vae9I~
+        int len=selection.length();                                //~vae9I~
+        int rc=(PplaySeq>=len) ? -1 : Character.getNumericValue(selection.charAt(PplaySeq));//~vae9I~
+        if (Dump.Y) Dump.println("PrefSetting.getSoundIDUser playseq="+PplaySeq+",rc="+rc+",selection="+selection);//~vae9I~
+        return rc;                                                 //~vae9I~
+    }                                                              //~vae9I~
 }//class                                                           //~v@@@R~

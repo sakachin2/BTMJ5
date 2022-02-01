@@ -1,5 +1,8 @@
-//*CID://+vac7R~:                             update#=  888;       //~vac7R~
+//*CID://+vaj7R~:                             update#=  894;       //+vaj7R~
 //*****************************************************************//~v101I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//+vaj7I~
+//2021/12/24 vaia app stop at DrawnHW; chk status is inGaming at Cancel btn and no issue alert and but dismiss.//~vaiaI~
+//2021/12/23 vai9 app stop at DrawnHW; when dup DrawnHW, dismiss then newInstance, but onDismiss(set aUEndGame.dlgConfirmHW null) delay after Default constructor(set digConfirmHW).//~vai9I~
 //2021/08/18 vac7 (Bug)99 tile did not dispaly taken               //~vac7I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -130,6 +133,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     private boolean swConfirmedSuspend,swConfirmedSuspendOK;       //~0306I~
 	private UCheckBox cbSuspend;                                   //~0306I~
     private boolean swSuspend;                                     //~0306I~
+    private TextView tvFuritenReach;                               //+vaj7I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public DrawnDlgHW()                                           //~v@@@R~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~
     {                                                              //~v@@@R~
@@ -285,6 +289,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
 //      {                                                          //~9520I~//~9708R~
     		RuleSetting.setDrawnHW(PView,true);                        //~9425I~//~9520R~
 //      }                                                          //~9520I~//~9708R~
+        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//+vaj7I~
         setupTextViewResp(PView);                                      //~9305M~//~9307R~//~9413M~
         hideResponseEswn(!swRequester);                            //~0217I~
     }                                                              //~9413I~
@@ -626,6 +631,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
                 LinearLayout ll=llReachers[reachctr++];            //~9425I~
                 new CompDlgReacher(this,ll,eswn);                  //~9425I~
             }                                                      //~9425I~
+        	CompleteDlg.chkFuritenReach(tvFuritenReach);           //+vaj7I~
         }                                                          //~9425I~
         ctrReach=reachctr;                                         //~9425I~
         if (Dump.Y) Dump.println("DrawnDlgHW.showReach ctr="+ctrReach);//~9425I~
@@ -649,7 +655,7 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
         if (Dump.Y) Dump.println("DrawnDlgHW.show99Tile eswn="+Peswn+",parent="+Pview.toString());//~vac7I~
         TextView tvReacherEswn         =(TextView)    UView.findViewById(Pview,R.id.tvReacherEswn);//~vac7I~
         tvReacherEswn.setText(GConst.nameESWN[Peswn]);             //~vac7I~
-      	CompDlgTiles.setImageLayoutHandAll(ll99Reacher,Peswn);     //+vac7R~
+      	CompDlgTiles.setImageLayoutHandAll(ll99Reacher,Peswn);     //~vac7R~
     }                                                              //~vac7I~
     //******************************************                   //~9305I~
     protected void setupTextViewResp(View PView)                                  //~9305I~//~9307R~
@@ -697,7 +703,8 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     @Override                                                      //~v@@@I~//~9303R~//~9304R~
     public void onDismissDialog()                                  //~v@@@I~//~9303R~//~9304R~
     {                                                              //~v@@@I~//~9303R~//~9304R~
-        if (Dump.Y) Dump.println("onDismissDialog");               //~v@@@I~//~9303R~//~9304R~
+        if (Dump.Y) Dump.println("DrawnDlgHW.onDismissDialog UAEG.dlgConfirmHW="+Utils.toString(UAEG.dlgConfirmHW)+",this="+Utils.toString(this));               //~v@@@I~//~9303R~//~9304R~//~vac7R~//~vai9R~
+      if (this==UAEG.dlgConfirmHW)                   //~vai9R~
         UAEG.dlgConfirmHW=null;                                      //~9303R~//~9304R~
     }                                                              //~v@@@I~//~9303R~//~9304R~
     //*******************************************************      //~9302I~//~9303R~//~9306R~
@@ -884,6 +891,12 @@ public class DrawnDlgHW extends DrawnReqDlgHW                     //~9303R~//~93
     public void onClickClose()                                     //~9B13I~
     {                                                              //~9B13I~
         if (Dump.Y) Dump.println("onClickClose");                  //~9B13I~
+    	if (!Status.isGaming())                                    //~vaiaI~
+        {                                                          //~vaiaI~
+        	if (Dump.Y) Dump.println("DrawnDlgHW.onClickClose issue dismiss by ! inGaming");//~vaiaI~
+			dismiss();                                             //~vaiaI~
+        }                                                          //~vaiaI~
+        else                                                       //~vaiaI~
         if (swRequester)                                           //~9B14I~
 	    	alertToCancelHW();                                         //~9B13I~//~9B14R~
         else                                                       //~9B14I~

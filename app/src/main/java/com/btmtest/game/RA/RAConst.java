@@ -1,5 +1,10 @@
-//*CID://+vaghR~: update#= 338;                                    //~vaghR~
+//*CID://+vaj7R~: update#= 347;                                    //~vaj7R~
 //**********************************************************************
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
+//2022/01/19 vaj6 set Err for missing Ron(including Take) after Reach//~vaj6I~
+//2022/01/19 vaj5 Not ronable when furiten even if taken if furitenreachoption=No//~vaj5I~
+//2022/01/13 vaim select tile to discard to avoid furiten at tryNextTake//~vaimI~
+//2021/12/21 vai3 skip call if dora=0 when otherReach=1 and Fixed1 //~vai3I~
 //2021/11/12 vagh support INTENT_4ANKO                             //~vaghI~
 //2021/11/08 vag7 INTENT_ALLSAME;triplet>=1 and (triplet+pair)>=4 and no seq meld//~vag7I~
 //2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
@@ -52,6 +57,7 @@ public class RAConst                                               //~1130R~
     public static final int DV_SHANTEN_UP     =  100000;           //~1127R~//~1215R~
     public static final int DV_SHANTEN_UP_TILE=     100;           //~1218R~
     public static final int DV_SHANTEN_DOWN   = -100000;           //~1127I~//~1215R~
+    public static final int DV_AVOID_FURITEN  = -100000;           //~vaimI~
 //  public static final int DV_BY_CTR_WINTILE =  100000;           //~1216R~//~1303R~
     public static final int DV_TRYNEXT_HANMAX = -100000;           //~1220I~
                                                                    //~1214I~
@@ -185,14 +191,15 @@ public class RAConst                                               //~1130R~
     public static final int HV_CTR_CHK_OTHER_13ORPHAN       =8; 	//at 8 discard chk other 13orphan//~1215I~
     public static final int HV_CTR_OTHER_13ORPHAN           =1; 	//at 8 discard chk other 13orphan discard >1 19ji//~1215I~
     public static final int HV_TIME_TO_CALL                 =3;		//<=3 save to call up to 3 tiles take//~1206I~
-    public static final int HV_TIME_TO_CALL_4ANKO           =8;		//if ctrTaken<=8, no call Pon if INTENT_4ANKO//+vaghI~
+    public static final int HV_TIME_TO_CALL_4ANKO           =8;		//if ctrTaken<=8, no call Pon if INTENT_4ANKO//~vaghI~
     public static final int HV_PARENT_1STCALL_SHANTEN       =3;		//if parent shanten<=3, call PON at 1st discard//~1305I~
 
     public static final int HV_CTR_TO_WAIT_REACH_EARLY      =8;    // if ctrTaken<8 wait winning tile>=4//~1215I~//~1216R~//~1218R~
     public static final int HV_CTR_TO_WAIT_REACH_EARLY_WINLIST=10;  // if ctrTaken<10 wait winList!=1//~va9hI~
     public static final int HV_CTR_TO_CHK_WORD_STARTING     =6;    // count word tile of ctrTaken<6 for samecolor//~1216I~//~1217R~
     public static final int HV_CTR_WORD_STARTING_SAMECOLOR  =3;    // if word tile>=3 in first 6 discard it is not same color//~1224R~
-    public static final int HV_CTR_DORA_FOR_PONCHII_OTHERREACH=0;  // if dora>=0 call pon/chii if shanten=1 and anyone called reach//~vaaiR~
+//  public static final int HV_CTR_DORA_FOR_PONCHII_OTHERREACH=0;  // if dora>=0 call pon/chii if shanten=1 and anyone called reach//~vaaiR~//~vai3R~
+    public static final int HV_CTR_DORA_FOR_PONCHII_OTHERREACH=1;  // if dora>=1 call pon/chii if shanten=1 and anyone called reach//~vai3I~
     public static final int HV_CTR_WINTILE_FOR_PONCHII_OTHERREACH=3; // if dora>=0 call pon/chii if shanten=1 and anyone called reach//~vaaiI~
     public static final int HV_CTR_DORA_FOR_PONCHII_SHANTEN1=2;    // if dora>=2 call pon/chii if shanten=1//~vaaiI~
     public static final int HV_CTR_DORA_FOR_PONCHII_SHANTEN2=3;    // if dora>=3 call pon/chii if shanten=2//~vaaiR~
@@ -288,6 +295,10 @@ public class RAConst                                               //~1130R~
 	public static final int CALLSTAT_REACH_ONESHOT      =0x04; //  //~1219I~
 	public static final int CALLSTAT_REACH_SET_SHANTEN  =0x08; //  //~vaaPI~
 	public static final int CALLSTAT_REACH_OPEN         =0x10; //reachOpen called//~vab7I~
+	public static final int CALLSTAT_REACH_ERRFURITEN   =0x20; //Furiten reach done with option=No; could not win even by take//~vaj5I~
+	public static final int CALLSTAT_REACH_OKFURITEN    =0x40; //furiten reach accepted//~vaj6I~
+	public static final int CALLSTAT_REACH_WINTILE      =0x80; //win tile taken/river after reach//+vaj7R~
+	public static final int CALLSTAT_REACH_FURITEN_AFTER=0x0100; //missed win tile after reach//+vaj7I~
                                                                    //~1115I~//~1130M~
     public static final int CTR_TILETYPE=34;                      //~1106I~//~va60R~//~1130M~
     public static final int OFFS_WORDTILE=3*9;                    //~1106I~//~va60R~//~1130M~

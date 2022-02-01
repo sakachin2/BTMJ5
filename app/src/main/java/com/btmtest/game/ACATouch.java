@@ -1,5 +1,7 @@
-//*CID://+va66R~: update#= 610;                                    //~va66R~
+//*CID://+vaifR~: update#= 618;                                    //~va66R~//~vaifR~
 //**********************************************************************//~v101I~
+//2021/12/24 vaig over vaif, basically have not set enable light when positioning skip mode//~vaifI~
+//2021/12/24 vaif protect dup touch on position acception          //~vaifI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //**********************************************************************//~1107I~
 package com.btmtest.game;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
@@ -83,6 +85,7 @@ public class ACATouch                                              //~v@@@R~
 	private int ctrResponsed;                                      //~v@@@R~
 	private int starter;                                           //~v@@@I~
 	private boolean isServer;                                      //~v@@@I~
+	private boolean swSkipPositioning;                              //~vaifI~
 //*****************************                                    //~v@@@I~
 	public ACATouch(ACAction PacAction,Accounts Paccounts)         //~v@@@R~
     {                                                              //~0914I~
@@ -90,7 +93,8 @@ public class ACATouch                                              //~v@@@R~
         acaction=PacAction;                                        //~v@@@R~
         accounts=Paccounts;                                        //~v@@@I~
         isServer=accounts.isServer();                               //~v@@@I~
-        if (Dump.Y) Dump.println("ACATouch.Constructor isServer="+isServer);         //~1506R~//~@@@@R~//~v@@@R~
+      	swSkipPositioning=RuleSettingOperation.isPositioningSkip();//~vaifI~
+        if (Dump.Y) Dump.println("ACATouch.Constructor isServer="+isServer+",swSkipPositioning="+swSkipPositioning);         //~1506R~//~@@@@R~//~v@@@R~//~vaifR~
     }                                                              //~0914I~//~v@@@R~
 //***************************************************************************//~v@@@I~
     public void resetCtrResponsed()                                //~v@@@R~
@@ -166,11 +170,11 @@ public class ACATouch                                              //~v@@@R~
 //***************************************************************************//~v@@@I~
 //*on Server by GCM_LIGHT_ENABLE msg                               //~v@@@R~
 //***************************************************************************//~v@@@I~
-//    public void light_Enable(int Pplayer)                          //~v@@@R~//+va66R~
-//    {                                                              //~v@@@I~//+va66R~
-//        if (Dump.Y) Dump.println("ACATouch.light_enable player="+Pplayer);//~v@@@I~//+va66R~
-//        enableLight(Pplayer,true/*swResetAll*/);                   //~v@@@R~//+va66R~
-//    }                                                              //~v@@@I~//+va66R~
+//    public void light_Enable(int Pplayer)                          //~v@@@R~//~va66R~
+//    {                                                              //~v@@@I~//~va66R~
+//        if (Dump.Y) Dump.println("ACATouch.light_enable player="+Pplayer);//~v@@@I~//~va66R~
+//        enableLight(Pplayer,true/*swResetAll*/);                   //~v@@@R~//~va66R~
+//    }                                                              //~v@@@I~//~va66R~
 //***************************************************************************//~v@@@R~
 //*on Server by GCM_LIGHT_TOUCHED_RESP msg                         //~v@@@R~
 //***************************************************************************//~v@@@R~
@@ -203,6 +207,11 @@ public class ACATouch                                              //~v@@@R~
 //            touchLightAcceptingDummy(Pplayer);                   //~v@@@I~
 //            return;                                              //~v@@@I~
 //        }                                                        //~v@@@I~
+        if (AG.aRiver.isPositionSetupAccepted(Pplayer))            //~vaifR~
+        {                                                          //~vaifR~
+	        if (Dump.Y) Dump.println("ACATouch.touchLightPositionAccepting return by dup touch player="+Pplayer);//~vaifR~
+            return;                                                //~vaifR~
+        }                                                          //~vaifR~
 		sendTouched(Pplayer);                                      //~v@@@I~
         showPositionTile(Pplayer);                                 //~v@@@R~
 //  	sendTouched(Pplayer);                                      //~v@@@R~
@@ -228,6 +237,11 @@ public class ACATouch                                              //~v@@@R~
     {                                                              //~v@@@I~
     //********************                                         //~v@@@I~
         if (Dump.Y) Dump.println("ACATouch.light_Touch_PositionAccepting_msg player="+Pplayer);//~v@@@I~//~0117R~
+        if (AG.aRiver.isPositionSetupAccepted(Pplayer))            //~vaifR~
+        {                                                          //~vaifR~
+	        if (Dump.Y) Dump.println("ACATouch.light_Touched_Position_Accepting_Msg return by dup touch player="+Pplayer);//~vaifR~
+            return;                                                //~vaifR~
+        }                                                          //~vaifR~
         showPositionTile(Pplayer);                                 //~v@@@R~
 //      sendTouchedResp(Psender,Pplayer);                          //~v@@@R~
         if (isServer) //client touched                             //~v@@@R~
@@ -268,10 +282,17 @@ public class ACATouch                                              //~v@@@R~
 	public void enableLight(int Pplayer,boolean PswResetAll)       //~v@@@R~
     {                                                              //~v@@@I~
         int player=Accounts.mapDummy(Pplayer);                     //~v@@@I~
-        if (Dump.Y) Dump.println("ACATouch.enableLight Pplayer="+Pplayer+",mapDummy="+player+",idxLocal="+accounts.idxLocal+",swResetAll="+PswResetAll+",status="+Status.getGameStatus());//~v@@@R~
+        if (Dump.Y) Dump.println("ACATouch.enableLight Pplayer="+Pplayer+",mapDummy="+player+",idxLocal="+accounts.idxLocal+",swResetAll="+PswResetAll+",status="+Status.getGameStatus()+",swSkipPositioning="+swSkipPositioning);//~v@@@R~//~vaifR~
+      if (swSkipPositioning && Status.getGameStatus()==GS_POSITION_ACCEPTING)//~vaifI~
+      {                                                            //+vaifI~
+        if (Dump.Y) Dump.println("ACATouch.enableLight skipPositioning set shadowLight");//+vaifI~
+        AG.aDiceBox.setWaitingResponse(Pplayer,true/*swShadow,to bypass onTouch msg*/,PswResetAll);//~vaifI~
+      }                                                            //+vaifI~
+      else                                                         //~vaifI~
         AG.aDiceBox.setWaitingResponse(Pplayer,player!=accounts.idxLocal/*swShadow*/,PswResetAll);//~v@@@R~
 //      if ((TestOption.option & TestOption.TO_POSITIONING)!=0) //TODO//~v@@@R~
-        if (RuleSettingOperation.isPositioningSkip())              //~v@@@I~
+//      if (RuleSettingOperation.isPositioningSkip())              //~v@@@I~//~vaifR~
+        if (swSkipPositioning)                                     //~vaifI~
         {                                                          //~v@@@I~
         	if (Status.getGameStatus()==GS_POSITION_ACCEPTING      //~v@@@R~
 //      	||  Status.getGameStatus()==GS_POSITIONING)            //~v@@@R~
@@ -279,11 +300,18 @@ public class ACATouch                                              //~v@@@R~
             {                                                      //~v@@@I~
 //      		if (Status.getGameStatus()==GS_POSITIONING)        //~v@@@R~
 //              	Status.setGameStatus(GS_POSITION_ACCEPTING);   //~v@@@R~
-        		if (Dump.Y) Dump.println("ACATouch.enableLight player="+player+",idxLocal="+accounts.idxLocal);//~v@@@I~
+        		if (Dump.Y) Dump.println("ACATouch.enableLight mapDummy player="+player+",idxLocal="+accounts.idxLocal);//~v@@@I~//~vaifR~
 //  			if (player==accounts.idxLocal || player==PLAYER_YOU)//~v@@@R~
 //  			if (player==PLAYER_YOU)                            //~v@@@R~
     			if (player==accounts.idxLocal)                     //~v@@@R~
+                {                                                  //~vaifI~
     				touchLight(Pplayer);                           //~v@@@R~
+//                    if (player==Pplayer)    //TODO test human player//~vaifR~
+//                    {                                            //~vaifR~
+//                        if (Dump.Y) Dump.println("ACATouch.enableLight TEST sendMsg"); //TODO//~vaifR~
+//                        GameViewHandler.sendMsg(GCM_TOUCH,1/*actionUp*/,AG.aDiceBox.boxLight[player].left,AG.aDiceBox.boxLight[player].top,0,0);    //TODO test skip pos move dump//~vaifR~
+//                    }                                            //~vaifR~
+                }                                                  //~vaifI~
             }                                                      //~v@@@I~
         	if (Status.getGameStatus()==GS_POSITION_ACCEPTED)      //~v@@@I~
             {                                                      //~v@@@I~

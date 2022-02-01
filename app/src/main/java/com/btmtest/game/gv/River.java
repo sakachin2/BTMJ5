@@ -1,5 +1,6 @@
-//*CID://+vagqR~: update#= 602;                                    //~vagqR~
+//*CID://+vaifR~: update#= 603;                                    //+vaifR~
 //**********************************************************************//~v101I~
+//2021/12/24 vaif protect dup touch on position acception          //+vaifI~
 //2021/11/13 vagq TestOption Client position previous              //~vagqI~
 //2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/04/11 va81 (Bug)In notify mode,btn si not highlighen when take//~va81I~
@@ -67,6 +68,7 @@ public class River                                                 //~v@@@R~
     private boolean swComplete;                                            //~v@@@I~
     private Players players;
     private TileData[] tdsSetup,sortedSetupTiles;                  //~v@@@R~
+    private boolean[] sortedSetupTilesSelected=new boolean[PLAYERS];//+vaifI~
     private int ctrSelected=0;                                     //~v@@@I~
     private Rect rectSetupTiles;                                   //~v@@@I~
     private Rect rectDiscarded;                                    //~v@@@I~
@@ -594,7 +596,7 @@ public class River                                                 //~v@@@R~
     public TileData eraseTaken()                                   //~v@@@R~
     {                                                              //~v@@@I~
         TileData td=players.tileLastDiscarded;                     //~v@@@R~
-        if (Dump.Y) Dump.println("River.eraseTaken lastDiscarded="+Utils.toString(td));              //~v@@@I~//+vagqR~
+        if (Dump.Y) Dump.println("River.eraseTaken lastDiscarded="+Utils.toString(td));              //~v@@@I~//~vagqR~
         if (td!=null && (td.flag & TDF_TAKEN_RIVER)!=0)            //~v@@@R~
         {                                                          //~v@@@I~
         	drawDiscarded(true/*erase*/);                          //~v@@@R~
@@ -679,6 +681,7 @@ public class River                                                 //~v@@@R~
         }                                                          //~v@@@I~
 		tdsSetup=tds;                                              //~v@@@R~
         sortedSetupTiles=sortSetupTile(Picker,(Pspot%2==1));       //~v@@@I~
+    	Arrays.fill(sortedSetupTilesSelected,false);               //+vaifI~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
     public  void  setup(int PstartingPlayer,boolean PswFaceup)     //~v@@@I~
@@ -989,10 +992,22 @@ public class River                                                 //~v@@@R~
 	//*********************************************************    //~v@@@I~
 	//*pickup eswn piece sequencially                              //~v@@@R~
 	//*********************************************************    //~v@@@I~
+    public boolean isPositionSetupAccepted(int Pplayer)            //+vaifI~
+    {                                                              //+vaifI~
+    	boolean rc=sortedSetupTilesSelected[Pplayer];              //+vaifI~
+        if (Dump.Y) Dump.println("River.isPositionSetupAccepted player="+Pplayer+",rc="+rc);//+vaifI~
+        return rc;
+    }                                                              //+vaifI~
     public boolean setupAccepted(int Pplayer)                      //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("River.setupAccepted player="+Pplayer+",ctrSelected="+ctrSelected);//~v@@@M~
+        if (isPositionSetupAccepted(Pplayer))                      //+vaifI~
+        {                                                          //+vaifI~
+	        if (Dump.Y) Dump.println("River.setupAccepted return false by dup call player="+Pplayer);//+vaifI~
+        	return false;                                          //+vaifI~
+        }                                                          //+vaifI~
     	TileData td=sortedSetupTiles[ctrSelected++];                //~v@@@I~
+    	sortedSetupTilesSelected[Pplayer]=true;                    //+vaifI~
     	Rect rect=getRectSetupAccept(Pplayer);                      //~v@@@I~
         Bitmap bm=getBitmapSetup(Pplayer,td,true);                 //~v@@@I~
 //        canvas=Graphics.lockCanvas(rect);                        //~v@@@R~

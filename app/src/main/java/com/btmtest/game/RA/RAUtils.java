@@ -1,5 +1,6 @@
-//*CID://+vag8R~: update#= 166;                                    //~vag8R~
+//*CID://+vaj2R~: update#= 167;                                    //+vaj2R~
 //**********************************************************************//~v101I~
+//2022/01/19 vaj2 at Reach,wait same color  for 7pair with intent samecolor regardless dora//+vaj2I~
 //2021/11/08 vag8 INTENT_ALLSAME;avoid when othercolor meld exist  //~vag7I~
 //2021/11/08 vag7 INTENT_ALLSAME;triplet>=1 and (triplet+pair)>=4 and no seq meld//~vag7I~
 //2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
@@ -412,6 +413,14 @@ public class RAUtils                                               //~v@@@R~//~v
         if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",type="+Ptype);//~1220I~//~1427R~
         return rc;                                                 //~1220I~
     }                                                              //~1220I~
+    //***********************************************************************//+vaj2I~
+    public static boolean isMatchSameColorPos(boolean PswWord/*rc for wordTile*/,int Pintent,int Ppos)//+vaj2I~
+    {                                                              //+vaj2I~
+        int type=Ppos/CTR_NUMBER_TILE;                             //+vaj2I~
+        boolean rc=isMatchSameColor(PswWord,Pintent,type);          //+vaj2I~
+        if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",pos="+Ppos);//+vaj2I~
+        return rc;                                                 //+vaj2I~
+    }                                                              //+vaj2I~
     //*********************************************************    //~vaaEI~
     //*single tile (ctr=1 & both side=0)                           //~vaaEI~
     //*********************************************************    //~vaaEI~
@@ -446,7 +455,7 @@ public class RAUtils                                               //~v@@@R~//~v
         return rc;                                                 //~vaaEI~
     }                                                              //~vaaEI~
     //*********************************************************    //~vag7R~
-    //*count seq meld not including pair or triplet                //~vag7R~//+vag8R~
+    //*count seq meld not including pair or triplet                //~vag7R~//~vag8R~
     //*********************************************************    //~vag7R~
     public static int getCtrSeqMeld(int[] PitsHand)                //~vag7R~
     {                                                              //~vag7R~

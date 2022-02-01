@@ -1,4 +1,4 @@
-//*CID://+vaaKR~: update#= 863;                                    //~vaaKR~
+//*CID://+vaaKR~: update#= 864;                                    //~vaaKR~
 //**********************************************************************//~v101I~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
@@ -631,7 +631,7 @@ public class UARonDataTree                                         //~va11R~
             }                                                      //~va60I~
         }                                                          //~va60I~
         int rc=ctrDoraOpen/2;                                      //~va60I~
-        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen rc="+rc);//~va60R~
+        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen rc="+rc+",PitsDoraOpen="+Utils.toString(PitsDoraOpen));//~va60R~//+vaaKR~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~
 	//*************************************************************************//~va11I~
@@ -687,11 +687,11 @@ public class UARonDataTree                                         //~va11R~
 	    for (TileData td:tdsHand)                                  //~va11I~
         {                                                          //~va11I~
         	if ((td.flag & TDF_RED5)!=0)                           //~va11I~
-              if (!td.isDiscardedRed5())                           //+vaaKI~
-              {                                                    //+vaaKI~
+              if (!td.isDiscardedRed5())                           //~vaaKI~
+              {                                                    //~vaaKI~
                 ctrRed5++;                                         //~va11I~
-				if (Dump.Y) Dump.println("UARonDataTree.chkRedTile ctrRed5="+ctrRed5+",td="+td.toString());//+vaaKI~
-              }                                                    //+vaaKI~
+				if (Dump.Y) Dump.println("UARonDataTree.chkRedTile ctrRed5="+ctrRed5+",td="+td.toString());//~vaaKI~
+              }                                                    //~vaaKI~
         }                                                          //~va11I~
         //*ron tile is not included in Hand when ron River         //~va11I~
         if (UARV.tdRonRiver!=null)                                 //~va11R~

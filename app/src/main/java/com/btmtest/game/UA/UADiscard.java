@@ -1,5 +1,6 @@
-//*CID://+vaf7R~: update#= 651;                                    //~vaf7R~
+//*CID://+vaj7R~: update#= 657;                                    //~vaj7R~
 //**********************************************************************//~v101I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2021/10/26 vaf7 (Bug)kuikae chk; inhibit other size only when ryanmen chii//~vaf7I~
 //2021/06/28 vaa5 (Bug)Dump at canceled Kan at 1st take because lastDiscarded is null//~vaa5I~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
@@ -54,6 +55,7 @@ import static com.btmtest.game.UserAction.*;                       //~v@@@I~
                                                                    //~v@@@I~
 public class UADiscard                                             //~v@@@R~
 {                                                                  //~0914I~
+    private static final int POSPARM_CALLSTATUS=8;                 //+vaj7R~
     private UserAction UA;                                         //~v@@@I~
     private Players PLS;                                           //~v@@@R~
     private UADelayed2 UADL;                                       //~9B28I~
@@ -233,7 +235,8 @@ public class UADiscard                                             //~v@@@R~
 	        UADL.resetWait(Pplayer);   //swith to next player after delay a moment//~v@@6I~//~9B28R~
         	if (Dump.Y) Dump.println("UADiscard.discard player="+Pplayer+",lastdiscardedplayer="+playerLastDiscarded+",eswn="+eswn+",tile type="+td.type+",num="+td.number);//~v@@@R~
 //      	msgDataToClient=makeMsgDataToClient(Pplayer,td,swKan?1:0,playerDiscarded);//~v@@@I~
-        	UA.msgDataToClient=makeMsgDataToClient(Pplayer,td,swKan?1:0,eswn);//~v@@@R~
+//      	UA.msgDataToClient=makeMsgDataToClient(Pplayer,td,swKan?1:0,eswn);//~v@@@R~//~vaj7R~
+        	UA.msgDataToClient=makeMsgDataToClient(Pplayer,td,swKan?1:0,eswn,UATake.makeMsgDataInfoCallStatus());//~vaj7I~
             swReach=(statReachOld==REACH_BEFORE_DISCARD && statReachNew==REACH_DONE);//~v@@6R~
             swOpenReach=swReach && PLS.isOpenReach(Pplayer);       //~v@@6I~
         }                                                          //~v@@@I~
@@ -247,7 +250,10 @@ public class UADiscard                                             //~v@@@R~
 			if (!PswReceived)                                       //~v@@@I~
                 td=infoSelectedTD;                                 //~v@@@I~
             else                                                   //~v@@@I~
+            {  //client on received                                //+vaj7R~
         		td=new TileData(true/*swEswnToPlayer*/,PintParm,PARMPOS_TD);              //~v@@@I~
+                UATake.saveServerCallStatus(PintParm,POSPARM_CALLSTATUS);//~vaj7I~
+            }                                                      //~vaj7I~
 //          PLS.discard(Pplayer,td);                               //~v@@@R~
     		if (Pplayer==PLAYER_YOU)                               //~v@@@R~
             {                                                      //~v@@@I~
@@ -303,7 +309,9 @@ public class UADiscard                                             //~v@@@R~
     	Sound.play(SOUNDID_DISCARD,false/*not change to beep when beeponly option is on*/);//~9C03I~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_DISCARD)//~v@@6I~
           	TestOption.disableBT();                                //~v@@6R~
-        if (Pplayer!=PLAYER_YOU && AG.swPlayMatchNotify)           //~vaa2R~
+//      if (Pplayer!=PLAYER_YOU && AG.swPlayMatchNotify)           //~vaa2R~//~vaj7R~
+//      if (Pplayer!=PLAYER_YOU)                                   //~vaj7R~
+        if (Pplayer!=PLAYER_YOU && AG.swPlayMatchNotify)           //~vaj7I~
         	AG.aRACall.discardedPlayMatchNotify(GCM_DISCARD,Pplayer,td);//~vaa2R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
@@ -682,7 +690,7 @@ public class UADiscard                                             //~v@@@R~
 //      if (posRiver==0)    //left side eat                        //~va60I~//~vaf7R~
         if (numRiver<numHand1 && numRiver<numHand2)	//left side eat//~vaf7I~
         {                                                          //~va60I~
-            if (tdDiscarded.number<=TN6)                           //~va60I~//+vaf7R~
+            if (tdDiscarded.number<=TN6)                           //~va60I~//~vaf7R~
             {                                                      //~va60I~
                 if (Dump.Y) Dump.println("UADiscard.isSameMeld err by prohibit right");//~va60I~
 //  	        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number+3;//~va60I~//~vaf7R~
@@ -694,7 +702,7 @@ public class UADiscard                                             //~v@@@R~
 //      if (posRiver==2)    //right side eat                       //~va60I~//~vaf7R~
         if (numRiver>numHand1 && numRiver>numHand2)	//right side eat//~vaf7I~
         {                                                          //~va60I~
-            if (tdDiscarded.number>=TN4)                           //~va60I~//+vaf7R~
+            if (tdDiscarded.number>=TN4)                           //~va60I~//~vaf7R~
             {                                                      //~va60I~
                 if (Dump.Y) Dump.println("UADiscard.getSameMeld err by prohibit left");//~va60I~//~vaf7R~
 //  	        PposNotDiscardable[1]=tdDiscarded.type*PIECE_NUMBERCTR+tdDiscarded.number-3;//~va60I~//~vaf7R~

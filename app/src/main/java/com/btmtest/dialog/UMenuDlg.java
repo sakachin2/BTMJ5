@@ -1,5 +1,6 @@
-//*CID://+vac5R~:                             update#=  234;       //~vac5R~
+//*CID://+vajgR~:                             update#=  236;       //~vajgR~
 //*****************************************************************//~v101I~
+//2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//~vajgI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v@@1I~
@@ -108,6 +109,21 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
     {                                                              //~v@@1I~
     	return show(Plistener,Pmenuid,Utils.getStr(Ptitleid),Pitemsid,Pswmultichoice,PswCustomTheme);//~v@@1I~
     }                                                              //~v@@1I~
+//**********************************                               //~vajgI~
+	public static UMenuDlg show(UMenuDlgI Plistener,int Pmenuid,int Ptitleid,int Pitemsid,boolean Pswmultichoice,boolean PswCustomTheme,boolean PswNoAutoDismiss)//~vajgI~
+    {                                                              //~vajgI~
+        if (Dump.Y) Dump.println("UMenuDlg.show");                 //~vajgI~
+        UMenuDlg dlg=newInstance(Utils.getStr(Ptitleid),Pitemsid,Pswmultichoice);//+vajgR~
+    	dlg.listener=Plistener;                                    //~vajgI~
+    	dlg.menuid=Pmenuid;                                        //~vajgI~
+    	dlg.swTheme=PswCustomTheme;                                //~vajgI~
+    	dlg.swNoAutoDismiss=PswNoAutoDismiss;                      //~vajgI~
+        String tag=UMenuDlg.class.getSimpleName();                 //~vajgI~
+        if (Dump.Y) Dump.println("UMenuDlg.show call showDF");     //~vajgI~
+        UView.showDF((DialogFragment)dlg,tag);                     //~vajgI~
+        if (Dump.Y) Dump.println("UMenuDlg.show after call showDF androidDialog==null?="+(dlg.androidDialog==null));//~vajgI~
+        return dlg;                                                //~vajgI~
+    }                                                              //~vajgI~
 //**********************************                               //~v@@@I~
 //  public static UMenuDlg show(UMenuDlgI Plistener,int Pmenuid,String Ptitle,int Pitemsid,boolean Pswmultichoice)//~v@@@I~//~v@@1R~
     public static UMenuDlg show(UMenuDlgI Plistener,int Pmenuid,String Ptitle,int Pitemsid,boolean Pswmultichoice,boolean PswCustomTheme)//~v@@1I~
@@ -199,8 +215,8 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
     	AlertDialog ad=(AlertDialog)androidDialog;                 //~v@@1I~
         ad.show();                                                 //~v@@1I~
         int wc=ViewGroup.LayoutParams.WRAP_CONTENT;                //~v@@1M~
-//      int minww=(AG.portrait ? AG.scrWidth : AG.scrHeight)/2;     //~v@@1I~//+vac5R~
-        int minww=(int)((AG.portrait ? AG.scrWidth : AG.scrHeight)*(AG.swSmallFont ? RATE_SMALLFONT_MENUINGAME : 0.5));   //0.7//+vac5I~
+//      int minww=(AG.portrait ? AG.scrWidth : AG.scrHeight)/2;     //~v@@1I~//~vac5R~
+        int minww=(int)((AG.portrait ? AG.scrWidth : AG.scrHeight)*(AG.swSmallFont ? RATE_SMALLFONT_MENUINGAME : 0.5));   //0.7//~vac5I~
         ad.getWindow().setLayout(minww,wc);                        //~v@@1R~
         if (Dump.Y) Dump.println("UMenuDlg.setWidth minww="+minww);//~va40I~
     }                                                              //~v@@1M~

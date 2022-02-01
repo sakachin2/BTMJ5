@@ -1,6 +1,8 @@
-//*CID://+va9gR~:                             update#=  492;       //+va9gR~
+//*CID://+vajiR~:                             update#=  498;       //~vajiR~
 //********************************************************************************//~v101I~
-//2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//+va9gI~
+//2022/01/31 vaji change color of top left to identify server      //~vajiI~
+//2022/01/30 vajf (bug)if canceled on orientation dialog on client at startgame. back button on server cause dump on client//~vajfI~
+//2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//~va9gI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //2020/10/19 va1b (Bug)server crashes by @@add from client because thread=null; BTCDialog EeditText textchange listener is called by Button push by focus change.//~va1bI~
@@ -105,6 +107,15 @@ public class BTMulti                                               //~1AebR~
         ctrClient=BTGroup.getConnectedCtr();                       //~1AebI~
         return true;                                               //~1AebI~
     }                                                              //~1AebI~
+    //*******************************************************      //+vajiI~
+    public static int getConnectedCtr()                            //+vajiI~
+	{                                                              //+vajiI~
+    	int rc=0;                                                  //+vajiI~
+        if (AG.aBTMulti!=null && AG.aBTMulti.BTGroup!=null)        //+vajiI~
+    		rc=AG.aBTMulti.BTGroup.getConnectedCtr();      //+vajiI~
+    	if (Dump.Y) Dump.println("BTMulti.getConnectedCtr rc="+rc);//+vajiI~
+        return rc;                                                 //+vajiI~
+    }                                                              //+vajiI~
     //*******************************************************      //~1AebI~
 //  public boolean updateMember(String Pname,BTIOThread Pthread)   //~1AebI~//~0117R~
     public int updateMember(String Pname,BTIOThread Pthread)       //~0117I~
@@ -408,8 +419,8 @@ public class BTMulti                                               //~1AebR~
     //*******************************************************      //~1AebI~
     public void onConnected(BluetoothSocket Psocket,String Premotedevicename,String Plocaldevicename,Boolean Pswclient)//~1AebR~
     {                                                              //~1AebI~
-        if (Dump.Y) Dump.println("BTMulti:onConnected: reset swTrainingMode old="+AG.swTrainingMode);//+va9gI~
-        AG.swTrainingMode=false;                                   //+va9gI~
+        if (Dump.Y) Dump.println("BTMulti:onConnected: reset swTrainingMode old="+AG.swTrainingMode);//~va9gI~
+        AG.swTrainingMode=false;                                   //~va9gI~
         String addr=Psocket.getRemoteDevice().getAddress();   //hardware addr//~9817R~
 //      setRuleOutOfSynch();                                       //~9405I~//~9B25R~
         setRuleOutOfSynch(Premotedevicename);                      //~9B25I~
@@ -452,6 +463,7 @@ public class BTMulti                                               //~1AebR~
         }                                                          //~1AebI~
         BTCDialog.onConnected(Premotedevicename,addr,Pswclient);   //~va02R~
 //      BTRDialog.onConnectedAfterThreadCreated(Pswclient,Premotedevicename);//~9A24R~
+        AG.aMainView.showConnectStatus();                          //~vac5R~//~vajiI~
     }                                                              //~1AebI~
     //*******************************************************      //~va66I~
     //*set local and server for [0]                                //~va66I~
@@ -1217,6 +1229,8 @@ public class BTMulti                                               //~1AebR~
                 {                                                  //~9B21I~
 		        Status.setEndgameSomeone();                        //~9B20I~
 	        	endGameUI();	//back to top panel                //~9B20R~
+      			if (AG.aOrientationMenuDlg!=null)                  //~vajfI~
+      				AG.aOrientationMenuDlg.returnEndgame();        //~vajfR~
                 }                                                  //~9B21I~
             }                                                      //~9B20I~
         }                                                          //~9B20I~
@@ -1234,6 +1248,7 @@ public class BTMulti                                               //~1AebR~
                     try                                            //~9305I~//~9B20I~
                     {                                              //~9305I~//~9B20I~
     				    if (Dump.Y) Dump.println("BTMulti.endgameUI runonUiThread.run");//~9305I~//~9314R~//~9B20I~
+                      if (AG.aGC!=null)                            //~vajfI~
                     	AG.aGC.endGame(true/*wsReturn*/);                          //~9B20I~//~9B21R~
                     }                                              //~9305I~//~9B20I~
                     catch(Exception e)                             //~9305I~//~9B20I~
@@ -1520,6 +1535,7 @@ public class BTMulti                                               //~1AebR~
             else                                                   //~0116R~
 			if (AG.activeSessionType==AST_WD)                      //~0116I~
 				AG.RemoteStatus=AG.RS_IP;     //disconnected       //~0116I~
+        	AG.aMainView.showConnectStatus();                          //~vac5R~//~vajiI~
         }                                                          //~9731I~
 	}                                                              //~9731I~
 //***************************************************************************//~9A18I~

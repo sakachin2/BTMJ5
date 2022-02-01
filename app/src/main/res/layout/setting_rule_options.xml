@@ -77,12 +77,11 @@
                     android:background="@color/separater"
         />
         <LinearLayout
-            android:orientation="horizontal"
+	         android:orientation="vertical"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
         >
-        	<include layout="@layout/setting_rule_opt_orderprize"
-        	/>
+	        <include layout="@layout/setting_rule_opt_orderprize" />
         </LinearLayout>
     </LinearLayout> <!--orderPrize-->
     <!-- **ScoreToPoint -->
@@ -98,6 +97,7 @@
         />
         <include layout="@layout/setting_rule_opt_scoretopoint"
         />
+
     </LinearLayout> <!--ScoreToPoint-->
     <LinearLayout
          android:layout_width="fill_parent"

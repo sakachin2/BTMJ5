@@ -1,5 +1,6 @@
-//*CID://+vac8R~:                             update#= 1092;       //~vac8R~
+//*CID://+vaj7R~:                             update#= 1093;       //+vaj7R~
 //*****************************************************************//~v101I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//+vaj7I~
 //2021/08/18 vac8 always display point stick value on drawnDlglast(no reason to limit DrawnmanganAsRon)//~vac8I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
@@ -183,6 +184,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 	private UCheckBox cbSuspend;                                   //~0308I~
     private boolean swSuspend;                                     //~0308I~
 	public int widthPendingEswn,widthReacherEswn;                //~0327I~
+    private TextView tvFuritenReach;                               //+vaj7I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public DrawnDlgLast()                                           //~v@@@R~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~
     {                                                              //~v@@@R~
@@ -298,7 +300,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 //      }                                                          //~9520I~//~9708R~
         RuleSettingYaku.setKeiten(PView,true/*swFixed*/);          //~va6bR~
 //  	if (!swDrawnManganAsRon)                                   //~9604I~//~vac8R~
-//      	((LinearLayout)UView.findViewById(PView,R.id.llPointStick)).setVisibility(View.GONE);//~9604I~//+vac8R~
+//      	((LinearLayout)UView.findViewById(PView,R.id.llPointStick)).setVisibility(View.GONE);//~9604I~//~vac8R~
                                                                    //~9604I~
     	Rect r=Status.getGameSeq();                                //~9506M~
         gameDup=r.right;                                           //~9506M~
@@ -316,6 +318,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         	gameReach=r.bottom;                                    //~9513R~
             }                                                      //~9511I~
         }                                                          //~9506M~//~9511M~
+        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//+vaj7I~
     }                                                              //~9413I~
     //******************************************                   //~0217I~
     private void hideResponseEswn(boolean PswHide)                 //~0217R~
@@ -1165,6 +1168,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
                 }                                                  //~9927I~
 		        if (Dump.Y) Dump.println("DrawnDlgLast.showReach widthTileImage="+widthTileImage);//~9927I~
             }                                                      //~9308I~
+        	CompleteDlg.chkFuritenReach(tvFuritenReach);           //+vaj7I~
         }                                                          //~9308I~
         ctrReach=reachctr;                                         //~9309I~
     }                                                              //~9307I~

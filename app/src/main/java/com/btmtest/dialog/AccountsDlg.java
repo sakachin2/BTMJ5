@@ -1,5 +1,6 @@
-//*CID://+vac9R~:                             update#= 1124;       //~vac9R~
+//*CID://+vajkR~:                             update#= 1126;       //~vajkR~
 //*****************************************************************//~v101I~
+//2022/01/31 vajk (Bug)invalid nameplate color on client(pos on msg:GCM_ENDGAME_ACCOUNT is invalid, then score received is invalid)//~vajkI~
 //2021/08/18 vac9 AccountsDlg, avoid colomn shift by option, keep column same as title//~vac9I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -58,7 +59,8 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     private static final int POS_OKNG=2;                           //~9321R~//~9322R~
 //  private static final int POS_DATE=2;                           //~9826I~//~0106R~
 //  private static final int POS_TIME=3;                           //~9826I~//~0106R~
-    private static final int POS_AMMOUNT_CONFIRMED=4;              //~9826I~
+//  private static final int POS_AMMOUNT_CONFIRMED=4;              //~9826I~//~vajkR~
+    private static final int POS_AMMOUNT_CONFIRMED=2;              //~vajkI~
     private static final int POS_AMMOUNT_MINUSPAY_CONFIRMED=POS_AMMOUNT_CONFIRMED+PLAYERS;//~9826I~
     private static final int POS_AMMOUNT_MINUSCHARGE_CONFIRMED=POS_AMMOUNT_CONFIRMED+PLAYERS*2;//~9826I~
     private static final int POS_AMMOUNT_FINALSCORE_CONFIRMED=POS_AMMOUNT_CONFIRMED+PLAYERS*3;//~9826I~
@@ -197,7 +199,7 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
         if (AG.swSmallDevice)                                      //~0218I~
         {                                                          //~9818R~
           if (AG.portrait)                                         //~0218I~
-            ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH);          //~9818R~
+            ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH);          //~9818R~//+vajkR~
           else                                                     //~0218I~
             ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH_LANDSCAPE);//~0218I~
         }                                                          //~9818R~
@@ -915,7 +917,7 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     @Override                                                      //~9321I~
     public void setButton()                                        //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("AccountsDlg.setButton swAllOK="+swAllOK);   //~9819I~//~9A31R~//+vac9R~
+        if (Dump.Y) Dump.println("AccountsDlg.setButton swAllOK="+swAllOK);   //~9819I~//~9A31R~//~vac9R~
     	super.setButton();                                         //~9321I~
         if (swRequester)                                           //~9321I~
 	        btnTotal.setEnabled(swAllOK);                          //~9321I~

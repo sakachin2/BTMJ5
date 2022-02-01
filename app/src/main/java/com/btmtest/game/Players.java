@@ -1,6 +1,8 @@
-//*CID://+vah4R~: update#= 869;                                    //+vah4R~
+//*CID://+vajdR~: update#= 874;                                    //~vajdR~
 //**********************************************************************//~v101I~
-//2021/11/26 vah4 (Bug by vagz)At client, Chii 1 with having 123 put earth   121//+vah4I~
+//2022/01/25 vajd (bug)FuritenReach err was not set for reach on client//~vajdI~
+//2022/01/23 vajb (bug)err FuretenAfterReach was not set for chankan//~vajbI~
+//2021/11/26 vah4 (Bug by vagz)At client, Chii 1 with having 123 put earth   121//~vah4I~
 //2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//~vaceR~
 //2021/06/30 vaad (Bug)PlayAlone mode,did not notify kan if kan not in deal. maintaine ItsHand also for MatcNotify mode//~vaadI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
@@ -1137,6 +1139,8 @@ public class Players                                               //~v@@@R~
     	return td;                                                 //~9222I~
     }                                                              //~9222I~
     //*********************************************************************//~v@@@I~
+    //*from UATake, YOU on client                                  //~vah4I~
+    //*********************************************************************//~vah4I~
 	public boolean takeOne(int Pplayer,TileData Ptd)               //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Players.takeOne no Eswn parm player="+Pplayer+",Ptd="+Ptd.toString());//~v@@@R~
@@ -1144,18 +1148,24 @@ public class Players                                               //~v@@@R~
     	return takeOne(Pplayer,Ptd,false/*PswShadow*/,AG.aAccounts.playerToEswn(Pplayer));//~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
+    //*from UATake, on server                                      //~vah4I~
+    //*********************************************************************//~vah4I~
 	public boolean takeOne(int Pplayer,TileData Ptd,boolean PswShadow)//~v@@@I~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Players.takeOne no Eswn parm player="+Pplayer+",swShadow="+PswShadow+",Ptd="+Ptd.toString());//~v@@@I~
     	return takeOne(Pplayer,Ptd,PswShadow,AG.aAccounts.playerToEswn(Pplayer));//~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
-	public boolean takeOne(int Pplayer,TileData Ptd,int Peswn)     //~v@@@I~
+//  public boolean takeOne(int Pplayer,TileData Ptd,int Peswn)     //~v@@@I~//~vah4R~
+    private boolean takeOne(int Pplayer,TileData Ptd,int Peswn)    //~vah4I~
     {                                                              //~v@@@I~
 		return takeOne(Pplayer,Ptd,false/*PswShadow*/,Peswn);      //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
-	public boolean takeOne(int Pplayer,TileData Ptd,boolean PswShadow,int Peswn)//~v@@@R~
+    //*On server and YOU on client                                 //~vah4I~
+    //*********************************************************************//~vah4I~
+//  public boolean takeOne(int Pplayer,TileData Ptd,boolean PswShadow,int Peswn)//~v@@@R~//~vah4R~
+    private boolean takeOne(int Pplayer,TileData Ptd,boolean PswShadow,int Peswn)//~vah4I~
     {                                                              //~v@@@I~
 //        if (!swLastActionIsDiscard)                              //~v@@@R~
 //        {                                                        //~v@@@R~
@@ -1204,6 +1214,8 @@ public class Players                                               //~v@@@R~
         return tileLastDiscarded;                                  //~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************************//~v@@@I~
+    //*from UADiscard; on server and YOU on client                 //~vah4I~
+    //*********************************************************************//~vah4I~
 	public boolean discard(int Pplayer,TileData Ptd)               //~v@@@M~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Players.discard player="+Pplayer+",Ptd="+Ptd.toString());//~v@@@R~
@@ -1392,7 +1404,7 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@5I~
 	public boolean takePonOtherOnClient(boolean PswShadow,int Pplayer,TileData[] Ptds)//~v@@5I~
     {                                                              //~v@@5I~
-        if (Dump.Y) Dump.println("Players.takePonOtherOnClient shadow="+PswShadow+",player="+Pplayer+",tileLastDiscarded="+Utils.toString(tileLastDiscarded));//~v@@5I~//~va60R~//+vah4R~
+        if (Dump.Y) Dump.println("Players.takePonOtherOnClient shadow="+PswShadow+",player="+Pplayer+",tileLastDiscarded="+Utils.toString(tileLastDiscarded));//~v@@5I~//~va60R~//~vah4R~
 //      TileData td=tileLastDiscarded;                             //~v@@5I~//~va60R~
         Ptds[PAIRCTR-1].setTakenRiver();                                        //~v@@5I~
 //      if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
@@ -1431,10 +1443,10 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~v@@@I~
 	public boolean takeChiiOtherOnClient(boolean PswShadow,int Pplayer,TileData[] Ptds)//~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Players.takeChiiOtherOnClient shadow="+PswShadow+",player="+Pplayer+",tileLastDiscarded="+Utils.toString(tileLastDiscarded));//~v@@@I~//~va60R~//+vah4R~
+        if (Dump.Y) Dump.println("Players.takeChiiOtherOnClient shadow="+PswShadow+",player="+Pplayer+",tileLastDiscarded="+Utils.toString(tileLastDiscarded));//~v@@@I~//~va60R~//~vah4R~
 //      Ptds[PAIRCTR-1].setTakenRiver();                           //~v@@@R~
-        TileData td=tileLastDiscarded;                             //+vah4I~
-        td.setTakenRiver();                                        //+vah4I~
+        TileData td=tileLastDiscarded;                             //~vah4I~
+        td.setTakenRiver();                                        //~vah4I~
         TileData.setTakenRiver(Ptds);  //taken is not last tile    //~v@@@I~
 //      if (Pplayer==PLAYER_YOU)                                   //~v@@@R~
 //          players[PLAYER_YOU].takeChii(Ptds);                    //~v@@@R~
@@ -1638,6 +1650,11 @@ public class Players                                               //~v@@@R~
     {                                                              //~0407I~
     	return players[Pplayer].getPonsEarth();                    //~0407I~
     }                                                              //~0407I~
+    //*********************************************************************//~vajbI~
+    public TileData[][] getPonKanEarth(int Pplayer)                //~vajbI~
+    {                                                              //~vajbI~
+    	return players[Pplayer].getPonKanEarth();                  //~vajbI~
+    }                                                              //~vajbI~
 //    //*********************************************************************//~v@@@I~
 //    public void reachPicked(TileData Ptd)                        //~v@@@I~
 //    {                                                            //~v@@@I~
@@ -2206,6 +2223,7 @@ public class Players                                               //~v@@@R~
             lastReach=player;                                      //~9511I~
             lastReachTD=Ptd;                                       //~9511I~
             ctrReach++;                                            //~9511I~
+            AG.aRoundStat.reachDone(player,status,reachStatus,Ptd);//+vajdR~
             if (Dump.Y) Dump.println("Player.reachDone player="+player+",ctrReach="+ctrReach);//~9706I~//~va84R~
         }                                                          //~v@@@I~
         //*****************************************************************************//~va66R~
@@ -2873,8 +2891,6 @@ public class Players                                               //~v@@@R~
             return addKan;                                         //~v@@6I~
         }                                                          //~v@@6I~
         //*********************************************************************//~0407I~
-        //*TODO test only                                          //~0407I~
-        //*********************************************************************//~0407I~
         private TileData[][] getPonsEarth()                        //~0407I~
         {                                                          //~0407I~
 			TileData[][] tdss=new TileData[PAIRS_MAX][];            //~0407I~
@@ -2895,6 +2911,28 @@ public class Players                                               //~v@@@R~
 	        if (Dump.Y) Dump.println("Player.getPonsEarth ctr="+ctr+",tdss="+TileData.toString(tdss));//~0407I~
             return tdss;                                           //~0407I~
         }                                                          //~0407I~
+        //*********************************************************************//~0407I~//~vajbM~
+        private TileData[][] getPonKanEarth()                      //~vajbI~
+        {                                                          //~vajbI~
+			TileData[][] tdss=new TileData[PAIRS_MAX][];           //~vajbI~
+            int ctr=0;                                             //~vajbI~
+            for (int ii=0;ii<PAIRS_MAX;ii++)                       //~vajbI~
+            {                                                      //~vajbI~
+				TileData[] tds=pairOnEarth[ii];                    //~vajbI~
+                if (tds==null)                                     //~vajbI~
+                	break;                                         //~vajbI~
+	        	if (Dump.Y) Dump.println("Player.getPonKanEarth tds="+TileData.toString(tds));//~vajbI~
+//              if (tds.length!=PAIRCTR)                           //~vajbI~
+//              	continue;                                      //~vajbI~
+//              if ((tds[0].flag & TDF_PON)!=0)                    //~vajbI~
+                if ((tds[0].flag & (TDF_PON|TDF_KAN_ADD))!=0)      //~vajbI~
+                	tdss[ctr++]=tds;                               //~vajbI~
+            }                                                      //~vajbI~
+            if (ctr==0)                                            //~vajbI~
+            	tdss=null;                                         //~vajbI~
+	        if (Dump.Y) Dump.println("Player.getPonsEarth ctr="+ctr+",tdss="+TileData.toString(tdss));//~vajbI~
+            return tdss;                                           //~vajbI~
+        }                                                          //~vajbI~
         //*********************************************************************//~9208I~
         //*TODO test only                                          //~9208I~
         //*********************************************************************//~9208I~

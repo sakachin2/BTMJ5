@@ -1,5 +1,8 @@
-//*CID://+vafnR~: update#= 431;                                    
+//*CID://+vaivR~: update#= 445;                                    //~vaivR~
 //**********************************************************************
+//2022/01/15 vaiv (bug)evaluateDiscard7Pair,if no furiten tile word tile was not selected//~vaivI~
+//2022/01/15 vaiu 7pair evaluation;consider red5 and set base for num//~vaiuI~
+//2022/01/13 vaim select tile to discard to avoid furiten at tryNextTake//~vaimI~
 //2021/11/01 vafn chk ronable(inclucding 2han constraint) required if shanten up to 0 in Not AllInHand//~vafnI~
 //2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
 //2021/10/28 vafc pon/chii call for INTENT_TANYAO                  //~vafbI~
@@ -452,9 +455,10 @@ public class RADSEval
 //  private void evaluateIntent(int Pidx/*in tdsHand*/,int Ppos/*in itsHand*/)//~vabbR~
     private void evaluateIntent(int Pidx/*in tdsHand*/,int Ppos/*in itsHand*/,int PaddByForceIntent)//~vabbI~
     {
-        if (Dump.Y) Dump.println("RADSEval.evaluateIntent idx="+Pidx+",pos="+Ppos+",eswnDiscard="+eswnDiscard+",myIntent=x"+Integer.toHexString(RADS.myIntent)+",PaddByForceIntent="+PaddByForceIntent);//~1131R~//~1213R~//~1215R~//~vaajR~//~vaf6R~
 //      int intent=RSP.intent;                                     //~1302R~
         int intent=RSP.getIntent();                                //~1302I~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent idx="+Pidx+",pos="+Ppos+",intent="+Integer.toHexString(intent)+",eswnDiscard="+eswnDiscard+",myIntent=x"+Integer.toHexString(RADS.myIntent)+",PaddByForceIntent="+PaddByForceIntent);//~vaiuI~
+        if (Dump.Y) Dump.println("RADSEval.evaluateIntent old pos="+Ppos+",handValue="+itsHandValue[Pidx]);//~vaiuI~
         if ((intent & INTENT_7PAIR)!=0)
         {                                                          //~1213I~
 	        if (Dump.Y) Dump.println("RADSEval.evaluateIntent idx="+Pidx+",pos="+Ppos+",ctr="+itsHand[Ppos]+",sw7PairKan="+RS.sw7PairKan);//~1216I~//~vaajR~
@@ -516,6 +520,8 @@ public class RADSEval
 	    if (Dump.Y) Dump.println("RADSEval.evaluateIntent exit idx="+Pidx+",handVal="+itsHandValue[Pidx]);//~vaf6I~
     }
     //***********************************************************************//~vaaCI~
+    //*for itsHand ctr==1                                          //~vaiuI~
+    //***********************************************************************//~vaiuI~
     private void evaluateIntent7PairAdditional(int Pintent,boolean PswDora,int Pidx/*in tdsHand*/,int Ppos/*in itsHand*/)//~vaaCR~
     {                                                              //~vaaCI~
         if (Dump.Y) Dump.println("RADSEval.evaluateIntent7PairAdditional PswDora="+PswDora+",intent="+Integer.toHexString(Pintent)+",pos="+Ppos+",idx="+Pidx+",old="+itsHandValue[Pidx]);//~vaaCR~
@@ -532,20 +538,56 @@ public class RADSEval
             if (Ppos<OFFS_WORDTILE)                                //~vaaCI~
 	            itsHandValue[Pidx]+=DVS_NUMBER_WEIGHT_CHANTA[Ppos%CTR_NUMBER_TILE];//~vaaCI~
         }                                                          //~vaaCI~
-        else                                                       //~vaaCI~
-        if (!PswDora)                                             //~vaaCI~
-        {                                                          //~vaaCI~
-            if (RAUtils.isTanyaoTile(Ppos))                        //~vaaCI~
-    		    setValueChanta(true/*swMe*/,Pidx,Ppos);   //add to tanyao tile,select 1/9/ji//~vaaCR~
-        }                                                          //~vaaCI~
+//      else                                                       //~vaaCI~//~vaiuR~
+//      if (!PswDora)                                             //~vaaCI~//~vaiuR~
+//      {                                                          //~vaaCI~//~vaiuR~
+//          if (RAUtils.isTanyaoTile(Ppos))                        //~vaaCI~//~vaiuR~
+//  		    setValueChanta(true/*swMe*/,Pidx,Ppos);   //add to tanyao tile,select 1/9/ji//~vaaCR~//~vaiuR~
+//      }                                                          //~vaaCI~//~vaiuR~
         if (Ppos>=OFFS_WORDTILE)                                   //~vaaCI~
-            if (RAUtils.chkValueWordTile(Ppos,eswnDiscard)>0)      //~vaaCI~
-            {                                                      //~vaaCI~
-                int additional=DV_NOT_CHANTA/2;   //10000 //select honor tile over other word tile//~vaaCI~
+        {                                                          //~vaiuI~
+//          if (RAUtils.chkValueWordTile(Ppos,eswnDiscard)>0)      //~vaaCI~//~vaiuR~
+//          {                                                      //~vaaCI~//~vaiuR~
+//              int additional=DV_NOT_CHANTA/2;   //10000/2 //select honor tile over other word tile//~vaaCI~//~vaiuR~
+            int additional;                                        //~vaiuI~
+            if (RAUtils.chkValueWordTile(Ppos,eswnDiscard)>0)      //~vaiuI~
+            {                                                      //~vaiuI~
+            	additional=DVS_NUMBER_WEIGHT[0]*2;	//40*2 more discardable over num tile//~vaiuI~
+            }                                                      //~vaiuI~
+            else                                                   //~vaiuI~
+            {                                                      //~vaiuI~
+            	additional=DVS_NUMBER_WEIGHT[0]*3;	//40*3 more discardable over num tile//~vaiuR~
+            }                                                      //~vaiuI~
                 if (Dump.Y) Dump.println("RADSEval.evaluateIntent7PairAdditional for value word tile mix tanyao/chanta  pos="+Ppos+",idx="+Pidx+",old="+itsHandValue[Pidx]);//~vaaCI~
                 itsHandValue[Pidx]+=additional;                    //~vaaCI~
-                if (Dump.Y) Dump.println("RADSEval.evaluateIntent7PairAdditional new="+itsHandValue[Pidx]);//~vaaCI~
-            }                                                      //~vaaCI~
+                if (Dump.Y) Dump.println("RADSEval.evaluateIntent7PairAdditional additional="+additional+",new="+itsHandValue[Pidx]);//~vaaCI~//~vaiuR~
+//          }                                                      //~vaaCI~//~vaiuR~
+        }                                                          //~vaiuI~
+        else                                                       //~vaiuI~
+        {                                                          //~vaiuI~
+        	int num=Ppos%CTR_NUMBER_TILE;                          //~vaiuI~
+            int addByNum=DVS_NUMBER_WEIGHT[num];                   //~vaiuI~
+			if (swUseRed5 && !PswDora)  //not red5 byt tn5         //~vaiuI~
+            {                                                      //~vaiuI~
+            	switch(num)                                        //~vaiuI~
+                {                                                  //~vaiuI~
+                case TN5:                                          //~vaiuI~
+            		addByNum+=DV_DORA/2;                           //~vaiuI~
+                    break;                                         //~vaiuI~
+                case TN4:                                          //~vaiuI~
+                case TN6:                                          //~vaiuI~
+            		addByNum+=DV_DORA_NEAR1/2;                     //~vaiuI~
+                    break;                                         //~vaiuI~
+                case TN3:                                          //~vaiuI~
+                case TN7:                                          //~vaiuI~
+            		addByNum+=DV_DORA_NEAR2/2;                     //~vaiuI~
+                    break;                                         //~vaiuI~
+                }                                                  //~vaiuI~
+            }                                                      //~vaiuI~
+            if (Dump.Y) Dump.println("RADSEval.evaluateIntent7PairAdditional add by Num pos="+Ppos+",idx="+Pidx+",old="+itsHandValue[Pidx]);//~vaiuI~
+            itsHandValue[Pidx]+=addByNum;                          //~vaiuI~
+            if (Dump.Y) Dump.println("RADSEval.evaluateIntent7PairAdditional new="+itsHandValue[Pidx]+",addbyNum="+addByNum+",swUseRed5="+swUseRed5);//~vaiuI~
+        }                                                          //~vaiuI~
         if ((Pintent & INTENT_SAMECOLOR_ANY)!=0)                   //~vaaCR~
         {                                                          //~vaaCI~
            setValueSameColor(true/*PswMe*/,Pidx,Ppos);             //~vaaCI~
@@ -558,12 +600,17 @@ public class RADSEval
     private void evaluateDiscard7Pair()                            //~1307I~
     {                                                              //~1307I~
         if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair");  //~1307I~//~vaajR~
-        int idxDiscard=-1;                                         //~1307I~
-        int maxExpectedWord=0,maxExpected=0,maxExpectedFuriten=0,idxMaxExpectedWord=-1,idxMaxExpected=-1,idxMaxExpectedFuriten=-1;//~1307I~
+//        int idxDiscard=-1;                                         //~1307I~//~vaivR~
+//        int maxExpectedWord=0,maxExpected=0,maxExpectedFuriten=0,idxMaxExpectedWord=-1,idxMaxExpected=-1,idxMaxExpectedFuriten=-1;//~1307I~//~vaivR~
         for (int ii=0;ii<ctrHand;ii++)                             //~1307I~
         {                                                          //~1307I~
         	int pos=itsHandPos[ii];                                //~1307I~
-            int expected=PIECE_DUPCTR-itsHand[pos]-RS.itsExposed[pos]; //~1307I~
+            int ctrHand=itsHand[pos];                              //~vaivI~
+	        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair pos="+pos+",ctrHand="+ctrHand+",old itsHandValue["+ii+"]="+itsHandValue[ii]);//~vaivI~
+            if (ctrHand>1)                                         //~vaivI~
+            	continue;                                          //~vaivI~
+            int expected=PIECE_DUPCTR-ctrHand-RS.itsExposed[pos]; //~1307I~//~vaivR~
+	        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair pos="+pos+",expected="+expected);//~vaivI~
             if (expected==0)                                       //~1307I~
             {                                                      //~1307I~
             	itsHandValue[ii]+=DV_DISCARD;	//100,000          //~1307R~
@@ -575,44 +622,54 @@ public class RADSEval
             	itsHandValue[ii]+=DV_DISCARD;	//100,000          //~1307R~
             	continue;                                          //~1307I~
             }                                                      //~1307I~
-            if (expected>maxExpected)                              //~1307I~
-            {                                                      //~1307I~
-            	maxExpected=expected;                              //~1307I~
-                idxMaxExpected=ii;                                 //~1307I~
-            }                                                      //~1307I~
+//            if (expected>maxExpected)                              //~1307I~//~vaivR~
+//            {                                                      //~1307I~//~vaivR~
+//                maxExpected=expected;                              //~1307I~//~vaivR~
+//                idxMaxExpected=ii;                                 //~1307I~//~vaivR~
+//            }                                                      //~1307I~//~vaivR~
+            itsHandValue[ii]+=(PIECE_DUPCTR-expected)*DV_DISCARD/PIECE_DUPCTR;	//75,000(expected=1), 50,000(2), 25,000(3)//~vaivI~
             if (furiten>0) //link furiten                          //~1307I~
         	{                                                      //~1307I~
-	            if (expected>maxExpectedFuriten)                   //~1307I~
-    	        {                                                  //~1307I~
-        	    	maxExpectedFuriten=expected;                   //~1307I~
-            	    idxMaxExpectedFuriten=ii;                      //~1307I~
-            	}                                                  //~1307I~
+//                if (expected>maxExpectedFuriten)                   //~1307I~//~vaivR~
+//                {                                                  //~1307I~//~vaivR~
+//                    maxExpectedFuriten=expected;                   //~1307I~//~vaivR~
+//                    idxMaxExpectedFuriten=ii;                      //~1307I~//~vaivR~
+//                }                                                  //~1307I~//~vaivR~
+            	itsHandValue[ii]-=DV_DISCARD/PIECE_DUPCTR;	//100,000/4//~vaivI~
             }                                                      //~1307I~
-            if (pos>=OFFS_WORDTILE && RS.itsExposed[pos]>0)           //~1307I~
+//          if (pos>=OFFS_WORDTILE && RS.itsExposed[pos]>0)           //~1307I~//~vaivR~
+            else                                                   //~vaivI~
+            if (pos>=OFFS_WORDTILE)                                //~vaivI~
         	{                                                      //~1307I~
-	            if (expected>maxExpectedWord)                      //~1307I~
-    	        {                                                  //~1307I~
-        	    	maxExpectedWord=expected;                      //~1307I~
-            	    idxMaxExpectedWord=ii;                         //~1307I~
-            	}                                                  //~1307I~
+//                if (expected>maxExpectedWord)                      //~1307I~//~vaivR~
+//                {                                                  //~1307I~//~vaivR~
+//                    maxExpectedWord=expected;                      //~1307I~//~vaivR~
+//                    idxMaxExpectedWord=ii;                         //~1307I~//~vaivR~
+//                }                                                  //~1307I~//~vaivR~
+            	itsHandValue[ii]-=DV_DISCARD/PIECE_DUPCTR;	//100,000/4//~vaivI~
             }                                                      //~1307I~
+        	if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair new furiten="+furiten+",pos="+pos+",itsHandValue["+ii+"]="+itsHandValue[ii]);//~vaivI~
         }                                                          //~1307I~
-        if (maxExpectedWord>=maxExpectedFuriten)                    //~1307I~
-        	idxDiscard=idxMaxExpectedWord;                         //~1307I~
-        else                                                       //~1307I~
-        if (maxExpectedFuriten>=maxExpected)                        //~1307I~
-        	idxDiscard=idxMaxExpectedFuriten;                      //~1307I~
-        else                                                       //~1307I~
-        	idxDiscard=idxMaxExpected;                             //~1307I~
-        if (idxDiscard!=-1)                                        //~1307I~
-        {                                                          //~1308I~
-	        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair old itsHandValue["+idxDiscard+"]="+itsHandValue[idxDiscard]);//~1307I~//~1308I~//~vaajR~
-            itsHandValue[idxDiscard]=DV_DISCARD;	//100,000      //~1307I~
-        	if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair new itsHandValue["+idxDiscard+"]="+itsHandValue[idxDiscard]);//~1307I~//~1308I~//~vaajR~
-        }                                                          //~1308I~
-        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair idxMaxExpected="+idxMaxExpected+",expected="+maxExpected);//~1307I~//~vaajR~
-        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair idxMaxExpectedWord="+idxMaxExpectedWord+",expected="+maxExpectedWord);//~1307I~//~vaajR~
-        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair idxMaxExpectedFuriten="+idxMaxExpectedFuriten+",expected="+maxExpectedFuriten);//~1307I~//~vaajR~
+////      if (maxExpectedWord>=maxExpectedFuriten)                    //~1307I~//~vaivR~
+//        if (maxExpectedWord>=maxExpectedFuriten && maxExpectedFuriten>0)//~vaivR~
+//            idxDiscard=idxMaxExpectedWord;                         //~1307I~//~vaivR~
+//        else                                                       //~1307I~//~vaivR~
+////      if (maxExpectedFuriten>=maxExpected)                        //~1307I~//~vaivR~
+//        if (maxExpectedFuriten>=maxExpected && maxExpected>0)    //~vaivR~
+//            idxDiscard=idxMaxExpectedFuriten;                      //~1307I~//~vaivR~
+//        else                                                       //~1307I~//~vaivR~
+//        if (!swSelected)                                         //~vaivR~
+//            idxDiscard=idxMaxExpected;                             //~1307I~//~vaivR~
+//        if (idxDiscard!=-1)                                        //~1307I~//~vaivR~
+//        {                                                          //~1308I~//~vaivR~
+//            if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair old itsHandValue["+idxDiscard+"]="+itsHandValue[idxDiscard]);//~1307I~//~1308I~//~vaajR~//~vaivR~
+////          itsHandValue[idxDiscard]=DV_DISCARD;    //100,000      //~1307I~//~vaivR~
+//            itsHandValue[idxDiscard]-=DV_DISCARD;   //100,000    //~vaivR~
+//            if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair new itsHandValue["+idxDiscard+"]="+itsHandValue[idxDiscard]);//~1307I~//~1308I~//~vaajR~//~vaivR~
+//        }                                                          //~1308I~//~vaivR~
+//        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair idxMaxExpected="+idxMaxExpected+",expected="+maxExpected);//~1307I~//~vaajR~//~vaivR~
+//        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair idxMaxExpectedWord="+idxMaxExpectedWord+",expected="+maxExpectedWord);//~1307I~//~vaajR~//~vaivR~
+//        if (Dump.Y) Dump.println("RADSEval.evaluateDiscard7Pair idxMaxExpectedFuriten="+idxMaxExpectedFuriten+",expected="+maxExpectedFuriten);//~1307I~//~vaajR~//~vaivR~
     }                                                              //~1307I~
     //***********************************************************************//~1307I~
     //*rc:-1 furiten itself,1:link furiten                         //~1307I~
@@ -1108,6 +1165,7 @@ public class RADSEval
 //      int shantenUpMax=0;                                        //~1127I~//~1218R~
         int ctrWinningTile=0;
         int ctrShantenDownCase=0;//~1216I~
+        boolean swFuriten=false,swNotFuriten=false;                //~vaimI~
         //*******************                                      //~1127I~
         if (Dump.Y) Dump.println("RADSEval.tryNextTake chk shantenDown pos="+Ppos+",idx="+Pidx+",Pshanten="+Pshanten);//~1220I~//~vaajR~
 //        shanten=AG.aShanten.getShantenMin(itsHand,PctrHand); //chk drop collapse meld//~1218I~//~1220R~
@@ -1130,13 +1188,28 @@ public class RADSEval
             	continue;                                          //~1127M~
         	int ctrRemain=PIECE_DUPCTR-(itsHand[ii]+RS.itsExposed[ii]);//~1218I~
 		    if (Dump.Y) Dump.println("RADSEval.tryNextTake ctrRemain="+ctrRemain+",pos="+ii);//~1218I~//~vaajR~
-        	if (ctrRemain<=0)                                      //~1218I~
+//      	if (ctrRemain<=0)                                      //~1218I~//~vaimR~
+        	if (PIECE_DUPCTR==itsHand[ii])                         //~vaimI~
             	continue;                                          //~1206I~//~1218M~
 //  		if (!isCanMakeSet(ii,itsHand))                         //~1218R~
 //              continue;                                          //~1218R~
         	itsHand[ii]++;   //try taken
 //  		shanten=RADS.getShanten(false/*PswIntent*/,PctrHand+1);//~1127R~//~1218R~
 	        shanten=AG.aShanten.getShantenMin(itsHand,PctrHand); //chk drop collapse meld//~1218I~
+            if (shanten==-1) //ron by next take                    //~vaimI~
+            {                                                      //~vaimI~
+    			if (RSP.isFuritenSelf(ii))	//ron next take but ron tile is furiteniscard//~vaimI~
+                	swFuriten=true;                                //~vaimI~
+                else                                               //~vaimI~
+                	swNotFuriten=true;                             //~vaimI~
+            }                                                      //~vaimI~
+		    if (Dump.Y) Dump.println("RADSEval.tryNextTake ctrRemain="+ctrRemain+",pos="+ii+",swFuriten="+swFuriten+",swFuritenNo="+swNotFuriten);//~vaimI~
+        	if (ctrRemain<=0) //need furiten chked for also ctrRemain=0//~vaimI~
+            {                                                      //~vaimI~
+			    if (Dump.Y) Dump.println("RADSEval.tryNextTake continue by ctrRemain="+ctrRemain);//~vaimI~
+        		itsHand[ii]--;                                     //~vaimI~
+            	continue;                                          //~vaimI~
+            }                                                      //~vaimI~
             int shantenUp=Pshanten-shanten;                        //~1127I~
 //          if (shantenUp>0)                                       //~1127R~//~1220R~
             if (shantenUp>=0)     //evaluate even if shanten same  //~1220I~
@@ -1153,8 +1226,8 @@ public class RADSEval
             	if (shanten==-1) //ron by next take
                 {
 //  				if (RAUtils.isFuriten(eswnDiscard,ii))	//ron next take but ron tile is furiteniscard//~1220R~
-    				if (RSP.isFuritenSelf(ii))	//ron next take but ron tile is furiteniscard//~1220I~
-                		break;                                     //~1130I~
+//  				if (RSP.isFuritenSelf(ii))	//ron next take but ron tile is furiteniscard//~1220I~//~vaimR~
+//              		break;                                     //~1130I~//~vaimR~
                     ctrWinListTryNextTake++;                       //~vaaEI~
                     if (RAUtils.isSingle(itsHand,ii,-1/*ron by pillow constructed*/))//~vaaER~
                     {	                                           //~vaaEI~
@@ -1178,13 +1251,14 @@ public class RADSEval
                     ctrWinningTile+=PIECE_DUPCTR-(itsHand[ii]-1)-RS.itsExposed[ii];//~1216I~
 			        if (Dump.Y) Dump.println("RADSEval.tryNextTake eswn="+eswnDiscard+",shanten=-1 pos="+ii+",hanMax="+hanMax+",amtMx="+amtMx+",ctrWinningTile="+ctrWinningTile);//~1216I~//~1220R~//~vaajR~
                 }
-                else
-            	if (shanten==0) //tenpai
-                {
-//  				if (RADS.chkFuriten())	//chk any winning tile is furiten//~1220R~
-    				if (RADS.chkFuritenSelf())	//chk any winning tile is furiten//~1220I~
-                		break;                                     //~1130I~
-                }
+//                else                                             //~vaimR~
+//                if (shanten==0) //tenpai                         //~vaimR~
+//                {                                                //~vaimR~
+//*no effect,finally break                                         //~vaimI~
+////                  if (RADS.chkFuriten())  //chk any winning tile is furiten//~1220R~//~vaimR~
+//                    if (RADS.chkFuritenSelf())  //chk any winning tile is furiten//~1220I~//~vaimR~
+//                        break;                                     //~1130I~//~vaimR~
+//                }                                                //~vaimR~
 //              itsHandValue[Pidx]+=DV_SHANTEN_UP;                 //~1126R~//~1127R~
 		        if (Dump.Y) Dump.println("RADSEval.tryNextTake shantenUp shanten="+shanten+",Pshanten="+Pshanten);//~1127R~//~1131R~//~vaajR~
                 break;                                             //~1130I~
@@ -1197,6 +1271,21 @@ public class RADSEval
             }                                                      //~1220I~
         	itsHand[ii]--;
         }
+        if (swFuriten)                                             //~vaimI~
+        {                                                          //~vaimI~
+        	swFuriten=!isEvaluateFuriten(swNotFuriten,Ppos);       //~vaimI~
+        }                                                          //~vaimI~
+      if (swFuriten)                                               //~vaimI~
+      {                                                            //~vaimI~
+	    	if (Dump.Y) Dump.println("RADSEval.tryNextTake Furiten idx="+Pidx+",old="+itsHandValue[Pidx]);//~vaimI~
+    	    itsHandValue[Pidx]+=DV_AVOID_FURITEN;       //-100000  //do not discard//~vaimI~
+	    	if (Dump.Y) Dump.println("RADSEval.tryNextTake Furiten idx="+Pidx+",new="+itsHandValue[Pidx]);//~vaimI~
+            ctrWinningTileTryNext=0;                               //~vaimI~
+        	amtMax=0;                                              //~vaimI~
+        	hanMax=0;                                              //~vaimI~
+      }                                                            //~vaimI~
+      else                                                         //~vaimI~
+      {                                                            //~vaimI~
 //      if (shantenUpMax>0)                                        //~1127I~//~1218R~
         if (ctrTileShantenUp>0)                                    //~1218I~
         {                                                          //~1127I~
@@ -1216,10 +1305,24 @@ public class RADSEval
             ctrWinningTileTryNext=0;                               //~1220I~
         }                                                          //~1220I~
         amtMax=amtMx;                                              //~vaajI~
+      }//!swFuriten                                                //~vaimI~
         if (Dump.Y) Dump.println("RADSEval.tryNextTake exit eswnDiscard="+eswnDiscard+",Pidx="+Pidx+",Ppos="+Ppos+",hanMax="+hanMax+",amtMax="+amtMax+",ctrTileShanteUp="+ctrTileShantenUp+",ctrWinningTile="+ctrWinningTile);//~1127R~//~1131R~//~1213R~//~1216R~//~1218R~//~vaajR~//~vafbR~
         if (Dump.Y) Dump.println("RADSEval.tryNextTake exit ctrWinlistTryNexttake="+ctrWinListTryNextTake+",ctrShantenDownCase="+ctrShantenDownCase);//~vaffR~
         return hanMax;
     }
+    //***********************************************************************//~vaimI~
+    //*For furiten, evaluate if Ron by Draw is allowed             //~vaimI~
+    //***********************************************************************//~vaimI~
+    private boolean isEvaluateFuriten(boolean PswExistNotFuritenTile,int Ppos)//~vaimI~
+    {                                                              //~vaimI~
+    	boolean rc;                                                //~vaimI~
+        if (PswExistNotFuritenTile) //win tile is mix of furiten and not furiten//~vaimI~
+        	rc=false;	//always select discard avoiding furiten   //~vaimI~
+        else      //all win tile is furiten                        //~vaimI~
+        	rc=false;	//do not evaluate this discard of Ppos     //~vaimI~
+        if (Dump.Y) Dump.println("RADSEval.isEvaluateFuriten rc="+rc+",pos="+Ppos+",swExistNotFuritenTile="+PswExistNotFuritenTile);//~vaimI~
+        return rc;                                                 //~vaimI~
+    }                                                              //~vaimI~
     //***********************************************************************//~vafcR~
     //*get max Amt for winlist                                     //~vafcR~
     //***********************************************************************//~vafcR~
@@ -1246,30 +1349,31 @@ public class RADSEval
         if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall exit posAndAmt="+posAndAmt.toString());//~vafcR~
         return posAndAmt;                                          //~vafcR~
     }                                                              //~vafcR~
-    //***********************************************************************//~vafnI~
-    //*get max Amt for winlist                                     //~vafnI~
-    //***********************************************************************//~vafnI~
-    public boolean evaluateWinListCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int PposTop,int[] PitsWin)//~vafnR~
-    {                                                              //~vafnI~
-        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall entry eswn="+Peswn+",itsWin="+Utils.toString(PitsWin)+",ctrHand="+PctrHand+",PitsHand="+Utils.toString(PitsHand,9));//~vafnI~
-        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall action="+Paction+",posTop="+PposTop);//~vafnI~
-        boolean rc=true;                                           //~vafnI~
-        int player=RS.RSP[Peswn].player;                           //~vafnI~
-        for (int ii=0;ii<PitsWin.length;ii++)                      //~vafnI~
-        {                                                          //~vafnI~
-        	int pos=PitsWin[ii];                                   //~vafnI~
-	        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable posWin="+pos);//~vafnI~
-	        Point hanAndAmt=AG.aRARon.getRonValueEvaluateCall2nd(player,PitsHand,pos,Paction,PposTop);//~vafnR~
-        	int amt=hanAndAmt.y;	//output of RARon.getRonValue()//~vafnI~
-            if (amt==0)	//ewve on 2 hanconstraint                  //~vafnI~
-            {                                                      //~vafnI~
-            	rc=false;                                          //~vafnI~
-            	break;                                             //~vafnI~
-            }                                                      //~vafnI~
-        }                                                          //~vafnI~
-        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable exit rc="+rc);//~vafnI~
-        return rc;                                                 //~vafnI~
-    }                                                              //~vafnI~
+//    //***********************************************************************//~vafnI~//+vaivR~
+//    //*get max Amt for winlist                                     //~vafnI~//+vaivR~
+//    //***********************************************************************//~vafnI~//+vaivR~
+//    //*NoUser                                                    //+vaivI~
+//    public boolean evaluateWinListCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int PposTop,int[] PitsWin)//~vafnR~//+vaivR~
+//    {                                                              //~vafnI~//+vaivR~
+//        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall entry eswn="+Peswn+",itsWin="+Utils.toString(PitsWin)+",ctrHand="+PctrHand+",PitsHand="+Utils.toString(PitsHand,9));//~vafnI~//+vaivR~
+//        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCall action="+Paction+",posTop="+PposTop);//~vafnI~//+vaivR~
+//        boolean rc=true;                                           //~vafnI~//+vaivR~
+//        int player=RS.RSP[Peswn].player;                           //~vafnI~//+vaivR~
+//        for (int ii=0;ii<PitsWin.length;ii++)                      //~vafnI~//+vaivR~
+//        {                                                          //~vafnI~//+vaivR~
+//            int pos=PitsWin[ii];                                   //~vafnI~//+vaivR~
+//            if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable posWin="+pos);//~vafnI~//+vaivR~
+//            Point hanAndAmt=AG.aRARon.getRonValueEvaluateCall2nd(player,PitsHand,pos,Paction,PposTop);//~vafnR~//+vaivR~
+//            int amt=hanAndAmt.y;    //output of RARon.getRonValue()//~vafnI~//+vaivR~
+//            if (amt==0) //ewve on 2 hanconstraint                  //~vafnI~//+vaivR~
+//            {                                                      //~vafnI~//+vaivR~
+//                rc=false;                                          //~vafnI~//+vaivR~
+//                break;                                             //~vafnI~//+vaivR~
+//            }                                                      //~vafnI~//+vaivR~
+//        }                                                          //~vafnI~//+vaivR~
+//        if (Dump.Y) Dump.println("RADSEval.evaluateWinListCallRonable exit rc="+rc);//~vafnI~//+vaivR~
+//        return rc;                                                 //~vafnI~//+vaivR~
+//    }                                                              //~vafnI~//+vaivR~
     //***********************************************************************//~vafnI~
     //*get max Amt for winlist,return 0 if amt=0 pattern exist     //~vafnI~
     //***********************************************************************//~vafnI~

@@ -1,6 +1,7 @@
-//*CID://+vaf2R~:                             update#=  885;       //+vaf2R~
+//*CID://+vaipR~:                             update#=  886;       //+vaipR~
 //*****************************************************************//~v101I~
-//2021/10/22 vaf2 static variable to AG or final                   //+vaf2I~
+//2022/01/14 vaip near finalgame aim higher score; consider current value and intent//+vaipI~
+//2021/10/22 vaf2 static variable to AG or final                   //~vaf2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //~vab6I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
@@ -69,14 +70,14 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private static final int POINT_RANKM  =8000;
     private static final int POINT_RANKM_SHORT=7680;//~9212I~      //~9213R~
 //  private static final int POINT_RANK_YM=40;                     //~9224I~//~va11R~
-    public  static final int RANKID_YAKUMAN=40;                          //~va11M~//+vaf2R~
-    public  static final int RANKID_YAKUMAN15=60;                        //~va11M~//+vaf2R~
-    public  static final int RANKID_YAKUMAN2=80;                         //~va11M~//+vaf2R~
-    public  static final int RANKID_YAKUMAN3=120;                        //~va11M~//+vaf2R~
-    public  static final int RANKID_YAKUMAN4=160;                        //~va11M~//+vaf2R~
-    public  static final int RANKID_YAKUMAN5=200;                        //~va11I~//+vaf2R~
-    public  static final int RANKID_YAKUMAN6=240;                        //~va11I~//+vaf2R~
-    public  static final int RANKID_YAKUMAN7=280;                        //~va11I~//+vaf2R~
+    public  static final int RANKID_YAKUMAN=40;                          //~va11M~//~vaf2R~
+    public  static final int RANKID_YAKUMAN15=60;                        //~va11M~//~vaf2R~
+    public  static final int RANKID_YAKUMAN2=80;                         //~va11M~//~vaf2R~
+    public  static final int RANKID_YAKUMAN3=120;                        //~va11M~//~vaf2R~
+    public  static final int RANKID_YAKUMAN4=160;                        //~va11M~//~vaf2R~
+    public  static final int RANKID_YAKUMAN5=200;                        //~va11I~//~vaf2R~
+    public  static final int RANKID_YAKUMAN6=240;                        //~va11I~//~vaf2R~
+    public  static final int RANKID_YAKUMAN7=280;                        //~va11I~//~vaf2R~
 //  private static final int[] intsPoint={20,25,30,40,50,60,70,80,90,100,110};//~9212R~//~va11R~
     private static final int[] intsPoint={0,20,25,30,40,50,60,70,80,90,100,110};//~va11I~
     private static final int POINTIDX_7PAIR2=2;                    //~va16I~
@@ -100,18 +101,18 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //    private static int RANKIDX_YAKUMAN4=12;                      //~va11R~
 //    private static int RANKIDX_YAKUMAN5=13;                      //~va11R~
 //    private static int RANKIDX_YAKUMAN6=14;                      //~va11R~
-    public  static final int RANKIDX_MANGAN=5;         //4han            //~va11I~//+vaf2R~
-    public  static final int RANKIDX_HANEMAN=6;        //6han            //~va11I~//+vaf2R~
-    public  static final int RANKIDX_MANGAN2=7;        //8han            //~va11I~//+vaf2R~
-    public  static final int RANKIDX_MANGAN3=8;        //11han           //~va11I~//+vaf2R~
-    public  static final int RANKIDX_YAKUMAN=9;        //13han           //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN15=10;                       //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN2=11;                        //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN3=12;                        //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN4=13;                        //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN5=14;                        //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN6=15;                        //~va11I~//+vaf2R~
-    private static final int RANKIDX_YAKUMAN7=16;                        //~va11I~//+vaf2R~
+    public  static final int RANKIDX_MANGAN=5;         //4han            //~va11I~//~vaf2R~
+    public  static final int RANKIDX_HANEMAN=6;        //6han            //~va11I~//~vaf2R~
+    public  static final int RANKIDX_MANGAN2=7;        //8han            //~va11I~//~vaf2R~
+    public  static final int RANKIDX_MANGAN3=8;        //11han           //~va11I~//~vaf2R~
+    public  static final int RANKIDX_YAKUMAN=9;        //13han           //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN15=10;                       //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN2=11;                        //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN3=12;                        //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN4=13;                        //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN5=14;                        //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN6=15;                        //~va11I~//~vaf2R~
+    private static final int RANKIDX_YAKUMAN7=16;                        //~va11I~//~vaf2R~
     private static final int COLOR_YOU=Color.argb(0xff,0x00,0xbf,0xff); //deep sky blue//~9311I~
     private static final int COLOR_REPLY_BEFORESEND=Color.argb(0xff,0x1b,0xa4,0xd7);//sky blue//~9227R~
     private static final int COLOR_REPLY_OK=Color.argb(0xff,0x00,0xff,0x00);//~9227I~
@@ -724,6 +725,18 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     	if (Dump.Y) Dump.println("CompReqDlg.calcPointBaseSub rc="+val+",fu="+Ppoint+",han="+Prank+",swRankMup="+PswRankMUp);//~va11R~
         return val;
     }                                                              //~va11I~
+    //*********************************************************************//+vaipI~
+    //*from RACall to calc approximate point at final round        //+vaipI~
+    //*********************************************************************//+vaipI~
+    public static int calcTempPoint(int Peswn,int Prank,boolean PswRankMUp)//+vaipI~
+    {                                                              //+vaipI~
+	    int amt=calcPointBaseSub(30/*fu*/,Prank,PswRankMUp);       //+vaipI~
+    	int cutEswn=AG.aAccounts.getCutEswn();                     //+vaipI~
+        if (cutEswn==Peswn)                                        //+vaipI~
+        	amt*=2;                                                //+vaipI~
+    	if (Dump.Y) Dump.println("CompReqDlg.calcTempPoint amt="+amt+",eswn="+Peswn+",cutEswn="+cutEswn+",swRankMUp="+PswRankMUp);//+vaipI~
+        return amt;                                                //+vaipI~
+    }                                                              //+vaipI~
     //*********************************************************************//~9602R~
     //*ammountNet:original total when cutPlayer option             //~9602I~
     //*********************************************************************//~9602I~

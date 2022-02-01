@@ -1,6 +1,7 @@
-//*CID://+va9gR~:                             update#=  427;       //+va9gR~
+//*CID://+vajiR~:                             update#=  428;       //+vajiR~
 //********************************************************************************//~v101I~
-//2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//+va9gI~
+//2022/01/31 vaji change color of top left to identify server      //+vajiI~
+//2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//~va9gI~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //@002:20181103 use enum                                           //~@002I~
 //@001:20181103 updatebuttonstatus over config change              //~@001I~
@@ -48,8 +49,8 @@ public class IPMulti extends BTMulti                                            
 //  public void onConnected(Socket Psocket,ConnectionDta PconnectionData,Boolean PswClient)//~9723R~
     public void onConnected(Socket Psocket, ConnectionData PconnectionData, Boolean PswClient)//~9723I~
     {                                                              //~9723I~
-        if (Dump.Y) Dump.println("IPMulti:onConnected: reset swTrainingMode old="+AG.swTrainingMode);//+va9gI~
-        AG.swTrainingMode=false;                                   //+va9gI~
+        if (Dump.Y) Dump.println("IPMulti:onConnected: reset swTrainingMode old="+AG.swTrainingMode);//~va9gI~
+        AG.swTrainingMode=false;                                   //~va9gI~
     	if (Dump.Y) Dump.println("IPMulti:onConnected swClient="+PswClient+",connectionData="+PconnectionData.toString());//~0117I~//~0B19R~
         AG.RemoteStatus=AG.RS_IPCONNECTED;                         //~9729I~
     	swServer=!PswClient;                                       //~9724I~
@@ -126,6 +127,7 @@ public class IPMulti extends BTMulti                                            
     		WDA.onConnected(remoteDeviceName);	//show status msg  //~0108I~
 			resetMemberDisconnected();	//reset other of local and server(thread!=null)//~0120I~
         }                                                          //~9723I~
+        AG.aMainView.showConnectStatus();                          //~vac5R~//+vajiI~
     }                                                              //~9723I~
     //*******************************************************      //~1AebI~//~9723I~
     //* add remote member at NotInGame                             //~0112R~
@@ -318,6 +320,7 @@ public class IPMulti extends BTMulti                                            
 //                memberRole=ROLE_UNDEFINED;  //enable to change role//~@002R~//~9729I~
                 memberRole=ROLE_UNDEFINED;  //enable to change role//~9B07I~
 				AG.RemoteStatus=AG.RS_IP;     //disconnected       //~9729I~
+		        AG.aMainView.showConnectStatus();                          //~vac5R~//+vajiI~
             }                                              //~@002I~//~9729R~
         }                                                  //~1AebI~//~9729I~
     }                                                              //~9729I~

@@ -1,4 +1,4 @@
-//*CID://+vac5R~:                             update#=  507;       //~vac5R~
+//*CID://+vac5R~:                             update#=  510;       //~vac5R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
@@ -1590,7 +1590,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 				UView.showToast(R.string.ErrSpecifyYourname);      //~9722I~
             return null;                                           //~9722I~
         }                                                          //~9722I~
-        if (Dump.Y) Dump.println("BTCDialog.getYourName="+yourname+",AG.YourName="+AG.YourName);//~9722I~//+vac5R~
+        if (Dump.Y) Dump.println("BTCDialog.getYourName="+yourname+",AG.YourName="+AG.YourName);//~9722I~//~vac5R~
         if (!yourname.equals(AG.YourName))                         //~9722I~
         {                                                          //~9722I~
         	AG.aBTCDialog.members.updateYourName(AG.YourName,yourname);           //~9905I~

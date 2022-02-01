@@ -1,6 +1,7 @@
-//*CID://+vaaGR~:                             update#=  155;       //+vaaGR~
+//*CID://+vaikR~:                             update#=  161;       //~vaikR~
 //*****************************************************************//~v101I~
-//2021/07/13 vaaG set default BG/FG for HelpDlg                    //+vaaGI~
+//2022/01/11 vaik Youtube movie as help                            //~vaikI~
+//2021/07/13 vaaG set default BG/FG for HelpDlg                    //~vaaGI~
 //2021/06/26 vaa0 support <img> in htmlText                        //~vaa0I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*****************************************************************//~v101I~
@@ -11,16 +12,20 @@ import android.graphics.Color;
 import android.os.Bundle;                                          //~v@@@I~
 import android.text.Html;
 import android.text.Spanned;
+import android.widget.Button;
 import android.widget.TextView;                                    //~v@@@I~
 import android.view.ViewGroup;                                     //~v@@@I~
 import android.view.LayoutInflater;                                //~v@@@I~
 import android.view.View;                                          //~v@@@I~
 
 import com.btmtest.R;                                              //~v@@@I~
+import com.btmtest.gui.UButton;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.utils.UFile;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;                                    //~v@@@I~
+import com.btmtest.utils.Utube;
+
 import static android.text.Html.*;
 import static com.btmtest.StaticVars.AG;
 
@@ -28,14 +33,16 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
 {                                                                  //~2C29R~
     public static final int HELP_BG_IMAGE=Color.argb(0xff,0xc0,0xd0,0xc0);//~vaa0I~
     public static final int HELP_FG_IMAGE=Color.argb(0xff,0x00,0x00,0x00);//~vaa0I~
-    private static final int HELP_BG_IMAGE_DEFAULT=Color.argb(0xff,0xd0,0xe0,0xd0);//+vaaGI~
-    private static final int HELP_FG_IMAGE_DEFAULT=Color.argb(0xff,0x00,0x00,0x00);//+vaaGI~
+    private static final int HELP_BG_IMAGE_DEFAULT=Color.argb(0xff,0xd0,0xe0,0xd0);//~vaaGI~
+    private static final int HELP_FG_IMAGE_DEFAULT=Color.argb(0xff,0x00,0x00,0x00);//~vaaGI~
     private static final int TITLEID=R.string.Title_HistoryDlg;    //~v@@@R~
     private static final String DEFAULT_FILENAME="default.history";   //~v@@@R~
     private TextView tvMessage;                                    //~v@@@I~
 //  private UFDlg ufdlg;                                           //~v@@@R~
     private String helpFilename;                                   //~v@@@I~
     private int colorBG,colorFG;                                   //~vaa0I~
+    private String playlistID,videoID;                             //~vaikI~
+    private Button btnMovie;                                       //~vaikI~
 //**********************************                               //~v@@@I~
 	public HelpDialog()                                              //~v@@@I~
     {                                                              //~v@@@I~
@@ -47,8 +54,8 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
 //  	hdlg.ufdlg=UFDlg.newInstance(hdlg,Ptitle,R.layout.helpdialog,UFDlg.FLAG_CLOSEBTN,0/*helptitleid*/,null/*helpfile*/);//~v@@@R~
     	UFDlg.setBundle(hdlg,Ptitle,R.layout.helpdialog,UFDlg.FLAG_CLOSEBTN,0/*helptitleid*/,null/*helpfile*/);//~v@@@R~
         hdlg.helpFilename=Pfnm;                                    //~v@@@I~
-        hdlg.colorBG=HELP_BG_IMAGE_DEFAULT;                        //+vaaGI~
-        hdlg.colorFG=HELP_FG_IMAGE_DEFAULT;                        //+vaaGI~
+        hdlg.colorBG=HELP_BG_IMAGE_DEFAULT;                        //~vaaGI~
+        hdlg.colorFG=HELP_FG_IMAGE_DEFAULT;                        //~vaaGI~
     	return hdlg;                                               //~v@@@I~
      }                                                              //~v@@@I~
 //**********************************                               //~v@@@I~
@@ -107,6 +114,7 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
 	    	tvMessage.setText(txt);                                //~v@@@R~
         }                                                          //~v@@@I~
       }                                                              //~v@@@M~//~vaa0R~
+      setBtnMovie(Playoutview);                                    //+vaikI~
     }                                                              //~vaa0I~
 //**********************************                               //~v@@@I~
     private String adjustHtml(String Ptxt)                                        //~v@@@I~
@@ -142,4 +150,48 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
 	{                                                              //~v@@@I~
         newInstance(Ptitleid,Pfnm).show();                         //~v@@@I~
     }                                                              //~v@@@I~
+    //******************************************                   //~vaikI~
+	public void showPlaylist(String PlistID)                       //~vaikI~
+	{                                                              //~vaikI~
+        if (Dump.Y) Dump.println("HelpDialog.showPlaylist playlistID="+PlistID);//~vaikI~
+    	playlistID=PlistID;                                        //~vaikI~
+        show();                                                    //~vaikI~
+    }                                                              //~vaikI~
+    //******************************************                   //~vaikI~
+	public void showVideo(String PvideoID)                         //~vaikI~
+	{                                                              //~vaikI~
+        if (Dump.Y) Dump.println("HelpDialog.showVideo videoID="+PvideoID);//~vaikI~
+    	videoID=PvideoID;                                          //~vaikI~
+        show();                                                    //~vaikI~
+    }                                                              //~vaikI~
+    //******************************************                   //~vaikI~
+    private void setBtnMovie(View PView)                             //+vaikR~
+    {                                                              //~vaikI~
+        if (Dump.Y) Dump.println("HelpDialog.setBtnMovie videoID="+videoID+",playlistID="+playlistID);//+vaikR~
+    	super.initLayout(PView);                                   //~vaikI~
+    	if (videoID!=null || playlistID!=null)                     //~vaikI~
+        {                                                          //~vaikI~
+	    	btnMovie=UButton.bind(PView,R.id.Cancel,this);         //~vaikI~
+        	btnMovie.setVisibility(View.VISIBLE);                  //~vaikI~
+        }                                                          //~vaikI~
+    }                                                              //~vaikI~
+    //******************************************                   //~vaikI~
+    //*use cancel as open youtube video                            //~vaikI~
+    //******************************************                   //~vaikI~
+    @Override                                                      //~vaikI~
+	public void onClickCancel()                                    //~vaikI~
+	{                                                              //~vaikI~
+        if (Dump.Y) Dump.println("HelpDialog.onClickCancel playlist="+playlistID+",videoID="+videoID);//~vaikI~
+        boolean rc=false;                                          //~vaikI~
+        if (playlistID!=null)                                      //~vaikI~
+        {                                                          //~vaikI~
+        	rc= Utube.openPlaylist(AG.context,playlistID);          //~vaikR~
+        }                                                          //~vaikI~
+        else                                                       //~vaikI~
+        if (videoID!=null)                                         //~vaikI~
+        {                                                          //~vaikI~
+        	rc=Utube.playVideo(AG.context,videoID);                //~vaikR~
+        }                                                          //~vaikI~
+        if (Dump.Y) Dump.println("HelpDialog.onClickCancel rc="+rc);//~vaikI~
+    }                                                              //~vaikI~
 }//class                                                           //~v@@@R~

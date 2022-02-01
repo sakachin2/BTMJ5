@@ -33,6 +33,12 @@
                     android:text="Dump to SDCard"
                 />
                 <CheckBox
+                    android:id="@+id/cbDumpNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Dump"
+                />
+                <CheckBox
                     android:id="@+id/cbOpenHand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,7 +120,7 @@
                     android:id="@+id/cbSetDora"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Set Dora"
+                    android:text="ドラ設定 type=1-4, num=1-9"
                 />
     			<LinearLayout
          			android:layout_width="fill_parent"
@@ -325,6 +331,12 @@
                     android:text="Deal Kuikae chk"
                 />
                 <CheckBox
+                    android:id="@+id/cbAvoidFuriten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="フリテン待ち"
+                />
+                <CheckBox
                     android:id="@+id/cbDealStraight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -364,7 +376,7 @@
                     android:id="@+id/cbDealChantaPon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="チャンタ ポン"
+                    android:text="チャンタ ポン or finalgame 順位アップ"
                 />
                 <CheckBox
                     android:id="@+id/cbDealAnkanFix1"
@@ -490,7 +502,7 @@
                     android:id="@+id/cbPonDealAllSame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="トイトイ ポン"
+                    android:text="トイトイ ポン and チー"
                 />
                 <CheckBox
                     android:id="@+id/cbDealIntentAllSame"
@@ -676,37 +688,37 @@
                     android:id="@+id/cbDeal7PairTanyao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 7Pair Tanyao"
+                    android:text="チートイ　タンヤオ"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal7PairChanta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 7Pair Chanta"
+                    android:text="チートイ　チャンタ"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal7PairNotTanyao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 7Pair Not Tanyao"
+                    android:text="チートイ　タンヤオ以外"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal7PairSamecolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 7Pair Samecolor"
+                    android:text="チートイ　一色"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal13NoPair"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 13NoPair"
+                    android:text="十三不搭"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal14NoPair"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deal 14NoPair"
+                    android:text="十四不搭"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal3Dragon"

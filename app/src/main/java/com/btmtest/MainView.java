@@ -1,5 +1,6 @@
-//*CID://+vaf5R~: update#= 432;                                    //~vaf5R~
+//*CID://+vajiR~: update#= 439;                                    //~vajiR~
 //**********************************************************************
+//2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2021/10/23 vaf5 (Bug)TTop panel msgbar overflow, adjust textsize //~vaf5I~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
@@ -22,6 +23,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.btmtest.BT.BTMulti;
+import com.btmtest.game.GC;
 import com.btmtest.game.gv.GMsg;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Dump;
@@ -43,6 +46,9 @@ public class MainView                                   //~v@21R~  //~9620R~
     private static final int MAIN_BUTTONS_SMALLFONT =R.layout.main_buttons_smallfont;//~vac5I~
     private static final int MAIN_BUTTONS_SMALLDEVICE =R.layout.main_buttons_smalldevice;//~vaecI~
 //    private static final int MAIN_MSGBAR =R.layout.main_msgbar;    //~9619I~//~9620R~
+    private static final int COLOR_ROLE_SERVER=GC.COLOR_GST_RELEASE;//~vajiR~
+    private static final int COLOR_ROLE_CLIENT=GC.COLOR_GST_RELEASE_CLIENT;//~vajiR~
+    private static final int COLOR_ROLE_UNDEFINED=GC.COLOR_BTN_NORMAL_BG;//~vajiR~
                                                                    //~v@21I~
     private FrameLayout frameLayout;                               //~v@21I~
     private MainActivity main;                                     //~v@21I~
@@ -58,7 +64,7 @@ public class MainView                                   //~v@21R~  //~9620R~
 //  private int frameLayoutHH,frameLayoutWW;                       //~v@21R~
 //    private boolean swRestore;                                   //~v@21R~
     private String strMsgBar;                                      //~9621I~
-    private float pixelTextSize;                                   //+vaf5I~
+    private float pixelTextSize;                                   //~vaf5I~
     //**************************************************************//~v@@@R~
     public MainView(MainActivity Pmain,FrameLayout PframeLayout)//~v@21R~//~9620R~
     {
@@ -188,11 +194,11 @@ public class MainView                                   //~v@21R~  //~9620R~
                                                                    //~v@21I~
 //        ViewGroup.LayoutParams lpvg=btnsMain.getLayoutParams();  //~v@21R~
 //        if (Dump.Y) Dump.println("MainView.addButtons getlayoutparm ww="+lpvg.width+".hh="+lpvg.height);//~v@21R~//~9620R~
-    	pixelTextSize=topMsgBar.getTextSize();                     //+vaf5I~
+    	pixelTextSize=topMsgBar.getTextSize();                     //~vaf5I~
         if (Dump.Y) Dump.println("MainView.addButtons view ww="+btnsMain.getMeasuredWidth()+",hh="+btnsMain.getMeasuredHeight());//~v@21I~//~9620R~
         if (Dump.Y) Dump.println("MainView.addButtons btnsMain="+btnsMain.toString());//~v@21R~//~9620R~
         if (Dump.Y) Dump.println("MainView.addButtons navigationBottomHeight="+AG.scrNavigationbarBottomHeight+",bottomA11="+AG.scrNavigationbarBottomHeightA11);;;//~vaefR~
-        if (Dump.Y) Dump.println("MainView.addButtons msgbar textsize="+pixelTextSize);//+vaf5I~
+        if (Dump.Y) Dump.println("MainView.addButtons msgbar textsize="+pixelTextSize);//~vaf5I~
     }                                                              //~v@21I~
 //    //*************************                                  //~v@21R~
 //    private void addButtons2()                                   //~v@21R~
@@ -252,6 +258,55 @@ public class MainView                                   //~v@21R~  //~9620R~
 //  	btnStartGame.setEnabled(PswConnected);                     //~v@21I~//~9620R~
     	enableStartGame(PswConnected);                              //~9620I~
     }                                                              //~v@21I~
+	//**************************************************************//~vajiI~
+	//*from BTCDialog,WDA dismissDialog                            //~vajiI~
+	//**************************************************************//~vajiI~
+    public void showConnectStatus()                                //~vajiI~
+    {                                                              //+vajiI~
+        if (Dump.Y) Dump.println("MainView.showConnectStatus entry");//+vajiI~
+        if (AG.isMainThread())                                     //+vajiI~
+        {                                                          //+vajiI~
+		    showConnectStatusUI();                                 //+vajiI~
+        }                                                          //+vajiI~
+        else                                                       //+vajiI~
+        {                                                          //+vajiI~
+            AG.activity.runOnUiThread(                             //+vajiI~
+                new Runnable()                                     //+vajiI~
+                {                                                  //+vajiI~
+                    @Override                                      //+vajiI~
+                    public void run()                              //+vajiI~
+                    {                                              //+vajiI~
+					    showConnectStatusUI();                     //+vajiI~
+                    }                                              //+vajiI~
+                }                                                  //+vajiI~
+                                      );                           //+vajiI~
+		}                                                          //+vajiI~
+        if (Dump.Y) Dump.println("MainView.showConnectStatus exit");//+vajiI~
+    }                                                              //+vajiI~
+    public void showConnectStatusUI()                              //+vajiI~
+    {                                                              //~vajiI~
+        int color;                                                 //+vajiM~
+        if (Dump.Y) Dump.println("MainView.showConnectStatusUI");  //+vajiI~
+        try                                                        //+vajiI~
+        {                                                          //+vajiI~
+            if (BTMulti.getConnectedCtr()==0)                      //+vajiR~
+                color=COLOR_ROLE_UNDEFINED;                        //+vajiR~
+            else                                                   //+vajiR~
+            if (BTMulti.isServerDevice())                          //+vajiR~
+                color=COLOR_ROLE_SERVER;                           //+vajiR~
+            else                                                   //+vajiR~
+            if (BTMulti.isClientDevice())                          //+vajiR~
+                color=COLOR_ROLE_CLIENT;                           //+vajiR~
+            else                                                   //+vajiR~
+                color=COLOR_ROLE_UNDEFINED;                        //+vajiR~
+            if (Dump.Y) Dump.println("MainView.showConnectStatus color="+Integer.toHexString(color));//+vajiR~
+            Utils.setBtnBG(btnConnect,color);                      //+vajiR~
+        }                                                          //+vajiI~
+        catch(Exception e)                                         //+vajiI~
+        {                                                          //+vajiI~
+            Dump.println(e,"MainView.drawMsg:runOnUiThread");      //+vajiI~
+        }                                                          //+vajiI~
+    }                                                              //~vajiI~
 	//*************************************************************************//~v@21I~
     public void addImageView()                                     //~v@21R~
     {                                                              //~v@21I~
@@ -533,19 +588,19 @@ public class MainView                                   //~v@21R~  //~9620R~
 			topMsgBar.setText(Pmsg);                               //~vaf5I~
             return;                                                //~vaf5I~
         }                                                          //~vaf5I~
-//      float pixelTextSize=topMsgBar.getTextSize();               //+vaf5R~
+//      float pixelTextSize=topMsgBar.getTextSize();               //~vaf5R~
         int pixelWW=topMsgBar.getWidth();                          //~vaf5I~
         float pixelTextSizeNew= GMsg.adjustTextSize(pixelTextSize,pixelWW,Pmsg);//~vaf5I~
         int unit= TypedValue.COMPLEX_UNIT_PX;                       //~vaf5I~
         if (pixelTextSizeNew!=pixelTextSize)                       //~vaf5I~
         {                                                          //~vaf5I~
-        	if (Dump.Y) Dump.println("MainView.drawMsgAdjusted setTextSize="+pixelTextSizeNew);//+vaf5I~
+        	if (Dump.Y) Dump.println("MainView.drawMsgAdjusted setTextSize="+pixelTextSizeNew);//~vaf5I~
 	        topMsgBar.setTextSize(unit,pixelTextSizeNew);          //~vaf5I~
         }                                                          //~vaf5I~
 		topMsgBar.setText(Pmsg);                                   //~vaf5I~
-//      if (pixelTextSizeNew!=pixelTextSize)                       //+vaf5R~
-//      {                                                          //+vaf5R~
-//          topMsgBar.setTextSize(unit,pixelTextSize);             //+vaf5R~
-//      }                                                          //+vaf5R~
+//      if (pixelTextSizeNew!=pixelTextSize)                       //~vaf5R~
+//      {                                                          //~vaf5R~
+//          topMsgBar.setTextSize(unit,pixelTextSize);             //~vaf5R~
+//      }                                                          //~vaf5R~
     }                                                              //~vaf5I~
 }//class MainView                                       //~v@21R~  //~9620R~

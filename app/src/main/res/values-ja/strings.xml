@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.18</string>
+    <string name="app_version">v1.19</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -386,7 +386,8 @@
     <string name="Agreed">有効</string>
     <string name="NoGame">ノーテン流れ</string>
     <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。\n
-\"フリテン立直\"の\"なし\"、\"不可\"は操作の設定で\"テンパイ確認\"：有りの場合にのみチェックされます。</string>
+\"フリテン立直\"の\"なし\"、\"不可\"は操作の設定で\"テンパイ確認\"：有りの場合にのみチェックされます。
+立直後の見逃しは自摸でも和了できません。空テン立直は可。</string>
     <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
     <string name="Label_ReachLimitOpenYakuman">役満払い</string>
     <string name="Label_ReachLimitOpenChombo">チョンボで続行</string>
@@ -662,7 +663,7 @@
     <string name="Label_PaoFor">対</string>
     <string name="Label_OpenReach">オープンリ</string>
     <string name="Label_Open">オープン</string>
-    <!--string name="Label_OpenReach_Vertical">オー\nプ\nン\nリ</string-->
+    <string name="Label_OpenReach_Vertical">オー\nプ\nン\nリ</string>
     <string name="Label_Open_Vertical">オ\n〡\nプ\nン</string>
     <string name="Label_ScoreAddTotal">得点</string>
     <string name="Label_ScoreNewScore">結果</string>
@@ -692,7 +693,8 @@
     <string name="Label_AccountsSettingTopPrizeEdit">%1$d (%2$d 点持ち - %3$d 返し)</string>
     <string name="Label_AccountsSettingOrderPrize">ウマ</string>
     <string name="Label_AccountsSettingOrderPrizeEdit">%1$d - %2$d</string>
-    <string name="Label_AccountsSettingSamePoint">同点のとき</string>
+    <string name="Desc_SamePointOrder">同点のときのは反時計回りで起家に近い方が高順位だが、ウマは？</string>
+    <string name="Label_AccountsSettingSamePoint"></string>
     <string name="Label_ByEswn">頭ハネ</string>
     <string name="Label_ByEswnOrderPrize">起家頭ハネ</string>
     <string name="Label_Debt">%1$d 点返し</string>
@@ -724,9 +726,9 @@
     <string name="Desc_OpenReach">ボット入りのときは下記、追加の設定あり</string>
     <!--string name="UserAction_Reach_Missing_YN">フリテン立直あり</string-->
     <string name="Label_FuritenReach">フリテン立直</string>
-    <string name="Label_FuritenReachNo">なし（和了できない）</string>
-    <string name="Label_FuritenReachYes">あり（自摸のみ）</string>
-    <string name="Label_FuritenReachReject">不可（できない）</string>
+    <string name="Label_FuritenReachNo">ノーチェック</string>
+    <string name="Label_FuritenReachYes">可（自摸のみ）</string>
+    <string name="Label_FuritenReachReject">拒否</string>
     <string name="UserAction_ReachReset">リーチを取り消しました</string>
     <string name="Label_AnkanAfterReach">立直後の暗槓あり</string>
     <string name="UserAction_WaitOn">ち待</string>
@@ -755,7 +757,7 @@
 		<item>@string/Title_AccountsDlg</item>
 		<!--item>中断要求</item-->
 		<!--item>中断取消</item-->
-		<item>中断確認の表示</item>
+		<item>中断処理の表示</item>
 		<item>対局終了</item>
 		<item>接続障害処理</item>
 		<item>とにかく和了</item>
@@ -779,7 +781,7 @@
     <string name="Err_LackingMemberNoConnectionTraining">接続がありません。一人練習モードにしますか？</string>
     <string name="Err_LackingMemberAllowRobotYes">メンバーが %1$d 人足りません。\nボットを入れて対戦しますか？</string>
     <string name="Err_LackingMemberAllowRobotNo">メンバーが %1$d 人足りません。\nルール設定でボットを加えた対戦もできます。</string>
-    <!--string name="Err_GameFromNotServer">サーバーから対局開始してください</string-->
+    <string name="Err_GameFromNotServer">サーバーから対局開始してください</string>
     <string name="Err_LackingMemberReconnect">接続障害が回復していません</string>
     <string name="Err_AlreadyRestarted">既にゲーム再開済です</string>
     <string name="Info_WaitingAllMemberSetup">残り %1$d 人の 対局準備 完了待ち</string>
@@ -908,11 +910,11 @@
     <string name="Info_SuspendEndgame">中断精算</string>
     <string name="Info_SuspendSaved">中断</string>
     <string name="Info_LastEndgame">終局</string>
-    <string name="Label_ResetReach">リ取消</string>
-    <string name="Label_ResetReach_Vertical">リ\n取\n消</string>
+    <string name="Label_ResetReach">取消</string>
+    <string name="Label_ResetReach_Vertical">取\n消</string>
     <string name="Label_Force_Reach">聴牌！</string>
-    <string name="Label_ResetOpenReach">オリ取消</string>
-    <string name="Label_ResetOpenReach_Vertical">オ\nリ\n取\n消</string>
+    <string name="Label_ResetOpenReach">オ取消</string>
+    <string name="Label_ResetOpenReach_Vertical">オ\n取\n消</string>
     <string name="Desc_SuspendPenalty">処理は省略値でダイアログで変更できます。罰金は均等払い、順位には影響しません。精算する場合、焼鳥はなしとします。\n接続障害の場合、\"パオ\"をチェック：ONするとこの設定にかかわらず、最低 8000*3 にすることができます。</string>
     <string name="Desc_SuspendGameover">\"持ち点\"は供出リーチ棒の返却を含みます。精算の場合、焼鳥はなしとします</string>
     <string name="Label_ctrReachStick">リーチ棒</string>
@@ -1500,6 +1502,7 @@
     <string name="AE_RankFix1">一飜縛り違反</string>
     <string name="AE_RankFix2">二飜縛り違反</string>
     <string name="AE_MultiWait_Furiten">フリテンです</string>
+    <string name="AE_MultiWait_Furiten_Reach">立直がフリテンです</string>
     <string name="AE_MultiWait_FixFirst">先付け違反</string>
     <string name="AE_MultiWait_FixMiddle">中付け違反</string>
     <string name="AE_MultiWait_Constraint1">一飜縛り違反</string>
@@ -1587,6 +1590,8 @@
     <string name="Info_Transfered">旧版の外部ストレージの %1$d / %2$d ファイルを Android-11 新領域に引き継ぎました</string>
     <string name="btnBGM">設定</string>
     <string name="NoUserBGM">未設定</string>
+    <string name="NoUserBGMENG">Not Set</string>
+    <string name="NoUserBGMJPN">未設定</string>
     <string name="UserBGM">お好み</string>
     <string name="UserBGMEachRound">局毎に変える</string>
     <string name="etUserBGMSelectionHint">演奏順を指定する</string>
@@ -1600,4 +1605,10 @@
     <string name="Err_AppDestroyedUnexpectedlyRestart">アプリケーションが強制終了されました!!!\n
 		構成（言語、フォントサイズなど）の変更、メモリー負荷などの理由が考えられます。\n
 		リスタートはサポートしていません。</string>
+    <string name="Info_AlreadyExist_SkipWrite">%1$s は既存です、出力は省略されました</string>
+    <string name="YouTube_PlaylistID">PLcSBt1Z39L59srL3yWSMsQE3R9stF4Wxp</string>
+    <string name="Label_YouTube">動画</string>
+    <string name="Err_FuritenReach">フリテン立直</string>
+    <string name="Err_FuritenReachAfter">和了見逃し</string>
+    <string name="Err_SelectOrientation">クライアントでは向きの選択はキャンセルできません</string>
 </resources>

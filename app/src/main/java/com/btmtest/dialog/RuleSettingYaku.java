@@ -1,6 +1,7 @@
-//*CID://+vah3R~:                             update#=  510;       //+vah3R~
+//*CID://+vaj0R~:                             update#=  511;       //+vaj0R~
 //*****************************************************************//~v101I~
-//2021/11/22 vah3 add Furiten reach reject option                  //+vah3I~
+//2022/01/18 vaj0 isFixed1() returns true if not sakiduke mode     //+vaj0I~
+//2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/06/26 vaa0 support <img> in htmlText                        //~vaa0I~
 //2021/06/15 va98 allow multiwait for take with allInHand          //~va98I~
@@ -68,7 +69,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private UButtonRG bg8Continue;                                 //~v@@@I~
     private URadioGroup rgYakuFix,rgYakuFix2;                      //~v@@@R~
     private URadioGroup rgYakuFixMultiwaitTake;                    //~va91I~
-    private URadioGroup rgFuritenReach;                            //+vah3I~
+    private URadioGroup rgFuritenReach;                            //~vah3I~
 //  private UCheckBox  cbYakuFix1;                                 //~va11R~
     private UCheckBox  cbOpenReach,cbMissingReach,cbAnkanAfterReach;//~v@@@R~
     private UCheckBox  cbOneShot;                                  //~va11I~
@@ -175,8 +176,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         spnRenhoRank.setArray(rankRenho);                          //~v@@@I~
     //*Reach                                                       //~v@@@I~
         cbOpenReach=new UCheckBox(PView,R.id.cbOpenReach);         //~v@@@I~
-//      cbMissingReach=new UCheckBox(PView,R.id.cbMissingReach);   //~v@@@I~//+vah3R~
-        rgFuritenReach=new URadioGroup(PView,R.id.rgFuritenReach,0,rbsFuritenReach);   //+vah3I~
+//      cbMissingReach=new UCheckBox(PView,R.id.cbMissingReach);   //~v@@@I~//~vah3R~
+        rgFuritenReach=new URadioGroup(PView,R.id.rgFuritenReach,0,rbsFuritenReach);   //~vah3I~
         cbOneShot=new UCheckBox(PView,R.id.cbOneShot);             //~va11I~
     	cbAnkanAfterReach=new UCheckBox(PView,R.id.cbAnkanAfterReach);//~v@@@I~
         rgOpenReach=new URadioGroup(PView,R.id.rgOpenReach,0/*listenerParm*/,rbsOpenReach);//~0329I~
@@ -268,8 +269,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         spnRenhoRank.select(Pprop.getParameter(getKeyRS(RSID_RENHORANK),RENHORANK_DEFAULT),swFixed);//~v@@@I~
     //*Reach                                                       //~v@@@I~
         cbOpenReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_OPEN),0/*defaultIdx*/),swFixed);//~v@@@I~
-//      cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~v@@@I~//+vah3R~
-        rgFuritenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_REACH_FURITEN),FURITEN_REACH_DEFAULT),swFixed);//+vah3I~
+//      cbMissingReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_REACH_MISSING),0/*defaultIdx*/),swFixed);//~v@@@I~//~vah3R~
+        rgFuritenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_REACH_FURITEN),FURITEN_REACH_DEFAULT),swFixed);//~vah3I~
         cbOneShot.setStateInt(Pprop.getParameter(getKeyRS(RSID_ONESHOT),1/*defaultIdx*/),swFixed);//~va11I~
         cbAnkanAfterReach.setStateInt(Pprop.getParameter(getKeyRS(RSID_ANKAN_AFTER_REACH),1/*default ON*/),swFixed);//~v@@@I~
         rgOpenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_OPENREACH_PAY),OPENREACH_DEFAULT),swFixed);//~0329I~
@@ -331,8 +332,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_RENHORANK),spnRenhoRank.getSelectedIndex());//~v@@@I~
     //*Reach                                                       //~v@@@I~
         changed+=updateProp(getKeyRS(RSID_REACH_OPEN),cbOpenReach.getStateInt());//~v@@@I~
-//      changed+=updateProp(getKeyRS(RSID_REACH_MISSING),cbMissingReach.getStateInt());//~v@@@I~//+vah3R~
-        changed+=updateProp(getKeyRS(RSID_REACH_FURITEN),rgFuritenReach.getCheckedID());//+vah3I~
+//      changed+=updateProp(getKeyRS(RSID_REACH_MISSING),cbMissingReach.getStateInt());//~v@@@I~//~vah3R~
+        changed+=updateProp(getKeyRS(RSID_REACH_FURITEN),rgFuritenReach.getCheckedID());//~vah3I~
         changed+=updateProp(getKeyRS(RSID_ONESHOT),cbOneShot.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_ANKAN_AFTER_REACH),cbAnkanAfterReach.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_OPENREACH_PAY),rgOpenReach.getCheckedID());//~0329I~
@@ -691,6 +692,14 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isYakuFixLast rc="+rc);//~va8cI~
         return rc;                                                 //~va8cI~
     }                                                              //~va8cI~
+    //**************************************                       //+vaj0I~
+    public static boolean isYakuFixNotFirst()                      //+vaj0I~
+    {                                                              //+vaj0I~
+        int fix=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT);	//default=NO=0//+vaj0I~
+	    boolean rc=fix!=YAKUFIX_FIRST;                             //+vaj0I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuFixNotFirst rc="+rc);//+vaj0I~
+        return rc;                                                 //+vaj0I~
+    }                                                              //+vaj0I~
     //*******************************************************      //~va6cI~
     private void setCBListener(UCheckBox Pcb,int Pid)              //~va6cI~
     {                                                              //~va6cI~
@@ -744,26 +753,26 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     //**************************************                       //~va8jI~
     public static boolean isFuritenReachOK()                       //~va8jI~
     {                                                              //~va8jI~
-		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //+vah3R~
-//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_MISSING),def)!=0;//~va8jI~//+vah3R~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_YES;//+vah3I~
+		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //~vah3R~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_MISSING),def)!=0;//~va8jI~//~vah3R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_YES;//~vah3I~
     	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachOK rc="+rc);//~va8jI~
         return rc;                                                 //~va8jI~
     }                                                              //~va8jI~
-    //**************************************                       //+vah3I~
-    public static boolean isFuritenReachNo()                       //+vah3I~
-    {                                                              //+vah3I~
-		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //+vah3I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_NO;//+vah3I~
-    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachNo rc="+rc);//+vah3I~
-        return rc;                                                 //+vah3I~
-    }                                                              //+vah3I~
-    //**************************************                       //+vah3I~
-    public static boolean isFuritenReachReject()                   //+vah3I~
-    {                                                              //+vah3I~
-		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //+vah3I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_REJECT;//+vah3I~
-    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachReject rc="+rc);//+vah3I~
-        return rc;                                                 //+vah3I~
-    }                                                              //+vah3I~
+    //**************************************                       //~vah3I~
+    public static boolean isFuritenReachNo()                       //~vah3I~
+    {                                                              //~vah3I~
+		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //~vah3I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_NO;//~vah3I~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachNo rc="+rc);//~vah3I~
+        return rc;                                                 //~vah3I~
+    }                                                              //~vah3I~
+    //**************************************                       //~vah3I~
+    public static boolean isFuritenReachReject()                   //~vah3I~
+    {                                                              //~vah3I~
+		int def=FURITEN_REACH_DEFAULT;	//0:chombo                 //~vah3I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_REACH_FURITEN),def)==FURITEN_REACH_REJECT;//~vah3I~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isFuritenReachReject rc="+rc);//~vah3I~
+        return rc;                                                 //~vah3I~
+    }                                                              //~vah3I~
 }//class                                                           //~v@@@R~

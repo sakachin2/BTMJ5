@@ -1,12 +1,13 @@
-//*CID://+va40R~: update#= 153;                                    //~@003R~//+va40R~
+//*CID://+vai8R~: update#= 154;                                    //+vai8R~
 //**********************************************************************//~1107I~
-//2020/11/04 va40 Android10(api29) upgrade                         //+va40I~
+//2021/12/23 vai8 try-catch required for Alert.onClick(app stop at DrawnHW)//+vai8I~
+//2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*support dialog shift vertically                                 //~0411I~
 //**********************************************************************//~0411I~
 package com.btmtest.utils;                                         //~1107R~  //~1108R~//~1109R~//~@@@@R~//~v@@@R~
 
-//import android.app.DialogFragment;                               //+va40R~
-import androidx.fragment.app.DialogFragment;                      //+va40I~
+//import android.app.DialogFragment;                               //~va40R~
+import androidx.fragment.app.DialogFragment;                      //~va40I~
 
 //**********************************************************************//~1107I~
 public class Alert2 extends DialogFragment                          //~v@@@R~//~@003R~
@@ -64,8 +65,15 @@ public class Alert2 extends DialogFragment                          //~v@@@R~//~
     @Override   //AlertI                                           //~@003I~
     public int alertButtonAction(int Pbuttonid,int Pitempos)       //~@003I~
     {                                                              //~@003I~
-        if (Dump.Y) Dump.println("Alert2.alertButtonAction buttonid="+Integer.toHexString(Pbuttonid));//~@003I~
+        if (Dump.Y) Dump.println("Alert2.alertButtonAction buttonid="+Integer.toHexString(Pbuttonid)+",itemPos="+Pitempos+",parmInt="+parmInt);//~@003I~//+vai8R~
+      try                                                          //+vai8I~
+      {                                                            //+vai8I~
         svCallback.alertButtonAction(Pbuttonid,parmInt,parmObject);                  //~@003I~
+      }                                                            //+vai8I~
+      catch(Exception e)                                           //+vai8I~
+      {                                                            //+vai8I~
+        Dump.println(e,"Alert2.alertButtonAction buttonID="+Integer.toHexString(Pbuttonid)+",parmInt"+parmInt);//+vai8I~
+      }                                                            //+vai8I~
         return 0;                                                  //~@003I~
     }                                                              //~@003I~
 }//class Alert                                                //~1211R~//~@@@@R~

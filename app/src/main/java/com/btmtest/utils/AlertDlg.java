@@ -1,8 +1,9 @@
-//*CID://+vaf0R~: update#= 117;                                    //~vaf0R~
+//*CID://+vai3R~: update#= 118;                                    //+vai3R~
 //**********************************************************************//~1107I~
 //*Not Fragment But DialogInterface                                //~vaf0R~
 // to avoid "java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState" at onDestry//~vaf0I~
 //**********************************************************************//~vaf0I~
+//2021/12/23 vai8 try-catch required for Alert.onClick(app stop at DrawnHW)//+vai3I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //1Ah2 2020/05/31 for Android9(Pie)-api28(PlayStore requires),deprected. DialogFragment,Fragmentmanager//~1Ah2I~
 //1A89k2015/03/01 Ajagoc:2015/02/28 confirm session disconnect when unpair//~1A89I~
@@ -73,16 +74,16 @@ public interface AlertDlgI                                         //~vaf0I~
 		ajagoalert.text=Ptext;                                     //~@@@2I~
     	URunnable.setRunFuncDirect(ajagoalert,ajagoalert,Pflag);	//callback is runFunc()//~@@@2I~
     }                                                              //~1212I~
-//===============================================================================//+vaf0I~
-//simple alertdialog                                               //+vaf0I~
-//===============================================================================//+vaf0I~
-    public static void simpleAlertDialogMainThread(AlertDlgI Pcallback,String Ptitle,String Ptext,int Pflag)//+vaf0I~
-    {                                                              //+vaf0I~
-    //***********                                                  //+vaf0I~
-        if (Dump.Y) Dump.println("AlertDlg:simpleAlertDialogMainThread title="+Ptitle+",text="+Ptext);//+vaf0I~
-    	AlertDlg ajagoalert=new AlertDlg(Pcallback);               //+vaf0I~
-    	ajagoalert.createAlertDialog(Ptitle,Ptext,Pflag);	//callback is runFunc()//+vaf0I~
-    }                                                              //+vaf0I~
+//===============================================================================//~vaf0I~
+//simple alertdialog                                               //~vaf0I~
+//===============================================================================//~vaf0I~
+    public static void simpleAlertDialogMainThread(AlertDlgI Pcallback,String Ptitle,String Ptext,int Pflag)//~vaf0I~
+    {                                                              //~vaf0I~
+    //***********                                                  //~vaf0I~
+        if (Dump.Y) Dump.println("AlertDlg:simpleAlertDialogMainThread title="+Ptitle+",text="+Ptext);//~vaf0I~
+    	AlertDlg ajagoalert=new AlertDlg(Pcallback);               //~vaf0I~
+    	ajagoalert.createAlertDialog(Ptitle,Ptext,Pflag);	//callback is runFunc()//~vaf0I~
+    }                                                              //~vaf0I~
 //===============================================================================//~@@@2I~
 //=run on UIThread                                                 //~@@@2I~
 //===============================================================================//~@@@2I~
@@ -112,7 +113,7 @@ public interface AlertDlgI                                         //~vaf0I~
 //**********************************                               //~1211I~
 	private void createAlertDialog(String Ptitle,String Ptext,int Pflag)//~1211R~//~1212R~
     {                                                              //~1211I~
-        if (Dump.Y) Dump.println("AlertDlg:createAlertDialog title="+Ptitle+",text="+Ptext+",flag="+Integer.toHexString(Pflag));//+vaf0I~
+        if (Dump.Y) Dump.println("AlertDlg:createAlertDialog title="+Ptitle+",text="+Ptext+",flag="+Integer.toHexString(Pflag));//~vaf0I~
 		AlertDialog.Builder builder=new AlertDialog.Builder(AG.context);//~1211I~
     	builder.setMessage(Ptext);                                         //~v@@@I~//~1211I~
         setButton(builder,Pflag);                                  //~1212I~
@@ -137,12 +138,19 @@ public interface AlertDlgI                                         //~vaf0I~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~
                                             {                      //~1212I~
+                                              try                  //+vai3I~
+                                              {                    //+vai3I~
                                                 pdlg.dismiss();    //~1212I~
                                                 if (callback!=null)//~1212I~
 	                                            	callback.alertButtonAction(BUTTON_POSITIVE,selectedPos);//~1212R~
                                                 if ((flag & EXIT)!=0)//~1212I~
 //                                              	Utils.finish();//~1212I~//~1309R~//~@@@@R~//~@@@2R~
                                                 	Utils.stopFinish();//~@@@2I~
+                                              }                    //+vai3I~
+                    						  catch(Exception e)   //+vai3I~
+                    						  {                    //+vai3I~
+                        					  	Dump.println(e,"AlertDlg.setButton.onClick OK");//+vai3I~
+                    						  }                    //+vai3I~
                                             }                      //~1212I~
                                         }                          //~1212I~
                                      );                            //~1212I~
@@ -154,9 +162,16 @@ public interface AlertDlgI                                         //~vaf0I~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~
                                             {                      //~1212I~
+                                              try                  //+vai3I~
+                                              {                    //+vai3I~
                                                 pdlg.dismiss();    //~1212I~
                                                 if (callback!=null)//~1212I~
 		                                            callback.alertButtonAction(BUTTON_CLOSE,selectedPos);//~1212R~
+                                              }                    //+vai3I~
+                    						  catch(Exception e)   //+vai3I~
+                    						  {                    //+vai3I~
+                        					  	Dump.println(e,"AlertDlg.setButton.onClick CLOSE");//+vai3I~
+                    						  }                    //+vai3I~
                                             }                      //~1212I~
                                         }                          //~1212I~
                                      );                            //~1212I~
@@ -168,9 +183,16 @@ public interface AlertDlgI                                         //~vaf0I~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~
                                             {                      //~1212I~
+                                              try                  //+vai3I~
+                                              {                    //+vai3I~
                                                 pdlg.dismiss();    //~1212I~
                                                 if (callback!=null)//~1212I~
 		                                            callback.alertButtonAction(BUTTON_NEGATIVE,selectedPos);//~1212R~
+                                              }                    //+vai3I~
+                    						  catch(Exception e)   //+vai3I~
+                    						  {                    //+vai3I~
+                        					  	Dump.println(e,"AlertDlg.setButton.onClick NEGATIVE");//+vai3I~
+                    						  }                    //+vai3I~
                                             }                      //~1212I~
                                         }                          //~1212I~
                                      );                            //~1212I~
@@ -243,11 +265,18 @@ public interface AlertDlgI                                         //~vaf0I~
 					{                                              //~1211I~
                     	int rc;                                    //~1211I~
                         if (Dump.Y) Dump.println("submenu onitemclisck itemno="+Ppos);//~1506R~
+                      try                                          //+vai3I~
+                      {                                            //+vai3I~
                         selectedPos=Ppos;                          //~1211I~
                         selectedView=Plv;                          //~1211I~
 	                    rc=callback.alertButtonAction(ITEM_SELECTED,selectedPos);//~1211I~//~1212R~
                         if (rc==1)	//close dialog                 //~1211I~
                             pdlg.dismiss();                        //~1211I~
+                      }                                            //+vai3I~
+                      catch(Exception e)                           //+vai3I~
+                      {                                            //+vai3I~
+                        Dump.println(e,"AlertDlg.setItemListener.onItemClick ps="+Ppos);//+vai3I~
+                      }                                            //+vai3I~
                     }
 				}
         	                             );//~1211I~
@@ -266,13 +295,13 @@ public interface AlertDlgI                                         //~vaf0I~
 		int flag=BUTTON_CLOSE;                                     //~1Ah2I~
     	simpleAlertDialog(null,Ptitle,Ptext,flag);              //~1Ah2I~
     }                                                              //~1Ah2I~
-//===============================================================================//+vaf0I~
-	public static void  showMessageMainThread(String Ptitle,String Ptext)//+vaf0I~
-    {                                                              //+vaf0I~
-        if (Dump.Y) Dump.println("AlertDlg:showMessageMainThread:"+Ptext);//+vaf0I~
-		int flag=BUTTON_CLOSE;                                     //+vaf0I~
-    	simpleAlertDialogMainThread(null,Ptitle,Ptext,flag);       //+vaf0I~
-    }                                                              //+vaf0I~
+//===============================================================================//~vaf0I~
+	public static void  showMessageMainThread(String Ptitle,String Ptext)//~vaf0I~
+    {                                                              //~vaf0I~
+        if (Dump.Y) Dump.println("AlertDlg:showMessageMainThread:"+Ptext);//~vaf0I~
+		int flag=BUTTON_CLOSE;                                     //~vaf0I~
+    	simpleAlertDialogMainThread(null,Ptitle,Ptext,flag);       //~vaf0I~
+    }                                                              //~vaf0I~
 //===============================================================================//~1Ah2I~
     public static void showMessage(int Ptitleid,int Ptextid)       //~1Ah2I~
     {                                                              //~1Ah2I~

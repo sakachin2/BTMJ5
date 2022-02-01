@@ -1,4 +1,4 @@
-//*CID://+vaaKR~: update#= 393;                                    //~vaaKR~
+//*CID://+vaaKR~: update#= 395;                                    //+vaaKR~
 //**********************************************************************//~v101I~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
@@ -219,7 +219,7 @@ public class TileData                                              //~v@@@R~
     //*****************************************************        //~vaaKI~
      public boolean isDiscardedRed5()                              //~vaaKI~
      {                                                             //~vaaKI~
-        if (Dump.Y) Dump.println("TileData.isDiscardedRed5="+((flag & TDF_DISCARDED_RED5)!=0));//+vaaKR~
+        if (Dump.Y) Dump.println("TileData.isDiscardedRed5="+((flag & TDF_DISCARDED_RED5)!=0));//~vaaKR~
        	return (flag & TDF_DISCARDED_RED5)!=0;                     //~vaaKI~
      }                                                             //~vaaKI~
     //*****************************************************        //~v@@@I~

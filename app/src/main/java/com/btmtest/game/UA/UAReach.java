@@ -1,5 +1,6 @@
-//*CID://+va9eR~: update#= 604;                                    //~va9cR~//~va9eR~
+//*CID://+vaj3R~: update#= 606;                                    //~vaj3R~
 //**********************************************************************//~v101I~
+//2022/01/19 vaj3 Gmsg:Reach should be show at discard             //~vaj3I~
 //2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9cI~
 //2021/06/17 va9c allow reach and warinig only for 2han-constraint or kataagari err. set reach at discard even issed warning//~va9cI~
 //2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
@@ -180,7 +181,7 @@ public class UAReach                                                //~v@@@R~//~
         	PLS.setReachAction(actionID,Pplayer);	//chk at Discard//~va60I~
 //      }                                                          //~va27I~//~va60R~
 //      GMsg.showHL(0,GCM_REACH);                                  //~9C02I~//~va60R~
-        GMsg.showHLName(0,GCM_REACH,Pplayer);                      //~va60I~
+//      GMsg.showHLName(0,GCM_REACH,Pplayer);                      //~va60I~//~vaj3R~
         return true;                                               //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@6I~
@@ -219,7 +220,7 @@ public class UAReach                                                //~v@@@R~//~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_OPEN)//~9A28I~
           	TestOption.disableBT();                                //~9A28I~
 //      GMsg.showHL(0,GCM_REACH);  //requester only,at discard for other      //~9C02I~//~va60R~
-        GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);                 //~va60R~
+//      GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);                 //~va60R~//~vaj3R~
         return true;                                               //~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~9A30I~
@@ -389,7 +390,7 @@ public class UAReach                                                //~v@@@R~//~
         {                                                          //~v@@6I~
 	        sb.append(ACAction.strTD(Ptds[ii])+MSG_SEPAPP2);       //~v@@6I~
         }                                                          //~v@@6I~
-        if (Dump.Y) Dump.println("UAReach.makeMsgDataToServer sb="+sb);//~v@@6I~//~9427R~
+        if (Dump.Y) Dump.println("UAReach.makeMsgDataToClient sb="+sb);//~v@@6I~//~9427R~//+vaj3R~
         return sb.toString();                                                              //~v@@@I~//~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~9309I~
@@ -457,7 +458,7 @@ public class UAReach                                                //~v@@@R~//~
         else                                                       //~va9eI~
         {                                                          //~va9eI~
         	GMsg.drawMsgbar(R.string.AE_NoReachErrToForce);        //~va9eI~
-            UView.showToastLong(R.string.AE_NoReachErrToForce);    //+va9eI~
+            UView.showToastLong(R.string.AE_NoReachErrToForce);    //~va9eI~
             return false;                                          //~va9eR~
         }                                                          //~va9eI~
         actionIDErr=0;                                             //~va9eI~

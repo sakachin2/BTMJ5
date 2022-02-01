@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:text="@string/Label_FuritenReach"
             android:layout_gravity="center_vertical"
+    			android:background="@color/descriptiononly"
         />
         <RadioGroup
             android:orientation="horizontal"
@@ -83,7 +84,6 @@
                 android:text="@string/Label_FuritenReachNo"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-    			android:background="@color/descriptiononly"
             />
             <RadioButton
                 android:id="@+id/rbFuritenReachYes"

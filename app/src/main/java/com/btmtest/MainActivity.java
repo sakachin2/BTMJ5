@@ -1,5 +1,9 @@
-//*CID://+vaf0R~:                             update#= 382;        //~vaf0R~
+//*CID://+vajiR~:                             update#= 392;        //+vajiR~
 //**********************************************************************//~@@@@I~
+//2022/01/31 vaji change color of top left to identify server      //+vajiI~
+//2022/01/31 vajh over vajg/vage, try to allow startgame from client//~vajhI~
+//2022/01/28 vaje (bug)startgame from client should be protected   //~vajeI~
+//2022/01/11 vaik Youtube movie as help                            //~vaikI~
 //2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity
     public static final int PERMISSION_EXTERNAL_STORAGE_READ=3; //ReadOnly   //~1Ak2I~//~1ak2I~
                                                                    //~8C29I~
     public static final int TOP_ORIENTATION=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;//~va9fR~
+    private static String PLAYLIST_ID;                       //~vaikR~
                                                                    //~va9fI~
 //  private Button btnSettings,btnConnect,btnHelp,btnStartGame;    //~8C29R~//~0119R~
     private Button btnHistory;                                     //~9613I~
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity
     private String msgIOErr;                                       //~9A22I~
 //    private OrientationEventListener listenerOrientationChanged; //TODO test//~va9fR~
 //  private int orientationBeforeGame;	//0/1:land/port, 8/9:reverse, 6/7:sensor//~va9fR~
+    private boolean swServerStartGame=true;                        //~vajhI~
     //***********************************************************  //~8B05I~
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -301,6 +307,7 @@ public class MainActivity extends AppCompatActivity
 	//*************************                                    //~9106I~
 	private void initApp()                                         //~9106I~
     {                                                              //~9106I~
+    	PLAYLIST_ID=AG.resource.getString(R.string.YouTube_PlaylistID);//~vaikI~
     	Pieces.recycleAll();                                       //~@@@@I~
         new GConst();                                              //~@@@@I~
         new UScoped();                                             //~1ak1R~
@@ -437,7 +444,7 @@ public class MainActivity extends AppCompatActivity
 //        }                                                          //~8C30I~//~9105R~
 		StaticVars.onDestroy();                                    //~0216I~
 		Dump.close();                                              //~vaebR~
-        TestOption.swActivityDestroyed=true;	//notify to ITMainActivity//+vaf0I~
+        TestOption.swActivityDestroyed=true;	//notify to ITMainActivity//~vaf0I~
     }                                                              //~8B05I~
 	//*************************                                    //~8B26I~
     @Override                                                      //~8B26I~
@@ -736,7 +743,8 @@ public class MainActivity extends AppCompatActivity
     protected void onClickHelp()                                   //~8C29I~
 	{                                                              //~8C29I~
         if (Dump.Y) Dump.println("MainActivity.onClickHelp");      //~8C29I~
-    	HelpDialog.newInstance(HELP_TITLEID,HELPFILE).show(); //~8C29I~//~9C13R~
+//  	HelpDialog.newInstance(HELP_TITLEID,HELPFILE).show(); //~8C29I~//~9C13R~//~vaikR~
+    	HelpDialog.newInstance(HELP_TITLEID,HELPFILE).showPlaylist(PLAYLIST_ID);//~vaikR~
     }                                                              //~8C29I~
 //**********************************************************       //~8930I~//~8C30I~
 //*toast on main thread from UView                                 //~v@@@R~//~8C30I~
@@ -811,6 +819,7 @@ public class MainActivity extends AppCompatActivity
         	break;                                                 //~v@@@I~//~8C30I~
         case ECB_ACTION_ENDGAME:                                   //~8C30R~
         	endGame(false/*configchange*/);                                             //~8C30I~//~9102R~
+	        AG.aMainView.showConnectStatus();                          //~vac5R~//+vajiI~
         	break;                                                 //~8C30I~
 //        case ECB_INVALIDATE:      use postinvalidate                                 //~9102I~//~9103R~
 //            AG.aGC.invalidate();                                   //~9102I~//~9103R~
@@ -1448,6 +1457,12 @@ public class MainActivity extends AppCompatActivity
             }                                                      //~va66I~
             return false;                                          //~0119I~
         }                                                          //~0119I~
+      if (swServerStartGame)                                       //~vajhR~
+        if (!BTMulti.isServerDevice())                             //~vajeI~
+        {                                                          //~vajeI~
+            MainView.drawMsg(R.string.Err_GameFromNotServer);      //~vajeI~
+            return false;                                          //~vajeI~
+        }                                                          //~vajeI~
         if (ctrActive+1<PLAYERS)                                   //~0119R~
         {                                                          //~0119I~
 			if (RuleSetting.isAllowRobot())                        //~0119I~

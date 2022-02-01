@@ -1,5 +1,6 @@
-//*CID://+vae0R~:                             update#=  118;       //~vae8R~//+vae0R~
+//*CID://+vaieR~:                             update#=  119;       //+vaieR~
 //************************************************************************//~v102I~
+//2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//+vaieI~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
 //2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
@@ -1158,6 +1159,12 @@ public class UFile                                                 //~v@@@R~
     {                                                              //~v@@@I~
         StringBuffer sb=new StringBuffer();                        //~v@@@R~
         if (Dump.Y) Dump.println("UFile.fileToStringBuffer fpath="+Pfpath);//~v@@@R~
+      if (AG.swScoped) //android11 api30                           //+vaieI~
+      {                                                            //+vaieI~
+      	sb=AG.aUScoped.fileToStringBuffer(Pfpath);                  //+vaieI~
+      }                                                            //+vaieI~
+      else                                                         //+vaieI~
+      {                                                            //+vaieI~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
         	BufferedReader r=new BufferedReader(new FileReader(Pfpath));//~v@@@I~
@@ -1174,6 +1181,7 @@ public class UFile                                                 //~v@@@R~
 	        Dump.println(e,"UFile.fileToString fnm="+Pfpath);      //~v@@@R~
             sb=null;                                               //~v@@@I~
         }                                                          //~v@@@I~
+      }                                                            //+vaieI~
         if (Dump.Y) Dump.println("UFile.fileToStringBuffer sb="+sb.toString());//~v@@@R~
         return sb;                                                 //~v@@@R~
     }                                                              //~v@@@I~
@@ -1343,7 +1351,7 @@ public class UFile                                                 //~v@@@R~
 //  	UView.showToast(R.string.ExternalStorageForSDGranted);     //~1ak2I~//~vae0R~
     	UView.showToast(R.string.ExternalStorageReadGranted);      //~vae0I~
 //  	chkWritableSD();                                           //~1ak2I~//~vae0R~
-        AG.swGrantedExternalStorageRead=true;                      //+vae0I~
+        AG.swGrantedExternalStorageRead=true;                      //~vae0I~
     }                                                              //~1ak2I~
 //*************************************************************************//~vae7I~
     public static void transferSDToScoped()                        //~vae7I~

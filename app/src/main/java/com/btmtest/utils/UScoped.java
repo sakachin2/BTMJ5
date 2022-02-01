@@ -1,5 +1,7 @@
-//*CID://+vae0R~:                             update#=  272;       //~vae0R~
+//*CID://+vaieR~:                             update#=  275;       //~vaieR~
 //************************************************************************
+//2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
+//2021/12/24 vaid Toast if Scoped file already exists.             //~vaidI~
 //2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
 //1ak0 2021/08/26 androd11:externalStorage:ScopedStorage
 //************************************************************************
@@ -65,6 +67,7 @@ public class UScoped
     private boolean swInitialized;
     private boolean swUseInternal;                                 //~vae0I~
     private boolean swNoOverride;                                  //~vae0I~
+    public  boolean swCouldNotOverride;                            //~vaidI~
 //********************************************************
     public UScoped()
     {
@@ -138,7 +141,7 @@ public class UScoped
 	private void initComp()                                        //~vae0I~
 	{                                                              //~vae0R~
         if (Dump.Y) Dump.println(CN+"initComp");                   //~vae0I~
-        String nm=uriSaveDir.getPath();                            //+vae0R~
+        String nm=uriSaveDir.getPath();                            //~vae0R~
         int pos=nm.lastIndexOf(":");                               //~vae0I~
         if (pos>=0)                                                //~vae0I~
         	nm=nm.substring(pos+1);                                //~vae0I~
@@ -966,6 +969,43 @@ public class UScoped
         }
 	    if (Dump.Y) Dump.println(CN+"readDocument exit lineno="+lineno);
     }
+//********************************************************         //~vaieI~
+//* from UFile.fileToStringBuffer                                  //+vaieI~
+//********************************************************         //+vaieI~
+	public StringBuffer fileToStringBuffer(String Pmember)         //+vaieR~
+    {                                                              //~vaieI~
+	    if (Dump.Y) Dump.println(CN+"fileToStringBuffer Member="+Pmember);//~vaieI~
+        InputStream is=openInputDocument(Pmember);                 //~vaieI~
+        StringBuffer sb=new StringBuffer();                         //~vaieI~
+        if (is == null)                                            //~vaieI~
+            return null;                                           //~vaieI~
+        int lineno=0;                                              //~vaieI~
+        try                                                        //~vaieI~
+        {                                                          //~vaieI~
+        	InputStreamReader isr=new InputStreamReader(is);       //~vaieI~
+        	BufferedReader br=new BufferedReader(isr);             //~vaieI~
+            for (;;)                                               //~vaieI~
+            {                                                      //~vaieI~
+            	String line=br.readLine();                         //~vaieI~
+                if (line==null)                                    //~vaieI~
+                	break;                                         //~vaieI~
+                lineno++;                                          //~vaieI~
+                sb.append(line+"\n");                              //~vaieI~
+			    if (Dump.Y) Dump.println(CN+"fileToStringBuffer lineno="+lineno+"="+line);//~vaieI~
+            }                                                      //~vaieI~
+            br.close();                                            //~vaieI~
+        }                                                          //~vaieI~
+        catch(FileNotFoundException e)                             //~vaieI~
+        {                                                          //~vaieI~
+        	Dump.println(e,CN+"fileToStringBuffer FileNotFound:"+saveDirTop+"/"+Pmember);//~vaieI~
+        }                                                          //~vaieI~
+        catch(IOException e)                                       //~vaieI~
+        {                                                          //~vaieI~
+        	Dump.println(e,CN+"fileToStringBuffer IOException:"+saveDirTop+"/"+Pmember);//~vaieI~
+        }                                                          //~vaieI~
+	    if (Dump.Y) Dump.println(CN+"fileToStringBuffer exit lineno="+lineno+",sb="+sb.toString());//~vaieI~
+        return sb;                                                 //~vaieI~
+    }                                                              //~vaieI~
 //********************************************************         //~vae0I~
 	private DocumentFile uriToDocument(Uri Puri)                   //~vae0I~
     {                                                              //~vae0I~
@@ -1035,11 +1075,13 @@ public class UScoped
 	    if (Dump.Y) Dump.println(CN+"openOutputDocument swNoOverride="+swNoOverride+",member="+Pmember+",uri="+PmemberUri);//~vae0R~
         DocumentFile doc=DocumentFile.fromSingleUri(AG.context,PmemberUri);//~vae0M~
 	    if (Dump.Y) Dump.println(CN+"openOutputDocument docuri="+doc.getUri()+",canRead="+doc.canRead()+",canWrite="+doc.canWrite()+",name="+doc.getName()+",type="+doc.getType()+",isFile="+doc.isFile()+",exists="+doc.exists()+",length="+doc.length()+",name="+doc.getName());//~vae0I~
+        swCouldNotOverride=false;                                  //~vaidI~
         if (doc.exists())                                          //~vae0M~
         {                                                          //~vae0M~
         	if (swNoOverride)                                      //~vae0I~
             {                                                      //~vae0I~
-			   	if (Dump.Y) Dump.println(CN+"openOutputDocument return null by existing");//~vae0I~
+			   	if (Dump.Y) Dump.println(CN+"openOutputDocument return null by existing set swCouldNotOverride:true");//~vae0I~//~vaidR~
+		        swCouldNotOverride=true;                           //~vaidI~
             	return null;                                       //~vae0I~
             }                                                      //~vae0I~
 		   	if (Dump.Y) Dump.println(CN+"openOutputDocument delete existing uri="+doc.getUri());//~vae0I~

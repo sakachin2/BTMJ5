@@ -1,5 +1,14 @@
-//*CID://+vagpR~: update#= 540;                                    //~vagpR~
+//*CID://+vajcR~: update#= 580;                                    //~vajcR~
 //**********************************************************************//~v101I~
+//2022/01/23 vajc (bug)Add kan was not notified when at just taken(should chk all in hand)-->bothersome notify only at take//~vajcI~
+//2022/01/23 vaj9 Not Notify Ankan but notify addKan               //~vaj9I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
+//2022/01/18 vaj1 skip kan if loose fixed1 by kan(honor meld in hand)//~vaj1I~
+//2022/01/15 vair issue pon for Double East even when INTENT_7PAIR //~vairI~
+//2022/01/15 vaiq when callChii by samecolor,additional to shantendown,chk othercolor exist to discard//~vaiqI~
+//2022/01/14 vaip near finalgame aim higher score; consider current value and intent//~vaipI~
+//2021/12/21 vai5 isTimeToCall; consider chkOtherPlayer            //~vai5I~
+//2021/12/21 vai4 drop "once called" from isTimeToCall condition   //~vai4I~
 //2021/11/13 vagp (Bug)vagn but origanally,when robot called Ron, Pon should not be notified to Human by that tile like as vagm.//~vagpI~
 //2021/11/13 vagm (Bug)Robot Ron was intercepted by Robot Pon by headbump sequence//~vagmI~
 //2021/11/13 vagk (Bug)same functionality so not harmfule but for future//~vagkI~
@@ -37,7 +46,7 @@
 //2021/07/29 vabn bypass notify for KanTaken                       //~vabnI~
 //2021/07/28 vabf Robot call Honer tile at first if top at near final game//~vabfI~
 //2021/07/25 vab4 call Pon if dora discarded                       //~vab4I~
-//2021/07/25 vab3 selectrMeld;select if possibility of dor even not red5 exist//~vab3I~
+//2021/07/25 vab3 selectrMeld;select if possibility of dora even not red5 exist//~vab3I~//~vaj7R~
 //2021/07/19 vaaU chankan was not notified                         //~vaaUI~
 //2021/07/17 vaaN (Bug of Vaa2)ron button was updated even err of constraint at take//~vaaNI~
 //2021/07/15 vaaL do not discard Dora at Chii. selectmeld checks dora considering tanyao/chanta//~vaaLI~
@@ -73,6 +82,7 @@ package com.btmtest.game.RA;                                         //~1107R~  
 import android.graphics.Point;
 
 import com.btmtest.TestOption;
+import com.btmtest.dialog.CompReqDlg;
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.Accounts;
@@ -126,6 +136,7 @@ public class RACall                                               //~v@@@R~//~va
     private int posFixedCallShanten0_Chii;                         //~vafnR~
     private int posFixedCallShanten0_Pon;                          //~vafnI~
     private boolean swAcceptShantenDown;                           //~vag2I~
+    private boolean swRankMUp;                                     //~vaipI~
 //*************************                                        //~v@@@I~
 	public RACall()                                               //~v@@@R~//~va60R~//~1111R~//~1117R~
     {                                                              //~0914I~
@@ -140,6 +151,7 @@ public class RACall                                               //~v@@@R~//~va
     	RAD=AG.aRADiscard;
     	RADS=AG.aRADSmart;//~1126I~
     	scorePlus= RuleSetting.getDebt();                           //~vabfI~
+    	swRankMUp=RuleSetting.isRankMUp();   //kiriage mangan      //~vaipI~
 	    optYakuFixTiming= RuleSettingYaku.getYakuFix();             //~vafjI~
         if (Dump.Y) Dump.println("RACall.init");                   //~1117R~//~vabfR~
     }                                                              //~va60I~
@@ -397,16 +409,16 @@ public class RACall                                               //~v@@@R~//~va
         if (Dump.Y) Dump.println("RACall.otherKan rc="+rc);        //~1201I~
         return rc;
     }                                                              //~1118I~
-    //*********************************************************    //~vaaUI~
-    public boolean otherKanClient(int Pplayer/*kan caller*/,int PplayerEswn,int PkanType,TileData PtdKan)//~vaaUI~
-    {                                                              //~vaaUI~
-        if (Dump.Y) Dump.println("RACall.otherKanClient Pplayer="+Pplayer+",eswn="+PplayerEswn+",kanType="+PkanType);//~vaaUI~
-        boolean rc;                                                //~vaaUR~
-        int yourEswn=AG.aAccounts.getCurrentEswn();	//PLAYER_YOU       //~vaaUR~
-		rc=calledKanNotify(yourEswn,Pplayer,PplayerEswn,PkanType,PtdKan);//~vaaUR~
-        if (Dump.Y) Dump.println("RACall.otherKanClient rc="+rc);  //~vaaUI~
-        return rc;                                                 //~vaaUI~
-    }                                                              //~vaaUI~
+//    //*********************************************************    //~vaaUI~//~vaj9R~
+//    public boolean otherKanClient(int Pplayer/*kan caller*/,int PplayerEswn,int PkanType,TileData PtdKan)//~vaaUI~//~vaj9R~
+//    {                                                              //~vaaUI~//~vaj9R~
+//        if (Dump.Y) Dump.println("RACall.otherKanClient Pplayer="+Pplayer+",eswn="+PplayerEswn+",kanType="+PkanType);//~vaaUI~//~vaj9R~
+//        boolean rc;                                                //~vaaUR~//~vaj9R~
+//        int yourEswn=AG.aAccounts.getCurrentEswn(); //PLAYER_YOU       //~vaaUR~//~vaj9R~
+//        rc=calledKanNotify(yourEswn,Pplayer,PplayerEswn,PkanType,PtdKan);//~vaaUR~//~vaj9R~
+//        if (Dump.Y) Dump.println("RACall.otherKanClient rc="+rc);  //~vaaUI~//~vaj9R~
+//        return rc;                                                 //~vaaUI~//~vaj9R~
+//    }                                                              //~vaaUI~//~vaj9R~
     //*********************************************************    //~1119I~
     //*for Robot:PeswnOther in thinkRobot mode                      //~va89I~//~vaaUR~
     //*13orphan may can ron for ankan                              //~1119I~
@@ -495,12 +507,12 @@ public class RACall                                               //~v@@@R~//~va
                             break;                                 //~1128I~
                         case GCM_NEXT_PLAYER_PONKAN:               //~1128I~
 //                          nextPlayerPonKan(eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~1128R~//~1206R~//~vagmR~
-//                        if (true)  //TODO test                   //~vagmI~//+vagpR~
-//                        {                                        //~vagmI~//+vagpR~
-//                          nextPlayerPonKan(true/*swRon*/,eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vagmI~//+vagpR~
-//                          nextPlayerPonKan(false/*swRon*/,eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vagmI~//+vagpR~
-//                        }                                        //~vagmI~//+vagpR~
-//                        else                                     //~vagmI~//+vagpR~
+//                        if (true)  //TODO test                   //~vagmI~//~vagpR~
+//                        {                                        //~vagmI~//~vagpR~
+//                          nextPlayerPonKan(true/*swRon*/,eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vagmI~//~vagpR~
+//                          nextPlayerPonKan(false/*swRon*/,eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vagmI~//~vagpR~
+//                        }                                        //~vagmI~//~vagpR~
+//                        else                                     //~vagmI~//~vagpR~
                             if (nextPlayerPonKan(true/*swRon*/,eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded))//~vagmR~
                             	swIssuedRon=true;                  //~vagmI~
                             break;                                 //~1128I~
@@ -522,13 +534,13 @@ public class RACall                                               //~v@@@R~//~va
                             break;                                 //~va70I~
                         case GCM_NEXT_PLAYER_PONKAN:               //~va70I~
 //                          nextPlayerPonKanPlayAlone(eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~va70I~//~vaa2R~
-//                          nextPlayerPonKanHumanOnServer(eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vaa2R~//+vagpR~
+//                          nextPlayerPonKanHumanOnServer(eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vaa2R~//~vagpR~
                             break;                                 //~va70I~
                         }                                          //~va70I~
                     }                                              //~va70I~
                 }                                                  //~va70I~
             }                                                          //~1118I~//~1126R~
-            if (Dump.Y) Dump.println("RACall.otherDiscard after chk robot ron swIssuedRon="+swIssuedRon);//+vagpI~
+            if (Dump.Y) Dump.println("RACall.otherDiscard after chk robot ron swIssuedRon="+swIssuedRon);//~vagpI~
             if (!swIssuedRon)                                      //~vagmI~
             {                                                      //~vagmI~
                 eswn=PeswnDiscarded+1;  //from next player for headbump by robot//~vagmR~
@@ -557,24 +569,24 @@ public class RACall                                               //~v@@@R~//~va
                             }                                      //~vagmR~
                         }                                          //~vagmR~
                     }                                              //~vagmR~
-                    else //human                                   //+vagpI~
-                    {                                              //+vagpI~
-                        if (eswn==PeswnDiscarded) //discarder      //+vagpI~
-                        {                                          //+vagpI~
-                            ;                                      //+vagpI~
-                        }                                          //+vagpI~
-                        else                                       //+vagpI~
-                        {                                          //+vagpI~
-                            switch(Paction)                        //+vagpI~
-                            {                                      //+vagpI~
-                            case GCM_DISCARD:                      //+vagpI~
-                                break;                             //+vagpI~
-                            case GCM_NEXT_PLAYER_PONKAN:           //+vagpI~
-                                nextPlayerPonKanHumanOnServer(eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//+vagpI~
-                                break;                             //+vagpI~
-                            }                                      //+vagpI~
-                        }                                          //+vagpI~
-                    }                                              //+vagpI~
+                    else //human                                   //~vagpI~
+                    {                                              //~vagpI~
+                        if (eswn==PeswnDiscarded) //discarder      //~vagpI~
+                        {                                          //~vagpI~
+                            ;                                      //~vagpI~
+                        }                                          //~vagpI~
+                        else                                       //~vagpI~
+                        {                                          //~vagpI~
+                            switch(Paction)                        //~vagpI~
+                            {                                      //~vagpI~
+                            case GCM_DISCARD:                      //~vagpI~
+                                break;                             //~vagpI~
+                            case GCM_NEXT_PLAYER_PONKAN:           //~vagpI~
+                                nextPlayerPonKanHumanOnServer(eswn,PplayerDiscarded,PeswnDiscarded,PtdDiscarded);//~vagpI~
+                                break;                             //~vagpI~
+                            }                                      //~vagpI~
+                        }                                          //~vagpI~
+                    }                                              //~vagpI~
                 }   //for                                          //~vagmR~
             }//!swIssuedRon                                        //~vagmI~
         }                                                          //~1126I~
@@ -619,8 +631,10 @@ public class RACall                                               //~v@@@R~//~va
     private void discardedPlayAloneNotify(int PeswnOther,int PplayerDiscarded,int PeswnDiscarded,TileData PtdDiscarded)//~va70R~
     {                                                              //~va70I~
         if (Dump.Y) Dump.println("RACall.discardedPlayAloneNotify swTrainingMode="+AG.swTrainingMode+",playAlonNotify="+AG.swPlayAloneNotify+",eswnOther="+PeswnOther+",playerDiscarded="+PplayerDiscarded+",eswnDiscarded="+PeswnDiscarded+",td="+PtdDiscarded.toString());//~va70R~
-    	if (!AG.swPlayAloneNotify)                                 //~va70I~
-        	return;                                                //~va70I~
+//  	if (!AG.swPlayAloneNotify)                                 //~va70I~//~vaj7R~
+//      	return;    //need furitenchk after reach                                            //~va70I~//~vaj7R~
+    	if (!AG.swPlayAloneNotify)                                 //~vaj7I~
+        	return;    //need furitenchk after reach               //~vaj7I~
         if (Accounts.eswnToPlayer(PeswnOther)!=PLAYER_YOU)         //~va70R~
         	return;                                                //~va70I~
         if (RS.getCurrentShanten(PeswnOther)!=0)                   //~va70I~
@@ -632,16 +646,18 @@ public class RACall                                               //~v@@@R~//~va
     	int shantenNew=RAUtils.getShantenAdd(itsH,ctrH,pos,1);     //~va8jI~
         if (shantenNew==-1)	//ronable                              //~va70R~
         {                                                          //~va8jI~
+//  	    setRonableAfterReach(PeswnOther);                      //~vaj7R~
 		    if (!AG.aRARon.callRonRiverPlayAloneNotify(PLAYER_YOU,PeswnOther,itsH,ctrH,PtdDiscarded))//~va8jI~
             {                                                      //~va8jI~
         		if (Dump.Y) Dump.println("RACall.discardedPlayAloneNotify@@@@ return by MultiWait/Furiten err");//~va8jI~
                 return;                                            //~va8jI~
             }                                                      //~va8jI~
+//    	  if (AG.swPlayAloneNotify)                                //~vaj7R~
         	AG.aUARon.selectInfoPlayAloneNotify();	//highlight Ron btn and show Cancel btn//~va70R~
         }                                                          //~va8jI~
     }                                                              //~va70I~
     //************************************************************************//~vaa2I~
-    //*from UADiscard.discard()                                    //~vaa2I~
+    //*from UADiscard.discard() on server and Client                //~vaa2I~//~vaj7R~
     //*notify Ron to PLAYER_YOU for other Discarded in PlayMatchNotify mode//~vaa2I~
     //************************************************************************//~vaa2I~
     public void discardedPlayMatchNotify(int Paction,int PplayerDiscarded,TileData PtdDiscarded)//~vaa2I~
@@ -660,12 +676,14 @@ public class RACall                                               //~v@@@R~//~va
     	int shantenNew=RAUtils.getShantenAdd(itsH,ctrH,pos,1);     //~vaa2I~
         if (shantenNew==-1)	//ronable                              //~vaa2I~
         {                                                          //~vaa2I~
+//  	    setRonableAfterReach(eswn);                            //~vaj7R~
 //  	    if (!AG.aRARon.callRonRiverPlayAloneNotify(PLAYER_YOU,eswn,itsH,ctrH,PtdDiscarded))//~vaa2I~//~vagkR~
     	    if (!AG.aRARon.callRonRiverPlayMatchNotify(PLAYER_YOU,eswn,itsH,ctrH,PtdDiscarded))////~vagkI~
             {                                                      //~vaa2I~
         		if (Dump.Y) Dump.println("RACall.discardedPlayMatchNotify@@@@ return by MultiWait/Furiten err");//~vaa2I~
                 return;                                            //~vaa2I~
             }                                                      //~vaa2I~
+//        if (AG.swPlayMatchNotify)                                //~vaj7R~
         	AG.aUARon.selectInfoPlayMatchNotify(PtdDiscarded);	//highlight Ron btn and show Cancel btn//~vaa2R~
         }                                                          //~vaa2I~
     }                                                              //~vaa2I~
@@ -910,7 +928,7 @@ public class RACall                                               //~v@@@R~//~va
     {                                                              //~1128I~
     	boolean rc=true;                                           //~1128I~
         int myShanten=RS.getCurrentShanten(PeswnOther);            //~1222I~
-	    if (Dump.Y) Dump.println("RACall.isCallable action="+Paction+",myShanten="+myShanten);//~vaaeI~
+	    if (Dump.Y) Dump.println("RACall.isCallable eswnPther="+PeswnOther+",eswnDiscard="+PeswnDiscarded+",action="+Paction+",myShanten="+myShanten);//~vaaeI~//~vairR~
       	if (Status.isIssuedRon())                                  //~va70I~
         {                                                          //~va70I~
 	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False issuedRon");//~va70I~
@@ -933,11 +951,20 @@ public class RACall                                               //~v@@@R~//~va
 	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False by intent giveup intent="+Integer.toHexString(intent));//~1224I~//~1302R~
             return false;                                          //~1224I~
         }                                                          //~1224I~
-        if ((intent & (INTENT_7PAIR | INTENT_13ORPHAN))!=0)//~1215I~//~1224R~
+//      if ((intent & (INTENT_7PAIR | INTENT_13ORPHAN))!=0)//~1215I~//~1224R~//~vairR~
+        if ((intent & (INTENT_13ORPHAN))!=0)                       //~vairI~
         {                                                          //~1215I~
-	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False by Intent="+Integer.toHexString(RS.RSP[PeswnOther].intent));//~1215I~//~1221R~
+	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False by intent 13orphan Intent="+Integer.toHexString(RS.RSP[PeswnOther].intent));//~1215I~//~1221R~//~vairR~
             return false;                                          //~1224I~
         }                                                          //~1215I~
+        if ((intent & (INTENT_7PAIR))!=0)                          //~vairI~
+        {                                                          //~vairI~
+          if (!isTimeToCallPonFor7Pair(Paction,PeswnOther,myShanten,intent,PtdDiscarded))//~vairI~
+          {                                                        //~vairI~
+	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False by intent 7pair Intent="+Integer.toHexString(RS.RSP[PeswnOther].intent));//~vairI~
+            return false;                                          //~vairI~
+          }                                                        //~vairI~
+        }                                                          //~vairI~
         if (Paction==GCM_KAN) //kan taken, tile is taken           //~1222I~
         {                                                          //~1222I~
 	        if (Dump.Y) Dump.println("RACall.isCallable GCM_TAKE by kantaken");//~1222I~
@@ -967,6 +994,36 @@ public class RACall                                               //~v@@@R~//~va
         if (Dump.Y) Dump.println("RACall.isCallable rc="+rc+",action="+Paction+",eswn="+PeswnOther+",eswnDiscard="+PeswnDiscarded+",td="+PtdDiscarded.toString());//~1128I~
         return rc;                                                 //~1128I~
     }                                                              //~1128I~
+    //*********************************************************    //~vairI~
+    private boolean isTimeToCallPonFor7Pair(int Paction,int PeswnOther,int Pshanten,int Pintent,TileData PtdDiscarded)//~vairI~
+    {                                                              //~vairI~
+        if (Dump.Y) Dump.println("RACall.isTimeToCallPonFor7Pair action="+Paction+",eswn="+PeswnOther+",shanten="+Pshanten+",intent="+Integer.toHexString(Pintent)+",td="+PtdDiscarded.toString());//~vairI~
+        boolean rc=false;                                          //~vairI~
+        if (Paction!=GCM_PON)                                      //~vairI~
+        	; //false                                              //~vairI~
+        else                                                       //~vairI~
+        if (Pshanten<(HV_SET_INTENT_MAX_SHANTEN_7PAIR-1)) //<2,1 shanten//~vairI~
+        {                                                          //~vairI~
+        //* shanten<HV_SET_INTENT_MAX_SHANTEN_7PAIR) //<3 shanten  for INTENT_7PAIR//~vairI~
+        	; //false                                              //~vairI~
+        }                                                          //~vairI~
+        else                                                       //~vairI~
+        {                                                          //~vairI~
+        	int pos=RAUtils.getPosTile(PtdDiscarded);                //~vairI~
+            if (pos>=OFFS_WORDTILE)                                //~vairI~
+            {                                                      //~vairI~
+                int[] itsH=RS.getItsHandEswn(PeswnOther);          //~vairI~
+                if (itsH[pos]==PAIRCTR-1)                          //~vairI~
+                {                                                  //~vairI~
+					int han=RAUtils.chkValueWordTile(pos,PeswnOther)/2;//~vairI~
+                    if (han==2) //wind and round                   //~vairI~
+                    	rc=true;                                   //~vairI~
+                }                                                  //~vairI~
+            }                                                      //~vairI~
+        }                                                          //~vairI~
+        if (Dump.Y) Dump.println("RACall.isTimeToCallPonFor7Pair rc="+rc);//~vairI~
+        return rc;
+    }                                                              //~vairI~
     //*********************************************************    //~vagcI~
     private boolean isMakableKanMeld(int Pplayer,int Peswn,TileData Ptd,int[] PitsHand,boolean PswAddKan)//~vagcR~//~vagdR~
     {                                                              //~vagcI~
@@ -1164,7 +1221,8 @@ public class RACall                                               //~v@@@R~//~va
         }                                                          //~1119I~//~1222R~
         int ctrCall=0;                                             //~1119R~//~1222R~
 //    if ((TestOption.option2 & TO2_CALL1ST)!=0)                   //~va75I~//~vab3R~
-      if ((TestOption.option2 & TO2_CALL1ST)!=0 && ctrPos!=PAIRCTR)//~vab3R~
+//    if ((TestOption.option2 & TO2_CALL1ST)!=0 && ctrPos!=PAIRCTR)//~vab3R~//~vaj7R~
+      if ((TestOption.option2 & TO2_CALL1ST)!=0)                   //~vaj7I~
       {                                                            //~va75I~
 	  	if (Dump.Y) Dump.println("RACall.callPonKan ignore intent and fix1 by testoption TO2_CALL1ST and ctrPos="+ctrPos+" is not Kan");//~va75I~//~vab3R~
          ctrCall=ctrPos+1;           //3 or 4                      //~va75I~
@@ -1314,6 +1372,8 @@ public class RACall                                               //~v@@@R~//~va
       }//testoption                                                //~va75I~
         if (ctrCall==PAIRCTR_KAN)                                  //~vaatI~
         {                                                          //~vaatI~
+          if ((TestOption.option2 & TO2_CALL1ST)==0)               //~vaj7I~
+          {                                                        //~vaj7I~
             if ((intent & INTENT_3DRAGON)!=0)                      //~vafvI~
             {                                                      //~vafvI~
                 ctrCall=-1;                                        //~vafvI~
@@ -1325,14 +1385,23 @@ public class RACall                                               //~v@@@R~//~va
 		        if (Dump.Y) Dump.println("RACall.callPonKan avoid kan by ctrReach="+ctrReach);//~vaatI~
                 ctrCall=-1;                                        //~vaatI~
             }                                                      //~vaatI~
+          }                                                        //~vaj7I~
         }                                                          //~vaatI~
         if (ctrCall==PAIRCTR_KAN)                                                 //~1118I~//~1119R~//~1222R~
         {                                                          //~1118I~//~1222R~
+          if ((TestOption.option2 & TO2_CALL1ST)==0)               //~vaj7I~
+          {                                                        //~vaj7I~
 			if (selectFixedCallShanten0_KanSelected(PeswnOther,shanten0,itsH,ctrH,pos)==-1)	//confirm constraint if current shanten=1//~vag0I~
             {                                                      //~vag0I~
 	            if (Dump.Y) Dump.println("RACall.callPonKan for KAN return false by constraintchk");//~vag0I~
     	        return false;                                      //~vag0I~
             }                                                      //~vag0I~
+            if (RADS.RADSO.chkOtherPlayerBeforeCall(Pshanten,PeswnOther,intent,ctrReach,itsH,ctrH))//~vai5I~
+            {                                                      //~vai5I~
+		        if (Dump.Y) Dump.println("RACall.callPonKan skip Kan by chkOtherPlayer pos="+pos);//~vai5I~
+    	        return false;                                      //~vai5I~
+            }                                                      //~vai5I~
+          }                                                        //~vaj7I~
             tdsPairKan=makeKanRiver(PeswnOther,pos,PtdDiscarded); //~1124R~//~1126R~//~1222R~
             issueKan(KAN_RIVER,PplayerOther,PeswnOther,tdsPairKan);                       //~1118I~//~1119R~//~1124I~//~1126R~//~1222R~
             if (Dump.Y) Dump.println("RACall.callPonKan return by issueKan");//~1118I~//~1119R~//~1222R~
@@ -1350,6 +1419,12 @@ public class RACall                                               //~v@@@R~//~va
 	            if (Dump.Y) Dump.println("RACall.callPonKan return false by constraintchk");//~vafnI~
     	        return false;                                      //~vafnR~
             }                                                      //~vafnI~
+          if ((TestOption.option2 & TO2_CALL1ST)==0)               //~vaj7I~
+            if (RADS.RADSO.chkOtherPlayerBeforeCall(Pshanten,PeswnOther,intent,ctrReach,itsH,ctrH))//~vai5I~
+            {                                                      //~vai5I~
+		        if (Dump.Y) Dump.println("RACall.callPonKan skip Pon by chkOtherPlayer pos="+pos);//~vai5I~
+    	        return false;                                      //~vai5I~
+            }                                                      //~vai5I~
             issuePon(PplayerOther,PeswnOther,pos,PtdDiscarded);                       //~1118I~//~1119R~//~1126R~//~1222R~
             if (Dump.Y) Dump.println("RACall.callPonKan return by issuePon");//~1118I~//~1119R~//~1222R~
             return true;                                           //~1118I~//~1222R~
@@ -1423,9 +1498,12 @@ public class RACall                                               //~v@@@R~//~va
                 break;                                             //~vaa1I~
             }                                                      //~vaa1I~
 		}                                                          //~vaa1I~
-        if (chkEarthToAddKan(Peswn,PtdTaken))                       //~vaaUI~
+//      if (chkEarthToAddKan(Peswn,PtdTaken))                       //~vaaUI~//~vajcR~
+//      if (chkEarthToAddKan(Peswn,Pplayer,ctrH))                  //~vajcI~
+        if (chkEarthToAddKan(Peswn,PtdTaken))                      //~vajcI~
         {                                                          //~vabnI~
 //      	swNotify=true; 	//notify for kan add                   //~vabnR~
+            swNotify=true;                                         //~vaj9I~
             swKan=true;                                            //~vaaUI~
         }                                                          //~vabnI~
 //      if (swKan)                                                 //~vaa1I~//~vabnR~
@@ -1456,21 +1534,46 @@ public class RACall                                               //~v@@@R~//~va
                 break;                                             //~vaa2I~
             }                                                      //~vaa2I~
 		}                                                          //~vaa2I~
-        if (chkEarthToAddKan(Peswn,PtdTaken))                      //~vaaUI~
+//      if (chkEarthToAddKan(Peswn,PtdTaken))                      //~vaaUI~//~vajcR~
+//      if (chkEarthToAddKan(Peswn,Pplayer,ctrH))                  //~vajcI~
+        if (chkEarthToAddKan(Peswn,PtdTaken))                      //~vajcI~
+        {                                                          //~vaj9I~
+            swNotify=true;                                         //~vaj9I~
             swKan=true;                                            //~vaaUI~
+        }                                                          //~vaj9I~
 //      if (swKan)                                                 //~vaa2I~//~vabnR~
         if (swNotify)                                              //~vabnI~
 	        AG.aUAD2Touch.updateBtnPlayMatchNotify(GCM_KAN,BTN_STATUS_ENABLE_CANCEL);//~vaa2I~
         if (Dump.Y) Dump.println("RACall.callKanTakenMPlayMatchNotify rc="+swKan);//~vaa2I~
         return swKan;                                              //~vaa2I~
     }                                                              //~vaa2I~
-    //**************************************************************************//~vaaUI~
-    private boolean chkEarthToAddKan(int Peswn,TileData PtdTaken)  //~vaaUI~
-    {                                                              //~vaaUI~
-        boolean rc=RS.RSP[Peswn].srchPonToAdd(PtdTaken)>=0;               //~vaaUI~
-        if (Dump.Y) Dump.println("RACall.chkEarthToAddKan rc="+rc+",Peswn="+Peswn+",tdKan="+PtdTaken.toString());//~vaaUI~
-        return rc;
-    }                                                              //~vaaUI~
+    //**************************************************************************//~vaaUI~//~vajcI~
+    //*chk just taken                                              //~vajcI~
+    //**************************************************************************//~vajcI~
+    private boolean chkEarthToAddKan(int Peswn,TileData PtdTaken)  //~vaaUI~//~vajcI~
+    {                                                              //~vaaUI~//~vajcI~
+        boolean rc=RS.RSP[Peswn].srchPonToAdd(PtdTaken)>=0;               //~vaaUI~//~vajcI~
+        if (Dump.Y) Dump.println("RACall.chkEarthToAddKan rc="+rc+",Peswn="+Peswn+",tdKan="+PtdTaken.toString());//~vaaUI~//~vajcI~
+        return rc;                                                 //~vajcI~
+    }                                                              //~vaaUI~//~vajcI~
+    //**************************************************************************//~vajcI~
+    //*chk all in hand                                             //~vajcI~
+    //**************************************************************************//~vajcI~
+    private boolean chkEarthToAddKan(int Peswn,int Pplayer,int PctrH)//~vajcI~
+    {                                                              //~vajcI~
+        if (Dump.Y) Dump.println("RACall.chkEarthToAddKan chk all in hand Peswn="+Peswn+",player="+Pplayer+",ctrH="+PctrH);//~vajcI~
+        TileData[] tdsHand=AG.aPlayers.getHands(Pplayer);            //~vajcI~
+        boolean rc=false;                                          //~vajcI~
+        for (int ii=0;ii<PctrH;ii++)                               //~vajcI~
+        {                                                          //~vajcI~
+			if (RS.RSP[Peswn].srchPonToAdd(tdsHand[ii])>=0)	//earth index//~vajcI~
+            {                                                      //~vajcI~
+            	rc=true;                                           //~vajcI~
+                break;                                             //~vajcI~
+            }                                                      //~vajcI~
+        }                                                          //~vajcI~
+        return rc;                                                 //~vajcI~
+    }                                                              //~vajcI~
     //*********************************************************    //~1222I~
     private boolean isKanFixed(int PeswnOther,int Ppos)            //~1222R~
     {                                                              //~1222I~
@@ -1560,11 +1663,12 @@ public class RACall                                               //~v@@@R~//~va
     	int   ctrH=RS.RSP[PeswnOther].ctrHand;                       //~1118I~//~1126R~
     	int   intent=RS.RSP[PeswnOther].intent;                     //~1118I~//~1126R~
         boolean swAllInHand=RS.RSP[PeswnOther].swAllInHand;        //~vag2I~
+		int ctrReach=AG.aPlayers.getCtrReachedPlayer(-1/*Player to be excluded*/);//~vai5I~
         if (Dump.Y) Dump.println("RACall.callChii entry eswnOther="+PeswnOther+",playerOther="+PplayerOther+",intent="+Integer.toHexString(intent)+",PplayerDiscarded="+PplayerDiscarded+",eswnDiscarded="+PeswnDiscarded+",shanten="+shanten+",tdDiscard="+TileData.toString(PtdDiscarded));//~1118R~//~1126R~//~1128R~//~1129R~//~vaaiM~//~vafkR~
         if (Dump.Y) Dump.println("RACall.callChii actionIssueTanyao="+actionIssueTanyao+",actionIssueChanta="+actionIssueChanta);//~vaffI~
         if (Dump.Y) Dump.println("RACall.callChii swIssueChiiStraight="+swIssueChiiStraight+",swIssueChii3SameSeq="+swIssueChii3SameSeq);//~vaffI~
         if (Dump.Y) Dump.println("RACall.callChii eswn="+PeswnOther+",getNum3SameSeq="+RS.getNum3SameSeq(PeswnOther)+",getColorStraight="+RS.getColorStraight(PeswnOther));//~vaffI~
-        if (Dump.Y) Dump.println("RACall.callChii swByHonorTile="+swByHonorTile);//~vafsI~
+        if (Dump.Y) Dump.println("RACall.callChii swByHonorTile="+swByHonorTile+",ctrReach="+ctrReach);//~vafsI~//~vai5R~
         int posChii=-1;                                            //~1118R~
 	    if (pos>=OFFS_WORDTILE)                                     //~1118R~//~1119R~
         {                                                          //~1119I~
@@ -1674,7 +1778,8 @@ public class RACall                                               //~v@@@R~//~va
                 {                                                  //~vabrI~
 //  	            posChii=selectSeqMeld(PeswnOther,false/*swTanyao*/,shanten,itsH,ctrH,pos);//~1220I~//~vaaLR~
 //  	            posChii=selectSeqMeld(PplayerOther,PeswnOther,false/*swTanyao*/,shanten,itsH,ctrH,pos);//~vaaLI~//~vag2R~
-    	            posChii=selectSeqMeldForSameColor(PplayerOther,PeswnOther,shanten,itsH,ctrH,pos,swAllInHand);//~vag2I~
+//  	            posChii=selectSeqMeldForSameColor(PplayerOther,PeswnOther,shanten,itsH,ctrH,pos,swAllInHand);//~vag2I~//~vaiqR~
+    	            posChii=selectSeqMeldForSameColor(PplayerOther,PeswnOther,shanten,itsH,ctrH,pos,swAllInHand,intent);//~vaiqI~
                 	if (Dump.Y) Dump.println("RACall.callChii chk by SAMECOLOR intent posChii="+posChii);//~1220I~//~vabrR~
                     if (posChii!=-1)                               //~vag2I~
                         posChiiForce=posChii;                      //~vag2I~
@@ -1700,6 +1805,17 @@ public class RACall                                               //~v@@@R~//~va
             )                                                      //~vafsI~
             	posChii=selectSeqMeld(PplayerOther,PeswnOther,false,shanten,itsH,ctrH,pos);//~vafsI~
         }                                                          //~vafsI~
+        if (posChii>=0)                                            //~vai5I~
+        {                                                          //~vai5I~
+          if ((TestOption.option2 & TO2_CALL1ST)==0)               //~vaj7I~
+          {                                                        //~vaj7I~
+            if (RADS.RADSO.chkOtherPlayerBeforeCall(shanten,PeswnOther,intent,ctrReach,itsH,ctrH))//~vai5I~
+            {                                                      //~vai5I~
+		        if (Dump.Y) Dump.println("RACall.callChii skip chii by chkOtherPlayer posChii="+posChii);//~vai5I~
+		        posChii=-1;                                        //~vai5I~
+            }                                                      //~vai5I~
+          }                                                        //~vaj7I~
+        }                                                          //~vai5I~
         if (posChii>=0)                                            //~1118R~
         {                                                          //~1118I~
             issueChii(PplayerOther,PeswnOther,posChii,PtdDiscarded,pos);          //~1118R~//~1119R~//~1126R~//~1129R~
@@ -1805,6 +1921,7 @@ public class RACall                                               //~v@@@R~//~va
     private int selectSeqMeld(int PplayerCaller,int PeswnCaller,boolean PswTanyao,int Pshanten,int[] PitsHand,int PctrHand,int Ppos)//~vaaLI~
     {                                                              //~1119I~
         if (Dump.Y) Dump.println("RACall.selectSeqMeld entry player="+PplayerCaller+",eswn="+PeswnCaller+",swTanyao="+PswTanyao+",pos="+Ppos+",shanten="+Pshanten+",itsHand="+Utils.toString(PitsHand,9));//~1119I~//~1129R~//~vaaLR~
+        if (Dump.Y) Dump.println("RACall.selectSeqMeld swAcceptShantenDown="+swAcceptShantenDown);//~vaiqI~
 		int ctrReach=AG.aPlayers.getCtrReachedPlayer(-1/*Player to be excluded*/);//~vaarI~
         int top=(Ppos/CTR_NUMBER_TILE)*CTR_NUMBER_TILE;            //~1119I~
         int end=top+CTR_NUMBER_TILE;                               //~1119I~
@@ -1911,9 +2028,11 @@ public class RACall                                               //~v@@@R~//~va
     //***********************************************************************//~vag2I~
     //*select meld at pos of MatchColor                            //~vag2I~
     //***********************************************************************//~vag2I~
-    private int selectSeqMeldForSameColor(int Pplayer,int Peswn,int Pshanten,int[] PitsHand,int PctrHand,int Ppos,boolean PswAllInHand)//~vag2I~
+//  private int selectSeqMeldForSameColor(int Pplayer,int Peswn,int Pshanten,int[] PitsHand,int PctrHand,int Ppos,boolean PswAllInHand)//~vag2I~//~vaiqR~
+    private int selectSeqMeldForSameColor(int Pplayer,int Peswn,int Pshanten,int[] PitsHand,int PctrHand,int Ppos,boolean PswAllInHand,int Pintent)//~vaiqI~
     {                                                              //~vag2I~
         if (Dump.Y) Dump.println("RACall.selectSeqMeldForSameColor entry eswn="+Peswn+",shanten="+Pshanten+",swAllInHand="+PswAllInHand+",fix2="+RS.swFix2+",pos="+Ppos+",ctrHand="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vag2R~
+        if (Dump.Y) Dump.println("RACall.selectSeqMeldForSameColor intent="+Integer.toHexString(Pintent));//~vaiqI~
         boolean swCall;                                            //~vag2I~
 		if (RS.swFix2 && !RS.RSP[Peswn].isFixed1())     //1han already fixed//~vag2I~
         {                                                          //~vag2I~
@@ -1932,6 +2051,8 @@ public class RACall                                               //~v@@@R~//~va
                 swCall=true;                                       //~vag2I~
         }                                                          //~vag2I~
         swAcceptShantenDown=swCall;                                //~vag2I~
+        if (RADS.getCtrOtherColorInHand(Peswn,Pintent)==0)	           //~vaiqI~
+        	swAcceptShantenDown=false;	//if other color to discard is not exist, disallow shanten down//~vaiqI~
     	int posChii=selectSeqMeld(Pplayer,Peswn,false/*PswTanyao*/,Pshanten,PitsHand,PctrHand,Ppos);//~vag2I~
         swAcceptShantenDown=false;                                 //~vag2I~
         if (Dump.Y) Dump.println("RACall.selectSeqMeldForSameColor exit swCall="+swCall+",rc="+posChii);//~vag2R~
@@ -2850,6 +2971,7 @@ public class RACall                                               //~v@@@R~//~va
 	    int ctrTaken=RS.RSP[Peswn].ctrTaken;                       //~1306I~
         if (Dump.Y) Dump.println("RACall.isTimeToCall shanten="+shanten+",ctrReach="+ctrReach+",ctrDora="+ctrDora+",ctrTaken="+ctrTaken);//~vaaiI~//~vaatR~
       	int pos=RAUtils.getPosTile(Ptd);                           //~vaaHI~
+		boolean swFixed1=RS.RSP[Peswn].isFixed1();     //1han already fixed//~vaipI~
         for (;;)                                                   //~1306I~
         {                                                          //~1306I~
 //      	int pos=RAUtils.getPosTile(Ptd);                               //~1306I~//~vaaHR~
@@ -2865,7 +2987,8 @@ public class RACall                                               //~v@@@R~//~va
                     }                                              //~vaghI~
                 }                                                  //~vaghI~
             }                                                      //~vaghI~
-		    if (Paction!=GCM_KAN && RS.RSP[Peswn].isFixed1())     //1han already fixed//~vafsI~
+//  	    if (Paction!=GCM_KAN && RS.RSP[Peswn].isFixed1())     //1han already fixed//~vafsI~//~vaipR~
+    	    if (Paction!=GCM_KAN && swFixed1)     //1han already fixed//~vaipI~
   				if (isTimeToCall_Fixed1(Peswn,PmyShanten,ctrDora,ctrTaken,itsH,ctrH,pos))//~vafsR~
                 {                                                  //~vafsI~
 	        		if (Dump.Y) Dump.println("RACall.isTimeToCall rc=true by already fixed1");//~vafsI~
@@ -2886,10 +3009,19 @@ public class RACall                                               //~v@@@R~//~va
             	break;                                             //~vaf6I~
             }                                                      //~vaf6I~
             int v=RAUtils.chkValueWordTile(pos,Peswn);             //~1313I~
+        	if (Dump.Y) Dump.println("RACall.isTimeToCall v="+v);  //~vaipI~
 			if (Paction==GCM_PON)                                  //~1313I~
             {                                                      //~1313I~
         		if (pos>=OFFS_WORDTILE)                            //~1313I~
                 {                                                  //~1313I~
+                    int tempHan=(swFixed1?1:0)+v/2+ctrDora;        //~vaipI~
+                    if (Dump.Y) Dump.println("RACall.isTimeToCall v="+v+",swFixed="+swFixed1+",swAllinHand="+swAllInHand+",ctrDora="+ctrDora+",tempHan="+tempHan);//~vaipR~
+                    if (v>0 && swAllInHand && isStatusAimToHigherScore(Peswn,Pplayer,Pintent,tempHan))//~vaipI~
+                    {                                              //~vaipI~
+                        if (Dump.Y) Dump.println("RACall.isTimeToCall return false by StatusAimToHigherScore");//~vaipI~
+                        rc=false;                                  //~vaipI~
+                        break;                                     //~vaipI~
+                    }                                              //~vaipI~
                     if (v/2>1)/*2han*/                             //~1313I~
                     {                                              //~1313I~
                         rc=true;                                   //~1313I~
@@ -2897,6 +3029,7 @@ public class RACall                                               //~v@@@R~//~va
                     }                                              //~1313I~
                     if (RS.RSP[Peswn].getCtrValueWordSameAndPairInHand()>1) //*2 pairs of valueword in hand//~1306R~//~1313I~
                     {                                              //~1306R~//~1313I~
+        				if (Dump.Y) Dump.println("RACall.isTimeToCall return true by 2pair of valueword");//~vaipI~
                         rc=true;                                   //~1306R~//~1313I~
                         break;                                     //~1306R~//~1313I~
                     }                                              //~1306R~//~1313I~
@@ -2907,25 +3040,28 @@ public class RACall                                               //~v@@@R~//~va
                         break;                                     //~1306R~//~1313I~
                     }                                              //~1306R~//~1313I~
 //          		if (!RS.RSP[Peswn].swAllInHand)         //already called//~va8pI~//~vafnR~
-            		if (!swAllInHand)         //already called     //~vafnI~
-		      	       	if (RS.RSP[Peswn].isFixed1())     //1han already fixed//~va8pR~
-                	    {                                          //~va8pI~
-        					if (Dump.Y) Dump.println("RACall.isTimeToCall return true by already called and fixed");//~va8pI~
-                    	    rc=true;                               //~va8pI~
-                        	break;                                 //~va8pI~
-                    	}                                          //~va8pI~
+//                    if (!swAllInHand)         //already called     //~vafnI~//~vai4R~
+//                        if (RS.RSP[Peswn].isFixed1())     //1han already fixed//~va8pR~//~vai4R~
+//                        {                                          //~va8pI~//~vai4R~
+//                            if (Dump.Y) Dump.println("RACall.isTimeToCall !swAllInHnd and isFixed1 ctrReach="+ctrReach);//~vai4R~
+//                            if (Dump.Y) Dump.println("RACall.isTimeToCall return true by already called and fixed");//~va8pI~//~vai4R~
+//                            rc=true;                               //~va8pI~//~vai4R~
+//                            break;                                 //~va8pI~//~vai4R~
+//                        }                                          //~va8pI~//~vai4R~
                     if (v>0 && isStatusHurryUpToGoal(Pplayer))     //~vabfI~
                     {                                              //~vabfI~
                         if (Dump.Y) Dump.println("RACall.isTimeToCall return true by StatusHurryToGoal");//~vabfI~
                         rc=true;                                   //~vabfI~
                         break;                                     //~vabfI~
                     }                                              //~vabfI~
-                    if (v>0 && isStatusAimToHigherScore(Pplayer,Pintent))//~vabtM~
-                    {                                              //~vabtM~
-                        if (Dump.Y) Dump.println("RACall.isTimeToCall return false by StatusAimToHigherScore");//~vabtM~
-                        rc=false;                                  //~vabtM~
-                        break;                                     //~vabtM~
-                    }                                              //~vabtM~
+//                  if (v>0 && isStatusAimToHigherScore(Pplayer,Pintent))//~vabtM~//~vaipR~
+//                    int tempHan=(swFixed1?1:0)+v/2+ctrDora;      //~vaipR~
+//                    if (v>0 && swAllInHand && isStatusAimToHigherScore(Peswn,Pplayer,Pintent,tempHan))//~vaipR~
+//                    {                                              //~vabtM~//~vaipR~
+//                        if (Dump.Y) Dump.println("RACall.isTimeToCall return false by StatusAimToHigherScore");//~vabtM~//~vaipR~
+//                        rc=false;                                  //~vabtM~//~vaipR~
+//                        break;                                     //~vabtM~//~vaipR~
+//                    }                                              //~vabtM~//~vaipR~
                     if (v>0 && isStatusAvoidGrillBird(Pplayer))    //~vabtI~
                     {                                              //~vabtI~
                         if (Dump.Y) Dump.println("RACall.isTimeToCall return true by StatusAvoidGrillBird");//~vabtI~
@@ -3017,6 +3153,7 @@ public class RACall                                               //~v@@@R~//~va
 //  		    if (ctrReach!=0) //other player's reach            //~1306I~//~vagdR~
 //              	break;                                         //~1306I~//~vagdR~
 //          }                                                      //~1306I~//~vagdR~
+			boolean swSkipKan=false;                               //~vaj1I~
 			if (Paction==GCM_PON)                                  //~1306I~
             {                                                      //~1306I~
         		if (pos>=OFFS_WORDTILE)                            //~1306R~
@@ -3040,9 +3177,15 @@ public class RACall                                               //~v@@@R~//~va
                         }                                          //~1306I~
                         if (ctrReach==0 && shanten<=HV_SHANTEN_KAN_WORD && RS.getItsHandEswn(Peswn)[pos]==PAIRCTR)    //kan if shanten<=2 with no other reach//~vaatI~
                         {                                          //~vaatI~
+					        if (Dump.Y) Dump.println("RACall.isTimeToCall for Kan shanten="+shanten+",ctrReach="+ctrReach);//~vaj1I~
+                          if (isFixed1AfterKan(Peswn,pos,v/2/*honor tile han*/))//~vaj1R~
+                          {                                        //~vaj1I~
 					        if (Dump.Y) Dump.println("RACall.isTimeToCall rc=true for Kan shanten="+shanten+",ctrReach="+ctrReach);//~vaatI~
 	                        rc=true;                               //~vaatI~
                         	break;                                 //~vaatI~
+                          }                                        //~vaj1I~
+                          else                                     //~vaj1I~
+                          	swSkipKan=true;                        //~vaj1I~
                         }                                          //~vaatI~
                     }                                              //~1306I~
                 }                                                  //~1306I~
@@ -3052,9 +3195,11 @@ public class RACall                                               //~v@@@R~//~va
                     rc=true;                                       //~vag7I~
                     break;                                         //~vag7I~
                 }                                                  //~vag7I~
-		      if (RS.RSP[Peswn].isFixed1())     //1han already fixed//~vafdI~
+        		if (Dump.Y) Dump.println("RACall.isTimeToCall swSkipKan="+swSkipKan);//~vaj1I~
+//  	      if (RS.RSP[Peswn].isFixed1())     //1han already fixed//~vafdI~//~vaj1R~
+    	      if (!swSkipKan && RS.RSP[Peswn].isFixed1())     //1han already fixed//~vaj1I~
                 if (shanten==1 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_SHANTEN1 //dora>=2//~vaaiR~
-                ||  shanten==1 && ctrReach==1 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_OTHERREACH //dora>=0//~vaaiR~
+                ||  shanten==1 && ctrReach==1 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_OTHERREACH //dora>=1//~vaaiR~
                 ||  shanten==2 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_SHANTEN2)//dora>=3//~vaaiR~
                 {                                                  //~vaaiI~
 			        if (Dump.Y) Dump.println("RACall.isTimeToCall rc=true for Pon shanten="+shanten+" and dora="+ctrDora+",ctrReach="+ctrReach);//~vaaiI~//~vaarR~
@@ -3153,7 +3298,7 @@ public class RACall                                               //~v@@@R~//~va
                 }                                                  //~vafbI~
 		      if (RS.RSP[Peswn].isFixed1())     //1han already fixed//~vafdI~
                 if (shanten==1 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_SHANTEN1 //shanten=1 and dora>=2//~vaaiR~
-                ||  shanten==1 && ctrReach==1 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_OTHERREACH //dora>=0//~vaaiR~
+                ||  shanten==1 && ctrReach==1 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_OTHERREACH //dora>=1//~vaaiR~
                 ||  shanten==2 && ctrDora>=HV_CTR_DORA_FOR_PONCHII_SHANTEN2)//shanten=2 and dora>=3//~vaaiR~
                 {                                                  //~vaaiI~
 			        if (Dump.Y) Dump.println("RACall.isTimeToCall rc=true for Chii shanten="+shanten+" and dora="+ctrDora+",ctrReach="+ctrReach);//~vaaiR~
@@ -3380,6 +3525,28 @@ public class RACall                                               //~v@@@R~//~va
         if (Dump.Y) Dump.println("RACall.isTimeToCall_Fixed1 exit rc="+swCall);//~vafsI~
         return swCall;
     }                                                              //~vafsI~
+ 	//******************************************************************************//~vaj1I~
+  	private boolean isFixed1AfterKan(int Peswn,int Ppos,int PhanHonor)//~vaj1R~
+    {                                                              //~vaj1I~
+    	boolean rc;                                                //~vaj1I~
+        if (optYakuFixTiming!=YAKUFIX_FIRST)                       //~vaj1I~
+        	rc=true;                                               //~vaj1I~
+        else                                                       //~vaj1I~
+        {                                                          //~vaj1I~
+        	int ctrFirst=RS.RSP[Peswn].getCtrFixedFirstOverFix2();      //~vaj1I~
+            if (PhanHonor>0)       //confirmed honor               //~vaj1R~
+            	ctrFirst-=PhanHonor;                               //~vaj1R~
+            else                                                   //~vaj1I~
+            if (PhanHonor<0) 	//unknown                          //~vaj1R~
+            {                                                      //~vaj1I~
+            	int v=RAUtils.chkValueWordTile(Ppos,Peswn);        //~vaj1I~
+                ctrFirst-=v/2;	//2:double East,1:other honor      //~vaj1I~
+            }                                                      //~vaj1I~
+            rc=ctrFirst>0;	//-1:pair change to minkan and loose fixedDirst//~vaj1R~
+        }                                                          //~vaj1I~
+        if (Dump.Y) Dump.println("RACall.isFixed1AfterKan rc="+rc+",eswn="+Peswn+",pos="+Ppos+",hanHonor="+PhanHonor+",optYakuFixTiming="+optYakuFixTiming);//~vaj1R~
+        return rc;
+    }                                                              //~vaj1I~
  	//******************************************************************************//~vagdR~
   	private boolean isTimeToCall_KanTaken(int Peswn,boolean PswAllInHand,boolean PswEarly,int Pshanten,int PctrReach,int PctrDora,int Ppos,int PctrHand,int[] PitsHand)//~vagdR~
     {                                                              //~vagdR~
@@ -3926,48 +4093,49 @@ public class RACall                                               //~v@@@R~//~va
 	    if (Dump.Y) Dump.println("RACall.isFixedChantaWinList rc="+rc+",maxAmtWinList="+maxAmtWinList);//~vaffI~
     	return rc;                                                 //~vaffI~
     }                                                              //~vaffI~
-    //***************************************************************//~vafnI~
-    private boolean isFixed2ndCall(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop)//~vafnI~
-    {                                                              //~vafnI~
-        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",pos="+Ppos+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnR~
-        boolean rc=true;
-        //*get discard list for shanten=0                              //~vafnI~
-        if (Paction==GCM_PON)                                      //~vafnI~
-        	PitsHand[Ppos]-=2;                                     //~vafnI~
-        else                                                       //~vafnI~
-            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~
-            {                                                      //~vafnI~
-            	if (pos!=Ppos)                                     //~vafnI~
-	                PitsHand[ii]--;                                 //~vafnI~
-            }                                                      //~vafnI~
-                                                                   //~vafnI~
-        int[] itsDiscard=getDiscardList(Peswn,PitsHand,PctrHand-2);//~vafnI~
-    //*get winlist and chk fixed                                   //~vafnI~
-        int ctrDiscard=itsDiscard.length;                              //~vafnI~
-        for (int ii=0;ii<ctrDiscard;ii++)                          //~vafnI~
-        {                                                          //~vafnI~
-        	int pos=itsDiscard[ii];                                    //~vafnI~
-            PitsHand[pos]--;		//as discarded                     //~vafnI~
-        	int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand-1);//~vafnI~
-			boolean rc2=isFixed2ndCallRonable(Peswn,PitsHand,PctrHand-1,Paction,Ppos,PposTop,itsWin);//~vafnI~
-        	PitsHand[pos]++;                                       //~vafnI~
-            if (!rc2)                                              //~vafnI~
-            {                                                      //~vafnI~
-            	rc=false;                                          //~vafnI~
-            	break;                                             //~vafnI~
-            }                                                      //~vafnI~
-        }                                                          //~vafnI~
-        if (Paction==GCM_PON)                                      //~vafnI~
-        	PitsHand[Ppos]+=2;                                     //~vafnI~
-        else                                                       //~vafnI~
-            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~
-            {                                                      //~vafnI~
-            	if (pos!=Ppos)                                     //~vafnI~
-	                PitsHand[ii]++;                                 //~vafnI~
-            }                                                      //~vafnI~
-	    if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",rc="+rc);//~vafnI~
-    	return rc;                                                 //~vafnI~
-    } //isFixed2ndCall                                                             //~vafnI~
+//    //*NoUSer*                                                   //+vajcR~
+//    //***************************************************************//+vajcI~
+//    private boolean isFixed2ndCall(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop)//~vafnI~//+vajcR~
+//    {                                                              //~vafnI~//+vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",pos="+Ppos+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnR~//+vajcR~
+//        boolean rc=true;                                         //+vajcR~
+//        //*get discard list for shanten=0                              //~vafnI~//+vajcR~
+//        if (Paction==GCM_PON)                                      //~vafnI~//+vajcR~
+//            PitsHand[Ppos]-=2;                                     //~vafnI~//+vajcR~
+//        else                                                       //~vafnI~//+vajcR~
+//            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~//+vajcR~
+//            {                                                      //~vafnI~//+vajcR~
+//                if (pos!=Ppos)                                     //~vafnI~//+vajcR~
+//                    PitsHand[ii]--;                                 //~vafnI~//+vajcR~
+//            }                                                      //~vafnI~//+vajcR~
+//                                                                   //~vafnI~//+vajcR~
+//        int[] itsDiscard=getDiscardList(Peswn,PitsHand,PctrHand-2);//~vafnI~//+vajcR~
+//    //*get winlist and chk fixed                                   //~vafnI~//+vajcR~
+//        int ctrDiscard=itsDiscard.length;                              //~vafnI~//+vajcR~
+//        for (int ii=0;ii<ctrDiscard;ii++)                          //~vafnI~//+vajcR~
+//        {                                                          //~vafnI~//+vajcR~
+//            int pos=itsDiscard[ii];                                    //~vafnI~//+vajcR~
+//            PitsHand[pos]--;        //as discarded                     //~vafnI~//+vajcR~
+//            int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand-1);//~vafnI~//+vajcR~
+//            boolean rc2=isFixed2ndCallRonable(Peswn,PitsHand,PctrHand-1,Paction,Ppos,PposTop,itsWin);//~vafnI~//+vajcR~
+//            PitsHand[pos]++;                                       //~vafnI~//+vajcR~
+//            if (!rc2)                                              //~vafnI~//+vajcR~
+//            {                                                      //~vafnI~//+vajcR~
+//                rc=false;                                          //~vafnI~//+vajcR~
+//                break;                                             //~vafnI~//+vajcR~
+//            }                                                      //~vafnI~//+vajcR~
+//        }                                                          //~vafnI~//+vajcR~
+//        if (Paction==GCM_PON)                                      //~vafnI~//+vajcR~
+//            PitsHand[Ppos]+=2;                                     //~vafnI~//+vajcR~
+//        else                                                       //~vafnI~//+vajcR~
+//            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~//+vajcR~
+//            {                                                      //~vafnI~//+vajcR~
+//                if (pos!=Ppos)                                     //~vafnI~//+vajcR~
+//                    PitsHand[ii]++;                                 //~vafnI~//+vajcR~
+//            }                                                      //~vafnI~//+vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",rc="+rc);//~vafnI~//+vajcR~
+//        return rc;                                                 //~vafnI~//+vajcR~
+//    } //isFixed2ndCall                                                             //~vafnI~//+vajcR~
     //***************************************************************//~vafnI~
     //*from isTimeToCall under the condition shanten up to 0       //~vafnI~
     //***************************************************************//~vafnI~
@@ -4132,29 +4300,30 @@ public class RACall                                               //~v@@@R~//~va
 	    if (Dump.Y) Dump.println("RACall.evaluateFixedCallShanten0 exit_Kan eswn="+Peswn+",amt="+amt+",itsHand="+Utils.toString(PitsHand,9));//~vag0I~//~vag3R~
     	return amt;                                                //~vag0I~
     }                                                              //~vag0I~
-    //***************************************************************//~vafnI~
-    private boolean isFixed2ndCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop,int[] PitsWin)//~vafnI~
-    {                                                              //~vafnI~
-        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnI~
-        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable action="+Paction+",PposTop="+PposTop+",itsWin="+Utils.toString(PitsWin));//~vafnI~
-        int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand); //~vafnI~
-        if (itsWin.length==0)                                      //~vafnI~
-        {                                                          //~vafnI~
-            if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by winlist=0");//~vafnI~
-        	return false;                                          //~vafnI~
-        }                                                          //~vafnI~
-        for (int pos:itsWin)                                       //~vafnI~
-        {                                                          //~vafnI~
-            if (RS.isFuritenSelf(Peswn,pos))                       //~vafnI~
-            {                                                      //~vafnI~
-	            if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by fuliten pos="+pos);//~vafnI~
-                return false;                                      //~vafnI~
-            }                                                      //~vafnI~
-        }                                                          //~vafnI~
-        boolean rc=AG.aRADSEval.evaluateWinListCallRonable(Peswn,PitsHand,PctrHand,Paction,PposTop,PitsWin);	//winTilePos and amt//~vafnI~
-        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",rc="+rc);//~vafnI~
-    	return rc;                                                 //~vafnI~
-    }                                                              //~vafnI~
+//    //***************************************************************//~vafnI~//+vajcR~
+//    //*NoUser                                                    //+vajcI~
+//    private boolean isFixed2ndCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop,int[] PitsWin)//~vafnI~//+vajcR~
+//    {                                                              //~vafnI~//+vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnI~//+vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable action="+Paction+",PposTop="+PposTop+",itsWin="+Utils.toString(PitsWin));//~vafnI~//+vajcR~
+//        int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand); //~vafnI~//+vajcR~
+//        if (itsWin.length==0)                                      //~vafnI~//+vajcR~
+//        {                                                          //~vafnI~//+vajcR~
+//            if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by winlist=0");//~vafnI~//+vajcR~
+//            return false;                                          //~vafnI~//+vajcR~
+//        }                                                          //~vafnI~//+vajcR~
+//        for (int pos:itsWin)                                       //~vafnI~//+vajcR~
+//        {                                                          //~vafnI~//+vajcR~
+//            if (RS.isFuritenSelf(Peswn,pos))                       //~vafnI~//+vajcR~
+//            {                                                      //~vafnI~//+vajcR~
+//                if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by fuliten pos="+pos);//~vafnI~//+vajcR~
+//                return false;                                      //~vafnI~//+vajcR~
+//            }                                                      //~vafnI~//+vajcR~
+//        }                                                          //~vafnI~//+vajcR~
+//        boolean rc=AG.aRADSEval.evaluateWinListCallRonable(Peswn,PitsHand,PctrHand,Paction,PposTop,PitsWin);    //winTilePos and amt//~vafnI~//+vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",rc="+rc);//~vafnI~//+vajcR~
+//        return rc;                                                 //~vafnI~//+vajcR~
+//    }                                                              //~vafnI~//+vajcR~
     //***************************************************************//~vafnI~
     private int evaluateFixedCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop)//~vafnR~
     {                                                              //~vafnI~
@@ -4281,19 +4450,72 @@ public class RACall                                               //~v@@@R~//~va
         return rc;                                                 //~vabtI~
     }                                                              //~vabtI~
     //*******************************************************************************************//~vabtI~
-    private boolean isStatusAimToHigherScore(int Pplayer,int Pintent)//~vabtI~
+    //*for wordtile Pon at final game in AllInHand,chk place up    //~vaipR~
+    //*******************************************************************************************//~vaipI~
+//  private boolean isStatusAimToHigherScore(int Pplayer,int Pintent)//~vabtI~//~vaipR~
+    private boolean isStatusAimToHigherScore(int Peswn,int Pplayer,int Pintent,int Phan)//~vaipR~
     {                                                              //~vabtI~
-    	boolean rc=false;                                          //~vabtI~
-        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore player="+Pplayer+",intent="+Integer.toHexString(Pintent));//~vabtR~
+//  	boolean rc=false;                                          //~vabtI~//~vaipR~
+        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore eswn="+Peswn+",player="+Pplayer+",intent="+Integer.toHexString(Pintent)+",tempHan="+Phan);//~vaipR~
+      	if (!Status.isNearFinalGame())                             //~vaipI~
+        {                                                          //~vaipI~
+	        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore return false by Not finalGame");//~vaipI~
+        	return false;                                          //~vaipI~
+        }                                                          //~vaipI~
         int[] scoreS=AG.aAccounts.score;                           //~vabtI~
-        int debt=scorePlus;                                        //~vabtI~
-        int limit=debt-Complete.POINT_RANKM; //mangan under debt   //~vabtI~
-        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore debt="+debt+",limit="+limit+",score="+ Arrays.toString(scoreS));//~vabtI~
+//      int debt=scorePlus;                                        //~vabtI~//~vaipR~
+//      int limit=debt-Complete.POINT_RANKM; //mangan under debt   //~vabtI~//~vaipR~
         int idx=AG.aAccounts.playerToPosition(Pplayer);            //~vabtI~
         int score=scoreS[idx];	//account index seq                //~vabtI~
-        if (score<limit)                                           //~vabtI~
-        	rc=Status.isNearFinalGame();                           //~vabtI~
-        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore rc="+rc+",idx="+idx+",Pplayer="+Pplayer+",playerScore="+score);//~vabtI~
+        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore current score="+score+",idx="+idx);//~vaipI~
+        int idxNextHigh=getIdxNextHigh(scoreS,idx);                //~vaipI~
+        if (idxNextHigh==-1)    //me is top                        //~vaipI~
+        {                                                          //~vaipI~
+	        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore return false by me is Top");//~vaipI~
+        	return false;                                          //~vaipI~
+        }                                                          //~vaipI~
+        int limit=scoreS[idxNextHigh];                             //~vaipI~
+        int han=Phan;	//fixed1+dora+honor tile                   //~vaipI~
+        if ((Pintent & (INTENT_3DRAGON))!=0)                       //~vaipM~
+        	han+=4;                                                //~vaipI~
+        if ((Pintent & (INTENT_ALLSAME | INTENT_SAMECOLOR_ANY))!=0)//~vaipM~
+        	han+=2;                                                //~vaipM~
+//      if ((Pintent & (INTENT_CHANTA))!=0)   //ctrDora is ambiguous for chanta//~vaipR~
+//      	han+=1;                                                //~vaipR~
+        score+=calcTempPoint(Peswn,han);                           //~vaipI~
+        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore new score by han="+score);//~vaipR~
+//      if (score<limit)                                           //~vabtI~//~vaipR~
+//      	rc=Status.isNearFinalGame();                           //~vabtI~//~vaipR~
+		boolean rc=score<=limit;                                   //~vaipR~
+        if (Dump.Y) Dump.println("RACall.isStatusAimToHigherScore rc="+rc+",idx="+idx+",Pplayer="+Pplayer+",playerScore="+score+",limit="+limit);//~vabtI~//~vaipR~
         return rc;                                                 //~vabtI~
     }                                                              //~vabtI~
+    //*******************************************************************************************//~vaipI~
+    private int calcTempPoint(int Peswn,int Phan)                  //~vaipI~
+    {                                                              //~vaipI~
+    	int amt= CompReqDlg.calcTempPoint(Peswn,Phan,swRankMUp); //~vaipI~
+        if (Dump.Y) Dump.println("RACall.calcTempPoint amt="+amt+",eswn="+Peswn+",han="+Phan);//~vaipI~
+        return amt;                                                //~vaipI~
+    }                                                              //~vaipI~
+    //*******************************************************************************************//~vaipI~
+    private int getIdxNextHigh(int[] PscoreS,int PidxMe)           //~vaipI~
+    {                                                              //~vaipI~
+        if (Dump.Y) Dump.println("RACall.getIdxNextHigh score="+Utils.toString(PscoreS)+",idxMe="+PidxMe);//~vaipI~
+        int idxNextHigh=-1;                                        //~vaipI~
+        int myScore=PscoreS[PidxMe];                               //~vaipI~
+        int nextHigh=scorePlus+32000;                             //~vaipI~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~vaipI~
+        {                                                          //~vaipI~
+        	if (ii!=PidxMe && PscoreS[ii]>=myScore)                //~vaipI~
+            {                                                      //~vaipI~
+            	if (PscoreS[ii]<nextHigh)                           //~vaipI~
+                {                                                  //~vaipI~
+                	nextHigh=PscoreS[ii];                          //~vaipI~
+                    idxNextHigh=ii;                                //~vaipI~
+                }                                                  //~vaipI~
+            }                                                      //~vaipI~
+        }                                                          //~vaipI~
+        if (Dump.Y) Dump.println("RACall.getIdxNextHigh idx="+idxNextHigh);//~vaipI~
+        return idxNextHigh;                                        //~vaipI~
+    }                                                              //~vaipI~
 }//class RACall                                                    //~1117R~

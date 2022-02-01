@@ -1,4 +1,4 @@
-//*CID://+vabfR~: update#= 553;                                    //~vac1R~//+vabfR~
+//*CID://+vabfR~: update#= 554;                                    //~vac1R~//~vabfR~
 //**********************************************************************//~v101I~
 //2021/07/28 vabf Robot call Honer tile at first if top at near final game//~vabfI~
 //2021/03/11 va6f (BUG)when resume ,1st take occures on player currentEswn!=0//~va6fI~
@@ -655,7 +655,7 @@ public class Status //extends Handler                              //~v@@@R~
     public static boolean isGamingNowAndInterRound()               //~va02I~
     {                                                              //~va02I~
     	boolean rc=aStatus.gameStatus>=GS_GAME_STARTED && aStatus.gameStatus<GS_BEFORE_DEAL && !isGameOver();    //21<= && <40//~va02I~
-        if (Dump.Y) Dump.println("Status.isGamingNow rc="+rc);     //~va02I~
+        if (Dump.Y) Dump.println("Status.isGamingNowAndInterRound rc="+rc);     //~va02I~//+vabfR~
         return rc;                                                 //~va02I~
     }                                                              //~va02I~
 	//*************************************************************************//~0205I~

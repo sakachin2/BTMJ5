@@ -1,5 +1,7 @@
-//*CID://+vaegR~: update#= 647;                                    //~vaegR~
+//*CID://+vajkR~: update#= 655;                                    //~vajkR~
 //**********************************************************************//~v101I~
+//2022/01/31 vajk (Bug)invalid nameplate color on client(pos on msg:GCM_ENDGAME_ACCOUNT is invalid, then score received is invalid)//~vajkI~
+//2021/12/31 vaij Nameplate Name;justify center                    //~vaijI~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //**********************************************************************//~va60I~
@@ -334,10 +336,12 @@ public class NamePlate                                             //~v@@@R~
         	String num=fp[idx];	//account index seq                //~9823R~
             int pos=rightJustify(r,num,paintScore);                //~9823I~
             int bg;                                                //~9823I~
-            if (score[idx]>=scorePlus)                             //~9823I~
+//          if (score[idx]>=scorePlus)                             //~9823I~//~vajkR~
+            if (score[idx]>scorePlus)                              //~vajkI~
 	            bg=TEXT_COLOR_SCORE_BG;                            //~9823I~
             else                                                   //~9823I~
-            if (score[idx]>=scoreBase)                             //~9823I~
+//          if (score[idx]>=scoreBase)                             //~9823I~//~vajkR~
+            if (score[idx]==scorePlus)                             //+vajkR~
 	            bg=TEXT_COLOR_SCORE_BG_UNDER_PLUS;                 //~9823I~
             else                                                   //~9823I~
 	            bg=TEXT_COLOR_SCORE_BG_UNDER_BASE;                 //~9823I~
@@ -587,7 +591,7 @@ public class NamePlate                                             //~v@@@R~
 	  if (swNPLLand)                                               //~9806I~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~9806I~
       else                                                         //~9806I~
-      if (AG.portrait && AG.swLongDevice)                          //+vaegR~
+      if (AG.portrait && AG.swLongDevice)                          //~vaegR~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~vaegI~
       else                                                         //~vaegI~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH-TEXTBOX_MARGINH*2);//~9806I~
@@ -697,12 +701,23 @@ public class NamePlate                                             //~v@@@R~
     //*********************************************************    //~9317I~
     private void drawTextName(Canvas Pcanvas,String Pstr,Rect Prect,Paint Ppaint)//~9317I~
     {                                                              //~9317I~
+        if (Dump.Y) Dump.println("NamePlate.drawTextName Prect="+Prect.toString()+",Pstr="+Pstr);//~vaijR~
     	Rect r=new Rect();                                         //~9317I~
-    	Ppaint.getTextBounds(Pstr,0,Pstr.length(),r);                //~9317I~
+//  	Ppaint.getTextBounds(Pstr,0,Pstr.length(),r);                //~9317I~//~vaijR~
+        String nm=Pstr.trim();                                     //~vaijI~
+    	Ppaint.getTextBounds(nm,0,nm.length(),r);                  //~vaijR~
+        if (Dump.Y) Dump.println("NamePlate.drawTextName textBound="+r.toString());//~vaijI~
         int yy=-r.top+PLATE_EDGE_WIDTH+TEXTBOX_MARGINH;            //~9317R~
         int xx=TEXTBOX_MARGINH+PLATE_EDGE_WIDTH;                   //~9317I~
-        if (Dump.Y) Dump.println("NamePlate.drawText xx="+xx+",yy="+yy+",nameH="+nameH+",str="+Pstr+",bounds="+r.toString());//~9317I~
-    	Graphics.drawText(Pcanvas,Pstr,xx,yy,Ppaint);          //~9317I~
+        if (Dump.Y) Dump.println("NamePlate.drawText xx="+xx);     //~vaijI~
+        int widthBox=Prect.right;                                  //~vaijI~
+        int widthText=r.right-r.left;                              //~vaijI~
+        int widthAvail=widthBox-widthText-xx-xx;	//r.left:for top space char//~vaijI~
+        if (widthAvail>0)                                          //~vaijI~
+        	xx+=widthAvail/2;                                      //~vaijI~
+        if (Dump.Y) Dump.println("NamePlate.drawText widthText="+widthText+",widthBox="+widthBox+",xx="+xx+",yy="+yy+",nameH="+nameH+",nm="+nm+",bounds="+r.toString());//~9317I~//~vaijR~
+//  	Graphics.drawText(Pcanvas,Pstr,xx,yy,Ppaint);          //~9317I~//~vaijR~
+    	Graphics.drawText(Pcanvas,nm,xx,yy,Ppaint);                //~vaijI~
     }                                                              //~9317I~
 //    //*********************************************************    //~v@@@I~//~0217R~
 //    public int setPlayerPosition(int PposEast,int[] PposMember)    //~v@@@R~//~0217R~

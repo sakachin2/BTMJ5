@@ -1,5 +1,6 @@
-//*CID://+vagvR~: update#= 571;                                    //~vagvR~
+//*CID://+vaihR~: update#= 573;                                    //~vagvR~//~vaihR~
 //**********************************************************************//~v@@@I~
+//2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vagvI~
 //2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
 //2021/08/18 vaca test SmallFont dialog                            //~vacaI~
@@ -165,7 +166,9 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO5_DEAL_CHANTA                    =  0x00000800;//~vaf1I~
     public static final int TO5_DEAL_CHANTA_PON                =  0x00001000;//~vaf1I~
     public static final int TO5_INITIAL_POSITION_CLIENT_PREV   =  0x00002000;//~vaf1I~
-    public static final int TO5_DEAL_OTHER_YAKUMAN             =  0x00004000;//+vagvI~
+    public static final int TO5_DEAL_OTHER_YAKUMAN             =  0x00004000;//~vagvI~
+    public static final int TO5_NODUMP                         =  0x00008000;//~vaihI~
+    public static final int TO5_AVOID_FURITEN                  =  0x00010000;//+vaihI~
     public static int option2;                                     //~v@@@I~
     public static int option3;                                     //~va66I~
     public static int option4;                                     //~vaa6I~
@@ -243,6 +246,9 @@ public class TestOption //extends Handler                          //~v@@@I~
         sst2="sst2-2";                                             //~v@@@I~
         Dump.println("TestOption appname="+AG.appName+",yourname="+AG.YourName);//~v@@@R~
         TODlg.prop2TO();                                           //~v@@@I~
+      if ((option5 & TO5_NODUMP)!=0)                               //~vaihI~
+        Dump.setOption(false);	//set Y=false                      //~vaihI~
+      else                                                         //~vaihI~
       if ((option2 & TO2_DUMP_SDCARD)!=0)      //else continue to terminal//~vaf1I~
         Dump.open("Dump.txt",false/*sdcard*/);                 //~vad5I~//~vacaI~
     }                                                              //~v@@@I~

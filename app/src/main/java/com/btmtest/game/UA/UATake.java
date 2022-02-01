@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 586;                                    //~v@@@R~//~v@@6R~//~9225R~
+//*CID://+vaj7R~: update#= 590;                                    //~vaj7R~
 //**********************************************************************//~v101I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -22,10 +23,12 @@ import com.btmtest.game.gv.Hands;
 import com.btmtest.game.gv.River;
 import com.btmtest.game.gv.Stock;
 import com.btmtest.utils.Dump;
+import com.btmtest.utils.Utils;
 import com.btmtest.utils.sound.Sound;
 
 import java.util.Arrays;
 
+import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
@@ -33,6 +36,7 @@ import static com.btmtest.game.UserAction.*;//~v@@@I~
                                                                    //~v@@@I~
 public class UATake                                                //~v@@@R~
 {                                                                  //~0914I~
+    private static final int POSPARM_CALLSTATUS=7;                 //~vaj7R~
     private UserAction UA;                                         //~v@@@I~
     private Players PLS;                                           //~v@@@R~
     private boolean isServer;                                      //~v@@@I~
@@ -104,7 +108,7 @@ public class UATake                                                //~v@@@R~
 	//*************************************************************************//~v@@6I~
     public boolean selectInfo(boolean PswServer,int Pplayer)       //~v@@6I~//~9B28R~
     {                                                              //~v@@6I~
-        if (Dump.Y) Dump.println("UATake.selectInfo swServer="+PswServer+",Pplayer="+Pplayer);//+1723I~
+        if (Dump.Y) Dump.println("UATake.selectInfo swServer="+PswServer+",Pplayer="+Pplayer);//~1723I~
     	boolean rc=true;                                           //~v@@6I~
 	    if (isLocked(Pplayer))	//before NEXT_PLAYER can take                                     //~v@@6I~//~9626R~
         	rc=false;                                              //~v@@6I~
@@ -174,13 +178,16 @@ public class UATake                                                //~v@@@R~
 //            PLS.takeOne(player,td,eswn);    //insert into Hands  //~v@@@R~
 			boolean swShadow=Pplayer!=PLAYER_YOU;                  //~v@@@I~
             PLS.takeOne(Pplayer,td,swShadow);    //insert into Hands//~v@@@R~
-        	UA.msgDataToClient=UA.makeMsgDataToClient(Pplayer,td,swKan?1:0);//~v@@@R~
+//      	UA.msgDataToClient=UA.makeMsgDataToClient(Pplayer,td,swKan?1:0);//~v@@@R~//~vaj7R~
+        	UA.msgDataToClient=UA.makeMsgDataToClient(Pplayer,td,swKan?1:0,makeMsgDataInfoCallStatus());//~vaj7I~
         	AG.aUADelayed.resetWait(Pplayer);	//switch to next player after delay a moment//~v@@6R~
             if (!swKan)                                            //~v@@6I~
 	            stock.drawPendingOpenDora(Pplayer,GCM_TAKE);       //~v@@6R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
+			if (PswReceived)	                                   //+vaj7I~
+                saveServerCallStatus(PintParm,POSPARM_CALLSTATUS); //+vaj7M~
 	        swKan=PintParm[PARMPOS_SWKAN]!=0;                      //~v@@@I~
             if (swKan)                                             //~v@@6I~
                 td=AG.aTiles.getNextKan();	//add ctrKan           //~v@@6I~
@@ -329,4 +336,28 @@ public class UATake                                                //~v@@@R~
         if (Dump.Y) Dump.println("UATake.discardTimeoutClient rc="+rc);//~9627I~
         return rc;                                                 //~9627I~
     }                                                              //~9627I~
+	//*************************************************************************//~vaj7I~
+	//*On Server                                                   //~vaj7I~
+	//*************************************************************************//~vaj7I~
+    public static String makeMsgDataInfoCallStatus()               //~vaj7I~
+    {                                                              //~vaj7I~
+    	String rc=AG.aRoundStat.RSP[0].callStatus+MSG_SEPAPP       //~vaj7I~
+    	         +AG.aRoundStat.RSP[1].callStatus+MSG_SEPAPP       //~vaj7I~
+    	         +AG.aRoundStat.RSP[2].callStatus+MSG_SEPAPP       //~vaj7I~
+    	         +AG.aRoundStat.RSP[3].callStatus;                  //~vaj7I~
+        if (Dump.Y) Dump.println("UATake.makeMsgDataInfoCallStatus rc="+rc);//~vaj7I~
+        return rc;                                                 //~vaj7I~
+    }                                                              //~vaj7I~
+	//*************************************************************************//~vaj7I~
+	//*On Client                                                   //~vaj7I~
+	//*************************************************************************//~vaj7I~
+    public static void saveServerCallStatus(int[] PintParm,int Ppos)//~vaj7I~
+    {                                                              //~vaj7I~
+        if (Dump.Y) Dump.println("UATake.saveServerCallStatus pos="+Ppos+",intp(Hex)="+ Utils.toHexString(PintParm));//~vaj7R~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~vaj7I~
+        {                                                          //~vaj7I~
+            int callStatus=PintParm[Ppos+ii];   //furiten info     //~vaj7I~
+            AG.aRoundStat.RSP[ii].callStatus=callStatus;                      //~vaj7I~
+        }                                                          //~vaj7I~
+    }                                                              //~vaj7I~
 }//class                                                           //~v@@@R~

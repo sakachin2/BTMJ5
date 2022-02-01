@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.18</string>
+    <string name="app_version">v1.19</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -180,7 +180,7 @@
     <string name="Msg_HistoryReceived">The record was sent from %1$s, do you save it？\n\n%2$s</string>
     <string name="Info_RuleSettingUpdated">Rule was changed.</string>
     <string name="Info_HistoryReceivedCanceled">The record received was canceled.</string>
-    <string name="Info_HistorySendToServer">The record was sent to the server.\n%1$s</string>
+    <string name="Info_HistorySendToServer">The record was sent to the server.</string>
     <string name="Info_HistoryRuleSavedReceived">Rule of the record was saved.\n%1$s</string>
     <string name="Info_HistorySendToAllClient">The record was sent to all client.</string>
     <string name="Err_ReloadSelectOne">Select one item only.</string>
@@ -393,7 +393,8 @@
     <string name="Agreed">Agreed</string>
     <string name="NoGame">DrawWithNotTenpai</string>
     <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.\n
-\"Furiten Riichi\":\"No\"/\"Reject\" is checked only when \"Confirm Tenpai\" of Oper setting is ON.</string>
+\"Furiten Riichi\":\"No\"/\"Reject\" is checked only when \"Confirm Tenpai\" of Oper setting is ON.
+When missed to call Ron after Riichi, you can not get win even by Draw. Allow Riichi even when winning tiles is empty(all exposed).</string>
     <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
     <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
     <string name="Label_ReachLimitOpenChombo">Continue as Chombo</string>
@@ -704,7 +705,8 @@
     <string name="Label_AccountsSettingTopPrizeEdit">%1$d (Initial:%2$d - Return:%3$d)</string>
     <string name="Label_AccountsSettingOrderPrize">PlacementPrize</string>
     <string name="Label_AccountsSettingOrderPrizeEdit">%1$d - %2$d</string>
-    <string name="Label_AccountsSettingSamePoint">If same</string>
+    <string name="Desc_SamePointOrder">For same score, closer to stating dealer in anticlockwise is higher place, For Order Prize?</string> 
+    <string name="Label_AccountsSettingSamePoint"></string>
     <string name="Label_ByEswn">HeadBump</string>
     <string name="Label_ByEswnOrderPrize">HeadBump</string>
     <string name="Label_Debt">Returns %1$d</string>
@@ -735,8 +737,8 @@
     <string name="Desc_OpenReach">(Set additional options bellow if Robot is included.)</string>
     <!--string name="UserAction_Reach_Missing_YN">Allow Furiten</string-->
     <string name="Label_FuritenReach">Furiten Riichi</string>
-    <string name="Label_FuritenReachNo">No</string>
-    <string name="Label_FuritenReachYes">Yes(Self-Pick only)</string>
+    <string name="Label_FuritenReachNo">No check</string>
+    <string name="Label_FuritenReachYes">Allow(Self-Pick only)</string>
     <string name="Label_FuritenReachReject">Reject</string>
     <string name="UserAction_ReachReset">Canceled Riichi.</string>
     <string name="Label_AnkanAfterReach">Allow Ankan after Riichi.</string>
@@ -765,7 +767,8 @@
 		<item>@string/Title_AccountsDlg</item>
 		<!--item>Request suspend</item-->
 		<!--item>Cancel suspend</item-->
-		<item>Suspend process</item>
+		<!--item>Suspend process</item-->
+		<item>Suspend Dialog</item>
 		<item>Gameover</item>
 		<item>Connection failure</item>
 		<item>Win Anyway</item>
@@ -789,7 +792,7 @@
     <string name="Err_LackingMemberNoConnectionTraining">No Connection, do you enter in One-Player-Traning-Mode ?</string>
     <string name="Err_LackingMemberAllowRobotYes">Missing %1$d players. \nDo you start game including Robot?</string>
     <string name="Err_LackingMemberAllowRobotNo">Missing %1$d players. \nRule setting allows a game including Robot.</string>
-    <!--string name="Err_GameFromNotServer">Start "Game" from server side.</string-->
+    <string name="Err_GameFromNotServer">Start "Game" from server side.</string>
     <string name="Err_LackingMemberReconnect">Connection Error remains.</string>
     <string name="Err_AlreadyRestarted">Already Restarted.</string>
     <string name="Info_WaitingAllMemberSetup">Waiting more %1$d player\'s setup completion.</string>
@@ -918,11 +921,11 @@
     <string name="Info_SuspendEndgame">ForceGameover</string>
     <string name="Info_SuspendSaved">SuspendGame</string>
     <string name="Info_LastEndgame">Gameover</string>
-    <string name="Label_ResetReach">Can.Ri</string>
+    <string name="Label_ResetReach">Cancel</string>
     <string name="Label_ResetReach_Vertical">Can.Ri</string>
     <string name="Label_Force_Reach">Tenpai!</string>
-    <string name="Label_ResetOpenReach">Can.OR</string>
-    <string name="Label_ResetOpenReach_Vertical">Can.OR</string>
+    <string name="Label_ResetOpenReach">Can.Op</string>
+    <string name="Label_ResetOpenReach_Vertical">Can.Op</string>
     <string name="Desc_SuspendPenalty">Option is default and changeable on dialog. Penalty is divided equally, no effect to placement.
 				 When Gameover, Yakitori penalty is not imposed. 
 				When Sespend by ConnectionErr, if \"Pao\" is checked ON in the dialog, penalty is minimum 8000*3 regardless of this setting.</string>
@@ -1490,6 +1493,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="AE_RankFix1">Hand required at least 1 han.</string>
     <string name="AE_RankFix2">Hand required at least 2 han.</string>
     <string name="AE_MultiWait_Furiten">Furiten(already discarded winning tile)</string>
+    <string name="AE_MultiWait_Furiten_Reach">Furiten of Riichi</string>
     <string name="AE_MultiWait_FixFirst">\"Fix First only\" rule violation</string>
     <string name="AE_MultiWait_FixMiddle">\"Fix Middle\" rule violation</string>
     <string name="AE_MultiWait_Constraint1">1-han constraint err</string>
@@ -1585,6 +1589,8 @@ Reinstall this APP to try to set again.
     <string name="Info_Transfered">%1$d / %2$d files on External Storage was migrated to Android-11 NEW Storage area.</string>
     <string name="btnBGM">Set</string>
     <string name="NoUserBGM">Not Set</string>
+    <string name="NoUserBGMENG">Not Set</string>
+    <string name="NoUserBGMJPN">未設定</string>
     <string name="UserBGM">YourFavorite</string>
     <string name="UserBGMEachRound">Change by round</string>
     <string name="etUserBGMSelectionHint">Specify Play Sequence</string>
@@ -1598,4 +1604,10 @@ Reinstall this APP to try to set again.
     <string name="Err_AppDestroyedUnexpectedlyRestart">Application was forced to destry!!!\n
     	It may be caused by ConfigurationChange(Language, FontSize etc.) or MemoryConstraints.\n
     	Restart is not supported.</string>
+    <string name="Info_AlreadyExist_SkipWrite">%1$s alreacy exists, skipped to write.</string>
+    <string name="YouTube_PlaylistID">PLcSBt1Z39L59yn-YoeleoIHSU2HoSRCvg</string>
+    <string name="Label_YouTube">Video</string>
+    <string name="Err_FuritenReach">Furiten-Riichi</string>
+    <string name="Err_FuritenReachAfter">Missed-WinningTile</string>
+    <string name="Err_SelectOrientation">Setting orientation is not canceled on Client.</string>
 </resources>

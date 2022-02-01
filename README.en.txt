@@ -18,10 +18,62 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.19 : 2022/02/01
+        .Show Furiten Riichi error.
+        .Strengthen smart Robot.
+        .Fix bugs.
+*********************************************************************************************
+V1.19 : 2022/02/01
+        .Write Exception log to Logcat even for release version.
+        .Use different background color for PlayAloneMode game on History dialog.
+        .Add NoDump option to TestOption for parformance of AndroidStudio DebugRun.
+        .Adjust text of player name on Nameplate to center.
+        .Link to YouTube playlist:"How-To-Play ‚…" from Help dialog of top panel.
+        .Show Message of "Riichi called" at not called Riichi but discarded after Riichi.
+        .Issue warning of Furiten Riichi if Furiten-Riichi option is not only Reject but also Yes.
+        .Implements "You can not win even bay Draw for Furiten Riichi if the option is No".
+        .Check Furiten Riichi for also Missing winning tile after Riichi. It is not winnable.
+        .Show on dialog of Complete, ExaustiveDraw and HalfwayDrw the errof of Furiten Riich(if option=No) and Missing winning tile after Riichi.
+        .Ankan will not be notified and AddKan is notified at timing of Draw the tile.
+        .Change backgroundcolor of Connect button and Gametype textbox to identify device is server or client.
+        .Strengthen smart Robot.
+         -When otherReach ctr=1, skip call if dora ctr=0 even fixed1.
+         -drop "once called" from call reason.
+         -Do "Giveup Check" also before decision of Call or Not Call.
+         -Not select tile to discard which cause Furiten error.
+         -To determine Intent:Chanta Number tile 3 with no 1 and 2 and Number tile 7 with no 8 and 9 are considered as Tanyao tile.
+         -Aim to higher point at near Final round.
+         -Consider number of tiles of other color before call CHii with intent Same-Color.
+         -Call Pon for honor tile Doubled-East if shanten>=2 with 7Pair intent.
+         -If 7pair intent, mark Riichi player even shanten<=1.
+         -When marking Riichi player, select tile to discard considering Honour tile's number and value.
+         -For 7Pair, think important tile of near Red Dora for Suits and not Value for Honour.
+         -For 7Pair, set more discardable for tile of Furiten itself and less discardable for tile of Suji(e.g 1 of 4, 2 fo 5..) and honours.
+         -At Tenpai(shanten=0) of Tanyao 7Pair, wait Riichi until draw Tanyao tile if both tile is Chanta tile other than Dora.
+         -At Tenpai(shanten=0) of Chanta 7Pair, wait Riichi until draw Chanta tile if both tile is Tanyao tile regardless Dora.
+         -Set Intent:Chanta for 7Pair if Count of Chanta Piar > 4 (if pair=4, set if single Chanta Tile >=2)
+         -Implement "Vlue Honour tile has 1 han even exposed if option of Sakiduke-rule is not 1st".
+         -Skip call Kan for discarded if it violates Sakiduke-rule=1st.
+         -At Tenpai(shanten=0) of (Half-)Samecolor 7Pair, wait Riichi until draw tile of the color or Honour tile.
+        .Bugs
+         -Japanese:NoUserBGM was shown on English env.
+         -Function:Suspend was deleted, it was remain on Help of MenuInGame.
+         -DrawnHW request had to be rejected before deal not only for 1st deal but all round.
+         -KanDora was not considered at decision of Call or Not Call.
+         -Try-Catch was required for function Onclick of Alert dialog.
+         -Crash when AbotiveDrawn confirm dialog was duplicatedly shown.
+         -Alert was issued also at before deal when AbortiveDrawn dialog was canceled.
+         -Eception occured at Send on history dialog between SDCARD system and Scoped system.
+         -When postioning mode is "Simply", keep lamp disabled to avoid double touch event.
+         -The value of discard priority was doubled when conditionally Riichi was bypassed at discard.
+         -Client player could not call Ron when match is not Notify mode.
+         -You can not get win by Chankan(Ron for AddKan).
+         -Client can puch "Game" button.
+         -At start "Game", client causes NPE if server backed to top panel by the reason of client canceled orientation selection dialog. 
+         -Background color of Point on nameplate of Client to identify Plus or Minus was different from Server.
 V1.18 : 2021/11/26
         .Bug of mistaken meld of Chii.
         .Add setting option of "Reject Furiten Riichi"
-*********************************************************************************************
 V1.18 : 2021/11/26
         .On "#nd-Of-Hand" dialog, show total score as the result.
         .Add setting option of "Reject Furiten Riichi"

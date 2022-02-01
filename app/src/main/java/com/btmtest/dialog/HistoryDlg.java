@@ -1,5 +1,6 @@
-//*CID://+vae0R~:                             update#=  612;       //~vae4R~//+vae0R~
+//*CID://+vaibR~:                             update#=  621;       //~vaibR~
 //*****************************************************************//~v101I~
+//2021/12/24 vaib History list;change background of playalone game //~vaibI~
 //2021/09/15 vae4 (Bug)No connection err if AG.Yourname="" at reload interrupted play alone game//~vae4I~
 //2021/09/12 vae0 Scped for BTMJ5                                  
 //2021/08/24 vad2 HistoryBS;add function to show detail            //~vad2I~
@@ -59,6 +60,9 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     private static final int LISTVIEW_ROW_LAYOUTID_SMALLFONT=R.layout.textrowlist_historydlg_theme;//~vac5I~
     private static final int COLOR_INTERRUPTED=Color.argb(0xff,0xff,0x00,0x00);//~9824I~
     private static final int COLOR_NOT_INTERRUPTED=Color.argb(0xff,0x00,0x00,0x00);//~9824I~
+    private static final int COLOR_BG_HUMAN=AG.getColor(R.color.greenyellow);     //same as layout textrowlist_historydlg//~vaibR~
+    private static final int COLOR_BG_ROBOT=AG.getColor(R.color.history_robotname_bg);//~vaibR~
+    private static final int COLOR_BG_PLAYALONE=Color.argb(0xff,0xe0,0xe0,0xf0);//+vaibR~
                                                                    //~9613I~
     private static final int UNIT_SHIFT=-100;                      //~0113I~
     private static final int UCBP_MULTISELECT=1;                   //~0114I~
@@ -77,7 +81,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         if (Dump.Y) Dump.println("HistoryDlg.defaultConstructor"); //~9614R~
         AG.aHistoryDlg=this;                                       //~9825I~
         swScoped= UScoped.isScoped();	//protected on FileDialog, History data on scoped storage if available//~vad2I~
-        swDiscendant=true;                                         //+vae0I~
+        swDiscendant=true;                                         //~vae0I~
         if (Dump.Y) Dump.println("HistoryDlg.defaultConstructor swScoped="+swScoped);//~vad2R~
     }                                                              //~v@@@R~
     //*****************************                                //~9825I~
@@ -484,14 +488,19 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             v1.setTextColor(Color.BLACK);                          //~v@@@I~//~9614I~
         }                                                          //~v@@@I~//~9614I~
         String[][] hds=getHistoryData(ld.itemtext);                //~9615I~
+        boolean swPlayAlone=false;                                 //~vaibI~
         if (hds!=null)                                             //~9615I~
-	        setHD(v,hds);                                          //~9615R~
+//          setHD(v,hds);                                          //~9615R~//~vaibR~
+            swPlayAlone=setHD(v,hds);                              //~vaibI~
+        if (!swSelected && swPlayAlone)                            //+vaibR~
+        	v1.setBackgroundColor(COLOR_BG_PLAYALONE);             //+vaibR~
         return v;                                                  //~v@@@I~//~9614I~
     }                                                              //~v@@@I~//~9614I~
     //***********************************************              //~9615I~
-//  private void setHD(View Pview,String[][] Phds)                      //~9615I~//~vad2R~
-    public void setHD(View Pview,String[][] Phds)                  //~vad2R~
+    public boolean setHD(View Pview,String[][] Phds)                      //~9615I~//~vad2R~//~vaibR~
     {                                                              //~9615I~
+    	boolean rc=false; //play alone                             //~vaibI~
+        int ctrRobot=0;
         try                                                        //~9829I~
         {                                                          //~9829I~
         String[] hdr=Phds[HDPOS_HDR];                              //~9615R~
@@ -500,23 +509,33 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         TextView tv;                                               //~9615I~
         tv=(TextView)UView.findViewById(Pview,R.id.Member1);       //~9615R~
         tv.setText(name[0]);                                       //~9615I~
+        if (setRobotBG(tv,name[0]))                                //~vaibR~
+        	ctrRobot++;                                            //~vaibI~
         tv=(TextView)UView.findViewById(Pview,R.id.Score1);        //~9615R~
         tv.setText(score[0]);                                      //~9615I~
         tv=(TextView)UView.findViewById(Pview,R.id.Member2);       //~9615R~
         tv.setText(name[1]);                                       //~9615I~
+        if (setRobotBG(tv,name[1]))                                //~vaibR~
+        	ctrRobot++;                                            //~vaibI~
         tv=(TextView)UView.findViewById(Pview,R.id.Score2);        //~9615R~
         tv.setText(score[1]);                                      //~9615I~
         tv=(TextView)UView.findViewById(Pview,R.id.Member3);       //~9615R~
         tv.setText(name[2]);                                       //~9615I~
+        if (setRobotBG(tv,name[2]))                                //~vaibR~
+        	ctrRobot++;                                            //~vaibI~
         tv=(TextView)UView.findViewById(Pview,R.id.Score3);        //~9615R~
         tv.setText(score[2]);                                      //~9615I~
         tv=(TextView)UView.findViewById(Pview,R.id.Member4);       //~9615R~
         tv.setText(name[3]);                                       //~9615I~
+        if (setRobotBG(tv,name[3]))                                //~vaibR~
+        	ctrRobot++;                                            //~vaibI~
         tv=(TextView)UView.findViewById(Pview,R.id.Score4);        //~9615R~
         tv.setText(score[3]);                                      //~9615I~
                                                                    //~9615I~
         tv=(TextView)UView.findViewById(Pview,R.id.GameType);      //~9615I~
         tv.setText(hdr[POS_GAMESET]);                              //~9615I~
+        if (ctrRobot==PLAYERS-1)                                   //~vaibR~
+        	rc=true;                                               //~vaibR~
         tv=(TextView)UView.findViewById(Pview,R.id.RuleID);        //~9615I~
         tv.setText(hdr[POS_RULEID]);                               //~9615I~
         tv=(TextView)UView.findViewById(Pview,R.id.EndgameType);   //~9823I~
@@ -532,7 +551,18 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         {                                                          //~9829I~
 //      	Dump.println(e,"HistoryDlg.setHD");                    //~9829R~
         }                                                          //~9829I~
+        if (Dump.Y) Dump.println("HistoryDlg.setHD rc="+rc+",ctrRobot="+ctrRobot);//~vaibI~
+        return rc;	//play alone                                   //~vaibI~
     }                                                              //~9615I~
+    //************************************************             //~vaibI~
+    private boolean setRobotBG(View Pview,String Pname)            //~vaibR~
+    {                                                              //~vaibI~
+    	int color=isRobotName(Pname) ? COLOR_BG_ROBOT : COLOR_BG_HUMAN;//~vaibI~
+        boolean rc=color==COLOR_BG_ROBOT;                          //~vaibI~
+        if (Dump.Y) Dump.println("HistoryDlg.setHD setRobotBG rc="+rc+",name="+Pname+",color="+Integer.toHexString(color));//~vaibR~
+        Pview.setBackgroundColor(color);                           //~vaibR~
+        return rc;                                                 //~vaibI~
+    }                                                              //~vaibI~
     //************************************************             //~9825I~
     private static String getStrEndgameType(int PendgameType,String[][] Phds)      //~9825I~//~9826R~
     {                                                              //~9825I~
@@ -628,6 +658,19 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
 		if (Dump.Y) Dump.println("HistoryDlg.chkMemberTrainingMode rc="+rc+",ctrRobot="+ctrRobot+",ctrFound="+ctrFound+",AG.YourName="+AG.YourName);//~va66I~//~vae0R~
         return rc;                                                 //~va66I~
     }                                                              //~va66I~
+    //***********************************************              //~vaibI~
+    private boolean isRobotName(String Pname)                          //~vaibI~
+    {                                                              //~vaibI~
+    	boolean rc=false;                                          //~vaibI~
+        String yn=AG.YourName;                                     //~vaibI~
+        if (yn.equals(""))                                         //~vaibI~
+        	yn=robotYourNameDefaultConst[0];                       //~vaibI~
+        if (Pname.compareTo(yn)!=0)                                //~vaibI~
+            if (Accounts.isRobotName(Pname)>0)                     //~vaibI~
+                rc=true;                                           //~vaibI~
+        if (Dump.Y) Dump.println("HistoryDlg.isRobotName name="+Pname+",rc="+rc);//~vaibI~
+        return rc;                                                 //~vaibI~
+    }                                                              //~vaibI~
     //***********************************************              //~va66I~
     private boolean chkMember(HistoryData Phds)                    //~va66I~
     {                                                              //~va66I~

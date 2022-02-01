@@ -131,9 +131,7 @@
                  android:layout_height="wrap_content"
                  android:orientation="vertical"
             >
-
-
-            	<include layout="@layout/setting_rule_options_theme"
+            	<include layout="@layout/setting_rule_options"
             	/>
 
             </LinearLayout><!-- one view hosted in scrollview-->

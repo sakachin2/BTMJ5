@@ -1,8 +1,10 @@
-//*CID://+vagnR~: update#= 844;                                    //+vagnR~
+//*CID://+vajiR~: update#= 854;                                    //~vajiR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
-//2021/11/13 vagn (Bug)GC buttons remains active because Robot Ron did not stop Notifing Pon to human//+vagnI~
+//2022/01/31 vaji change color of top left to identify server      //~vajiI~
+//2021/12/31 vaii notifyPlayMatch:Chii overrun Pon button push(Chii button lit yellow after Pon pushed for the discarded tile of Pon and Chii)//~vaiiI~
+//2021/11/13 vagn (Bug)GC buttons remains active because Robot Ron did not stop Notifing Pon to human//~vagnI~
 //2021/10/23 vaf4 (Bug)Could not back to top at before game start on client when ioerr occured. msg issued "try from server"//~vaf4I~
 //2021/09/27 vaef gesture navigation mode from android11
 //2021/09/26 vaee gesture navigation mode from android10           //~vaeeI~
@@ -158,12 +160,17 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int BTNID_F6      =R.id.Func6;   //TODO   //~v@@@I~
                                                                    //~9301I~
 //  private static final int COLOR_ACTIVEBTN=Color.argb(0xff,0xff,0xa5,0x00);//orange//~9301I~//~vacbR~
-    private static final int COLOR_BTN_NORMAL_BG= AG.getColor(R.color.btn_normal_bg);		//yellow//~vaafI~//~vaa2I~
+//  private static final int COLOR_BTN_NORMAL_BG= AG.getColor(R.color.btn_normal_bg);		//yellow//~vaafI~//~vaa2I~//~vajiR~
+    public  static final int COLOR_BTN_NORMAL_BG= AG.getColor(R.color.btn_normal_bg);		//yellow//~vajiI~
                                                                    //~vaahI~
 //  private static final int COLOR_GST_DEBUG=AG.getColor(R.color.btn_normal_bg);//~vaahR~
     private static final int COLOR_GST_DEBUG  =Color.argb(0xff,0xc0,0xf0,0x00);//~vaahR~
-    private static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vaahI~
+    private static final int COLOR_GST_DEBUG_CLIENT  =Color.argb(0xff,0xc0,0xf0,0xa0);//+vajiR~
+//  private static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vaahI~//~vajiR~
+    public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vajiR~
+    public  static final int COLOR_GST_RELEASE_CLIENT=Color.argb(0xff,0xc0,0xf0,0xf0);//~vajiR~
     private static final int COLOR_GST_RELEASE_TEXT=Color.argb(0xff,0xff,0x00,0x00);//orange//~vaahR~
+    private static final int COLOR_GST_RELEASE_TEXT_CLIENT=Color.argb(0xff,0x40,0x00,0x00);//orange//~vajiI~
                                                                    //~v@@@I~
     private static final int URO_STARTGAME=1;                      //~v@@@I~
     private static final int URO_ADDVIEW=2;                        //~v@@@I~
@@ -370,22 +377,22 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	public void newGame()                                          //~va70I~
     {                                                              //~va70I~
         if(Dump.Y) Dump.println("GC.newGame");                     //~va70I~
-//      statusPlayAlone=0;                                         //~va70R~//+vagnR~
+//      statusPlayAlone=0;                                         //~va70R~//~vagnR~
         swChankan=false;                                           //~vaaVI~
-//  	swShownBtnCancel=false;                                    //~vaahI~//+vagnR~
-        resetButton();                                             //+vagnI~
+//  	swShownBtnCancel=false;                                    //~vaahI~//~vagnR~
+        resetButton();                                             //~vagnI~
     }                                                              //~va70I~
-//***********************************************************      //+vagnI~
-	private void resetButton()                                     //+vagnI~
-    {                                                              //+vagnI~
-        if (Dump.Y) Dump.println("GC.resetButton swShownBtnCancel="+swShownBtnCancel+",statusPlayAlone="+statusPlayAlone);//+vagnI~
-        if (statusPlayAlone!=0)                                    //+vagnI~
-        {                                                          //+vagnI~
-    		updateActionBtn2Touch(statusPlayAlone,BTN_STATUS_DISABLE_CANCEL,COLOR_NORMAL);//+vagnI~
-			statusPlayAlone=0;                                     //+vagnI~
-        }                                                          //+vagnI~
-		resetPendingPlayMatchNotify(0/*PmsgID*/);                  //+vagnI~
-    }                                                              //+vagnI~
+//***********************************************************      //~vagnI~
+	private void resetButton()                                     //~vagnI~
+    {                                                              //~vagnI~
+        if (Dump.Y) Dump.println("GC.resetButton swShownBtnCancel="+swShownBtnCancel+",statusPlayAlone="+statusPlayAlone);//~vagnI~
+        if (statusPlayAlone!=0)                                    //~vagnI~
+        {                                                          //~vagnI~
+    		updateActionBtn2Touch(statusPlayAlone,BTN_STATUS_DISABLE_CANCEL,COLOR_NORMAL);//~vagnI~
+			statusPlayAlone=0;                                     //~vagnI~
+        }                                                          //~vagnI~
+		resetPendingPlayMatchNotify(0/*PmsgID*/);                  //~vagnI~
+    }                                                              //~vagnI~
 //***********************************************************      //~9621R~
 //*from BTMulti when Date Synched OK                               //~9621I~
 //***********************************************************      //~9621I~
@@ -1765,6 +1772,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             statMatch=SPMN_KAN;                                    //~vaa2I~
             break;                                                 //~vaa2I~
         case GCM_CHII:                                             //~vaa2I~
+//            int cp=AG.aPlayers.getCurrentPlayer();               //~vaiiR~
+//            if (Players.nextPlayer(cp)!=PLAYER_YOU)              //~vaiiR~
+//            {                                                    //~vaiiR~
+//                if (Dump.Y) Dump.println("GC.updateActionBtn2TouchMatchNotify@@@@ignore updateBtn msg by  current player changed actionID="+PactionID);//~vaiiR~
+//                break;                                           //~vaiiR~
+//            }                                                    //~vaiiR~
         	btn=btnChii;                                           //~vaa2I~
             statMatch=SPMN_CHII;                                   //~vaa2I~
             break;                                                 //~vaa2I~
@@ -2378,13 +2391,25 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             float px=Pbtn.getTextSize();                             //~vaahI~
             Pbtn.setTextSize(COMPLEX_UNIT_PX,px*1.4f);             //~vaahR~
             Pbtn.setTypeface(Pbtn.getTypeface(), Typeface.BOLD);   //~vaahI~
+		  if (BTMulti.isServerDevice())                            //~vajiI~
+          {                                                        //~vajiI~
   	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE);            //~vaahI~
             setBtnBG(Pbtn,COLOR_GST_RELEASE);                      //~vaahI~
             Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT);             //~vaahI~
+          }                                                        //~vajiM~
+          else                                                     //~vajiM~
+          {                                                        //~vajiM~
+  	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE_CLIENT);     //~vajiM~
+            setBtnBG(Pbtn,COLOR_GST_RELEASE_CLIENT);               //~vajiM~
+            Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT_CLIENT);      //~vajiI~
+          }                                                        //~vajiM~
         }                                                          //~vaahI~
         else                                                       //~vaahI~
         {                                                          //~vaahI~
+		  if (BTMulti.isServerDevice())                            //~vajiI~
             setBtnBG(Pbtn,COLOR_GST_DEBUG);                        //~vaahI~
+          else                                                     //~vajiI~
+            setBtnBG(Pbtn,COLOR_GST_DEBUG_CLIENT);                 //~vajiI~
         }                                                          //~vaahI~
         int intGST=RuleSetting.getGameSetType();                   //~vaahI~
 //      String strGST= RuleSettingEnum.strsGameSetType[intGST];    //~vaahI~//~vacfR~

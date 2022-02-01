@@ -1,6 +1,15 @@
-//*CID://+vah3R~: update#= 324;                                    //~vafpR~//+vah3R~
+//*CID://+vajdR~: update#= 382;                                    //~vajdR~
 //**********************************************************************//~v101I~
-//2021/11/22 vah3 add Furiten reach reject option                  //+vah3I~
+//2022/01/25 vajd (bug)FuritenReach err was not set for reach on client//~vajdI~
+//2022/01/23 vajb (bug)err FuretenAfterReach was not set for chankan//~vajbI~
+//2022/01/22 vaj8 (Bug)When not match notify mode, itshand was notupdated for human on client//~vaj8I~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
+//2022/01/19 vaj6 set Err for missing Ron(including Take) after Reach//~vaj6I~
+//2022/01/19 vaj5 Not ronable when furiten even if taken if furitenreachoption=No//~vaj5I~
+//2022/01/18 vaj1 skip kan if loose fixed1 by kan(honor meld in hand)//~vaj1I~
+//2022/01/18 vaj0 isFixed1() returns true if not sakiduke mode     //~vaj0I~
+//2022/01/15 vaiq when callChii by samecolor,additional to shantendown,chk othercolor exist to discard//~vaiqI~
+//2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/11/01 vafp (Bug)ctrHand decreased duplecatedly; shanten calc failed.//~vafpI~
 //2021/11/01 vafm (Bug)getCtrEarthChanta returns >0 even tanyao earth exist(chanta and tanyao)//~vafmI~
 //2021/11/01 vafk INTENT_3SAMESEQ; 2nd call if once called according FixedFirst rule//~vafkI~
@@ -46,6 +55,7 @@ import com.btmtest.game.Players;
 import com.btmtest.game.Robot;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
+import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
@@ -88,7 +98,9 @@ public class RoundStat                                               //~v@@@R~//
 	public boolean swReachOneShot;                                 //~1219I~
 	public boolean swYakuFixLast;                                  //~va8cI~
 	public boolean swFuritenReachOK;                               //~va8jR~
-	public boolean swFuritenReachReject;                           //+vah3I~
+	public boolean swFuritenReachReject;                           //~vah3I~
+	public boolean swFuritenReachNo;                                    //~vaj5I~
+	private boolean swYakuFixNotFirst;                             //~vaj0I~
 //*************************                                        //~v@@@I~
 	public RoundStat()                                               //~v@@@R~//~va60R~
     {                                                              //~0914I~
@@ -136,8 +148,10 @@ public class RoundStat                                               //~v@@@R~//
         swReachOneShot=RuleSettingYaku.isReachOneShot();           //~1219I~
         constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~
 		swYakuFixLast=RuleSettingYaku.isYakuFixLast();             //~va8cI~
+		swYakuFixNotFirst=RuleSettingYaku.isYakuFixNotFirst();     //~vaj0I~
 		swFuritenReachOK=RuleSettingYaku.isFuritenReachOK();       //~va8jR~
-		swFuritenReachReject=RuleSettingYaku.isFuritenReachReject();//+vah3I~
+		swFuritenReachReject=RuleSettingYaku.isFuritenReachReject();//~vah3I~
+		swFuritenReachNo=!swFuritenReachOK && !swFuritenReachReject;//~vaj5I~
     }                                                              //~1118I~
     //*********************************************************    //~v@@@I~
     //*reset each round                                            //~1126I~
@@ -279,7 +293,8 @@ public class RoundStat                                               //~v@@@R~//
         if (Dump.Y) Dump.println("RoundStat.drawDora pos="+pos+",itsExposed="+itsExposed[pos]);//~va60R~
     }                                                              //~va60I~
     //*********************************************************    //~va60M~
-    //*from Players after removed from tdsHand                                               //~1112I~//~1128R~
+    //*from Players after removed from tdsHand <-UADiscard                                   //~1112I~//~1128R~//~vaj7R~
+    //*on Serve and YOU on client                                  //~vaj7R~
     //*********************************************************    //~1112I~
     public void discard(int Pplayer,TileData Ptd)                  //~va60I~
     {                                                              //~va60M~
@@ -288,6 +303,8 @@ public class RoundStat                                               //~v@@@R~//
 //      	return;                                                //~va60I~//~va96R~
     	int eswn=Accounts.playerToEswn(Pplayer);                   //~va60R~
         int pos=RAUtils.getPosTile(Ptd);                                   //~va60M~//~1119R~
+    	if (swServer)            //calStatus will send to all client with GCM_TAKE and GCM_DISCARD//~vaj7R~
+        	chkRonableAfterReach(eswn,pos);                        //~vaj7R~
         itsExposed[pos]++;                                         //~va60M~
         RSP[eswn].discard(pos,Ptd);    //update itsHand                            //~va60I~//~1128R~
         RSP[eswn].ctrDiscardedAllDiscarded=ctrDiscardedAll;        //~va8wM~
@@ -385,15 +402,20 @@ public class RoundStat                                               //~v@@@R~//
 //    }                                                            //~vaaUR~
     //************************************************************************//~vaaUI~
     //*from UAKan.takeKan()                                        //~vaaUI~
-    //*notify to Human                                             //~vaaUI~
+    //*on Server and human on client                             //~vaaUI~//~vaj8R~
+    //*notify to Human                                             //~vaj8I~
     //************************************************************************//~vaaUI~
     public boolean calledKan(boolean PswServer,int Pplayer/*Kan caller*/,int PkanType,TileData PtdKan)//~vaaUI~
     {                                                              //~vaaUI~
         if (Dump.Y) Dump.println("RoundStat.calledKan swServer="+PswServer+",Player="+Pplayer+",kanType="+PkanType+",PtdKan="+PtdKan.toString());//~vaaUI~
         if (Dump.Y) Dump.println("RoundStat.calledKan swPlaAloneNotify="+AG.swPlayAloneNotify+",swPlayMatchNotify="+AG.swPlayMatchNotify);//~vaaUI~
+        int pos=RAUtils.getPosTile(PtdKan);                        //~vajbI~
+        int playerEswn=Accounts.playerToEswn(Pplayer);             //~vajbI~
+        if (PkanType==KAN_ADD)    //chk chankan ron                //~vajbI~
+		    chkRonableAfterReach(playerEswn/*discarder*/,pos/*discarded*/);//~vajbR~
         if (!AG.swPlayMatchNotify && !AG.swPlayAloneNotify)        //~vaaUI~
             return false;                                          //~vaaUI~
-        int playerEswn=Accounts.playerToEswn(Pplayer);             //~vaaUI~
+//      int playerEswn=Accounts.playerToEswn(Pplayer);             //~vaaUI~//~vajbR~
         int yourEswn=Accounts.getCurrentEswn();                    //~vaaUI~
         if (yourEswn==playerEswn)                                   //~vaaUI~
             return false;                                          //~vaaUI~
@@ -423,13 +445,14 @@ public class RoundStat                                               //~v@@@R~//
     }                                                              //~1128I~
     //*********************************************************    //~va60I~
     //*from Players                                                //~1112I~
+    //*On server and YOU on client                                 //~vaj7I~
     //*********************************************************    //~1112I~
     public void takeOne(int Pplayer,int Peswn,TileData Ptd)        //~va60R~
     {                                                              //~va60I~
         if (Dump.Y) Dump.println("RoundStat.takeOne swServer="+swServer+",player="+Pplayer+",eswn="+Peswn+",td="+Ptd.toString());//~va60I~
-    	if (!swServer)                                             //~va60I~
-          if (!AG.swPlayMatchNotify)                               //~vaa2I~
-        	return;                                                //~va60I~
+//  	if (!swServer)                                             //~va60I~//~vaj8R~
+//        if (!AG.swPlayMatchNotify)                               //~vaa2I~//~vaj8R~
+//      	return;                                                //~va60I~//~vaj8R~
         int pos=RAUtils.getPosTile(Ptd);                                   //~va60I~//~1119R~
 		RSP[Peswn].takeOne(pos,Ptd);                         //~va60I~
         ctrTakenAll++;                                             //~1115I~
@@ -498,7 +521,7 @@ public class RoundStat                                               //~v@@@R~//
         swDiscardableAll=false;                                    //~1126I~
     }                                                              //~va60I~
     //*********************************************************    //~1112I~
-    //*from UAReach on Server                                      //~1112I~
+    //*from UAReach on Server and received Client                                      //~1112I~//~vaj7R~
     //*********************************************************    //~1112I~
     public  void reach(int Pplayer)                                //~1112I~
     {                                                              //~1112I~
@@ -508,8 +531,18 @@ public class RoundStat                                               //~v@@@R~//
     	int eswn=Accounts.playerToEswn(Pplayer);                   //~1112I~
         RSP[eswn].reach();    //set furiten ptr                    //~1112I~
     }                                                              //~1112I~
+    //*********************************************************    //~vajdI~
+    //*from Players                                                //~vajdI~
+    //*on Server and YOU on client                                 //~vajdI~
+    //*********************************************************    //~vajdI~
+    public  void reachDone(int Pplayer,int Pstatus/*STF_*/,int PreachStatus/*REACH_*/,TileData Ptd)//~vajdR~
+    {                                                              //~vajdI~
+        if (Dump.Y) Dump.println("RoundStat.reachDone swServer="+swServer+",player="+Pplayer+",status="+Integer.toHexString(Pstatus)+",reachStatus="+PreachStatus+",PtdDiscard="+Ptd.toString());//~vajdR~
+    	int eswn=Accounts.playerToEswn(Pplayer);                   //~vajdI~
+        RSP[eswn].reachDone(Pstatus,PreachStatus,Ptd);    //set furiten ptr//~vajdR~
+    }                                                              //~vajdI~
     //*********************************************************    //~va60I~
-    //*from UAReach on Server                                      //~va60I~
+    //*from UAReach on Server and Client                           //~vaj7I~
     //*Robot dose not set openReach                                //~va60I~
     //*********************************************************    //~va60I~
     public  void reachOpen(int Pplayer)                            //~va60I~//~1112R~
@@ -747,6 +780,26 @@ public class RoundStat                                               //~v@@@R~//
         if (Dump.Y) Dump.println("RoundStat.getIntentCalled eswn="+Peswn+",rc="+Integer.toHexString(rc));//~vafcI~
         return rc;                                                //~vafcI~
     }                                                              //~vafcI~
+    //*********************************************************    //~vaj7I~
+    //*on server at Discard                                        //~vaj7R~
+    //*********************************************************    //~vaj7I~
+    private void chkRonableAfterReach(int Peswn/*discarder*/,int Ppos/*discarded*/)//~vaj7R~
+    {                                                              //~vaj7I~
+        if (Dump.Y) Dump.println("RoundStat.chkRonableAfterReach eswn="+Peswn+",pos="+Ppos);//~vaj7I~
+        int rc=0;                                                  //~vaj7I~
+        for (int ii=0;ii<PLAYERS;ii++)                            //~vaj7I~
+        {                                                          //~vaj7I~
+        	if (ii==Peswn)                                         //~vaj7I~
+            	continue;                                          //~vaj7I~
+        	if (RSP[ii].setErrReachFuritenAfterReach()!=0)	//already WINTILE by previous taken or river or Already FURITEN//~vaj7R~
+            {                                                      //~vaj7M~
+		        if (Dump.Y) Dump.println("RoundStat.chkRonableAfterReach WINTILE changed to FURITEN_AFTER");//~vaj7M~
+                continue;                                          //~vaj7M~
+            }                                                      //~vaj7M~
+		    RSP[ii].setWinStatusAfterReachDiscarded(Ppos); //chk shanten=-1 for human//~vaj7R~
+        }                                                          //~vaj7I~
+        if (Dump.Y) Dump.println("RoundStat.chkRonableAfterReach Peswn="+Peswn);//~vaj7R~
+    }                                                              //~vaj7I~
 //******************************************************************************//~v@@@I~//~1128R~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
@@ -757,6 +810,8 @@ public class RoundStat                                               //~v@@@R~//
       	private int ctrDiscardedAllReach=-1;                       //~va8wI~
       	public  int ctrDiscardedAllDiscarded;                      //~va8wI~
     	private int ctrDiscardedSelfReach=-1;                      //~1311I~
+    	private int ctrDiscardedAllReachFuriten=-1;                 //~vaj7I~
+    	private int ctrTakenAllReachFuriten=-1;                    //~vaj7I~
     	public boolean swRobot;                                           //~va60I~//~1303R~
     	protected Robot robot;                                             //~1124I~//~1303R~
         private int[] itsHand=new int[CTR_TILETYPE];      		//for Shanten calc//~va60R~//~1114R~
@@ -788,6 +843,7 @@ public class RoundStat                                               //~v@@@R~//
 		private int colorStraight=-1;                              //~vaf9R~
 		private int num3SameSeq=-1;                                //~vafbI~
 		private int callStatusIntent;  //called Pon/Chii by Tanyao,..//~vafcI~
+//  	private boolean swReachErrFuriten;	                       //~vaj5I~//~vajdR~
         //*****************************************************    //~v@@@I~
         public RSPlayer(int Peswn,int Pplayer,boolean PswRobot)                                 //~v@@@I~//~va60R~
         {                                                          //~v@@@I~
@@ -958,15 +1014,20 @@ public class RoundStat                                               //~v@@@R~//
         //*********************************************************************************//~vaadI~
         public void takeOne(int Ppos,TileData Ptd)                 //~va60I~
         {                                                          //~va60I~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeOne swRobot="+swRobot+",swServer="+swServer+",swPlayAloneNotify="+AG.swPlayAloneNotify+",swPlaymatchNotify="+AG.swPlayMatchNotify);//~1201I~//~vaa2R~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeOne eswn="+eswn+",swRobot="+swRobot+",swServer="+swServer+",swPlayAloneNotify="+AG.swPlayAloneNotify+",swPlaymatchNotify="+AG.swPlayMatchNotify);//~1201I~//~vaa2R~//~vaj7R~
+            if (swServer)                                          //~vaj7I~
+	        	setErrReachFuritenAfterReachByNextAction(GCM_TAKE);	//WINTILE to FURITEN_AFTER//~vaj7I~
 			callStatus &=~CALLSTAT_REACH_ONESHOT; //reset oneshot at take of reacher//~1219I~
         	ctrTaken++;                                            //~1114I~//~1223M~
 //      	ctrDiscardedAllTaken=ctrDiscardedAll;	//for chk furiten discarded after taken//~va60I~//~1223M~//~va8wR~
         	ctrDiscardedAllDiscarded=ctrDiscardedAll+1;	//chk furiten from my discrad(for furiten chk at reach)//~vaayI~
+//          setErrReachFuritenAfterReach(eswn);                    //~vaj7R~
             int pos=RAUtils.getPosTile(Ptd);                       //~vaadI~
         	addHandTile(pos,Ptd);                                  //~vaadI~
     		if (!swRobot)                                          //~1201I~
             {                                                      //~va81I~
+                if (swServer)                                      //~vaj7R~
+	                setWinStatusAfterReachTaken();  //set WINTILE  //~vaj7R~
       			if (AG.swPlayAloneNotify)                          //~va81I~
                 	AG.aRACall.takeOnePlayAloneNotify(Ppos,Ptd);   //~va81I~
                 else                                               //~vaa2I~
@@ -976,6 +1037,11 @@ public class RoundStat                                               //~v@@@R~//
 //  	       	addHandTile(pos,Ptd);                              //~vaadR~
         		return;                                            //~1201I~
             }                                                      //~va81I~
+            else                                                   //~vaj8I~
+            {                                                      //~vaj8I~
+                if (!swServer)                                     //~vaj8I~
+        			return;      //robot on client                 //~vaj8I~
+            }                                                      //~vaj8I~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeOne eswn="+eswn+",ctrTaken="+ctrTaken+",ctrDiscardedAllDiscarded="+ctrDiscardedAllDiscarded+",Ptd="+TileData.toString(Ptd));//~va60R~//~1114R~//~va8wR~
 //          int pos=RAUtils.getPosTile(Ptd);                                //~va60I~//~1119R~//~vaadR~
 //      	addHandTile(pos,Ptd);                                   //~va60I~//~vaadR~
@@ -994,8 +1060,123 @@ public class RoundStat                                               //~v@@@R~//
 			callStatus|=CALLSTAT_REACH; //reach called             //~1115R~
             if (swReachOneShot)                                    //~1219I~
 				callStatus|=CALLSTAT_REACH_ONESHOT; //reach oneshot//~1219I~
+//      	if (swReachErrFuriten)                                 //~vaj5I~//~vajdR~
+//  	        setReachStatusErrFuriten();                        //~vaj5I~//~vajdR~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.reach eswn="+eswn+",ctrDiscardedReach="+ctrDiscardedAllReach);//~va60I~
         }                                                          //~va60I~
+//        //*****************************************************    //~vaj5I~//~vajdR~
+//        //*from RAReach.chkFuritenMultiWait                        //~vaj7I~//~vajdR~
+//        //*****************************************************    //~vaj7I~//~vajdR~
+//        public void setReachErrFuriten(boolean PswErr)             //~vaj5I~//~vajdR~
+//        {                                                          //~vaj5I~//~vajdR~
+//            swReachErrFuriten=PswErr;                              //~vaj5I~//~vajdR~
+//            if (Dump.Y) Dump.println("RoundStat.RSPlayer.setReachErrFuriten swReacherrFuriten="+swReachErrFuriten+",callStatus="+Integer.toHexString(callStatus));//~vaj5I~//~vajdR~
+//        }                                                          //~vaj5I~//~vajdR~
+        //*****************************************************    //~vaj5I~
+        //*from RS.reach()                                         //~vaj7I~
+        //*****************************************************    //~vaj7I~
+//      private void setReachStatusErrFuriten()                    //~vaj5I~//~vajdR~
+        public  void setReachStatusErrFuriten()                    //~vajdI~
+        {                                                          //~vaj5I~
+          if (swFuritenReachNo) //furitenReach:None; no msg may cause chombo//~vaj6I~
+			callStatus|=CALLSTAT_REACH_ERRFURITEN; //reach oneshot //~vaj5I~
+          else                                                     //~vaj6I~
+          if (swFuritenReachOK) //furitenReach:OK  ; allow furiten reach//~vaj6I~
+			callStatus|=CALLSTAT_REACH_OKFURITEN; //allow ron by take//~vaj6I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setReachStatusErrFuriten swFuritenReachNo="+swFuritenReachNo+",swFuritenReachOK="+swFuritenReachOK+",callStatus="+Integer.toHexString(callStatus));//~vaj5I~//~vaj6R~
+        }                                                          //~vaj5I~
+        //*********************************************************//~vajdI~
+        //*from RS                                                 //~vajdI~
+	    //*on Server and YOU on client                             //~vajdI~
+        //*********************************************************//~vajdI~
+        public  void reachDone(int Pstatus/*STF_*/,int PreachStatus/*REACH_*/,TileData Ptd)//~vajdR~
+        {                                                          //~vajdI~
+            if (Dump.Y) Dump.println("RoundStat.RSPlayer.reachDone swServer="+swServer+",player="+player+",eswn="+eswn+",swRobot="+swRobot+",status="+Integer.toHexString(Pstatus)+",reachStatus="+PreachStatus+",old callStatus="+Integer.toHexString(callStatus)+",tileData="+Ptd.toString());//~vajdR~
+            if (swRobot)                                           //~vajdI~
+            	return;                                            //~vajdI~
+            if (swServer)                                          //~vajdI~
+            {                                                      //~vajdI~
+            	int pos=RAUtils.getPosTile(Ptd);                   //~vajdI~
+	            AG.aRAReach.chkReachDoneFuriten(eswn,pos);         //~vajdR~
+            }                                                      //~vajdI~
+            if (Dump.Y) Dump.println("RoundStat.RSPlayer.reachDone swServer="+swServer+",player="+player+",eswn="+eswn+",swRobot="+swRobot+",new callStatus="+Integer.toHexString(callStatus));//~vajdI~
+        }                                                          //~vajdI~
+        //*****************************************************    //~vaj5I~
+        public boolean isReachStatusErrFuriten()                   //~vaj5I~
+        {                                                          //~vaj5I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten before eswn="+eswn+",callStatus="+Integer.toHexString(callStatus));//~vaj7I~//+vajdR~
+  			boolean rc=(callStatus & CALLSTAT_REACH_ERRFURITEN)!=0; //reach oneshot//~vaj5I~
+            if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)!=0)    //~vaj7I~
+                rc=true;                                           //~vaj7R~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten rc="+rc+",callStatus="+Integer.toHexString(callStatus));//~vaj5I~
+            return rc;
+        }                                                          //~vaj5I~
+        //*****************************************************    //~vaj7I~
+        //*On Server,at Discard, Pon, Kan, Chii, Take              //~vaj7I~
+        //*****************************************************    //~vaj7I~
+        private void setErrReachFuritenAfterReachByNextAction(int Paction)//~vaj7R~
+        {                                                          //~vaj7I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setErrReachFuritenAfterReachByNextAction action="+Paction+",eswn="+eswn);//~vaj7R~
+            int ctrNew=0;                                          //~vajbI~
+            for (int ii=0;ii<PLAYERS;ii++)                         //~vaj7I~
+            {                                                      //~vaj7I~
+            	if ((Paction==GCM_DISCARD && ii==eswn)	//me discard after take//~vaj7R~
+            	||  (Paction!=GCM_DISCARD && ii!=eswn) 	//other player action//~vaj7R~
+                )                                                  //~vaj7I~
+                	if (RSP[ii].setErrReachFuritenAfterReach()>0)//now or already FURITEN_AFTER//~vaj7R~//~vajbR~
+                    	ctrNew++;                                  //~vajbI~
+            }                                                      //~vaj7I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setErrReachFuritenAfterReach eswn="+eswn+",ctrNew="+ctrNew);//~vaj7R~//~vajbR~
+        }                                                          //~vaj7I~
+        //*****************************************************    //~vaj7I~
+        //*on Server at Discard                                    //~vaj7R~
+        //*rc:1:now set furiten, -1: already set                   //~vaj7I~
+        //*****************************************************    //~vaj7I~
+        private int setErrReachFuritenAfterReach()                 //~vaj7R~
+        {                                                          //~vaj7I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setErrReachFuritenAfterReach before swServer="+swServer+",eswn="+eswn+",callStatus="+Integer.toHexString(callStatus));//~vaj7R~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setErrReachFuritenAfterReach ctrDiscardedAll="+ctrDiscardedAll+",ctrTakenAll="+ctrTakenAll+",ctrDiscardedAllReachFuriten="+ctrDiscardedAllReachFuriten+",ctrTakenAllReachFuriten="+ctrTakenAllReachFuriten);//~vaj7R~
+            int rc=0;                                          //~vaj7R~
+			if ((callStatus & CALLSTAT_REACH_WINTILE)!=0)               //~vaj7I~
+            {                                                      //~vaj7I~
+				if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)==0)//~vaj7I~
+                {                                                  //~vaj7I~
+					callStatus|=CALLSTAT_REACH_FURITEN_AFTER;         //0x80//~vaj7R~
+                                if ((TestOption.option2 & TO2_ROBOT_TOAST)!=0)//~vaj7M~
+                                    UView.showToastLong("FuritenAfterReach eswn="+eswn);//~vaj7M~//~vaj8R~
+                    rc=1;                                          //~vaj7I~
+                }                                                  //~vaj7I~
+                else                                               //~vaj7I~
+                	rc=-1;                                         //~vaj7I~
+            }                                                      //~vaj7I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setErrReachStatusFuritenAfterReach take/discard after wintile eswn="+eswn+",rc="+rc+",after callStatus="+Integer.toHexString(callStatus));//~vaj7R~
+            return rc;                                         //~vaj7R~
+        }                                                          //~vaj7I~
+        //****************************************************************//~vaj7R~
+        //*rc:true:now detected WINTILE at first under Furiten at Reach//~vaj7I~
+        //****************************************************************//~vaj7I~
+        private void setWinTileAfterReach(boolean PswTake)         //~vaj7R~
+        {                                                          //~vaj7I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setWinTileAfterReach eswn="+eswn+",swTake="+PswTake+",old callStatus="+Integer.toHexString(callStatus));//~vaj7R~
+			if ((callStatus & CALLSTAT_REACH_OKFURITEN)==0) //0x40 not Furiten at reach//~vaj7R~
+            {                                                      //~vaj7I~
+				if ((callStatus & CALLSTAT_REACH_WINTILE)==0)         //0x80//~vaj7R~
+                {                                                  //~vaj7I~
+                    callStatus|=CALLSTAT_REACH_WINTILE;         //0x80//~vaj7I~
+                    ctrDiscardedAllReachFuriten=ctrDiscardedAll;   //~vaj7R~
+                    ctrTakenAllReachFuriten=ctrTakenAll;           //~vaj7R~
+		        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setWinTileAfterReach set WINTILE eswn="+eswn);//~vaj7I~
+                }                                                  //~vaj7I~
+            }                                                      //~vaj7I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.setWinTileAfterReach wintile swTake="+PswTake+",eswn="+eswn+",new callStatus="+Integer.toHexString(callStatus));//~vaj7R~
+        }                                                          //~vaj7I~
+        //*****************************************************    //~vaj6I~
+        public boolean isReachStatusOKFuriten()                    //~vaj6I~
+        {                                                          //~vaj6I~
+			boolean rc=(callStatus & CALLSTAT_REACH_OKFURITEN)!=0; //reach oneshot//~vaj6I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusOKFuriten rc="+rc+",callStatus="+Integer.toHexString(callStatus));//~vaj6I~
+            return rc;                                             //~vaj6I~
+        }                                                          //~vaj6I~
         //*****************************************************    //~vab7I~
         public void reachOpen()                                    //~vab7I~
         {                                                          //~vab7I~
@@ -1029,8 +1210,9 @@ public class RoundStat                                               //~v@@@R~//
         //*****************************************************    //~vaadI~
         public void discard(int Ppos,TileData Ptd)                 //~va60I~
         {                                                          //~va60I~
-                                                                   //~1201I~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.discard swServer="+swServer+",eswn="+eswn+",swRobot="+swRobot+",swThinkRobot="+swThinkRobot+",eswn="+eswn+",Ppos="+Ppos+",ctrDiscarded="+ctrDiscarded+",Ptd="+Ptd.toString());//~va60R~//~1114R~//~1128R~//~1201R~//~1223R~//~vaa2R~
+            if (swServer)                                          //~vaj7I~
+	        	setErrReachFuritenAfterReachByNextAction(GCM_DISCARD);	//WINTILE to FURITEN_AFTER//~vaj7I~
             itsDiscarded[Ppos]++;   //for furiten chk     //for also humen         //~va60I~//~1223I~
 //  		if (!swServer)                                         //~va96I~//~vaadR~
 //          {                                                      //~va96I~//~vaadR~
@@ -1096,6 +1278,15 @@ public class RoundStat                                               //~v@@@R~//
             if (Dump.Y) Dump.println("RoundStat.RSPlayer.isFixedFirst rc="+rc+",swFix2="+swFix2+",ctrFixedFirst="+ctrFixedFirst+",ctrFirst="+ctrFirst);//~va8uI~//~va8wR~
             return rc;                                             //~va8uI~
         }                                                          //~va8uI~
+        //*****************************************************    //~vaj1I~
+        public int getCtrFixedFirstOverFix2()                      //~vaj1I~
+        {                                                          //~vaj1I~
+           	int ctrFirst=ctrFixedFirst+getCtrFixedInHand();  	//pair ctr of WGR, round, wind//~vaj1I~
+            if (swFix2)                                            //~vaj1I~
+            	ctrFirst--;                                        //~vaj1I~
+            if (Dump.Y) Dump.println("RoundStat.RSPlayer.getCtrFixedFirst rc="+ctrFirst);//~vaj1I~
+            return ctrFirst;                                       //~vaj1I~
+        }                                                          //~vaj1I~
         //*****************************************************    //~1130I~
         private boolean isFixed1InHand()                            //~1130I~//~va8vR~
         {                                                          //~1130I~
@@ -1197,6 +1388,8 @@ public class RoundStat                                               //~v@@@R~//
         public void takeChii(TileData[] Ptds)                      //~va60R~
         {                                                          //~va60I~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeChii eswn="+eswn+",swRobot="+swRobot);//~1201I~
+            if (swServer)                                          //~vaj7I~
+	        	setErrReachFuritenAfterReachByNextAction(GCM_CHII);	//WINTILE to FURITEN_AFTER//~vaj7I~
         	ctrDiscardedAllDiscarded=ctrDiscardedAll+1;	//chk furiten from my discrad(for furiten chk at reach)//~vaayI~
             if (swReachOneShot)                                    //~1219I~
                 resetOtherReachOneShot();                          //~1219I~
@@ -1281,7 +1474,9 @@ public class RoundStat                                               //~v@@@R~//
         //*****************************************************    //~va60I~
         public void takePon(int Ppos,TileData[] Ptds)              //~va60I~
         {                                                          //~va60I~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takePon eswn="+eswn+",swRobot="+swRobot);//~vaayI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takePon eswn="+eswn+",swRobot="+swRobot+",swServer="+swServer);//~vaayI~//~vaj7R~
+            if (swServer)                                          //~vaj7I~
+	        	setErrReachFuritenAfterReachByNextAction(GCM_PON);	//WINTILE to FURITEN_AFTER//~vaj7I~
         	ctrDiscardedAllDiscarded=ctrDiscardedAll+1;	//chk furiten from my discrad(for furiten chk at reach)//~vaayI~
             swAllInHand=false;                                     //~1120I~
             if (swReachOneShot)                                    //~1219I~
@@ -1297,11 +1492,20 @@ public class RoundStat                                               //~v@@@R~//
             {                                                      //~1118I~
 		        takePonWord(Ppos);                                 //~va60I~
         		if (RAUtils.chkValueWordTile(Ptds[0],eswn)!=0)         //~1118I~
-        			if (ctrPairStatus==0)                          //~1118R~
+                {                                                  //~vaj0I~
+        			if (ctrPairStatus==0)                          //~1118R~//~vaj0R~
                     {                                              //~va8uI~
+			        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takePon set swFixed1 by ctrPairStatus="+ctrPairStatus+",eswn="+eswn+",Ppos="+Ppos);//~vaj0I~
                     	swFixed1=true;                             //~1118I~
                         ctrFixedFirst++;                           //~va8uI~
                     }                                              //~va8uI~
+                    else                                           //~vaj0I~
+        			if (swYakuFixNotFirst)                         //~vaj0I~
+                    {                                              //~vaj0I~
+			        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takePon set swFixed1 by swYakuFixNotFirst="+swYakuFixNotFirst+",eswn="+eswn+",Ppos="+Ppos);//~vaj0I~
+                    	swFixed1=true;                             //~vaj0I~
+                    }                                              //~vaj0I~
+                }                                                  //~vaj0I~
             }                                                      //~1118I~
             else                                                   //~1215I~
                 earthColor|=1<<Ptds[0].type;                       //~1215I~
@@ -1310,12 +1514,16 @@ public class RoundStat                                               //~v@@@R~//
         //*****************************************************    //~va60M~
         public void takeKan(int Ppos,TileData[] Ptds)              //~va60R~
         {                                                          //~va60M~
+			if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeKan swServer="+swServer+",eswn="+eswn+",swRobot="+swRobot);//~vaj7I~
+            if (swServer)                                          //~vaj7I~
+	        	setErrReachFuritenAfterReachByNextAction(GCM_KAN);	//WINTILE to FURITEN_AFTER//~vaj7I~
             if (!Ptds[0].isKanTaken())                             //~1120I~
 	            swAllInHand=false;                                 //~1120I~
             if (swReachOneShot)                                    //~1219I~
                 resetOtherReachOneShot();	//including human player//~1219I~
         	ctrKan++;                                              //~1114I~
         	boolean swAdd=Ptds[0].isKanAdd();                      //~va60I~
+			if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeKan swKanAdd="+swAdd+",ptds="+Utils.toString(Ptds));//~vajbI~
         	pairExposedKan(Ppos,Ptds,swAdd);                       //~va60R~
   			if (!swServer)                                         //~vaadI~
       			return;                                            //~vaadI~
@@ -1323,11 +1531,20 @@ public class RoundStat                                               //~v@@@R~//
             {                                                      //~1118I~
         		takePonWord(Ppos);                                 //~va60M~
         		if (RAUtils.chkValueWordTile(Ptds[0],eswn)!=0)         //~1118I~
-        			if (ctrPairStatus==0)                          //~1118I~
+                {                                                  //~vaj0I~
+        			if (ctrPairStatus==0)                          //~1118I~//~vaj0R~
                     {                                              //~va8uI~
+			        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeKan set swFixed1 by ctrPairStatus="+ctrPairStatus+",eswn="+eswn+",Ppos="+Ppos);//~vaj0I~
                     	swFixed1=true;                             //~1118I~
                         ctrFixedFirst++;                           //~va8uI~
                     }                                              //~va8uI~
+                    else                                           //~vaj0I~
+                    if (swYakuFixNotFirst)                         //~vaj0I~
+                    {                                              //~vaj0I~
+			        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeKan set swFixed1 by swYakuFixNotFirst="+swYakuFixNotFirst+",eswn="+eswn+",Ppos="+Ppos);//~vaj0I~
+                    	swFixed1=true;                             //~vaj0I~
+                    }                                              //~vaj0I~
+                }                                                  //~vaj0I~
             }                                                      //~1118I~
         	if (Ppos<OFFS_WORDTILE)                                //~1215I~
                 earthColor|=1<<Ptds[0].type;                       //~1215I~
@@ -1335,9 +1552,11 @@ public class RoundStat                                               //~v@@@R~//
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeKan eswn="+eswn+",Ppos="+Ppos+",ctrKan="+ctrKan+",pao4kan="+pao4Kan);//~va60R~//~1114R~
             if (pao4Kan==3)                                        //~va60M~
             	setPao4Kan(eswn);                                  //~va60M~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.takeKan eswn="+eswn+",itsPairStatus="+Utils.toHexString(itsPairStatus));//~vajbI~
             if (swAdd)	//chankan                                  //~1303I~
             {                                                      //~1303I~
-                int idxPon=srchPonToAdd(Ptds[0]);                      //~1303I~
+//              int idxPon=srchPonToAdd(Ptds[0]);                      //~1303I~//~vajbR~
+                int idxPon=srchPonKanToAdd(Ptds[0]);               //~vajbI~
                 if (idxPon>=0)                                     //~1303I~
 		            itsPairStatus[idxPon]=getPairStatus(PS_KAN,Ptds);//~1303I~
                 else                                               //~1303I~
@@ -1347,6 +1566,8 @@ public class RoundStat                                               //~v@@@R~//
 	            itsPairStatus[ctrPairStatus++]=getPairStatus(PS_KAN,Ptds);//~1114I~//~1303R~
         }                                                          //~va60M~
         //******************************************               //~1303I~
+        //*return earth index                                      //~vajbI~
+        //******************************************               //~vajbI~
 //      private int srchPonToAdd(TileData Ptd)                     //~1303I~//~vaaUR~
         public  int srchPonToAdd(TileData Ptd)                     //~vaaUI~
         {                                                          //~1303I~
@@ -1371,6 +1592,32 @@ public class RoundStat                                               //~v@@@R~//
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.srchPonToAdd eswn="+eswn+",rc="+rc+",Ptd="+Ptd.toString());//~1303I~
             return rc;                                             //~1303I~
         }                                                          //~1303I~
+        //******************************************               //~vajbI~
+        //*including kan earth                                     //~vajbI~
+        //******************************************               //~vajbI~
+        public  int srchPonKanToAdd(TileData Ptd)                  //~vajbI~
+        {                                                          //~vajbI~
+        	int rc=-1,idx;                                         //~vajbI~
+        //*****************************                            //~vajbI~
+        	TileData[][] tdssPon=AG.aPlayers.getPonKanEarth(player);	//pon and kan on earth//~vajbI~
+            if (tdssPon!=null)                                     //~vajbI~
+            {                                                      //~vajbI~
+                idx=0;                                             //~vajbI~
+                for (TileData[] tds:tdssPon)                       //~vajbI~
+                {                                                  //~vajbI~
+                    if (tds==null)                                 //~vajbI~
+                        break;                                     //~vajbI~
+                    if (Ptd.type==tds[0].type && Ptd.number==tds[0].number)//~vajbI~
+                    {                                              //~vajbI~
+                        rc=idx;                                    //~vajbI~
+                        break;                                     //~vajbI~
+                    }                                              //~vajbI~
+                    idx++;                                         //~vajbI~
+                }                                                  //~vajbI~
+            }                                                      //~vajbI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.srchPonKanToAdd eswn="+eswn+",rc="+rc+",Ptd="+Ptd.toString());//~vajbI~
+            return rc;                                             //~vajbI~
+        }                                                          //~vajbI~
         //*****************************************************    //~va60I~
         private void takePonWord(int Ppos)                         //~va60R~
         {                                                          //~va60I~
@@ -1634,6 +1881,12 @@ public class RoundStat                                               //~v@@@R~//
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getHandStatistic itsHandStatus="+Arrays.toString(itsHandStatus));//~1114R~//~1216R~
             return stat;                                             //~1115R~//~1116R~
         }                                                          //~1114I~
+        //*****************************************************************//~vaiqI~
+        public int[] getHandStatisticSaved()                       //~vaiqI~
+        {                                                          //~vaiqI~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.getHandStatisticSaved itsHandStatus="+Arrays.toString(itsHandStatus));//~vaiqI~
+            return itsHandStatus;                                  //~vaiqI~
+        }                                                          //~vaiqI~
 //        //*****************************************************************//~1115I~//~1217R~
 //        public int[] getDiscardStatistic()                         //~1115I~//~1217R~
 //        {                                                          //~1115I~//~1217R~
@@ -1794,8 +2047,10 @@ public class RoundStat                                               //~v@@@R~//
         }                                                          //~va70I~
         //***********************************************************************//~vaadI~
 	    //*set shanten of human player PlayAloneNotify/PlayMatchNotify mode//~vaadI~
+	    //*(if !PlayMatchMode not need to set currentShanten currentry)//~vajdI~
         //***********************************************************************//~vaadI~
-        public int setCurrentShantenYou()                          //~vaadR~
+//      public int setCurrentShantenYou()                          //~vaadR~//~vajdR~
+        private int setCurrentShantenYou()                         //~vajdI~
         {                                                          //~vaadI~
         	if (player==PLAYER_YOU)                                //~vaadI~
 	        	if (!isReachCalled())                              //~vaadI~
@@ -1839,5 +2094,46 @@ public class RoundStat                                               //~v@@@R~//
             if (Dump.Y) Dump.println("RoundStat.getIntentCalled RSP eswn="+eswn+",rc="+Integer.toHexString(rc));//~vafcI~
             return rc;                                             //~vafcI~
         }                                                          //~vafcI~
+        //*********************************************************//~vaj7I~
+        //*from takeOne                                            //~vaj7I~
+        //*set win status after reach at Taken                     //~vaj7R~
+        //*for Human on server and You on client                   //~vaj7I~
+        //*********************************************************//~vaj7I~
+        private void setWinStatusAfterReachTaken()                 //~vaj7R~
+        {                                                          //~vaj7I~
+            if (Dump.Y) Dump.println("RoundStat.RSP.setWinStatusAfterReachTaken swServer="+swServer+",eswn="+eswn+",player="+player+",swRobot="+swRobot);//~vaj7R~
+  		  	if (swServer && !swRobot)                              //~vaj7R~
+            {                                                      //~vaj7I~
+                if (isReachCalled())                               //~vaj7I~
+        			if (!isReachStatusErrFuriten())	//not yet detected furiten//~vaj7I~
+                    {                                              //~vaj7R~
+                        if (getShanten()==-1)                      //~vaj7R~
+                            setWinTileAfterReach(true/*swTake*/);//set WINTILE//~vaj7R~
+                    }                                              //~vaj7R~
+            }                                                      //~vaj7I~
+            if (Dump.Y) Dump.println("RoundStat.RSP.setWinStatusAfterReachTaken eswn="+eswn);//~vaj7R~
+        }                                                          //~vaj7I~
+        //*********************************************************//~vaj7I~
+        //*set winstatus after reach at other Discarded            //~vaj7I~
+        //*********************************************************//~vaj7I~
+        private void setWinStatusAfterReachDiscarded(int Ppos)     //~vaj7R~
+        {                                                          //~vaj7I~
+            if (Dump.Y) Dump.println("RoundStat.RSP.setWinStatusAfterReachDiscarded eswn="+eswn+",player="+player+",swRobot="+swRobot+",Ppos="+Ppos+",itsHand="+Utils.toString(itsHand,9));//~vaj7R~//~vajdR~
+            if (Dump.Y) Dump.println("RoundStat.RSP.setWinStatusAfterReachDiscarded callStatus="+Integer.toHexString(callStatus));//~vaj7I~
+  		  	if (swServer && !swRobot)                              //~vaj7R~
+            {                                                      //~vaj7I~
+                if (isReachCalled())                               //~vaj7I~
+        			if (!isReachStatusErrFuriten())	//not yet detected furiten//~vaj7I~
+                    {                                              //~vaj7R~
+                        itsHand[Ppos]++;                           //~vaj7R~
+                        ctrHand++;                                 //~vaj7R~
+                        if (getShanten()==-1)                      //~vaj7R~
+                            setWinTileAfterReach(false/*swTake*/);  //set WINTILE//~vaj7R~
+                        itsHand[Ppos]--;                           //~vaj7R~
+                        ctrHand--;                                 //~vaj7R~
+                    }                                              //~vaj7R~
+            }                                                      //~vaj7I~
+            if (Dump.Y) Dump.println("RoundStat.RSP.setWinStatusAfterReachDiscarded exit eswn="+eswn);//~vaj7R~//~vajbR~
+        }                                                          //~vaj7I~
 	}//class RSPlayer                                              //~va60M~
 }//class RoundStat                                                 //~dataR~//~@@@@R~//~v@@@R~//~va60R~

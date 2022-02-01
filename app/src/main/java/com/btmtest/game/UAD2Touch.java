@@ -1,4 +1,4 @@
-//*CID://+vaccR~:                             update#=  270;       //~vaccR~
+//*CID://+vaccR~:                             update#=  276;       //~vaccR~
 //*****************************************************************//~v101I~
 //2021/08/21 vacc (Bug)Match mode; at blocked by Ron issued, Discard btn issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vaccI~
 //2021/08/18 vacb Win btn do AinAny after WinAny button.           //~vacbI~
@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import com.btmtest.R;                                              //~v@@@I~
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
+import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
@@ -562,6 +563,11 @@ public class UAD2Touch                                             //~v@@@R~
     private void runUpdateBtnUIPlayAloneNotify(final int PmsgID,final int Pstat,final int Pcolor)//~va70R~
     {                                                              //~va70I~
         if (Dump.Y) Dump.println("UAD2Touch.runUpdateBtnUIPlayAloneNotify msgID="+PmsgID+",stat=0x"+Integer.toHexString(Pstat)+",color="+Integer.toHexString(Pcolor));//~va70R~//~vaa2R~
+//        if (PmsgID==13) //TODO test  Pon and Chii for a tile     //+vaccR~
+//        {                                                        //+vaccR~
+//            UView.showToast("UAD2Touch runBtnPAN msgid="+PmsgID);//+vaccR~
+//            Utils.sleep(3000);                           //TODO test//+vaccR~
+//        }                                                        //+vaccR~
         AG.activity.runOnUiThread(                                 //~va70I~
             new Runnable()                                         //~va70I~
             {                                                      //~va70I~
@@ -649,10 +655,10 @@ public class UAD2Touch                                             //~v@@@R~
             case GCM_CHII:                                         //~vaccI~
 	            msgid=R.string.ActionBlockedYouAreNotBlockerOfTheAction;//~vaccI~
                 break;                                             //~vaccI~
-//          case GCM_RON:                                          //+vaccR~
-//          	if (PactionID!=GCM_RON_ANYWAY)                     //+vaccR~
-//  	            msgid=R.string.AE_CancelAtFirst;               //+vaccR~
-//              break;                                             //+vaccR~
+//          case GCM_RON:                                          //~vaccR~
+//          	if (PactionID!=GCM_RON_ANYWAY)                     //~vaccR~
+//  	            msgid=R.string.AE_CancelAtFirst;               //~vaccR~
+//              break;                                             //~vaccR~
             default:                                               //~vaccI~
 	            msgid=R.string.AE_CancelAtFirst;                   //~vaccI~
             }                                                      //~vaccI~

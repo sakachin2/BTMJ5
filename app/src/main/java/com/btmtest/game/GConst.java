@@ -1,5 +1,6 @@
-//*CID://+vae9R~: update#= 375;                                    //~vae8R~//~vae9R~
+//*CID://+vajmR~: update#= 377;                                    //~vajmR~
 //**********************************************************************//~v101I~
+//2022/01/31 vajm AccountsDlg orderprize was cut by dialog width   //~vajmI~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
@@ -67,7 +68,8 @@ public class GConst                                                    //~v@@@R~
 	public static final int COLOR_EDITABLE          =R.color.editable;//~v@11I~
 	public static final int COLOR_EDITABLE_DISABLED =R.color.markabletext; //editabledisabled;//~v@11I~
                                                                    //~v@11I~
-    public static final double RATE_SMALLDEVICE_WIDTH=0.95;       //~9818I~//~v@11I~
+//  public static final double RATE_SMALLDEVICE_WIDTH=0.95;       //~9818I~//~v@11I~//~vajmR~
+    public static final double RATE_SMALLDEVICE_WIDTH=0.99;        //+vajmR~
     public static final double RATE_SMALLFONT_WIDTH=0.99;          //~vac5R~
     public static final double RATE_SMALLDEVICE_WIDTH_LANDSCAPE=0.7;//~v@11R~
     public static final double RATE_MAX_WIDTH=0.95;                //~v@11I~
@@ -188,8 +190,8 @@ public class GConst                                                    //~v@@@R~
 //    public static final int SOUNDID_BGM_MIZUCHUKOUKA=21;           //~va6iI~//~vae9R~
 //    public static final int SOUNDID_BGM_TOUCHIKUKOUKA=22;          //~vac3R~//~vae9R~
 //    public static final int SOUNDID_BGM_KYOUTO=23;                 //~vac3I~//~vae9R~
-    public static final int MAX_USERBGM=10;                        //+vae9I~
-    public static final int SOUNDID_BGM_TOP=MAX_USERBGM+1;         //+vae9R~
+    public static final int MAX_USERBGM=10;                        //~vae9I~
+    public static final int SOUNDID_BGM_TOP=MAX_USERBGM+1;         //~vae9R~
     public static final int SOUNDID_BGM_GAME1SLOW    =SOUNDID_BGM_TOP+1;//~vae9I~
     public static final int SOUNDID_BGM_GAME1FAST    =SOUNDID_BGM_TOP+2;//~vae9I~
     public static final int SOUNDID_BGM_GAME2SLOW    =SOUNDID_BGM_TOP+3;//~vae9I~

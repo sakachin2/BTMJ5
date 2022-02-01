@@ -1,5 +1,7 @@
-//*CID://+vae6R~:                             update#=  559;       //~vae6R~
+//*CID://+vaidR~:                             update#=  565;       //+vaidR~
 //*****************************************************************//~v101I~
+//2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
+//2021/12/24 vaid Toast if Scoped file already exists.             //~vaidI~
 //2021/09/16 vae6 (Bug)rule file of interrupted game(.sg.rulefile) should be deleted at gameover(normal end or suspended)//~vae6R~
 //2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
 //*****************************************************************//~v101I~
@@ -88,7 +90,7 @@ public class History                                               //~9614R~
         pathHistory=!swSD ? pathDataDir : workDirSD;               //~9614I~
 //      if (UScoped.chkScoped()==1)    //api>=30 use scoped        //~vae0R~
 //      	swScoped=true;                                         //~vae0R~
-        if (Dump.Y) Dump.println("History.init swSD="+swSD+",swScoped="+swScoped+",workDirSD="+workDirSD+",pathDataDir="+pathDataDir);//~vae0R~
+        if (Dump.Y) Dump.println("History.init swSD="+swSD+",swScoped="+swScoped+",workDirSD="+workDirSD+",pathDataDir="+pathDataDir+",pathHistory="+pathHistory);//~vae0R~//~vaieR~
     }                                                              //~v@@@R~
 	//**********************************                           //~9826I~
     public static String timestampToFilename(int Pdate,int Ptime)  //~9826R~
@@ -105,8 +107,8 @@ public class History                                               //~9614R~
         return rc;
     }                                                              //~9826I~
 	//**********************************                           //~9613I~
-	//*from AccountsDlg                                            //+vae6I~
-	//**********************************                           //+vae6I~
+	//*from AccountsDlg                                            //~vae6I~
+	//**********************************                           //~vae6I~
 //  public void saveLatestGame(String[] Paccountnames,int[][] Pscores/*total,minuspay,minuscharge,finalscore*/)//~9613I~//~9614R~//~9826R~
     public void saveLatestGame(String Pfnm,String[] Paccountnames,int[][] Pscores/*total,minuspay,minuscharge,finalscore*/)//~9826I~
     {                                                              //~9613I~
@@ -163,7 +165,14 @@ public class History                                               //~9614R~
         String[] hdr=hd[HDPOS_HDR];                                 //~9825I~
         String ts=hdr[POS_TIMESTAMP];                              //~9825I~
         String fpath=UFile.makeFullpath(pathHistory,ts,EXT_HISTORY);//~9825I~
-        if ((new File(fpath)).exists())                              //~9825I~//~9827R~
+		if (Dump.Y) Dump.println("History.saveReceived fpath="+fpath);//~vaieI~
+//      if ((new File(fpath)).exists())                              //~9825I~//~9827R~//~vaieR~
+        boolean swExist;                                           //~vaieI~
+        if (swScoped)                                              //~vaieI~
+			swExist=AG.aUScoped.isDocumentExist(fpath);            //~vaieI~
+        else                                                       //~vaieI~
+			swExist=(new File(fpath)).exists();                     //~vaieI~
+        if (swExist)                                               //~vaieI~
         {                                                          //~9825I~
         	if (!PswMsg)                                           //~9828I~
             {                                                      //~9828I~
@@ -504,7 +513,8 @@ public class History                                               //~9614R~
     	SettingDlg.saveProperties(fpath,CMT_HISTORY_RULE);           //~9826I~
     }                                                              //~9826I~
 	//************************************************************ //~vae0I~
-    public void saveRuleInterruptedScoped()                        //~vae0I~
+//  public void saveRuleInterruptedScoped()                        //~vae0I~//~vae6R~
+    private void saveRuleInterruptedScoped()                       //~vae6I~
     {                                                              //~vae0I~
 		if (Dump.Y) Dump.println("History.saveRuleInterruptedScoped");//~vae0I~
         String fpath=makeFullpathHistoryRule();                    //~vae0I~
@@ -698,13 +708,19 @@ public class History                                               //~9614R~
         pos=fpath.lastIndexOf("\n");                               //~9827I~
         if (pos>0)                                                 //~9827I~
             fpath=fpath.substring(0,pos);                          //~9827I~
-        if (Dump.Y) Dump.println("History.saveReceived fnm="+fpath);//~9827I~
+        if (Dump.Y) Dump.println("History.saveReceivedRule fnm="+fpath);//~9827I~//~vaidR~
       if (swScoped)                                                //~vae0I~
       {                                                            //~vae0I~
-        Prop.savePropertiesStringScoped(fpath,props);	//chk existing, avoid override//~vae0I~
+//      Prop.savePropertiesStringScoped(fpath,props);	//chk existing, avoid override//~vae0I~//~vaidR~
+        if (!Prop.savePropertiesStringScoped(fpath,props))	//chk existing, avoid override//~vaidI~
+        	return;	//bypass saved toast                           //~vaidI~
       }                                                            //~vae0I~
       else                                                         //~vae0I~
       {                                                            //~vae0I~
+//      if (!fpath.startsWith("/")) //received scoped file path    //~vaieR~
+//      {                                                          //~vaieR~
+        	fpath=makePathHistoryForScoped(fpath);                 //~vaieI~
+//      }                                                          //~vaieR~
         if ((new File(fpath)).exists())                            //~9827I~
         {                                                          //~9827I~
             if (Dump.Y) Dump.println("History.saveReceivedRule Already exist="+fpath);//~9827I~
@@ -724,4 +740,12 @@ public class History                                               //~9614R~
 		if (Dump.Y) Dump.println("History.getCurrentEswn ctrGame="+ctrGame+",wind="+Arrays.toString(winds));//~9828I~
         return winds;                                               //~9828R~
     }                                                              //~9828I~
+	//************************************************************ //~vaieI~
+    private String makePathHistoryForScoped(String Ppath)          //~vaieI~
+    {                                                              //~vaieI~
+		String member=AG.aUScoped.parseMember(Ppath);                        //~vae0I~//~vaicR~//~vaieI~
+        String rc=pathHistory+"/"+member;                        //~vaieI~
+		if (Dump.Y) Dump.println("History.makePathHistoryForScoped path="+Ppath+",pathHistory="+pathHistory+",swSD="+swSD+",rc="+rc);//~vaieI~
+        return rc;                                                 //~vaieI~
+    }                                                              //~vaieI~
 }//class                                                           //~v@@@R~
