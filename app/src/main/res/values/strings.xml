@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.19</string>
+    <string name="app_version">v1.20</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -370,9 +370,9 @@
     <string name="Desc_DrawnHW">No penalty of Noten. 4Riichi and 4Kans completes when discard was not winning tile.</string>
     <string name="Desc_DrawnHWSelectReason">Check also stay dealer or not.</string>
     <string name="Label_MinusStop">Tobi</string>
-    <string name="Desc_MinusStop">"  = Fly away : Gameover when a plyer\'s score goes to negative."</string>
+    <string name="Desc_MinusStop">" : Bunkrupt : Gameover when a plyer\'s score goes to negative."</string>
     <string name="Label_Bird">Yakitori</string>
-    <string name="Desc_Bird">"  = Grilled chicken : The mark disappears by win and get off the penalty."</string>
+    <string name="Desc_Bird">" : The mark disappears by win and get off the penalty."</string>
     <string name="Label_BirdPayToPlace">Divide</string>
     <string name="Label_BirdPayToEach">To All</string>
     <!--string name="Label_BirdRule2">Out of score placing. Not imposed when robot is \"DiscardAllDrawn\".</string-->
@@ -393,7 +393,7 @@
     <string name="Agreed">Agreed</string>
     <string name="NoGame">DrawWithNotTenpai</string>
     <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.\n
-\"Furiten Riichi\":\"No\"/\"Reject\" is checked only when \"Confirm Tenpai\" of Oper setting is ON.
+\"Furiten Riichi\" option is effective only when \"Confirm Tenpai\" of Oper setting is ON.
 When missed to call Ron after Riichi, you can not get win even by Draw. Allow Riichi even when winning tiles is empty(all exposed).</string>
     <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
     <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
@@ -734,7 +734,10 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="UserAction_Discard_Vertical">Discard</string>
     <string name="UserAction_Reach_Open">OpenRiichi</string>
     <string name="UserAction_Reach_Open_YN">Allow OpenRiichi</string>
+<!--
     <string name="Desc_OpenReach">(Set additional options bellow if Robot is included.)</string>
+-->
+    <string name="Desc_OpenReach"></string>
     <!--string name="UserAction_Reach_Missing_YN">Allow Furiten</string-->
     <string name="Label_FuritenReach">Furiten Riichi</string>
     <string name="Label_FuritenReachNo">No check</string>
@@ -1017,7 +1020,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Info_ResyncRuleAtFirst">The rule is not agreed, Server(%1$s) send rule file.</string>
     <string name="Info_ResyncRuleClientChanged">Client (%1$S) changed rule. Getting Agreement required anew.</string>
     <string name="Info_ResyncRuleServerChanged">This device is server, send the rule because it is updated.</string>
-    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\".</string>
+    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\". \"Send\" is required.</string>
     <string name="Err_RuleIsInitial">Rule is not established yet. Press \"Settings\".</string>
     <string name="Info_ResyncRuleChkOK">Rule was synchronized, game will start.</string>
     <string name="Info_RuleSynchedAlready">Rule is synchronized with %1$d players, no send required.</string>
@@ -1065,7 +1068,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
 						</string>
     <string name="Desc_CheckRonable">Furiten not checked.</string>
     <string name="Desc_CheckRonValue">You can correct score on Dialog.</string>
-    <string name="Desc_CheckReach">Chk Tenpai pattern at Riich. Furiten, 2han-constraint is also checked.</string>
+    <string name="Desc_CheckReach">Check your hand is ready to win or not.</string>
     <string name="Label_S2P">Fraction</string>
     <string name="Label_RankMUp">Rounded Mangan</string>
     <string name="Desc_RankMUp">(30fu4han and 60fu3han is Mangan）</string>
@@ -1164,10 +1167,10 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_YakuFixFirst">First only</string>
     <string name="Label_YakuFixLast">Finally</string>
     <string name="Label_YakuFixMiddle">Middle OK</string>
-    <string name="Label_YakuFixMultiwaitOK">For \"Finally\", multi tile wait OK for both Self-Draw and Ron</string>
-    <string name="Label_YakuFixMultiwaitTake">Multi tile wait when Self-Drawn</string>
+    <string name="Label_YakuFixMultiwaitOK">For \"Finally\", multi tile wait OK for both Self-Draw and Ron even not Conceiled Hand</string>
+    <string name="Label_YakuFixMultiwaitTake">Win by Self-Drawn with option NOT \"Finally\".</string>
     <string name="Label_YakuFixMultiwaitOKTake">All OK</string>
-    <string name="Label_YakuFixMultiwaitOKTakeAllInHand">OK if no Earth</string>
+    <string name="Label_YakuFixMultiwaitOKTakeAllInHand">OK if Conceiled Hand</string>
     <string name="Label_YakuFixMultiwaitOKTakeNo">NG</string>
     <!--string name="Label_YakuFixMultiwaitDrawOK">Multi tile wait Draw OK</string-->
     <string name="Desc_YakuFix">" Finally : Accept winning hand if it has Yaku finally.\n"
@@ -1193,7 +1196,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Label_EatChangeAllOK">OK fully.</string>
     <string name="Desc_StatementOnly">This is note of rule, which is not checked by this App.</string>
     <!--string name="Desc_YakuStatementOnly">This is basically note of rule, items with dark green are checked by this App.\nItems with yellowish brown are checked if Setting option of \"Evaluate Point by APP\" is on.</string-->
-    <string name="Desc_YakuStatementOnly">This is basically note of rule, items with 
+    <!--string name="Desc_YakuStatementOnly">This is basically note of rule, items with 
 				&lt;span style="background-color:#80ff80;"&gt;
 					dark green
 				&lt;/span&gt;
@@ -1204,6 +1207,12 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
 					yellowish brown
 				&lt;/span&gt;
 					 are checked depending Setting option of \"Evaluate Point by APP\" etc.
+		</string-->
+    <string name="Desc_YakuStatementOnly">This is basically note of rule, items with 
+				&lt;span style="background-color:#80ff80;"&gt;
+					dark green
+				&lt;/span&gt;
+					are checked by this App.
 		</string>
     <string name="Label_Kuitan">Kuitan</string>
     <string name="Label_DoublePillow">By Wind+Round, 4 fu for Pair</string>
@@ -1292,9 +1301,9 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
 					(6) Full Flush.\n
 					(Note)---(n) : han(=rank). Usualy 1 rank down if not All-In-Hand with some exception. (+n): always along with other rank.</string>
     <string name="Desc_YakuLocal">See also topic of Yakuman, Hand of man, NagasiMangan. Otherwise, take agree in the group beforehand.</string>
-    <string name="Label_SpritPos">Wareme(割れ目)</string>
-    <!--string name="Desc_SpritPos0">" = SplitPos : You will see \"割\" in End-of-Hand dialog."</string-->
-    <string name="Desc_SpritPos0_1">" = SplitPos : You will see "</string>
+    <string name="Label_SpritPos">Wareme</string>
+    <!--string name="Desc_SpritPos0">" : SplitPos : You will see \"割\" in End-of-Hand dialog."</string-->
+    <string name="Desc_SpritPos0_1">" : SplitPos : You will see "</string>
     <string name="Desc_SpritPos0_2">"割"</string>
     <string name="Desc_SpritPos0_3">" in End-of-Hand dialog."</string>
     <string name="Label_SpritPosID">割</string>
@@ -1494,8 +1503,8 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="AE_RankFix2">Hand required at least 2 han.</string>
     <string name="AE_MultiWait_Furiten">Furiten(already discarded winning tile)</string>
     <string name="AE_MultiWait_Furiten_Reach">Furiten of Riichi</string>
-    <string name="AE_MultiWait_FixFirst">\"Fix First only\" rule violation</string>
-    <string name="AE_MultiWait_FixMiddle">\"Fix Middle\" rule violation</string>
+    <string name="AE_MultiWait_FixFirst">\"Fix First only\"/\"Fix Middle\" rule violation</string>
+    <string name="AE_MultiWait_FixMiddle">"Fix First only\"/\"Fix Middle\" rule violation</string>
     <string name="AE_MultiWait_Constraint1">1-han constraint err</string>
     <string name="AE_MultiWait_Constraint2">2-han constraint err</string>
     <string name="AE_MultiWait_Multiple">Not fixed multiple winning tiles</string>
@@ -1542,14 +1551,23 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Err_BS_NotCompleteSelected">Select a game overed.</string>
     <string name="Err_BSMultipleSelected">Select only one game.</string>
     <string name="AE_FuritenReach">Furiten Riichi</string>
-    <string name="Label_ChkMultiWait">Check \"Furiten and \"\"Fix Yaku\" rule violation</string>
-    <string name="Label_ChkMultiWaitYes">Yes</string>
 <!--
+    <string name="Label_ChkMultiWait">Check \"Kata-Agari\" and \"Furiten\"</string>
     <string name="Desc_ChkMultiWait">Checked at \"Win\" is pushed. \"1-han constraint\" is also checked. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to APP\'s decision.
     			Regardless this setting \"ron-able\" is notified when play-alone mode. Robot calls \"Win\" after cheking this rule.</string>
+    <string name="Desc_ChkMultiWait">Check and notify rule violation at \"Win\" is pushed. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to this APP\'s decision.
+    			See also \"Fix Yaku\" on Yaku setting dialog.</string>
+    <string name="Desc_ChkMultiWait">Furiten is free for Drawn case. \"Kata-Agari\" depends to \"Fix Yaku\" option on Yaku setting dialog.
+ You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to this APP\'s decision.</string>
 -->
-    <string name="Desc_ChkMultiWait">Checked at \"Win\" is pushed. \"1-han constraint\" is also checked. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to APP\'s decision.
-    			Notification of \"ron-able\" obeys this setting. But Robot calls \"Win\" only if check OK regardress this setting.</string>
+    <string name="Label_ChkMultiWait">Check \"Furiten\"</string>
+    <string name="Desc_ChkMultiWait">Furiten is out of question for Self-Drawn case.</string>
+    <string name="Label_MultiWait">Kata-Agari</string>
+<!--
+    <string name="Desc_MultiWait"> : Effective only when \"Check Kata-Agari and Furiten\" of Oper setting is ON.</string>
+-->
+    <string name="Desc_MultiWait">Allow Kata-Agari if \"Fix Yaku\":Filally.</string>
+    <string name="Label_ChkMultiWaitYes">Yes</string>
     <string name="AE_NoReachErrToForce">Accepted only after failure of Riichi/OpenRiich.</string>
     <string name="AE_CancelAtFirst">\"Cancel\" is required for other action button highlighten.</string>
     <string name="Label_LeftyPortrait">Reverse layout of bottom buttons when portrait mode.</string>
@@ -1610,4 +1628,7 @@ Reinstall this APP to try to set again.
     <string name="Err_FuritenReach">Furiten-Riichi</string>
     <string name="Err_FuritenReachAfter">Missed-WinningTile</string>
     <string name="Err_SelectOrientation">Setting orientation is not canceled on Client.</string>
+    <string name="Info_RuleReceived_ChangeY">Rule received, change item is shown with different background color.</string>
+    <string name="Info_RuleReceived_ChangeN">Rule received, no change exists but reply required.</string>
+    <string name="Info_RuleReceived_ChangeN_Server">Server received rule, no change exists.</string>
 </resources>

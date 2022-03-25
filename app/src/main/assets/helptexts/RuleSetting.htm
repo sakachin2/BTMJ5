@@ -10,8 +10,9 @@ Use <BIG><B>Save</B></BIG>/<BIG><B>Load</B></BIG> button when updated.
 <BR>
 On the right of <B>ID</B>, timestamp of <BIG><B>Update</B></BIG> is displayed.
  This is key of rule synchronization. Unmatch of this among players prevents start of game even if its contents are same.
- When changed on server <BIG><B>Send</B></BIG> to all clients,
- game can be started when received <BIG><B>Agree</B></BIG> from all clients.
+ When changed on server <BIG><B>Send</B></BIG> to all clients.
+ When received dialog opens and you can identify items different with current setting by background color.
+ Game can be started when received <BIG><B>Agree</B></BIG> from all clients.
  If you want to use rule file on a client, the client "Load" the file then "Send" to server.
  Dialog will open on the server, which will be sent again to the other clients to synchronize.
 <BR>
@@ -67,18 +68,35 @@ Top place player's final score is adjusted to keep zero-sum.
 <BR>
 <BR>
 <BIG><B>Dora</B></BIG>： 
-Defined according tile opened on Stock at start of each round.
+Dora tile has value of 1 han each in your Hand.
+<BR>
+A Dora is randomly decided and shown on Stock at start of each round,
+ and increase at Kan(declare quad).
 "End-of-Hand" dialog shows Dora indicator.
- When <B>Imm.</B> is selected, open Kan-Dora at Kan-Draw.
- Kan-Dora is not opened for Chankan(Add-Kan).
 <BR>
-<B>NextTo</B> : Number tile:1-9--&gt;2-0, dragon:WGR--&gt;GRW, wind:ESWN--&gt;SWNE
+ Kan-Dora is not opened for Chankan(Win called for the tile of Add-Kan).
 <BR>
-<BIG><B>RedDora</B></BIG>： 
-If ON, use half of 4 tiles of each number 5 with red colored. Those, total 6 tiles, have value of 1 han each.
+<B>Hidden</B> : Tile underneath the Dora tile opend on Stock is hidden Dora.
+It is shown only when the player called Riichi won. 
+<BR>
+<B>Itself</B> : Dora is the same tile as opend.
+<BR>
+<B>NextTo</B> : Dora is next tile of the opend. Number tile:1-9--&gt;2-0, dragon:WGR--&gt;GRW, wind:ESWN--&gt;SWNE
+<BR>
+<B>Imm.</B> means open Kan-Dora at additional Draw for Kan, else open at after discarded.
+<BR>
+<B>RedDora</B>： 
+Half of number-5 tiles of each suit is colored red as additional Dora.(total 6 tiles more Dora)
 <BR>
 <BR>
-<BIG><B>Tobi</B></BIG>(Bankrupt) 
+<BIG><B>Wareme</B></BIG>： 
+<BR>
+Wareme(Japanese:split point) player is decided by the role of Dice the dealer casted at start of each round.
+<BR>
+dice spot=2--&gt;南 is Wareme, 3--&gt;西, 4--&gt;北, 5--&gt;東, 6--&gt;南, ...
+<BR>
+<BR>
+<BIG><B>Tobi</B></BIG> : (Japanese: Fly away, Bankrupt) 
 <BR>
 <B>Pay for negative score</B>：Gameover after paying fully to winner.
 <BR>
@@ -92,6 +110,51 @@ If ON, use half of 4 tiles of each number 5 with red colored. Those, total 6 til
  according counterclockwise sequence starting from the winner closest to the discarder.
  Tobi prize is given to the player when bankrupt occurred in that sequence.
  In case of "NagashiMangan" starting collector is the closest to the dealer.
+<BR>
+<BR>
+<BIG><B>Yakitori</B></BIG>：Japanese:YAKI(grill)-TORI(bird, chicken)
+<BR>
+This mark indicate the player won never once in the game.
+At End-Of-Game the player holding the mark pays award.
+This point is payed after player placing determined. 
+<BR>
+<B>Divide</B>:Marked player pays the point and Not-maked players get equally divided point.
+<BR>
+<B>To All</B>:Marked player pays the point to all Not-maked players.
+<BR>
+<BR>
+<BIG><B>Call the same Meld</B></BIG>：
+Limitation to discarding after calling Pon/Chii.
+<BR>
+<B>No if the same tile</B>：e.g) Calling Chii for number-1 to make meld 1-2-3 and discarding number-1 is not allowed,
+but discarding number-4 is allowed.
+Likewise, calling Pon a tile and discarding the same tile is not allowed. 
+<BR>
+<B>No</B>：Both is not allowed.
+<BR>
+<B>OK fully</B>：Both is allowed.
+<BR>
+<BR>
+<BIG><B>Abortive Draw</B></BIG>：
+<BR>
+<B>4Riichi</B></BIG>：(all player called Riich)
+<BR>
+Dialog popup automatically if no one called Ron for the discarded tile after elapsed some seconds.
+<BR>
+<B>4Winds</B></BIG>：(The first 4 discarded tiles are all one of 東南西北)
+<BR>
+Dialog popup automatically.
+If conceiled Kan was called in the first 4 Discardit, it is not a case of 4Winds.
+But you can request to open the dialog from Menu.
+<BR>
+<B>3Win</B></BIG>：(3 players called Win at same time)
+<BR>
+"AbortiveDraw" dialog popups when "Fix" was pushed on "End-Of-Hand" dialog.
+Effective even if "Double-Ron" is "No".
+<BR>
+e.g) 4Riichi:When 4 player called Riichi any player can call "Abortive Draw" from Menu. 
+And the next round to be started with dealer stay or not.
+If no one called "Abortive Draw" the round continues.
 <BR>
 <BR>
 <BIG><B>Double-Ron</B></BIG>：
@@ -134,4 +197,4 @@ When the game includes Robot(s) except playing alone mode, robot's debts are res
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;finally  +30600, -400, -30000, 0(Robot)
 <BR>
 <BR>
-<SMALL>RuleSetting 2021/11/26</SMALL>
+<SMALL>RuleSetting 2022/03/22</SMALL>

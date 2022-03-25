@@ -1,5 +1,7 @@
-//*CID://+vah3R~: update#= 523;                                    //~vah3R~
+//*CID://+vakQR~: update#= 525;                                    //+vakQR~
 //**********************************************************************//~v101I~
+//2022/03/19 vakQ notify update of rule when client received       //+vakQI~
+//2022/03/02 vakn change delay time for Ron 1-->2 for double ron   //~vaknI~
 //2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //2021/08/22 vacf vertical button label for landscape              //~vacfI~
@@ -198,7 +200,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int 	DEFAULT_ORDERPRIZE=1;	//5-10     //~9819I~
                                                                    //~9819I~
 //  public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~9412R~//~vabuR~
-    public static final int 	DEFAULT_DELAY_PONKAN=1;		//sec  //~vabuI~
+//  public static final int 	DEFAULT_DELAY_PONKAN=1;		//sec  //~vabuI~//~vaknR~
+    public static final int 	DEFAULT_DELAY_PONKAN=2;		//sec  //~vaknI~
     public static final int 	DEFAULT_DELAY_PONKAN_NOTIFYMODE=200;		//msec//~va70I~
 //  public static final int 	DEFAULT_DELAY_TAKE=2  ;		//sec  //~9412I~//~vabuR~
     public static final int 	DEFAULT_DELAY_TAKE=1  ;		//sec  //~vabuI~
@@ -434,7 +437,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_SUSPEND_PENALTY       =411;    //~9820I~
     public static final int    RSID_SUSPEND_PENALTYIOERR  =412;    //~9A18I~
                                                                    //~9820I~
-    private static final RSEnumPair[] pairs=                       //~9404I~//~9414R~
+//  private static final RSEnumPair[] pairs=                       //~9404I~//~9414R~//+vakQR~
+    public static final RSEnumPair[] pairs=                        //+vakQI~
     			{                                                  //~9404I~
     				new RSEnumPair(RSID_SYNCDATE             ,"SyncDate"             ),//~9404R~
     				new RSEnumPair(RSID_SYNCDATE_FORMATTED   ,"SyncDateFormatted"    ),//~9405I~
@@ -504,7 +508,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_SCORE_TO_POINT       ,"ScoreToPoint"         ),//~9416I~
                                                                    //~9413I~
     				new RSEnumPair(RSID_REACH_OPEN           ,"OpenReach"            ),//~9427I~
-//  				new RSEnumPair(RSID_REACH_MISSING        ,"MissingReach"         ),//~9427I~//+vah3R~
+//  				new RSEnumPair(RSID_REACH_MISSING        ,"MissingReach"         ),//~9427I~//~vah3R~
     				new RSEnumPair(RSID_ANKAN_AFTER_REACH    ,"AnkanReach"           ),//~9530I~
     				new RSEnumPair(RSID_OPENREACH_PAY        ,"OpenReachPay"         ),//~0329I~
     				new RSEnumPair(RSID_OPENREACH_ROBOT      ,"OpenReachRobot"        ),//~0329I~

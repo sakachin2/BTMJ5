@@ -1,5 +1,6 @@
-//*CID://+vaitR~: update#= 226;                                    //~vaitR~
+//*CID://+vakqR~: update#= 228;                                    //~vakqR~
 //**********************************************************************
+//2022/03/05 vakq (Bug)markOtherPlayer by samecolor; earth chk error(reverse decision)//~vakqI~
 //2022/01/15 vait evaluate wordtile for chkother                   //~vaitI~
 //2022/01/15 vais for 7pair chk other reach if otherReach=1 && shanten==1//~vaisI~
 //2021/12/21 vai5 isTimeToCall; consider chkOtherPlayer            //~vai5I~
@@ -147,10 +148,10 @@ public class RADSOther
         //set value                                                //~1217I~
 //      int intent=RS.RSP[PeswnDiscard].getIntent();                      //~1223I~//~vagiR~
         if (ctrOtherReach>=HV_GIVEUP_BY_MULTIPLE_REACH)   //     =2;      //when other reach player>=2 set intent giveup//~1223I~
-        {                                                          //+vaitI~
+        {                                                          //~vaitI~
         	intent|=INTENT_GIVEUP;                                 //~1223I~
-        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer@@@@ set giveup by multiplereach ctrOtherReach="+ctrOtherReach);//+vaitI~
-        }                                                          //+vaitI~
+        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayer@@@@ set giveup by multiplereach ctrOtherReach="+ctrOtherReach);//~vaitI~
+        }                                                          //~vaitI~
         int remainingTile=RAUtils.getCtrRemain();                  //~1224I~
         if (remainingTile<HV_CTR_UPTO_DRAW)            // 4*4         //~1224I~//~1302R~//~1311R~
         {                                                          //~1224I~
@@ -248,10 +249,10 @@ public class RADSOther
         //set value                                                //~vai5I~
 //      if (ctrOtherReach>=HV_GIVEUP_BY_MULTIPLE_REACH)   //     =2;      //when other reach player>=2 set intent giveup//~vai5R~
         if (PctrReach>=HV_GIVEUP_BY_MULTIPLE_REACH)   //     =2;      //when other reach player>=2 set intent giveup//~vai5I~
-        {                                                          //+vaitI~
+        {                                                          //~vaitI~
         	intent|=INTENT_GIVEUP;                                 //~vai5I~
-        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerBeforeCall giveup by ctrReach="+PctrReach);//+vaitI~
-        }                                                          //+vaitI~
+        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerBeforeCall giveup by ctrReach="+PctrReach);//~vaitI~
+        }                                                          //~vaitI~
         int remainingTile=RAUtils.getCtrRemain();                  //~vai5I~
         if (remainingTile<HV_CTR_UPTO_DRAW)            // 4*4      //~vai5I~
         {                                                          //~vai5I~
@@ -321,7 +322,10 @@ public class RADSOther
         int ctrDiscarded=RS.RSP[PotherEswn].ctrDiscarded;            //~1215I~
         if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerSameColor PeswnDiscard="+PeswnDiscard+",otherEswn="+PotherEswn+",ctrDiscarded="+ctrDiscarded+",RADS.myShanten="+RADS.myShanten+",itsStatDiscard="+Utils.toString(itsStatDiscard,9));//~1215R~//~1303R~//~vai5R~
         if (ctrDiscarded<HV_CTR_DISCARD_SAMECOLOR_OTHER)	//chk from 8 discarded//~1215I~
+        {                                                          //+vakqI~
+	        if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerSameColor return by ctrDiscard <"+HV_CTR_DISCARD_SAMECOLOR_OTHER);//+vakqI~
         	return;                                                //~1215I~
+        }                                                          //+vakqI~
         int ctrWordStarting=its[CSI_WORD_STARTING];                                 //~1215I~//~1216I~
         if (ctrWordStarting>=HV_CTR_WORD_STARTING_SAMECOLOR)    // if word ctr >=2 at first 6 discard its is not samecolor//~1216I~//~1224R~
         {                                                          //~1216I~
@@ -356,9 +360,10 @@ public class RADSOther
         if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerSameColor ctrWordStarting="+ctrWordStarting+",colorOther="+colorOther+",ctrOther="+ctrOther+",ctrMan="+ctrMan+",ctrPin="+ctrPin+",ctrSou="+ctrSou);//~1216R~
         if (colorOther>=0)
         {
-	        if (RS.RSP[PotherEswn].isSameColorEarth(colorOther))              //~1302I~
+//          if (RS.RSP[PotherEswn].isSameColorEarth(colorOther))              //~1302I~//~vakqR~
+            if (!RS.RSP[PotherEswn].isSameColorEarth(colorOther))  //~vakqI~
             {                                                      //~1302I~
-	        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerSameColor return by other color called colorOther="+colorOther);//~1302I~
+	        	if (Dump.Y) Dump.println("RADSOther.chkOtherPlayerSameColor return by earth chk,meld of not other color exist="+colorOther);//~1302I~//~vakqR~
         			return;                                        //~1302I~
             }                                                      //~1302I~
                                 if ((TestOption.option2 & TO2_ROBOT_TOAST)!=0)//~1215I~

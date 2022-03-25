@@ -1,6 +1,6 @@
-//*CID://+vajgR~:                             update#=  490;       //+vajgR~
+//*CID://+vajgR~:                             update#=  492;       //+vajgR~
 //******************************************************************************************************************//~v101R~
-//2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//+vajgI~
+//2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//~vajgI~
 //2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
@@ -459,7 +459,7 @@ public class AG                                                    //~1107R~
 	public boolean swGrantedExternalStorageRead,swGrantedExternalStorageWrite;//~1Ak2R~//~1ak2I~
 	public boolean swChangedPreference,swChangedRule;              //~vae8R~
 	public boolean swNewA10=true;	//navigationbar hide logic for Android10//~vaeeI~
-    public OrientationMenuDlg aOrientationMenuDlg;                           //~vaf0I~//+vajgR~
+    public OrientationMenuDlg aOrientationMenuDlg;                           //~vaf0I~//~vajgR~
 //    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //~vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~

@@ -1,5 +1,6 @@
-//*CID://+va73R~: update#= 486;                                    //~va73R~
+//*CID://+vakSR~: update#= 492;                                    //~vakSR~
 //**********************************************************************//~v101I~
+//2022/03/23 vakS (Bug)dismiss CompleteDialog for DobleRon by Robot//~vakSI~
 //2021/03/30 va73 (Bug of va60)when multiron of human and robot,reply OK on CompReqDlg is always set, so dismissAll issued at 1st clickOK.//~va73I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/10/20 va1c send net point to show setYaku on CompReqDlg     //~va1cI~
@@ -206,7 +207,7 @@ public class Complete                            //~v@@@R~
 	        if (statusS[ii]!=null)                                 //~9320I~
             {                                                      //~9320I~
             	ctrComp++;                                         //~9320I~
-		        if (Dump.Y) Dump.println("Complete.chkCompReqReplyAll ii="+ii+",swReplyAll="+statusS[ii].swReplyAll);//~9320I~//~va60R~
+		        if (Dump.Y) Dump.println("Complete.chkCompReqReplyAll ii="+ii+",swReplyAll="+statusS[ii].swReplyAll+",replyOK="+Utils.toString(statusS[ii].replyOK));//~va73R~
                 if (statusS[ii].swReplyAll)                        //~9320I~
                 	ctrReply++;                                     //~9320I~
             }                                                      //~9320I~
@@ -532,6 +533,7 @@ public class Complete                            //~v@@@R~
         //*************************************************************************//~v@@@I~
         public boolean setOK(int Peswn,boolean PswOK)              //~v@@@I~
         {                                                          //~v@@@I~
+            if (Dump.Y) Dump.println("Complete.Status.setOK replayOK="+Arrays.toString(replyOK));//~va73I~
             if (Peswn==-1)	//for TEST TODO                        //~v@@@I~
             	swOK=PswOK;                                         //~v@@@I~
             else                                                   //~v@@@I~
@@ -598,37 +600,37 @@ public class Complete                            //~v@@@R~
         //*************************************************************************//~v@@@I~
         public boolean chkOK()                                      //~v@@@I~
         {                                                          //~v@@@I~
-            if (Dump.Y) Dump.println("Complete.Status.chkOK");      //~v@@@I~
+            if (Dump.Y) Dump.println("Complete.Status.chkOK completeEswn="+completeEswn+",replyOK="+Utils.toString(replyOK));      //~v@@@I~//~va73R~
             ctrReply=0;                                            //~v@@@I~
             ctrNG=0;                                               //~v@@@I~
             ctrResponsible=0;                                      //~v@@@I~
             for (int ii=0;ii<PLAYERS;ii++)                         //~v@@@I~
             {                                                      //~v@@@I~
-              if (AG.swTrainingMode)                               //+va73I~
-              {                                                    //+va73I~
-            		if (!AG.aAccounts.isDummyByCurrentEswn(ii))    //+va73I~
-                    {                                              //+va73I~
-                    	ctrResponsible++;                          //+va73I~
-                    	int reply=replyOK[ii];                     //+va73I~
-                    	if (reply==COMPREPLY_OK)                   //+va73I~
-                        {                                          //+va73I~
-                    		ctrReply++;                            //+va73I~
-                        }                                          //+va73I~
-                        else                                       //+va73I~
-                    	if (reply==COMPREPLY_NG)                   //+va73I~
-                        {                                          //+va73I~
-                    		ctrReply++;                            //+va73I~
-	                    	ctrNG++;                               //+va73I~
-                        }                                          //+va73I~
-                        else                                       //+va73I~
-		                if (ii==completeEswn)                      //+va73I~
-                    		replyOK[ii]=COMPREPLY_YOU;             //+va73I~
-                    }                                              //+va73I~
-                    else                                           //+va73I~
-	                    replyOK[ii]=COMPREPLY_ROBOT;               //+va73I~
-              }                                                    //+va73I~
-              else                                                 //+va73I~
-              {                                                    //+va73I~
+              if (AG.swTrainingMode)                               //~va73I~
+              {                                                    //~va73I~
+            		if (!AG.aAccounts.isDummyByCurrentEswn(ii))    //~va73I~
+                    {                                              //~va73I~
+                    	ctrResponsible++;                          //~va73I~
+                    	int reply=replyOK[ii];                     //~va73I~
+                    	if (reply==COMPREPLY_OK)                   //~va73I~
+                        {                                          //~va73I~
+                    		ctrReply++;                            //~va73I~
+                        }                                          //~va73I~
+                        else                                       //~va73I~
+                    	if (reply==COMPREPLY_NG)                   //~va73I~
+                        {                                          //~va73I~
+                    		ctrReply++;                            //~va73I~
+	                    	ctrNG++;                               //~va73I~
+                        }                                          //~va73I~
+                        else                                       //~va73I~
+		                if (ii==completeEswn)                      //~va73I~
+                    		replyOK[ii]=COMPREPLY_YOU;             //~va73I~
+                    }                                              //~va73I~
+                    else                                           //~va73I~
+	                    replyOK[ii]=COMPREPLY_ROBOT;               //~va73I~
+              }                                                    //~va73I~
+              else                                                 //~va73I~
+              {                                                    //~va73I~
                 if (ii!=completeEswn)                              //~v@@@I~
                 {                                                  //~v@@@I~
             		if (!AG.aAccounts.isDummyByCurrentEswn(ii))                 //~v@@@I~
@@ -637,7 +639,7 @@ public class Complete                            //~v@@@R~
                         {                                          //~va60I~
       	              		if (replyOK[ii]!=COMPREPLY_OK)         //~va60I~
                             {                                      //~va60I~
-                    			ctrReply++;	//for robot,RealDealer send CompReqDlg,assume replyed OK//~va60R~
+//                  			ctrReply++;	//for robot,RealDealer send CompReqDlg,assume replyed OK//~va60R~//+vakSR~
       	              			replyOK[ii]=COMPREPLY_OK;          //~va60R~
                             }                                      //~va60I~
                         }                                          //~va60I~
@@ -659,12 +661,13 @@ public class Complete                            //~v@@@R~
                 }                                                  //~v@@@I~
                 else                                               //~v@@@I~
                     replyOK[ii]=COMPREPLY_YOU;                     //~v@@@I~
-              }//!trainingmode                                     //+va73I~
+              }//!trainingmode                                     //~va73I~
             }                                                      //~v@@@I~
             swReplyAll=ctrResponsible==ctrReply;                   //~v@@@I~
             boolean rc=(swReplyAll && ctrNG==0);                  //~v@@@R~
             swNG=swReplyAll && !rc;                               //~v@@@I~
             if (Dump.Y) Dump.println("Complete.Status.chkOK rc="+rc+",swNG="+swNG+",swReplyAll="+swReplyAll+",ctrResponsible="+ctrResponsible+",ctrReply="+ctrReply+",ctrNG="+ctrNG+",supporterEswn="+supporterEswn);//~v@@@I~//~9315R~//~9320R~//~va60R~//~va73R~
+            if (Dump.Y) Dump.println("Complete.Status.chkOK exit completeEswn="+completeEswn+",replyOK="+Utils.toString(replyOK));//~va73R~
             return rc;                                             //~v@@@I~
         }                                                          //~v@@@I~
         //*************************************************************************//~v@@@I~

@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.19</string>
+    <string name="app_version">v1.20</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -386,7 +386,7 @@
     <string name="Agreed">有効</string>
     <string name="NoGame">ノーテン流れ</string>
     <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。\n
-\"フリテン立直\"の\"なし\"、\"不可\"は操作の設定で\"テンパイ確認\"：有りの場合にのみチェックされます。
+\"フリテン立直\"の設定は操作の\"テンパイ確認\"：有りの場合にのみ有効です。
 立直後の見逃しは自摸でも和了できません。空テン立直は可。</string>
     <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
     <string name="Label_ReachLimitOpenYakuman">役満払い</string>
@@ -723,7 +723,10 @@
     <string name="UserAction_Discard_Vertical">打\n牌</string>
     <string name="UserAction_Reach_Open">オープンリーチ</string>
     <string name="UserAction_Reach_Open_YN">オープン立直あり</string>
+<!--
     <string name="Desc_OpenReach">ボット入りのときは下記、追加の設定あり</string>
+-->
+    <string name="Desc_OpenReach"></string>
     <!--string name="UserAction_Reach_Missing_YN">フリテン立直あり</string-->
     <string name="Label_FuritenReach">フリテン立直</string>
     <string name="Label_FuritenReachNo">ノーチェック</string>
@@ -1004,7 +1007,7 @@
     <string name="Info_ResyncRuleAtFirst">ルール設定の同意がされていません、サーバー(%1$s) から設定を送信してください</string>
     <string name="Info_ResyncRuleClientChanged">クライアント（%1$S）がルールを変更しました、再度ルールの同意が必要です</string>
     <string name="Info_ResyncRuleServerChanged">この端末はサーバーです、ルールを変更したので、送信が必要です</string>
-    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています</string>
+    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています。\"送信\"が必要です</string>
     <string name="Err_RuleIsInitial">ルール設定ができていません。\"設定\"ボタンを押してください</string>
     <string name="Info_ResyncRuleChkOK">ルール設定を確認しました、対局を開始します</string>
     <string name="Info_RuleSynchedAlready">%1$d 人とルールは同期しています、送信は行われません</string>
@@ -1176,8 +1179,8 @@
     <string name="Label_YakuFixFirst">先付け</string>
     <string name="Label_YakuFixLast">後付けあり</string>
     <string name="Label_YakuFixMiddle">中付けあり</string>
-    <string name="Label_YakuFixMultiwaitOK">後付けのとき片上がりは自摸、ロン共にOK</string>
-    <string name="Label_YakuFixMultiwaitTake">自摸の時の片上がり</string>
+    <string name="Label_YakuFixMultiwaitOK">後付けのとき面前でなくても、自摸、ロン共に片上がりOK</string>
+    <string name="Label_YakuFixMultiwaitTake">\"後付けあり\"でないとき、自摸が片上がりは</string>
     <string name="Label_YakuFixMultiwaitOKTake">OK</string>
     <string name="Label_YakuFixMultiwaitOKTakeAllInHand">面前のみOK</string>
     <string name="Label_YakuFixMultiwaitOKTakeNo">NG</string>
@@ -1207,7 +1210,7 @@
     <string name="Label_EatChangeAllOK">全てOK</string>
     <string name="Desc_StatementOnly">この設定は決めごとの覚書であり、アプリでは判定しません</string>
     <!--string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は濃い緑の部分\n柿色の部分はオプションで"アプリで点数計算"："YES"の時チェックします。</string-->
-    <string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は
+    <!--string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は
 				&lt;span style="background-color:#80ff80;"&gt;
 				濃い緑
 				&lt;/span&gt;
@@ -1217,6 +1220,12 @@
 				柿色
 				&lt;/span&gt;
 				の部分は設定で\"アプリで点数計算\"などのオプション設定によります。
+			</string-->
+    <string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は
+				&lt;span style="background-color:#80ff80;"&gt;
+				濃い緑
+				&lt;/span&gt;
+				の部分。
 			</string>
     <string name="Label_Kuitan">食いタンあり</string>
     <string name="Label_DoublePillow">場+風で枕も４符</string>
@@ -1503,8 +1512,8 @@
     <string name="AE_RankFix2">二飜縛り違反</string>
     <string name="AE_MultiWait_Furiten">フリテンです</string>
     <string name="AE_MultiWait_Furiten_Reach">立直がフリテンです</string>
-    <string name="AE_MultiWait_FixFirst">先付け違反</string>
-    <string name="AE_MultiWait_FixMiddle">中付け違反</string>
+    <string name="AE_MultiWait_FixFirst">先付け/中付け違反</string>
+    <string name="AE_MultiWait_FixMiddle">先付け/中付け違反</string>
     <string name="AE_MultiWait_Constraint1">一飜縛り違反</string>
     <string name="AE_MultiWait_Constraint2">二飜縛り違反</string>
     <string name="AE_MultiWait_Multiple">片上がり違反</string>
@@ -1543,14 +1552,19 @@
     <string name="Err_BS_NotCompleteSelected">終了したゲームを選択してください</string>
     <string name="Err_BSMultipleSelected">ゲームの選択は１行にしてください</string>
     <string name="AE_FuritenReach">フリテン立直</string>
-    <string name="Label_ChkMultiWait">片上がり、フリテン、先付違反</string>
-    <string name="Label_ChkMultiWaitYes">チェックする</string>
 <!--
-    <string name="Desc_ChkMultiWait">\"和了\"を押したときにチェック。一飜縛りもチェックします。アプリの判定に不満がある場合に備えて、役の設定で\"とに和\"ボタンを表示した方が良いでしょう。
-				一人遊びの時は、この設定にかかわらずチェックします。またロボットもチェックOKに限って上がりを宣言します。</string>
+    <string name="Label_ChkMultiWait">片上がり、フリテン</string>
+    <string name="Desc_ChkMultiWait">自摸の時はフリテンは問われません。片上がりのオプションは役の設定ダイアログの\"役の確定\"の項で設定します。
+アプリの判定に不満がある場合に備えて、役の設定で\"とに和\"ボタンを表示した方が良いでしょう。</string>
 -->
-    <string name="Desc_ChkMultiWait">\"和了\"を押したときにチェック。一飜縛りもチェックします。アプリの判定に不満がある場合に備えて、役の設定で\"とに和\"ボタンを表示した方が良いでしょう。
-				ロンの通知もこの設定に従います。ロボットはこの設定にかかわらずチェックOKに限って上がりを宣言します。</string>
+    <string name="Label_ChkMultiWait">フリテン</string>
+    <string name="Desc_ChkMultiWait">自摸の時はフリテンは問われません</string>
+    <string name="Label_MultiWait">片上がり</string>
+<!--
+    <string name="Desc_MultiWait"> : 操作の設定で\"片上がり、フリテン\"をチェックとした場合にのみアプリでチェック</string>
+-->
+    <string name="Desc_MultiWait"> : 後付けありなら片上がりはＯＫ。</string>
+    <string name="Label_ChkMultiWaitYes">チェックする</string>
     <string name="AE_NoReachErrToForce">リーチ/オープンリーチ失敗の後でのみ有効です</string>
     <string name="AE_CancelAtFirst">オレンジボタン以外を押す場合は、先に取り消してください</string>
     <string name="Label_LeftyPortrait">縦画面の時、下部のボタン列を逆向きにする</string>
@@ -1611,4 +1625,7 @@
     <string name="Err_FuritenReach">フリテン立直</string>
     <string name="Err_FuritenReachAfter">和了見逃し</string>
     <string name="Err_SelectOrientation">クライアントでは向きの選択はキャンセルできません</string>
+    <string name="Info_RuleReceived_ChangeY">受信したルールの変更点を背景色を変えて表示しています。</string>
+    <string name="Info_RuleReceived_ChangeN">受信したルールに変更点は有りませんが返信してください。</string>
+    <string name="Info_RuleReceived_ChangeN_Server">クライアントから受信したルールに変更点は有りません。</string>
 </resources>

@@ -1,4 +1,4 @@
-//*CID://+vajaR~: update#= 963;                                    //~vajaR~
+//*CID://+vajaR~: update#= 964;                                    //~vajaR~
 //**********************************************************************//~v101I~
 //2022/01/23 vaja Not Notify Chankan to human                      //~vajaI~
 //2021/11/10 vagf (Bug)Robot could not by chankan                  //~vagfI~
@@ -177,7 +177,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     //*************************************************************************//~va8jI~
     //*from RAReach.chkMultiWait(<--UAReach.chkTenpai) to chk kataagari; dupCtr was already setup//~va8jR~//~va9bR~
     //*rc=-1:not ronnable,1:1han constraint, 2:2han constrint, 0 ok//~va8jI~
-    //*for human selectInfo                                        //+vajaI~
+    //*for human selectInfo                                        //~vajaI~
     //*************************************************************************//~va8jI~
     public int chkRankReachExceptDora(int Pplayer,TileData PtdWin,boolean PswCheckFix2,int[] PitsHand)//~va8jR~
     {                                                              //~va8jI~
@@ -1207,6 +1207,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 	//*************************************************************************//~va11I~
 	private void chkEnvironmentYaku()                              //~va11R~
     {                                                              //~va11I~
+	  	if (Dump.Y) Dump.println("UARonValue.chkEnvironmentYaku swReach="+swReach+",swEvaluateRon="+swEvaluateRon+",swRobot="+swRobot);//+vajaI~
 	    swYakuOtherEnvironment=false;                              //~va11I~
 //  	AG.aUARon.chkEnvironmentYaku(swAllInHand);                 //~va11R~
       if (swReach)                                                 //~vagfI~

@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=   42;       //~v1EjI~//~9226R~
+//*CID://+vakQR~:                             update#=   43;       //+vakQR~
 //**************************************************************************//~1B0bI~//~v1EjI~
+//2022/03/19 vakQ notify update of rule when client received       //+vakQI~
 //**************************************************************************//~1B0bI~//~v1EjI~
 package com.btmtest.gui;                                           //~v1EjI~
 
@@ -25,7 +26,8 @@ public class USpinBtn implements View.OnClickListener              //~9408R~
     private static final int ID_BTNDOWN=R.id.btnSpinDown;          //~9412R~
     private static final int ID_TEXTVIEW=R.id.tvSpinText;          //~9412I~
 	private Button btnUp,btnDown;                                  //~9408R~
-	private TextView tvText;                                       //~9408I~
+//  private TextView tvText;                                       //~9408I~//+vakQR~
+    public  TextView tvText;                                       //+vakQI~
     private ArrayAdapter<CharSequence> adapter;                                  //~v1EjI~
     private int valMin,valMax,valInc,valInit;                      //~9408I~
     private int btnIDUp,btnIDDown;                                 //~9408I~
@@ -120,6 +122,6 @@ public class USpinBtn implements View.OnClickListener              //~9408R~
         valCurrent=val;                                            //~9408I~
         tvText.setText(Integer.toString(valCurrent));               //~9408I~
         if (Dump.Y) Dump.println("USpinBtn.onClickButton dest="+dest+",valCurrent="+valCurrent);//~9408I~
-        CommonListener.onClickButtonUSB(Pbtn.getId());             //+9902M~
+        CommonListener.onClickButtonUSB(Pbtn.getId());             //~9902M~
     }                                                              //~9408I~
 }//class                                                           //~1112I~//~v1EjI~

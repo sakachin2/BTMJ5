@@ -1,5 +1,6 @@
-//*CID://+vajcR~: update#= 580;                                    //~vajcR~
+//*CID://+vaKNR~: update#= 581;                                    //+vaKNR~
 //**********************************************************************//~v101I~
+//2022/03/19 vakN (Bug)MakeChii Dump.e;chii for straight,missing color check//+vaKNI~
 //2022/01/23 vajc (bug)Add kan was not notified when at just taken(should chk all in hand)-->bothersome notify only at take//~vajcI~
 //2022/01/23 vaj9 Not Notify Ankan but notify addKan               //~vaj9I~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
@@ -2228,6 +2229,11 @@ public class RACall                                               //~v@@@R~//~va
 //      	if (Dump.Y) Dump.println("RACall.selectSeqMeldForStraight return -1 by isFixedStraight");//~vaf9I~//~vafbR~
 //      	return -1;                                             //~vaf9I~//~vafbR~
 //      }                                                          //~vaf9I~//~vafbR~
+        if (Ppos/CTR_NUMBER_TILE!=color)                           //+vaKNI~
+        {                                                          //+vaKNI~
+        	if (Dump.Y) Dump.println("RACall.selectSeqMeldForStraight @@@@ return -1 by different color");//+vaKNI~
+        	return -1;                                             //+vaKNI~
+        }                                                          //+vaKNI~
         int num=Ppos%CTR_NUMBER_TILE;                              //~vaf9I~
         if (num>=TN1 && num<=TN3)                                  //~vaf9I~
             num1=TN1;                                              //~vaf9R~
@@ -2932,6 +2938,7 @@ public class RACall                                               //~v@@@R~//~va
 //      		tdsPair[ctrPair++]=RAUtils.selectTileInHand(PeswnPlayer,ii);//~1129I~//~vab3R~
         		tdsPair[ctrPair++]=RAUtils.selectTileInHandRed5(PeswnPlayer,ii);//~vab3I~
         }                                                          //~1129I~
+        if (Dump.Y) Dump.println("RACall.makeChii ctrPair="+ctrPair+",posChiiStart="+PposChiiStart);//+vaKNI~
         tdsPair[ctrPair++]=PtdDiscarded;                           //~1129I~
         PtdDiscarded.setTakenRiver();	//tdLastDiscarded is different instance by sendmsg//~1129I~
         if (Dump.Y) Dump.println("RACall.makeChii eswnPlayer="+PeswnPlayer+",posstart="+PposChiiStart+",posDiscarded="+PposDiscarded+",tdDiscarded="+PtdDiscarded.toString()+",tdsPair="+TileData.toString(tdsPair));//~1129I~
@@ -4093,49 +4100,49 @@ public class RACall                                               //~v@@@R~//~va
 	    if (Dump.Y) Dump.println("RACall.isFixedChantaWinList rc="+rc+",maxAmtWinList="+maxAmtWinList);//~vaffI~
     	return rc;                                                 //~vaffI~
     }                                                              //~vaffI~
-//    //*NoUSer*                                                   //+vajcR~
-//    //***************************************************************//+vajcI~
-//    private boolean isFixed2ndCall(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop)//~vafnI~//+vajcR~
-//    {                                                              //~vafnI~//+vajcR~
-//        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",pos="+Ppos+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnR~//+vajcR~
-//        boolean rc=true;                                         //+vajcR~
-//        //*get discard list for shanten=0                              //~vafnI~//+vajcR~
-//        if (Paction==GCM_PON)                                      //~vafnI~//+vajcR~
-//            PitsHand[Ppos]-=2;                                     //~vafnI~//+vajcR~
-//        else                                                       //~vafnI~//+vajcR~
-//            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~//+vajcR~
-//            {                                                      //~vafnI~//+vajcR~
-//                if (pos!=Ppos)                                     //~vafnI~//+vajcR~
-//                    PitsHand[ii]--;                                 //~vafnI~//+vajcR~
-//            }                                                      //~vafnI~//+vajcR~
-//                                                                   //~vafnI~//+vajcR~
-//        int[] itsDiscard=getDiscardList(Peswn,PitsHand,PctrHand-2);//~vafnI~//+vajcR~
-//    //*get winlist and chk fixed                                   //~vafnI~//+vajcR~
-//        int ctrDiscard=itsDiscard.length;                              //~vafnI~//+vajcR~
-//        for (int ii=0;ii<ctrDiscard;ii++)                          //~vafnI~//+vajcR~
-//        {                                                          //~vafnI~//+vajcR~
-//            int pos=itsDiscard[ii];                                    //~vafnI~//+vajcR~
-//            PitsHand[pos]--;        //as discarded                     //~vafnI~//+vajcR~
-//            int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand-1);//~vafnI~//+vajcR~
-//            boolean rc2=isFixed2ndCallRonable(Peswn,PitsHand,PctrHand-1,Paction,Ppos,PposTop,itsWin);//~vafnI~//+vajcR~
-//            PitsHand[pos]++;                                       //~vafnI~//+vajcR~
-//            if (!rc2)                                              //~vafnI~//+vajcR~
-//            {                                                      //~vafnI~//+vajcR~
-//                rc=false;                                          //~vafnI~//+vajcR~
-//                break;                                             //~vafnI~//+vajcR~
-//            }                                                      //~vafnI~//+vajcR~
-//        }                                                          //~vafnI~//+vajcR~
-//        if (Paction==GCM_PON)                                      //~vafnI~//+vajcR~
-//            PitsHand[Ppos]+=2;                                     //~vafnI~//+vajcR~
-//        else                                                       //~vafnI~//+vajcR~
-//            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~//+vajcR~
-//            {                                                      //~vafnI~//+vajcR~
-//                if (pos!=Ppos)                                     //~vafnI~//+vajcR~
-//                    PitsHand[ii]++;                                 //~vafnI~//+vajcR~
-//            }                                                      //~vafnI~//+vajcR~
-//        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",rc="+rc);//~vafnI~//+vajcR~
-//        return rc;                                                 //~vafnI~//+vajcR~
-//    } //isFixed2ndCall                                                             //~vafnI~//+vajcR~
+//    //*NoUSer*                                                   //~vajcR~
+//    //***************************************************************//~vajcI~
+//    private boolean isFixed2ndCall(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop)//~vafnI~//~vajcR~
+//    {                                                              //~vafnI~//~vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",pos="+Ppos+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnR~//~vajcR~
+//        boolean rc=true;                                         //~vajcR~
+//        //*get discard list for shanten=0                              //~vafnI~//~vajcR~
+//        if (Paction==GCM_PON)                                      //~vafnI~//~vajcR~
+//            PitsHand[Ppos]-=2;                                     //~vafnI~//~vajcR~
+//        else                                                       //~vafnI~//~vajcR~
+//            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~//~vajcR~
+//            {                                                      //~vafnI~//~vajcR~
+//                if (pos!=Ppos)                                     //~vafnI~//~vajcR~
+//                    PitsHand[ii]--;                                 //~vafnI~//~vajcR~
+//            }                                                      //~vafnI~//~vajcR~
+//                                                                   //~vafnI~//~vajcR~
+//        int[] itsDiscard=getDiscardList(Peswn,PitsHand,PctrHand-2);//~vafnI~//~vajcR~
+//    //*get winlist and chk fixed                                   //~vafnI~//~vajcR~
+//        int ctrDiscard=itsDiscard.length;                              //~vafnI~//~vajcR~
+//        for (int ii=0;ii<ctrDiscard;ii++)                          //~vafnI~//~vajcR~
+//        {                                                          //~vafnI~//~vajcR~
+//            int pos=itsDiscard[ii];                                    //~vafnI~//~vajcR~
+//            PitsHand[pos]--;        //as discarded                     //~vafnI~//~vajcR~
+//            int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand-1);//~vafnI~//~vajcR~
+//            boolean rc2=isFixed2ndCallRonable(Peswn,PitsHand,PctrHand-1,Paction,Ppos,PposTop,itsWin);//~vafnI~//~vajcR~
+//            PitsHand[pos]++;                                       //~vafnI~//~vajcR~
+//            if (!rc2)                                              //~vafnI~//~vajcR~
+//            {                                                      //~vafnI~//~vajcR~
+//                rc=false;                                          //~vafnI~//~vajcR~
+//                break;                                             //~vafnI~//~vajcR~
+//            }                                                      //~vafnI~//~vajcR~
+//        }                                                          //~vafnI~//~vajcR~
+//        if (Paction==GCM_PON)                                      //~vafnI~//~vajcR~
+//            PitsHand[Ppos]+=2;                                     //~vafnI~//~vajcR~
+//        else                                                       //~vafnI~//~vajcR~
+//            for (int pos=PposTop,ii=0;ii<PAIRCTR;ii++,pos++)       //~vafnI~//~vajcR~
+//            {                                                      //~vafnI~//~vajcR~
+//                if (pos!=Ppos)                                     //~vafnI~//~vajcR~
+//                    PitsHand[ii]++;                                 //~vafnI~//~vajcR~
+//            }                                                      //~vafnI~//~vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCall eswn="+Peswn+",rc="+rc);//~vafnI~//~vajcR~
+//        return rc;                                                 //~vafnI~//~vajcR~
+//    } //isFixed2ndCall                                                             //~vafnI~//~vajcR~
     //***************************************************************//~vafnI~
     //*from isTimeToCall under the condition shanten up to 0       //~vafnI~
     //***************************************************************//~vafnI~
@@ -4300,30 +4307,30 @@ public class RACall                                               //~v@@@R~//~va
 	    if (Dump.Y) Dump.println("RACall.evaluateFixedCallShanten0 exit_Kan eswn="+Peswn+",amt="+amt+",itsHand="+Utils.toString(PitsHand,9));//~vag0I~//~vag3R~
     	return amt;                                                //~vag0I~
     }                                                              //~vag0I~
-//    //***************************************************************//~vafnI~//+vajcR~
-//    //*NoUser                                                    //+vajcI~
-//    private boolean isFixed2ndCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop,int[] PitsWin)//~vafnI~//+vajcR~
-//    {                                                              //~vafnI~//+vajcR~
-//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnI~//+vajcR~
-//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable action="+Paction+",PposTop="+PposTop+",itsWin="+Utils.toString(PitsWin));//~vafnI~//+vajcR~
-//        int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand); //~vafnI~//+vajcR~
-//        if (itsWin.length==0)                                      //~vafnI~//+vajcR~
-//        {                                                          //~vafnI~//+vajcR~
-//            if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by winlist=0");//~vafnI~//+vajcR~
-//            return false;                                          //~vafnI~//+vajcR~
-//        }                                                          //~vafnI~//+vajcR~
-//        for (int pos:itsWin)                                       //~vafnI~//+vajcR~
-//        {                                                          //~vafnI~//+vajcR~
-//            if (RS.isFuritenSelf(Peswn,pos))                       //~vafnI~//+vajcR~
-//            {                                                      //~vafnI~//+vajcR~
-//                if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by fuliten pos="+pos);//~vafnI~//+vajcR~
-//                return false;                                      //~vafnI~//+vajcR~
-//            }                                                      //~vafnI~//+vajcR~
-//        }                                                          //~vafnI~//+vajcR~
-//        boolean rc=AG.aRADSEval.evaluateWinListCallRonable(Peswn,PitsHand,PctrHand,Paction,PposTop,PitsWin);    //winTilePos and amt//~vafnI~//+vajcR~
-//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",rc="+rc);//~vafnI~//+vajcR~
-//        return rc;                                                 //~vafnI~//+vajcR~
-//    }                                                              //~vafnI~//+vajcR~
+//    //***************************************************************//~vafnI~//~vajcR~
+//    //*NoUser                                                    //~vajcI~
+//    private boolean isFixed2ndCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop,int[] PitsWin)//~vafnI~//~vajcR~
+//    {                                                              //~vafnI~//~vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",ctrH="+PctrHand+",itsHand="+Utils.toString(PitsHand,9));//~vafnI~//~vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable action="+Paction+",PposTop="+PposTop+",itsWin="+Utils.toString(PitsWin));//~vafnI~//~vajcR~
+//        int[] itsWin=AG.aRAReach.getItsWinList(PitsHand,PctrHand); //~vafnI~//~vajcR~
+//        if (itsWin.length==0)                                      //~vafnI~//~vajcR~
+//        {                                                          //~vafnI~//~vajcR~
+//            if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by winlist=0");//~vafnI~//~vajcR~
+//            return false;                                          //~vafnI~//~vajcR~
+//        }                                                          //~vafnI~//~vajcR~
+//        for (int pos:itsWin)                                       //~vafnI~//~vajcR~
+//        {                                                          //~vafnI~//~vajcR~
+//            if (RS.isFuritenSelf(Peswn,pos))                       //~vafnI~//~vajcR~
+//            {                                                      //~vafnI~//~vajcR~
+//                if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable return false by fuliten pos="+pos);//~vafnI~//~vajcR~
+//                return false;                                      //~vafnI~//~vajcR~
+//            }                                                      //~vafnI~//~vajcR~
+//        }                                                          //~vafnI~//~vajcR~
+//        boolean rc=AG.aRADSEval.evaluateWinListCallRonable(Peswn,PitsHand,PctrHand,Paction,PposTop,PitsWin);    //winTilePos and amt//~vafnI~//~vajcR~
+//        if (Dump.Y) Dump.println("RACall.isFixed2ndCallRonable eswn="+Peswn+",rc="+rc);//~vafnI~//~vajcR~
+//        return rc;                                                 //~vafnI~//~vajcR~
+//    }                                                              //~vafnI~//~vajcR~
     //***************************************************************//~vafnI~
     private int evaluateFixedCallRonable(int Peswn,int[] PitsHand,int PctrHand,int Paction,int Ppos,int PposTop)//~vafnR~
     {                                                              //~vafnI~

@@ -1,5 +1,14 @@
-//*CID://+vajaR~: update#= 221;                                    //~vaj7R~//~vajaR~
+//*CID://+vakhR~: update#= 264;                                    //~vakhR~
 //**********************************************************************//~v101I~
+//2022/02/20 vakh set kataagari err different from fix err         //~vakhI~
+//2022/02/19 vak8 (BUG)with FuritenChk=NO and FuritenReachOK, it can call Ron for furiten tile.//~vak8I~
+//2022/02/19 vak7 drop option chk kataagari(temporally False always AND and option is chk furiten only)//~vak7I~
+//2022/02/18 vak6 differenciate kataagari err  and fix err         //~vak6I~
+//                fixLast:allow kataagari, else chk kataagari with chk option if not fix err//~vak6I~
+//2022/02/16 vak5 with no chk kataagari,do not lit win button in notify mode for human//~vak5I~
+//2022/02/16 vak4 with no chk 1hanConstraint/furiten,do not lit win button in notify mode for human//~vak4I~
+//2022/02/15 vak2 No 1han constraint err msg when chk option:off(oper setting)//~vak2I~
+//2022/02/15 vak1 Furiten msg even chkMultiwait option is OFF(chk furiten and kataagari)//~vak1I~
 //2022/01/23 vaja (Bug)Chankan was not notified and not get win for Human//~vajaI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2022/01/20 vaj6 set Err for missing Ron(including Take) after Reach//~vaj6I~
@@ -82,13 +91,18 @@ public class RARon                                               //~v@@@R~//~va6
     private boolean swYakuFixLast,swYakuFixMultiWaitOK,swChkFixErr;//~va91I~
 //  private boolean swYakuFixMultiwaitOKTake,swYakuFixMultiwaitOKTakeAllInHand;//~va91I~//~va98R~
     private boolean swYakuFixMultiwaitOKTake;                      //~va98I~
+    private boolean swCheckFix1; //oper setting to chk 1han constraint//~vak2I~
     private int errMultiWait;
+    private int errMultiWaitNoChkMode;                             //~vak4I~
     private boolean swCheckMultiWait;                              //~vaa8I~
+    private boolean swCheckFuriten;                                //~vak7I~
     public  int amtRonValue;	//output of getRonValue to caller  //~vaajR~
     private int eswnKanAdd=-1;   //chankan                         //~vaaTI~
     private boolean swChankan;   //add RYAKU_KAN_ADD               //~vaaUI~
     private int actionEvaluateCall2nd,posTopEvaluateCall2nd;      //~vafnI~
     private int environmentYaku;                                   //~vagfI~
+	private int typeYakuFix;                                       //~vak5I~
+    private boolean              swChkFixErrMultiWait;                                  //~vakhI~
 //*************************                                        //~v@@@I~
 	public RARon()                                               //~v@@@R~//~va60R~//~1111R~
     {                                                              //~0914I~
@@ -100,16 +114,19 @@ public class RARon                                               //~v@@@R~//~va6
     private void  init()                                           //~va60I~
     {                                                              //~va60I~
     	RS=AG.aRoundStat;                                          //~1111I~
+		typeYakuFix=RuleSettingYaku.getYakuFix();                  //~vak5I~
 		swYakuFixLast= RuleSettingYaku.isYakuFixLast();             //~va91I~
         swYakuFixMultiWaitOK=RuleSettingYaku.isYakuFixMultiwaitOK();//~va91I~
         int fixTake=RuleSettingYaku.getYakuFixMultiwaitTake();      //~va91I~
         swYakuFixMultiwaitOKTake=fixTake==YAKUFIX_TAKE_ALL;        //~va91I~
 //      swYakuFixMultiwaitOKTakeAllInHand=fixTake==YAKUFIX_TAKE_ALLINHAND;//~va91R~//~va98R~
         swCheckMultiWait= RuleSettingOperation.isCheckMultiWait();  //~vaa8I~
-        if (Dump.Y) Dump.println("RARon.init swYakuFixMultiWaitOK="+swYakuFixMultiWaitOK+",takeOK="+fixTake+",swCheckMultiWait="+swCheckMultiWait);//~va91R~//~vaa8R~
+        swCheckFuriten=RuleSettingOperation.isCheckFuriten();     //~vak7I~
+        swCheckFix1= RuleSettingOperation.isYakuFix1();            //~vak2I~
+        if (Dump.Y) Dump.println("RARon.init swYakuFixMultiWaitOK="+swYakuFixMultiWaitOK+",takeOK="+fixTake+",swCheckMultiWait="+swCheckMultiWait+",swCheckFuriten="+swCheckFuriten);//~va91R~//~vaa8R~//~vak7R~
     }                                                              //~va60I~
     //*********************************************************    //~1117I~
-    //*from RADSmart at to discard for Robot                                //~1120R~//~1417R~
+    //*from RADSmart at Robot discarding                           //~vajaR~
     //*under shanten=-1                                            //~1120I~
     //*********************************************************    //~1118I~
 //  public  boolean callRonTaken(int PplayerDiscard,int PeswnDiscard,int[] PitsHand,TileData PtdTaken)//~1117R~//~1118R~//~1120R~//~va8iR~
@@ -143,6 +160,8 @@ public class RARon                                               //~v@@@R~//~va6
         boolean rc=isRonableMultiWait(true/*swTake*/,Pplayer,Peswn,PitsHand,PctrHand,PtdTaken);//~va8jI~
         if (errMultiWait!=0)                                       //~va96I~
 		    issueRonableMultiWaitErrMsg();                         //~va96I~
+    	if (isErrInNoChkMode())                                    //~vak4I~
+        	rc=false;                                              //~vak4I~
         if (Dump.Y) Dump.println("RARon.callRonTakenPlayAloneNotify@@@@ rc="+rc+",player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdTaken.toString());//~va8jI~
         return rc;                                                 //~va8jI~
     }                                                              //~va8jI~
@@ -252,6 +271,8 @@ public class RARon                                               //~v@@@R~//~va6
         boolean rc=isRonableMultiWait(false/*swTake*/,Pplayer,Peswn,PitsHand,PctrHand,PtdDiscarded);//~va8jI~
         if (errMultiWait!=0)                                       //~va96I~
 		    issueRonableMultiWaitErrMsg();                         //~va96I~
+    	if (isErrInNoChkMode())                                    //~vak4I~
+        	rc=false;                                              //~vak4I~
         if (Dump.Y) Dump.println("RARon.callRonRiverPlayAloneNotify@@@@ rc="+rc+",player="+Pplayer+",eswn="+Peswn+",tdTaken="+PtdDiscarded.toString());//~va8jI~
         return rc;                                                 //~va8jI~
     }                                                              //~va8jI~
@@ -428,6 +449,28 @@ public class RARon                                               //~v@@@R~//~va6
         if (Dump.Y) Dump.println("RARon.isRonableFixErr@@@@ rc="+rc);//~va91I~
         return rc;                                                 //~va91I~
     }                                                              //~va91I~
+    //*********************************************************    //~vak7I~
+    //*allow kataagari by option                                   //~vak7I~
+    //*********************************************************    //~vak7I~
+    private boolean isRonableFixErrMultiWait(boolean PswTake,boolean PswRobot,RonResult PronResult)//~vak7I~
+    {                                                              //~vak7I~
+        if (Dump.Y) Dump.println("RARon.isRonableFixErrMultiWait swTake="+PswTake+",swRobot="+PswRobot+",ronResult="+PronResult.toString());//~vak7I~
+    	swChkFixErr=true;     //parm to getHanExceptDoraConstraint //~vak7I~
+    	swChkFixErrMultiWait=true;     //parm to getHanExceptDoraConstraint,chk also kataagari at take//~vakhI~
+	    boolean rc=isRonable(PronResult);                          //~vak7I~
+    	swChkFixErrMultiWait=false;     //parm to getHanExceptDoraConstraint,chk also kataagari at take//~vakhI~
+    	swChkFixErr=false;                                         //~vak7I~
+        if (!rc)                                                   //~vak7I~
+        	if (!PswRobot)                                         //~vak7R~
+            {                                                      //~vakhI~
+              if (PronResult.swMultiWaitErr)                       //~vakhI~
+            	errMultiWait|=RARON_ERR_MULTIPLE;//=0x80;          //~vakhI~
+              else                                                 //~vakhI~
+            	errMultiWait|=RARON_ERR_FIX;//issue msg            //~vak7R~
+            }                                                      //~vakhI~
+        if (Dump.Y) Dump.println("RARon.isRonableFixErrMultiWait rc="+rc);//~vak7I~
+        return rc;                                                 //~vak7I~
+    }                                                              //~vak7I~
     //*********************************************************    //~1118I~
     //*for smart Robot                                             //~1417I~
     //*from RACall.calledKan ankan ron for 13orphan and chankan ron//~1120R~
@@ -550,7 +593,7 @@ public class RARon                                               //~v@@@R~//~va6
     //*********************************************************    //~vaaUI~
     private boolean issueRonTakenNotifyChankan(int Paction,int PplayerRon,int PeswnRon,int[] PitsH,int PctrH,TileData PtdKan)//~vaaUR~
     {                                                              //~vaaUI~
-        if (Dump.Y) Dump.println("RARon.issueRonTakenNotifyChanken PplayerRon="+PplayerRon+",PeswnRon="+PeswnRon+",action="+Paction+",tdKan="+PtdKan.toString());//+vaaUR~        boolean rc=false;//~vaaUR~
+        if (Dump.Y) Dump.println("RARon.issueRonTakenNotifyChankan PplayerRon="+PplayerRon+",PeswnRon="+PeswnRon+",action="+Paction+",tdKan="+PtdKan.toString());//+vaaUR~        boolean rc=false;//~vaaUR~//~vak4R~
     	boolean rc=false;
         if (AG.swPlayAloneNotify)                                  //~vaaUI~
         {                                                          //~vaaUI~
@@ -568,7 +611,7 @@ public class RARon                                               //~v@@@R~//~va6
             if (rc)                                                //~vaaUI~
 	          	AG.aUARon.selectInfoPlayMatchNotifyTake(PtdKan,false/*swRonNoPair*/);	//chk furiten,han constraint then highlight Ron btn and show Cancel btn//~vaaUI~
         }                                                          //~vaaUI~
-        if (Dump.Y) Dump.println("RARon.issueRonTakenNotifyChanken rc="+rc);//~vaaUR~
+        if (Dump.Y) Dump.println("RARon.issueRonTakenNotifyChankan rc="+rc);//~vaaUR~//~vak4R~
         return rc;
     }                                                              //~vaaUI~
     //*********************************************************    //~1213I~
@@ -590,6 +633,9 @@ public class RARon                                               //~v@@@R~//~va6
         boolean swIgnoreAccidental=!swYakuFixLast;	//ignore accidental YAKU(one shot,haitei,rinshan) even if not Fix2 conbstraint//~vageI~
 //      int han=PronResult.getHanExceptDoraConstraint(swIgnoreAccidental);//~va8cR~//~va8iR~
 		int han;                                                   //~va91I~
+      	if (swChkFixErrMultiWait)                                  //~vakhI~
+			han=PronResult.getHanExceptDoraConstraintChkFixMultiWait(swIgnoreAccidental,PswFix2);//~vakhI~
+        else                                                       //~vakhI~
       	if (swChkFixErr)                                           //~va91I~
 			han=PronResult.getHanExceptDoraConstraintChkFix(swIgnoreAccidental,PswFix2);//~va91I~
         else                                                       //~va91I~
@@ -604,43 +650,99 @@ public class RARon                                               //~v@@@R~//~va6
     //*********************************************************    //~va8fI~
     private boolean isRonableMultiWait(boolean PswTake,int Pplayer,int Peswn,int[] PitsH,int PctrH,TileData PtdDiscarded)//~va8fI~
     {                                                              //~va8fI~
-    //*****************************************************************//~va91I~
-    //*New logic                                                   //~va91I~
-    //*****************************************************************//~va91I~
         if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ entry swTake="+PswTake+",player="+Pplayer+",eswn="+Peswn+",tdDiscarded="+PtdDiscarded+toString()+",itsHand="+Utils.toString(PitsH,9));//~va8fI~//~va8iR~//~va91M~//~vaj7R~
         errMultiWait=0;                                            //~va96M~
+        errMultiWaitNoChkMode=0;         //control Win button light to notify//~vak4R~
     	boolean rc=true;                                                //~va8fR~//~va91R~
         boolean swAllInHand=RS.RSP[Peswn].swAllInHand;             //~va91I~
+        boolean swRobot=RS.RSP[Peswn].swRobot;                     //~vak2I~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ swRobot="+swRobot+",swCheckFix1="+swCheckFix1);//~vak2I~
+        RonResult r;                                               //~vak6I~
+      if (swRobot || swCheckFix1)                                  //~vak2R~
+      {                                                            //~vak2I~
 //      RonResult r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded);//~va91I~//~vagfR~
-        RonResult r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded,environmentYaku);//~vagfI~
+//      RonResult r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded,environmentYaku);//~vagfI~//~vak6R~
+        r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded,environmentYaku);//~vak6I~
         if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ result="+r.toString());//~va91I~
         rc=isRonable(r);   //no chk kataagariErr                         //~va91I~
         if (!rc)    //constraint NG                                //~va91I~
         {                                                          //~va91I~
         	if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ return false by constraint NG ronResult="+r.toString()+",tdDiscarded="+PtdDiscarded.toString());//~va91I~
+          if (!swRobot)                                            //~vak2I~
         	errMultiWait|=RARON_ERR_CONSTRAINT;                    //~va96I~
             return false;                                          //~va91I~
         }                                                          //~va91I~
-		if (RS.RSP[Peswn].isReachStatusErrFuriten())               //~vaj7I~
+      }                                                            //~vak2I~
+      else	//human and not checkFix1                              //~vak4I~
+      {                                                            //~vak4I~
+//      RonResult r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded,environmentYaku);//~vak4I~//~vak6R~
+        r=getRonValue(PswTake,Pplayer,PitsH,PtdDiscarded,environmentYaku);//~vak6I~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ result="+r.toString());//~vak4I~
+        rc=isRonable(r);   //no chk kataagariErr                   //~vak4I~
+        if (!rc)    //constraint NG                                //~vak4I~
+        {                                                          //~vak4I~
+        	if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ 1han constraint err for human NOT swCheckFix1 r="+r.toString()+",tdDiscarded="+PtdDiscarded.toString());//~vak4I~
+            errMultiWaitNoChkMode|=RARON_ERR_CONSTRAINT;           //~vak4I~
+            rc=true;	//continue other check                     //~vak4I~
+        }                                                          //~vak4I~
+      }                                                            //~vak4I~
+//		if (RS.RSP[Peswn].isReachStatusErrFuriten())               //~vaj7I~//~vak8R~
+  		if (RS.RSP[Peswn].isReachStatusErrFuriten(PswTake))        //~vak8I~
         {                                                          //~vaj7I~
-            if (Dump.Y) Dump.println("RARon.isRonableMultiWait return false by Furiten Reach eswn="+Peswn);//~vaj7I~//+vajaR~
+            if (Dump.Y) Dump.println("RARon.isRonableMultiWait return false by Furiten Reach eswn="+Peswn);//~vaj7I~//~vajaR~
             errMultiWait|=RARON_ERR_FURITEN_REACH;	//  =0x0100;   //~vaj7I~
-            rc=false;                                              //~vaj7I~
+//          rc=false;                                              //~vaj7I~//~vak1R~
+            return false;                                          //~vak1I~
         }                                                          //~vaj7I~
-        else                                                       //~vaj7I~
+//      else                                                       //~vaj7I~//~vak1R~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWait swCheckFuriten="+swCheckFuriten);//~vak1I~//~vak5R~//~vak7R~
+//      boolean swRobot=RS.RSP[Peswn].swRobot;                     //~vak1I~//~vak2R~
+//  	if (swCheckMultiWait)	//oper setting(chk kataagara & furiten)//~vak1I~//~vak6R~
+//  	if (swCheckMultiWait || swRobot)	//oper setting(chk kataagara & furiten)//~vak6I~//~vak7R~
+    	if (swCheckFuriten || swRobot)	//oper setting(chk kataagara & furiten)//~vak7I~
+        {                                                          //~vak1I~
+            if (!PswTake && isFuriten(Peswn,PitsH,PctrH))  //chk winlist//~vak1R~
+            {                                                      //~vak1R~
+                if (Dump.Y) Dump.println("RARon.isRonableMultiWait swCheckFuriten ON:return false by Furiten swRobot="+swRobot);//~vak1R~//~vak7R~
+                if (!swRobot) //chk furiten for human              //~vak1I~
+                	errMultiWait|=RARON_ERR_FURITEN;    //  =0x01; //~vak1R~
+                return false;                                      //~vak1R~
+            }                                                      //~vak1I~
+        }                                                          //~vak1I~
+        else                                                       //~vak4I~
+        {                                                          //~vak4I~
+//          if (!swRobot) //chk furiten for human                  //~vak4I~//~vak6R~
+                if (!PswTake && isFuriten(Peswn,PitsH,PctrH))  //chk winlist//~vak4R~
+                {                                                  //~vak4R~
+                    if (Dump.Y) Dump.println("RARon.isRonableMultiWait swCheckFuriten OFF:human Furiten");//~vak4R~//~vak7R~
+                    errMultiWaitNoChkMode|=RARON_ERR_FURITEN;    //  =0x01;//~vak4R~
+                }                                                  //~vak4R~
+        }                                                          //~vak4I~
+        rc=isRonableFixErrMultiWait(PswTake,swRobot,r);	//sakiduke/nakaduke err//~vak7R~
+        if (!rc)	//sakiduke/nakaduke err                        //~vak7I~
+        {                                                          //~vak7I~
+            if (Dump.Y) Dump.println("RARon.isRonableMultiWait return false by rc of isRonableFixErrMultiWait");//~vak7I~
+            return false;                                          //~vak7I~
+        }                                                          //~vak7I~
+      if (false)                                                   //~vak7I~
+      {                                                            //~vak7I~
 //  	if (!isChkYakuMultiWait(PswTake,swAllInHand))	//no need to chk kataagari//~va91R~//~vaa8R~
     	if (!isChkYakuMultiWait(PswTake,swAllInHand,RS.RSP[Peswn].swRobot))	//no need to chk kataagari//~vaa8I~
         {                                                          //~va91I~
-//      	if (!PswTake && isFuriten(Peswn,PitsH,PctrH)) //chk winlist//~va91R~//~vaj5R~
-        	if (!PswTake && isFuriten(Peswn,PitsH,PctrH)  //chk winlist//~vaj5I~
-//      	||   PswTake && RS.RSP[Peswn].isReachStatusErrFuriten())//~vaj5R~//~vaj6R~
-//      	||   PswTake && isFuritenErrReachTake(Peswn,PitsH,PctrH,PtdDiscarded))//~vaj6R~//~vaj7R~
-        	)                                                      //~vaj7I~
-            {                                                      //~va91R~
-                if (Dump.Y) Dump.println("RARon.isRonableMultiWait return false by Furiten");//~va91R~//~vaj5R~
-                errMultiWait|=RARON_ERR_FURITEN;	//  =0x01;     //~va96I~
-                rc=false;                                          //~va91R~
-            }                                                      //~va91R~
+//          if (swRobot)  //test chk furiten for human          //~vak1R~//~vak6R~
+//          {                                                        //~vak1I~//~vak6R~
+////          if (!PswTake && isFuriten(Peswn,PitsH,PctrH)) //chk winlist//~va91R~//~vaj5R~//~vak6R~
+//            if (!PswTake && isFuriten(Peswn,PitsH,PctrH)  //chk winlist//~vaj5I~//~vak6R~
+////          ||   PswTake && RS.RSP[Peswn].isReachStatusErrFuriten())//~vaj5R~//~vaj6R~//~vak6R~
+////          ||   PswTake && isFuritenErrReachTake(Peswn,PitsH,PctrH,PtdDiscarded))//~vaj6R~//~vaj7R~//~vak6R~
+//            )                                                      //~vaj7I~//~vak6R~
+//            {                                                      //~va91R~//~vak6R~
+//                if (Dump.Y) Dump.println("RARon.isRonableMultiWait swCheckMultiWait:OFF return false by Furiten");//~va91R~//~vaj5R~//~vak1R~//~vak6R~
+////              errMultiWait|=RARON_ERR_FURITEN;    //  =0x01;  No errmsg for robot   //~va96I~//~vak1R~//~vak6R~
+//                rc=false;                                          //~va91R~//~vak6R~
+//            }                                                      //~va91R~//~vak6R~
+//          }                                                        //~vak1I~//~vak6R~
+            if (Dump.Y) Dump.println("RARon.isRonableMultiWait isChkYakuMultiWait:OFF No need to chk kataagari rc="+rc);//~vak6I~//~vak7R~
         }                                                          //~va91I~
         else  //chk kataagari                                      //~va91R~
         {                                                          //~va91I~
@@ -657,6 +759,7 @@ public class RARon                                               //~v@@@R~//~va6
         		PitsH[posTaken]++;                                     //~va8iI~//~va91I~
 			}                                                          //~va8iI~//~va91I~
       	}                                                            //~va8jI~//~va91I~
+      }                                                            //~vak7I~
         if (Dump.Y) Dump.println("RARon.isRonableMultiWait@@@@ rc="+rc+",swTake="+PswTake+",swAllInHand="+swAllInHand+",eswn="+Peswn+",player="+Pplayer+",ctrH="+PctrH+",PitsH="+Utils.toString(PitsH,9));//~va8fR~//~va8jR~//~va91R~
         return rc;                                                 //~va8fI~//~va91M~
 	}                                                              //~va8fI~//~va8iR~
@@ -692,6 +795,7 @@ public class RARon                                               //~v@@@R~//~va6
     //*for Robot from RADSmart.chkFuritenMultiWait(callback) after furitenchk      //~va8fI~//~va91R~
     //*chk MultiWait(1/2han constraint)                            //~va8fI~
     //*rc:true:ronable                                             //~va91I~
+    //*NOT Used                                                    //+vakhI~
     //*********************************************************    //~va8fI~
     public boolean isRonableMultiWaitCB(int PposTile,boolean PswTake,int Pplayer,int Peswn,int[] PitsH,int PctrH,TileData PtdDiscarded)//~va8fR~
     {                                                              //~va8fI~
@@ -708,80 +812,109 @@ public class RARon                                               //~v@@@R~//~va6
         RonResult r=getRonValue(false/*PswTake*/,Pplayer,PitsH,tdRon,environmentYaku);//~vagfI~
 //      PitsH[PposTile]--;                                         //~va8fR~
 //      boolean rc=isRonable(r);                                   //~va8fI~//~va91R~
-        boolean rc=isRonableFixErr(r);                             //~va91I~
-        if (!rc)                                                   //~va96I~
-        	errMultiWait|=RARON_ERR_FIX;                           //~va96I~
+        boolean rc=isRonableFixErr(r);                             //~va91I~//~vak6R~
+//      if (!rc)                                                   //~va96I~//~vak5R~
+//      	errMultiWait|=RARON_ERR_FIX; //set for all win tile at caller//~vak5R~
         if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCB rc="+rc+",swTake="+PswTake+",PposTile="+PposTile+",eswn="+Peswn+",player="+Pplayer+",ctrH="+PctrH+",PitsH="+Utils.toString(PitsH,9));//~va8fR~
         return rc;                                                 //~va8fI~
 	}                                                              //~va8fI~
     //*********************************************************    //~va96I~
+    //*only from RADSmart.chkFuritenMultiWait                      //~vak5I~
+    //*********************************************************    //~vak5I~
     public void setRonableMultiWaitCBFuriten(int PposTile)         //~va96R~
     {                                                              //~va96I~
 		errMultiWait|=RARON_ERR_FURITEN;                           //~va96I~
         if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCBFuriten posTile="+PposTile+",errMultiWait="+errMultiWait);//~va96I~
     }                                                              //~va96I~
+    //*********************************************************    //~vak5I~
+    //*only from RADSmart.chkFuritenMultiWait                      //~vak5I~
+    //*return true:furiten chk mode                                //~vak5I~
+    //*********************************************************    //~vak5I~
+    public boolean setRonableMultiWaitCBFuritenRon(int Peswn,int PposTile)//~vak5I~
+    {                                                              //~vak5I~
+    	boolean swRobot=RS.RSP[Peswn].swRobot;                     //~vak5I~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCBFuriten eswn="+Peswn+",swRobot="+swRobot+",swCheckFuriten="+swCheckFuriten+",posTile="+PposTile+",errMultiWait="+errMultiWait);//~vak5I~//~vak7R~
+//  	if (swCheckMultiWait || swRobot)                           //~vak5I~//~vak7R~
+    	if (swCheckFuriten || swRobot)                             //~vak7I~
+        {                                                          //~vak5I~
+			setRonableMultiWaitCBFuriten(PposTile);                //~vak5I~
+            return true;                                           //~vak5I~
+        }                                                          //~vak5I~
+        errMultiWaitNoChkMode|=RARON_ERR_FURITEN;                  //~vak5I~
+        if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCBFuriten return False eswn="+Peswn+",errMultiWaitNoChkMode="+Integer.toHexString(errMultiWaitNoChkMode));//~vak5I~
+        return false;                                              //~vak5I~
+    }                                                              //~vak5I~
     //*********************************************************    //~va96I~
     //*from RADSmart, Ok is not all of ctrWin and no furiten       //~va96I~
     //*********************************************************    //~va96I~
     public void setRonableMultiWaitCBErr(int Preason)              //~va96R~
     {                                                              //~va96I~
 //  	errMultiWait|=RARON_ERR_MULTIPLE;                          //~va96R~
+      if (Preason==RARON_ERR_MULTIPLE && !swCheckMultiWait)	//kataagari err in no chk mode//~vak5I~
+    	errMultiWaitNoChkMode|=Preason;                            //~vak5I~
+      else                                                         //~vak5I~
     	errMultiWait|=Preason;                                     //~va96I~
-        if (Dump.Y) Dump.println("RARon.isRonableMultiWaitCBErr reason="+Integer.toHexString(Preason)+",errMultiWait="+Integer.toHexString(errMultiWait));//~va96R~
+        if (Dump.Y) Dump.println("RARon.setRonableMultiWaitCBErr reason="+Integer.toHexString(Preason)+",errMultiWait="+Integer.toHexString(errMultiWait)+",errMultiWaitNoChkMode="+Integer.toHexString(errMultiWaitNoChkMode)+",swCheckMultiWait="+swCheckMultiWait);//~va96R~//~vak5R~
     }                                                              //~va96I~
     //*********************************************************    //~va8fI~
     //*chk whether kataagari chk required                          //~vaa4I~
     //*********************************************************    //~vaa4I~
-//  private boolean  isChkYakuMultiWait(boolean PswTake)           //~va8fR~
-//  private boolean  isChkYakuMultiWait(boolean PswTake,RonResult PronResult)//~va8fI~//~va98R~
-    private boolean  isChkYakuMultiWait_deprecated(boolean PswTake,RonResult PronResult)//~va98I~
-    {                                                              //~va8fI~
-    	boolean rc=true;	//kataagari NG                         //~va8fI~
-//    	if (PswTake)                                               //~va8kI~//~va8mR~
-//        	rc=false;	//allow multiwait                          //~va8kI~//~va8mR~
-//      else                                                       //~va8kI~//~va8mR~
-    	if (AG.aUARonValue.swYakuFixLast)	//allow yaku at last   //~va8fI~
-        {                                                          //~va8fI~
-        	if (AG.aUARonValue.swYakuFixMultiwaitOK)                  //~va8fI~
-            	rc=false;	//allow multiwait                      //~va8fI~
-        }                                                          //~va8fI~
-//      else                                                       //~va8fI~//~va8kR~
-//      {                                                          //~va8fI~//~va8kR~
-//      	if (PronResult.isTakeAllInHand())                      //~va8fI~//~va8kR~
-//          {                                                      //~va8fI~//~va8kR~
-//  	        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait skip multiwait chk by menzen");//~va8fI~//~va8kR~
-//          	rc=false;	//allow multiwait                      //~va8fI~//~va8kR~
-//          }                                                      //~va8fI~//~va8kR~
-//          else                                                   //~va8fI~//~va8kR~
-//      	if (PswTake && AG.aUARonValue.swYakuFixMultiwaitDrawOK)   //~va8fI~//~va8kR~
-//          	rc=false;	//allow multiwait                      //~va8fI~//~va8kR~
-//      }                                                          //~va8fI~//~va8kR~
-        else                                                       //~va8mI~
-        {                                                          //~va8mI~
-          if (false)        //rc=True, kataagari:NG for FixFirst/FixMiddle//~va91I~
-          {                                                        //~va91I~
-        	if (PronResult.isTakeAllInHand())                      //~va8mI~
-            {                                                      //~va8mI~
-    	        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait skip multiwait chk by menzen");//~va8mI~
-            	rc=false;	//allow multiwait                      //~va8mI~
-            }                                                      //~va8mI~
-          }                                                        //~va91I~
-        }                                                          //~va8mI~
-        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait@@@@ rc="+rc+",swTake="+PswTake+",swYakuFixLast="+AG.aUARonValue.swYakuFixLast+",swYakuMultiwaitOK="+AG.aUARonValue.swYakuFixMultiwaitOK);//~va8fR~//~va8kR~
-        return rc;
-    }                                                              //~va8fI~
+////  private boolean  isChkYakuMultiWait(boolean PswTake)           //~va8fR~//~vak2R~
+////  private boolean  isChkYakuMultiWait(boolean PswTake,RonResult PronResult)//~va8fI~//~va98R~//~vak2R~
+//    private boolean  isChkYakuMultiWait_deprecated(boolean PswTake,RonResult PronResult)//~va98I~//~vak2R~
+//    {                                                              //~va8fI~//~vak2R~
+//        boolean rc=true;    //kataagari NG                         //~va8fI~//~vak2R~
+////      if (PswTake)                                               //~va8kI~//~va8mR~//~vak2R~
+////          rc=false;   //allow multiwait                          //~va8kI~//~va8mR~//~vak2R~
+////      else                                                       //~va8kI~//~va8mR~//~vak2R~
+//        if (AG.aUARonValue.swYakuFixLast)   //allow yaku at last   //~va8fI~//~vak2R~
+//        {                                                          //~va8fI~//~vak2R~
+//            if (AG.aUARonValue.swYakuFixMultiwaitOK)                  //~va8fI~//~vak2R~
+//                rc=false;   //allow multiwait                      //~va8fI~//~vak2R~
+//        }                                                          //~va8fI~//~vak2R~
+////      else                                                       //~va8fI~//~va8kR~//~vak2R~
+////      {                                                          //~va8fI~//~va8kR~//~vak2R~
+////          if (PronResult.isTakeAllInHand())                      //~va8fI~//~va8kR~//~vak2R~
+////          {                                                      //~va8fI~//~va8kR~//~vak2R~
+////              if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait skip multiwait chk by menzen");//~va8fI~//~va8kR~//~vak2R~
+////              rc=false;   //allow multiwait                      //~va8fI~//~va8kR~//~vak2R~
+////          }                                                      //~va8fI~//~va8kR~//~vak2R~
+////          else                                                   //~va8fI~//~va8kR~//~vak2R~
+////          if (PswTake && AG.aUARonValue.swYakuFixMultiwaitDrawOK)   //~va8fI~//~va8kR~//~vak2R~
+////              rc=false;   //allow multiwait                      //~va8fI~//~va8kR~//~vak2R~
+////      }                                                          //~va8fI~//~va8kR~//~vak2R~
+//        else                                                       //~va8mI~//~vak2R~
+//        {                                                          //~va8mI~//~vak2R~
+//          if (false)        //rc=True, kataagari:NG for FixFirst/FixMiddle//~va91I~//~vak2R~
+//          {                                                        //~va91I~//~vak2R~
+//            if (PronResult.isTakeAllInHand())                      //~va8mI~//~vak2R~
+//            {                                                      //~va8mI~//~vak2R~
+//                if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait skip multiwait chk by menzen");//~va8mI~//~vak2R~
+//                rc=false;   //allow multiwait                      //~va8mI~//~vak2R~
+//            }                                                      //~va8mI~//~vak2R~
+//          }                                                        //~va91I~//~vak2R~
+//        }                                                          //~va8mI~//~vak2R~
+//        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait@@@@ rc="+rc+",swTake="+PswTake+",swYakuFixLast="+AG.aUARonValue.swYakuFixLast+",swYakuMultiwaitOK="+AG.aUARonValue.swYakuFixMultiwaitOK);//~va8fR~//~va8kR~//~vak2R~
+//        return rc;                                               //~vak2R~
+//    }                                                              //~va8fI~//~vak2R~
     //*********************************************************    //~va91I~
     //*rc=true:chk kataagari, false:no need to chk kataagari       //~va91I~
     //*********************************************************    //~va91I~
 //  private boolean  isChkYakuMultiWait(boolean PswTake,boolean PswAllInHand)//~va91I~//~vaa8R~
     private boolean  isChkYakuMultiWait(boolean PswTake,boolean PswAllInHand,boolean PswRobot)//~vaa8I~
     {                                                              //~va91I~
-        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait PswTake="+PswTake+",PswAllInHand="+PswAllInHand+",PswRobot="+PswRobot+",swCheckMultiWait="+swCheckMultiWait);//~vaa8I~//~vaggR~
-    	if (!PswRobot && !swCheckMultiWait)	//human obey RuleSetting//~vaa8I~
-        {                                                          //~vaa8I~
-        	if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait return false for Human by RuleSetting");//~vaa8I~
-        	return false;                                          //~vaa8I~
-        }                                                          //~vaa8I~
+        if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait swYakuFixlast="+swYakuFixLast+",PswTake="+PswTake+",PswAllInHand="+PswAllInHand+",PswRobot="+PswRobot+",swCheckMultiWait="+swCheckMultiWait);//~vaa8I~//~vaggR~//~vak5R~
+    	if (swYakuFixLast)	//allow yaku at last                   //~vak5I~
+        {                                                          //~vak5I~
+        	if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait return false by swYakuFixLast");//~vak5R~
+            return false;	//allow multiwait                      //~vak5I~
+        }                                                          //~vak5I~
+//        if (!PswRobot && !swCheckMultiWait) //human obey RuleSetting//~vaa8I~//~vak5R~
+//        {                                                          //~vaa8I~//~vak5R~
+//            if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait return true for Human by NOT swCheckMultiWait option");//~vaa8I~//~vak5R~
+////          return false;                                          //~vaa8I~//~vak5R~
+//            return true;    //do kataagarichk without button lit //~vak5R~
+//        }                                                          //~vaa8I~//~vak5R~
     	boolean rc=true;	//kataagari NG                         //~va91I~
         if (PswTake)                                               //~va91I~
         {                                                          //~va91I~
@@ -792,11 +925,11 @@ public class RARon                                               //~v@@@R~//~va6
 //              if (swYakuFixMultiwaitOKTakeAllInHand)             //~va91I~//~va98R~
     	        	rc=false;                                      //~va91I~
         }                                                          //~va91I~
-    	if (swYakuFixLast)	//allow yaku at last                   //~va91I~
-        {                                                          //~va91I~
-        	if (swYakuFixMultiWaitOK)                              //~va91R~
-            	rc=false;	//allow multiwait                      //~va91I~
-        }                                                          //~va91I~
+//  	if (swYakuFixLast)	//allow yaku at last                   //~va91I~//~vak5R~
+//      {                                                          //~va91I~//~vak5R~
+//      	if (swYakuFixMultiWaitOK)  //true by take              //~va91R~//~vak5R~
+//          	rc=false;	//allow multiwait                      //~va91I~//~vak5R~
+//      }                                                          //~va91I~//~vak5R~
         if (Dump.Y) Dump.println("RARon.isChkYakuMultiWait@@@@ rc="+rc+",swTake="+PswTake+",swAllInHand="+PswAllInHand+",swYakuFixLast="+swYakuFixLast+",swYakuMultiwaitOK="+swYakuFixMultiWaitOK+",swYakuFixMultiwaitOKTake="+swYakuFixMultiwaitOKTake);//~va91R~
         return rc;                                                 //~va91I~
     }                                                              //~va91I~
@@ -820,7 +953,7 @@ public class RARon                                               //~v@@@R~//~va6
         return rc;                                                 //~va8uI~
     }                                                              //~va8uI~
     //*********************************************************************//~va96I~
-    //*from UARon at button Pushed                                 //~va96I~
+    //*Only from UARon at button Pushed                                 //~va96I~//~vak5R~
     //*********************************************************************//~va96I~
     public boolean isRonableMultiWaitMatchModeHuman(int Pplayer,boolean PswTake,TileData PtdRon)//~va96R~
     {                                                              //~va96I~
@@ -842,14 +975,25 @@ public class RARon                                               //~v@@@R~//~va6
         if (Dump.Y) Dump.println("RARon.isRonableMultiWaitMatchModeHuman rc="+rc);//~va96R~
         return rc;                                                 //~va96R~
     }                                                              //~va96I~
+    //*********************************************************************//~vak4I~
+    //*chk errMultiWaitNoChkMode(1han constarint,furiten,kataagari err) set for Human only//~vak4I~
+    //*********************************************************************//~vak4I~
+    private boolean isErrInNoChkMode()                             //~vak4I~
+    {                                                              //~vak4I~
+        boolean rc=errMultiWaitNoChkMode!=0;                        //~vak4I~
+        if (Dump.Y) Dump.println("RARon.isErrInNoChkMode rc="+rc+",errMultiWaitNoChkMode="+Integer.toHexString(errMultiWaitNoChkMode));//~vak4I~//~vak5R~
+        return rc;                                                 //~vak4I~
+    }                                                              //~vak4I~
     //*********************************************************************//~va96I~
     //*from UARon at button Pushed                                 //~va96I~
     //*********************************************************************//~va96I~
     public int issueRonableMultiWaitErrMsg()                       //~va96I~
     {                                                              //~va96I~
+        if (Dump.Y) Dump.println("RARon.issueRonableMultiWaitErrMsg typeYakuFix="+typeYakuFix+",errMultiWait="+Integer.toHexString(errMultiWait)+",errMultiWaitNoChkMode="+Integer.toHexString(errMultiWaitNoChkMode));//~vak5R~
         if ((errMultiWait & RARON_ERR_FIX)!=0)                     //~va96I~
         {                                                          //~va96I~
-			if (RuleSettingYaku.getYakuFix()==YAKUFIX_FIRST)       //~va96I~
+//  		if (RuleSettingYaku.getYakuFix()==YAKUFIX_FIRST)       //~va96I~//~vak5R~
+    		if (typeYakuFix==YAKUFIX_FIRST)                        //~vak5I~
 		        errMultiWait|=RARON_ERR_FIXFIRST;                  //~va96I~
             else                                                   //~va96I~
 		        errMultiWait|=RARON_ERR_FIXMIDDLE;                 //~va96I~

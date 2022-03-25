@@ -117,6 +117,36 @@
                     android:text="RonValue No Dora"
                 />
                 <CheckBox
+                    android:id="@+id/cbSetDiscard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="捨て牌指定 type=1-4, num=1-9"
+                />
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <EditText
+                         android:id="@+id/etDiscardType"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etDiscardNumber"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
+                <CheckBox
                     android:id="@+id/cbSetDora"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -319,515 +349,10 @@
                 />                                     
     </LinearLayout>
                 <CheckBox
-                    android:id="@+id/cbRuleNoSync"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Skip Rule Sync"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealKuikaeChk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Kuikae chk"
-                />
-                <CheckBox
-                    android:id="@+id/cbAvoidFuriten"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="フリテン待ち"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealStraight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="一通"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealStraightChii"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="一通 チー"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal3SameSeq"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="三色"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealTanyao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="タンヤオ"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealTanyaoPon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="タンヤオ ポン"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealChantaChii"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="チャンタチー"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealChantaPon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="チャンタ ポン or finalgame 順位アップ"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealAnkanFix1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="役牌　暗槓"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMinkanHonor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="役牌　明槓"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMinkanHonorSameColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="役牌　明槓　一色"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMinKanRon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Ron for discard of MinKan"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealSameColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="一色"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealAtodukeTakeSameColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="一色 後付け"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealSakiduke2hanTake"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Sakiduke 2han constraint multi wait"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealAtodukeTakeYakuhai"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Atoduke Take Yakuhai"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal3shikiChii"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal 3Shiki after Chii OK"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal3shikiChiiTake"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal 3Shiki after Chii and Take OK"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal3shikiChiiNG"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal 3Shiki after Chii NG"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleRunChii"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal DoubleRun Chii"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleRunFix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal DoubleRun Kanchan"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleRunNotFix"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal DoubleRun Ryanmen OK"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleRunNotFixNG"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal DoubleRun Ryanmen NG"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMultiWaitWGR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal MultiWait Yaku W+DoubleEast"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMultiWaitRon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal MultiWait Yaku 3shiki NG"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMultiWaitRonOK"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal MultiWait Yaku 3shiki OK"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealMultiRon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal MultiRon"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealSingleRon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal SingleRon"
-                />
-                <CheckBox
-                    android:id="@+id/cbPonDealAllSame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="トイトイ ポン and チー"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealIntentAllSame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="トイトイ インテント"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealIntentTanyao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for call Intent Tanyao"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealIntentChanta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for call Intent Chanta"
-                />
-                <CheckBox
-                    android:id="@+id/cbPonDealWaitTanki"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Pon and Wait Tanki"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealKanchanReach"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Kanchan Reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealPenchanReach"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Penchan Reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealShanponReach"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Shanpon Reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealTankiReach"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Tanki Reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealTankiReachTanyao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal Tanki Reach tanyao"
-                />
-                <CheckBox
-                    android:id="@+id/cbPonDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Pon(reset other deal if set on)"
-                />
-                <CheckBox
-                    android:id="@+id/cbChiiDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Chii(reset other deal if set on)"
-                />
-                <CheckBox
-                    android:id="@+id/cbPonChiiDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ポン、打牌がポンとロン"
-                />
-                <CheckBox
-                    android:id="@+id/cbPonChiiDealSelectDora"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Pon then Chii for Tenpai select Dora"
-                />
-                <CheckBox
-                    android:id="@+id/cbPonPonDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Pon then Pon for Tenpai"
-                />
-                <CheckBox
-                    android:id="@+id/cbNotifyAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Notify Ron/Pon/Chii"
-                />
-                <CheckBox
-                    android:id="@+id/cbDoubleRonDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Double Ron"
-                />
-                <CheckBox
-                    android:id="@+id/cbKanAfterReachDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal for Ankan after Reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbKanRinshanRonDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="嶺上開花"
-                />
-                <CheckBox
-                    android:id="@+id/cbKanDeal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="加槓"
-                />
-                <CheckBox
-                    android:id="@+id/cbKanDealAnkan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="暗槓"
-                />
-                <CheckBox
-                    android:id="@+id/cbKanDealChankan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="槍槓"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealRonTaken1st"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ron by 1st taken"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealRonTaken"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ron by Taken"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealRonTakenDouble"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ron by Taken after Double Reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleReachChii"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chii for double reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleReachPon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pon  for double reach"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealDoubleReachPonHonor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="役牌２ でチー"
-                />
-                <CheckBox
-                    android:id="@+id/cbRonRiver"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ron for Discarded"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal13Orphan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="国士無双"
-                />
-                <CheckBox
-                    android:id="@+id/cbDealYakuman"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="その他役満"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal7PairTanyao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="チートイ　タンヤオ"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal7PairChanta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="チートイ　チャンタ"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal7PairNotTanyao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="チートイ　タンヤオ以外"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal7PairSamecolor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="チートイ　一色"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal13NoPair"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="十三不搭"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal14NoPair"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="十四不搭"
-                />
-                <CheckBox
-                    android:id="@+id/cbDeal3Dragon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deal intent 小三元"
-                />
-                <CheckBox
-                    android:id="@+id/cbPon_Test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pon with any tile"
-                />
-                <CheckBox
-                    android:id="@+id/cbChii_Test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chii with any tile"
-                />
-                <CheckBox
-                    android:id="@+id/cbKan_Test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kan with any tile"
-                />
-                <CheckBox
-                    android:id="@+id/cbChankan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chankan Ron"
-                />
-                <CheckBox
-                    android:id="@+id/cbChankan13Orphan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="国士 槍槓"
-                />
-                <CheckBox
-                    android:id="@+id/cbWaitSelectPon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pon always wait to select multiple"
-                />
-                <CheckBox
-                    android:id="@+id/cbWaitSelectCii"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chii always wait to select multiple"
-                />
-                <!--CheckBox
-                    android:id="@+id/cbPositioning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bypass Positioning"
-                /-->
-                <CheckBox
-                    android:id="@+id/cbSkipDice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Emulate Touch Dice"
-                />
-                <CheckBox
-                    android:id="@+id/cbTakeDiscard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Just Discard after Taken"
-                />
-                <CheckBox
-                    android:id="@+id/cbDrawnReqDlg_Last"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="show DrwanReqDlg Last at 6 tile discard"
-                />
-                <CheckBox
-                    android:id="@+id/cbShowF2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="show F2"
-                />
-                <CheckBox
-                    android:id="@+id/cbLayoutFinalGame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Layout test(layout_test.xml)"
-                />
-                <CheckBox
-                    android:id="@+id/cbDrawnLastShowStick" 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="DrawnLast show Stick"
-                />
-                <CheckBox
-                    android:id="@+id/cbBirdWithRobot" 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bird Active with Robot"
-                />
-                <CheckBox
-                    android:id="@+id/cbSuspend" 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Suspend Requested"
-                />
-                
-                <CheckBox
                     android:id="@+id/cbSetPosition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="set start position eswn of Server by First Dealer"
+                    android:text="起家の場所を指定する"
                 />
                 <CheckBox
                     android:id="@+id/cbSetPositionClient"
@@ -857,7 +382,7 @@
                     android:id="@+id/cbFinalGame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="set finalGame"
+                    android:text="オーラスにする"
                 />
                 <LinearLayout
                      android:layout_width="fill_parent"
@@ -991,6 +516,511 @@
                         />
                     </RadioGroup>
 	            </LinearLayout>
+                <CheckBox
+                    android:id="@+id/cbRuleNoSync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skip Rule Sync"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealKuikaeChk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal Kuikae chk"
+                />
+                <CheckBox
+                    android:id="@+id/cbAvoidFuriten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="フリテン待ち(10021)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealStraight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一通(10014) 面前片上がり"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealStraightChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一通 チー(10015) 鳴き片上がり"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3SameSeq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="三色 10016"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealTanyao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タンヤオ 10017"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealTanyaoPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タンヤオ ポン 10018"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealChantaChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チャンタチー 10019"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealChantaPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チャンタ ポン or finalgame 順位アップ 10020"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealAnkanFix1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="役牌　暗槓 414"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMinkanHonor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="役牌　明槓 4140"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMinkanHonorSameColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="役牌　明槓　一色 41401"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMinKanRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="明槓　ロン　4141"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSameColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一色 411"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealAtodukeTakeSameColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一色 後付け 412"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSakiduke2hanTake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="先付２飜片上がり　415"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealAtodukeTakeYakuhai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="後付け　役牌自摸 413"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3shikiChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="三色　チー OK 14"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3shikiChiiTake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="３色チー自摸 OK 141"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3shikiChiiNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="３色チー NG　１５"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一盃口　チー　１３"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunFix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一盃口　カンチャン　１０"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunNotFix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一盃口 両面 OK(111)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleRunNotFixNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一盃口 両面 NG(12)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiWaitWGR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="役牌　白＋ダブトン　４"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiWaitRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="片上がり　三色 NG(8)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiWaitRonOK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="片上がり　三色 OK(9)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealMultiRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ダブロン、三家和 1007"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealSingleRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="シングルロン shuffleMultiRonTest(false)"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonDealAllSame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="トイトイ ポン and チー 1001"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealIntentAllSame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="トイトイ インテント 10011"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealIntentTanyao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タンヤオ　インテント　１００１２"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealIntentChanta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チャンタ　インテント　１００１３"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonDealWaitTanki"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ポン　単騎　１００２"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealKanchanReach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="カンチャン　立直 112"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealPenchanReach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ペンチャン　立直　１１３"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealShanponReach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="シャンポン　立直　１１３１"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealTankiReach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="単騎　立直h　１１４"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealTankiReachTanyao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="単騎立直タンヤオ　１１５"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Pon(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbChiiDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Chii(reset other deal if set on)"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonChiiDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ポン、打牌がポンとロン"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonChiiDealSelectDora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ポン＋チー　テンパイ　ドラ選択 1004"
+                />
+                <CheckBox
+                    android:id="@+id/cbPonPonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ポン＋ポン　テンパイ 1003"
+                />
+                <CheckBox
+                    android:id="@+id/cbNotifyAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ロンポンチー　通知 16"
+                />
+                <CheckBox
+                    android:id="@+id/cbDoubleRonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal for Double Ron"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanAfterReachDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="立直　後　暗槓　3"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanRinshanRonDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="嶺上開花 4"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="加槓 1006"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanDealAnkan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暗槓 1005"
+                />
+                <CheckBox
+                    android:id="@+id/cbKanDealChankan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="槍槓 2001"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealRonTaken1st"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="天和・地和 5"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealRonTaken"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ツモ上がり　６"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealRonTakenDouble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ダブリー　自摸　６１"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleReachChii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ダブリーをチー　６１１"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleReachPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ダブリーをポン　６１２"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealDoubleReachPonHonor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="役牌２ でポン　６１３"
+                />
+                <CheckBox
+                    android:id="@+id/cbRonRiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ロン 7"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal13Orphan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="国士無双 101"
+                />
+                <CheckBox
+                    android:id="@+id/cbDealYakuman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="その他役満、四風連打、四人立直 1011"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal7PairTanyao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チートイ　タンヤオ 102"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal7PairChanta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チートイ　チャンタ 103"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal7PairNotTanyao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チートイ　タンヤオ以外 104"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal7PairSamecolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チートイ　一色 105"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal13NoPair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="十三不搭 1"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal14NoPair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="十四不搭 2"
+                />
+                <CheckBox
+                    android:id="@+id/cbDeal3Dragon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deal intent 小三元 3"
+                />
+                <CheckBox
+                    android:id="@+id/cbPon_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ポン　フリー"
+                />
+                <CheckBox
+                    android:id="@+id/cbChii_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="チー　フリー"
+                />
+                <CheckBox
+                    android:id="@+id/cbKan_Test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="槓　フリー"
+                />
+                <CheckBox
+                    android:id="@+id/cbChankan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="槍槓ロン/ポン＋カン 4143 "
+                />
+                <CheckBox
+                    android:id="@+id/cbChankan13Orphan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="国士 槍槓 106"
+                />
+                <CheckBox
+                    android:id="@+id/cbWaitSelectPon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pon always wait to select multiple"
+                />
+                <CheckBox
+                    android:id="@+id/cbWaitSelectCii"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chii always wait to select multiple"
+                />
+                <!--CheckBox
+                    android:id="@+id/cbPositioning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bypass Positioning"
+                /-->
+                <CheckBox
+                    android:id="@+id/cbSkipDice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Emulate Touch Dice"
+                />
+                <CheckBox
+                    android:id="@+id/cbTakeDiscard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Just Discard after Taken"
+                />
+                <CheckBox
+                    android:id="@+id/cbDrawnReqDlg_Last"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="show DrwanReqDlg Last at 6 tile discard"
+                />
+                <CheckBox
+                    android:id="@+id/cbShowF2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="show F2"
+                />
+                <CheckBox
+                    android:id="@+id/cbLayoutFinalGame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Layout test(layout_test.xml)"
+                />
+                <CheckBox
+                    android:id="@+id/cbDrawnLastShowStick" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DrawnLast show Stick"
+                />
+                <CheckBox
+                    android:id="@+id/cbBirdWithRobot" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bird Active with Robot"
+                />
+                <CheckBox
+                    android:id="@+id/cbSuspend" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suspend Requested"
+                />
+                
                 <LinearLayout
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"

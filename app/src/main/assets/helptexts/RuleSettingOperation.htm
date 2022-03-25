@@ -94,15 +94,59 @@ e.g.) In green period all action is allowed, anyone called Chii at first and ent
  If Chii pushed again before timeout Chii completes and Pon is canceled.
 <BR>
 <BR>
-<BIG><B>1-han constraint</B></BIG>：
+<BIG><B>1-Han Constraint</B></BIG>：
 <BR>
-If checked ON, your hand is checked that its value is at least 1 han.
+If checked ON, your hand is checked that its value is at least 1 han excluding Dora.
  Win call is ignored and other player is not notified about your win call if NG.
  For complete hand, depending on "Win call is cancelable" enters into "Wait!" state or proceed to "Win Claimed".
  If not "Yes"(similar to real mahjong), miss-pressing "Win" button is cancelable if "Win is cancelable" is set,
  otherwise it may be "Chmbo" of mistaken Ron.
 For Locally defined winning pattern, you can proceed Ron by <B>Win-A</B> button or <B>Win anyway</B> of Menu even when err by checking hand.
 When "Cancel" button appeared, use "Win anyway" also for 2nd Win call for the local hand.
+<!--
+<BR>
+<B>Kata-Agari</B>：(Japanese:One side-Win)
+<BR>
+You are waiting multiple winning tile and one of those dose not meet "1-Han Constraint".
+<BR>
+e.g.
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+<BR>
+Your winning tiles are
+<img src=@drawable/s_man1s> (construncts Yaku of Straight)
+ and 
+<img src=@drawable/s_man4s>
+<img src=@drawable/s_man7s> (both missing 1 han).
+You can call win for 
+<img src=@drawable/s_man1s> ?.
+It depend on options of <B>Fix Yaku</B> on settiong of Yaku.
+<BR>
+This option here is to check it or not.
+Of cause, you can call win after you called Riich which meets 1-han constraint.
+-->
+<BR>
+<BIG><B>Furiten</B></BIG>：(Japanese:FURI(discarded)-TENpai(tile to win))
+<BR>
+It means you are already discarded one of winning tiles.
+<BR>
+e.g. Your winning tiles are <img src=@drawable/s_man1s><img src=@drawable/s_man4s><img src=@drawable/s_man7s>.
+If you already discarded <img src=@drawable/s_man1s>, you can not call win for <img src=@drawable/s_man4s> and <img src=@drawable/s_man7s>.
+And there is another case of Furiten, you can not call win until you draw your next tile if other player discarded one of winning tile and you missed it. 
+<BR>
+e.g. 
+<BR>
+ you pass over for next player's <img src=@drawable/s_man1s> by the reason of aiming higher score.
+You can not call win for next of next player's <img src=@drawable/s_man4s>. After you drawn in your next turn you can call win for all of <img src=@drawable/s_man1s><img src=@drawable/s_man4s><img src=@drawable/s_man7s>.
+If you drawn one of those at next draw, you can call win by Self-Draw.
+<BR>
+Regardless this setting, after you called Riichi Furiten is checked depending <B>Furiten Riichi</B> of Yaku dialog.
+<BR>
+Like as these option is OFF, in real Mahjong, anyone dose not notify your win violates rule of 1-han constraint and Furiten. 
+<BR>
+<B>
+If these option are OFF, <BIG>Be careful to violate Chombo</BIG>. 
+</B>
+<BR>
 <BR>
 <BIG><B>Evaluate Point By APP.</B></BIG>：
 <BR>
@@ -112,7 +156,7 @@ If you do not agree the result, you can modify it on the dialog,
 <BR>
 which allows to manage irregular Local Winning Hand.
 <BR>
-<BIG><B>Confirm Tenpai</B></BIG>：
+<BIG><B>Confirm Tenpai</B></BIG>：(Japanese:Tenpai=The hand is in status of ready to win)
 <BR>
 "No":Without checking Ron-able pattern, discards selected(green framed) tile. It may cause chombo of "NoTen Riich".
 <BR>
@@ -130,4 +174,4 @@ In case of ConnectionFailure, "ConnectionFailure Notification" dialog will appea
  with game status accomplished up to end of the previous hand.
 <BR>
 <BR>
-<SMALL>RuleSettingOperation 2022/01/24</SMALL>
+<SMALL>RuleSettingOperation 2022/02/12</SMALL>

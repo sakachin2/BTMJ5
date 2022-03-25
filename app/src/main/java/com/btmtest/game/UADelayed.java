@@ -1,5 +1,17 @@
-//*CID://+vab2R~: update#= 917;                                    //~vab2R~
+//*CID://+vakHR~: update#= 969;                                    //~vakGR~//~vakHR~
 //**********************************************************************//~v101I~
+//2022/03/17 vakH chk4KanDrawn, it should be before autotakeKanTimeout(time of ron+pon timeout expired)//~vakHI~
+//2022/03/17 vakG for canceled 4kanDrawn, if blocked msg exist autotake timeout did not work//~vakGI~
+//2022/03/14 vakA DrawnHW; As aResult, try reschedule from runtimer when last action is KAN//~vakAI~
+//2022/03/14 vakz show drawnReqDlgHW for 4kandrawn by KanRiverafter 200ms(no need to allow chankan timing)//~vakzI~
+//2022/03/14 vaky skip send autotake_kan when 4kanDrawn            //~vakyI~
+//2022/03/09 vaks short delay for timeout_to_take inalso PlayAloneNotify mode//~vaksI~
+//2022/03/09 vakr (Bug)PAN mode; call not postDelayedAutoTakeKan but postDelayedAutoTake when human pushed Kan button//~vakrI~
+//2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vakqI~
+//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //~vakmI~
+//                4kan exceutes at called 4'th kan, can not take rinshan.//~vakmI~
+//2022/03/01 vakk dismiss DrawnDlgHW on client when DrawnHW canceled//~vakkI~
+//2022/02/27 vakj (Bug)hung if drawnRegDlgHW was canceled at the timeing robot discard(discard msg was ignored by swStop)//~vakjI~
 //2021/07/24 vab2 UADelayedTimer illegalStateException if once run() returned by vab1//~vab2I~
 //2021/07/24 vab1 stop UADelayedTime if block released for cost    //~vab1I~
 //2021/07/19 vaaU chankan was not notified                         //~vaaUI~
@@ -16,21 +28,17 @@ package com.btmtest.game;                                         //~1107R~  //~
 import android.os.Bundle;
 import android.os.Message;
 
-import com.btmtest.BT.BTIOThread;
 import com.btmtest.R;
 import com.btmtest.TestOption;
-import com.btmtest.dialog.ActionAlert;
+import com.btmtest.dialog.DrawnDlgHW;
 import com.btmtest.dialog.DrawnReqDlgHW;
-import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.UA.UARestart;
 import com.btmtest.game.gv.GMsg;
-import com.btmtest.game.gv.GameView;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
-import com.btmtest.utils.Alert;                                    //~9B16I~
-                                                                   //~9B16I~
+                                                                  //~9B16I~
 import java.util.Arrays;
 
 import static com.btmtest.TestOption.*;
@@ -42,7 +50,6 @@ import static com.btmtest.game.TileData.*;
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.game.UA.UAEndGame.*;
 import static com.btmtest.game.gv.GameViewHandler.*;
-import static com.btmtest.utils.Alert.*;                           //~9B16I~
 
 //~v@@@I~
 public class UADelayed //implements Runnable                            //~v@@@R~//~9623R~
@@ -70,6 +77,9 @@ public class UADelayed //implements Runnable                            //~v@@@R
     public static final int STOPAUTO_DRAWNHW_NOTIFY=4;  //from EndGame by Menu:drawn selection//~9B14I~
                                                                    //~9A24I~
   	private static final int RESCHEDULE_DELAY=100;	               //~v@@@I~//~9628R~
+  	private static final int TIMEOUT_AUTOTAKE_ROBOT_MINKAN=200; //no need to wait autotake for Minkan(not ronable for minkan)//~vakqR~
+  	private static final int TIMEOUT_AUTOTAKE_HUMAN_MINKAN=200; //no need to wait autotake for Minkan(not ronable for minkan)//~vakzI~
+  	private static final int TIMEOUT_AUTOTAKE_ROBOT_ANKAN_ADDKAN=200; //no need to wait autotake for Minkan(not ronable for minkan)//~vakqI~
 //	private int actionID,player;                                           //~v@@@I~
 	private TileData TD;                                                   //~v@@@I~
 //  private UserAction UA;                                                 //~v@@@I~//~9B17R~
@@ -109,6 +119,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
     protected boolean swServer;                                    //~9B17I~
     private boolean swAtRestart;                                   //~0221I~
     private boolean swResetMsgWaiting;                             //~0226I~
+    private int actionBlockedDrawnHW,playerBlockedDrawnHW;         //~vakjI~
 //*************************                                        //~v@@@I~
 //  public UADelayed(UserAction Pua)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9B17R~
     public UADelayed()                                             //~9B17I~
@@ -232,7 +243,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_PONKAN,delayPonKan,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~9625I~
 //      GameViewHandler.sendMsgDelayed(msg,delayPonKan);	//callback to timeoutToPonKan//~9623I~//~9624R~//~9626R~
 	  if (AG.swPlayAloneNotify)	                                   //~va70I~
-        sendMsgDelayed(msg,delayPonKanNotifyMode);	//callback to timeoutToPonKan//~va70I~
+        sendMsgDelayed(msg,delayPonKanNotifyMode);	//200ms callback to timeoutToPonKan//~va70I~
       else                                                         //~va70I~
         sendMsgDelayed(msg,delayPonKan);	//callback to timeoutToPonKan//~9626I~
     }                                                              //~9623I~
@@ -254,10 +265,40 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,Pplayer,AG.aPlayers.ctrTakenAll,0,stdTD);//~9623I~//~9624I~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,Pplayer,0,0,strTD);//~9624R~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~9624I~//~9625R~
-        Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,delayTake,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~9625I~
+        int delay;                                                 //~vaksI~
+	  	if (AG.swPlayAloneNotify)                                  //~vaksI~
+        	delay=delayPonKanNotifyMode;	//200ms callback to timeoutToPonKan//~vaksI~
+        else                                                       //~vaksI~
+	        delay=delayTake;	 //callback :timeoutToTake         //~vaksI~
+//      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,delayTake,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~9625I~//~vaksR~
+        Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,delay,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~vaksI~
 //      GameViewHandler.sendMsgDelayed(msg,delayTake);	 //callback to timeoutToTake//~9624R~//~9626R~
-        sendMsgDelayed(msg,delayTake);	 //callback :timeoutToTake //~9628R~
+//      sendMsgDelayed(msg,delayTake);	 //callback :timeoutToTake //~9628R~//~vaksR~
+        sendMsgDelayed(msg,delay);	 //callback :timeoutToTake     //~vaksI~
     }                                                              //~9623I~//~9624M~
+//  public void postDelayedTake(int Pplayer,TileData Ptd)          //~vakrI~
+    //***********************************************************************//~vakrI~
+    //*from GC.actionPlayAlone                                     //~vakrI~
+    //*On Server                                                   //~vakrI~
+    //*canceled Pon/Kan in PlayAlonNotify mode                     //~vakrI~
+    //***********************************************************************//~vakrI~
+    public void postDelayedTakablePlayAloneNotifyCanceledPonKan(int Pplayer)//~vakrI~
+    {                                                              //~vakrI~
+    	if (swStop)                                                //~vakrI~
+        {                                                          //~vakrI~
+	    	if (Dump.Y) Dump.println("UADelayed.postDelayedTakablePlayAloneNotifyCanceledPonKan return by swStop");//~vakrR~
+        	return;                                                //~vakrI~
+        }                                                          //~vakrI~
+        if (Dump.Y) Dump.println("UADelayed postDelayedTakablePlayAloneNotifyCanceledPonKan  player="+Pplayer);//~vakrR~
+        int delay;                                                 //~vakrI~
+	  	if (AG.swPlayAloneNotify)                                  //~vakrI~
+        	delay=delayPonKanNotifyMode;	//200ms callback to timeoutToPonKan//~vakrI~
+        else                                                       //~vakrI~
+	        delay=delayTake;	 //callback :timeoutToTake         //~vakrI~
+        Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_TO_TAKE,delay,Pplayer,AG.aPlayers.ctrTakenAll,AG.aPlayers.ctrDiscardedAll);//~vakrI~
+        sendMsgDelayed(msg,delay);	 //callback :timeoutToTake     //~vakrI~
+        if (Dump.Y) Dump.println("UADelayed postDelayedTakablePlayAloneNotifyCanceledPonKan  exit player="+Pplayer);//~vakrI~
+    }                                                              //~vakrI~
     //***********************************************************************//~0403I~
     //*On Server                                                   //~0403I~
     //keep ron time for ankan,chankan                              //~0403I~
@@ -449,22 +490,41 @@ public class UADelayed //implements Runnable                            //~v@@@R
     //***********************************************************************//~9627I~
     //*on server                                                   //~9627I~
     //***********************************************************************//~9627I~
-	public void postDelayedAutoTakeKan(boolean PswServer,int Pplayer,int PctrTaken,int PctrDiscarded)//~9623R~//~9624R~//~9627R~//~0406R~
+//	public void postDelayedAutoTakeKan(boolean PswServer,int Pplayer,int PctrTaken,int PctrDiscarded)//~9623R~//~9624R~//~9627R~//~0406R~//~vakqR~
+  	public void postDelayedAutoTakeKan(boolean PswServer,int Pplayer,int PctrTaken,int PctrDiscarded,boolean PswTimeout)//~vakqI~
     {                                                              //~9623I~
     	if (swStop)                                                //~9B20I~
         {                                                          //~9B20I~
 	    	if (Dump.Y) Dump.println("UADelayed.postDelayedAutoTakeKan return by swStop");//~9B20I~
         	return;                                                //~9B20I~
         }                                                          //~9B20I~
-        if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan swServer="+PswServer+",timeout="+timeoutAutoTake+",player="+Pplayer+",ctraTakenAll="+PctrTaken);//~9623I~//~9624R~//~9625R~//~9627R~
+        if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan swServer="+PswServer+",timeoutAutoTake="+timeoutAutoTake+",timeoutAutoTakeRobot="+timeoutAutoTakeRobot+",player="+Pplayer+",ctraTakenAll="+PctrTaken+",PswTimeout="+PswTimeout);//~9623I~//~9624R~//~9625R~//~9627R~//~vakqR~
         int timeout=timeoutAutoTake;                               //~va60I~
         if (AG.aAccounts.isDummyPlayer(Pplayer))    //Robot may do KAN//~va60I~
-	        timeout=timeoutAutoTakeRobot;                          //~va60I~
+        {                                                          //~vakqI~
+          if (!PswTimeout) //minkan, Takeable just after Kan       //~vakqI~
+          {                                                        //~vakyI~
+        	timeout=TIMEOUT_AUTOTAKE_ROBOT_MINKAN;	//=200;            //~vakqM~
+//          if (UA.UAK.chk4KanDrawnWithoutOpenDlg(Pplayer,PctrTaken,PctrDiscarded))	//chk 4KanDrawn case(schedule  ReqDlg//~vakyR~
+//          	timeout=0;	//do not take and open ReqDlgHW        //~vakyR~
+          }                                                        //~vakyI~
+          else                                                     //~vakqI~
+//          timeout=timeoutAutoTakeRobot;                          //~va60I~//~vakqR~
+        	timeout=TIMEOUT_AUTOTAKE_ROBOT_ANKAN_ADDKAN; //200 //no need to wait for robot after rinshantake wait//~vakqI~
+        }                                                          //~vakqI~
+        else                                                       //~vakzI~
+        {                                                          //~vakzI~
+          	if (!PswTimeout) //minkan, Takeable just after Kan     //~vakzI~
+            if (timeout!=0)                                        //~vakzI~
+	        	timeout=TIMEOUT_AUTOTAKE_HUMAN_MINKAN;	//=200;    //~vakzI~
+        }                                                          //~vakzI~
         if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan timeout="+timeout);//~va60I~
 //      if (timeoutAutoTake==0)                                    //~9625I~//~9627R~//~9628I~//~va60R~
         if (timeout==0)                                            //~va60I~
         {                                                          //~9630I~
 	        delayedAction=GCM_TIMEOUT_AUTOTAKE_KAN0;               //~9630I~
+            if (PswServer)                                         //~vakmI~
+	        	UA.UAK.autoTakeKanTimeout_0(Pplayer,PctrTaken,PctrDiscarded);  //chk Drawn4Kan//~vakmI~
         	if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan return by timeout=0 set delayedAction="+delayedAction);//~9630I~
         	return;                                                //~9624I~//~9627R~//~9628I~
         }                                                          //~9630I~
@@ -478,6 +538,11 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //  	if (!UA.UADL.isWaitableAutoTakeKan(Pplayer,PctrTaken,PctrDiscarded))    //Player is next player//~9627I~//~0406R~//~va60R~
     	if (!isWaitableAutoTakeKan(Pplayer,PctrTaken,PctrDiscarded,timeout))    //Player is next player//~va60R~
         	return;                                                //~9627I~
+	    if (UA.UAK.chk4KanDrawnBeforeAutoTakeKan(Pplayer,PctrTaken,PctrDiscarded))  //chk Drawn4Kan//~vakHI~
+        {                                                          //~vakHI~
+        	if (Dump.Y) Dump.println("UADelayed postDelayedAutoTakeKan return by 4kanDrawn");//~vakHI~
+        	return;                                                //~vakHI~
+        }                                                          //~vakHI~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TAKEKAN_TIMEOUT,Pplayer,PctrTaken,PctrKan);//~9623R~//~9624R~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_AUTOTAKE_KAN,Pplayer,PctrTaken,PctrKan);//~9624I~//~9625R~
 //      Message msg=GameViewHandler.obtainMsg(GCM_TIMEOUT_AUTOTAKE_KAN,timeoutAutoTakeKan,Pplayer,PctrTaken,PctrKan);//~9625R~
@@ -619,9 +684,10 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //        GVH.postDelayed(this,Ptime);    //GVH:Handler extended     //~v@@@R~//~9623R~
 //    }                                                              //~v@@@I~//~9623R~
     //***********************************************************************//~v@@@I~
-    //*from Robot by GCM_TAKE and GCM_NEXT_PLAYER                 //~9624I~//~va60R~
+    //*from Robot by GCM_TAKE,GCM_DISCARD,PON,KAN,CHII,RON,REACH,RON//~vakjR~
     //***********************************************************************//~9624I~
-	public static void postDelayedRobotMsg(boolean PswWaiterBlock,int Ptime/*milisec*/,int PactionID,int Psender,String PmsgData)//~v@@@R~//~9624R~
+//  public static void postDelayedRobotMsg(boolean PswWaiterBlock,int Ptime/*milisec*/,int PactionID,int Psender,String PmsgData)//~v@@@R~//~9624R~//~vakjR~
+    public static void postDelayedRobotMsg(boolean PswWaiterBlock,int Ptime/*milisec*/,int PactionID,int Psender,String PmsgData,int Peswn)//~vakjI~
     {                                                              //~v@@@I~
     	if (AG.aUADelayed.swStop)                                  //~9B20I~
         {                                                          //~9B20I~
@@ -1118,7 +1184,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         if  (AG.aPlayers.isActionDoneExceptRon(Pplayer,PctrTaken,PctrDiscarded)//~0404I~
                 )                                                  //~v@@@I~
         {                                                          //~v@@@I~
-        	if (Dump.Y) Dump.println("UADelayed.delayedNextPlayerPonKan tile intercepted or take advanced");//~9624R~
+        	if (Dump.Y) Dump.println("UADelayed.delayedNextPlayerPonKan @@@@ tile intercepted or take advanced");//~9624R~//~vakAR~
             return;                                                //~v@@@I~
         }                                                          //~v@@@I~
 //  	postDelayed(delayTake,GCM_NEXT_PLAYER,player,TD);          //~v@@@I~//~9623R~
@@ -1143,7 +1209,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         if  (AG.aPlayers.isActionDoneExceptRon(Pplayer,PctrTaken,PctrDiscarded)//~0404I~
                 )                                                  //~0403I~
         {                                                          //~0403I~
-        	if (Dump.Y) Dump.println("UADelayed.delayedRinshanTakable tile intercepted or take advanced");//~0403I~
+        	if (Dump.Y) Dump.println("UADelayed.delayedRinshanTakable tile @@@@ intercepted or take advanced");//~0403I~//~vakAR~
             return;                                                //~0403I~
         }                                                          //~0403I~
 //      UA.UAK.setTimeout(true/*timeout*/,true/*swServer*/,Pplayer);	//autotake timeout//~0403R~//~va60R~
@@ -1167,7 +1233,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         if  (AG.aPlayers.isActionDone(Pplayer,PctrTaken,PctrDiscarded)//~9624M~
                 )//~v@@@I~                                         //~9624M~
         {                                                          //~v@@@I~//~9624M~
-        	if (Dump.Y) Dump.println("UADelayed.delayedNextPlayer tile intercepted");//~v@@@R~//~9624R~
+        	if (Dump.Y) Dump.println("UADelayed.delayedNextPlayer @@@@ tile intercepted");//~v@@@R~//~9624R~//~vakAR~
             return;                                                //~v@@@I~//~9624M~
         }                                                          //~v@@@I~//~9624M~
 		if ((TestOption.option & TO_DRAWNREQDLG_LAST)!=0)          //~v@@@I~//~9624M~
@@ -1213,7 +1279,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //      if  ((lastTD.flag & TDF_INTERCEPTED)!=0)                   //~9624R~
       	if (Status.isIssuedRon())                                  //~9624I~
         {
-        	if (Dump.Y) Dump.println("UADelayed.delayedLastDrawn tile intercepted");//~9624I~
+        	if (Dump.Y) Dump.println("UADelayed.delayedLastDrawn @@@@ tile intercepted");//~9624I~//~vakAR~
             return;
         }
 		int currentEswn=Accounts.getCurrentEswn();                 //~9B24I~
@@ -1286,6 +1352,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         	return;                                                //~9B20I~
         }                                                          //~9B20I~
         if (Dump.Y) Dump.println("UADelayed.actionReleaseWait player="+Pplayer+",parm="+Arrays.toString(PintParm));//~9627R~
+        if (Dump.Y) Dump.println("UADelayed.actionReleaseWait currentAction="+PLS.getCurrentAction()+",currentPlayer="+PLS.getCurrentPlayer());//+vakHI~
         int eswn=PintParm[PARMPOS_WAIT_RELEASE_PLAYER];            //~9627R~
 	    int player=AG.aAccounts.eswnToPlayer(eswn);                //~9627I~
         int msgid=PintParm[PARMPOS_WAIT_RELEASE_MSGID];            //~9627I~
@@ -2308,15 +2375,17 @@ public class UADelayed //implements Runnable                            //~v@@@R
         	return;                                                //~9B20I~
         }                                                          //~9B20I~
 	    if (Dump.Y) Dump.println("UADelayed.stopAuto PswOn="+PswOn+",eswn="+Peswn+",swWaitingAutoByDrawnHW="+Arrays.toString(swWaitingAutoByDrawnHW)+",stopAutoCtr="+stopAutoCtr+",PfixStop="+PfixStop);//~9703R~//~9704R~//~9A27R~
-	    if (Dump.Y) Dump.println("UADelayed.stopAuto timeoutAutoTake="+timeoutAutoTake+",timeoutAutoDiscard="+timeoutAutoDiscard+",timeoutAutoTakeRobot="+timeoutAutoTakeRobot+",widthRobot="+AG.aAccounts.isGameWithRobot());//~9703I~
+	    if (Dump.Y) Dump.println("UADelayed.stopAuto timeoutAutoTake="+timeoutAutoTake+",timeoutAutoDiscard="+timeoutAutoDiscard+",timeoutAutoTakeRobot="+timeoutAutoTakeRobot+",isGameWithRobot="+AG.aAccounts.isGameWithRobot());//~9703I~//~vab2R~
         if (timeoutAutoTake==0 && timeoutAutoDiscard==0 && !AG.aAccounts.isGameWithRobot())//~9703I~
         {                                                          //~9703I~
-		    if (Dump.Y) Dump.println("UADelayed.stopAuto bypass by no timeout setting");//~9703I~
+		    if (Dump.Y) Dump.println("UADelayed.stopAuto @@@@bypass by no timeout setting");//~9703I~//~vakrR~
         }                                                          //~9703I~
     	if (PfixStop==STOPAUTO_DRAWNHW_NOTIFY)  //on client from Server  at ctr=1 or 0//~9B14I~//~9B19R~
         {                                                          //~9B14I~
         	stopAutoCtr=PswOn ? 1: 0;                              //~9B14I~
 		    if (Dump.Y) Dump.println("UADelayed.stopAuto DRAWNHW_NOTIFY stopAutoCtr="+stopAutoCtr);//~9B14I~
+            if (stopAutoCtr==0 && !swServer)                       //~vakkI~
+            	dismissDrawnHW();                                  //~vakkI~
         	return;                                                //~9B14I~
         }                                                          //~9B14I~
 //      if (PfixStop!=0)                                           //~9A24R~
@@ -2422,6 +2491,90 @@ public class UADelayed //implements Runnable                            //~v@@@R
 	    if (Dump.Y) Dump.println("UADelayed.isPendingHW rc="+rc+",stopAutoFix="+stopAutoFix+",stopAutoCtr="+stopAutoCtr);  //~9B14I~//~0228R~
         return rc;                                                 //~9B14I~
     }                                                              //~9B14I~
+    //************************************************************ //~vakjI~
+    //*when isPendingHW returned true (drawnHW requested)          //~vakjR~
+    //*from Players.isPendingHW for DISCARD,TAKE,PON,CHII,KAN      //~vakjR~
+    //*rc:true:continue normal process                             //~vakjI~
+    //************************************************************ //~vakjI~
+    public boolean saveBlockedActionHW(int PactionID,int Pplayer)  //~vakjR~
+    {                                                              //~vakjI~
+	    if (Dump.Y) Dump.println("UADelayed.saveBlockedActionHW swServer="+swServer+",actionID="+PactionID+",player="+Pplayer);//~vakjR~
+        boolean swRobot=AG.aAccounts.isRobotPlayer(Pplayer);       //~vakjI~
+        boolean rc=false;     //process ms as err(action blocked)  //~vakjR~
+////        actionBlockedDrawnHW=0;                                //~vakjR~
+////        if (swRobot && swServer)                               //~vakjR~
+////        {                                                      //~vakjR~
+////            if (PactionID==GCM_TAKE)                           //~vakjR~
+////            {                                                  //~vakjR~
+////                actionBlockedDrawnHW=PactionID;                //~vakjR~
+////                playerBlockedDrawnHW=Pplayer;                  //~vakjR~
+////            }                                                  //~vakjR~
+////            else                                               //~vakjR~
+////                rc=true;    //continue normal action for robot except GCM_TAKE//~vakjR~
+////        }                                                      //~vakjR~
+//        if (swRobot && swServer)                                 //~vakjR~
+//        {                                                        //~vakjR~
+//            rc=true;    //continue normal action for robot, only GCM_TAKE will be blocked at Robot.sendToServer//~vakjR~
+//        }                                                        //~vakjR~
+        actionBlockedDrawnHW=0;                                    //~vakjI~
+        if (swRobot && swServer)                                   //~vakjI~
+        {                                                          //~vakjI~
+            if (PactionID==GCM_TAKE)                               //~vakjI~
+            {                                                      //~vakjI~
+                actionBlockedDrawnHW=PactionID;                    //~vakjI~
+                playerBlockedDrawnHW=Pplayer;                      //~vakjI~
+			    if (Dump.Y) Dump.println("UADelayed.saveBlockedActionHW action saved action="+PactionID+",player="+Pplayer);//~vakkI~
+            }                                                      //~vakjI~
+            else                                                   //~vakjI~
+	            rc=true;    //continue normal action for robot except GCM_TAKE//~vakjI~
+        }                                                          //~vakjI~
+	    if (Dump.Y) Dump.println("UADelayed.saveBlockedActionHW rc="+rc+",actionBlockedDrawnHW="+actionBlockedDrawnHW+",playerBlockedDrawnHW="+playerBlockedDrawnHW);//~vakjR~
+        return rc;
+    }                                                              //~vakjI~
+    //************************************************************ //~vakjI~
+    //*from Robot.sendToServer                                     //~vakjI~
+    //* for DISCARD,TAKE,PON,KAN,CHII,REACH,RON                    //~vakjI~
+    //* rc=true:send msg blocked                                   //~vakjI~
+    //************************************************************ //~vakjI~
+//    private static boolean swTest=true; //TODO TEST              //~vakjR~
+    public boolean saveBlockedActionHWRobot(int PactionID,int Peswn)//~vakjR~
+    {                                                              //~vakjI~
+	    if (Dump.Y) Dump.println("UADelayed.saveBlockedActionHWRobot actionID="+PactionID+",eswn="+Peswn);//~vakjR~
+//        if (Dump.Y) Dump.println("UADelayed.saveBlockedActionHWRobot swTest="+swTest);//~vakjR~
+//        boolean rc=false;                                        //~vakjR~
+//        actionBlockedDrawnHW=0;                                  //~vakjR~
+//        if (PactionID==GCM_TAKE)                                 //~vakjR~
+//        {                                                        //~vakjR~
+////          if (isPendingHW())                                   //~vakjR~
+//            if (swTest)   //TODO test                            //~vakjR~
+//            {                                                    //~vakjR~
+//                swTest=false;                                    //~vakjR~
+//                actionBlockedDrawnHW=PactionID;                  //~vakjR~
+//                int player=Accounts.eswnToPlayer(Peswn);         //~vakjR~
+////              if (!AG.aPlayers.isLastActionIsKan())            //~vakjR~
+////                  if (AG.aPlayers.swLastActionIsDiscard)       //~vakjR~
+////                      player=Players.nextPlayer(player);       //~vakjR~
+//                playerBlockedDrawnHW=player;                     //~vakjR~
+//                rc=true;                                         //~vakjR~
+//            }                                                    //~vakjR~
+//        }                                                        //~vakjR~
+        boolean rc=false; 	//block no msg and postDelayedRobotMsg(blocked at handle msg GCM_TAKE at Players.isyourTurn)//~vakjI~
+	    if (Dump.Y) Dump.println("UADelayed.saveBlockedActionHWRobot rc="+rc+",actionBlockedDrawnHW="+actionBlockedDrawnHW+",playerBlockedDrawnHW="+playerBlockedDrawnHW);//~vakjI~
+        return rc;                                                 //~vakjI~
+    }                                                              //~vakjI~
+    //************************************************************ //~vakjI~
+    //*rc:true:msg will be rescheduled                             //~vakjI~
+    //************************************************************ //~vakjI~
+    public boolean actionBlockedDrawnHW(int Paction,int Pplayer)   //~vakjI~
+    {                                                              //~vakjI~
+	    boolean rc=false;
+        if (Dump.Y) Dump.println("UADelayed.actionBlockedDrawnHW action="+Paction+",player="+Pplayer);//~vakjI~
+        if (!AG.aAccounts.isRobotPlayer(Pplayer))                  //~vakjI~
+        	return false;                                           //~vakjI~
+    //*timer task will reschedule robot action if no msg saved     //~vakjI~
+	    if (Dump.Y) Dump.println("UADelayed.actionBlockedDrawnHW rc="+rc+",action="+Paction+",player="+Pplayer);//~vakjI~
+        return rc;                                                 //~vakjI~
+    }                                                              //~vakjI~
     //************************************************************ //~v@@@R~
     //*subthread Class. a Thread for server to process msg        //~1424I~//~v@@@I~
     //************************************************************ //~v@@@R~
@@ -2432,6 +2585,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //      private boolean suSuspendThread=false;                         //~vab1I~//~vab2R~
 //      private int ctrNoWork=0;                                   //~vab1I~//~vab2R~
         private int ctrWaiting;                                    //~vab1I~
+        private boolean swBlockedNoMsgOld=false;                   //~vakjR~
         UADelayTimer()                                  //~1420R~  //~v@@@I~
         {                                                          //~1420I~//~v@@@I~
 //          if (Dump.Y) Dump.println("UADelayTimer new() LIMiIT_NOWORK="+LIMIT_ENDTHREAD+",limit="+limit);        //~v@@@R~//~vab1R~//~vab2R~
@@ -2461,13 +2615,13 @@ public class UADelayed //implements Runnable                            //~v@@@R
                 {                                                  //~v@@@I~
                   if (!swStopTemporally)                           //~0223I~
                   {                                                //~0223I~
-            		if (swStop)                                    //~v@@@I~//+vab2R~
-                    {                                              //+vab2R~
-				        if (Dump.Y) Dump.println("UADelayTimer.run exit by swStop");//+vab2I~
+            		if (swStop)                                    //~v@@@I~//~vab2R~
+                    {                                              //~vab2R~
+				        if (Dump.Y) Dump.println("UADelayTimer.run exit by swStop");//~vab2I~
 //                  	swSuspendThread=true;                      //~vab2R~
 //  					suspendThread()                            //~vab2R~
-                		break;                                     //~v@@@I~//+vab2I~
-                    }                                              //+vab2R~
+                		break;                                     //~v@@@I~//~vab2I~
+                    }                                              //~vab2R~
 					runTimer();                                    //~9B18I~
 //                  if (swSuspendThread)                           //~vab2R~
 //  					suspendThread()                            //~vab2R~
@@ -2518,7 +2672,8 @@ public class UADelayed //implements Runnable                            //~v@@@R
                             swBlock=true;                          //~9B18I~
                         if (Dump.Y) Dump.println("UADelayed.runTimer stopAutoFix="+stopAutoFix+",swStopAuto2Touch="+swStopAuto2Touch+",stopAutoCtr="+stopAutoCtr+",swBlock="+swBlock);//~9B18R~//~9B28R~
                     }                                              //~9B18I~
-                    if (Dump.Y) Dump.println("UADelayed.runTimer swBlock="+swBlock+",msgWaiting="+Utils.toString(msgWaiting));//~vaaUR~
+                    boolean swBlockedNoMsg=stopAutoCtr!=0;         //~vakjR~
+                    if (Dump.Y) Dump.println("UADelayed.runTimer swBlock="+swBlock+",swBlockedNoMsg="+swBlockedNoMsg+",swBlockedNoMsgOld="+swBlockedNoMsgOld+",stopAutoFix="+stopAutoFix+",stopAutoCtr="+stopAutoCtr+",swStopAuto2Touch="+swStopAuto2Touch+",msgWaiting="+Utils.toString(msgWaiting));//~vaaUR~//~vakjR~
                     if (swBlock)                                   //~9B18I~
                     {                                              //~9B18I~
                         swPostM=false;                             //~9B18I~
@@ -2528,12 +2683,28 @@ public class UADelayed //implements Runnable                            //~v@@@R
                     {                                              //~9B18I~
                         swPostM=msgWaiting!=null;                  //~9B18I~
                         if (swPostM)                               //~9B18I~
+                        {                                          //~vakjI~
                             if (AG.aUARestart.isIOExceptionBeforeRestart())//~9B18I~
                             {                                      //~9B18I~
                                 if (Dump.Y) Dump.println("UADelayed.runTimer ioException skip Post");//~9B18R~
                                 swPostM=false;                     //~9B18I~
                             }                                      //~9B18I~
+                        }                                          //~vakjI~
                     }                                              //~9B18I~
+                    if (!swBlockedNoMsg && swBlockedNoMsgOld)//stopAuto released//~vakGI~
+                    {                                              //~vakGI~
+		                if (Dump.Y) Dump.println("UADelayed.runTimer stopAuto released");//~vakGI~
+                     	if (rescheduleStopAutoAction())            //~vakGI~
+                        {                                          //~vakGI~
+		                	if (Dump.Y) Dump.println("UADelayed.runTimer rescheduled for 4kanDrawn swPostM="+swPostM+",msg="+msgWaiting);//~vakGI~//~vakHR~
+		                    if (swPostM)                           //~vakGI~
+                            {                                      //~vakGI~
+		                        if (Dump.Y) Dump.println("UADelayed.runTimer @@@@ blocked msg canceled msg="+msgWaiting);//~vakGI~
+                            	swPostM=false;	//ignore blocked Msg//~vakGI~
+		                        msgWaiting=null;                   //~vakGI~
+                            }                                      //~vakGI~
+                        }                                          //~vakGI~
+                    }                                              //~vakGI~
                     if (swPostM)                                   //~9B18I~
                     {                                              //~9B18I~
                         Message msg=msgWaiting;                    //~9B18I~
@@ -2543,6 +2714,12 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //                      GameViewHandler.sendMsgDelayed(msg,0/*time*/);  //callback to timeout//~9B18I~
                         rescheduleMsgFromTimer(msg);               //~9B18I~
                     }                                              //~9B18I~
+//                  else                                           //~vakjI~//~vakGR~
+//                  {                                              //~vakjI~//~vakGR~
+//                      if (!swBlockedNoMsg && swBlockedNoMsgOld && msgWaiting==null)	//no msg to reschedule//~vakjR~//~vakGR~
+//                      	rescheduleRobotAction();               //~vakjM~//~vakGR~
+//                  }                                              //~vakjI~//~vakGR~
+                    swBlockedNoMsgOld=swBlockedNoMsg;                //~vakjR~
 //                    if (swPost)                                  //~9B18I~
 //                    {                                            //~9B18I~
 //                        swActionReleased=true;                   //~9B18I~
@@ -2566,6 +2743,90 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //        else                                                       //~vab1I~//~vab2R~
 //            ctrNoWork=0;                                           //~vab1I~//~vab2R~
     }                                                              //~9B18I~
+	    //*****************************************************************//~vakjI~
+	    //*for Robot and Human                                     //~vakAI~
+	    //*****************************************************************//~vakAI~
+//  	private void rescheduleRobotAction()                       //~vakjI~//~vakGR~
+    	private boolean rescheduleStopAutoAction()                 //~vakGI~
+    	{                                                          //~vakjI~
+        	boolean rc=false;                                      //~vakGI~
+        	int lastActionID=AG.aPlayers.lastActionID;             //~vakjI~
+			if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleStopAutoAction swServer="+swServer+",lastActionID="+lastActionID+",actionBlockedDrawnHW="+actionBlockedDrawnHW+",playerBlockedDrawnHW="+playerBlockedDrawnHW+",currentAction="+AG.aPlayers.getCurrentPlayer());//~vakGR~
+            if (!swServer)                                         //~vakjI~
+            {                                                      //~vakjI~
+				if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleStopAutoAction @@@@return by swServer=False");//~vakjR~//~vakGR~
+//          	return;                                            //~vakjI~//~vakGR~
+            	return rc;                                         //~vakGI~
+            }                                                      //~vakjI~
+//        if (false)                                                 //~vakAI~//~vakGR~
+//        {                                                          //~vakAI~//~vakGR~
+//            if (actionBlockedDrawnHW==0)                           //~vakkI~//~vakGR~
+//            {                                                      //~vakkI~//~vakGR~
+//                if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleRobotAction @@@@return by actionBlockedDrawnHW=0");//~vakkI~//~vakGR~
+//                return;                                            //~vakkI~//~vakGR~
+//            }                                                      //~vakkI~//~vakGR~
+//            int player=AG.aPlayers.getCurrentPlayer();             //~vakjM~//~vakGR~
+//            int playerNext=Players.nextPlayer(player);             //~vakjI~//~vakGR~
+//            if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleRobotAction playerCurrent="+player+",playerNext="+playerNext);//~vakjI~//~vakGR~
+//            boolean swReschedule=false;                            //~vakjI~//~vakGR~
+//            switch(actionBlockedDrawnHW)                           //~vakjI~//~vakGR~
+//            {                                                      //~vakjI~//~vakGR~
+////          case GCM_DISCARD:                                      //~vakjR~//~vakGR~
+////              if (lastActionID==GCM_TAKE)                        //~vakjR~//~vakGR~
+////                  swReschedule=true;                             //~vakjR~//~vakGR~
+////              break;                                             //~vakjR~//~vakGR~
+//            case GCM_TAKE:                                         //~vakjI~//~vakGR~
+//                if (lastActionID==GCM_DISCARD)                     //~vakjI~//~vakGR~
+//                {                                                  //~vakjI~//~vakGR~
+//                    swReschedule=playerBlockedDrawnHW==playerNext; //~vakjI~//~vakGR~
+//                    player=playerNext;                             //~vakjI~//~vakGR~
+//                }                                                  //~vakjI~//~vakGR~
+//                else                                               //~vakjI~//~vakGR~
+//                if (lastActionID==GCM_KAN)                         //~vakjI~//~vakGR~
+//                    swReschedule=playerBlockedDrawnHW==player;     //~vakjI~//~vakGR~
+//                if (swReschedule)                                  //~vakkI~//~vakGR~
+//                    if (!AG.aAccounts.isRobotPlayer(player))       //~vakkI~//~vakGR~
+//                    {                                                      //~vakjI~//~vakkI~//~vakGR~
+//                        swReschedule=false;                        //~vakkI~//~vakGR~
+//                        if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleRobotAction @@@@return by Human player="+player);//~vakjR~//~vakkI~//~vakGR~
+//                    }                                                      //~vakjI~//~vakkI~//~vakGR~
+//                break;                                             //~vakjI~//~vakGR~
+//            }                                                      //~vakjI~//~vakGR~
+//            if (!swReschedule)                                     //~vakjI~//~vakGR~
+//            {                                                      //~vakjM~//~vakGR~
+//                if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleRobotAction return@@@@ by actionBlockedDrawnHW="+actionBlockedDrawnHW+",lastActionID="+lastActionID);//~vakjR~//~vakGR~
+//                return;                                            //~vakjM~//~vakGR~
+//            }                                                      //~vakjM~//~vakGR~
+//            try                                                    //~vakjI~//~vakGR~
+//            {                                                      //~vakjI~//~vakGR~
+//                DrawnReqDlgHW.rescheduleRobotAction(player,actionBlockedDrawnHW);//~vakjR~//~vakGR~
+//                actionBlockedDrawnHW=0;                            //~vakkI~//~vakGR~
+//            }                                                      //~vakjI~//~vakGR~
+//            catch (Exception e)                                    //~vakjI~//~vakGR~
+//            {                                                      //~vakjI~//~vakGR~
+//                Dump.println(false/*show toast*/,e,"UADelayTimer.run.rescheduleRobotAction");//~vakjI~//~vakGR~
+//            }                                                      //~vakjI~//~vakGR~
+//          }                                                        //~vakAI~//~vakGR~
+//          else  //TODO test                                        //~vakAI~//~vakGR~
+//          {                                                        //~vakAI~//~vakGR~
+            try                                                    //~vakAI~
+            {                                                      //~vakAI~
+            	if (PLS.getCurrentAction()==GCM_KAN)               //~vakAR~
+                {                                                  //~vakAI~
+		            int player=PLS.getCurrentPlayer();             //~vakAI~
+                    if (Dump.Y) Dump.println("UADelayed.runTimer.stopAutoAction @@@@ 4KanDrawn was released player="+player);//~vakGI~
+	            	DrawnReqDlgHW.rescheduleKanDrawnRelease(player);//~vakAR~
+                    rc=true;                                       //~vakGI~
+                }                                                  //~vakAI~
+            }                                                      //~vakAI~
+            catch (Exception e)                                    //~vakAI~
+            {                                                      //~vakAI~
+                Dump.println(false/*show toast*/,e,"UADelayTimer.run.rescheduleStopAutoAction");//~vakAI~//~vakGR~
+            }                                                      //~vakAI~
+//          }                                                        //~vakAI~//~vakGR~
+			if (Dump.Y) Dump.println("UADelayed.runTimer.rescheduleStopAutoAction exit rc="+rc);//~vakjI~//~vakGR~
+            return rc;                                             //~vakGI~
+    	}                                                          //~vakjI~
     }//UADelayTimer thread class                                   //~vab1I~
 //    //*****************************************************************//~9B16I~//~9B17R~
 //    //*confirm action by popupdialog                               //~9B16I~//~9B17R~
@@ -2640,4 +2901,9 @@ public class UADelayed //implements Runnable                            //~v@@@R
         swStop=PswStop;                                            //~0223I~
     }                                                              //~0223I~
     //*************************************************************************//~0223I~
+    private void dismissDrawnHW()                                  //~vakkI~
+    {                                                              //~vakkI~
+        if(Dump.Y) Dump.println("UADelayed.dismissDrawnHW swSever="+swServer);//~vakkI~
+        DrawnDlgHW.dismissByCancelDrawnDlgHW();                       //~vakkI~
+    }                                                              //~vakkI~
 }//class                                                           //~v@@@R~

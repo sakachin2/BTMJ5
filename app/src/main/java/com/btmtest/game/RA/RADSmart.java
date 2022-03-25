@@ -1,5 +1,8 @@
-//*CID://+vaj5R~: update#= 427;                                    //~vaj5R~
+//*CID://+vak6R~: update#= 435;                                    //~vaj5R~//~vak6R~
 //**********************************************************************
+//2022/02/18 vak6 differenciate kataagari err  and fix err         //~vak6I~
+//                fixLast:allow kataagari, else chk kataagari with chk option if not fix err//~vak6I~
+//2022/02/16 vak5 with no chk kataagari,do not lit win button in notify mode for human
 //2022/01/19 vaj5 Not ronable when furiten even if taken if furitenreachoption=No//~vaj5I~
 //2022/01/17 vaiz (Bug)chanta 7pair,missing set INTENT_CHANT when chant pair>=5//~vaizI~
 //2022/01/17 vaiw (bug)itsHandValue was not clearted before evaluateTile if SwDoReach was reset//~vaiwI~
@@ -56,6 +59,7 @@ package com.btmtest.game.RA;
 import android.graphics.Point;
 
 import com.btmtest.TestOption;
+import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
@@ -109,6 +113,7 @@ public class RADSmart
     public	int hanMaxReach;                                       //~1122I~
     private boolean swDiscardedSmart;                              //~1201I~
     private int[] wk3SameSeq=new int[CTR_NUMBER_TILE];             //~vafbI~
+    private boolean swCheckMultiWait;                              //~vak5I~
 //*************************
 	public RADSmart()
     {
@@ -123,6 +128,7 @@ public class RADSmart
     {
     	RAD=AG.aRADiscard;
     	RS=AG.aRoundStat;
+        swCheckMultiWait= RuleSettingOperation.isCheckMultiWait();  //~vak5I~
     }
     //*********************************************************    //~1201I~
     //*from RACAll at Robot itself discard done                                  //~1201I~//~1205R~//~va84R~
@@ -453,7 +459,7 @@ public class RADSmart
     {
     	TileData tdDiscard;
         //**************************
-        if (Dump.Y) Dump.println("RADSmart.selectDiscard swDoReach="+swDoReach);        //~1201R~//~1309R~
+        if (Dump.Y) Dump.println("RADSmart.selectDiscard swDoReach="+swDoReach+",PmyShanten="+PmyShanten);        //~1201R~//~1309R~//~vak6R~
         setNonDiscardable();	//pao and no tile
 //      getStatistic();    //suit,19ji                             //~1201R~
         getDoraOpen();
@@ -933,7 +939,8 @@ public class RADSmart
         return rc;                                                 //~1213I~
 	}                                                              //~1213I~
     //***********************************************************************//~va8fI~
-    //*from RARon at RonRiver,chk furiten and MultiWait:NG         //~va8fI~
+    //*from RARon.isRonableMultiWait only,chk furiten and MultiWait:NG         //~va8fI~//~vak5R~
+    //*NOT Used                                                    //+vak6I~
     //***********************************************************************//~va8fI~
     public  boolean chkFuritenMultiWait(boolean PswTake,int Pplayer,int Peswn,int[] PitsHand,int PctrHand,TileData PtdDiscarded)//~va8fR~
     {                                                              //~va8fI~
@@ -943,7 +950,7 @@ public class RADSmart
       int ctrWin=                                                  //~va91I~
 //  	getWinList(PitsHand,PctrHand);                             //~va8fI~//~vagwR~
     	getWinListNoChkEmpty(PitsHand,PctrHand);                   //~vagwI~
-        boolean swFuriten=false;                                   //~va96R~
+//      boolean swFuriten=false;                                   //~va96R~//~vak6R~
         int ctrOK=0,ctrNG=0;                                       //~va96I~
         for (int ii=0;ii<CTR_TILETYPE;ii++)                        //~va8fI~
         {                                                          //~va8fI~
@@ -951,17 +958,29 @@ public class RADSmart
             {                                                      //~va8fI~
 //          	if (RS.isFuritenRon(Peswn,ii))                     //~va8fI~//~va96R~
 //          	if (!PswTake && RS.isFuritenRon(Peswn,ii))         //~va96I~//~vaj5R~
-            	if (!PswTake && RS.isFuritenRon(Peswn,ii)          //+vaj5I~
-        		||   PswTake && RS.RSP[Peswn].isReachStatusErrFuriten())//+vaj5I~
-                {                                                  //~va8fI~
-				    if (Dump.Y) Dump.println("RADSmart.chkFuritenMultiWait Furiten");//~vaj5I~
-        	    	AG.aRARon.setRonableMultiWaitCBFuriten(ii/*pos of Ron Tile*/);//~va96R~
-                    swFuriten=true;	                               //~va96I~
-                	rc=true;                                       //~va8fI~
-                    break;                                         //~va8fI~
-                }                                                  //~va8fI~
-    	        else                                               //~va8fI~
-                {                                                  //~va8fI~
+//          	if (!PswTake && RS.isFuritenRon(Peswn,ii)          //~vaj5I~//~vak5R~
+//      		||   PswTake && RS.RSP[Peswn].isReachStatusErrFuriten())//~vaj5I~//~vak5R~
+//                if (!PswTake && RS.isFuritenRon(Peswn,ii))         //~vak5I~//~vak6R~
+//                {                                                  //~vak5I~//~vak6R~
+//                    if (Dump.Y) Dump.println("RADSmart.chkFuritenMultiWait FuritenRon");//~vak5I~//~vak6R~
+//                  if (AG.aRARon.setRonableMultiWaitCBFuritenRon(Peswn,ii/*pos of Ron Tile*/)) //set err depending chkmode//~vak5I~//~vak6R~
+//                  {                                                //~vak5I~//~vak6R~
+//                    swFuriten=true;                                //~vak5I~//~vak6R~
+//                    rc=true;                                       //~vak5I~//~vak6R~
+//                    break;                                         //~vak5I~//~vak6R~
+//                  }                                                //~vak5I~//~vak6R~
+//                }                                                  //~vak5I~//~vak6R~
+//                else                                               //~vak5I~//~vak6R~
+//                if ( PswTake && RS.RSP[Peswn].isReachStatusErrFuriten())//~vak5I~//~vak6R~
+//                {                                                  //~va8fI~//~vak6R~
+//                    if (Dump.Y) Dump.println("RADSmart.chkFuritenMultiWait FuritenReach");//~vaj5I~//~vak5R~//~vak6R~
+//                    AG.aRARon.setRonableMultiWaitCBFuriten(ii/*pos of Ron Tile*/);//~va96R~//~vak6R~
+//                    swFuriten=true;                                //~va96I~//~vak6R~
+//                    rc=true;                                       //~va8fI~//~vak6R~
+//                    break;                                         //~va8fI~//~vak6R~
+//                }                                                  //~va8fI~//~vak6R~
+//                else                                               //~va8fI~//~vak6R~
+//                {   //*Furiten is already chked at RARon.isRonableMultiWait//~vak6R~
         	    	boolean rc2=AG.aRARon.isRonableMultiWaitCB(ii/*pos of Ron Tile*/,PswTake,Pplayer,Peswn,PitsHand,PctrHand,PtdDiscarded);//~va8fI~
                     if (!rc2)                                      //~va8fI~
                     {                                              //~va8fI~
@@ -974,17 +993,22 @@ public class RADSmart
                     }                                              //~va8fI~
                     else                                           //~va96I~
                         ctrOK++;                                   //~va96I~
-                }                                                  //~va8fI~
+//                }                                                  //~va8fI~//~vak6R~
             }                                                      //~va8fI~
         }                                                          //~va8fI~
-        if (rc && !swFuriten)                                      //~va96I~
+//      if (rc && !swFuriten)   //ctrNG!=0 without furiten         //~va96I~//~vak6R~
+        if (rc)   //ctrNG!=0                                       //~vak6I~
         {                                                          //~va96I~
         	if (ctrOK==0)                                          //~va96I~
 				AG.aRARon.setRonableMultiWaitCBErr(RARON_ERR_FIX); //~va96I~
             else                                                   //~va96I~
+            {                                                      //~vak5I~
 				AG.aRARon.setRonableMultiWaitCBErr(RARON_ERR_MULTIPLE);//~va96I~
+		    	if (!swCheckMultiWait)                             //~vak5I~
+                	rc=false;	//accept Win button push without notify//~vak5I~
+            }                                                      //~vak5I~
         }                                                          //~va96I~
-        if (Dump.Y) Dump.println("RADSmart.chkFuritenMultiWait rc="+rc+",ctrWin="+ctrWin+",ctrOK="+ctrOK);//~va8fI~//~va96R~
+        if (Dump.Y) Dump.println("RADSmart.chkFuritenMultiWait rc="+rc+",ctrWin="+ctrWin+",ctrOK="+ctrOK+",ctrNG="+ctrNG);//~va8fI~//~va96R~
         return rc;                                                 //~va8fI~
 	}                                                              //~va8fI~
     //***********************************************************************//~1220I~

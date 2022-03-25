@@ -1,5 +1,9 @@
-//*CID://+vajdR~: update#= 382;                                    //~vajdR~
+//*CID://+vakpR~: update#= 391;                                    //~vakpR~
 //**********************************************************************//~v101I~
+//2022/03/02 vakp (Bug)13orphan ankan ron; fails by not winning pattern if called kan not just taken it(success if called at just taken it).//~vakpI~
+//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //~vakmI~
+//2022/02/20 vaka apply kataagari tsumo option                     //~vakaI~
+//2022/02/19 vak8 (BUG)with FuritenChk=NO and FuritenReachOK, it can call Ron for furiten tile.//~vak8I~
 //2022/01/25 vajd (bug)FuritenReach err was not set for reach on client//~vajdI~
 //2022/01/23 vajb (bug)err FuretenAfterReach was not set for chankan//~vajbI~
 //2022/01/22 vaj8 (Bug)When not match notify mode, itshand was notupdated for human on client//~vaj8I~
@@ -48,6 +52,7 @@ package com.btmtest.game.RA;                                         //~1107R~  
 import android.graphics.Point;
 
 import com.btmtest.TestOption;
+import com.btmtest.dialog.DrawnReqDlgHW;
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.Accounts;
@@ -65,6 +70,7 @@ import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.Tiles.*;
 import static com.btmtest.game.RA.RAConst.*;                           //~va60I~
+import static com.btmtest.game.UA.UAEndGame.*;
 
 import java.util.Arrays;
 
@@ -97,10 +103,12 @@ public class RoundStat                                               //~v@@@R~//
 	public boolean sw7PairKan;                                     //~1216I~
 	public boolean swReachOneShot;                                 //~1219I~
 	public boolean swYakuFixLast;                                  //~va8cI~
+	public boolean swYakuFixLastMultiWaitTakeOK;                   //~vakaI~
 	public boolean swFuritenReachOK;                               //~va8jR~
 	public boolean swFuritenReachReject;                           //~vah3I~
 	public boolean swFuritenReachNo;                                    //~vaj5I~
 	private boolean swYakuFixNotFirst;                             //~vaj0I~
+	public boolean sw4ReachCanceled;                               //~vakmI~
 //*************************                                        //~v@@@I~
 	public RoundStat()                                               //~v@@@R~//~va60R~
     {                                                              //~0914I~
@@ -148,6 +156,7 @@ public class RoundStat                                               //~v@@@R~//
         swReachOneShot=RuleSettingYaku.isReachOneShot();           //~1219I~
         constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~
 		swYakuFixLast=RuleSettingYaku.isYakuFixLast();             //~va8cI~
+		swYakuFixLastMultiWaitTakeOK=RuleSettingYaku.isYakuFixMultiWaitTakeOK();//~vakaI~
 		swYakuFixNotFirst=RuleSettingYaku.isYakuFixNotFirst();     //~vaj0I~
 		swFuritenReachOK=RuleSettingYaku.isFuritenReachOK();       //~va8jR~
 		swFuritenReachReject=RuleSettingYaku.isFuritenReachReject();//~vah3I~
@@ -175,6 +184,7 @@ public class RoundStat                                               //~v@@@R~//
         ctrTakenAll=0; ctrCallPonKan=0;                            //~1115R~
         swFix2=constraintFix2!=0 && gameCtrDup>=constraintFix2;                         //~1119I~//~1126M~
         swUpdateDora=true;                                          //~1215I~
+		sw4ReachCanceled=false;                                    //~vakmI~
         if (Dump.Y) Dump.println("RoundStat.reset swFix2="+swFix2);//~vaaUI~
     }                                                              //~v@@@I~
     //*****************************************************        //~va60I~
@@ -294,7 +304,7 @@ public class RoundStat                                               //~v@@@R~//
     }                                                              //~va60I~
     //*********************************************************    //~va60M~
     //*from Players after removed from tdsHand <-UADiscard                                   //~1112I~//~1128R~//~vaj7R~
-    //*on Serve and YOU on client                                  //~vaj7R~
+    //*on Server(Human and Robot) and YOU on client                                  //~vaj7R~//~vakmR~
     //*********************************************************    //~1112I~
     public void discard(int Pplayer,TileData Ptd)                  //~va60I~
     {                                                              //~va60M~
@@ -312,7 +322,8 @@ public class RoundStat                                               //~v@@@R~//
                                                                    //~1201I~
     	if (!swServer)                                             //~va96I~
         	return;                                                //~va96I~
-                                                                   //~va96I~
+        if (ctrDiscardedAll==PLAYERS)                              //~vakmI~
+            chkDrawnHW4Wind(pos);                                    //~va96I~//~vakmR~
 //  	if (!swThinkRobot)                                         //~1201M~//~vaa9R~
 //      	return;                                                //~1201M~//~vaa9R~
                                                                    //~1201I~
@@ -365,7 +376,15 @@ public class RoundStat                                               //~v@@@R~//
         	tdKan=AG.aPlayers.getTileKanAdded();	//chk chaknan  //~1201I~
         else                                                       //~1201I~
         if (kanType==KAN_TAKEN)                                    //~1201I~
-        	tdKan=AG.aPlayers.getCurrentTaken();  //before rinshantaken,chk ankan ron//~1201I~
+        {                                                          //~vakpI~
+//      	tdKan=AG.aPlayers.getCurrentTaken();  //before rinshantaken,chk ankan ron//~1201I~//~vakpR~
+        	tdKan=AG.aPlayers.getLastKanTaken();  //before rinshantaken,chk ankan ron//~vakpI~
+            if (tdKan==null)                                       //~vakpI~
+            {                                                      //~vakpI~
+    	    	if (Dump.Y) Dump.println("RoundStat.timeoutRinshanTakableRobot return by getLastKanTaken==null");//~vakpI~
+                return false;                                      //~vakpI~
+            }                                                      //~vakpI~
+        }                                                          //~vakpI~
         else                                                       //~1201I~
         {                                                          //~1201I~
         	if (Dump.Y) Dump.println("RoundStat.timeoutRinshanTakableRobot return by kantype");//~1201I~
@@ -800,6 +819,26 @@ public class RoundStat                                               //~v@@@R~//
         }                                                          //~vaj7I~
         if (Dump.Y) Dump.println("RoundStat.chkRonableAfterReach Peswn="+Peswn);//~vaj7R~
     }                                                              //~vaj7I~
+    //*********************************************************    //~vakmI~
+    //*on server from discard() at ctrDiscardedAll=4               //~vakmI~
+    //*********************************************************    //~vakmI~
+    private void chkDrawnHW4Wind(int Ppos/*discarded*/)            //~vakmI~
+    {                                                              //~vakmI~
+        if (Dump.Y) Dump.println("RoundStat.chkDrawnHW4Wind Ppos="+Ppos+",ctrTakenAll="+AG.aPlayers.ctrTakenAll+",ctrDiscardedAll="+AG.aPlayers.ctrDiscardedAll);//~vakmR~
+        int ctr4Wind=1; //of 4th discard                           //~vakmI~
+        if (AG.aPlayers.ctrTakenAll==PLAYERS && Ppos>=OFFS_WORDTILE && Ppos<OFFS_WORDTILE_DRAGON)//~vakmI~
+        {                                                          //~vakmI~
+	        for (int ii=0;ii<PLAYERS-1;ii++)                       //~vakmI~
+            {                                                      //~vakmI~
+        		if (Ppos!=itsDiscardedAll[ii])  //for furiten chk  //~vakmI~
+                	break;                                         //~vakmI~
+                ctr4Wind++;                                        //~vakmI~
+            }                                                      //~vakmI~
+        }                                                          //~vakmI~
+        if (ctr4Wind==PLAYERS)                                     //~vakmR~
+        	DrawnReqDlgHW.newInstance(EGDR_4WIND).show();          //~vakmI~
+        if (Dump.Y) Dump.println("RoundStat.chkDrawnHW4Wind ctr4Wind="+ctr4Wind);//~vakmR~
+    }                                                              //~vakmI~
 //******************************************************************************//~v@@@I~//~1128R~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
@@ -1104,13 +1143,24 @@ public class RoundStat                                               //~v@@@R~//
         //*****************************************************    //~vaj5I~
         public boolean isReachStatusErrFuriten()                   //~vaj5I~
         {                                                          //~vaj5I~
-        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten before eswn="+eswn+",callStatus="+Integer.toHexString(callStatus));//~vaj7I~//+vajdR~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten before eswn="+eswn+",callStatus="+Integer.toHexString(callStatus));//~vaj7I~//~vajdR~
   			boolean rc=(callStatus & CALLSTAT_REACH_ERRFURITEN)!=0; //reach oneshot//~vaj5I~
             if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)!=0)    //~vaj7I~
                 rc=true;                                           //~vaj7R~
         	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten rc="+rc+",callStatus="+Integer.toHexString(callStatus));//~vaj5I~
             return rc;
         }                                                          //~vaj5I~
+        //*****************************************************    //~vak8I~
+        public boolean isReachStatusErrFuriten(boolean PswTake)    //~vak8I~
+        {                                                          //~vak8I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten before eswn="+eswn+",swTake="+PswTake+",callStatus="+Integer.toHexString(callStatus));//~vak8I~
+	        boolean rc=isReachStatusErrFuriten();	//chk passed winntile//~vak8I~
+            if (!rc)                                               //~vak8I~
+            	if (!PswTake && (callStatus & CALLSTAT_REACH_OKFURITEN)!=0) //furitan reach OK and taken//~vak8R~
+                	rc=true;                                       //~vak8I~
+        	if (Dump.Y) Dump.println("RoundStat.RSPlayer.isReachStatusErrFuriten swTake="+PswTake+",rc="+rc+",callStatus="+Integer.toHexString(callStatus));//~vak8I~
+            return rc;                                             //~vak8I~
+        }                                                          //~vak8I~
         //*****************************************************    //~vaj7I~
         //*On Server,at Discard, Pon, Kan, Chii, Take              //~vaj7I~
         //*****************************************************    //~vaj7I~
@@ -2001,10 +2051,12 @@ public class RoundStat                                               //~v@@@R~//
             if (Dump.Y) Dump.println("RoundStat.setIntent eswn="+eswn+",intent="+Integer.toHexString(intent));//~1131I~
         }                                                          //~1131I~
         //***********************************************************************//~1215I~
+        //*rc=true:earth pair is all same color of the parm type   //+vakpI~
+        //***********************************************************************//+vakpI~
         public boolean isSameColorEarth(int Ptype)                 //~1215I~
         {                                                          //~1215I~
             boolean rc=(earthColor & ~(1<<Ptype))==0;               //~1215I~
-            if (Dump.Y) Dump.println("RoundStat.isSameEarthColor rc="+rc+",type="+Ptype+",earthColor="+earthColor);//~1215I~
+            if (Dump.Y) Dump.println("RoundStat.isSameColorEarth rc="+rc+",type="+Ptype+",earthColor="+earthColor);//~1215I~//+vakpR~
             return rc;
         }                                                          //~1215I~
         //***********************************************************************//~1223I~

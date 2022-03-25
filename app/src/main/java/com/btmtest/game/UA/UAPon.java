@@ -1,4 +1,4 @@
-//*CID://+vah0R~: update#= 616;                                    //~vah0R~
+//*CID://+vah0R~: update#= 617;                                    //~vah0R~
 //**********************************************************************//~v101I~
 //2021/11/18 vah0 delete unused UnitTest data statement            //~vah0I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -283,7 +283,7 @@ public class UAPon                                                 //~v@@@R~
     	boolean swDraw;                                            //~v@@@R~
         TileData[] tds;                                            //~v@@@R~
     //***********************                                      //~v@@@I~
-        if (Dump.Y) Dump.println("UAPon.takePon swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~v@@@R~//~9B21R~//+vah0R~
+        if (Dump.Y) Dump.println("UAPon.takePon swServer="+PswServer+",swReceived="+PswReceived+",player="+Pplayer+",intp="+Arrays.toString(PintParm));//~v@@@R~//~9B21R~//~vah0R~
 //      AG.aUADelayed.actionDone(GCM_PON,PswServer,PswReceived,Pplayer);//~9B21I~//~9B27R~
         if (!PswReceived)                                          //~v@@@I~
         {                                                          //~v@@@I~
@@ -370,7 +370,7 @@ public class UAPon                                                 //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public  static String makeMsgDataToServer(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@R~//~v@@6R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UAPon.makeMsgDataToServer ctr="+Pctr);//~v@@@R~
+        if (Dump.Y) Dump.println("UAPon.makeMsgDataToServer player="+Pplayer+",ctr="+Pctr+",tds="+TileData.toString(Ptds));//~v@@@R~//+vah0R~
 //  	int eswn=AG.aAccounts.playerToEswn(Pplayer);               //~v@@@R~
         StringBuffer sb=new StringBuffer();                        //~v@@@I~
 //      sb.append(eswn+MSG_SEPAPP2);                               //~v@@@R~
@@ -385,7 +385,7 @@ public class UAPon                                                 //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public  static String makeMsgDataToClient(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@I~//~v@@6R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UAPon.makeMsgDataToClient ctr="+Pctr);//~v@@@I~
+        if (Dump.Y) Dump.println("UAPon.makeMsgDataToClient player="+Pplayer+",ctr="+Pctr+",tds="+TileData.toString(Ptds));//+vah0I~
 		int eswn=Accounts.playerToEswn(Pplayer);                        //~v@@@I~
 //      String data=eswn+MSG_SEPAPP2+makeMsgDataToServer(Pplayer,Ptds,Pctr);//~v@@@I~//~v@@6R~
         String data=eswn+MSG_SEPAPP2+makeMsgDataToServer(Pplayer,Ptds,Pctr);//~v@@6R~
@@ -406,6 +406,7 @@ public class UAPon                                                 //~v@@@R~
         {                                                          //~v@@@I~
         	tds[ii]=new TileData(true/*swEswnToPlayer*/,PintParm,pos);                        //~v@@@I~
         }
+        if (Dump.Y) Dump.println("UAPon.getReceivedPair ctr="+PpairCtr+",tds="+TileData.toString(tds));//+vah0I~
         return tds;//~v@@@I~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~

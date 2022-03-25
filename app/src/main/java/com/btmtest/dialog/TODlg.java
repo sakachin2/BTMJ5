@@ -1,4 +1,4 @@
-//*CID://+vaihR~:                             update#=  574;       //~vaihR~
+//*CID://+vaihR~:                             update#=  575;       //~vaihR~
 //*****************************************************************//~v101I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
@@ -49,6 +49,9 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String CHKRANK="ChkRank";                 //~0A16I~
     private static final String RONVALUE_CASE="RonValue_Case";     //~0A07I~
     private static final String SET_DORA="SetDora";                //~0A14I~
+    private static final String SET_DISCARD="SetDiscard";          //+vaihI~
+    private static final String DISCARD_TYPE="DiscardType";        //+vaihI~
+    private static final String DISCARD_NUMBER="DiscardNumber";    //+vaihI~
     private static final String DORA_DOWNTYPE="Dora1Type";         //~0A12I~
     private static final String DORA_DOWNNUMBER="Dora1Num";        //~0A12I~
     private static final String DORA_UPTYPE="Dora2Type";           //~0A12I~
@@ -164,7 +167,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DEAL_TANYAO_PON        ="DealTanyaoPon"       ;//~vad5I~
     private static final String DEAL_CHANTA            ="DealChanta"          ;//~vad5I~
     private static final String DEAL_CHANTA_PON        ="DealChantaPon"       ;//~vad5I~
-    private static final String DEAL_AVOID_FURITEN     ="DealAvoidFuriten"    ;//+vaihI~
+    private static final String DEAL_AVOID_FURITEN     ="DealAvoidFuriten"    ;//~vaihI~
                                                                    //~v@@@I~
     private static final int[] rbIDFirstDealer=new int[]{R.id.rbFirstDealer0,R.id.rbFirstDealer1,R.id.rbFirstDealer2,R.id.rbFirstDealer3,R.id.rbFirstDealer4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrSet=new int[]{R.id.rbFinalSet1,R.id.rbFinalSet2,R.id.rbFinalSet3,R.id.rbFinalSet4};//~v@@@I~
@@ -174,6 +177,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbRon_Test;                                  //~v@@@I~
     private UCheckBox cbRonValue_Test,cbRonValue_NoDora;                             //~0A02I~//~0A08R~
     private UCheckBox cbSetDora;                                   //~0A14I~
+    private UCheckBox cbSetDiscard;                                //+vaihI~
     private UCheckBox cbChkRank;                                   //~0A16I~
     private UCheckBox cbDumpSDCard,cbDumpNo;                                //~0A08I~//~vaihR~
     private EditText etRonValue_Case;                             //~0A07I~
@@ -183,6 +187,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private EditText etKanUpType,etKanUpNumber;                    //~0A12I~
     private EditText etKanUpType2,etKanUpNumber2;                  //~0A12I~
     private EditText etKanDownType2,etKanDownNumber2;              //~0A12I~
+    private EditText etDiscardType,etDiscardNumber;                //+vaihI~
     private UCheckBox cbShowF2;                                    //~v@@@I~
     private UCheckBox cbFinalGame,cbLayoutFinalGame;               //~v@@@R~
     private UCheckBox cbSetPosition,cbSetDupCtr;                   //~va66R~
@@ -219,7 +224,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbDealKuikaeChk;                             //~vad5I~
     private UCheckBox cbDealStraight,cbDealStraightChii,cbDeal3SameSeq,cbDealTanyao,cbDealTanyaoPon;//~vad5R~
     private UCheckBox cbDealMultiRon,cbDealSingleRon,cbDealChanta,cbDealChantaPon;              //~va66I~//~vad5R~
-    private UCheckBox cbDealAvoidFuriten;                          //+vaihI~
+    private UCheckBox cbDealAvoidFuriten;                          //~vaihI~
     private Prop prop;                                             //~v@@@I~
     private boolean swChanged;                                     //~v@@@I~
     private URadioGroup rgFirstDealer;                             //~v@@@I~
@@ -254,7 +259,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbRonValue_NoDora=new UCheckBox(PView,R.id.cbRonValue_NoDora);//~0A08I~
     	cbChkRank=new UCheckBox(PView,R.id.cbChkRank);             //~0A16I~
     	cbSetDora=new UCheckBox(PView,R.id.cbSetDora);             //~0A14I~
+    	cbSetDiscard=new UCheckBox(PView,R.id.cbSetDiscard);       //+vaihI~
     	etRonValue_Case=(EditText) UView.findViewById(PView,R.id.etRonValueCase);//~0A07I~
+    	etDiscardType=(EditText) UView.findViewById(PView,R.id.etDiscardType);//+vaihI~
+    	etDiscardNumber=(EditText) UView.findViewById(PView,R.id.etDiscardNumber);//+vaihI~
     	etDoraDownType=(EditText) UView.findViewById(PView,R.id.etDoraDownType);//~0A12I~
     	etDoraDownNumber=(EditText) UView.findViewById(PView,R.id.etDoraDownNumber);//~0A12I~
     	etDoraUpType=(EditText) UView.findViewById(PView,R.id.etDoraUpType);//~0A12I~
@@ -330,7 +338,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealTanyao =new UCheckBox(PView,R.id.cbDealTanyao);      //~vad5I~
     	cbDealTanyaoPon =new UCheckBox(PView,R.id.cbDealTanyaoPon);//~vad5I~
     	cbDealChantaPon =new UCheckBox(PView,R.id.cbDealChantaPon);//~vad5I~
-    	cbDealAvoidFuriten=new UCheckBox(PView,R.id.cbAvoidFuriten);//+vaihI~
+    	cbDealAvoidFuriten=new UCheckBox(PView,R.id.cbAvoidFuriten);//~vaihI~
     	cbDealChanta =new UCheckBox(PView,R.id.cbDealChantaChii);      //~vad5I~
     	cbDealStraightChii =new UCheckBox(PView,R.id.cbDealStraightChii);//~vad5I~
     	cbDealAtodukeTakeYakuhai    =new UCheckBox(PView,R.id.cbDealAtodukeTakeYakuhai  );//~va66I~
@@ -412,7 +420,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbRonValue_NoDora.setStateInt(Pprop.getParameter(RONVALUE_NODORA,0));//~0A08I~
     	cbChkRank.setStateInt(Pprop.getParameter(CHKRANK,0));      //~0A16I~
     	cbSetDora.setStateInt(Pprop.getParameter(SET_DORA,0));     //~0A14I~
+    	cbSetDiscard.setStateInt(Pprop.getParameter(SET_DISCARD,0));//+vaihI~
     	etRonValue_Case.setText(Integer.toString(Pprop.getParameter(RONVALUE_CASE,0)));//~0A07I~
+    	etDiscardType.setText(Integer.toString(Pprop.getParameter(DISCARD_TYPE,0)));//+vaihI~
+    	etDiscardNumber.setText(Integer.toString(Pprop.getParameter(DISCARD_NUMBER,0)));//+vaihI~
     	etDoraDownType.setText(Integer.toString(Pprop.getParameter(DORA_DOWNTYPE,0)));//~0A12I~
     	etDoraDownNumber.setText(Integer.toString(Pprop.getParameter(DORA_DOWNNUMBER,0)));//~0A12I~
     	etDoraUpType.setText(Integer.toString(Pprop.getParameter(DORA_UPTYPE,0)));//~0A12I~
@@ -494,7 +505,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealTanyao.setStateInt(Pprop.getParameter(DEAL_TANYAO,0));//~vad5I~
     	cbDealTanyaoPon.setStateInt(Pprop.getParameter(DEAL_TANYAO_PON,0));//~vad5I~
     	cbDealChantaPon.setStateInt(Pprop.getParameter(DEAL_CHANTA_PON,0));//~vad5I~
-    	cbDealAvoidFuriten.setStateInt(Pprop.getParameter(DEAL_AVOID_FURITEN,0));//+vaihI~
+    	cbDealAvoidFuriten.setStateInt(Pprop.getParameter(DEAL_AVOID_FURITEN,0));//~vaihI~
     	cbDealChanta.setStateInt(Pprop.getParameter(DEAL_CHANTA,0));//~vad5I~
     	cbDealStraightChii.setStateInt(Pprop.getParameter(DEAL_STRAIGHT_CHII,0));//~vad5I~
     	cbDealAtodukeTakeYakuhai.setStateInt(Pprop.getParameter(DEALATODUKETAKEYAKUHAI,0));//~va66I~
@@ -629,6 +640,11 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_SETDORA;                       //~0A14I~
         else                                                       //~0A14I~
 			TestOption.option2&=~TO2_SETDORA;                       //~0A14I~//~va65R~
+                                                                   //+vaihI~
+        if (Pprop.getParameter(SET_DISCARD,0)!=0)                  //+vaihI~
+			TestOption.option5|=TO5_SETDISCARD;                    //+vaihI~
+        else                                                       //+vaihI~
+			TestOption.option5&=~TO5_SETDISCARD;                   //+vaihI~
                                                                    //~0A07I~
         if (Pprop.getParameter(OPENHAND,0)!=0)                     //~va65I~
 			TestOption.option2|=TO2_OPENHAND;                      //~va65I~
@@ -640,6 +656,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2&=~TO2_ROBOT_DISCARD_BUTTON;         //~va66I~
                                                                    //~va65I~
 		TestOption.testCaseRonValue=Pprop.getParameter(RONVALUE_CASE,0);//~0A07I~
+		TestOption.testDiscardType=Pprop.getParameter(DISCARD_TYPE,0);//+vaihI~
+		TestOption.testDiscardNumber=Pprop.getParameter(DISCARD_NUMBER,0);//+vaihI~
 		TestOption.testDoraDownType=Pprop.getParameter(DORA_DOWNTYPE,0);//~0A12I~
 		TestOption.testDoraDownNumber=Pprop.getParameter(DORA_DOWNNUMBER,0);//~0A12I~
 		TestOption.testDoraUpType=Pprop.getParameter(DORA_UPTYPE,0);//~0A12I~
@@ -1012,10 +1030,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option5|=TO5_DEAL_CHANTA_PON;               //~vad5I~
         else                                                       //~vad5I~
 			TestOption.option5&=~TO5_DEAL_CHANTA_PON;              //~vad5I~
-        if (Pprop.getParameter(DEAL_AVOID_FURITEN,0)!=0)           //+vaihI~
-			TestOption.option5|=TO5_AVOID_FURITEN;                 //+vaihI~
-        else                                                       //+vaihI~
-			TestOption.option5&=~TO5_AVOID_FURITEN;                //+vaihI~
+        if (Pprop.getParameter(DEAL_AVOID_FURITEN,0)!=0)           //~vaihI~
+			TestOption.option5|=TO5_AVOID_FURITEN;                 //~vaihI~
+        else                                                       //~vaihI~
+			TestOption.option5&=~TO5_AVOID_FURITEN;                //~vaihI~
         if (Pprop.getParameter(DEAL_CHANTA,0)!=0)                  //~vad5I~
 			TestOption.option5|=TO5_DEAL_CHANTA;                   //~vad5I~
         else                                                       //~vad5I~
@@ -1109,7 +1127,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(RONVALUE_NODORA,cbRonValue_NoDora.getStateInt());//~0A08I~
         changed+=updateProp(CHKRANK,cbChkRank.getStateInt());      //~0A16I~
         changed+=updateProp(SET_DORA,cbSetDora.getStateInt());     //~0A14I~
+        changed+=updateProp(SET_DISCARD,cbSetDiscard.getStateInt());//+vaihI~
         changed+=updateProp(RONVALUE_CASE,Integer.valueOf(etRonValue_Case.getText().toString()));//~0A07I~
+        changed+=updateProp(DISCARD_TYPE,Integer.valueOf(etDiscardType.getText().toString()));//+vaihI~
+        changed+=updateProp(DISCARD_NUMBER,Integer.valueOf(etDiscardNumber.getText().toString()));//+vaihI~
         changed+=updateProp(DORA_DOWNTYPE,Integer.valueOf(etDoraDownType.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_DOWNNUMBER,Integer.valueOf(etDoraDownNumber.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_UPTYPE,Integer.valueOf(etDoraUpType.getText().toString()));//~0A12I~
@@ -1186,7 +1207,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DEAL_TANYAO,cbDealTanyao.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_TANYAO_PON,cbDealTanyaoPon.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_CHANTA_PON,cbDealChantaPon.getStateInt());//~vad5I~
-        changed+=updateProp(DEAL_AVOID_FURITEN,cbDealAvoidFuriten.getStateInt());//+vaihI~
+        changed+=updateProp(DEAL_AVOID_FURITEN,cbDealAvoidFuriten.getStateInt());//~vaihI~
         changed+=updateProp(DEAL_CHANTA,cbDealChanta.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_STRAIGHT_CHII,cbDealStraightChii.getStateInt());//~vad5I~
         changed+=updateProp(DEALATODUKETAKEYAKUHAI,cbDealAtodukeTakeYakuhai.getStateInt());//~va66I~

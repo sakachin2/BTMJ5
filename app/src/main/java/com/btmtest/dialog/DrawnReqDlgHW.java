@@ -1,6 +1,13 @@
-//*CID://+vac5R~:                             update#=  709;       //+vac5R~
+                            //*CID://+vakPR~:                             update#=  738;       //~vakPR~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2022/03/19 vakP (Bug)4ReachDrawn; if last is robot Cancel on ReqDlgHW did not work(did not continue the round)//~vakPI~
+//2022/03/15 vakF in PAN mode,if option is button take, for also rinshan take wait btton push at 4kanDrawn canceled//~vakFI~
+//2022/03/14 vakB (Bug)DrawnReqDlgHW; rule button was not effective//~vakBI~
+//2022/03/14 vakx Dump.e when canceled on DrawnDlagHW              //~vakxI~
+//2022/03/09 vakw In PAN mode,rinshan was not taken automatically when canceled 4KanDrawn//~vakwI~
+//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //~vakmI~
+//2022/02/27 vakj (Bug)hung if drawnRegDlgHW was canceled at the timeing robot discard(discard msg was ignored by swStop)//~vakjI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Point;
@@ -18,6 +25,7 @@ import com.btmtest.game.Robot;
 import com.btmtest.game.Status;
 import com.btmtest.game.TileData;
 import com.btmtest.game.UA.UAEndGame;
+import com.btmtest.game.UA.UAKan;
 import com.btmtest.game.UserAction;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.gui.UButton;
@@ -35,7 +43,7 @@ import static com.btmtest.game.UADelayed.*;
 public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~//~9307R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.drawnreqdlghw;      //~9220I~//~9302R~//~9303R~
-    private static final int LAYOUTID_SMALLFONT=R.layout.drawnreqdlghw_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.drawnreqdlghw_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_DrawnReqDlgHW;//~9220I~//~9302R~//~9303R~
     private static final String HELPFILE="DrawnReqDlgHW";                //~9220I~//~9302R~//~9303R~
                                                                    //~9214I~
@@ -70,6 +78,8 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
     protected UserAction UA;//~9303I~                              //~9304R~
 //  private boolean swDrawnNext;                                   //~9702I~
     private boolean sw99,sw4w,sw4k,sw3r,sw4r;                      //~9702I~
+    private int parmDrawnType;                                     //~vakmI~
+    private boolean parmSwStopAuto;                                //~vakwI~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public DrawnReqDlgHW()                                           //~v@@@R~//~9220R~//~9221R~//~9302R~//~9303R~
     {                                                              //~v@@@R~
@@ -82,12 +92,32 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("DrawnReqDlgHW.newInstance");        //~9226I~//~9302R~//~9303R~
     	DrawnReqDlgHW dlg=new DrawnReqDlgHW();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~
-//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//+vac5R~
-      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN|UFDlg.FLAG_RULEBTN,//~v@@@I~//~9220R~//~9701R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         return dlg;                                                //~v@@@R~
     }                                                              //~v@@@R~
+    //******************************************                   //~vakmI~
+    public static DrawnReqDlgHW newInstance(int PdrawnType)        //~vakmI~
+    {                                                              //~vakmI~
+        if (Dump.Y) Dump.println("DrawnReqDlgHW.newInstance drawnType="+PdrawnType);//~vakmI~
+    	DrawnReqDlgHW dlg=new DrawnReqDlgHW();                     //~vakmI~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vakmI~
+    			UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN|UFDlg.FLAG_RULEBTN,//~vakmI~
+				TITLEID,HELPFILE);                                 //~vakmI~
+        dlg.parmDrawnType=PdrawnType;                                  //~vakmI~
+        return dlg;                                                //~vakmI~
+    }                                                              //~vakmI~
+    //******************************************                   //~vakwI~
+    public static DrawnReqDlgHW newInstance(int PdrawnType,boolean PswStopAuto)//~vakwI~
+    {                                                              //~vakwI~
+        if (Dump.Y) Dump.println("DrawnReqDlgHW.newInstance drawnType="+PdrawnType+",swStopAuto="+PswStopAuto);//~vakwI~
+	    DrawnReqDlgHW.stopAutoDrawnHW();                           //~vakwI~
+    	DrawnReqDlgHW dlg=newInstance(PdrawnType);           //~vakwI~
+        dlg.parmSwStopAuto=PswStopAuto;                            //~vakwI~
+        return dlg;                                                //~vakwI~
+    }                                                              //~vakwI~
 //    //******************************************                   //~v@@@M~//~9303R~
 //    @Override                                                      //~9221I~//~9303R~
 //    public void onPause()                                          //~9221I~//~9303R~
@@ -121,6 +151,7 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
 //      {                                                          //~9520I~//~9708R~
     		RuleSetting.setDrawnHW(PView,true);                        //~9425I~//~9520R~
 //      }                                                          //~9520I~//~9708R~
+      if (!parmSwStopAuto)                                         //~vakwI~
 		stopAutoTakeDiscard();                                  //~9A20I~//~9A24R~
     }                                                              //~9413I~
     //******************************************                   //~9212I~//~9303R~//~9702R~
@@ -182,6 +213,9 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
         UBRG.setEnabled(2,sw4k);                                   //~9702I~
         UBRG.setEnabled(3,sw3r);                                   //~9702I~
         UBRG.setEnabled(4,sw99);                                   //~9702I~
+        if (parmDrawnType!=0)                                      //~vakmR~
+        	UBRG.setDefaultChk(parmDrawnType);                     //~vakmR~
+        else                                                       //~vakmI~
         if (AG.aComplete.getDrawn3R())                              //~9B29I~
         UBRG.setDefaultChk(EGDR_3RON);                             //~9B29I~
         else                                                       //~9B29I~
@@ -214,6 +248,9 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
             case R.id.SendDiscard:                                 //~9B14I~
             	discardAndSend();                                  //~9B14I~
             	break;                                             //~9B14I~
+            case R.id.ShowRule:                                    //~vakBI~
+                onClickShowRule();                                 //~vakBI~
+                break;                                             //~vakBI~
             default:                                               //~9B14I~
                 if (Dump.Y) Dump.println("DrawReqDlgHW:onClickOther unknown");//~9B14I~
         }                                                          //~9B14I~
@@ -264,33 +301,80 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
     {                                                              //~9A24I~
 	    if (Dump.Y) Dump.println("DrawnReqDlgHW.stopAutoTakeDiscard");//~9A24I~
         if (Accounts.isServer())                                   //~9A24I~
+        {                                                          //~vakPI~
+			int player=AG.aPlayers.getCurrentPlayer();             //~vakPI~
+		  if (AG.aAccounts.isRobotPlayer(player))                  //~vakPI~
+          {                                                        //~vakPI~
+//          if (Dump.Y) Dump.println("DrawnReqDlgHW.stopAutoTakeDiscar Robot eswn="+eswn+",player="+player);//~vakPI~
+			int eswn=Accounts.playerToEswn(player);                    //~vakPI~
+            GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,eswn,1/*On*/,STOPAUTO_DRAWNHW/*PswStopFix*/);//~vakPI~
+          }                                                        //~vakPI~
+          else                                                     //~vakPI~
+          {                                                        //~vakPI~
 //          GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,Accounts.getCurrentEswn(),1/*On*/,0/*PswStopFix*/);//~9A24R~
             GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,Accounts.getCurrentEswn(),1/*On*/,STOPAUTO_DRAWNHW/*PswStopFix*/);//~9A24I~
+          }                                                        //~vakPI~
+        }                                                          //~vakPI~
         else                                                       //~9A24I~
 //          AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,1/*On*/,0/*PswFix*/,0);//~9A24R~
             AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,1/*On*/,STOPAUTO_DRAWNHW/*PswFix*/,0);//~9A24I~
     }                                                              //~9A24I~
-    //*******************************************************      //~9A24I~
-    public static void stopAutoTakeDiscard(boolean PswOn,int PoptStop)//~9A24I~
-    {                                                              //~9A24I~
-	    if (Dump.Y) Dump.println("DrawnReqDlgHW.stopAutoTakeDiscard sw="+PswOn+",opt="+PoptStop);//~9A24I~
-        if (Accounts.isServer())                                   //~9A24I~
-            GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,Accounts.getCurrentEswn(),PswOn ? 1 : 0,PoptStop);//~9A24I~
-        else                                                       //~9A24I~
-            AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,PswOn ? 1 : 0,PoptStop,0);//~9A24I~
-    }                                                              //~9A24I~
+//    //*******************************************************      //~9A24I~//~vakPR~
+////  public static void stopAutoTakeDiscard(boolean PswOn,int PoptStop)//~9A24I~//~vakwR~//~vakPR~
+//    private static void stopAutoTakeDiscard(boolean PswOn,int PoptStop)//~vakwI~//~vakPR~
+//    {                                                              //~9A24I~//~vakPR~
+//        if (Dump.Y) Dump.println("DrawnReqDlgHW.stopAutoTakeDiscard sw="+PswOn+",opt="+PoptStop);//~9A24I~//~vakPR~
+//        if (Accounts.isServer())                                   //~9A24I~//~vakPR~
+//            GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,Accounts.getCurrentEswn(),PswOn ? 1 : 0,PoptStop);//~9A24I~//~vakPR~
+//        else                                                       //~9A24I~//~vakPR~
+//            AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,PswOn ? 1 : 0,PoptStop,0);//~9A24I~//~vakPR~
+//    }                                                              //~9A24I~//~vakPR~
+    //*******************************************************      //~vakwI~
+    private static void stopAutoDrawnHW()                          //~vakwI~
+    {                                                              //~vakwI~
+	    if (Dump.Y) Dump.println("DrawnReqDlgHW.stopAutoDrawnHW"); //~vakwI~
+		int player=AG.aPlayers.getCurrentPlayer();                 //~vakwR~
+		int eswn=Accounts.playerToEswn(player);                    //~vakwI~
+        int[] intp=new int[]{eswn,1/*swOn*/,STOPAUTO_DRAWNHW};     //~vakwI~
+        if (Accounts.isServer())                                   //~vakwI~
+            AG.aUADelayed.stopAuto(intp);                          //~vakwI~
+	    if (Dump.Y) Dump.println("DrawnReqDlgHW.stopAutoDrawnHW exit");//~vakwI~
+    }                                                              //~vakwI~
     //*******************************************************      //~9701I~
-    public static void releaseStopAutoTakeDiscard()                          //~9701R~//~9A20R~//~9A24R~
+//  public static void releaseStopAutoTakeDiscard()                          //~9701R~//~9A20R~//~9A24R~//~vac5R~
+    private static void releaseStopAutoTakeDiscard()               //~vac5I~
     {                                                              //~9701I~
 	    if (Dump.Y) Dump.println("DrawnReqDlgHW.releaseStopAutoTakeDiscard");//~9701I~//~9A24R~
     	if (Accounts.isServer())                                   //~9701I~
+        {	                                                       //~vakxI~
 //          GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,Accounts.getCurrentEswn(),0/*StopOff*/,0);//~9701I~//~9702R~//~9A20R~//~9A24R~
+			int player=AG.aPlayers.getCurrentPlayer();             //~vakxI~
+		  if (AG.aAccounts.isRobotPlayer(player))                  //~vakxI~
+          {                                                        //~vakxI~
+			int eswn=Accounts.playerToEswn(player);                //~vakxI~
+            GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,eswn,0/*StopOff*/,STOPAUTO_DRAWNHW);//~vakxI~
+          }                                                        //~vakxI~
+          else                                                     //~vakxI~
+          {                                                        //~vakxI~
+           if (AG.aPlayers.getCurrentAction()==GCM_KAN)              //~vakxI~
+           {                                                       //~vakxI~
+	    	if (Dump.Y) Dump.println("DrawnReqDlgHW.releaseStopAutoTakeDiscard for 4KanDrawn");//~vakxR~
+			int eswn=Accounts.playerToEswn(player);                //~vakxI~
+            GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,eswn,0/*StopOff*/,STOPAUTO_DRAWNHW);//~vakxI~
+           }                                                       //~vakxI~
+           else                                                    //~vakxI~
             GameViewHandler.sendMsg(GCM_TIMEOUT_STOPAUTO,Accounts.getCurrentEswn(),0/*StopOff*/,STOPAUTO_DRAWNHW);//~9A24I~
+          }                                                        //~vakxI~
+        }                                                          //~vakxI~
         else                                                       //~9701I~
 //      	AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,0/*StopOff*/,0,0);//~9701I~//~9A20R~//~9A24R~
         	AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,0/*StopOff*/,STOPAUTO_DRAWNHW,0);//~9A24I~
+        AG.aRoundStat.sw4ReachCanceled=true;                       //~vakmI~
+	    if (Dump.Y) Dump.println("DrawnReqDlgHW.releaseStopAutoTakeDiscard sw4ReachCanceled="+AG.aRoundStat.sw4ReachCanceled);//~vakmI~
     }                                                              //~9701I~
     //*******************************************************      //~9A24I~
+    //*from DrawnDlgHW.continueThisRound                           //~vakmI~//+2320R~
+    //*******************************************************      //~vakmI~
     public static void releaseStopAutoTakeDiscardAll()             //~9A24I~
     {                                                              //~9A24I~
 	    if (Dump.Y) Dump.println("DrawnReqDlgHW.releaseStopAutoTakeDiscardAll");//~9A24I~
@@ -300,6 +384,8 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
         else                                                       //~9A24I~
 //      	AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,0/*StopOff*/,2,0);//~9A24R~
         	AG.aUserAction.sendToServer(GCM_TIMEOUT_STOPAUTO,PLAYER_YOU,0/*StopOff*/,STOPAUTO_RESETALL,0);//~9A24R~
+        AG.aRoundStat.sw4ReachCanceled=true;                       //~vakmI~
+	    if (Dump.Y) Dump.println("DrawnReqDlgHW.releaseStopAutoTakeDiscardAll exit sw4ReachiCanceled="+AG.aRoundStat.sw4ReachCanceled);//~vakmI~
     }                                                              //~9A24I~
     //******************************************                   //~9220I~//~9303R~
     @Override                                                      //~9306I~
@@ -308,6 +394,7 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
     	reason=UBRG.getChecked();                                  //~9303R~
 //      if (reason==EGDR_99TILE)                                   //~9425R~
 //      	reason=(Accounts.getCurrentEswn()<<EGDR_99ESWN_SHIFT)|EGDR_99TILE;//~9425R~
+        if (Dump.Y) Dump.println("DrawnReqDlgHW.getSetting reason="+reason);//~vakmI~
         return true;                                               //~9306I~
     }                                                              //~9220I~//~9303R~
 //    //*******************************************************************//~9303R~
@@ -382,6 +469,16 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
         Players PLS=AG.aPlayers;                                   //~0228I~
         Point p=PLS.getActionBeforeDrawnHW();                      //~0228I~
         int action=p.x; int player=p.y;                            //~0228I~
+        if (action==GCM_KAN)                                       //~vakxI~
+        {                                                          //~vakxI~
+//            int kanType=PLS.getKanType();                        //~vakxR~
+//            if (kanType==KAN_RIVER)                              //~vakxR~
+//                action=GCM_DISCARD;                              //~vakxR~
+//            else                                                 //~vakxR~
+//                action=GCM_TAKE; //take rinshan                  //~vakxR~
+	    	if (Dump.Y) Dump.println("DrawnReqDlg.setDelayedTimer @@@@ return action=KAN player="+player);//~vakxR~
+            return;                                                //~vakxI~
+        }                                                          //~vakxI~
         if (action==GCM_DISCARD)                                   //~0228I~
         {                                                          //~0228I~
         	if (PswServer)                                         //~0228I~
@@ -399,4 +496,68 @@ public class DrawnReqDlgHW extends DrawnReqDlgLast                     //~9303R~
 	        	AG.aUserAction.UAT.setAutoDiscardTimeout(PswServer,player,action);//~0228I~
         }                                                          //~0228I~
     }                                                              //~0228I~
+//    //*******************************************************************//~vakjI~//~vakFR~
+//    //*from UADelayed.rescheduleRobotAction on server for robot    //~vakjI~//~vakFR~
+//    //*NOT Used                                                    //~vakxI~//~vakFR~
+//    //*******************************************************************//~vakjI~//~vakFR~
+//    public static void rescheduleRobotAction(int Pplayer,int PlastActionID)//~vakjI~//~vakFR~
+//    {                                                              //~vakjI~//~vakFR~
+//        if (Dump.Y) Dump.println("DrawnReqDlg.rescheduleRobotAction player="+Pplayer+",lastActionID="+PlastActionID);//~vakjI~//~vakFR~
+//        switch(PlastActionID)                                      //~vakjI~//~vakFR~
+//        {                                                          //~vakjI~//~vakFR~
+////        case GCM_DISCARD:   //currentPlayer is discarder         //~vakjR~//~vakFR~
+////            TileData td=AG.aPlayers.tileLastDiscarded;           //~vakjR~//~vakFR~
+////            if (Dump.Y) Dump.println("DrawnReqDlg.rescheduleRobotAction lastDiscarded="+td.toString());//~vakjR~//~vakFR~
+////            AG.aUserAction.UAD.postNextPlayerPonKan(Pplayer,td); //~vakjR~//~vakFR~
+////            break;                                               //~vakjR~//~vakFR~
+//        case GCM_TAKE:      //currentplayer is taker               //~vakjI~//~vakFR~
+//            Robot r=AG.aAccounts.getRobot(Pplayer);                //~vakjI~//~vakFR~
+//            if (r!=null)                                           //~vakjI~//~vakFR~
+//                r.sendTakeDrawnHWReleased();                       //~vakjR~//~vakFR~
+//            else                                                   //~vakjI~//~vakFR~
+//            {                                                      //~vakjI~//~vakFR~
+//                if (Dump.Y) Dump.println("DrawnReqDlg.rescheduleRobotAction @@@@ getRobot=null");//~vakjI~//~vakFR~
+//            }                                                      //~vakjI~//~vakFR~
+//            break;                                                 //~vakjI~//~vakFR~
+//        }                                                          //~vakjI~//~vakFR~
+//        if (Dump.Y) Dump.println("DrawnReqDlg.rescheduleRobotAction exit");//~vakjI~//~vakFR~
+//    }                                                              //~vakjI~//~vakFR~
+    //*******************************************************************//~vakxI~
+    //*from UADelayed.rescheduleRobotAction on server   Human and Robot//~vakxI~
+    //*******************************************************************//~vakxI~
+    public static void rescheduleKanDrawnRelease(int Pplayer/*currentPlayer*/)      //~vakxI~
+    {                                                              //~vakxI~
+		int timeoutAutoTake=timeoutAutoTake=RuleSettingOperation.getTimeoutTake();//~vakFR~
+    	if (Dump.Y) Dump.println("DrawnReqDlg.rescheduleKanDrawnRelease player="+Pplayer+",timeoutAutoTake="+timeoutAutoTake);//~vakxI~//~vakFI~
+		if (Pplayer==PLAYER_YOU)                                   //~vakxI~
+        {                                                          //~vakFI~
+        	if (timeoutAutoTake!=0)                                //~vakFI~
+	        	AG.aGC.sendMsg(GCM_TAKE,Pplayer);		//simulate take button//~vakxI~//~vakFR~
+            else                                                   //~vakFI~
+//  			AG.aUserAction.UAK.infoMsgTakeRinshan(Pplayer);    //~vakFI~//~vakxR~
+    			UAKan.infoMsgTakeRinshan(Pplayer);                 //~vakxI~
+        }                                                          //~vakFI~
+        else                                                       //~vakxI~
+        {                                                          //~vakxI~
+          	if (AG.aAccounts.isDummyPlayer(Pplayer))               //~vakxI~
+            {                                                      //~vakFI~
+            	boolean swManualRobot=AG.swTrainingMode && RuleSettingOperation.isAllowRobotAllButton();//~vakFI~
+              if (swManualRobot)                                         //~va66R~//~vakCR~//~vakFI~
+              {                                                    //~vakFI~
+//  			AG.aUserAction.UAK.infoMsgTakeRinshan(Pplayer);    //~vakFI~//~vakxR~
+    			UAKan.infoMsgTakeRinshan(Pplayer);                 //~vakxI~
+		    	if (Dump.Y) Dump.println("DrawnReqDlg.rescheduleKanDrawn skip send GCM_TAKE by manualRobot option");//~vakFI~
+              }                                                    //~vakFI~
+              else                                                 //~vakFI~
+           		Robot.autoTakeTimeoutKan(Pplayer);                 //~vakxI~
+            }                                                      //~vakFI~
+          	else                                                   //~vakxI~
+            {                                                      //~vakFI~
+	        	if (timeoutAutoTake!=0)                            //~vakFI~
+					AG.aUserAction.UADL.sendMsgEmulatedToClient(GCM_TAKE,Pplayer);	//simulate take button//~vakxR~//~vakFR~
+                else                                               //~vakxI~
+	    			UserAction.sendErr(0/*Popt*/,Pplayer,R.string.AE_TakeKanAdditional);//~vakxI~
+            }                                                      //~vakFI~
+        }                                                          //~vakxI~
+    }                                                              //~vakxI~
 }//class                                                           //~v@@@R~

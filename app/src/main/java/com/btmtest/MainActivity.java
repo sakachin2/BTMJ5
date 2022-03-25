@@ -1,6 +1,7 @@
-//*CID://+vajiR~:                             update#= 392;        //+vajiR~
+//*CID://+vakvR~:                             update#= 393;        //+vakvR~
 //**********************************************************************//~@@@@I~
-//2022/01/31 vaji change color of top left to identify server      //+vajiI~
+//2022/03/23 vakV google exception report; add try catch           //+vakvI~
+//2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2022/01/31 vajh over vajg/vage, try to allow startgame from client//~vajhI~
 //2022/01/28 vaje (bug)startgame from client should be protected   //~vajeI~
 //2022/01/11 vaik Youtube movie as help                            //~vaikI~
@@ -451,10 +452,17 @@ public class MainActivity extends AppCompatActivity
     public void onWindowFocusChanged(boolean PhasFocus)         //~8B26I~
     {                                                              //~8B26I~
         super.onWindowFocusChanged(PhasFocus);                     //~8B26I~
+      try                                                          //+vakvI~
+      {                                                            //+vakvI~
         if(Dump.Y) Dump.println("MainActivity.onWindowFocusChanged focus="+PhasFocus+",ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~8B26I~//~vaeeR~//~vaf0R~
 //        hideNavigationBar(true);    //done if portrait             //~8B26I~//~8C29R~
         if (PhasFocus)  //navigationbar reappear when dialog opend //~9511R~
         	hideNavigationBar(true);                               //~9511I~
+      }                                                            //+vakvI~
+      catch(Exception e)                                           //+vakvI~
+      {                                                            //+vakvI~
+        Dump.println(e,"onWindowFocusChanged");                    //+vakvI~
+      }                                                            //+vakvI~
     }                                                              //~8B26I~
 //*************************                                        //~8C03I~
     @Override                                                      //~8C03I~
@@ -819,7 +827,7 @@ public class MainActivity extends AppCompatActivity
         	break;                                                 //~v@@@I~//~8C30I~
         case ECB_ACTION_ENDGAME:                                   //~8C30R~
         	endGame(false/*configchange*/);                                             //~8C30I~//~9102R~
-	        AG.aMainView.showConnectStatus();                          //~vac5R~//+vajiI~
+	        AG.aMainView.showConnectStatus();                          //~vac5R~//~vajiI~
         	break;                                                 //~8C30I~
 //        case ECB_INVALIDATE:      use postinvalidate                                 //~9102I~//~9103R~
 //            AG.aGC.invalidate();                                   //~9102I~//~9103R~
@@ -1212,7 +1220,24 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 swHide="+PswHide);//~8B26I~//~9102I~//~9807R~//~1ak4R~
 //      if (Build.VERSION.SDK_INT==29) //Android10(Q)              //~vaeeR~
 //      	chkInsets29();                                         //~vaeeR~
+      	if (AG==null)                                              //+vakvI~
+      	{                                                          //+vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG==null");//+vakvI~
+      	}                                                          //+vakvI~
+      	if (AG.activity==null)                                     //+vakvI~
+      	{                                                          //+vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.Activity==null");//+vakvI~
+      	}                                                          //+vakvI~
+      	if (AG.activity.getWindow()==null)                         //+vakvI~
+      	{                                                          //+vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.activity.getWindow()=null");//+vakvI~
+      	}                                                          //+vakvI~
     	View decor=AG.activity.getWindow().getDecorView();             //~8B26I~//~9102I~
+      	if (decor==null)                                           //+vakvI~
+      	{                                                          //+vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.activity.getWindow().getDecorView()=null");//+vakvI~
+            return;                                                //+vakvI~
+      	}                                                          //+vakvI~
     	int flag=0;                                                //~8B26I~//~9102I~
         if (!PswHide)                                              //~8B26I~//~9102I~
         {                                                          //~8B26I~//~9102I~

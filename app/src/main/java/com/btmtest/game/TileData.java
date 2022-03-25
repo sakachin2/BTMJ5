@@ -1,5 +1,6 @@
-//*CID://+vaaKR~: update#= 395;                                    //+vaaKR~
+//*CID://+vakqR~: update#= 398;                                    //+vakqR~
 //**********************************************************************//~v101I~
+//2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vaaqI~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //2021/02/12 va6a (BUG)TDF_LAST was not set to last discard(Haitei was valid but Hotei was not)//~va6aI~
@@ -51,6 +52,7 @@ public class TileData                                              //~v@@@R~
     public static final int TDF_DORA            =0x040000;         //~va60I~
     public static final int TDF_ROBOT_SELECTION =0x080000;         //~va60I~
     public static final int TDF_DISCARDED_RED5  =0x100000;   //for tryNextTake, emulate discard      //~vaaKI~
+    public static final int TDF_LOCKED_KANTAKE  =0x200000;   //blocked to take rinshan//~vaaqI~
                                                                    //~v@@@I~
     public static final int TDF_INTERCEPTED=(TDF_PON | TDF_CHII | TDF_RON | TDF_KAN_RIVER);//~v@@@I~
                                                                    //~v@@@I~
@@ -121,7 +123,7 @@ public class TileData                                              //~v@@@R~
     //*****************************************************        //~v@@@I~
      public String toString()                                      //~v@@@I~
      {                                                             //~v@@@I~
-        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder);//~v@@@I~//~v@@6R~//~va8xR~
+        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder+",hashCode="+this.hashCode());//~v@@@I~//~v@@6R~//~va8xR~//+vakqR~
      }                                                             //~v@@@I~
     //*****************************************************        //~v@@6I~
      public static String toString(TileData Ptd)                   //~v@@6I~
@@ -410,6 +412,19 @@ public class TileData                                              //~v@@@R~
         if (Dump.Y) Dump.println("TileData.setLockPonKan oldLockStatus="+rc+",req="+PswOn+",td:"+toString());//~v@@6I~
         return rc;                                                 //~v@@6I~
      }                                                             //~v@@6I~
+    //*****************************************************        //~vaaqI~
+    //*block pon/kan                                               //~vaaqI~
+    //*****************************************************        //~vaaqI~
+     public boolean setLockKanTake(boolean PswOn)                  //~vaaqI~
+     {                                                             //~vaaqI~
+     	boolean rc=isLockedKanTake();                              //~vaaqI~
+     	if (PswOn)                                                 //~vaaqI~
+        	flag |= TDF_LOCKED_KANTAKE;                            //~vaaqI~
+        else                                                       //~vaaqI~
+        	flag &= ~TDF_LOCKED_KANTAKE;                           //~vaaqI~
+        if (Dump.Y) Dump.println("TileData.setLockKanTake oldLockStatus="+rc+",req="+PswOn+",td:"+toString());//~vaaqI~
+        return rc;                                                 //~vaaqI~
+     }                                                             //~vaaqI~
     //*****************************************************        //~v@@@I~
     //*block take/chii                                             //~v@@6I~
     //*****************************************************        //~v@@6I~
@@ -428,6 +443,15 @@ public class TileData                                              //~v@@@R~
         if (Dump.Y) Dump.println("TileData.isLockPonKan LockStatus="+rc+",td:"+toString());//~v@@6R~
         return rc;                                                 //~v@@6I~
      }                                                             //~v@@6I~
+    //*****************************************************        //~vaaqI~
+    //*block rinshan take                                          //~vaaqI~
+    //*****************************************************        //~vaaqI~
+     public boolean isLockedKanTake()                              //~vaaqI~
+     {                                                             //~vaaqI~
+     	boolean rc=(flag & TDF_LOCKED_KANTAKE)!=0;                 //~vaaqI~
+        if (Dump.Y) Dump.println("TileData.isLockKanTake LockStatus="+rc+",td:"+toString());//~vaaqI~
+        return rc;                                                 //~vaaqI~
+     }                                                             //~vaaqI~
     //*****************************************************        //~v@@@I~
     //* set Kan by taken tile(minkan) to draw upside down          //~v@@@I~
     //*****************************************************        //~v@@@I~

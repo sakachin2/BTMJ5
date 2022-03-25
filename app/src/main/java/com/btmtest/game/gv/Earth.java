@@ -1,4 +1,4 @@
-//*CID://+vag9R~: update#= 704;                                    //~vag9R~
+//*CID://+vag9R~: update#= 705;                                    //~vag9R~
 //**********************************************************************//~v101I~
 //2021/11/08 vag9 Ankan on Earth;display Red5 if option active(it may be disappear by facedown tile)//~vag9I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
@@ -166,24 +166,24 @@ public class Earth                                                 //~v@@@R~
     //*******************************************************************//~v@@@I~
     public TileData[] sortPairKanTaken(TileData[] Ptds)            //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Earth.sortPairKanTaken entry="+TileData.toString(Ptds));//+vag9I~
+        if (Dump.Y) Dump.println("Earth.sortPairKanTaken entry="+TileData.toString(Ptds));//~vag9I~
         int ctr=Ptds.length;                                       //~v@@@I~
-        TileData tdWk;                                             //+vag9I~
+        TileData tdWk;                                             //~vag9I~
         if (Ptds[0].isRed5())                                      //~vag9I~
-        {                                                          //+vag9I~
-        	tdWk=Ptds[1];                                          //+vag9I~
+        {                                                          //~vag9I~
+        	tdWk=Ptds[1];                                          //~vag9I~
         	Ptds[1]=Ptds[0];	                                   //~vag9I~
-        	Ptds[0]=tdWk;                                          //+vag9I~
-        }                                                          //+vag9I~
+        	Ptds[0]=tdWk;                                          //~vag9I~
+        }                                                          //~vag9I~
         if (Ptds[ctr-1].isRed5())                                  //~vag9I~
-        {                                                          //+vag9I~
-        	tdWk=Ptds[2];                                          //+vag9I~
+        {                                                          //~vag9I~
+        	tdWk=Ptds[2];                                          //~vag9I~
         	Ptds[2]=Ptds[ctr-1];                                   //~vag9I~
-        	Ptds[ctr-1]=tdWk;                                      //+vag9I~
-        }                                                          //+vag9I~
+        	Ptds[ctr-1]=tdWk;                                      //~vag9I~
+        }                                                          //~vag9I~
         Ptds[0].setKanFaceDown();                                    //~v@@@I~
         Ptds[ctr-1].setKanFaceDown();                                //~v@@@I~
-        if (Dump.Y) Dump.println("Earth.sortPairKanTaken exit="+TileData.toString(Ptds));//+vag9I~
+        if (Dump.Y) Dump.println("Earth.sortPairKanTaken exit="+TileData.toString(Ptds));//~vag9I~
         return Ptds;                                               //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
@@ -246,6 +246,7 @@ public class Earth                                                 //~v@@@R~
     //*********************                                        //~v@@@I~
         if (Dump.Y) Dump.println("Earth.getRectEarthAddKan player="+Pplayer);//~v@@@R~
         Rect rectPiece=AG.aPlayers.getPieceRectForAddKan(Pplayer); //~v@@@I~
+        if (Dump.Y) Dump.println("Earth.getRectEarthAddKan rectPiece="+rectPiece.toString());//+vag9I~
         Rect r=new Rect(rectPiece);                                //~v@@@I~
      //   Bitmap bm=getBitmapPair(tdAddKan,Pplayer);                 //~v@@@I~
         ww=Pbitmap.getWidth(); hh=Pbitmap.getHeight();                       //~v@@@I~
@@ -279,6 +280,7 @@ public class Earth                                                 //~v@@@R~
             r.top+=(int)(hh*RATE_ADD_KAN/2);                       //~v@@@I~
             r.bottom=r.top+(int)(hh*RATE_ADD_KAN);                 //~v@@@I~
         }                                                          //~v@@@I~
+        if (Dump.Y) Dump.println("Earth.getRectEarthAddKan return ww="+ww+",hh="+hh+",diff="+diff+",r="+r.toString());//+vag9I~
         return r;                                                  //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~

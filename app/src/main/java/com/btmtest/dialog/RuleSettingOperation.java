@@ -1,6 +1,9 @@
-//*CID://+vaaFR~:                             update#=  501;       //~vaaFR~
+//*CID://+vakRR~:                             update#=  513;       //~vakRR~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vaaFI~
+//2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
+//2022/03/19 vakQ notify update of rule when client received       //~vakQI~
+//2022/02/19 vak7 drop option chk kataagari(temporally False always AND and option is chk furiten only)//~vak7I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vaaFI~
 //2021/07/13 vaaF setting option of waittimeby 0.5 second          //~vaaFI~
 //2021/06/27 vaa2 Notify mode of Match                             //~vaa2I~
 //2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
@@ -31,7 +34,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 {                                                                  //~2C29R~
   	private static final int    TITLEID=R.string.Title_OperationSetting; //~v@@@R~//~0211R~
 	private static final int    LAYOUTID=R.layout.setting_rule_operation;//~v@@@R~
-	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_operation_theme;//+vaaFI~
+	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_operation_theme;//~vaaFI~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
@@ -68,7 +71,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     private RuleSetting RSD;                                       //~v@@@I~
     private Prop curProp;                                          //~v@@@I~
     private boolean swChanged,swFixed;                             //~v@@@R~
-                                                                   //~1A6fI~
+    private boolean swReceived;                                    //~vakQI~
     //******************************************                   //~v@@@M~
 	public RuleSettingOperation()                                  //~v@@@R~
     {
@@ -77,11 +80,12 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     public static RuleSettingOperation newInstance(RuleSetting Pparent)//~v@@@R~
     {                                                              //~v@@@I~
         RuleSettingOperation dlg=new RuleSettingOperation();       //~v@@@R~
-//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~//+vaaFR~
-        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vaaFI~
+//      UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~v@@@R~//~vaaFR~
+        UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vaaFI~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                   //~v@@@I~//~9C13R~
         dlg.RSD=Pparent;                                           //~v@@@I~
+        Pparent.aRuleSettingOperation=dlg;                         //~vakRI~
         return dlg;                                                //~v@@@I~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@M~
@@ -91,6 +95,7 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         if (Dump.Y) Dump.println("RuleSettingOperation.initLayout");//~v@@@R~
         RSD.swChildInitializing=true;                              //~v@@@I~
         swFixed=RSD.swFixed;                                       //~v@@@I~
+        swReceived=RSD.swReceived;                                 //~vakQI~
         super.initLayout(PView);                                   //~v@@@I~
         setupLayout(PView);                                        //~v@@@I~
         setInitialValue();                                         //~v@@@I~
@@ -104,6 +109,13 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSettingOperation.getDialogWidth swSmallDevice="+AG.swSmallDevice+",ww="+ww);//~9819I~//~v@@@I~
         return ww;                                                 //~9819I~//~v@@@I~
     }                                                              //~9819I~//~v@@@I~
+    //******************************************                   //+vakRI~
+    @Override                                                      //+vakRI~
+    public void onDismissDialog()                                  //+vakRI~
+    {                                                              //+vakRI~
+        if (Dump.Y) Dump.println("RuleSettingOperation.onDismissDialog");//+vakRI~
+        RSD.aRuleSettingOperation=null;                            //+vakRI~
+    }                                                              //+vakRI~
 	//***********************************************************      //~1613I~//~v@@@R~
     private void setupLayout(View PView)                           //~v@@@I~
     {                                                              //~v@@@I~
@@ -166,6 +178,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     {                                                              //~v@@@I~
     	curProp=RSD.curProp;                                       //~v@@@I~
 	    properties2Dialog(curProp);                                 //~v@@@I~
+        if (swReceived)                                            //~vakQI~
+            chkUpdate();                                           //~vakQI~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@M~
     @Override                                                      //~v@@@M~
@@ -224,6 +238,77 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         rgSuspend.setCheckedID(Pprop.getParameter(getKeyRS(RSID_SUSPEND),0),swFixed);//~v@@@I~
         rgDelayUnit.setCheckedID(Pprop.getParameter(getKeyRS(RSID_DELAY_UNIT),0),swFixed);//~vaaFI~
     }                                                              //~v@@@I~
+	//***********************************************************  //~vakQI~
+    public  static boolean chkUpdateCheckOnly(RuleSetting Prsd)    //~vakQR~
+    {                                                              //~vakQI~
+		if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnly curProp="+Prsd.curProp.toString());//~vakQI~
+	    if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnly AG.ruleProp="+AG.ruleProp.toString());//~vakQI~
+        boolean rc=false;                                          //~vakQI~
+        for (;;)                                                   //~vakQI~
+        {                                                          //~vakQI~
+    //*delay                                                       //~vakQI~
+            if (Prsd.isChanged(RSID_DELAY_PONKAN))            {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_DELAY_TAKE))              {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_DELAY_LAST))              {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_DELAY_DISCARD))           {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_DELAY_2TOUCH))            {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_TIMEOUT_TAKE))            {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_TIMEOUT_TAKEROBOT))       {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_ALLOW_ROBOT_ALL_BTN))     {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_PLAY_ALONE_NOTIFY))       {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_PLAY_MATCH_NOTIFY))       {rc=true; break;}//~vakQR~
+    //*2Touch                                                      //~vakQI~
+            if (Prsd.isChanged(RSID_2TOUCH_CANCELABLE_RON))   {rc=true; break;}//~vakQR~
+    //*YakuFix1                                                    //~vakQI~
+            if (Prsd.isChanged(RSID_YAKUFIX1))                {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_CHECK_RONVALUE))          {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_CHECK_REACH))             {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_CHK_MULTIWAIT))           {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_2TOUCH_TIMEOUT))          {rc=true; break;}//~vakQR~
+    //*positioning                                                 //~vakQI~
+            if (Prsd.isChanged(RSID_POSITIONING))             {rc=true; break;}//~vakQR~
+    //*suspend                                                     //~vakQI~
+            if (Prsd.isChanged(RSID_SUSPEND_PENALTY))         {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_SUSPEND_PENALTYIOERR))    {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_SUSPEND))                 {rc=true; break;}//~vakQR~
+            if (Prsd.isChanged(RSID_DELAY_UNIT))              {rc=true; break;}//~vakQR~
+            break;                                                 //~vakQI~
+        }                                                          //~vakQI~
+	    if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnly rc="+rc);//~vakQI~
+        return rc;                                                 //~vakQI~
+    }                                                              //~vakQI~
+	//***********************************************************  //~vakQI~
+    private void chkUpdate()                                       //~vakQI~
+    {                                                              //~vakQI~
+		if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdate curProp="+curProp.toString());//~vakQI~
+	    if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdate AG.ruleProp="+AG.ruleProp.toString());//~vakQI~
+    //*delay                                                       //~vakQI~
+        RSD.setBGUpdated(sbDelayPonKan,RSD.isChanged(RSID_DELAY_PONKAN));//~vakQR~
+        RSD.setBGUpdated(sbDelayTake,RSD.isChanged(RSID_DELAY_TAKE));//~vakQR~
+        RSD.setBGUpdated(sbDelayLast,RSD.isChanged(RSID_DELAY_LAST));//~vakQR~
+        RSD.setBGUpdated(sbDelayDiscard,RSD.isChanged(RSID_DELAY_DISCARD));//~vakQR~
+        RSD.setBGUpdated(sbDelay2Touch,RSD.isChanged(RSID_DELAY_2TOUCH));//~vakQR~
+        RSD.setBGUpdated(sbTimeoutTake,RSD.isChanged(RSID_TIMEOUT_TAKE));//~vakQR~
+        RSD.setBGUpdated(sbTimeoutTakeRobot,RSD.isChanged(RSID_TIMEOUT_TAKEROBOT));//~vakQR~
+        RSD.setBGUpdated(cbAllowRobotAllButton,RSD.isChanged(RSID_ALLOW_ROBOT_ALL_BTN));//~vakQR~
+        RSD.setBGUpdated(cbPlayAloneNotify,RSD.isChanged(RSID_PLAY_ALONE_NOTIFY));//~vakQR~
+        RSD.setBGUpdated(cbPlayMatchNotify,RSD.isChanged(RSID_PLAY_MATCH_NOTIFY));//~vakQR~
+    //*2Touch                                                      //~vakQI~
+        RSD.setBGUpdated(cb2TouchCancelableRon,RSD.isChanged(RSID_2TOUCH_CANCELABLE_RON));//~vakQR~
+    //*YakuFix1                                                    //~vakQI~
+    	RSD.setBGUpdated(cbYakuFix1,RSD.isChanged(RSID_YAKUFIX1)); //~vakQR~
+        RSD.setBGUpdated(cb2CheckRonValue,RSD.isChanged(RSID_CHECK_RONVALUE));//~vakQR~
+        RSD.setBGUpdated(cb2CheckReach,RSD.isChanged(RSID_CHECK_REACH));//~vakQR~
+        RSD.setBGUpdated(cbChkMultiWait,RSD.isChanged(RSID_CHK_MULTIWAIT));//~vakQR~
+        RSD.setBGUpdated(cb2TouchTimeout,RSD.isChanged(RSID_2TOUCH_TIMEOUT));//~vakQR~
+    //*positioning                                                 //~vakQI~
+        RSD.setBGUpdated(cbPositioning,RSD.isChanged(RSID_POSITIONING));//~vakQR~
+    //*suspend                                                     //~vakQI~
+        RSD.setBGUpdated(spnSuspendPenalty,RSD.isChanged(RSID_SUSPEND_PENALTY));//~vakQR~
+        RSD.setBGUpdated(spnSuspendPenaltyIOErr,RSD.isChanged(RSID_SUSPEND_PENALTYIOERR));//~vakQR~
+        RSD.setBGUpdated(rgSuspend,RSD.isChanged(RSID_SUSPEND));   //~vakQR~
+        RSD.setBGUpdated(rgDelayUnit,RSD.isChanged(RSID_DELAY_UNIT));//~vakQR~
+    }                                                              //~vakQI~
 	//***********************************************************  //~v@@@I~
     private boolean dialog2Properties()                            //~v@@@I~
     {                                                              //~v@@@I~
@@ -543,12 +628,21 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     }                                                              //~va27I~
     //**************************************                       //~va96I~
     public static boolean isCheckMultiWait()                       //~va96I~
-    {                                                              //~va96I~
-        int def=DEFAULT_CHK_MULTIWAIT;  //false                    //~va96I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),def)!=0;//~va96I~
-        if (Dump.Y) Dump.println("RuleSetting.isCheckMultiWait rc="+rc);//~va96I~
+    {                                                              //~va96I~//~vak7R~
+//      int def=DEFAULT_CHK_MULTIWAIT;  //false                    //~va96I~//~vak7R~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),def)!=0;//~va96I~//~vak7R~
+        boolean rc=false;                                          //~vak7I~
+        if (Dump.Y) Dump.println("RuleSetting.isCheckMultiWait temporally false always rc="+rc);//~va96I~//~vak7R~
         return rc;                                                 //~va96I~
     }                                                              //~va96I~
+    //**************************************                       //~vak7I~
+    public static boolean isCheckFuriten()                         //~vak7I~
+    {                                                              //~vak7I~
+        int def=DEFAULT_CHK_MULTIWAIT;  //false                    //~vak7I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_CHK_MULTIWAIT),def)!=0;//~vak7I~
+        if (Dump.Y) Dump.println("RuleSetting.isCheckFuriten rc="+rc);//~vak7I~
+        return rc;                                                 //~vak7I~
+    }                                                              //~vak7I~
     //**************************************                       //~v@@@I~
 	public static boolean isPositioningSkip()                      //~v@@@I~
     {                                                              //~v@@@I~

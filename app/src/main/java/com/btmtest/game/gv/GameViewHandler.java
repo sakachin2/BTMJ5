@@ -1,4 +1,4 @@
-//*CID://+va60R~: update#= 424;                                    //~v@21R~//~va27R~//~va60R~
+//*CID://+va60R~: update#= 425;                                    //~v@21R~//~va27R~//~va60R~
 //**********************************************************************//~v101I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
@@ -306,7 +306,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
     //***********************************************************  //~v@11I~
     public static Message obtainMsg(int Pmsgid,int Pappmsgid,int Psender,String Pparm1,String Pparm2,String Pparm3)//~v@11I~
     {                                                              //~v@11I~
-        if (Dump.Y) Dump.println("GameViewHandler.obtainMag msgid="+Pmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pparm3="+Pparm3);//~v@11I~
+        if (Dump.Y) Dump.println("GameViewHandler.obtainMsg msgid="+Pmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pparm3="+Pparm3);//~v@11I~//+va60R~
     	Message msg=obtainMsg(Pmsgid);                             //~v@11I~
         Bundle bundle=msg.getData();                               //~v@11I~
         bundle.putInt(GVPARM_INT1,Pappmsgid);                      //~v@11I~
@@ -367,7 +367,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
 	public void gvHandleMsg(Message Pmsg)                          //~v@@@R~
     {                                                              //~v@@@I~
     	boolean rc=false;   //need call draw                       //~v@@@I~
-        if (Dump.Y) Dump.println("GameViewHandler.gvHandleMsg what="+Pmsg.what);//~v@@@R~//+va60R~
+        if (Dump.Y) Dump.println("GameViewHandler.gvHandleMsg what="+Pmsg.what);//~v@@@R~//~va60R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
 	        switch(Pmsg.what)                                      //~v@@@R~

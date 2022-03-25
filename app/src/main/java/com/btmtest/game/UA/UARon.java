@@ -1,5 +1,11 @@
-//*CID://+vagfR~: update#= 724;                                    //~vagfR~
+//*CID://+vakvR~: update#= 732;                                    //+vakvR~
 //**********************************************************************//~v101I~
+//2022/03/09 vakv (Bug)RinshanTaken was not evaluated for Robot    //+vakvI~
+//2022/02/19 vak7 drop option chk kataagari(temporally False always AND and option is chk furiten only)//~vak7I~
+//2022/02/16 vak5 with no chk kataagari,do not lit win button in notify mode for human//~vak5I~
+//2022/01/31 vak0 ronable pattern chk was done by kataagari chk option. it should be independent//~vak0I~
+//                But ronable patter chk required for having accidental yaku like as tenho//~vak0I~
+//                Allow Win-Anyway even 1han constraint chk(not ronable pattern)//~vak0I~
 //2021/11/10 vagf (Bug)Robot could not by chankan                  //~vagfI~
 //2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
 //                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
@@ -88,7 +94,7 @@ public class UARon                                                 //~v@@@R~//~v
     private UARonValue UARV;                                       //~va11I~
 //  private boolean swCheckRonable;                                //~va11I~//~va1aR~
     private boolean swCheckFix1;                                   //~va11I~
-    private boolean swCheckMultiWait;                              //~va96I~
+//  private boolean swCheckMultiWait;                              //~va96I~//~vak7R~
     private boolean swCheckFix2;                                   //~va88I~
     private int completeType,currentEswn;                          //~va11R~
     private boolean swTake;                                        //~va11I~
@@ -126,9 +132,9 @@ public class UARon                                                 //~v@@@R~//~v
     	swMultiRon3Next=RuleSetting.isDrawnHW3R();     //~v@@6I~   //~9B29I~
 //      swCheckRonable= RuleSettingOperation.isCheckRonable();     //~va11I~//~va1aR~
         swCheckFix1= RuleSettingOperation.isYakuFix1();            //~va11R~
-        swCheckMultiWait=RuleSettingOperation.isCheckMultiWait();  //~va96R~
+//      swCheckMultiWait=RuleSettingOperation.isCheckMultiWait();  //~va96R~//~vak7R~
         constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~//~va88I~
-        if (Dump.Y) Dump.println("UARon.init swCheckFix1="+swCheckFix1+",swCheckMultiwait="+swCheckMultiWait);//~va96I~
+        if (Dump.Y) Dump.println("UARon.init swCheckFix1="+swCheckFix1);//~va96I~//~vak7R~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
 //    public boolean complete(int Pplayer)                            //~v@@@I~//~v@@6R~
@@ -294,7 +300,7 @@ public class UARon                                                 //~v@@@R~//~v
     private boolean chkComplete(int Pplayer)                       //~9C11I~
     {                                                              //~9C11I~
 		boolean rc=true;                                           //~va11R~
-        if (Dump.Y) Dump.println("UARon.chkComplete player="+Pplayer+",swChkFix1="+swCheckFix1);             //~9C11I~//~va11R~//~va1aR~
+        if (Dump.Y) Dump.println("UARon.chkComplete player="+Pplayer+",swChkFix1="+swCheckFix1);//~vak0R~//~vak7R~
 //      setForChkRank(Pplayer);                                    //~va11R~
 //      if (!swCheckRonable)                                       //~va11R~
 //  		return true;                                           //~va11R~
@@ -308,8 +314,8 @@ public class UARon                                                 //~v@@@R~//~v
         if (rc)                                                    //~va11R~
         {                                                          //~va11R~
 //          if (swCheckFix1)                                       //~va11R~//~va96R~
-            if (swCheckFix1 || swCheckMultiWait)                   //~va96I~
-            {                                                      //~va11I~
+//          if (swCheckFix1 || swCheckMultiWait)                   //~va96I~//~vak0R~
+//          {                                                      //~va11I~//~vak0R~
             	swCheckFix2=isCheckFix2();                         //~va88I~
 //              int rc2=UARV.chkRank(this,Pplayer);                //~va11R~//~va88R~
                 int rc2;                                           //~va88I~
@@ -321,16 +327,24 @@ public class UARon                                                 //~v@@@R~//~v
                 {                                                  //~va11I~
                 	if (rc2>0)                                     //~va11R~
                     {                                              //~va88I~
+                     if (swCheckFix1)                              //~vak0I~
+                     {                                             //~vak0I~
                       if (rc2==1)                                  //~va88I~
 			  			GMsg.drawMsgbar(R.string.AE_RankFix1);     //~va11R~
                       else                                         //~va88I~
 			  			GMsg.drawMsgbar(R.string.AE_RankFix2);     //~va88I~
+                	  rc=false;                                    //~vak0I~
+                     }                                             //~vak0I~
                     }                                              //~va88I~
                 	else                                           //~va11R~
+                    {                                              //~vak0I~
     			  		GMsg.drawMsgbar(R.string.Err_RonChk);      //~va11R~
-                	rc=false;                                      //~va11I~
+                		rc=false;                                  //~vak0I~
+                    }                                              //~vak0I~
+//              	rc=false;                                      //~va11I~//~vak0R~
                 }                                                  //~va11I~
-        		if (rc && swCheckMultiWait)   //confirmed shanten==-1 by chkRank//~va96I~
+//      		if (rc && swCheckMultiWait)   //confirmed shanten==-1 by chkRank//~va96I~//~vak5R~
+        		if (rc)                       //required to chk fixerr(sakiduke chk) even if swChkMultiWait is off//~vak5I~
             	{                                                  //~va96I~
 //        			if (!chkCompleteMultiWaitMatchModeHuman(PLAYER_YOU))     //chk furiten kataagari//~va96I~//~va9aR~
                 	TileData td=swChkCompleteTake ? tdNotifyTake : null;//~va9aI~
@@ -338,7 +352,7 @@ public class UARon                                                 //~v@@@R~//~v
           			if (!chkCompleteMultiWaitHuman(PLAYER_YOU,td))     //chk furiten kataagari//~va9aI~
             			rc=false;                                  //~va96I~
             	}                                                  //~va96I~
-            }                                                      //~va96I~
+//          }                                                      //~va96I~//~vak0R~
         }                                                          //~va11R~
         if (Dump.Y) Dump.println("UARon.chkComplete rc="+rc);      //~va70I~
 		return rc;                                          //~9C11I~
@@ -657,15 +671,15 @@ public class UARon                                                 //~v@@@R~//~v
     	boolean rc=true;                                           //~0205I~
     //***********************                                      //~0205I~
 //  	boolean swChk= RuleSettingOperation.isCheckRonable();       //~0205I~//~va11R~//~va1aR~
-        boolean swFix1= RuleSettingOperation.isYakuFix1();         //~va11R~
-		if (Dump.Y) Dump.println("UARon.winAnyway swCheckFix1="+swFix1);//~0205R~//~va11R~//~va1aR~
+//      boolean swFix1= RuleSettingOperation.isYakuFix1();         //~va11R~//~vak0R~
+		if (Dump.Y) Dump.println("UARon.winAnyway");//~0205R~//~va11R~//~va1aR~//~vak0R~
 //      if (!swChk)	//no ronchk, no need to RON_ANYWAY             //~0205I~//~va11R~
 //      if (!swChk && !swFix1)                                     //~va11R~//~va1aR~
-        if (!swFix1)                                               //~va1aI~
-        {                                                          //~0205I~
-            UView.showToastLong(R.string.Err_NoNeedRonAnyway);         //~0205I~//~0215R~
-        	return false;	//no dismiss                           //~0205I~
-        }                                                          //~0205I~
+//      if (!swFix1)                                               //~va1aI~//~vak0R~
+//      {                                                          //~0205I~//~vak0R~
+//          UView.showToastLong(R.string.Err_NoNeedRonAnyway);         //~0205I~//~0215R~//~vak0R~
+//      	return false;	//no dismiss                           //~0205I~//~vak0R~
+//      }                                                          //~0205I~//~vak0R~
         GameViewHandler.sendMsg(GCM_RON_ANYWAY,null);              //~0205I~
         return rc;                                                 //~0205I~
     }                                                              //~0205I~
@@ -728,7 +742,7 @@ public class UARon                                                 //~v@@@R~//~v
     //*************************************************************************//~vagfI~
     public void chkEnvironmentYaku(boolean PswAllInHand,TileData PtdRonLast,boolean PswTaken,int Pplayer,int PenvironmentYaku)//~vagfI~
     {                                                              //~vagfI~
-        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku PenvironmentYaku="+PenvironmentYaku+",player="+Pplayer+",swAllInHand="+PswAllInHand+",ptdLast="+TileData.toString(PtdRonLast));//~vagfI~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku PenvironmentYaku="+PenvironmentYaku+",swTaken="+PswTaken+",player="+Pplayer+",swAllInHand="+PswAllInHand+",ptdLast="+TileData.toString(PtdRonLast));//~vagfI~//+vakvR~
         completeTD=PtdRonLast;                                     //~vagfI~
         currentEswn=Accounts.playerToEswn(Pplayer);                //~vagfI~
         completeType=PLS.getPlayerCompleteFlag(Pplayer);           //~vagfI~
@@ -740,8 +754,10 @@ public class UARon                                                 //~v@@@R~//~v
         chkTaken(PswAllInHand);  //tsumo                           //~vagfI~
         chkLastTile();	//hitei hotei                              //~vagfI~
 //      chkKan();    //chankan                                     //~vagfI~
-		if (PenvironmentYaku!=0)                                   //+vagfI~
-			UARV.addOtherYaku(PenvironmentYaku,1/*han*/); //add chankan//+vagfR~
+		if (PswTaken)                                               //+vakvI~
+        	chkKanTaken(Pplayer);    //rinshan kaiho               //+vakvI~
+		if (PenvironmentYaku!=0)                                   //~vagfI~
+			UARV.addOtherYaku(PenvironmentYaku,1/*han*/); //add chankan//~vagfR~
     }                                                              //~vagfI~
     //*************************************************************************//~va11I~
     private boolean chkTimingYakuman()                             //~va11I~
@@ -775,7 +791,6 @@ public class UARon                                                 //~v@@@R~//~v
     //*************************************************************************//~va11I~
     private boolean chk1stChildTake()                    //chiho   //~va11I~
     {                                                              //~va11I~
-	    //TODO test ankan                                          //~va11I~
         int ctr=PLS.ctrTakenAll;                                   //~va11R~
         int ctrDiscarded=PLS.ctrDiscardedAll;                      //~va11R~
         boolean sw=swTake && currentEswn!=ESWN_E && ctr==currentEswn+1 && ctrDiscarded==currentEswn/*no pon,kan,chii*/;//~va11I~
@@ -893,6 +908,14 @@ public class UARon                                                 //~v@@@R~//~v
         if ((completeType & COMPLETE_KAN_ADD)!=0)	//chankan      //~va11I~
 			UARV.addOtherYaku(RYAKU_KAN_ADD,RANK_KAN_ADD);         //~va11I~
     }                                                              //~va11I~
+    //*************************************************************************//+vakvI~
+    private void chkKanTaken(int Pplayer) //rinshan kaiho          //+vakvI~
+    {                                                              //+vakvI~
+        if (Dump.Y) Dump.println("UARon.chkKanTaken player="+Pplayer);//+vakvI~
+        int kanType=PLS.getKanType();                               //+vakvI~
+        if (kanType!=0)                                            //+vakvI~
+			UARV.addOtherYaku(RYAKU_KAN_TAKEN,RANK_KAN_TAKEN);     //+vakvI~
+    }                                                              //+vakvI~
 	//*************************************************************************//~va96I~
 	//*after chkRank(constraint chk done)                          //~va96R~
 	//*************************************************************************//~va96I~

@@ -1,5 +1,6 @@
-//*CID://+vae0R~:                             update#=  468;       //~vae0R~
+//*CID://+vakVR~:                             update#=  469;       //+vakVR~
 //*****************************************************************//~v101I~
+//2022/03/24 vakW rule update msg on dialog                        //+vakVI~
 //2021/09/12 vae0 Scped for BTMJ5                                  //~vae0I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -394,10 +395,10 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     //*******************************************************      //~vae0I~
     //*from History                                                //~vae0I~
     //*******************************************************      //~vae0I~
-    public static void savePropertiesScoped(String Pmember,String Pcmt,boolean PswOverride)//+vae0R~
+    public static void savePropertiesScoped(String Pmember,String Pcmt,boolean PswOverride)//~vae0R~
     {                                                              //~vae0I~
         if (Dump.Y) Dump.println("SettingDlg.savePropertiesScoped Pmember="+Pmember+",Pcmt="+Pcmt);//~vae0I~
-        AG.ruleProp.savePropertiesScoped(Pmember,Pcmt,PswOverride);//+vae0R~
+        AG.ruleProp.savePropertiesScoped(Pmember,Pcmt,PswOverride);//~vae0R~
     }                                                              //~vae0I~
     //**************************************                       //~9616I~
     //* when agreed                                                //~9616I~
@@ -532,4 +533,11 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
         if (Dump.Y) Dump.println("SettingDlg.updateOKNG");         //~9406I~
     	showSyncStatus();                                          //~9406I~
     }                                                              //~9406I~
+    //*******************************************************      //+vakVI~
+    protected void showStatus(int PmsgID)                          //+vakVI~
+    {                                                              //+vakVI~
+		String msg=Utils.getStr(PmsgID);                           //+vakVI~
+		tvShowStatus.setText(msg);                                 //+vakVI~
+        if (Dump.Y) Dump.println("SettingDlg.showStatus msg="+msg);//+vakVI~
+    }                                                              //+vakVI~
 }//class                                                           //~v@@@R~

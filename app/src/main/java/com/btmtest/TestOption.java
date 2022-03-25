@@ -1,4 +1,4 @@
-//*CID://+vaihR~: update#= 573;                                    //~vagvR~//~vaihR~
+//*CID://+vaihR~: update#= 575;                                    //~vagvR~//~vaihR~
 //**********************************************************************//~v@@@I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vagvI~
@@ -168,7 +168,8 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO5_INITIAL_POSITION_CLIENT_PREV   =  0x00002000;//~vaf1I~
     public static final int TO5_DEAL_OTHER_YAKUMAN             =  0x00004000;//~vagvI~
     public static final int TO5_NODUMP                         =  0x00008000;//~vaihI~
-    public static final int TO5_AVOID_FURITEN                  =  0x00010000;//+vaihI~
+    public static final int TO5_AVOID_FURITEN                  =  0x00010000;//~vaihI~
+    public static final int TO5_SETDISCARD                     =  0x00020000;//~vaihI~
     public static int option2;                                     //~v@@@I~
     public static int option3;                                     //~va66I~
     public static int option4;                                     //~vaa6I~
@@ -179,6 +180,7 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static int testCaseRonValue;                            //~v@@@I~
     public static int testDoraUpType,testDoraUpNumber;             //~v@@@I~
     public static int testDoraDownType,testDoraDownNumber;         //~v@@@I~
+    public static int testDiscardType,testDiscardNumber;           //+vaihI~
     public static int testKanUpType,testKanUpNumber;               //~v@@@I~
     public static int testKanDownType,testKanDownNumber;           //~v@@@I~
     public static int testKanUpType2,testKanUpNumber2;             //~v@@@I~

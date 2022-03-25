@@ -1,6 +1,7 @@
-//*CID://+vaj2R~: update#= 167;                                    //+vaj2R~
+//*CID://+vakDR~: update#= 168;                                    //+vakDR~
 //**********************************************************************//~v101I~
-//2022/01/19 vaj2 at Reach,wait same color  for 7pair with intent samecolor regardless dora//+vaj2I~
+//2022/03/15 vakD No need to wait ronTime to take Rinshan for Ankan if tile is not candidate of 13 orphan//+vakDI~
+//2022/01/19 vaj2 at Reach,wait same color  for 7pair with intent samecolor regardless dora//~vaj2I~
 //2021/11/08 vag8 INTENT_ALLSAME;avoid when othercolor meld exist  //~vag7I~
 //2021/11/08 vag7 INTENT_ALLSAME;triplet>=1 and (triplet+pair)>=4 and no seq meld//~vag7I~
 //2021/10/28 vaff pon/chii call for INTENT_CHANTA                  //~vaffI~
@@ -45,7 +46,8 @@ public class RAUtils                                               //~v@@@R~//~v
     //*********************************************************    //~1114I~
     public static boolean isTerminal(int Ppos)                     //~1114I~
     {                                                              //~1114I~
-        boolean rc=Ppos>OFFS_WORDTILE || Ppos%CTR_NUMBER_TILE==0 || (Ppos%CTR_NUMBER_TILE==CTR_NUMBER_TILE-1);//~1114I~
+//      boolean rc=Ppos>OFFS_WORDTILE || Ppos%CTR_NUMBER_TILE==0 || (Ppos%CTR_NUMBER_TILE==CTR_NUMBER_TILE-1);//~1114I~//+vakDR~
+        boolean rc=Ppos>=OFFS_WORDTILE || Ppos%CTR_NUMBER_TILE==TN1 || (Ppos%CTR_NUMBER_TILE==TN9);//+vakDI~
         if (Dump.Y) Dump.println("RAUtils.isTerminal pos="+Ppos+",rc="+rc);//~1114I~//~1119R~
         return rc;                                                 //~1114I~
     }                                                              //~1114I~
@@ -413,14 +415,14 @@ public class RAUtils                                               //~v@@@R~//~v
         if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",type="+Ptype);//~1220I~//~1427R~
         return rc;                                                 //~1220I~
     }                                                              //~1220I~
-    //***********************************************************************//+vaj2I~
-    public static boolean isMatchSameColorPos(boolean PswWord/*rc for wordTile*/,int Pintent,int Ppos)//+vaj2I~
-    {                                                              //+vaj2I~
-        int type=Ppos/CTR_NUMBER_TILE;                             //+vaj2I~
-        boolean rc=isMatchSameColor(PswWord,Pintent,type);          //+vaj2I~
-        if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",pos="+Ppos);//+vaj2I~
-        return rc;                                                 //+vaj2I~
-    }                                                              //+vaj2I~
+    //***********************************************************************//~vaj2I~
+    public static boolean isMatchSameColorPos(boolean PswWord/*rc for wordTile*/,int Pintent,int Ppos)//~vaj2I~
+    {                                                              //~vaj2I~
+        int type=Ppos/CTR_NUMBER_TILE;                             //~vaj2I~
+        boolean rc=isMatchSameColor(PswWord,Pintent,type);          //~vaj2I~
+        if (Dump.Y) Dump.println("RAUtils.isMatchSameColor rc="+rc+",intent="+Pintent+",pos="+Ppos);//~vaj2I~
+        return rc;                                                 //~vaj2I~
+    }                                                              //~vaj2I~
     //*********************************************************    //~vaaEI~
     //*single tile (ctr=1 & both side=0)                           //~vaaEI~
     //*********************************************************    //~vaaEI~

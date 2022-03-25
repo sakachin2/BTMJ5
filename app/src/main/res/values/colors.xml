@@ -37,4 +37,6 @@
     <color name="btn_normal_fg">#ff000000</color> 
     <!--color name="upicker_list">@android:color/white</color-->
     <color name="upicker_list">#ffc8ffc8</color>
+    <!--color name="bg_rule_updated">#ffff00</color-->   <!--yellow-->
+    <color name="bg_rule_updated">#00ffff</color>   <!--yellow-->
 </resources>

@@ -1,5 +1,6 @@
-//*CID://+vaj7R~: update#= 590;                                    //~vaj7R~
+//*CID://+vakqR~: update#= 596;                                    //~vakqR~
 //**********************************************************************//~v101I~
+//2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vakqI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
 //utility around screen                                            //~v@@@I~
@@ -123,6 +124,8 @@ public class UATake                                                //~v@@@R~
         boolean rc=false;                                          //~v@@6I~
 //      TileData td=PLS.getLastDiscarded();                        //~v@@6I~//~0404R~
         TileData td=PLS.getCurrentTile();   //tileLastDiscarded or tileCurrentTaken//~0404I~
+      if (false)    //TODO test                                    //~vakqI~
+      {                                                            //~vakqI~
 		if (td!=null && td.isLocked())                             //~v@@6I~
 		{                                                          //~v@@6I~
 	    	if (Dump.Y) Dump.println("UATake.isLocked ignore Take by Locked");//~0404I~
@@ -133,7 +136,28 @@ public class UATake                                                //~v@@@R~
 	        UserAction.sendErr(0,Pplayer,R.string.Info_WaitDiscardTimeout);//~v@@6I~
             rc=true;                                               //~v@@6I~
         }                                                          //~v@@6I~
-	    if (Dump.Y) Dump.println("UATake.isLocked rc="+rc);        //~v@@6I~
+      }                                                            //~vakqI~
+      else                                                         //~vakqI~
+	  if (td!=null)                                                //~vakqI~
+      {                                                            //~vakqI~
+	    if (Dump.Y) Dump.println("UATake.isLocked td objectID="+td.hashCode());
+
+        if (PLS.isLastActionIsKan())                               //~vakqI~
+        {                                                          //~vakqI~
+        	if (td.isLockedKanTake())                              //~vakqI~
+        	{                                                      //~vakqI~
+	        	UserAction.sendErr(0,Pplayer,R.string.Info_WaitKanTakableTimeout);//~vakqI~
+        		rc=true;                                           //~vakqI~
+        	}                                                      //~vakqI~
+        }                                                          //~vakqI~
+        else                                                       //~vakqI~
+		if (td.isLocked())                                         //~vakqI~
+        {                                                          //~vakqI~
+	        UserAction.sendErr(0,Pplayer,R.string.Info_WaitDiscardTimeout);//~vakqI~
+        	rc=true;                                               //~vakqI~
+        }                                                          //~vakqI~
+      }                                                            //~vakqI~
+	    if (Dump.Y) Dump.println("UATake.isLocked rc="+rc+",player="+Pplayer);        //~v@@6I~//~vaj7R~
         return rc;                                                 //~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~v@@@I~
@@ -186,8 +210,8 @@ public class UATake                                                //~v@@@R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
-			if (PswReceived)	                                   //+vaj7I~
-                saveServerCallStatus(PintParm,POSPARM_CALLSTATUS); //+vaj7M~
+			if (PswReceived)	                                   //~vaj7I~
+                saveServerCallStatus(PintParm,POSPARM_CALLSTATUS); //~vaj7M~
 	        swKan=PintParm[PARMPOS_SWKAN]!=0;                      //~v@@@I~
             if (swKan)                                             //~v@@6I~
                 td=AG.aTiles.getNextKan();	//add ctrKan           //~v@@6I~

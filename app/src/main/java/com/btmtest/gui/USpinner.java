@@ -1,6 +1,7 @@
-//*CID://+vac5R~:                             update#=   34;       //+vac5R~
+//*CID://+vakQR~:                             update#=   37;       //~vakQR~
 //**************************************************************************//~1B0bI~//~v1EjI~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2022/03/19 vakQ notify update of rule when client received       //~vakQI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //**************************************************************************//~1B0bI~//~v1EjI~
 package com.btmtest.gui;                                           //~v1EjI~
 
@@ -20,19 +21,22 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v
 
 public class USpinner                                              //~v1EjI~
 {                                                                  //~1112I~//~v1EjI~
-	private Spinner spinner;                                       //~1219I~//~v1EjI~
+//  private Spinner spinner;                                       //~1219I~//~v1EjI~//~vakQR~
+    public  Spinner spinner;                                       //~vakQI~
     private ArrayAdapter<CharSequence> adapter;                                  //~v1EjI~
 //  private static final int itemlayout=android.R.layout.simple_spinner_item;//~v1EjI~
     private static final int itemlayout=R.layout.spinner_item;     //~v1EjI~
-    private static final int itemlayout_smallfont=R.layout.spinner_item_theme;//+vac5I~
+    private static final int itemlayout_smallfont=R.layout.spinner_item_theme;//~vac5I~
 //  private static final int dropdownlayout=android.R.layout.simple_spinner_dropdown_item;//~v1EjI~
     private static final int dropdownlayout=R.layout.spinner_dropdown;//~v1EjI~
-    private static final int dropdownlayout_smallfont=R.layout.spinner_dropdown_theme;//+vac5I~
+    private static final int dropdownlayout_smallfont=R.layout.spinner_dropdown_theme;//~vac5I~
     private int USParm;                                            //~v1EjI~
     private USpinnerI listener;
     private OnItemSelectedListener spListener;//~v1EjI~
     private boolean swFixed;                                       //~9226I~
     private int idxFixed;                                          //~9226I~
+    private boolean swSetBG;                                       //~vakQI~
+    private int colorBG;                                           //~vakQI~
 //*******************************                                  //~v1EjI~
     public interface USpinnerI                                     //~v1EjI~
     {                                                              //~v1EjI~
@@ -43,10 +47,10 @@ public class USpinner                                              //~v1EjI~
     public USpinner(View Playout, int Pid)                                                 //~1112R~//~1219R~//~v1EjR~
     {                                                              //~1112I~//~v1EjI~
 		spinner=(Spinner)UView.findViewById(Playout,Pid);        //~v@@@I~//~v1EjI~
-//  	adapter=new ArrayAdapter(AG.context,itemlayout);           //~v1EjR~//+vac5R~
-    	adapter=new ArrayAdapter(AG.context,(AG.swSmallFont ? itemlayout_smallfont : itemlayout));//+vac5I~
-//  	adapter.setDropDownViewResource(dropdownlayout);           //~v1EjR~//+vac5R~
-    	adapter.setDropDownViewResource(AG.swSmallFont ? dropdownlayout_smallfont : dropdownlayout);//+vac5I~
+//  	adapter=new ArrayAdapter(AG.context,itemlayout);           //~v1EjR~//~vac5R~
+    	adapter=new ArrayAdapter(AG.context,(AG.swSmallFont ? itemlayout_smallfont : itemlayout));//~vac5I~
+//  	adapter.setDropDownViewResource(dropdownlayout);           //~v1EjR~//~vac5R~
+    	adapter.setDropDownViewResource(AG.swSmallFont ? dropdownlayout_smallfont : dropdownlayout);//~vac5I~
         spinner.setAdapter(adapter);                               //~v1EjI~
 //  	setListener(null);                                         //~9228I~//~9902R~
 		setListener(createListener());                             //~9902I~
@@ -161,6 +165,13 @@ public class USpinner                                              //~v1EjI~
     	                        	CommonListener.onItemSelectedUS(spinner.getId(),Ppos);//~9902I~//~9903R~
                             }                                      //~9903I~
                         }                                          //~9903I~
+						if (Dump.Y) Dump.println("USpinner.createListener swSetBG="+swSetBG+",view="+Pview+",Pid="+Pid);//~vakQI~
+                        if (swSetBG)                               //~vakQI~
+                        {                                          //~vakQI~
+							if (Dump.Y) Dump.println("USpinner.createListener setBackGround pos="+Ppos);//~vakQI~
+                        	Pview.setBackgroundColor(colorBG);     //~vakQI~
+                        }                                          //~vakQI~
+                        	                                       //~vakQI~
                     }                                              //~9228I~
                     catch(Exception e)                             //~9228I~
                     {                                              //~9228I~
@@ -221,4 +232,13 @@ public class USpinner                                              //~v1EjI~
         if (Dump.Y) Dump.println("USpinner.getId id="+Integer.toHexString(id));//~9228R~
         return id;                                                 //~9228I~
     }                                                              //~9228I~
+    //**********************************************               //~vakQI~
+    public void setBackgroundColor(int Pcolor)                     //~vakQI~
+    {                                                              //~vakQI~
+    	swSetBG=true;                                              //~vakQI~
+    	colorBG=Pcolor;                                            //~vakQI~
+    	int pos=getSelectedIndex();                                //~vakQI~
+        if (Dump.Y) Dump.println("USpinner.setBackgroundColor pos="+pos+",color="+Integer.toHexString(Pcolor));//~vakQI~
+    	select(pos,true/*PswFixed*/);                               //~vakQI~
+    }                                                              //~vakQI~
 }//class                                                           //~1112I~//~v1EjI~

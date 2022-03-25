@@ -1,6 +1,10 @@
-//*CID://+vaj0R~:                             update#=  511;       //+vaj0R~
+//*CID://+vakRR~:                             update#=  518;       //~vakRR~
 //*****************************************************************//~v101I~
-//2022/01/18 vaj0 isFixed1() returns true if not sakiduke mode     //+vaj0I~
+//2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
+//2022/03/19 vakQ notify update of rule when client received       //~vakQI~
+//2022/02/20 vaka apply kataagari tsumo option                     //~vakaI~
+//2022/02/16 vak3 delete option kataagari with fixLast(always allow kataagari with FixLast)//~vak3I~
+//2022/01/18 vaj0 isFixed1() returns true if not sakiduke mode     //~vaj0I~
 //2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/06/26 vaa0 support <img> in htmlText                        //~vaa0I~
@@ -78,7 +82,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     private RuleSetting RSD;                                       //~v@@@I~
     private Prop curProp;                                          //~v@@@I~
     private boolean swChanged,swFixed;                             //~v@@@R~
-                                                                   //~1A6fI~
+    private boolean swReceived;                                    //~vakQI~
     //******************************************                   //~v@@@M~
 	public RuleSettingYaku()                                       //~v@@@R~
     {
@@ -92,6 +96,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
                     UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~
                     HELP_TITLEID,HELPFILE);                        //~v@@@R~
         dlg.RSD=Pparent;                                           //~v@@@I~
+        Pparent.aRuleSettingYaku=dlg;                              //~vakRI~
         return dlg;                                                //~v@@@I~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@M~
@@ -100,6 +105,7 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     {                                                              //~v@@@M~
         if (Dump.Y) Dump.println("RuleSettingYaku.initLayout");    //~v@@@R~
         swFixed=RSD.swFixed;                                       //~v@@@I~
+        swReceived=RSD.swReceived;                                 //~vakQI~
         RSD.swChildInitializing=true;                              //~v@@@I~
         super.initLayout(PView);                                   //~v@@@I~
         setupLayout(PView);                                        //~v@@@I~
@@ -114,6 +120,13 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSettingYaku.getDialogWidth swSmallDevice="+AG.swSmallDevice+",ww="+ww);//~9819I~//~v@@@I~
         return ww;                                                 //~9819I~//~v@@@I~
     }                                                              //~9819I~//~v@@@I~
+    //******************************************                   //+vakRI~
+    @Override                                                      //+vakRI~
+    public void onDismissDialog()                                  //+vakRI~
+    {                                                              //+vakRI~
+        if (Dump.Y) Dump.println("RuleSettingYaku.onDismissDialog");//+vakRI~
+        RSD.aRuleSettingYaku=null;                                 //+vakRI~
+    }                                                              //+vakRI~
 	//***********************************************************      //~1613I~//~v@@@R~
     private void setupLayout(View PView)                           //~v@@@I~
     {                                                              //~v@@@I~
@@ -188,6 +201,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     {                                                              //~v@@@I~
     	curProp=RSD.curProp;                                       //~v@@@I~
 	    properties2Dialog(curProp);                                 //~v@@@I~
+        if (swReceived)                                            //~vakQI~
+            chkUpdate();                                           //~vakQI~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@M~
     @Override                                                      //~v@@@M~
@@ -276,6 +291,123 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         rgOpenReach.setCheckedID(Pprop.getParameter(getKeyRS(RSID_OPENREACH_PAY),OPENREACH_DEFAULT),swFixed);//~0329I~
         rgOpenReachRobot.setCheckedID(Pprop.getParameter(getKeyRS(RSID_OPENREACH_ROBOT),OPENREACH_ROBOT_DEFAULT),swFixed);//~0329I~
     }                                                              //~v@@@I~
+	//***********************************************************  //~vakQI~
+    public  static boolean chkUpdateCheckOnly(RuleSetting Prsd)    //~vakQI~
+    {                                                              //~vakQI~
+		if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly curProp="+Prsd.curProp.toString());//~vakQI~
+	    if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly AG.ruleProp="+AG.ruleProp.toString());//~vakQI~
+        boolean rc=false;                                          //~vakQI~
+        for (;;)                                                   //~vakQI~
+        {                                                          //~vakQI~
+            if 	(Prsd.isChanged(RSID_KUITAN))                  {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_SHOW_ANYWAY_BTN))         {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_DOUBLE_PILLOW))           {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_PINFUTAKEN))              {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_PENDING_RANKNO))          {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_PENDING_RANKEMPTY))       {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_PENDING_RANKFURITEN))     {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_PENDING_RANK0))           {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_PENDING_RANK2))           {rc=true; break;}//~vakQI~
+    //*drawnMangan                                                 //~vakQI~
+            if  (Prsd.isChanged(RSID_DRAWN_MANGAN_TYPE))       {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_DRAWN_MANGAN_RANK))       {rc=true; break;}//~vakQI~
+    //*8Continue                                                   //~vakQI~
+            if  (Prsd.isChanged(RSID_8CONTINUE))               {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_8CONT_NONEEDYAKU))        {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_8CONT_RESET))             {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_8CONT_MULTI))             {rc=true; break;}//~vakQI~
+    //*YakuFix                                                     //~vakQI~
+            if  (Prsd.isChanged(RSID_YAKUFIX))                 {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_YAKUFIX_TAKE))            {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_YAKUFIX_MULTIWAITOK))     {rc=true; break;}//~vakQI~
+    //*YakuFix2                                                    //~vakQI~
+            if  (Prsd.isChanged(RSID_YAKUFIX2))                {rc=true; break;}//~vakQI~
+    //*7Pairif                                                     //~vakQI~
+            if  (Prsd.isChanged(RSID_7PAIR))                   {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_7PAIR4PAIR))              {rc=true; break;}//~vakQI~
+    //*Yakuman2                                                    //~vakQI~
+            if  (Prsd.isChanged(RSID_4ANKO1))                  {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_KOKUSI13))                {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_9REN9))                   {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_4WIND))                   {rc=true; break;}//~vakQI~
+    //*Yakuman                                                     //~vakQI~
+            if  (Prsd.isChanged(RSID_ALLGREEN_NOBLUE))         {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_9RENPINSOU))              {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_NOPAIR13))                {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_NOPAIR14))                {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_BIGRING))                 {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_RANK13))                  {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_KOKUSI_ANKANRON))         {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_5THKAN))                  {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_RENHOMIX))                {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_RENHORANK))               {rc=true; break;}//~vakQI~
+    //*Reachif                                                     //~vakQI~
+            if  (Prsd.isChanged(RSID_REACH_OPEN))              {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_REACH_FURITEN))           {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_ONESHOT))                 {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_ANKAN_AFTER_REACH))       {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_OPENREACH_PAY))           {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_OPENREACH_ROBOT))         {rc=true; break;}//~vakQI~
+            break;                                                 //~vakQI~
+        }                                                          //~vakQI~
+	    if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly rc="+rc);//~vakQI~
+        return rc;                                                 //~vakQI~
+    }                                                              //~vakQI~
+	//***********************************************************  //~vakQI~
+    private void chkUpdate()                                       //~vakQI~
+    {                                                              //~vakQI~
+		if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdate curProp="+curProp.toString());//~vakQI~
+	    if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdate AG.ruleProp="+AG.ruleProp.toString());//~vakQI~
+        RSD.setBGUpdated(cbKuitan,RSD.isChanged(RSID_KUITAN));     //~vakQR~
+        RSD.setBGUpdated(cbShowAnywayBtn,RSD.isChanged(RSID_SHOW_ANYWAY_BTN));//~vakQR~
+        RSD.setBGUpdated(cbDoublePillow,RSD.isChanged(RSID_DOUBLE_PILLOW));//~vakQR~
+        RSD.setBGUpdated(cbPinfuTaken,RSD.isChanged(RSID_PINFUTAKEN));//~vakQR~
+        RSD.setBGUpdated(cbPendingRankNo,RSD.isChanged(RSID_PENDING_RANKNO));//~vakQR~
+        RSD.setBGUpdated(cbPendingRankEmpty,RSD.isChanged(RSID_PENDING_RANKEMPTY));//~vakQR~
+        RSD.setBGUpdated(cbPendingRankFuriten,RSD.isChanged(RSID_PENDING_RANKFURITEN));//~vakQR~
+        RSD.setBGUpdated(cbPendingRank0OK,RSD.isChanged(RSID_PENDING_RANK0));//~vakQR~
+        RSD.setBGUpdated(rgPendingRank2,RSD.isChanged(RSID_PENDING_RANK2));//~vakQR~
+    //*drawnMangan                                                 //~vakQI~
+        RSD.setBGUpdated(rgDrawnMangan,RSD.isChanged(RSID_DRAWN_MANGAN_TYPE));//~vakQR~
+        RSD.setBGUpdated(spnDrawnManganRank,RSD.isChanged(RSID_DRAWN_MANGAN_RANK));//~vakQR~
+    //*8Continue                                                   //~vakQI~
+        RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE);//~vakQR~
+    	RSD.setBGUpdated(cb8ContNoNeedYaku,RSD.isChanged(RSID_8CONT_NONEEDYAKU));//~vakQR~
+    	RSD.setBGUpdated(cb8ContReset,RSD.isChanged(RSID_8CONT_RESET));//~vakQR~
+    	RSD.setBGUpdated(cb8ContMulti,RSD.isChanged(RSID_8CONT_MULTI));//~vakQR~
+    //*YakuFix                                                     //~vakQI~
+        RSD.setBGUpdated(rgYakuFix,RSD.isChanged(RSID_YAKUFIX));   //~vakQR~
+        RSD.setBGUpdated(rgYakuFixMultiwaitTake,RSD.isChanged(RSID_YAKUFIX_TAKE));//~vakQR~
+    	RSD.setBGUpdated(cbYakuFixMultiwaitOK,RSD.isChanged(RSID_YAKUFIX_MULTIWAITOK));//~vakQR~
+    //*YakuFix2                                                    //~vakQI~
+        RSD.setBGUpdated(rgYakuFix2,RSD.isChanged(RSID_YAKUFIX2)); //~vakQR~
+    //*7Pair                                                       //~vakQI~
+        RSD.setBGUpdated(rgYaku7Pair,RSD.isChanged(RSID_7PAIR));   //~vakQR~
+    	RSD.setBGUpdated(cbYaku7Pair4Pair,RSD.isChanged(RSID_7PAIR4PAIR));//~vakQR~
+    //*Yakuman2                                                    //~vakQI~
+    	RSD.setBGUpdated(cbYakuMan2_4Anko,RSD.isChanged(RSID_4ANKO1));//~vakQR~
+    	RSD.setBGUpdated(cbYakuMan2_Kokusi13,RSD.isChanged(RSID_KOKUSI13));//~vakQR~
+    	RSD.setBGUpdated(cbYakuMan2_9Ren9,RSD.isChanged(RSID_9REN9));//~vakQR~
+    	RSD.setBGUpdated(cbYakuMan2_4Wind,RSD.isChanged(RSID_4WIND));//~vakQR~
+    //*Yakuman                                                     //~vakQI~
+    	RSD.setBGUpdated(cbAllGreenNoBlue,RSD.isChanged(RSID_ALLGREEN_NOBLUE));//~vakQR~
+    	RSD.setBGUpdated(cb9RenPinSou,RSD.isChanged(RSID_9RENPINSOU));//~vakQR~
+    	RSD.setBGUpdated(cbNoPair13,RSD.isChanged(RSID_NOPAIR13)); //~vakQR~
+    	RSD.setBGUpdated(cbNoPair14,RSD.isChanged(RSID_NOPAIR14)); //~vakQR~
+    	RSD.setBGUpdated(cbBigRing,RSD.isChanged(RSID_BIGRING));   //~vakQR~
+    	RSD.setBGUpdated(cbRank13,RSD.isChanged(RSID_RANK13));     //~vakQR~
+    	RSD.setBGUpdated(cbKokusiAnkanRon,RSD.isChanged(RSID_KOKUSI_ANKANRON));//~vakQR~
+    	RSD.setBGUpdated(cb5thKan,RSD.isChanged(RSID_5THKAN));     //~vakQR~
+    	RSD.setBGUpdated(cbRenhoMix,RSD.isChanged(RSID_RENHOMIX)); //~vakQR~
+        RSD.setBGUpdated(spnRenhoRank,RSD.isChanged(RSID_RENHORANK));//~vakQR~
+    //*Reach                                                       //~vakQI~
+        RSD.setBGUpdated(cbOpenReach,RSD.isChanged(RSID_REACH_OPEN));//~vakQR~
+        RSD.setBGUpdated(rgFuritenReach,RSD.isChanged(RSID_REACH_FURITEN));//~vakQR~
+        RSD.setBGUpdated(cbOneShot,RSD.isChanged(RSID_ONESHOT));   //~vakQR~
+        RSD.setBGUpdated(cbAnkanAfterReach,RSD.isChanged(RSID_ANKAN_AFTER_REACH));//~vakQR~
+        RSD.setBGUpdated(rgOpenReach,RSD.isChanged(RSID_OPENREACH_PAY));//~vakQR~
+        RSD.setBGUpdated(rgOpenReachRobot,RSD.isChanged(RSID_OPENREACH_ROBOT));//~vakQR~
+    }                                                              //~vakQI~
 	//***********************************************************  //~v@@@I~
     private boolean dialog2Properties()                            //~v@@@I~
     {                                                              //~v@@@I~
@@ -684,6 +816,15 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.getYakuFixTake rc="+rc);//~va91I~
         return rc;                                                 //~va91I~
     }                                                              //~va91I~
+    //**************************************                       //~vakaI~
+    //*allow multiwait take for not FixLast option                 //~vakaI~
+    //**************************************                       //~vakaI~
+    public static boolean isYakuFixMultiWaitTakeOK()               //~vakaI~
+    {                                                              //~vakaI~
+        boolean rc=getYakuFixMultiwaitTake()==YAKUFIX_TAKE_ALL;    //~vakaI~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuFixMultiWaitTakeOK rc="+rc);//~vakaI~
+        return rc;                                                 //~vakaI~
+    }                                                              //~vakaI~
     //**************************************                       //~va8cI~
     public static boolean isYakuFixLast()                              //~va8cI~
     {                                                              //~va8cI~
@@ -692,14 +833,14 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isYakuFixLast rc="+rc);//~va8cI~
         return rc;                                                 //~va8cI~
     }                                                              //~va8cI~
-    //**************************************                       //+vaj0I~
-    public static boolean isYakuFixNotFirst()                      //+vaj0I~
-    {                                                              //+vaj0I~
-        int fix=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT);	//default=NO=0//+vaj0I~
-	    boolean rc=fix!=YAKUFIX_FIRST;                             //+vaj0I~
-        if (Dump.Y) Dump.println("RuleSetting.isYakuFixNotFirst rc="+rc);//+vaj0I~
-        return rc;                                                 //+vaj0I~
-    }                                                              //+vaj0I~
+    //**************************************                       //~vaj0I~
+    public static boolean isYakuFixNotFirst()                      //~vaj0I~
+    {                                                              //~vaj0I~
+        int fix=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX),YAKUFIX_DEFAULT);	//default=NO=0//~vaj0I~
+	    boolean rc=fix!=YAKUFIX_FIRST;                             //~vaj0I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuFixNotFirst rc="+rc);//~vaj0I~
+        return rc;                                                 //~vaj0I~
+    }                                                              //~vaj0I~
     //*******************************************************      //~va6cI~
     private void setCBListener(UCheckBox Pcb,int Pid)              //~va6cI~
     {                                                              //~va6cI~
@@ -737,9 +878,10 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     //**************************************                       //~va8fI~
     public static boolean isYakuFixMultiwaitOK()                   //~va8fI~
     {                                                              //~va8fI~
-		int def=0;	//false                                        //~va8fI~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),def)!=0;//~va8fI~
-    	if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitOK rc="+rc);//~va8fI~
+//  	int def=0;	//false                                        //~va8fI~//~vak3R~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_YAKUFIX_MULTIWAITOK),def)!=0;//~va8fI~//~vak3R~
+        boolean rc=true;                                                   //~vak3I~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.isYakuFixMultiwaitOK always rc="+rc);//~va8fI~//~vak3R~
         return rc;                                                 //~va8fI~
     }                                                              //~va8fI~
 //    //**************************************                       //~va8fI~//~va8kR~

@@ -1,5 +1,12 @@
-//*CID://+vafrR~: update#= 913;                                    //~vafrR~
+//*CID://+vakhR~: update#= 971;                                    //~vakfR~//~vakhR~
 //**********************************************************************//~v101I~
+//2022/02/20 vakh set kataagari err different from fix err         //~vakhI~
+//2022/02/20 vakg (Bug)invalid 3samehand(3anko) yaku chk           //~vakfI~
+//2022/02/20 vakf (Bug)additional to vaka, chk FixYaku required for 3anko,(mix)chanta and tanyao//~vakfI~
+//2022/02/22 vake (Bug)should reset all hanfixerr for multiple honor tile//~vakeI~
+//2022/02/22 vakd (Bug)small 3dragon depends fix rule of honor(eswn,wgr); no need to fix rule for small 3dragon(allow big dragon:yakuman is always)//~vakdI~
+//2022/02/20 vakb (Bug)It is Fix:Middle for straight/3sameseq when nonrelated chii before related if fixed at last//~vakbI~
+//2022/02/20 vaka apply kataagari tsumo option                     //~vakaI~
 //2021/11/14 vagr (Bug of vafh)determins honchan when pillow:tanyao//~vafrI~
 //2021/11/01 vafh bug for HonChanta(TerminalMix)                   //~vafhI~
 //2021/07/17 vaaQ (Bug)honchan decision; not cheked pillow is terminal//~vaaQI~
@@ -19,6 +26,7 @@ import com.btmtest.utils.Utils;
 import java.util.Arrays;
 
 import static com.btmtest.dialog.RuleSettingEnum.*;
+import static com.btmtest.StaticVars.AG;                           //~v@@@I~//~vakaI~
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.TileData.*;
@@ -56,7 +64,9 @@ public class UARank                                                //~va11R~
     private Rank longRank7;                                        //~va11I~
     private int[]  intRankS;	//rank accum                       //~va11I~
     public  int[]  intRankFixErrS;	//rank accum                   //~va91R~
+    public  int[]  intRankFixErrSMultiWait;	//of RankFixErr        //~vakhI~
     private int  rankFixErr;                                       //~va91I~
+    private int  rankFixErrMultiWait;                              //~vakhI~
     private int idxPairNumSS;                                         //~va11R~
     private int statusPillow,typePillow,numberPillow;              //~va11R~
     private boolean swTaken;                                       //~va11I~
@@ -66,6 +76,8 @@ public class UARank                                                //~va11R~
     private Rank longRankFixErr;                                   //~va91R~
     private boolean swAllInHand;                                   //~va91I~
     private boolean swChkFix;                                      //~va91I~
+    private boolean swYakuFixMultiWaitTakeOK;                      //~vakaI~
+    private boolean swFixErrMultiWait;                                //~vakhI~
 //******************************************************           //~va11I~
 //*from UARonDataTree                                              //~va11I~
 //******************************************************           //~va11I~
@@ -79,6 +91,7 @@ public class UARank                                                //~va11R~
 	private void init()                                             //~v@@@I~//~va11R~
     {                                                              //~v@@@I~
     	swRulePinfuTaken=RuleSettingYaku.isPinfuTaken();           //~va11I~
+	    swYakuFixMultiWaitTakeOK= AG.aRoundStat.swYakuFixLastMultiWaitTakeOK;//~vakaI~
     	typeYakuFix=RuleSettingYaku.getYakuFix();                   //~va91I~
         swAllInHand=UARV.swAllInHand;                               //~va91I~
         intNotAllHand=UARV.swAllInHand ? 0 : 1;                    //~va11R~
@@ -87,6 +100,7 @@ public class UARank                                                //~va11R~
         ronNumber=UARV.ronNumber;                                  //~va11I~
         pairEarth=UARV.pairEarth;                                  //~va91M~
         if (Dump.Y) Dump.println("UARank.init typeYAkuFix="+typeYakuFix+",intNotAllHand="+intNotAllHand+",ronType="+ronType+",ronNumber="+ronNumber+",pairEarth count="+(pairEarth==null ? 0 : pairEarth.length));//~va91I~//~vafrR~
+        if (Dump.Y) Dump.println("UARank.init swYakuFixMultiWaitTakeOK="+swYakuFixMultiWaitTakeOK);//~vakaI~
     }                                                              //~v@@@I~
 	//*************************************************************************//~va11I~
 	//*from UARonDataTree.getAmmount                               //~va11R~
@@ -129,28 +143,34 @@ public class UARank                                                //~va11R~
 //      ctrYakuSS=new int[sizePairNumSS];                          //~va11R~//~va91R~
      	intRankS=new int[sizePairNumSS];                           //~va11R~
      	intRankFixErrS=new int[sizePairNumSS];                     //~va91I~
+     	intRankFixErrSMultiWait=new int[sizePairNumSS];            //~vakhI~
      	longRankS=new Rank[sizePairNumSS];                         //~va11R~
      	longRankFixErrS=new Rank[sizePairNumSS];                   //~va91I~
         idxPairNumSS=0;                                            //~va11R~
 //      swChkFix=(!swAllInHand && UARV.typeYakuFix!=YAKUFIX_LAST); //~va91R~
 //      swChkFix=(UARV.typeYakuFix!=YAKUFIX_LAST) && !(swAllInHand && swTake);//~va91R~
-        swChkFix=typeYakuFix!=YAKUFIX_LAST; //Later Take on allInHand is cheked and it is OK by 1han of RANK_TAKE_NOEARTH//~va91R~
+//      swChkFix=typeYakuFix!=YAKUFIX_LAST; //Later Take on allInHand is cheked and it is OK by 1han of RANK_TAKE_NOEARTH//~va91R~//~vakaR~
+        swChkFix=typeYakuFix!=YAKUFIX_LAST && !(swAllInHand && swTaken);//~vakaI~
         for (Pair pairS[]:pairNumSS)                               //~va11R~
         {                                                          //~va11I~
             longRank=new Rank();                                   //~va11R~
             longRankFixErr=new Rank();                                 //~va91I~
         	int rank=0;                                            //~va91R~
         	rankFixErr=0;                                          //~va91I~
+        	rankFixErrMultiWait=0;                                 //~vakhI~
         	if (pairS!=null)                                       //~va11I~
         		rank=setRank(pairS);                               //~va11R~
         	intRankS[idxPairNumSS]=rank;                           //~va11R~
         	intRankFixErrS[idxPairNumSS]=rankFixErr;               //~va91I~
+        	intRankFixErrSMultiWait[idxPairNumSS]=rankFixErrMultiWait;//~vakhI~
         	longRankS[idxPairNumSS]=longRank;                         //~va11R~
-        	if (Dump.Y) Dump.println("UARank.setRank idxPairNumSS="+idxPairNumSS+",longRank="+longRank.toStringName());//+vafrI~
+        	if (Dump.Y) Dump.println("UARank.setRank rank="+rank+",rankFixErr="+rankFixErr+",idxPairNumSS="+idxPairNumSS+",longRank="+longRank.toStringName());//~vafrR~
         	longRankFixErrS[idxPairNumSS]=longRankFixErr;          //~va91I~
             idxPairNumSS++;                                        //~va11R~
         }                                                          //~va11I~
         if (Dump.Y) Dump.println("UARank.setRank rankS="+ Arrays.toString(intRankS)+",longRankFixErrS="+Rank.toString(longRankFixErrS)+",longRankS="+Rank.toString(longRankS)+",longRankFixErrS="+Rank.toString(longRankFixErrS));//~va11R~//~va91R~
+        if (Dump.Y) Dump.println("UARank.setRank intRankFixErrS="+Arrays.toString(intRankFixErrS));//~vafrI~
+        if (Dump.Y) Dump.println("UARank.setRank intRankFixErrSMultiWait="+Arrays.toString(intRankFixErrSMultiWait));//~vakhI~
     }                                                              //~va11I~
 	//*************************************************************************//~va91I~
 	//*rc:false:fix err                                            //~va91I~
@@ -175,8 +195,139 @@ public class UARank                                                //~va11R~
                 rc=false;                                          //~va91I~
             }                                                      //~va91I~
         }
+        if (Dump.Y) Dump.println("UARank.setFixErr rc="+rc+",Prank="+Rank.toStringName(Prank)+",swLast="+PswLast+",swMiddle="+PswMiddle);//~vakaI~
         return rc;//~va91I~
     }                                                              //~va91I~
+	//*************************************************************************//~vakhI~
+	//*setk multiwait err                                          //~vakhR~
+    //fixerr AND kataagari tsumo not allowed by option             //~vakhI~
+    //	  if (!(swTaken && swLastNotFix && setMultiWaitTake(RYAKU_ROUND,swOther)))	//allow multiwait take by option//~vakhI~
+	//*rc:swFixErrMultiWait                                        //~vakhI~
+	//*************************************************************************//~vakhI~
+    private boolean setFixErrMultiWait_old(boolean PswOther)       //~vakhR~
+    {                                                              //~vakhI~
+    	boolean rc;                                                //~vakhI~
+        swFixErrMultiWait=false;                                   //~vakhI~
+        if (typeYakuFix==YAKUFIX_FIRST && PswOther)	//no related on Earth//~vakhI~
+        	rc=false;                                              //~vakhI~
+        else                                                       //~vakhI~
+        	rc=true;                                               //~vakhI~
+        swFixErrMultiWait=rc;                                      //~vakhI~
+        if (Dump.Y) Dump.println("UARank.setFixErrMultiWait_old typeYakuFix="+typeYakuFix+",rc=swFixErrMultiWait="+rc+",swOther="+PswOther);//~vakhI~
+        return rc;                                                 //~vakhI~
+    }                                                              //~vakhI~
+	//*************************************************************************//~vakhI~
+    private boolean setFixErrMultiWait(boolean PswOther)           //~vakhI~
+    {                                                              //~vakhI~
+    	boolean rc;                                                //~vakhI~
+        swFixErrMultiWait=false;                                   //~vakhI~
+//      if (typeYakuFix==YAKUFIX_FIRST && PswOther)	//no related on Earth//~vakhI~
+        if (PswOther)	//no related on Earth                      //~vakhI~
+        	rc=false;                                              //~vakhI~
+        else                                                       //~vakhI~
+        	rc=true;                                               //~vakhI~
+        swFixErrMultiWait=rc;                                      //~vakhI~
+        if (Dump.Y) Dump.println("UARank.setFixErrMultiWait typeYakuFix="+typeYakuFix+",rc=swFixErrMultiWait="+rc+",swOther="+PswOther);//~vakhI~
+        return rc;                                                 //~vakhI~
+    }                                                              //~vakhI~
+    //****************************************************************//~vakaI~
+    //*apply multiWait TakeOK if swTaken & swLastNotFix for FixErr //+vakhR~
+    //*for ronTaken is related and ryanmen under sakizuke,nakaduke err//~vakaR~
+    //****************************************************************//~vakaI~
+    private boolean setMultiWaitTake(int Prank,boolean PswOther)   //~vakaI~//+vakhR~
+    {                                                              //~vakaI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTake rank="+Rank.toStringName(Prank)+",swYakuFixMultiWaitTakeOK="+swYakuFixMultiWaitTakeOK+",swOther="+PswOther+",swAllInHand="+swAllInHand+",typeYakuFix="+typeYakuFix);//~vakaR~//+vakhR~
+        boolean rc=false;                                          //~vakaI~
+	    if (swAllInHand || swYakuFixMultiWaitTakeOK)	//not all in Hand//~vakaR~
+        {                                                          //~vakaI~
+          if (PswOther && typeYakuFix==YAKUFIX_FIRST)              //~vakaI~
+          {                                                        //~vakaI~
+    		if (Dump.Y) Dump.println("UARank.setMultiWaitTake no rest by take by FixFirst and swOther=T");//~vakaI~
+          }                                                        //~vakaI~
+          else                                                     //~vakaI~
+          {                                                        //~vakaI~
+            addYakuFixErrMultiWaitTakeOK(Prank);      //allow multiwait take ron//~vakaR~
+            rc=true;                                               //~vakaR~
+          }                                                        //~vakaI~
+        }                                                          //~vakaI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTake rc="+rc+",rank="+Rank.toStringName(Prank));//~vakaI~//+vakhR~
+        return rc;                                                 //~vakaI~
+    }                                                              //~vakaI~
+    //****************************************************************//~vakhI~
+    //*apply multiWait TakeOK if swTaken & swLastNotFix for FixErr //+vakhI~
+    //*For honor, no case of err by fixMix                         //+vakhI~
+    //*for ronTaken is related and ryanmen under sakizuke,nakaduke err//~vakhI~
+    //****************************************************************//~vakhI~
+    private boolean setMultiWaitTakeHonor(int Prank,boolean PswOther)//+vakhR~
+    {                                                              //~vakhI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTakeHonor rank="+Rank.toStringName(Prank)+",swYakuFixMultiWaitTakeOK="+swYakuFixMultiWaitTakeOK+",swOther="+PswOther+",swAllInHand="+swAllInHand+",typeYakuFix="+typeYakuFix);//+vakhR~
+        boolean rc=false;                                          //~vakhI~
+	    if (swAllInHand)	//always allow in AllInHand            //+vakhR~
+        {                                                          //~vakhI~
+            addYakuFixErrMultiWaitTakeOK(Prank);      //allow multiwait take ron//~vakhI~
+            rc=true;                                               //~vakhI~
+        }                                                          //~vakhI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTakeHonor rc="+rc+",rank="+Rank.toStringName(Prank));//+vakhR~
+        return rc;                                                 //~vakhI~
+    }                                                              //~vakhI~
+    //****************************************************************//~vakgI~
+    //*rc:true:allow kataagari                                     //~vakgI~
+    //****************************************************************//~vakgI~
+    private boolean isMultiWaitTake(boolean PswOther)              //~vakgI~
+    {                                                              //~vakgI~
+    	if (Dump.Y) Dump.println("UARank.isMultiWaitTake swYakuFixMultiWaitTakeOK="+swYakuFixMultiWaitTakeOK+",swOther="+PswOther+",swAllInHand="+swAllInHand+",typeYakuFix="+typeYakuFix);//~vakgI~
+        boolean rc=false;                                          //~vakgI~
+	    if (swAllInHand || swYakuFixMultiWaitTakeOK)	//not all in Hand//~vakgI~
+        {                                                          //~vakgI~
+          if (PswOther && typeYakuFix==YAKUFIX_FIRST)              //~vakgI~
+          {                                                        //~vakgI~
+    		if (Dump.Y) Dump.println("UARank.isMultiWaitTake no rest by take by FixFirst and swOther=T");//~vakgI~
+          }                                                        //~vakgI~
+          else                                                     //~vakgI~
+          {                                                        //~vakgI~
+            rc=true;                                               //~vakgI~
+          }                                                        //~vakgI~
+        }                                                          //~vakgI~
+    	if (Dump.Y) Dump.println("UARank.isMultiWaitTake rc="+rc); //~vakgI~
+        return rc;                                                 //~vakgI~
+    }                                                              //~vakgI~
+    //****************************************************************//~vakaI~
+    //*return:true:reset fixerr                                    //~vakaI~
+    //****************************************************************//~vakaI~
+    private boolean setMultiWaitTakeWGR(boolean PswOther)          //~vakaI~
+    {                                                              //~vakaI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTakeWGR swYakuFixMultiWaitTakeOK="+swYakuFixMultiWaitTakeOK+",swOther="+PswOther+",swAllInHand="+swAllInHand);//~vakaI~//+vakhR~
+        boolean rc=false;                                          //~vakaI~
+	    if (swAllInHand || swYakuFixMultiWaitTakeOK)	//not all in Hand//~vakaI~
+        {                                                          //~vakaI~
+          if (PswOther && typeYakuFix==YAKUFIX_FIRST)              //~vakaI~
+          {                                                        //~vakaI~
+    		if (Dump.Y) Dump.println("UARank.setMultiWaitTakeWGR no rest by take by FixFirst and swOther=T");//~vakaI~
+          }                                                        //~vakaI~
+          else                                                     //~vakaI~
+          {                                                        //~vakaI~
+            addYakuFixErrMultiWaitTakeOKWGR();      //allow multiwait take ron//~vakaR~
+            rc=true;                                               //~vakaI~
+          }                                                        //~vakaI~
+        }                                                          //~vakaI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTakeWGR rc="+rc);//~vakaR~//+vakhR~
+        return rc;                                                 //~vakaI~
+    }                                                              //~vakaI~
+    //****************************************************************//~vakhI~
+    //*return:true:reset fixerr                                    //~vakhI~
+    //****************************************************************//~vakhI~
+    private boolean setMultiWaitTakeWGRHonor(boolean PswOther)     //+vakhR~
+    {                                                              //~vakhI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTakeWGRHonor swYakuFixMultiWaitTakeOK="+swYakuFixMultiWaitTakeOK+",swOther="+PswOther+",swAllInHand="+swAllInHand);//+vakhR~
+        boolean rc=false;                                          //+vakhI~
+	    if (swAllInHand)	//always allow in AllInHand            //+vakhI~
+        {                                                          //+vakhI~
+            addYakuFixErrMultiWaitTakeOKWGR();      //allow multiwait take ron//+vakhI~
+            rc=true;                                               //+vakhI~
+        }                                                          //+vakhI~
+    	if (Dump.Y) Dump.println("UARank.setMultiWaitTakeWGRHonor rc="+rc);//+vakhI~
+        return rc;                                                 //+vakhI~
+    }                                                              //~vakhI~
 	//*************************************************************************//~va91I~
 	//*rc:false:fix err                                            //~va91I~
 	//*************************************************************************//~va91I~
@@ -200,6 +351,7 @@ public class UARank                                                //~va11R~
                 rc=false;                                          //~va91I~
             }                                                      //~va91I~
         }                                                          //~va91I~
+        if (Dump.Y) Dump.println("UARank.setFixErrWGR rc="+rc+",swLast="+PswLast+",swMiddle="+PswMiddle);//~vakaI~
         return rc;                                                 //~va91I~
     }                                                              //~va91I~
 	//*************************************************************************//~va11I~
@@ -214,6 +366,18 @@ public class UARank                                                //~va11R~
         if (Dump.Y) Dump.println("UARank.addYakuFixErr Prank="+Rank.toStringName(Prank));//~va91R~
     	Rank.addYaku(longRankFixErr,Prank);                        //~va91R~
     }                                                              //~va91I~
+	//*************************************************************************//~vakaI~
+    private void addYakuFixErrMultiWaitTakeOK(int Prank)           //~vakaI~
+    {                                                              //~vakaI~
+        if (Dump.Y) Dump.println("UARank.addYakuFixErrMultiWaitTakeOK Prank="+Rank.toStringName(Prank));//~vakaI~
+    	Rank.resetYaku(longRankFixErr,Prank);                      //~vakaI~
+    }                                                              //~vakaI~
+	//*************************************************************************//~vakaI~
+    private void addYakuFixErrMultiWaitTakeOKWGR()                 //~vakaI~
+    {                                                              //~vakaI~
+        if (Dump.Y) Dump.println("UARank.addYakuFixErrMultiWaitTakeOKWGR");//~vakaI~
+    	Rank.resetYakuWGR(longRankFixErr);                         //~vakaI~
+    }                                                              //~vakaI~
 	//*************************************************************************//~va11I~
     private void addYaku7(int Prank)                               //~va11I~
     {                                                              //~va11I~
@@ -251,10 +415,16 @@ public class UARank                                                //~va11R~
                 rank+=RANK_PINFU;	//rank by taken is added at other place//~va11R~
             }                                                      //~va11I~
         }                                                          //~va11I~
+        boolean swHonorTileOK=true;                                //~vakdI~
         if (swChkFix)                                              //~va91R~
+        {                                                          //~vakdI~
+          swHonorTileOK=                                           //~vakdI~
     		chkEarthHonorTile();                                   //~va91R~
+        }                                                          //~vakdI~
     //rank1                                                        //~va11M~
 //      rank+=chkSameSeq();         //1peiko  by chkSameSeq2       //~va11R~
+        if (swChkFix) //not FixLast & !(take at allinHand)         //~vakfR~
+        	chkTanyaoTaken();                                      //~vakfR~
     //rank2                                                        //~va11R~
         rank+=chk3SameSeq();        //3shoku                       //~va11R~
         rank+=chk3Same();           //3tonko                       //~va11R~
@@ -268,7 +438,10 @@ public class UARank                                                //~va11R~
         rank+=chkTerminal();        //junchanta                    //~va11R~
         rank+=chkFlushMix();        //honitsu                      //~va11R~
     //rank4                                                        //~va11R~
+      if (swHonorTileOK)	//3DragonSmall is mised with yakuhai;fixed of by honor tile 3dragon has 2 han more//~vakdI~
+      {                                                            //~vakdI~
         rank+=chk3DragonSmall();    //shosangen                    //~va11R~
+      }                                                            //~vakdI~
         rank+=chkTerminalOnlyMix(); //honro                        //~va11R~
     //rank6                                                        //~va11R~
         rank+=chkFlush();           //chinitsu                     //~va11R~
@@ -342,6 +515,45 @@ public class UARank                                                //~va11R~
         if (Dump.Y) Dump.println("UARank.isPinfuSub rc="+pt+",ronType="+ronType+",ronNumber="+ronNumber+",pairType="+Ppair.type+",pairNumber="+Ppair.number);//~va11R~
         return pt;                                                 //~va11I~
     }                                                              //~va11I~
+    //****************************************************************//~vakfI~
+    //*rc:fixerr was reset to allow multiwait for tanyao taken     //~vakfI~
+    //****************************************************************//~vakfI~
+    private boolean chkTanyaoTaken()                      //~vakfI~
+    {                                                              //~vakfI~
+        boolean swLastNotFix=false,rc=false;                       //~vakfR~
+        Rank longRankOther=UARDT.longRankOther;                    //~vakfI~
+    //***************************                                  //~vakfI~
+    	if (Dump.Y) Dump.println("UARank.chkTanyaoTaken longRankOther="+longRankOther.toString()+",ronType="+ronType+",ronNumber="+ronNumber);//~vakfI~
+        if (!longRankOther.isContains(RYAKU_TANYAO))               //~vakfI~
+        	return false;                                          //~vakfI~
+        for (int ii=0;ii<sizePairSeqS;ii++)                        //~vakfI~
+        {                                                          //~vakfI~
+            Pair pair=pairNumS[ii];                                //~vakfI~
+            int pairnum=pair.number;                               //~vakfI~
+            if (pair.typePair==PT_NUMSEQ                           //~vakfI~
+            &&  pair.type==ronType                                 //~vakfI~
+            && (pair.flag & TDF_CHII)==0)//in hand by flag         //~vakfI~
+            {                                                      //~vakfI~
+            	if ((pairnum==TN2 && ronNumber==pairnum+2)      //right side of seqmeld of TN2//~vakfI~
+            	||  (pairnum==TN6 && ronNumber==pairnum  ))      //left side of seqmeld of TN6//~vakfI~
+                    swLastNotFix=true;                             //~vakfI~
+            }                                                      //~vakfI~
+        }                                                          //~vakfI~
+        if (swLastNotFix)	//fix err and last related take        //~vakfI~
+        {                                                          //~vakfI~
+        	rc=setFixErr(RYAKU_TANYAO,true/*swLast*/,false/*swMiddle*/);//~vakfI~
+        	if (!rc && swTaken)	//fix err and last related take    //~vakfI~
+	    		rc=setMultiWaitTake(RYAKU_TANYAO,false/*swOther*/);	//allow multiwait take by option//~vakfI~
+	        if (!rc)   //multiwait not accepted by swTaken         //~vakfI~//~vakhR~
+            {                                                      //~vakhI~
+		        rankFixErr+=RANK_TANYAO;                           //~vakfI~
+		        rankFixErrMultiWait+=RANK_TANYAO;                  //~vakhI~
+            }                                                      //~vakhI~
+        }                                                          //~vakfI~
+    	if (Dump.Y) Dump.println("UARank.chkTanyaoTaken rc="+rc+",ronNumber="+ronNumber+",typeYakuFix="+typeYakuFix);//~vakfI~
+    	if (Dump.Y) Dump.println("UARank.chkTanyaoTaken swTaken="+swTaken+",swLastNotFix="+swLastNotFix+",rankFixErr="+rankFixErr);//~vakfR~
+    	return rc;                                                 //~vakfI~
+    }                                                              //~vakfI~
     //****************************************************************//~va91I~
     //*FixFirst chk                                                //~va91I~
     //*rc:false fixFirst/FixMiddle err                             //~va91I~
@@ -350,7 +562,9 @@ public class UARank                                                //~va11R~
     {                                                              //~va91I~
         int ctrPairNotFirst=0,ctrPairFirst=0;                      //~va91R~
         boolean swOther=false,swLast=false,swMiddle=false,rc;      //~va91R~
+        boolean swLastNotFix=false;                                //~vakaI~
         int ctrWGR;                                                //~va91I~
+        boolean swTakeOK;                                          //~vakhI~
     //***************************                                  //~va91I~
     	if (Dump.Y) Dump.println("UARank.chkEarthHonorTile pairEarth="+Pair.toString(pairEarth));//~va91I~
     	if (Dump.Y) Dump.println("UARank.chkEarthHonorTile sizePairSeqS="+sizePairSeqS+",pairNumS="+Pair.toString(pairNumS));//~va91I~
@@ -394,13 +608,18 @@ public class UARank                                                //~va11R~
                     {                                              //~va91I~
                         if (pair.type==ronType && pair.number==ronNumber)//~va91I~
                         {                                          //~va91I~
+                        	boolean swLastFixed=(typePillow==TT_JI && (numberPillow>=TT_4ESWN_CTR || numberPillow==eswnHonor|| numberPillow==roundHonor));//~vakaI~
+                            if (!swLastFixed) //shanpon of honor and not honor//~vakaI~
+                            	swLastNotFix=true;                 //~vakaI~
     						if (Dump.Y) Dump.println("UARank.chkEarthHonorTile swAllInHand="+swAllInHand+",swMiddle="+swMiddle+",typePillow="+typePillow+",numberPillow="+numberPillow);//~va91R~
                         	if (!swMiddle)                         //~va91I~
                             {                                      //~va91I~
-	                            swLast=true;                       //~va91R~
-                                if (swAllInHand)                   //~va91I~
-                					if (typePillow==TT_JI && (numberPillow>=TT_4ESWN_CTR || numberPillow==eswnHonor|| numberPillow==roundHonor))//~va91I~
-                                    	swLast=false;	//menzen shanpon//~va91I~
+//                                swLast=true;                       //~va91R~//~vakhR~
+//                                if (swAllInHand)                   //~va91I~//~vakhR~
+////                                  if (typePillow==TT_JI && (numberPillow>=TT_4ESWN_CTR || numberPillow==eswnHonor|| numberPillow==roundHonor))//~va91I~//~vakaR~//~vakhR~
+//                                    if (swLastFixed)               //~vakaI~//~vakhR~
+//                                        swLast=false;   //menzen shanpon//~va91I~//~vakhR~
+								swLast=!swLastFixed || swOther;    //~vakhI~
                             }                                      //~va91I~
                         }                                          //~va91I~
                         else                                       //~va91I~
@@ -414,25 +633,77 @@ public class UARank                                                //~va11R~
         }                                                          //~va91I~
         int id;                                                    //~va91I~
         int han=0;                                                  //~va91I~
+        int hanMultiWait=0;                                        //~vakhI~
+    	if (Dump.Y) Dump.println("UARank.chkEarthHonorTile swTaken="+swTaken+",swlastNotFix="+swLastNotFix);//~vakaI~
         if (rankOther.isContains(RYAKU_ROUND))                     //~va91R~
         {                                                          //~va91I~
 	        if (!setFixErr(RYAKU_ROUND,swLast,swMiddle))           //~va91I~
-            	han++;                                             //~va91I~
+            {                                                      //~vakaI~
+//              if (!(swTaken && swLastNotFix && setMultiWaitTake(RYAKU_ROUND,swOther)))  //allow multiwait take by option//~vakaR~//~vakhR~
+//              {                                                  //~vakhR~
+//                han++;                                             //~va91I~//~vakhR~
+//                if (setFixErrMultiWait(swOther))                 //~vakhR~
+//                    hanMultiWait++;                              //~vakhR~
+//              }                                                  //~vakhR~
+             	swTakeOK=false;                                    //~vakhI~
+        	  	if (swTaken && swLastNotFix)                       //~vakhI~
+					swTakeOK=setMultiWaitTakeHonor(RYAKU_ROUND,swOther);//allow multiwait take by option//+vakhR~
+                if (!swTakeOK)                                     //~vakhI~
+                {                                                  //~vakhI~
+                	han++;                                         //~vakhI~
+                	if (swLastNotFix && setFixErrMultiWait(swOther))//~vakhR~
+                		hanMultiWait++;                            //~vakhI~
+                }                                                  //~vakhI~
+            }                                                      //~vakaI~
         }                                                          //~va91I~
         if (rankOther.isContains(RYAKU_WIND))                      //~va91R~
         {                                                          //~va91I~
 	        if (!setFixErr(RYAKU_WIND,swLast,swMiddle))            //~va91I~
-	            han++;                                             //~va91I~
+            {                                                      //~vakaI~
+//              if (!(swTaken && swLastNotFix && setMultiWaitTake(RYAKU_WIND,swOther)))   //allow multiwait take by option//~vakaR~//~vakhR~
+//              {                                                  //~vakhR~
+//                han++;                                             //~va91I~//~vakhR~
+//                if (setFixErrMultiWait(swOther))                 //~vakhR~
+//                    hanMultiWait++;                              //~vakhR~
+//              }                                                  //~vakhR~
+             	swTakeOK=false;                                    //~vakhI~
+        	  	if (swTaken && swLastNotFix)                       //~vakhI~
+					swTakeOK=setMultiWaitTakeHonor(RYAKU_WIND,swOther);//allow multiwait take by option//+vakhR~
+                if (!swTakeOK)                                     //~vakhI~
+                {                                                  //~vakhI~
+                	han++;                                         //~vakhI~
+                	if (swLastNotFix && setFixErrMultiWait(swOther))//~vakhR~
+                		hanMultiWait++;                            //~vakhI~
+                }                                                  //~vakhI~
+            }                                                      //~vakaI~
         }                                                          //~va91I~
         if (ctrWGR!=0)                                             //~va91I~
         {                                                          //~va91I~
 	        if (!setFixErrWGR(swLast,swMiddle))                    //~va91R~
-	            han++;                                             //~va91I~
+            {                                                      //~vakaI~
+//              if (!(swTaken && swLastNotFix && setMultiWaitTakeWGR(swOther)))   //allow multiwait take by option//~vakaR~//~vakhR~
+//              {                                                  //~vakhR~
+////              han++;                                             //~va91I~//~vakeR~//~vakhR~
+//                han+=ctrWGR;                                       //~vakeI~//~vakhR~
+////              if (setFixErrMultiWait(swOther))                 //~vakhR~
+//                    hanMultiWait++;                              //~vakhR~
+//              }                                                  //~vakhR~
+             	swTakeOK=false;                                    //~vakhM~
+        	  	if (swTaken && swLastNotFix)                       //~vakhI~
+					swTakeOK=setMultiWaitTakeWGRHonor(swOther);//allow multiwait take by option//+vakhR~
+                if (!swTakeOK)                                     //~vakhM~
+                {                                                  //~vakhM~
+                	han+=ctrWGR;                                   //~vakhM~
+                	if (swLastNotFix && setFixErrMultiWait(swOther))//~vakhR~
+                		hanMultiWait+=ctrWGR;                      //~vakhM~
+                }                                                  //~vakhM~
+            }                                                      //~vakaI~
         }                                                          //~va91I~
         rankFixErr+=han;
+        rankFixErrMultiWait+=hanMultiWait;                         //~vakhI~
         rc=han==0;                                                 //~va91R~
     	if (Dump.Y) Dump.println("UARank.chkEarthHonorTile ronType="+ronType+",ronNumber="+ronNumber+",typeYakuFix="+typeYakuFix+",ctrPairFirst="+ctrPairFirst+",ctrPairNotFirst="+ctrPairNotFirst);//~va91R~
-    	if (Dump.Y) Dump.println("UARank.chkEarthHonorTile rc="+rc+",han="+han+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle);//~va91R~
+    	if (Dump.Y) Dump.println("UARank.chkEarthHonorTile rc="+rc+",han="+han+",hanMultiWait="+hanMultiWait+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle+",swLastNotFix="+swLastNotFix);//~va91R~//~vakhR~
     	return rc;                                                 //~va91I~
     }                                                              //~va91I~
     //****************************************************************//~va11I~
@@ -487,7 +758,11 @@ public class UARank                                                //~va11R~
         	rc-=intNotAllHand;                                     //~va11R~
             if (swChkFix)                                          //~va91R~
 	            if (!chkEarth3SameSeq(num3SameSeq))                //~va91R~
+                {                                                  //~vakhI~
                 	rankFixErr+=rc;                                //~va91I~
+                    if (swFixErrMultiWait)                         //~vakhI~
+                		rankFixErrMultiWait+=rc;                   //~vakhI~
+                }                                                  //~vakhI~
         }                                                          //~va91I~
     	if (Dump.Y) Dump.println("UARank.chk3SameSeq rc="+rc);     //~va11R~
     	return rc;                                                 //~va11I~
@@ -501,6 +776,7 @@ public class UARank                                                //~va11R~
         int ctrPairNotFirst=0,ctrPairRon=0,pairnum;                //~va91R~
         boolean swNotLast=false,swSeqFix=false,swOther=false,swLast=false,swMiddle=false,rc=true;//~va91R~
         boolean swNearRelated=false;                               //~va91I~
+        boolean swLastNotFix=false;                                //~vakaI~
     //***************************                                  //~va91I~
     	if (Dump.Y) Dump.println("UARank.chkEarth3SameSeq pairEarth="+Pair.toString(pairEarth));//~va91I~
     	if (Dump.Y) Dump.println("UARank.chkEarth3SameSeq sizePairSeqS="+sizePairSeqS+",pairNumS="+Pair.toString(pairNumS));//~va91I~
@@ -561,16 +837,24 @@ public class UARank                                                //~va11R~
         	if (swSeqFix)    //kanchan etc                         //~va91I~
             {	                                                   //~va91I~
             	if (swOther)                                       //~va91I~
+	              if (ctrPairNotFirst!=0)  //related earth pair exist after non related//~vakbI~
+    	            swMiddle=true;       //OK if YAKUFIX_MIDDLE    //~vakbI~
+                  else                                             //~vakbI~
                 	swLast=true;                                   //~va91I~
             }                                                      //~va91I~
             else	//ryanmen                                      //~va91I~
             {                                                      //~va91I~
                 swLast=true;                                       //~va91I~
+                swLastNotFix=true;                                 //~vakaI~
             }                                                      //~va91I~
         }                                                          //~va91I~
         rc=setFixErr(RYAKU_3SAMESEQ,swLast,swMiddle);              //~va91I~
+        if (!rc && swTaken && swLastNotFix)	//fix err and last related take//~vakaI~
+	    	rc=setMultiWaitTake(RYAKU_3SAMESEQ,swOther);	//allow multiwait take by option//~vakaI~
+        if (!rc && swLastNotFix)	//last related is ron or not effective take//~vakhI~
+	        setFixErrMultiWait(swOther);                           //~vakhI~
     	if (Dump.Y) Dump.println("UARank.chkEarth3SameSeq rc="+rc+",Pnum="+Pnum+",ronType="+ronType+",ronNumber="+ronNumber+",typeYakuFix="+typeYakuFix+",ctrPairRon="+ctrPairRon+",ctrPairNotFirst="+ctrPairNotFirst+",swOther="+swOther);//~va91R~
-    	if (Dump.Y) Dump.println("UARank.chkEarth3SameSeq swNotLast="+swNotLast+",swNearRelated="+swNearRelated+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle+",swSeqFix="+swSeqFix);//~va91R~
+    	if (Dump.Y) Dump.println("UARank.chkEarth3SameSeq swTaken="+swTaken+",swLastNotFix="+swLastNotFix+",swNotLast="+swNotLast+",swNearRelated="+swNearRelated+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle+",swSeqFix="+swSeqFix);//~va91R~//~vakaR~
     	return rc;                                                 //~va91I~
     }                                                              //~va91I~
     //****************************************************************//~va11I~
@@ -611,9 +895,13 @@ public class UARank                                                //~va11R~
         {                                                          //~va91I~
             if (swChkFix)                                          //~va91I~
 	            if (!chkEarth3Same(numSame))                       //~va91R~
+                {                                                  //~vakhI~
                 	rankFixErr+=rc;                                //~va91I~
+                    if (swFixErrMultiWait)                            //~vakhI~
+                		rankFixErrMultiWait+=rc;                   //~vakhI~
+                }                                                  //~vakhI~
         }                                                          //~va91I~
-    	if (Dump.Y) Dump.println("UARank.chk3Same rc="+rc);        //~va11R~
+    	if (Dump.Y) Dump.println("UARank.chk3Same rc="+rc+",swMultiWaitErr="+swFixErrMultiWait+",rankFixErr="+rankFixErr+",rankFixerrMultiWait="+rankFixErrMultiWait);        //~va11R~//~vakhR~
     	return rc;                                                 //~va11I~
     }                                                              //~va11I~
     //****************************************************************//~va91I~
@@ -641,6 +929,7 @@ public class UARank                                                //~va11R~
             else                                                   //~va91R~
                 swOther=true;                                      //~va91R~
         }                                                          //~va91R~
+        boolean swLastRelated=(ronType!=TT_JI && ronNumber==Pnum); //ron tile related to yaku//~vakaI~
         if (ctrPairNotFirst!=0)  //non related earth pair exist    //~va91R~
             swMiddle=true;       //OK if YAKUFIX_MIDDLE            //~va91R~
         if (!swMiddle)                                             //~va91I~
@@ -649,8 +938,12 @@ public class UARank                                                //~va11R~
                 swLast=true;                                       //~va91I~
             }                                                      //~va91I~
         rc=setFixErr(RYAKU_3SAMENUM,swLast,swMiddle);                 //~va91R~
+        if (!rc && swTaken && swLastRelated)	//fix err and last related take//~vakaI~
+	    	rc=setMultiWaitTake(RYAKU_3SAMENUM,swOther);	//allow multiwait take by option//~vakaI~//~vakhR~
+        if (!rc &&  swLastRelated)	//last related is ron or not effective take//~vakhI~
+	        setFixErrMultiWait(swOther);                           //~vakhI~
     	if (Dump.Y) Dump.println("UARank.chkEarth3Same Pnum="+Pnum+",ronType="+ronType+",ronNumber="+ronNumber+",typeYakuFix="+typeYakuFix+",ctrPairNotFirst="+ctrPairNotFirst);//~va91R~
-    	if (Dump.Y) Dump.println("UARank.chkEarth3Same rc="+rc+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle);//~va91R~
+    	if (Dump.Y) Dump.println("UARank.chkEarth3Same rc="+rc+",swLastRelated="+swLastRelated+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle);//~va91R~//~vakaR~
     	return rc;                                                 //~va91I~
     }                                                              //~va91I~
     //****************************************************************//~va11I~
@@ -663,27 +956,50 @@ public class UARank                                                //~va11R~
         }                                                          //~va11R~
         int rc=0;                                                  //~va11R~
         int ctr=0;                                                  //~va11I~
+    	boolean swLast=false,swOther=false;                      //~vakgR~
+	    for (Pair pair:pairEarth)                                  //~vakgI~
+        {                                                          //~vakgI~
+        	if (pair==null)                                        //~vakgI~
+            	continue;                                          //~vakgI~
+            if ((pair.flag & TDF_KAN_TAKEN)!=0)      //Ankan is not a furo//~vakgI~
+                continue;                                          //~vakgI~
+            swOther=true;                                          //~vakgI~
+        }                                                          //~vakgI~
         for (Pair pair:pairNumS)                                   //~va11R~
         {                                                          //~va11I~
             if (Dump.Y) Dump.println("UARank.chk3SameHand pair="+Pair.toString(pair));//~va11R~
         	if (pair.typePair==PT_NUMSAME && pair.swHand)	//not earth//~va11R~
-	        	if (!(pair.type==ronType && pair.number==ronNumber))//~va11I~
+            {                                                      //~vakgR~
+  	        	if (!(pair.type==ronType && pair.number==ronNumber))//~va11I~
             		ctr++;                                         //~va11R~
+                else                                               //~vakgR~
+  	        		swLast=true;                                   //~vakgR~
+            }                                                      //~vakgR~
         }                                                          //~va11I~
         if (ctrPairNotNum!=0)                                      //~va11I~
             for (Pair pair:pairNotNum)     //earth and hand        //~va11R~
             {                                                      //~va11R~
 	            if (Dump.Y) Dump.println("UARank.chk3SameHand pair="+Pair.toString(pair));//~va11I~
                 if (pair.swHand)	//not earth                    //~va11R~
-		        	if (!(pair.type==ronType && pair.number==ronNumber))//~va11I~
+                {                                                  //~vakgR~
+  		        	if (!(pair.type==ronType && pair.number==ronNumber))//~va11I~
     	                ctr++;                                     //~va11R~
+                    else                                           //~vakgR~
+	  	        		swLast=true;                               //~vakgR~
+                }                                                  //~vakgR~
             }                                                      //~va11R~
+        if (ctr==2)      //!FixLast & !(allInHand & taken):(earth or ron)//~vakgR~
+        {                                                          //~vakgI~
+	  		if (swLast & swTaken)	//last is not taken            //~vakgR~
+				if (isMultiWaitTake(swOther))                      //~vakgR~
+	            	ctr++;                                         //~vakgR~
+        }                                                          //~vakgI~
         if (ctr==3)                                                //~va11I~
         {                                                          //~va11I~
             addYaku(RYAKU_3SAMEHAND);                              //~va11I~
         	rc=RANK_3SAMEHAND;                                     //~va11I~
         }                                                          //~va11I~
-        if (Dump.Y) Dump.println("UARank.chk3Samehand rc="+rc+",ctr="+ctr);//~va11R~
+        if (Dump.Y) Dump.println("UARank.chk3SameHand rc="+rc+",ctr="+ctr+",swLast="+swLast+",swTaken="+swTaken+",swOther="+swOther+",swChkFix="+swChkFix);//~va11R~//~vakgR~
         return rc;                                                 //~va11R~
     }                                                              //~va11R~
     //****************************************************************//~va11I~
@@ -736,9 +1052,13 @@ public class UARank                                                //~va11R~
         	rc-=intNotAllHand;                                     //~va11R~
             if (swChkFix)                                          //~va91I~
 	            if (!chkEarthStraight(typeStraight))               //~va91R~
+                {                                                  //~vakhI~
                 	rankFixErr+=rc;                                //~va91I~
+                    if (swFixErrMultiWait)                         //~vakhI~
+                		rankFixErrMultiWait+=rc;                   //~vakhI~
+                }                                                  //~vakhI~
         }                                                          //~va91I~
-    	if (Dump.Y) Dump.println("UARank.chkStraight rc="+rc+",wkBit="+Integer.toHexString(wkBit));//~va25R~
+    	if (Dump.Y) Dump.println("UARank.chkStraight rc="+rc+",rankFixErr="+rankFixErr+",rankFixErrMultiWait="+rankFixErrMultiWait+",wkBit="+Integer.toHexString(wkBit));//~va25R~//~vakhR~
     	return rc;                                                 //~va11I~
     }                                                              //~va11I~
     //****************************************************************//~va91I~
@@ -750,6 +1070,7 @@ public class UARank                                                //~va11R~
         int ctrPairNotFirst=0,ctrPairRon=0,pairnum;                //~va91R~
         boolean swNotLast=false,swSeqFix=false,swOther=false,swLast=false,swMiddle=false,rc=true;//~va91I~
         boolean swNearRelated=false;                                     //~va91I~
+        boolean swLastNotFix=false;                                //~vakaI~
     //***************************                                  //~va91I~
     	if (Dump.Y) Dump.println("UARank.chkEarthStraight pairEarth="+Pair.toString(pairEarth));//~va91I~
     	if (Dump.Y) Dump.println("UARank.chkEarthStraight sizePairSeqS="+sizePairSeqS+",pairNumS="+Pair.toString(pairNumS));//~va91I~
@@ -796,8 +1117,12 @@ public class UARank                                                //~va11R~
                                                                    //~va91I~
                 }                                                  //~va91I~
             }                                                      //~va91I~
+    		if (Dump.Y) Dump.println("UARank.chkEarthStraight swNearRelated="+swNearRelated+",ctrPairRon="+ctrPairRon);//~vagrI~
             if (swNearRelated && ctrPairRon!=0)                        //~va91I~
             	ctrPairRon--;                                  //~va91I~
+            //**ctrPair==2:double meld,                            //~vagrI~
+			//**ctrpair==0:nearRelated & relatedMeld(apply ron to nearrelated and related is in hand)//~vagrI~
+            //**           or no related meld in hand(on Earth, it is not last)//~vagrI~
             if (ctrPairRon==2 || ctrPairRon==0)	//doubled pair or not related ron tile//~va91I~
             	swNotLast=true;                                    //~va91I~
         }                                                          //~va91I~
@@ -812,16 +1137,24 @@ public class UARank                                                //~va11R~
         	if (swSeqFix)    //kanchan etc                         //~va91I~
             {                                                      //~va91I~
             	if (swOther)                                       //~va91I~
+	              if (ctrPairNotFirst!=0)  //related earth pair exist after non related//~vakbR~
+    	            swMiddle=true;       //OK if YAKUFIX_MIDDLE    //~vakbI~
+                  else                                             //~vakbI~
                 	swLast=true;                                   //~va91I~
             }                                                      //~va91I~
             else	//ryanmen                                      //~va91I~
             {                                                      //~va91I~
                 swLast=true;                                       //~va91I~
+                swLastNotFix=true;                                 //~vakaI~
             }                                                      //~va91I~
         }                                                          //~va91I~
         rc=setFixErr(RYAKU_STRAIGHT,swLast,swMiddle);              //~va91I~
+        if (!rc && swTaken && swLastNotFix)	//fix err and last related take//~vakaI~
+	    	rc=setMultiWaitTake(RYAKU_STRAIGHT,swOther);	//allow multiwait take by option//~vakaI~
+        if (!rc && swLastNotFix)	//last related is ron or not effective take//~vakhR~
+	        setFixErrMultiWait(swOther);                           //~vakhI~
     	if (Dump.Y) Dump.println("UARank.chkEarthStraight rc="+rc+",Ptype="+Ptype+",ronType="+ronType+",ronNumber="+ronNumber+",typeYakuFix="+typeYakuFix+",ctrPairRon="+ctrPairRon+",ctrPairNotFirst="+ctrPairNotFirst+",swOther="+swOther);//~va91I~
-    	if (Dump.Y) Dump.println("UARank.chkEarthStraight swNotLast="+swNotLast+",swNearRelated="+swNearRelated+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle+",swSeqFix="+swSeqFix);//~va91R~
+    	if (Dump.Y) Dump.println("UARank.chkEarthStraight swTaken="+swTaken+",swNotLast="+swNotLast+",swLastNotFix="+swLastNotFix+",swNearRelated="+swNearRelated+",swOther="+swOther+",swLast="+swLast+",swMiddle="+swMiddle+",swSeqFix="+swSeqFix);//~va91R~//~vakaR~
     	return rc;                                                 //~va91I~
     }                                                              //~va91I~
     //****************************************************************//~va11I~
@@ -877,8 +1210,16 @@ public class UARank                                                //~va11R~
             }                                                      //~va11I~
         }                                                          //~va11I~
         if (rc!=0)                                                 //~va11R~
+        {                                                          //~vakfR~
         	rc-=intNotAllHand;                                     //~va11R~
-    	if (Dump.Y) Dump.println("UARank.chkTerminalMix rc="+rc);  //~va11R~
+            if (swChkFix)                                          //~vakfR~
+	            if (!chkTerminalNumTaken(RYAKU_19SEQMIX))          //~vakfR~
+                {                                                  //~vakhI~
+                	rankFixErr+=rc;                                //~vakfR~
+                	rankFixErrMultiWait+=rc;                       //~vakhI~
+                }                                                  //~vakhI~
+        }                                                          //~vakfR~
+    	if (Dump.Y) Dump.println("UARank.chkTerminalMix rc="+rc+",swTaken="+swTaken);  //~va11R~//~vakfR~
     	return rc;                                                 //~va11I~
     }                                                              //~va11I~
     //****************************************************************//~va11I~
@@ -915,6 +1256,37 @@ public class UARank                                                //~va11R~
     	if (Dump.Y) Dump.println("UARank.chkTerminalNum rc="+rc+",swSeq="+swSeq);//~va11R~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
+    //****************************************************************//~vakfR~
+    //*multiwait chk and allow takeen by option                    //~vakfR~
+    //*rc:false fixFirst err                                       //~vakfR~
+    //****************************************************************//~vakfR~
+    private boolean chkTerminalNumTaken(int Pyaku) //(mix)chanta   //~vakfR~
+    {                                                              //~vakfR~
+        boolean swLastNotFix=false,rc=true;                        //~vakfR~
+    //***************************                                  //~vakfR~
+    	if (Dump.Y) Dump.println("UARank.chkTerminalNumTaken");    //~vakfR~
+        for (int ii=0;ii<sizePairSeqS;ii++)                        //~vakfR~
+        {                                                          //~vakfR~
+            Pair pair=pairNumS[ii];                                //~vakfR~
+            int pairnum=pair.number;                               //~vakfR~
+            if (pair.typePair==PT_NUMSEQ                           //~vakfR~
+            &&  ronNumber>=pairnum && ronNumber<pairnum+3      //related to ron//~vakfR~
+            && (pair.flag & TDF_CHII)==0)//in hand by flag         //~vakfR~
+            {                                                      //~vakfR~
+                if (ronNumber==TN1 || ronNumber==TN9)    //ryanmen //~vakfR~
+                    swLastNotFix=true;                             //~vakfR~
+            }                                                      //~vakfR~
+        }                                                          //~vakfR~
+        if (swLastNotFix)	//ron tile ryanmen                     //~vakfR~
+        {                                                          //~vakfR~
+	        rc=setFixErr(Pyaku,true/*swLast*/,false/*swMiddle*/);  //false if fix err//~vakfR~
+        	if (!rc && swTaken)	//fix err and last related take    //~vakfR~
+	    		rc=setMultiWaitTake(Pyaku,false/*swOther*/);	//allow multiwait take by option//~vakfR~
+        }                                                          //~vakfR~
+    	if (Dump.Y) Dump.println("UARank.chkTerminalNumTaken rc="+rc+",ronNumber="+ronNumber+",typeYakuFix="+typeYakuFix);//~vakfR~
+    	if (Dump.Y) Dump.println("UARank.chkTerminalNumTaken swTaken="+swTaken+",swLastNotFix="+swLastNotFix);//~vakfR~
+    	return rc;                                                 //~vakfR~
+    }                                                              //~vakfR~
     //***********************************                          //~va11I~
     private int chk3Kan()            //3kan                       //~va11I~
     {                                                              //~va11I~
@@ -925,7 +1297,6 @@ public class UARank                                                //~va11R~
         }                                                          //~va11I~
         int rc=0;                                                  //~va11I~
         int ctr=0;                                                  //~va11I~
-        //TODO test ankan, not declared kan                        //~va11I~
         for (Pair pair:pairNumS)                                   //~va11R~
         {                                                          //~va11I~
         	if (pair.typePair==PT_NUMSAME && pair.dupCtr==4)       //~va11I~
@@ -1036,7 +1407,15 @@ public class UARank                                                //~va11R~
             }                                                      //~va11I~
         }                                                          //~va11I~
         if (rc!=0)                                                 //~va11R~
+        {                                                          //~vakfI~
         	rc-=intNotAllHand;                                     //~va11R~
+            if (swChkFix)                                          //~vakfI~
+	            if (!chkTerminalNumTaken(RYAKU_19SEQ))             //~vakfI~
+                {                                                  //~vakhI~
+                	rankFixErr+=rc;                                //~vakfI~
+		        	rankFixErrMultiWait+=rc;                       //~vakhI~
+                }                                                  //~vakhI~
+        }                                                          //~vakfI~
     	if (Dump.Y) Dump.println("UARank.chkTerminal rc="+rc);     //~va11R~
     	return rc;                                                 //~va11I~
     }                                                              //~va11I~
@@ -1123,9 +1502,9 @@ public class UARank                                                //~va11R~
             {                                                      //~va11I~
 	        	addYaku(RYAKU_3DRAGONSMALL);                       //~va11I~
         		rc=RANK_3DRAGONSMALL;                              //~va11I~
-	            if (swChkFix)                                      //~va91I~
-	            	if (!chkEarth3DragonSmall())                   //~va91R~
-	                	rankFixErr+=rc;                            //~va91I~
+//              if (swChkFix)                                      //~va91I~//~vakdR~
+//              	if (!chkEarth3DragonSmall())                   //~va91R~//~vakdR~
+//                  	rankFixErr+=rc;                            //~va91I~//~vakdR~
             }                                                      //~va11I~
     	}                                                          //~va11I~
     	if (Dump.Y) Dump.println("UARank.chk3DragonSmall rc="+rc+",ctrDragon="+ctrDragon+",ctrPairNotNum="+ctrPairNotNum);//~va11R~

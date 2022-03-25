@@ -1,5 +1,6 @@
-//*CID://+DATER~:                             update#=   55;       //~1AfcR~//~9211R~
+//*CID://+vaKQR~:                             update#=   58;       //~vaKQR~
 //*************************************************************************//~v106I~
+//2022/03/19 vakQ notify update of rule when client received       //~vaKQI~
 //1Afc 2016/09/22 like V1C1 fuego, add ray as player               //~1AfcI~
 //*************************************************************************//~v106I~
 //RadioButtonGroup:make group RadioButton at anyplace              //~1AfcI~
@@ -60,11 +61,11 @@ public class UButtonRG                                              //~1AfcR~//~
                             }                                      //~9306I~
                         }                                          //~9306I~
                         else                                       //~9306I~
-                        {                                          //+9902I~
-                        	if (Pchecked)                                  //~1AfcI~//~9228R~//+9902R~
-                            	resetChecked(id);                          //~1AfcR~//~9228R~//+9902R~
-                            CommonListener.onCheckedChanged(Pbtn,Pchecked);//+9902I~
-                        }                                          //+9902I~
+                        {                                          //~9902I~
+                        	if (Pchecked)                                  //~1AfcI~//~9228R~//~9902R~
+                            	resetChecked(id);                          //~1AfcR~//~9228R~//~9902R~
+                            CommonListener.onCheckedChanged(Pbtn,Pchecked);//~9902I~
+                        }                                          //~9902I~
                     }                                              //~9228I~
                     catch(Exception e)                             //~9228I~
                     {                                              //~9228I~
@@ -188,4 +189,19 @@ public class UButtonRG                                              //~1AfcR~//~
 		if (Dump.Y) Dump.println("UButtonRG:setEnabled pos="+Ppos+",enable="+PswEnable+",rc="+rc);//~9702I~
         return rc;                                                 //~9702I~
 	}//setEnabled                                                  //~9702I~
+	//***************************************************************************//~vaKQI~
+    public boolean setBGUpdated(int PcolorBG,int PposOld)          //+vaKQR~
+    {                                                              //~vaKQI~
+        boolean rc=false;                                          //+vaKQI~
+        if (PposOld!=currentIndex)                                 //~vaKQI~
+        {                                                          //~vaKQI~
+        	if (currentIndex<buttons.length)                       //~vaKQR~
+				buttons[currentIndex].setBackgroundColor(PcolorBG);//~vaKQR~
+        	if (PposOld<buttons.length)                            //~vaKQR~
+				buttons[PposOld].setBackgroundColor(PcolorBG);     //~vaKQR~
+            rc=true;                                               //+vaKQI~
+        }                                                          //~vaKQI~
+		if (Dump.Y) Dump.println("UButtonRG:setBGUpdated rc="+rc+",posOld="+PposOld+",currentIndex="+currentIndex+",color="+Integer.toHexString(PcolorBG));//+vaKQI~
+        return rc;                                                 //+vaKQI~
+	}                                                              //~vaKQI~
 }//class                                                           //~1121R~

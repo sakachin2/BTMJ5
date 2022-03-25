@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_YakuStandard"
             android:textSize="@dimen/textview_middle"
+    			android:background="@color/descriptiononly"
         />
         <TextView
             android:layout_height="wrap_content"
@@ -27,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
             android:text="@string/Label_YakuStandardList"
-            android:background="@color/getvalue"
     />
     <TextView
         android:layout_height="wrap_content"

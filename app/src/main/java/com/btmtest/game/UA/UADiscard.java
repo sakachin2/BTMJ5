@@ -1,5 +1,6 @@
-//*CID://+vaj7R~: update#= 657;                                    //~vaj7R~
+//*CID://+vakmR~: update#= 662;                                    //~vakmR~
 //**********************************************************************//~v101I~
+//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //~vakmI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2021/10/26 vaf7 (Bug)kuikae chk; inhibit other size only when ryanmen chii//~vaf7I~
 //2021/06/28 vaa5 (Bug)Dump at canceled Kan at 1st take because lastDiscarded is null//~vaa5I~
@@ -21,6 +22,7 @@ package com.btmtest.game.UA;                                         //~1107R~  
 
 import com.btmtest.R;
 import com.btmtest.TestOption;
+import com.btmtest.dialog.DrawnReqDlgHW;
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingOperation;
@@ -51,11 +53,12 @@ import static com.btmtest.game.GConst.*;                           //~v@@@I~
 import static com.btmtest.game.Players.*;
 import static com.btmtest.game.RA.RAConst.*;
 import static com.btmtest.game.TileData.*;
+import static com.btmtest.game.UA.UAEndGame.*;
 import static com.btmtest.game.UserAction.*;                       //~v@@@I~
                                                                    //~v@@@I~
 public class UADiscard                                             //~v@@@R~
 {                                                                  //~0914I~
-    private static final int POSPARM_CALLSTATUS=8;                 //+vaj7R~
+    private static final int POSPARM_CALLSTATUS=8;                 //~vaj7R~
     private UserAction UA;                                         //~v@@@I~
     private Players PLS;                                           //~v@@@R~
     private UADelayed2 UADL;                                       //~9B28I~
@@ -67,6 +70,8 @@ public class UADiscard                                             //~v@@@R~
    private boolean swCheckReach;                                    //~va27I~
     private boolean swManualRobot;   //take by button in training mode//~va66R~
     private int typeSameMeld;                                          //~va60I~
+    private boolean sw4R;                                          //~vakmI~
+    public boolean sw4RCanceled;                                   //~vakmI~
 //  private TileData tdPlayAlone;                                  //~va70R~
 //*************************                                        //~v@@@I~
 	public UADiscard(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
@@ -94,7 +99,8 @@ public class UADiscard                                             //~v@@@R~
         typeSameMeld=RuleSetting.getSameMeld();                    //~va60I~
         if (AG.swTrainingMode)                                     //~va66I~
 	    	swManualRobot=RuleSettingOperation.isAllowRobotAllButton();//~va66R~
-        if (Dump.Y) Dump.println("UADiscard init");//~v@@@R~       //~v@@6R~
+    	sw4R=RuleSetting.isDrawnHW4R();                            //~vakmI~
+        if (Dump.Y) Dump.println("UADiscard init sw4R="+sw4R);//~v@@@R~       //~v@@6R~//~vakmR~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
     private TileData selectTile(int Pplayer)                       //~v@@@I~
@@ -250,7 +256,7 @@ public class UADiscard                                             //~v@@@R~
 			if (!PswReceived)                                       //~v@@@I~
                 td=infoSelectedTD;                                 //~v@@@I~
             else                                                   //~v@@@I~
-            {  //client on received                                //+vaj7R~
+            {  //client on received                                //~vaj7R~
         		td=new TileData(true/*swEswnToPlayer*/,PintParm,PARMPOS_TD);              //~v@@@I~
                 UATake.saveServerCallStatus(PintParm,POSPARM_CALLSTATUS);//~vaj7I~
             }                                                      //~vaj7I~
@@ -461,7 +467,9 @@ public class UADiscard                                             //~v@@@R~
             {                                                      //~va66I~
 	        	if (AG.aAccounts.isDummyPlayer(Pplayer))           //~va66I~
                 {                                                  //~va77I~
-    	        	Robot.nextPlayerManual(Pplayer);//issue chii   //~va66R~
+//    	        	Robot.nextPlayerManual(Pplayer);//issue chii   //~va66R~//~vakmR~
+    	        	if (!Robot.nextPlayerManual(Pplayer))//Not issue chii//~vakmI~
+                    	chk4Reach(PswServer,Pplayer,true/*swRobot*/);//~vakmI~
         		    return;                                        //~va77I~
                 }                                                  //~va77I~
 //  			if (AG.aTiles.chkLast())                                 //~9225I~//~va66R~
@@ -469,6 +477,7 @@ public class UADiscard                                             //~v@@@R~
             }                                                      //~va66I~
 //          return;                                                //~va66R~//~va77R~
         }                                                          //~va66R~
+        chk4Reach(PswServer,Pplayer,false/*swRobot*/);	//drawn by 4reach//+vakmR~
         UA.UADL.postDelayedAutoTake(PswServer,Pplayer,PLS.ctrTakenAll);//~v@@6R~
     }                                                              //~v@@6I~
 	//*************************************************************************//~v@@6I~
@@ -719,7 +728,7 @@ public class UADiscard                                             //~v@@@R~
 //    //*************************************************************************//~va70R~
 //    public void resetCallPlayAlone(int PmsgID)                   //~va70R~
 //    {                                                            //~va70R~
-//        if (Dump.Y) Dump.println("UADiscard.resetCallPlayAlone nsgID="+PmsgID);//~va70R~
+//        if (Dump.Y) Dump.println("UADiscard.resetCallPlayAlone msgID="+PmsgID);//~va70R~//~vakmR~
 //        switch(PmsgID)                                           //~va70R~
 //        {                                                        //~va70R~
 //        case GCM_RON:                                            //~va70R~
@@ -734,4 +743,18 @@ public class UADiscard                                             //~v@@@R~
 //            break;                                               //~va70R~
 //        }                                                        //~va70R~
 //    }                                                            //~va70R~
+    //*************************************************************************//~vakmI~
+    private boolean chk4Reach(boolean PswServer,int PnextPlayer,boolean PswRobot)//~vakmR~
+    {                                                              //~vakmI~
+    	boolean rc=false;                                          //~vakmI~
+    	int ctrReach=PLS.ctrReach;                                 //~vakmI~
+        if (Dump.Y) Dump.println("UADiscard.chk4Reach swServer="+PswServer+",nextPlayer="+PnextPlayer+",swRobot="+PswRobot+",ctrReach="+ctrReach+",sw4Reachcanceled="+AG.aRoundStat.sw4ReachCanceled);//~vakmR~
+        if (sw4R && PswServer && ctrReach==PLAYERS && !AG.aRoundStat.sw4ReachCanceled)//~vakmR~
+        {                                                          //~vakmI~
+			DrawnReqDlgHW.newInstance(EGDR_4REACH).show();         //~vakmI~
+        	rc=true;                                               //~vakmI~
+        }                                                          //~vakmI~
+        if (Dump.Y) Dump.println("UADiscard.chk4Reach rc="+rc+",nextPlayer="+PnextPlayer+",swRobot="+PswRobot+",ctrReach="+ctrReach);//~vakmR~
+        return rc;
+    }                                                              //~vakmI~
 }//class                                                           //~v@@@R~

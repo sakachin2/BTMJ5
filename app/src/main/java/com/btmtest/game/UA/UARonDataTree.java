@@ -1,5 +1,6 @@
-//*CID://+vaaKR~: update#= 864;                                    //~vaaKR~
+//*CID://+vakhR~: update#= 865;                                    //+vakhR~
 //**********************************************************************//~v101I~
+//2022/02/20 vakh set kataagari err different from fix err         //+vakhI~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/06/06 va92 drop duplicated call of getRankStandard          //~va92I~
@@ -67,6 +68,7 @@ public class UARonDataTree                                         //~va11R~
 //  public  int rankTanyao;                                        //~va11R~
     private int rankSpecial,amtSpecial,yakuSpecial,rankFinal,pointFinal;//~va11R~
     private int rankFixErrFinal;                                   //~va91I~
+    private int rankFixErrFinalMultiWait;                          //+vakhI~
     private int rankOther;	//dora,reach,..                        //~va11R~
     private int[][] dupCtrAll,dupCtr;                              //~va11I~
     private UARonData maxUARD;                                      //~va11I~
@@ -212,10 +214,11 @@ public class UARonDataTree                                         //~va11R~
                 	amt=v;                                         //~va11R~
                     rankFinal=uard.intRankMax;                        //~va11R~
                     rankFixErrFinal=uard.intRankFixErrMax;         //~va91I~
+                    rankFixErrFinalMultiWait=uard.intRankFixErrMaxMultiWait;//+vakhI~
                     pointFinal=uard.pointMax;                      //~va11R~
                     longRankFinal=uard.longRankMax;                //~va11I~
                     longRankFixErrFinal=uard.longRankFixErrMax;    //~va91I~
-			        if (Dump.Y) Dump.println("UARonDataTree.getAmmount swChkRank="+UARV.swChkRank+",v="+v+",amt="+amt+",rankFinal="+rankFinal+",rankFixErrFinal"+rankFixErrFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal)+",longRankFixErrDinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~
+			        if (Dump.Y) Dump.println("UARonDataTree.getAmmount swChkRank="+UARV.swChkRank+",v="+v+",amt="+amt+",rankFinal="+rankFinal+",rankFixErrFinal"+rankFixErrFinal+",rankFixErrFinalMultiWait="+rankFixErrFinalMultiWait+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal)+",longRankFixErrFinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~//+vakhR~
                     if (UARV.swChkRank && longRankFinal.isContainsAnyYakuExceptDora())//~va11R~
                     	break;                                     //~va11I~
                 }                                                  //~va11I~
@@ -245,7 +248,7 @@ public class UARonDataTree                                         //~va11R~
             }                                                      //~va11I~
         }                                                          //~va11I~
         amtTotal=amt;                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonDataTree.getAmmount return rankYakuman="+rankYakuman+",amtTotal="+amtTotal+",rankFinal="+rankFinal+",rankFixErrFinal="+rankFixErrFinal+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal)+".longRankFixErrFinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~
+        if (Dump.Y) Dump.println("UARonDataTree.getAmmount return rankYakuman="+rankYakuman+",amtTotal="+amtTotal+",rankFinal="+rankFinal+",rankFixErrFinal="+rankFixErrFinal+",rankFixErrFinalMultiWait="+rankFixErrFinalMultiWait+",pontFinal="+pointFinal+",longRankFinal="+Rank.toString(longRankFinal)+"="+Rank.toStringName(longRankFinal)+".longRankFixErrFinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~//+vakhR~
 	    setResult(PronValue);                                      //~va11I~
         return amtTotal;                                           //~va11R~
     }                                                              //~va11I~
@@ -313,6 +316,7 @@ public class UARonDataTree                                         //~va11R~
         Presult.longRankFixErr=longRankFixErrFinal;                //~va91I~
     	Presult.han=rankFinal;                                     //~va11R~
     	Presult.hanFixErr=rankFixErrFinal;                         //~va91I~
+    	Presult.hanFixErrMultiWait=rankFixErrFinalMultiWait;       //+vakhI~
 	    Presult.point=pointFinal;	//roundup by 10 if not 7Pair   //~va11R~
         if (Dump.Y) Dump.println("UARonDataTree.setResult pointFinal="+pointFinal+",PronResult="+Presult.toString()+",longRank="+longRankFinal.toStringName()+",longRankFixErrFinal="+Rank.toStringName(longRankFixErrFinal));//~va11R~//~va91R~
     }                                                              //~va11I~
@@ -631,7 +635,7 @@ public class UARonDataTree                                         //~va11R~
             }                                                      //~va60I~
         }                                                          //~va60I~
         int rc=ctrDoraOpen/2;                                      //~va60I~
-        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen rc="+rc+",PitsDoraOpen="+Utils.toString(PitsDoraOpen));//~va60R~//+vaaKR~
+        if (Dump.Y) Dump.println("UARonDataTree.getDoraOpen rc="+rc+",PitsDoraOpen="+Utils.toString(PitsDoraOpen));//~va60R~//~vaaKR~
         return rc;                                                 //~va60I~
     }                                                              //~va60I~
 	//*************************************************************************//~va11I~

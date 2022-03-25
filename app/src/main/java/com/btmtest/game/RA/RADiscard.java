@@ -1,16 +1,19 @@
-//*CID://+DATER~: update#=  70;                                    //~1111R~
+//*CID://+vak2R~: update#=  76;                                    //~vak2R~
 //**********************************************************************//~v101I~
+//2022/02/15 vak2 Test option, specify discard tile                //~vak2I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
 //**********************************************************************//~1107I~
 package com.btmtest.game.RA;                                         //~1107R~  //~1108R~//~1109R~//~v106R~//~v@@@R~
 import android.graphics.Point;
 
+import com.btmtest.TestOption;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.RA.RAConst.*;                           //~va60I~
 
 //********************************************************************************************//~v@@5R~
@@ -42,7 +45,7 @@ public class RADiscard                                               //~v@@@R~//
     //*********************************************************    //~va60I~
     //*from Robot.afterTakeOne                                     //~1113I~
     //*********************************************************    //~1113I~
-    public  TileData selectDiscard(int Peswn,TileData PtdTaken)              //~va60R~
+    public  TileData selectDiscard(int Peswn,TileData PtdTaken/*null after when Pon,Chii*/)              //~va60R~
     {                                                              //~va60I~
         TileData tdDiscard;                                        //~va60I~
         //********************                                     //~1111I~
@@ -56,10 +59,17 @@ public class RADiscard                                               //~v@@@R~//
                                                                    //~1111I~
         try                                                        //~1126I~
         {                                                          //~1126I~
+            if ((TestOption.option5 & TO5_SETDISCARD)!=0)           //~vak2I~
+                tdDiscard=selectTestDiscard(Peswn,PtdTaken,tdsHand);//~vak2R~
+            else                                                   //~vak2I~
+                tdDiscard=null;                                    //~vak2I~
+          if (tdDiscard==null)                                     //~vak2R~
+          {                                                        //~vak2I~
             if (!RS.swThinkRobot)                                         //~va60I~//~1111R~//~1126R~
                 tdDiscard=selectDull(Peswn,PtdTaken);                    //~va60I~//~1111R~//~1116R~//~1126R~
             else                                                       //~va60I~//~1126R~
                 tdDiscard=selectSmart(Peswn,PtdTaken); //null if Kan called            //~va60I~//~1116R~//~1124R~//~1126R~
+          }                                                        //~vak2I~
         }                                                          //~1126I~
         catch(Exception e)                                         //~v@@@I~//~1123I~//~1126I~
         {                                                          //~v@@@I~//~1123I~//~1126I~
@@ -74,6 +84,32 @@ public class RADiscard                                               //~v@@@R~//
 //        itsHandRed=null;                                            //~1122I~//~1129R~
         return tdDiscard;
     }                                                              //~va60I~
+    //***********************************************************************//~vak2I~
+    private TileData selectTestDiscard(int Peswn,TileData PtdTaken,TileData[] PtdsHand)//~vak2R~
+    {                                                              //~vak2I~
+        if (Dump.Y) Dump.println("RADiscard.selectTestDiscard eswn="+Peswn+",PtdTaken="+TileData.toString(PtdTaken));//~vak2I~
+        if ((RS.RSP[Peswn].callStatus & CALLSTAT_REACH)!=0) //reach called//~vak2I~
+        {                                                          //~vak2I~
+        	if (Dump.Y) Dump.println("RADiscard.selectTestDiscard return null by reach called");//~vak2I~
+        	return null;                                           //~vak2I~
+        }                                                          //~vak2I~
+		int type= TestOption.testDiscardType-1;                     //~vak2R~
+		int num=TestOption.testDiscardNumber-1;                    //~vak2R~
+    	TileData tdDiscard=null;                                   //~vak2I~
+        if (PtdTaken!=null && PtdTaken.type==type && PtdTaken.number==num)//+vak2R~
+        	tdDiscard=PtdTaken;                                     //~vak2I~
+        else                                                       //~vak2I~
+        	for (TileData td:PtdsHand)                             //~vak2I~
+            {                                                      //~vak2I~
+		        if (td.type==type && td.number==num)               //~vak2I~
+                {                                                  //~vak2I~
+		        	tdDiscard=td;                                  //~vak2I~
+                    break;                                         //~vak2I~
+                }                                                  //~vak2I~
+            }                                                      //~vak2I~
+        if (Dump.Y) Dump.println("RADiscard.selectTestDiscard testDiscardType="+type+",testDiscardNumber="+num+",tdDiscard="+TileData.toString(tdDiscard)+",tdsHand="+TileData.toString(PtdsHand));//~vak2R~
+        return tdDiscard;                                          //~vak2I~
+    }                                                              //~vak2I~
     //***********************************************************************//~1111M~
     //*not smart robot                                             //~1111M~
     //*discard jsut take if discardable(not winning of open reachnot or pao//~1111M~

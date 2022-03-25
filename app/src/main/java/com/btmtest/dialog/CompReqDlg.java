@@ -1,6 +1,8 @@
-//*CID://+vaipR~:                             update#=  886;       //+vaipR~
+//*CID://+vakUR~:                             update#=  889;       //+vakUR~
 //*****************************************************************//~v101I~
-//2022/01/14 vaip near finalgame aim higher score; consider current value and intent//+vaipI~
+//2022/03/23 vakU Shift required for received ReqDlg               //+vakUI~
+//2022/03/23 vakT (Bug)Score button show Robot CompReqDlg after receved it from oter supporter Eswn//~vakTI~
+//2022/01/14 vaip near finalgame aim higher score; consider current value and intent//~vaipI~
 //2021/10/22 vaf2 static variable to AG or final                   //~vaf2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //~vab6I~
@@ -725,18 +727,18 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     	if (Dump.Y) Dump.println("CompReqDlg.calcPointBaseSub rc="+val+",fu="+Ppoint+",han="+Prank+",swRankMup="+PswRankMUp);//~va11R~
         return val;
     }                                                              //~va11I~
-    //*********************************************************************//+vaipI~
-    //*from RACall to calc approximate point at final round        //+vaipI~
-    //*********************************************************************//+vaipI~
-    public static int calcTempPoint(int Peswn,int Prank,boolean PswRankMUp)//+vaipI~
-    {                                                              //+vaipI~
-	    int amt=calcPointBaseSub(30/*fu*/,Prank,PswRankMUp);       //+vaipI~
-    	int cutEswn=AG.aAccounts.getCutEswn();                     //+vaipI~
-        if (cutEswn==Peswn)                                        //+vaipI~
-        	amt*=2;                                                //+vaipI~
-    	if (Dump.Y) Dump.println("CompReqDlg.calcTempPoint amt="+amt+",eswn="+Peswn+",cutEswn="+cutEswn+",swRankMUp="+PswRankMUp);//+vaipI~
-        return amt;                                                //+vaipI~
-    }                                                              //+vaipI~
+    //*********************************************************************//~vaipI~
+    //*from RACall to calc approximate point at final round        //~vaipI~
+    //*********************************************************************//~vaipI~
+    public static int calcTempPoint(int Peswn,int Prank,boolean PswRankMUp)//~vaipI~
+    {                                                              //~vaipI~
+	    int amt=calcPointBaseSub(30/*fu*/,Prank,PswRankMUp);       //~vaipI~
+    	int cutEswn=AG.aAccounts.getCutEswn();                     //~vaipI~
+        if (cutEswn==Peswn)                                        //~vaipI~
+        	amt*=2;                                                //~vaipI~
+    	if (Dump.Y) Dump.println("CompReqDlg.calcTempPoint amt="+amt+",eswn="+Peswn+",cutEswn="+cutEswn+",swRankMUp="+PswRankMUp);//~vaipI~
+        return amt;                                                //~vaipI~
+    }                                                              //~vaipI~
     //*********************************************************************//~9602R~
     //*ammountNet:original total when cutPlayer option             //~9602I~
     //*********************************************************************//~9602I~
@@ -1159,7 +1161,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     	int skipEswn;                                              //~9227I~
         int[] amts=ACAction.parseAppData(PmsgData);                //~9221I~
         int srcEswn=amts[0];	//completeEswn                                       //~9221I~//~9227R~
-        if (Dump.Y) Dump.println("CompReqDlg.onReceivedRequest sender="+Psender+",msgdata="+PmsgData+",srcEswn="+srcEswn);//~9221R~
+        if (Dump.Y) Dump.println("CompReqDlg.onReceivedRequest sender="+Psender+",msgdata="+PmsgData+",srcEswn="+srcEswn+",amts="+Utils.toString(amts));//~9221R~//~vaipR~
         Complete.Status stat=AG.aComplete.getStatus(srcEswn);      //~9221R~
         if (stat==null)                                            //~9226I~
         {                                                          //~9226I~
@@ -1177,7 +1179,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             }                                                      //~9226I~
             Complete.setAmmount(amts,CALC_AMT_POS,stat);           //~9221R~
         	stat.requestSent();                                    //~9222I~//~9227R~
-            newInstance(stat).show();                              //~9221R~
+//          newInstance(stat).show();                              //~9221R~//+vakUR~
+            newInstance(stat).show(srcEswn);                       //+vakUI~
 //          skipEswn=srcEswn;                                      //~9227I~//~va60R~
             skipEswn=AG.aAccounts.getRealSenderEswn(srcEswn);	//completeEswn or realDealer for Robot//~va60R~
         }                                                          //~9221R~
@@ -1395,9 +1398,12 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             if (ss[ii].isShowableRobot(curEswn))                   //~va60I~
             {                                                      //~va60I~
 				if (Dump.Y) Dump.println("CompReqDlg.shwComplete robot completion for comp idx="+ii);//~va60I~
+              if (ss[ii].supporterEswn==curEswn)                   //~vakTI~
+              {                                                    //~vakTI~
                 CompReqDlg.newInstance(ss[ii]).show(ii);           //~va60I~
                 swRobot=true;                                      //~va60I~
                 rc++;                                              //~va60I~
+              }                                                    //~vakTI~
             }                                                      //~va60I~
 //            else    //for multiron                                 //~9B11I~//~0106R~
 //            if (!(ss[ii].swInvalid || ss[ii].swErr))               //~9B11I~//~0106R~

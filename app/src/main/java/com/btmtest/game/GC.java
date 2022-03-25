@@ -1,7 +1,8 @@
-//*CID://+vajiR~: update#= 854;                                    //~vajiR~
+//*CID://+vakrR~: update#= 864;                                    //~vakrR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2022/03/09 vakr (Bug)PAN mode; call not postDelayedAutoTakeKan but postDelayedAutoTake when human pushed Kan button//~vakrI~
 //2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2021/12/31 vaii notifyPlayMatch:Chii overrun Pon button push(Chii button lit yellow after Pon pushed for the discarded tile of Pon and Chii)//~vaiiI~
 //2021/11/13 vagn (Bug)GC buttons remains active because Robot Ron did not stop Notifing Pon to human//~vagnI~
@@ -165,7 +166,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
                                                                    //~vaahI~
 //  private static final int COLOR_GST_DEBUG=AG.getColor(R.color.btn_normal_bg);//~vaahR~
     private static final int COLOR_GST_DEBUG  =Color.argb(0xff,0xc0,0xf0,0x00);//~vaahR~
-    private static final int COLOR_GST_DEBUG_CLIENT  =Color.argb(0xff,0xc0,0xf0,0xa0);//+vajiR~
+    private static final int COLOR_GST_DEBUG_CLIENT  =Color.argb(0xff,0xc0,0xf0,0xa0);//~vajiR~
 //  private static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vaahI~//~vajiR~
     public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vajiR~
     public  static final int COLOR_GST_RELEASE_CLIENT=Color.argb(0xff,0xc0,0xf0,0xf0);//~vajiR~
@@ -2349,10 +2350,17 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case GCM_KAN_OR_PON:                                       //~va78I~
     		player=AG.aPlayers.getCurrentPlayer();    //for pass chk of PLS.isActionDoneExceptRon//~va78I~
         	if (Dump.Y) Dump.println("GC.actionPlayAlone swCancel="+swCancel+",current player="+player);//~vaahI~
-          if (swCancel && player==PLAYER_YOU)   // you are taken   //~vaahI~
-          	postAutoDiscardAnkan();                                //~vaahI~
-          else                                                     //~vaahI~
-    	    GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(player),0,0);	//on server,to UADiscard.nextPlayer()//~va78I~
+//        if (swCancel && player==PLAYER_YOU)   // you are taken (ankan or kakan)  //~vaahI~//~vakrR~
+//        	postAutoDiscardAnkan();                                //~vaahI~//~vakrR~
+//        else                                                     //~vaahI~//~vakrR~
+//  	    GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(player),0,0);	//on server,to UADiscard.nextPlayer()//~va78I~//~vakrR~
+          	if (swCancel)   //cancel button in Notify Mode         //+vakrR~
+            {                                                      //~vakrI~
+          		if (player==PLAYER_YOU)   // you are taken (ankan or kakan)//~vakrI~
+					postAutoDiscardAnkan();                        //~vakrI~
+                else	//Pon or minkan                            //~vakrI~
+					AG.aUADelayed.postDelayedTakablePlayAloneNotifyCanceledPonKan(player);//+vakrR~
+            }                                                      //~vakrI~
             break;                                                 //~va78I~
         default:                                                   //~va78I~
     		player=AG.aPlayers.getNextPlayer();                    //~va70I~
@@ -2377,9 +2385,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         swChankan=Psw;                                             //~vaaUI~
     }                                                              //~vaaUI~
     //*******************************************************************//~vaahI~
+    //*when ankan or kakan was canceld                             //~vakrI~
+    //*******************************************************************//~vakrI~
     private void postAutoDiscardAnkan()                            //~vaahI~
     {                                                              //~vaahI~
-		if (Dump.Y) Dump.println("GC.postAutoDiscardAnkan");       //~vaahI~
+        if (Dump.Y) Dump.println("GC.postAutoDiscardAnkan");       //~vaahI~
         AG.aUserAction.UAT.setAutoDiscardTimeout(true/*swServer*/,PLAYER_YOU,GCM_TAKE);//~vaahI~
     }                                                              //~vaahI~
     //*******************************************************************//~vaahI~

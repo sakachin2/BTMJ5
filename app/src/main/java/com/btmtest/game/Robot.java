@@ -1,5 +1,7 @@
-//*CID://+vaaRR~:                                   update#=  265; //~vaaRR~
+//*CID://+vakmR~:                                   update#=  274; //+vakmR~
 //*************************************************************************//~@002R~
+//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //+vakmI~
+//2022/02/27 vakj (Bug)hung if drawnRegDlgHW was canceled at the timeing robot discard(discard msg was ignored by swStop)//~vakjI~
 //2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
 //                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
 //                Consequently CompReqDlg shows Not ronable format.//~vaaRI~
@@ -42,12 +44,14 @@ public class Robot                                                 //~@002I~
     private Accounts accounts;                                     //~@002I~
     private TileData tdTaken;                                      //~@002I~
     private TileData tdSelectedDiscard;                            //~va66I~
+    private TileData tdDiscardLast;                                //~vakjI~
     private int ctrSelectedDiscardTaken=-1;                        //~va66I~
 //    private int delay;                                           //~@002R~
     private int initialEswn;                                       //~@002I~
     private int yourEswn=-1;                                       //~@002I~
     private int currentEswn=-1;                                    //~@002I~
 //	private int	timeoutAutoTake;                                   //~9630I~//~9702R~
+  	private int	delayRelease,delayReleaseTake;                     //~vakjI~
 //*********************************************************************//~@002I~
     public static Robot createNewInstance(Accounts.Account Paccount)//~@002R~
     {                                                              //~1AecI~//~@002M~
@@ -72,6 +76,8 @@ public class Robot                                                 //~@002I~
 	//	delay=OperationSetting.delayRobot;                         //~@002I~
         initialEswn=account.idxMembers;                             //~@002I~
 //		timeoutAutoTake=RuleSettingOperation.getTimeoutTake(); //~9624I~//~9630I~//~9702R~
+  		delayReleaseTake=RuleSettingOperation.getDelayPonKan()+RuleSettingOperation.getTimeoutTakeRobot();//wait after release DrawnHW//~vakjR~
+        if (Dump.Y) Dump.println("Robot init delayReleaseTake="+delayReleaseTake);//~vakjI~
     }                                                              //~@002I~
 	//**************************************************************//~@002I~
 	//*for robot                                                   //~@002I~
@@ -187,6 +193,7 @@ public class Robot                                                 //~@002I~
 		if (Dump.Y) Dump.println("Robot.takePon player="+Pplayer); //~va60R~
 		int eswn=getCurrentEswnRobot();	//not msg to me            //~va60I~
 		TileData tdDiscard=AG.aRADiscard.selectDiscard(eswn,null); //~va60R~
+		tdDiscardLast=tdDiscard;                                   //~vakjI~
         String data=ACAction.strTD(tdDiscard);                     //~va60I~
         sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~va60I~
     }                                                              //~va60I~
@@ -227,6 +234,7 @@ public class Robot                                                 //~@002I~
 			if (Dump.Y) Dump.println("Robot.afterTakeOne return by TO2_ROBOT_DISCARD_BY_BUTTON");//~va66M~
         	return;                                                //~va66M~
         }                                                          //~va66M~
+		tdDiscardLast=tdDiscard;                                   //~vakjI~
         String data=ACAction.strTD(tdDiscard);                     //~va60R~
         if (TestOption.getTimingBTIOErr()==TestOption.BTIOE_AFTER_ROBOTTAKE)//~9A28I~//~9A30I~
           	TestOption.disableBT();                                //~9A28I~//~9A30I~
@@ -249,6 +257,23 @@ public class Robot                                                 //~@002I~
         String data=ACAction.strTD(tdTaken);                       //~0228I~
         sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~0228I~
     }                                                              //~0228I~
+	//**************************************************************//~vakjI~
+	//*from DrawnReqdlgHW.rescheduleRobotAction at stopAuto for DrawnHW was released//~vakjI~
+	//*discard tdDiscardLast                                       //~vakjI~
+	//**************************************************************//~vakjI~
+    public void afterTakeOneDrawnHWReleased()                      //~vakjI~
+    {                                                              //~vakjI~
+		if (Dump.Y) Dump.println("Robot.afterTakeOneDrawnHWReleased tdDiscardLast="+ Utils.toString(tdDiscardLast));//~vakjI~
+        if (tdDiscardLast!=null)                                   //~vakjI~
+        {                                                          //~vakjI~
+		    if (!tdDiscardLast.isRon())  //no discard id robot Ron //~vakjI~
+            {                                                      //~vakjI~
+                int eswn=getCurrentEswnRobot(); //not msg to me    //~vakjI~
+                String data=ACAction.strTD(tdDiscardLast);         //~vakjI~
+                sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~vakjI~
+            }                                                      //~vakjI~
+        }                                                          //~vakjI~
+    }                                                              //~vakjI~
 	//**************************************************************//~@002I~
 //    private boolean takeOneDelayed(int Pplayer,TileData Ptd,RFParm Prfp)//~@002R~
 //    {                                                              //~@002I~
@@ -282,14 +307,18 @@ public class Robot                                                 //~@002I~
 //    }                                                              //~@002R~//~0222R~
     //**************************************************************//~va66I~
     //*from UADiscard at GCM_NEXT_PLAYER at manual mode(not auto take)//~va66I~
+    //*rc:true:issued Chii                                         //+vakmI~
     //**************************************************************//~va66I~
-    public static void nextPlayerManual(int Pplayer)               //~va66I~
+//  public static void nextPlayerManual(int Pplayer)               //~va66I~//+vakmR~
+    public static boolean nextPlayerManual(int Pplayer)            //+vakmI~
     {                                                              //~va66I~
         Robot r=AG.aAccounts.getRobot(Pplayer);                    //~va66I~
         int eswn=r.getCurrentEswnRobot(); //not msg to me          //~va66I~
         if (Dump.Y) Dump.println("Robot.nextPlayerManual player="+Pplayer+",eswn="+eswn);//~va66I~
-        AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //~va66I~
-        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit");   //~va66I~
+//      AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //~va66I~//+vakmR~
+        boolean rc=AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii//+vakmI~
+        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit rc(issued Chii)="+rc);   //~va66I~//+vakmR~
+        return rc;                                                 //+vakmI~
     }                                                              //~va66I~
     //**************************************************************//~9630I~
     //*from UADiscard.autoTakeTimeout, UAKan.autoTakeKanTimeout    //~vaaRI~
@@ -326,6 +355,7 @@ public class Robot                                                 //~@002I~
         int eswn=getCurrentEswnRobot(); //not msg to me          //~va60I~
         if (Dump.Y) Dump.println("Robot.autoDiscardTimeout player="+Pplayer+",eswn="+eswn);//~va60I~
 		TileData tdDiscard=AG.aRADiscard.selectDiscard(eswn,null); //~va60R~
+		tdDiscardLast=tdDiscard;                                   //~vakjI~
         String data=ACAction.strTD(tdDiscard);                     //~va60I~
         sendToServer(false/*swWaiterBlock*/,GCM_DISCARD,eswn,data);//~va60I~
         if (Dump.Y) Dump.println("Robot.autoDiscardTimeout exit"); //~va60I~
@@ -339,6 +369,15 @@ public class Robot                                                 //~@002I~
         String data="";                                            //~@002I~
         sendToServer(true/*swWaiterBlock*/,GCM_TAKE,Peswn,data);   //~@002R~
     }                                                              //~@002I~
+    //**************************************************************//~vakjI~
+    public void sendTakeDrawnHWReleased()                          //~vakjI~
+    {                                                              //~vakjI~
+		int eswn=getCurrentEswnRobot();                            //~vakjI~
+		if (Dump.Y) Dump.println("Robot.sendTakeDrawnHWReleased eswn="+eswn);//~vakjI~
+        delayRelease=delayReleaseTake;  //parmto sendToServer      //~vakjI~
+        sendTake(eswn);                                            //~vakjI~
+        delayRelease=0;                                            //~vakjI~
+    }                                                              //~vakjI~
 //    //**************************************************************//~@002R~
 //    private void discard(int Pplayer)                            //~@002R~
 //    {                                                            //~@002R~
@@ -363,18 +402,30 @@ public class Robot                                                 //~@002I~
 //        return td;                                               //~@002R~
 //    }                                                            //~@002R~
 	//*************************************************************************//~v@@@I~//~@002I~
+	//*for msg GCM_DISCARD/GCM_TAKE,PON,KAN,CHII,RON,REACH,RON     //~vakjI~
+	//*************************************************************************//~vakjI~
     public  void sendToServer(boolean PswWaiterBlock,int PactionID,int Peswn,String Pdata)//~v@@@R~//~@002R~
     {                                                              //~v@@@I~//~@002I~
         if (Dump.Y) Dump.println("Robot.sendToServer actionid="+PactionID+"="+GCMsgID.getEnum(PactionID)+",eswn="+Peswn+",initialEswn="+initialEswn+",msgDataToServer="+Pdata);//~@002I~//~va60R~
+        if (AG.aUADelayed.saveBlockedActionHWRobot(PactionID,Peswn))	//action blocked by DrawnHW pending//~vakjI~
+        {                                                          //~vakjI~
+	        if (Dump.Y) Dump.println("Robot.sendToServer @@@@skipped by pendingDrawn");//~vakjR~
+        	return;	                                    //reschedule later at DrwanHW released//~vakjI~
+        }                                                          //~vakjI~
         String msg=Peswn+MSG_SEPAPP2+Pdata;//~v@@@I~               //~@002R~
 //      AG.aUserAction.actionReceived(PactionID,msg);              //~@002R~
 //      AG.aUserAction.UADL.postDelayed(delayRobot,PactionID,msg);	//after current action process returned//~@002R~
 		int delayRobot;                                            //~vaaRI~
+        if (delayRelease!=0)  //parm to sendToServer               //~vakjI~
+        	delayRobot=delayRelease;                               //~vakjI~
+        else                                                       //~vakjI~
 	  	if (PactionID==GCM_DISCARD)                                //~vaaRI~
         	delayRobot=DELAY_ROBOT_DISCARD;     //500ms            //~vaaRI~
         else                                                       //~vaaRI~
         	delayRobot=DELAY_ROBOT;             //200s             //~vaaRI~
-        UADelayed.postDelayedRobotMsg(PswWaiterBlock,delayRobot,PactionID,initialEswn,msg);	//after current action process returned//~@002R~//~9624R~
+//      UADelayed.postDelayedRobotMsg(PswWaiterBlock,delayRobot,PactionID,initialEswn,msg);	//after current action process returned//~@002R~//~9624R~//~vakjR~
+        UADelayed.postDelayedRobotMsg(PswWaiterBlock,delayRobot,PactionID,initialEswn,msg,Peswn);	//after current action process returned//~vakjI~
+        if (Dump.Y) Dump.println("Robot.sendToServer exit delayRobot="+delayRobot);//~vakjI~
     }                                                              //~v@@@I~//~@002I~
 ////*************************                                        //~@@@@I~//~@@@2I~//~@@@@I~//~v@@@I~//~@@@@I~//~@002R~
 ////*callback from Runnable *                                        //~@@@@I~//~@@@2I~//~@@@@I~//~v@@@I~//~@@@@I~//~@002R~

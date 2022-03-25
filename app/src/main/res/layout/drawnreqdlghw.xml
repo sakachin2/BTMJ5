@@ -85,6 +85,7 @@
             android:layout_weight="1"
             android:text="@string/SendDiscard"
             android:layout_gravity="center_vertical"
+            android:visibility="gone"
         />
         <Button
             android:id="@+id/ShowRule"                        

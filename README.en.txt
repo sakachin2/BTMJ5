@@ -18,11 +18,35 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.20 : 2022/03/24
+        .Inplements Furiten Riichi option.
+        .inplements Abortive Draw 4Kans, 4Winds and 4Riichi.
+        .Show changed option with different background color when received Rule setting.
+        .Strengthen smart Robot and fix Bugs.
+*********************************************************************************************
+V1.20 : 2022/03/24
+        .No 1-han constraint check for Win-Anyway.
+        .Allow Kataagari if Fix Yaku option is finally, else apply setting  of self-drawn option.
+        .Inplements Furiten Riichi option.
+        .Specific error msg for Kataagari error and 1-han constraint error.
+        .Display not only Wind but also player's name on Win claim and End-Of-Hand dialog.
+        .Automatically open Abortive Draw dialog for 4Kans, 4Winds and 4Riichi. Accordingly drop Discard+Draw button.
+        .Show changed option with different background color when received Rule setting.
+        .Closed child dialog of Rule setting(Operation or Yaku dialog) if opened when received Rule setting.
+        .Strengthen smart Robot.
+         -Implements RinshanKaiho(King's Tile drawn).
+        .Bugs
+         -Decision of Fix Yaku:middle for 3 color runs and Straight.
+         -Han for 3 dragon(White, Green and Red) triples may be counted duplicatedly.
+         -Little Dragons have to be checked Fix-Yaku rule.
+         -Game may hung when Abotive Draw dialog was canceled.
+         -13 orphan could not be called for conceiled Kan call.
+         -Robot's decision error for marking other playter which intent seems to be flush.
+         -Exception may occur by error about decision of calling Chii with intent of Straight.
 V1.19 : 2022/02/01
         .Show Furiten Riichi error.
         .Strengthen smart Robot.
         .Fix bugs.
-*********************************************************************************************
 V1.19 : 2022/02/01
         .Write Exception log to Logcat even for release version.
         .Use different background color for PlayAloneMode game on History dialog.

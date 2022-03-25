@@ -1,6 +1,7 @@
-//*CID://+vaj7R~:                             update#= 1117;       //+vaj7R~
+//*CID://+vakiR~:                             update#= 1124;       //~vakiR~
 //*****************************************************************//~v101I~
-//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//+vaj7I~
+//2022/02/26 vaki display player name on completedlg               //~vakiI~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//~vah2I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -155,7 +156,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //    private TextView tvEswn1,tvEswn2,tvEswn3,tvEswn4;              //~9212R~//~9315R~
 //    private TextView tvAmmount1,tvAmmount2,tvAmmount3,tvAmmount4;  //~9213I~//~9315R~
     private TextView tvCompType;                                   //~9218I~//~9219R~//~9223R~
-    private TextView tvFuritenReach;                               //+vaj7R~
+    private TextView tvFuritenReach;                               //~vaj7R~
     private TextView[] tvsName,tvsEswn,tvsAmmount,tvsCompType;                            //~9212R~//~9213R~//~9315R~
     private TextView[] tvsTotal;                                   //~vah2R~
     private TextView[] tvsSpritPosID;                              //~vah2I~
@@ -260,6 +261,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     public static CompleteDlg newInstance()                        //~v@@@R~//~9315R~
 //  public static CompleteDlg newInstance(int Peswn1stGainer)      //~9315R~
     {                                                              //~v@@@R~
+        if (Dump.Y) Dump.println("CompleteDlg.newInstance");//+vakiI~
         CompleteDlg dlg=AG.aCompleteDlg;                           //~v@@@I~//~9226R~
         if (Utils.isShowingDialogFragment(dlg))                    //~v@@@I~//~9226R~
         {                                                          //~v@@@I~//~9226R~
@@ -279,7 +281,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     //******************************************                   //~9225I~
     public static CompleteDlg newInstance(int[] PintParm,int Ppos) //~9225I~
     {                                                              //~9225I~
-        if (Dump.Y) Dump.println("CompleteDlg:newInstance parm="+Arrays.toString(PintParm));//~9315I~//~9410R~
+        if (Dump.Y) Dump.println("CompleteDlg.newInstance parm="+Arrays.toString(PintParm));//~9315I~//~9410R~//+vakiR~
     	CompleteDlg dlg=AG.aCompleteDlg;                           //~9225I~
         if (Utils.isShowingDialogFragment(dlg))                    //~9225I~//~9226R~
         {                                                          //~9225I~//~9226R~
@@ -381,7 +383,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 		setupResult(PView);                                         //~9315I~
                                                                    //~9218I~
         tvCompType      =(TextView)    UView.findViewById(PView,R.id.tvCompType);//~9218I~//~9219R~//~9223R~
-        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//+vaj7R~
+        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//~vaj7R~
                                                                    //~9212I~
         llGainer1        =(LinearLayout)UView.findViewById(PView,R.id.gainer1);//~9219I~//~9222R~
         llGainer2        =(LinearLayout)UView.findViewById(PView,R.id.gainer2);//~9222I~
@@ -779,7 +781,11 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~9223I~
         Complete.Status stat=sortedStatus[0];                      //~9223I~
         if (!stat.swTake)                                          //~9223I~
-        	sb.append(Utils.getStr(R.string.Info_CompTypeLooser,GConst.nameESWN[stat.completeEswnLooser]));//~9223I~
+        {                                                          //~vakiI~
+//      	sb.append(Utils.getStr(R.string.Info_CompTypeLooser,GConst.nameESWN[stat.completeEswnLooser]));//~9223I~//~vakiR~
+            String eswnyn=GConst.nameESWN[stat.completeEswnLooser]+"("+AG.aAccounts.currentEswnToAccountName(stat.completeEswnLooser)+")";//~vakiR~
+        	sb.append(Utils.getStr(R.string.Info_CompTypeLooser,eswnyn));//~vakiI~
+        }                                                          //~vakiI~
 //      spannedText=Html.fromHtml(sb.toString());                  //~va40R~
         spannedText=Utils.fromHtml(sb.toString());                 //~va40I~
         tvCompType.setText(spannedText);                           //~9223I~
@@ -794,6 +800,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     //******************************                               //~9223I~
     	if (Dump.Y) Dump.println("CompleteDlg.setCompTypeWinner comptype="+PcompType+",eswn="+Peswn);//~9223I~
     	winner=GConst.nameESWN[Peswn];                             //~9223I~
+    	winner+="("+AG.aAccounts.currentEswnToAccountName(Peswn)+")";//~vakiR~
         int compid;                                                //~9223I~
         if ((PcompType & COMPLETE_KAN_TAKEN_OTHER)!=0)	//minkan ron//~9223I~
         	compid=R.string.Info_CompType_Ron_Ankan;               //~9223I~
@@ -1218,6 +1225,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~9222I~
     	setTotalCompTypeErr();                                     //~0302I~
         setCheckBoxResult();    //after set resultCompType         //~0302I~
+		if (Dump.Y) Dump.println("CompleteDlg.getNormalPoint ctrOK="+ctrOK+",ctr3R="+ctr3R+",swMultiRon3Next="+swMultiRon3Next);//~vakiR~
         if ((ctrOK+ctr3R)==3 && swMultiRon3Next)    //for also by eswnSeq//~0107I~
         {                                                          //~0107I~
         	setTitle(Utils.getStr(R.string.Info_MultiRon3Drawn));  //~0107I~
@@ -1322,30 +1330,30 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         }                                                          //~9228I~
         if (reachctr==0)                                           //~9228I~
         	llllReachers.setVisibility(View.GONE);                 //~9228I~
-        else                                                       //+vaj7R~
-        	chkFuritenReach(tvFuritenReach);                       //+vaj7R~
+        else                                                       //~vaj7R~
+        	chkFuritenReach(tvFuritenReach);                       //~vaj7R~
     }                                                              //~9228I~
-    //******************************************                   //+vaj7R~
-    public static void chkFuritenReach(TextView PtvFuriten)        //+vaj7R~
-    {                                                              //+vaj7R~
-        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach");   //+vaj7R~
-        String msg="";                                             //+vaj7R~
-        for (int player=0;player<PLAYERS;player++)                 //+vaj7R~
-        {                                                          //+vaj7R~
-        	if (AG.aPlayers.getReachStatus(player)!=REACH_DONE)    //+vaj7R~
-            	continue;                                          //+vaj7R~
-	        int eswn=AG.aAccounts.playerToEswn(player);            //+vaj7R~
-            int callStatus=AG.aRoundStat.RSP[eswn].callStatus;     //+vaj7R~
-            if ((callStatus & CALLSTAT_REACH_ERRFURITEN)!=0)       //+vaj7R~
-            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReach);//+vaj7R~
-            else                                                   //+vaj7R~
-            if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)!=0)    //+vaj7R~
-            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReachAfter);//+vaj7R~
-        }                                                          //+vaj7R~
-        if (!msg.equals(""))                                       //+vaj7R~
-        	PtvFuriten.setText(msg);                               //+vaj7R~
-        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach msg="+msg);//+vaj7R~
-    }                                                              //+vaj7R~
+    //******************************************                   //~vaj7R~
+    public static void chkFuritenReach(TextView PtvFuriten)        //~vaj7R~
+    {                                                              //~vaj7R~
+        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach");   //~vaj7R~
+        String msg="";                                             //~vaj7R~
+        for (int player=0;player<PLAYERS;player++)                 //~vaj7R~
+        {                                                          //~vaj7R~
+        	if (AG.aPlayers.getReachStatus(player)!=REACH_DONE)    //~vaj7R~
+            	continue;                                          //~vaj7R~
+	        int eswn=AG.aAccounts.playerToEswn(player);            //~vaj7R~
+            int callStatus=AG.aRoundStat.RSP[eswn].callStatus;     //~vaj7R~
+            if ((callStatus & CALLSTAT_REACH_ERRFURITEN)!=0)       //~vaj7R~
+            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReach);//~vaj7R~
+            else                                                   //~vaj7R~
+            if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)!=0)    //~vaj7R~
+            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReachAfter);//~vaj7R~
+        }                                                          //~vaj7R~
+        if (!msg.equals(""))                                       //~vaj7R~
+        	PtvFuriten.setText(msg);                               //~vaj7R~
+        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach msg="+msg);//~vaj7R~
+    }                                                              //~vaj7R~
 //    //******************************************                   //~9228I~//~9315R~
 //    private boolean updateCompType(int PviewID,int Ppos)          //~9228I~//~9315R~
 //    {                                                            //~9315R~
@@ -2181,13 +2189,13 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     @Override                                                      //~v@@@I~
     public void onDismissDialog()                                  //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("CompleteDlg.onDismissDialog");               //~v@@@I~//~9225R~
+        if (Dump.Y) Dump.println("CompleteDlg.onDismissDialog this="+this+",AG.aCompleteDlg="+AG.aCompleteDlg);               //~v@@@I~//~9225R~//~vakiR~
         AG.aCompleteDlg=null;                                      //~v@@@I~//~9316R~
     }                                                              //~v@@@I~
     //*******************************************************      //~9316I~
     public void dismissDlg()                                       //~9316I~
     {                                                              //~9316I~
-        if (Dump.Y) Dump.println("CompleteDlg.dismissDlg");        //~9316I~
+        if (Dump.Y) Dump.println("CompleteDlg.dismissDialog this="+this+",AG.aCompleteDlg="+AG.aCompleteDlg);//~vakiI~
 //      AG.aCompleteDlg=null;                                      //~9316R~
         dismiss();                                                 //~9316I~
     }                                                              //~9316I~
@@ -2251,7 +2259,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     //******************************************                   //~9316I~
     public void onClickTotal()                                     //~9316I~
     {                                                              //~9316I~
-        if (Dump.Y) Dump.println("CompleteDlg.onClickTotal");      //~9316I~
+        if (Dump.Y) Dump.println("CompleteDlg.onClickTotal swDrawn3R="+swDrawn3R);      //~9316I~//~vakiR~
 //      UView.showToast("CalcTotal");                              //~9316R~
         if (swDrawn3R)                                             //~9B29I~
         {                                                          //~9B29I~
@@ -3012,7 +3020,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
         	return;                                                //~0218I~
         if (Utils.isShowingDialogFragment(AG.aCompleteDlg))        //~0303I~
         {                                                          //~0303I~
-        	if (Dump.Y) Dump.println("CompleteDlg.showResult dismsiss by dup");//~0303I~
+        	if (Dump.Y) Dump.println("CompleteDlg.showResult @@@@ dismiss by dup");//~0303I~//~vakiR~
 		    AG.aCompleteDlg.dismissDlg();                          //~0303I~
         }                                                          //~0303I~
 //      if (AG.aCompleteDlg==null)                                 //~9227I~//~0303R~

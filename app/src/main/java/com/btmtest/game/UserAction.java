@@ -1,5 +1,6 @@
-//*CID://+vaj7R~: update#= 798;                                    //~vaj7R~
+//*CID://+vakER~: update#= 799;                                    //+vakER~
 //**********************************************************************//~v101I~
+//2022/03/15 vakE (Bug) take button at kan cause not your turn; by option of take btn for robot may faile but remains action current.//+vakEI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2022/01/19 vaj3 Gmsg:Reach should be show at discard             //~vaj3I~
 //2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//~vaceI~
@@ -241,16 +242,16 @@ public class UserAction       //~v@@@R~
         if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",additional2="+Padditional2+",str="+str);//~v@@@R~
         return str;                                                //~v@@@I~
     }                                                              //~v@@@I~
-	//*************************************************************************//+vaj7I~
-	//*player on msg data is eswn of the player                    //+vaj7I~
-	//*************************************************************************//+vaj7I~
-    public  static String makeMsgDataToClient(int Pplayer,TileData Ptd,int Padditional,int Padditional2,String Pmore)//+vaj7I~
-    {                                                              //+vaj7I~
-        String str=makeMsgDataToClient(Pplayer,Ptd,Padditional)+MSG_SEPAPP2+Padditional2+MSG_SEPAPP2+Pmore;//+vaj7I~
-        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",additional2="+Padditional2+",str="+str);//+vaj7I~
-        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient with additional 1/2 and more rc="+str);//+vaj7I~
-        return str;                                                //+vaj7I~
-    }                                                              //+vaj7I~
+	//*************************************************************************//~vaj7I~
+	//*player on msg data is eswn of the player                    //~vaj7I~
+	//*************************************************************************//~vaj7I~
+    public  static String makeMsgDataToClient(int Pplayer,TileData Ptd,int Padditional,int Padditional2,String Pmore)//~vaj7I~
+    {                                                              //~vaj7I~
+        String str=makeMsgDataToClient(Pplayer,Ptd,Padditional)+MSG_SEPAPP2+Padditional2+MSG_SEPAPP2+Pmore;//~vaj7I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient player="+Pplayer+",additional2="+Padditional2+",str="+str);//~vaj7I~
+        if (Dump.Y) Dump.println("UserAction.makeMsgDataToClient with additional 1/2 and more rc="+str);//~vaj7I~
+        return str;                                                //~vaj7I~
+    }                                                              //~vaj7I~
 //    //*************************************************************************//~v@@@R~
 //    //*msgdata to server,data after eswn(eswn added at sendToServer()~v@@@R~//~v@@@R~
 //    //*************************************************************************//~v@@@R~
@@ -917,13 +918,15 @@ public class UserAction       //~v@@@R~
         }                                                          //~9629I~
         if (playerTakeDiscardRobot>=0)                                   //~va66I~
         {                                                          //~va66I~
-            if (!players.isYourTurn(PactionID,playerTakeDiscardRobot,prevActionID))//~va66I~
+//          if (!players.isYourTurn(PactionID,playerTakeDiscardRobot,prevActionID))//~va66I~//+vakER~
+            if (!players.isYourTurnActionInfo(PactionID,playerTakeDiscardRobot,prevActionID))//+vakEI~
             {                                                      //~va66I~
                 return false;                                      //~va66I~
             }                                                      //~va66I~
         }                                                          //~va66I~
         else                                                       //~va66I~
-        if (!players.isYourTurn(PactionID,Pplayer,prevActionID)) //~v@@@R~//~v@@7R~
+//      if (!players.isYourTurn(PactionID,Pplayer,prevActionID)) //~v@@@R~//~v@@7R~//+vakER~
+        if (!players.isYourTurnActionInfo(PactionID,Pplayer,prevActionID))//+vakEI~
         {                                                        //~v@@@R~//~v@@7R~
             return false;                                        //~v@@@R~//~v@@7R~
         }                                                        //~v@@@R~//~v@@7R~

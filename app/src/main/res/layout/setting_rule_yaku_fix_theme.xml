@@ -14,8 +14,9 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_YakuFix"
                      android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
-            android:background="@color/getvalue"
+    			android:background="@color/descriptiononly"
         />
+        <!--android:background="@color/getvalue"-->
         <RadioGroup
             android:orientation="horizontal"
             android:layout_height="wrap_content"
@@ -41,6 +42,35 @@
                 android:layout_width="wrap_content"
             />
         </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+                android:text="@string/Desc_YakuFix"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+                android:text="@string/Label_MultiWait"
+                     android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
+    			android:background="@color/descriptiononly"
+        />
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+                android:text="@string/Desc_MultiWait"
+        />
     </LinearLayout>
     <LinearLayout
          android:layout_width="wrap_content"
@@ -93,6 +123,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
     >
         <CheckBox
             android:id="@+id/cbYakuFixMultiwaitOK"
@@ -108,16 +139,5 @@
             android:text="@string/Label_YakuFixMultiwaitDrawOK"
         />
 -->
-    </LinearLayout>
-    <LinearLayout
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-    >
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-                android:text="@string/Desc_YakuFix"
-        />
     </LinearLayout>
 </LinearLayout>

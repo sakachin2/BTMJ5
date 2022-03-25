@@ -1,8 +1,9 @@
-//*CID://+vag0R~: update#= 818;                                    //~vag0R~
+//*CID://+vakhR~: update#= 822;                                    //~vakhR~
 //**********************************************************************//~v101I~
+//2022/02/20 vakh set kataagari err different from fix err         //~vakhI~
 //2021/11/06 vag0 (Bug)Kan call is not shanten up                  //~vag0I~
 //2021/11/06 vafz (Bug of evaluate Pon/Chii ronvalue);add Pair for earth for the pon/chii
-//2021/11/01 vafi (Bug)number of pauir was not top; it cause of failure chanta,straight,3sameseq...//~vafiI~
+//2021/11/01 vafi (Bug)number of pair was not top; it cause of failure chanta,straight,3sameseq...//~vafiI~//~vag0R~
 //2021/06/12 va94 (Bug)point calc ron at take same should be *2    //~va94I~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/26 va8r (Bug)Fu is 110 for pinfu tsumo under punfu-tsumo=yes//~va8rI~
@@ -48,10 +49,12 @@ public class UARonData                                             //~va11R~
     private UARonDataTree UARDT;                                   //~va11I~
     private int[] intRankS,pointS;                               //~va11I~
     private int[] intRankFixErrS;                                  //~va91I~
+    private int[] intRankFixErrSMultiWait;                         //~vakhI~
     private boolean swTaken;                                       //~va94I~
     public UAPair UAP;                                             //~va11R~
     public int idxPatternMax,pointMax,intRankMax,ctrPatternMix;           //~va11I~
     public int intRankFixErrMax;                                    //~va91I~
+    public int intRankFixErrMaxMultiWait;                          //~vakhI~
     public Rank longRankMax;                                       //~va11I~
     public Rank longRankFixErrMax;                                 //~va91R~
     public Rank[] longRankS;                                       //~va11I~
@@ -86,6 +89,7 @@ public class UARonData                                             //~va11R~
 //  	UARDT.aUARank.chkYakuStandard(this,uard,dupCtr,dupCtrAll); //~va11I~
     	intRankS=UARDT.aUARank.getRankStandard(UARDT,this);       //~va11I~
     	intRankFixErrS=UARDT.aUARank.intRankFixErrS;               //~va91I~
+    	intRankFixErrSMultiWait=UARDT.aUARank.intRankFixErrSMultiWait;//~vakhI~
     	longRankS=UARDT.aUARank.longRankS;                         //~va11I~
     	longRankFixErrS=UARDT.aUARank.longRankFixErrS;             //~va91R~
         pointS=getPoint();                                         //~va11R~
@@ -390,7 +394,7 @@ public class UARonData                                             //~va11R~
     //******************************************                   //~va11I~
     private int getAmmount(int PrankBase)                          //~va11R~
     {                                                              //~va11I~
-        if (Dump.Y) Dump.println("UARonData.getAmmount rankBase="+PrankBase+",ctrPatternMax="+ctrPatternMix);//~va11R~//+vag0R~
+        if (Dump.Y) Dump.println("UARonData.getAmmount rankBase="+PrankBase+",ctrPatternMax="+ctrPatternMix);//~va11R~//~vag0R~
         int amtMax=0;                                              //~va11I~
         int rankMax=0;                                             //~va11I~
         for (int ii=0;ii<ctrPatternMix;ii++)                       //~va11I~
@@ -400,7 +404,7 @@ public class UARonData                                             //~va11R~
 	            pt=Utils.roundUp(pt,10);                           //~va11R~
 	    	intRankS[ii]+=PrankBase;                               //~va11R~
 	    	int rank=intRankS[ii];                                 //~va11I~
-        	if (Dump.Y) Dump.println("UARonData.getAmmount ii="+ii+",rank="+rank);//~va11I~//+vag0R~
+        	if (Dump.Y) Dump.println("UARonData.getAmmount ii="+ii+",rank="+rank);//~va11I~//~vag0R~
 //          if (rank>=MIN_RANK_YAKUMAN)                            //~va11R~
     		if (rank>=MIN_RANK_YAKUMAN && RuleSettingYaku.isYakumanByRank())//~va11I~
             {                                                      //~va11I~
@@ -428,9 +432,10 @@ public class UARonData                                             //~va11R~
         pointMax=pointS[Pidx];                                     //~va11I~
         intRankMax=intRankS[Pidx];                                 //~va11R~
         intRankFixErrMax=intRankFixErrS[Pidx];                     //~va91I~
+        intRankFixErrMaxMultiWait=intRankFixErrSMultiWait[Pidx];   //~vakhI~
         longRankMax=longRankS[Pidx];                               //~va11I~
         longRankFixErrMax=longRankFixErrS[Pidx];                   //~va91R~
-        if (Dump.Y) Dump.println("UARonData.setMax idxPatternMax="+Pidx+",pointMax="+pointMax+",intRankMax="+intRankMax+",intRankFixErrMax="+intRankFixErrMax+",longRankMax="+Rank.toString(longRankMax)+"="+Rank.toStringName(longRankMax)+",longRankFixErr="+Rank.toString(longRankFixErrMax));//~va11R~//~va91R~
+        if (Dump.Y) Dump.println("UARonData.setMax idxPatternMax="+Pidx+",pointMax="+pointMax+",intRankMax="+intRankMax+",intRankFixErrMax="+intRankFixErrMax+",intRankFixErrMaxMultiWait="+intRankFixErrMaxMultiWait+",longRankMax="+Rank.toString(longRankMax)+"="+Rank.toStringName(longRankMax)+",longRankFixErr="+Rank.toString(longRankFixErrMax));//~va11R~//~va91R~//+vakhR~
     }                                                              //~va11I~
     //******************************************                   //~va11I~
     private int getAmmount(int Prank,int Ppoint)                   //~va11I~
