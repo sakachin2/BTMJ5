@@ -1,5 +1,7 @@
-//*CID://+1aj1R~:                             update#=  177;       //~1aj1R~
+//*CID://+vam9R~:                             update#=  185;       //+vam9R~
 //****************************************************************************//~v101I~
+//2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//+vam9I~
+//2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~vam3I~
 //1aj1 2021/08/14 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~1aj1I~
 //@004:20181103 remains constant "AjagoBT"                         //~@004I~
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
@@ -7,6 +9,7 @@
 
 package com.btmtest.BT;                                               //~1AedI~//~1A6aI~
 
+import com.btmtest.dialog.BTCDialog;
 import com.btmtest.utils.Dump;                                           //~1A6aR~
 
 import com.btmtest.R;
@@ -17,10 +20,13 @@ import com.btmtest.utils.Utils;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
-import android.os.Looper;                                          //+1aj1I~
+import android.os.Looper;                                          //~1aj1I~
+import android.annotation.TargetApi;                               //~vam3I~
                                                                    //~@003I~
 //import static com.btmtest.AG.*;                                  //~@003R~
 import java.lang.reflect.Method;
@@ -69,6 +75,7 @@ public class BTControl {                                           //~@@@@I~
 //  private Handler mHandler;                                      //~@@@@R~//~@003R~
     private BTHandler mHandler;                                    //~@003I~
     private BluetoothSocket mBTSocket;                             //~@@@@R~
+    private BluetoothManager aBluetoothManager;                    //~vam3I~
  
 //*************************************************************************//~@@@@I~
     public BTControl()                                             //~@@@@I~//~@@@2R~
@@ -86,7 +93,8 @@ public class BTControl {                                           //~@@@@I~
         if (mBluetoothAdapter != null)                             //~@@@@I~
         	return true;                                           //~@@@@I~
         // Get local Bluetooth adapter                             //~@@@@R~
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();  //~@@@@I~
+//      mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();  //~@@@@I~//~vam3R~
+        mBluetoothAdapter = getDefaultAdapter();                   //~vam3I~
                                                                    //~@@@@I~
         // If the adapter is null, then Bluetooth is not supported //~@@@@I~
         if (mBluetoothAdapter == null) {                           //~@@@@I~
@@ -119,6 +127,7 @@ public class BTControl {                                           //~@@@@I~
     {                                                              //~v101I~
     	boolean rc=true;                                           //~v101I~
         if(Dump.Y) Dump.println("BTControl.BTEnable");                //~v101I~//~1A6aR~
+		if (Dump.Y) Dump.println("BTControl.BTEnable bta="+mBluetoothAdapter+",address="+mBluetoothAdapter.getAddress()+",name="+mBluetoothAdapter.getName()+",status="+mBluetoothAdapter.getState());//~vam3I~
         if (!mBluetoothAdapter.isEnabled())                        //~v101I~
         {                                                          //~v101I~
             startBTActivity(BTA_ENABLE);                           //~v101I~
@@ -247,10 +256,10 @@ public class BTControl {                                           //~@@@@I~
     } //BTHandler Class                                            //~@@@@M~
 
 //*************************************************************************//~@@@@I~
-//*from Ahsv                                                       //~@@@@R~
+//*from BTI.activityResult<--MainActivity.onActivityResult         //~vam3R~
 //*************************************************************************//~@@@@I~
     public void BTActivityResult(int requestCode, int resultCode, Intent data) {//~@@@@R~
-        if(Dump.Y) Dump.println("onActivityResult reqcode=" +requestCode+ ",resultcode="+ resultCode); //~@@@@R~//~1A60R~
+        if(Dump.Y) Dump.println("BTControl.onActivityResult reqcode=" +requestCode+ ",resultcode="+ resultCode); //~@@@@R~//~1A60R~//+vam9R~
         switch (requestCode) {
 //      case AG.ACTIVITY_REQUEST_ENABLE_BT:                        //~1A6aI~//~@003R~
         case REQUEST_ENABLE_BT:                                    //~@003I~
@@ -262,14 +271,21 @@ public class BTControl {                                           //~@@@@I~
                 // User did not enable Bluetooth or an error occured
                 if (Dump.Y) Dump.println("BT not enabled");        //~@@@@R~
 	            UView.showToastLong(R.string.bt_not_enabled_leaving);  //~v107I~//~@@@@R~//~1A6aR~
+                dismissDialog();                                   //+vam9I~
             }
             break;                                                 //~9A26I~
         }
     }
-
+//*************************************************************************//+vam9I~
+	private void dismissDialog()                                   //+vam9R~
+	{                                                              //+vam9I~
+        if(Dump.Y) Dump.println("BTControl.dismissDialog");        //+vam9I~
+        BTCDialog.closeDialog();                                   //+vam9I~
+	}                                                              //+vam9I~
 //*************************************************************************//~@@@@I~
     public boolean startBTActivity(int Pfuncid)                    //~@@@@I~
     {                                                              //~@@@@I~
+        if(Dump.Y) Dump.println("BTControl.startBTActivity funcid="+Pfuncid);//+vam9I~
         Intent intent=null;                                        //~@@@@R~
         switch (Pfuncid) {                                         //~@@@@I~
         case BTA_ENABLE:                                           //~@@@@I~
@@ -517,4 +533,32 @@ public class BTControl {                                           //~@@@@I~
 		if (Dump.Y) Dump.println("BTControl:onDisconnectedIP dev="+Pdevname+",swServer="+PswServer);//~0123I~
     	mChatService.onDisconnectedIP(Pdevname,PswServer);         //~0123I~
     }                                                              //~0123I~
+//********************************************************************//~vam3I~
+    public static BluetoothAdapter getDefaultAdapter()             //~vam3I~
+    {                                                              //~vam3I~
+		if (Dump.Y) Dump.println("BTControl:getDefaultAdapter apiLevel="+AG.osVersion);//~vam3I~
+    	BluetoothAdapter bta;                                      //~vam3I~
+        if (AG.osVersion>= 31) //Android-12                        //~vam3I~
+		    bta=getDefaultAdapter_from31();                        //~vam3M~
+        else                                                       //~vam3I~
+		    bta=getDefaultAdapter_upto30();                        //~vam3M~
+        return bta;                                                //~vam3I~
+    }                                                              //~vam3I~
+    @SuppressWarnings("deprecation")                               //~1aj0I~//~vam3I~
+    private static BluetoothAdapter getDefaultAdapter_upto30()     //~vam3I~
+    {                                                              //~vam3I~
+    	BluetoothAdapter bta=BluetoothAdapter.getDefaultAdapter(); //~vam3I~
+		if (Dump.Y) Dump.println("BTControl:getDefaultAdapter_upto30 bta="+bta);//~vam3I~
+        return bta;                                                //~vam3I~
+    }                                                              //~vam3I~
+    @TargetApi(31)                                                 //~vam3I~
+    private static BluetoothAdapter getDefaultAdapter_from31()     //~vam3I~
+    {                                                              //~vam3I~
+    	BTControl BTC=AG.aBTI.mBTC;                                          //~vam3I~
+    	if (BTC.aBluetoothManager==null)                           //~vam3R~
+	        BTC.aBluetoothManager=(BluetoothManager)AG.context.getSystemService(Context.BLUETOOTH_SERVICE);//~vam3R~
+    	BluetoothAdapter bta= BTC.aBluetoothManager.getAdapter();      //~vam3R~
+		if (Dump.Y) Dump.println("BTControl:getDefaultAdapter_from31 bta="+bta+",address="+bta.getAddress()+",name="+bta.getName()+",status="+bta.getState());//~vam3R~
+        return bta;                                                //~vam3I~
+    }                                                              //~vam3I~
 }

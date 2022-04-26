@@ -1,4 +1,4 @@
-//*CID://+vah0R~: update#= 829;                                    //~vah0R~
+//*CID://+vah0R~: update#= 835;                                    //~vah0R~
 //**********************************************************************//~v101I~
 //2021/11/19 vah1 complete vagv(delete from main/java)             //~vah0I~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vaauI~
@@ -235,17 +235,28 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         int type,num;                                              //~0A12I~
         type=TestOption.testDoraUpType;                            //~0A12I~
         num=TestOption.testDoraUpNumber;                           //~0A12I~
-        if (type>=1&&type<=4 && num>=1 && num<=9)                  //~0A12I~//~vaauR~
+        if (type>=1&&type<=4 && num>=0 && num<=9)                  //~0A12I~//~vaauR~//~vah0R~
+          if (num==0 && type<=3)                                   //~vah0I~
+        	Pout[DORA_TDPOS]=new TileData(type-1,4,true);          //~vah0R~
+          else                                                     //~vah0I~
         	Pout[DORA_TDPOS]=new TileData(type-1,num-1);               //~0A12R~//~vaauR~
         type=TestOption.testDoraDownType;                          //~0A12I~
         num=TestOption.testDoraDownNumber;                         //~0A12I~
-        if (type>=1&&type<=4 && num>=1 && num<=9)                  //~0A12I~//~vaauR~
+        if (type>=1&&type<=4 && num>=0 && num<=9)                  //~0A12I~//~vaauR~//~vah0R~
+          if (num==0 && type<=3)                                   //~vah0R~
+        	Pout[DORA_TDPOS-1]=new TileData(type-1,4,true);        //~vah0R~
+          else                                                     //~vah0I~
         	Pout[DORA_TDPOS-1]=new TileData(type-1,num-1);             //~0A12R~//~vaauR~
                                                                    //~0A12I~
         type=TestOption.testKanUpType;                             //~0A12I~
         num=TestOption.testKanUpNumber;                            //~0A12R~
-        if (type>=1&&type<=4 && num>=1 && num<=9)                  //~0A12I~//~vaauR~
+        if (type>=1&&type<=4 && num>=0 && num<=9)                  //~0A12I~//~vaauR~//~vah0R~
+        {                                                          //~vah0I~
+          if (num==0 && type<=3)                                   //~vah0I~
+        	Pout[DORA_TDPOS-2]=new TileData(type-1,4,true);        //+vah0R~
+          else                                                     //~vah0I~
         	Pout[DORA_TDPOS-2]=new TileData(type-1,num-1);             //~0A12R~//~vaauR~
+        }                                                          //~vah0I~
         type=TestOption.testKanDownType;                           //~0A12I~
         num=TestOption.testKanDownNumber;                          //~0A12R~
         if (type>=1&&type<=4 && num>=1 && num<=9)                  //~0A12I~//~vaauR~
@@ -253,7 +264,10 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
                                                                    //~0A12I~
         type=TestOption.testKanUpType2;                            //~0A12I~
         num=TestOption.testKanUpNumber2;                           //~0A12I~
-        if (type>=1&&type<=4 && num>=1 && num<=9)                  //~0A12I~//~vaauR~
+        if (type>=1&&type<=4 && num>=0 && num<=9)                  //~0A12I~//~vaauR~//~vah0R~
+          if (num==0 && type<=3)                                   //~vah0I~
+        	Pout[DORA_TDPOS-4]=new TileData(type-1,4,true);        //+vah0R~
+          else                                                     //~vah0I~
         	Pout[DORA_TDPOS-4]=new TileData(type-1,num-1);             //~0A12I~//~vaauR~
         type=TestOption.testKanDownType2;                          //~0A12I~
         num=TestOption.testKanDownNumber2;                         //~0A12I~
@@ -1570,7 +1584,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
             outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
           }                                                        //~vah0I~
           else                                                     //~vah0I~
-          if (false)                                               //+vah0R~
+          if (false)                                               //~vah0R~
           {        //2ron                                          //~vah0I~
         	itsDeal=new int[][]{                                   //~vah0I~
             						{ 0, 1, 2,  3, 4, 5,  6, 7, 8,  9,10, 11},//~vah0I~

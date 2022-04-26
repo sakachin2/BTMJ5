@@ -106,6 +106,43 @@
                 android:background="@color/separater"
     />
     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <CheckBox
+            android:id="@+id/cbPlayAloneNotify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_PlayAloneNotify"
+            android:gravity="center_vertical"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Desc_PlayAloneNotify"
+            android:gravity="center_vertical"
+        />
+    </LinearLayout>
+    <CheckBox
+        android:id="@+id/cbAllowRobotAllButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Label_AllowRobotAllButton"
+        android:gravity="center_vertical"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"

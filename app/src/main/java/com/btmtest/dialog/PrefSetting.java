@@ -1,6 +1,7 @@
-//*CID://+vai0R~:                             update#=  541;       //~vai0R~
+//*CID://+vamuR~:                             update#=  545;       //~vamuR~
 //*****************************************************************//~v101I~
-//2021/12/21 vai0 (Bug)Id of NoBGM was shown by Japanese on english env.//+vai0I~
+//2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
+//2021/12/21 vai0 (Bug)Id of NoBGM was shown by Japanese on english env.//~vai0I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //1ak2 2021/09/04 access external audio file                       //~1ak2I~
@@ -125,6 +126,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private String[] strsUserBGMTitle=new String[MAX_USERBGM];     //~vae9I~
     private TextView[] tvsUserBGMTitle=new TextView[MAX_USERBGM];  //~vae9M~
     private boolean swError;                                       //~vae9I~
+    private UCheckBox cbAllowRobotAllButton;                       //~vamuI~
+    private UCheckBox cbPlayAloneNotify;                           //~vamuI~
     //******************************************                   //~v@@@I~
     //******************************************                   //~v@@@M~
 	public PrefSetting()                                           //~v@@@R~
@@ -211,6 +214,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      	tvsUserBGMTitle[ii].setText(strsUserBGMTitle[ii]);         //~vae9I~//~vai0R~
         	tvsUserBGMTitle[ii].setText(getDisplayNameUserBGM(strsUserBGMTitle[ii]));//~vai0I~
         }                                                          //~vae9I~
+        cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//~vamuI~
+        cbPlayAloneNotify=new UCheckBox(PView,R.id.cbPlayAloneNotify);//~vamuI~
     }                                                              //~v@@@I~
 	//*********************************************************    //~vai0I~
     private String getDisplayNameUserBGM(String Ptitle)            //~vai0I~
@@ -367,6 +372,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 //      	tvsUserBGMTitle[ii].setText(strsUserBGMTitle[ii]); //~vae9R~//~vai0R~
         	tvsUserBGMTitle[ii].setText(getDisplayNameUserBGM(strsUserBGMTitle[ii]));//~vai0I~
         }                                                          //~vae9I~
+        cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~vamuI~
+        cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyPS(PSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//~vamuI~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
     @Override //SettingDlg                                         //~v@@@I~
@@ -398,6 +405,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         changedBtn+=updateProp(getKeyPS(PSID_LEFTY_PORTRAIT),cbLeftyPortrait.getStateInt());//~vad1I~
         changedBtn+=updateProp(getKeyPS(PSID_LEFTY_LANDSCAPE),cbLeftyLandscape.getStateInt());//~vad1I~
         changed+=updateProp(getKeyPS(PSID_BEEPONLY),cbBeepOnly.getStateInt());//~v@@@I~
+        changed+=updateProp(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//~vamuI~
+        changed+=updateProp(getKeyPS(PSID_PLAY_ALONE_NOTIFY),cbPlayAloneNotify.getStateInt());//~vamuI~
                                                                    //~v@@@I~
         changedSound+=updateProp(getKeyPS(PSID_NOSOUND),cbNoSound.getStateInt());//~v@@@M~
         changedSound+=updateProp(getKeyPS(PSID_VOLUME),sbVolume.getVal());//~v@@@R~
@@ -895,4 +904,21 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("PrefSetting.getSoundIDUser playseq="+PplaySeq+",rc="+rc+",selection="+selection);//~vae9I~
         return rc;                                                 //~vae9I~
     }                                                              //~vae9I~
+//*************************************************************    //~vamuI~
+    //**************************************                       //~vamuI~
+	public static boolean isAllowRobotAllButton()                  //~vamuI~
+    {                                                              //~vamuI~
+    	int def=0;	//false                                        //~vamuI~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//+vamuR~
+        if (Dump.Y) Dump.println("PrefSetting.isAllowRobotAllButton rc="+rc);//~vamuI~
+        return rc;                                                 //~vamuI~
+    }                                                              //~vamuI~
+    //**************************************                       //~vamuI~
+	public static boolean isPlayAloneNotify()                      //~vamuI~
+    {                                                              //~vamuI~
+    	int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~vamuR~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_PLAY_ALONE_NOTIFY),def)!=0;//+vamuR~
+        if (Dump.Y) Dump.println("PrefSetting.isPlayAloneNotify rc="+rc);//~vamuI~
+        return rc;                                                 //~vamuI~
+    }                                                              //~vamuI~
 }//class                                                           //~v@@@R~

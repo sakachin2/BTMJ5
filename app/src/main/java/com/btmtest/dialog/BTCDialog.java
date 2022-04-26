@@ -1,7 +1,9 @@
-//*CID://+vac5R~:                             update#=  510;       //~vac5R~
+//*CID://+vam9R~:                             update#=  512;       //+vam9R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
+//2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//+vam9I~
+//2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/12 va69 (BUG)BTCDialog;disconnect button is disable at connection failed even another connection is active//~va69I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -158,6 +160,11 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     //******************************************                   //~v@@@I~
     public static BTCDialog newInstance(int PmemberRole)           //~v@@@R~
     {                                                              //~v@@@I~
+        if (!AG.swGrantedBluetooth)                                //~vam8I~
+        {                                                          //~vam8I~
+            UView.showToastLong(R.string.failedBluetoothPermission);//~vam8I~
+        	return null;                                           //~vam8I~
+        }                                                          //~vam8I~
         if (isShowing())                                           //~9709I~
         {	                                                       //~9709I~
         	if (Dump.Y) Dump.println("BTCDialog:newInstance Dup"); //~9709I~
@@ -1103,7 +1110,8 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     public static void closeDialog()                               //~1AbvI~//~1AbuI~
     {                                                              //~1AbvI~//~1AbuI~
     	if (Dump.Y) Dump.println("BTCDialog:closeDialog");//~1AbvI~//~1AbuI~//~v@@@R~
-	    if (!isShowing())                                          //~v@@@I~
+//      if (!isShowing())                                          //~v@@@I~//+vam9R~
+        if (isShowing())                                           //+vam9I~
         {                                                          //~1AbvI~//~1AbuI~
 	    	if (Dump.Y) Dump.println("BTCDialog:closeDialog dismiss");//~1AbvI~//~1AbuI~//~v@@@R~
 		    AG.aBTCDialog.waitingDialog=0;               //~1AbvI~//~1AbuI~//~v@@@R~

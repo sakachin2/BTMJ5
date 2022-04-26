@@ -1,5 +1,6 @@
-//*CID://+vajkR~: update#= 655;                                    //~vajkR~
+//*CID://+vamtR~: update#= 656;                                    //+vamtR~
 //**********************************************************************//~v101I~
+//2022/04/20 vamt hidden dora was cut at clearRiver when EndOfHand is fixed at Final Round//+vamtI~
 //2022/01/31 vajk (Bug)invalid nameplate color on client(pos on msg:GCM_ENDGAME_ACCOUNT is invalid, then score received is invalid)//~vajkI~
 //2021/12/31 vaij Nameplate Name;justify center                    //~vaijI~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
@@ -254,6 +255,7 @@ public class NamePlate                                             //~v@@@R~
         	showPlate(newPosition); //name and score               //~0324R~
         else                                                       //~0324I~
 		    showScore();                                           //~0324I~
+        AG.aStock.clearHiddenDora();                                //+vamtI~
     }                                                              //~0324I~
     //*********************************************************    //~9317I~
     public void showScore()                            //~9317I~   //~9318R~
@@ -341,7 +343,7 @@ public class NamePlate                                             //~v@@@R~
 	            bg=TEXT_COLOR_SCORE_BG;                            //~9823I~
             else                                                   //~9823I~
 //          if (score[idx]>=scoreBase)                             //~9823I~//~vajkR~
-            if (score[idx]==scorePlus)                             //+vajkR~
+            if (score[idx]==scorePlus)                             //~vajkR~
 	            bg=TEXT_COLOR_SCORE_BG_UNDER_PLUS;                 //~9823I~
             else                                                   //~9823I~
 	            bg=TEXT_COLOR_SCORE_BG_UNDER_BASE;                 //~9823I~

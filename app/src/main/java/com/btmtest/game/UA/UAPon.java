@@ -1,5 +1,6 @@
-//*CID://+vah0R~: update#= 617;                                    //~vah0R~
+//*CID://+vamhR~: update#= 623;                                    //~vamhR~
 //**********************************************************************//~v101I~
+//2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2021/11/18 vah0 delete unused UnitTest data statement            //~vah0I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.UserAction.*;//~v@@@I~
 import static com.btmtest.BT.enums.MsgIDConst.*;                   //~v@@@I~
                                                                    //~v@@@I~
@@ -98,11 +100,11 @@ public class UAPon                                                 //~v@@@R~
 //      TileData[] tds=Accounts.getHands();                        //~v@@@I~//~v@@5R~
         TileData[] tds=AG.aHands.getHands(PLAYER_YOU);            //~v@@5I~
 	    getTouchSelection();                                       //~9C05I~
-//        if ((TestOption.option & TestOption.TO_PON_TEST)!=0) //TODO           //~v@@@I~//~9C04R~//~vah0R~
-//        {                                                          //~9C04R~//~vah0R~
-//            rc=selectInfoTest(tds,td);                             //~v@@@I~//~9C04R~//~vah0R~
-//        }                                                          //~9C04R~//~vah0R~
-//        else                                                       //~v@@@I~//~9C04R~//~vah0R~
+        if ((TestOption.option & TestOption.TO_PON_TEST)!=0)           //~v@@@I~//~9C04R~//~vah0R~//+vamhR~
+        {                                                          //~9C04R~//~vah0R~//+vamhR~
+            rc=selectInfoTest(tds,td);                             //~v@@@I~//~9C04R~//~vah0R~//+vamhR~
+        }                                                          //~9C04R~//~vah0R~//+vamhR~
+        else                                                       //~v@@@I~//~9C04R~//~vah0R~//+vamhR~
         	rc=selectInfo(tds,td);                                 //~v@@@R~
         if (Dump.Y) Dump.println("UAPon.selectInfo rc="+rc);       //~9C05I~
         if (rc!=-1) //could not make pair                          //~9B24I~
@@ -322,6 +324,7 @@ public class UAPon                                                 //~v@@@R~
 	    	hands.takePon(Pplayer);  //draw Hands                  //~v@@@R~
         int playerDiscarded=PLS.getLastDiscardedPlayer();          //~v@@@I~
         river.takePon(playerDiscarded);                                     //~v@@@R~
+        AG.aAnim.calledPonKanChii(TDF_PON,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,river.playerDiscarded,river.rectTileCalled,river.bmCalledOnRiver);//~vamhR~
 //      UA.UAT.setTimeout(Pplayer,GCM_PON);	//autodiscard timeout  //~v@@6R~
         Robot r=null;                                              //~va60I~
       	if (PswServer)                                             //~va60I~
@@ -370,7 +373,7 @@ public class UAPon                                                 //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public  static String makeMsgDataToServer(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@R~//~v@@6R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UAPon.makeMsgDataToServer player="+Pplayer+",ctr="+Pctr+",tds="+TileData.toString(Ptds));//~v@@@R~//+vah0R~
+        if (Dump.Y) Dump.println("UAPon.makeMsgDataToServer player="+Pplayer+",ctr="+Pctr+",tds="+TileData.toString(Ptds));//~v@@@R~//~vah0R~
 //  	int eswn=AG.aAccounts.playerToEswn(Pplayer);               //~v@@@R~
         StringBuffer sb=new StringBuffer();                        //~v@@@I~
 //      sb.append(eswn+MSG_SEPAPP2);                               //~v@@@R~
@@ -385,7 +388,7 @@ public class UAPon                                                 //~v@@@R~
 	//*************************************************************************//~v@@@I~
     public  static String makeMsgDataToClient(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@I~//~v@@6R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UAPon.makeMsgDataToClient player="+Pplayer+",ctr="+Pctr+",tds="+TileData.toString(Ptds));//+vah0I~
+        if (Dump.Y) Dump.println("UAPon.makeMsgDataToClient player="+Pplayer+",ctr="+Pctr+",tds="+TileData.toString(Ptds));//~vah0I~
 		int eswn=Accounts.playerToEswn(Pplayer);                        //~v@@@I~
 //      String data=eswn+MSG_SEPAPP2+makeMsgDataToServer(Pplayer,Ptds,Pctr);//~v@@@I~//~v@@6R~
         String data=eswn+MSG_SEPAPP2+makeMsgDataToServer(Pplayer,Ptds,Pctr);//~v@@6R~
@@ -406,7 +409,7 @@ public class UAPon                                                 //~v@@@R~
         {                                                          //~v@@@I~
         	tds[ii]=new TileData(true/*swEswnToPlayer*/,PintParm,pos);                        //~v@@@I~
         }
-        if (Dump.Y) Dump.println("UAPon.getReceivedPair ctr="+PpairCtr+",tds="+TileData.toString(tds));//+vah0I~
+        if (Dump.Y) Dump.println("UAPon.getReceivedPair ctr="+PpairCtr+",tds="+TileData.toString(tds));//~vah0I~
         return tds;//~v@@@I~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
@@ -426,18 +429,18 @@ public class UAPon                                                 //~v@@@R~
         swSelectedMulti=AG.aHandsTouch.getSelectedMulti();         //~v@@6I~
         if (Dump.Y) Dump.println("UAPon.getTouchSelection swSelectMulti="+Arrays.toString(swSelectedMulti));//~v@@6I~
     }                                                              //~v@@6I~
-//    //*************************************************************************//~v@@@M~//~vah0R~
-//    //*Test TODO                                                   //~v@@@M~//~vah0R~
-//    //*************************************************************************//~v@@@M~//~vah0R~
-//    private int  selectInfoTest(TileData[] Ptds, TileData Ptd)     //~v@@@M~//~vah0R~
-//    {                                                              //~v@@@M~//~vah0R~
-//        if (Dump.Y) Dump.println("UAPon.selectInfoTest river td="+Ptd.toString());//~v@@@M~//~vah0R~
+    //*************************************************************************//~v@@@M~//~vah0R~//+vamhR~
+    //*for Test make pair with top 2 tile of Hands                 //+vamhR~
+    //*************************************************************************//~v@@@M~//~vah0R~//+vamhR~
+    private int  selectInfoTest(TileData[] Ptds, TileData Ptd)     //~v@@@M~//~vah0R~//+vamhR~
+    {                                                              //~v@@@M~//~vah0R~//+vamhR~
+        if (Dump.Y) Dump.println("UAPon.selectInfoTest river td="+Ptd);//~v@@@M~//~vah0R~//+vamhR~
 //        utPon();                                                   //~v@@@M~//~vah0R~
-//        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~//~vah0R~
-//        tds[0]=Ptds[0];                                            //~v@@@M~//~vah0R~
-//        tds[1]=Ptds[1];                                            //~v@@@M~//~vah0R~
-//        tdsPair=tds;                                               //~v@@@M~//~vah0R~
-//        int rc=0;                                                  //~9C05I~//~vah0R~
+        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~//~vah0R~//+vamhR~
+        tds[0]=Ptds[0];                                            //~v@@@M~//~vah0R~//+vamhR~
+        tds[1]=Ptds[1];                                            //~v@@@M~//~vah0R~//+vamhR~
+        tdsPair=tds;                                               //~v@@@M~//~vah0R~//+vamhR~
+        int rc=0;                                                  //~9C05I~//~vah0R~//+vamhR~
 //        if ((TestOption.option2 & TestOption.TO2_WAITSELECT_PON)!=0) //TODO//~9C05I~//~9C12R~//~vah0R~
 //        {                                                          //~9C05I~//~vah0R~
 ////          getTouchSelection();                                   //~9C05R~//~vah0R~
@@ -447,9 +450,9 @@ public class UAPon                                                 //~v@@@R~
 //            if (swSelectedMulti!=null && !swSelectedMulti[0])      //~9C05R~//~vah0R~
 //                rc=1;   //wait multi selecion                      //~9C05R~//~vah0R~
 //        }                                                          //~9C05I~//~vah0R~
-//        if (Dump.Y) Dump.println("UAPon.selectInfoTest rc="+rc+",testoption2="+Integer.toHexString(TestOption.option2));//~9C05I~//~vah0R~
-//        return rc;                                                  //~v@@@M~//~9C05R~//~vah0R~
-//     }                                                             //~v@@@M~//~vah0R~
+        if (Dump.Y) Dump.println("UAPon.selectInfoTest rc="+rc+",tdsPair="+TileData.toString(tdsPair));//+vamhR~
+        return rc;                                                  //~v@@@M~//~9C05R~//~vah0R~//+vamhR~
+     }                                                             //~v@@@M~//~vah0R~//+vamhR~
 //    //*************************************************************************//~v@@@M~//~vah0R~
 //    //*For UnitTest                                                //~v@@@M~//~vah0R~
 //    //*************************************************************************//~v@@@M~//~vah0R~

@@ -1,6 +1,8 @@
-//*CID://+vakER~: update#= 799;                                    //+vakER~
+//*CID://+vamnR~: update#= 804;                                    //~vamnR~
 //**********************************************************************//~v101I~
-//2022/03/15 vakE (Bug) take button at kan cause not your turn; by option of take btn for robot may faile but remains action current.//+vakEI~
+//2022/04/23 vamw need reset notified button also when taken by autotake timeout//~vamnI~
+//2022/04/11 vamn (Bug)in PAN mode,errmsg for Draw after Pon/Chii is not "Not Your Turn" but has to be "Discard"//~vamnR~
+//2022/03/15 vakE (Bug) take button at kan cause not your turn; by option of take btn for robot may faile but remains action current.//~vakEI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2022/01/19 vaj3 Gmsg:Reach should be show at discard             //~vaj3I~
 //2021/08/21 vace (Bug)WinAnyway has to avoid at other player taking//~vaceI~
@@ -842,7 +844,10 @@ public class UserAction       //~v@@@R~
         {                                                          //~va66I~
         	int cp=AG.aPlayers.getCurrentPlayer();                 //~va66I~
 	        int np;                                                //~va66R~
-	        if (PprevActionID==GCM_KAN)                            //~va66R~
+//          if (PprevActionID==GCM_KAN)                            //~va66R~//~vamnR~
+            if (PprevActionID==GCM_KAN                             //~vamnI~
+            ||  PprevActionID==GCM_PON                             //~vamnI~
+            ||  PprevActionID==GCM_CHII)                           //~vamnI~
 	        	np=cp;                                             //~va66I~
             else                                                   //~va66I~
 	        if (PprevActionID==GCM_TAKE)                           //~va66R~
@@ -918,15 +923,15 @@ public class UserAction       //~v@@@R~
         }                                                          //~9629I~
         if (playerTakeDiscardRobot>=0)                                   //~va66I~
         {                                                          //~va66I~
-//          if (!players.isYourTurn(PactionID,playerTakeDiscardRobot,prevActionID))//~va66I~//+vakER~
-            if (!players.isYourTurnActionInfo(PactionID,playerTakeDiscardRobot,prevActionID))//+vakEI~
+//          if (!players.isYourTurn(PactionID,playerTakeDiscardRobot,prevActionID))//~va66I~//~vakER~
+            if (!players.isYourTurnActionInfo(PactionID,playerTakeDiscardRobot,prevActionID))//~vakEI~
             {                                                      //~va66I~
                 return false;                                      //~va66I~
             }                                                      //~va66I~
         }                                                          //~va66I~
         else                                                       //~va66I~
-//      if (!players.isYourTurn(PactionID,Pplayer,prevActionID)) //~v@@@R~//~v@@7R~//+vakER~
-        if (!players.isYourTurnActionInfo(PactionID,Pplayer,prevActionID))//+vakEI~
+//      if (!players.isYourTurn(PactionID,Pplayer,prevActionID)) //~v@@@R~//~v@@7R~//~vakER~
+        if (!players.isYourTurnActionInfo(PactionID,Pplayer,prevActionID))//~vakEI~
         {                                                        //~v@@@R~//~v@@7R~
             return false;                                        //~v@@@R~//~v@@7R~
         }                                                        //~v@@@R~//~v@@7R~
@@ -1098,7 +1103,7 @@ public class UserAction       //~v@@@R~
     public boolean action(boolean PswServer,int PactionID,int Pplayer/*relative pos on the device*/,int[] PintParm,String[] PstrParm)//~v@@@R~//~v@@7R~
     {                                                              //~v@@@I~
         int playerTakeDiscardRobot=-1;                             //~va66R~
-        if (Dump.Y) Dump.println("UserAction.action actionID="+PactionID+"="+GCMsgID.getEnum(PactionID)+",player="+Pplayer);//~v@@@R~
+        if (Dump.Y) Dump.println("UserAction.action actionID="+PactionID+"="+GCMsgID.getEnum(PactionID)+",player="+Pplayer+",swServer="+PswServer+",swReceived="+swReceived);//~v@@@R~//~vamnR~
         if (Dump.Y) Dump.println("UserAction.action intParm="+Arrays.toString(PintParm));//~v@@7I~
         if (Dump.Y) Dump.println("UserAction.action strParm="+Arrays.toString(PstrParm));//~9826I~
 	 	if (PactionID==GCM_TAKE)                              //~va66I~
@@ -1124,6 +1129,11 @@ public class UserAction       //~v@@@R~
 	        if (PactionID==GCM_TAKE || PactionID==GCM_PON || PactionID==GCM_KAN || PactionID==GCM_CHII || PactionID==GCM_RON)//~vaa2I~
             	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //~vaa2I~
         }                                                          //~vaa2I~
+        if (Pplayer==PLAYER_YOU)    //button or autotake timeout   //+vamnR~
+        {                                                          //~vamnI~
+	        if (PactionID==GCM_TAKE)                               //~vamnI~
+            	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //~vamnI~
+        }                                                          //~vamnI~
         boolean rc=true;                                            //~v@@@R~
         swSendAll=true;                                      //~v@@@R~
         swRobot=true;                                              //~v@@@R~

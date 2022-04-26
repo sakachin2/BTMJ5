@@ -1,5 +1,7 @@
-//*CID://+vajgR~:                             update#=  492;       //+vajgR~
+//*CID://+vamdR~:                             update#=  494;       //+vamdR~
 //******************************************************************************************************************//~v101R~
+//2022/04/02 vamd Animation. at first show Dora                    //+vamdI~
+//2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//~vajgI~
 //2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
@@ -66,6 +68,7 @@ import com.btmtest.game.gv.DiceBox;
 import com.btmtest.game.gv.GCanvas;
 import com.btmtest.game.gv.GameView;                               //~@@01I~
 import com.btmtest.game.gv.Hands;
+import com.btmtest.game.gv.Anim;                                   //+vamdI~
 import com.btmtest.game.gv.HandsTouch;                             //~@@01I~
 import com.btmtest.game.gv.River;
 import com.btmtest.game.gv.Stock;
@@ -455,11 +458,13 @@ public class AG                                                    //~1107R~
 	public UScoped aUScoped;                               //~1Ak0I~//~1ak0I~
 	public boolean swScoped;                               //~1Ak0I~//~1ak0I~
 	public boolean swScopedGranted;                                //~vae0I~
+	public boolean swGrantedBluetooth;                             //~vam8I~
 	public UMediaStore aUMediaStore;                       //~1Ak2I~//~1ak2I~
 	public boolean swGrantedExternalStorageRead,swGrantedExternalStorageWrite;//~1Ak2R~//~1ak2I~
 	public boolean swChangedPreference,swChangedRule;              //~vae8R~
 	public boolean swNewA10=true;	//navigationbar hide logic for Android10//~vaeeI~
     public OrientationMenuDlg aOrientationMenuDlg;                           //~vaf0I~//~vajgR~
+    public Anim aAnim;                                             //+vamdI~
 //    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //~vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~

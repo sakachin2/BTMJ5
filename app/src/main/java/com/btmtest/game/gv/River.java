@@ -1,6 +1,9 @@
-//*CID://+vaifR~: update#= 603;                                    //+vaifR~
+//*CID://+vampR~: update#= 615;                                    //~vampR~
 //**********************************************************************//~v101I~
-//2021/12/24 vaif protect dup touch on position acception          //+vaifI~
+//2022/04/12 vamp Animation. for Riichi                            //+vampR~
+//2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
+//2022/04/05 vamg Animation. at Win call                           //~vamgI~
+//2021/12/24 vaif protect dup touch on position acception          //~vaifI~
 //2021/11/13 vagq TestOption Client position previous              //~vagqI~
 //2021/06/28 vaa6 Test option; set client position                 //~vaa6I~
 //2021/04/11 va81 (Bug)In notify mode,btn si not highlighen when take//~va81I~
@@ -68,7 +71,7 @@ public class River                                                 //~v@@@R~
     private boolean swComplete;                                            //~v@@@I~
     private Players players;
     private TileData[] tdsSetup,sortedSetupTiles;                  //~v@@@R~
-    private boolean[] sortedSetupTilesSelected=new boolean[PLAYERS];//+vaifI~
+    private boolean[] sortedSetupTilesSelected=new boolean[PLAYERS];//~vaifI~
     private int ctrSelected=0;                                     //~v@@@I~
     private Rect rectSetupTiles;                                   //~v@@@I~
     private Rect rectDiscarded;                                    //~v@@@I~
@@ -79,6 +82,10 @@ public class River                                                 //~v@@@R~
     private Rect lastRowRect;                                      //~0323I~
     private boolean swRiverCleared;                                //~0324I~
     public int stroke_width_river;                                 //~0401I~
+    public Rect rectTileCalled;                                    //~vamhI~
+    public int playerDiscarded;                                    //~vamhR~
+    public TileData tdCalledOnRiver;                               //~vamhR~
+    public Bitmap bmCalledOnRiver;                                 //~vamhR~
 //*************************                                        //~v@@@I~
 	public River()  //for IT extends                               //~va60I~
     {                                                              //~va60I~
@@ -421,12 +428,11 @@ public class River                                                 //~v@@@R~
 //        Graphics.unlockCanvas(canvas);                           //~v@@@R~
 //    }                                                            //~v@@@R~
 	//*********************************************************    //~v@@@I~
-	public void drawDiscarded()                                    //~v@@@I~//~0401R~
+//	public void drawDiscarded()                                    //~v@@@I~//~0401R~//~vamhR~
+  	protected void drawDiscarded()    //protected for ITMock       //~vamhR~
     {                                                              //~v@@@I~
 		drawDiscarded(false/*erase*/);                             //~v@@@R~
     }                                                              //~v@@@I~
-	//*********************************************************    //~v@@@I~
-	//*TODO for test                                               //~v@@@I~
 	//*********************************************************    //~v@@@I~
 	private void drawDiscarded(boolean Pswerase)                    //~v@@@R~//~0401R~
     {                                                              //~v@@@I~
@@ -444,6 +450,7 @@ public class River                                                 //~v@@@R~
         boolean swReach=chkReachPos(player,pos); 	//reached then discard//~v@@@I~
     	Rect rect=getPieceRect(player,pos,false/*not force standing*/);//~v@@@I~
         Bitmap bm=getBitmap(player,td,swReach);                 //~v@@@I~
+        saveRectTileCalled(player,rect,td,bm);                     //~vamhI~
         	if (Pswerase)                                          //~v@@@I~
             {                                                      //~v@@@I~
     	        Graphics.drawRect(rect,bgColor);                   //~v@@@I~
@@ -463,6 +470,7 @@ public class River                                                 //~v@@@R~
                 	rectComplete=rect;                             //~0303I~
 //  	        	Graphics.drawRect(rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~//~0401R~
     	        	Graphics.drawRect(rect,COMPLETE_COLOR,stroke_width_river);//~0401I~
+                    AG.aAnim.showWin(rect,td,player,0);            //~vamgR~
         			if (Dump.Y) Dump.println("River.drawDiscarded swComplete=T stroke_width="+stroke_width_river);//~0401I~
 					rectDiscarded=null;                               //~v@@@I~
                 }                                                  //~v@@@I~
@@ -516,6 +524,7 @@ public class River                                                 //~v@@@R~
 //          Graphics.drawRect(canvas,rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@R~
 //          Graphics.drawRect(rect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~//~0401R~
             Graphics.drawRect(rect,COMPLETE_COLOR,stroke_width_river);//~0401I~
+            AG.aAnim.showWin(rect,td,player,0);                    //~vamgR~
         	if (Dump.Y) Dump.println("River.drawDiscarded swComplete=T stroke_width="+stroke_width_river);//~0401I~
             bmComplete=bm;                                         //~0303I~
             rectComplete=rect;                                     //~0303I~
@@ -525,6 +534,8 @@ public class River                                                 //~v@@@R~
 		    rectDiscarded=rect;	//redraw frame when timeout changed//~v@@@I~
 			drawFrameDiscardedTile(GCM_DISCARD);                   //~v@@@I~
         }                                                          //~v@@@I~
+        if (!swComplete && swReach)                                //~vampR~
+	        AG.aAnim.calledReach(Pplayer,rect,bm);                 //~vampI~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
 	public void eraseDiscarded(int Pplayer)                        //~v@@@I~
@@ -681,7 +692,7 @@ public class River                                                 //~v@@@R~
         }                                                          //~v@@@I~
 		tdsSetup=tds;                                              //~v@@@R~
         sortedSetupTiles=sortSetupTile(Picker,(Pspot%2==1));       //~v@@@I~
-    	Arrays.fill(sortedSetupTilesSelected,false);               //+vaifI~
+    	Arrays.fill(sortedSetupTilesSelected,false);               //~vaifI~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
     public  void  setup(int PstartingPlayer,boolean PswFaceup)     //~v@@@I~
@@ -992,22 +1003,22 @@ public class River                                                 //~v@@@R~
 	//*********************************************************    //~v@@@I~
 	//*pickup eswn piece sequencially                              //~v@@@R~
 	//*********************************************************    //~v@@@I~
-    public boolean isPositionSetupAccepted(int Pplayer)            //+vaifI~
-    {                                                              //+vaifI~
-    	boolean rc=sortedSetupTilesSelected[Pplayer];              //+vaifI~
-        if (Dump.Y) Dump.println("River.isPositionSetupAccepted player="+Pplayer+",rc="+rc);//+vaifI~
+    public boolean isPositionSetupAccepted(int Pplayer)            //~vaifI~
+    {                                                              //~vaifI~
+    	boolean rc=sortedSetupTilesSelected[Pplayer];              //~vaifI~
+        if (Dump.Y) Dump.println("River.isPositionSetupAccepted player="+Pplayer+",rc="+rc);//~vaifI~
         return rc;
-    }                                                              //+vaifI~
+    }                                                              //~vaifI~
     public boolean setupAccepted(int Pplayer)                      //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("River.setupAccepted player="+Pplayer+",ctrSelected="+ctrSelected);//~v@@@M~
-        if (isPositionSetupAccepted(Pplayer))                      //+vaifI~
-        {                                                          //+vaifI~
-	        if (Dump.Y) Dump.println("River.setupAccepted return false by dup call player="+Pplayer);//+vaifI~
-        	return false;                                          //+vaifI~
-        }                                                          //+vaifI~
+        if (isPositionSetupAccepted(Pplayer))                      //~vaifI~
+        {                                                          //~vaifI~
+	        if (Dump.Y) Dump.println("River.setupAccepted return false by dup call player="+Pplayer);//~vaifI~
+        	return false;                                          //~vaifI~
+        }                                                          //~vaifI~
     	TileData td=sortedSetupTiles[ctrSelected++];                //~v@@@I~
-    	sortedSetupTilesSelected[Pplayer]=true;                    //+vaifI~
+    	sortedSetupTilesSelected[Pplayer]=true;                    //~vaifI~
     	Rect rect=getRectSetupAccept(Pplayer);                      //~v@@@I~
         Bitmap bm=getBitmapSetup(Pplayer,td,true);                 //~v@@@I~
 //        canvas=Graphics.lockCanvas(rect);                        //~v@@@R~
@@ -1120,4 +1131,13 @@ public class River                                                 //~v@@@R~
             rectComplete=null;                                     //~0303I~
         }                                                          //~0303I~
     }                                                              //~0303I~
+	//*********************************************************    //~vamhI~
+    private void  saveRectTileCalled(int Pplayer,Rect Prect,TileData Ptd,Bitmap Pbitmap)//~vamhR~
+    {                                                              //~vamhI~
+    	rectTileCalled=Prect;                                      //~vamhI~
+    	playerDiscarded=Pplayer;                                   //~vamhR~
+    	bmCalledOnRiver=Pbitmap;                                   //~vamhR~
+    	tdCalledOnRiver=Ptd;                                       //~vamhR~
+	    if (Dump.Y) Dump.println("River.resetComplete saveRectTileCalled player="+Pplayer+",rect="+Prect+",td="+Ptd+",bitmap="+Pbitmap);//~vamhR~
+    }                                                              //~vamhI~
 }//class River                                                 //~dataR~//~@@@@R~//~v@@@R~

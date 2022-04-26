@@ -1,5 +1,6 @@
-//*CID://+vag9R~: update#= 705;                                    //~vag9R~
+//*CID://+vamhR~: update#= 714;                                    //~vamhR~
 //**********************************************************************//~v101I~
+//2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2021/11/08 vag9 Ankan on Earth;display Red5 if option active(it may be disappear by facedown tile)//~vag9I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
 //**********************************************************************//~va65I~
@@ -57,6 +58,10 @@ public class Earth                                                 //~v@@@R~
     private Rect lastRectPair;                                     //~v@@@I~
     private Rect[][] savedRectPair=new Rect[PLAYERS][PAIRS_MAX];   //~v@@@I~
     private int[] savedPairCtr=new int[PLAYERS];                   //~v@@@I~
+    public Rect rectTileCalled;                                    //~vamhI~
+    public int playerDrawEarth;                                    //~vamhI~
+    public TileData tdOnEarth;                                     //~vamhR~
+    public Bitmap bmOnEarth;                                       //~vamhI~
 //*************************                                        //~v@@@I~
     public Earth(GCanvas Pgcanvas,Hands Phands)                    //~v@@@R~
     {                                                              //~0914I~//~v@@@R~
@@ -206,6 +211,7 @@ public class Earth                                                 //~v@@@R~
 //        Graphics.drawRect(rectPiece,COLOR_KAN_ADD_UNDER);          //~v@@@I~
         Bitmap bm=getBitmapPair(tdAddKan,Pplayer);                 //~v@@@R~
         Rect rect=getRectEarthAddKan(Pplayer,bm);                  //~v@@@I~
+        saveRectTileCalled(Pplayer,rect,tdAddKan,bm);              //~vamhR~
         tdAddKan.player=playerLose;	//recover player kan added(pay for completion)//~v@@@I~
         Bitmap bmscaled=Pieces.scaleImage(bm,RATE_ADD_KAN);        //~v@@@I~
 //        switch(Pplayer)                                          //~v@@@R~
@@ -246,7 +252,7 @@ public class Earth                                                 //~v@@@R~
     //*********************                                        //~v@@@I~
         if (Dump.Y) Dump.println("Earth.getRectEarthAddKan player="+Pplayer);//~v@@@R~
         Rect rectPiece=AG.aPlayers.getPieceRectForAddKan(Pplayer); //~v@@@I~
-        if (Dump.Y) Dump.println("Earth.getRectEarthAddKan rectPiece="+rectPiece.toString());//+vag9I~
+        if (Dump.Y) Dump.println("Earth.getRectEarthAddKan rectPiece="+rectPiece.toString());//~vag9I~
         Rect r=new Rect(rectPiece);                                //~v@@@I~
      //   Bitmap bm=getBitmapPair(tdAddKan,Pplayer);                 //~v@@@I~
         ww=Pbitmap.getWidth(); hh=Pbitmap.getHeight();                       //~v@@@I~
@@ -280,7 +286,7 @@ public class Earth                                                 //~v@@@R~
             r.top+=(int)(hh*RATE_ADD_KAN/2);                       //~v@@@I~
             r.bottom=r.top+(int)(hh*RATE_ADD_KAN);                 //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("Earth.getRectEarthAddKan return ww="+ww+",hh="+hh+",diff="+diff+",r="+r.toString());//+vag9I~
+        if (Dump.Y) Dump.println("Earth.getRectEarthAddKan return ww="+ww+",hh="+hh+",diff="+diff+",r="+r.toString());//~vag9I~
         return r;                                                  //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
@@ -363,7 +369,8 @@ public class Earth                                                 //~v@@@R~
 	        hands.drawOpen(Pplayer,null/*taken tile*/);            //~va65I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
-	public void drawEarthYou(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~
+//  public void drawEarthYou(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~//~vamhR~
+    private void drawEarthYou(int Pplayer,Rect Prectpair,TileData[] Ptds)//~vamhI~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Earth.drawEarthYou player="+Pplayer);//~v@@@R~
 //      Graphics.drawRect(canvas,Prectpair,bgColor); //bg clear required//~v@@@R~
@@ -377,6 +384,7 @@ public class Earth                                                 //~v@@@R~
             if ((td.flag & (TDF_DISCARDED|TDF_PON))==(TDF_DISCARDED|TDF_PON))//~v@@@I~
             	AG.aPlayers.savePieceRectForAddKan(Pplayer,rectPiece); //~v@@@I~
             Bitmap bm=getBitmapPair(td,Pplayer);                   //~v@@@I~
+            saveRectTileCalled(td,PLAYER_YOU,rectPiece,bm);        //~vamhI~
 //          Graphics.drawBitmap(canvas,bm,rectPiece.left,rectPiece.top);//~v@@@R~
             Graphics.drawBitmap(bm,rectPiece.left,rectPiece.top);  //~v@@@I~
             xx=rectPiece.right+PIECE_SPACING;                      //~v@@@I~
@@ -407,7 +415,8 @@ public class Earth                                                 //~v@@@R~
     	return new Rect(xx1,yy1,xx2,yy2);                          //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
-	public void drawEarthRight(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~
+//  public void drawEarthRight(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~//~vamhR~
+    private void drawEarthRight(int Pplayer,Rect Prectpair,TileData[] Ptds)//~vamhI~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Earth.drawEarthRight player="+Pplayer);//~v@@@R~
 //      Graphics.drawRect(canvas,Prectpair,bgColor); //bg clear required//~v@@@R~
@@ -420,6 +429,7 @@ public class Earth                                                 //~v@@@R~
             if ((td.flag & (TDF_DISCARDED|TDF_PON))==(TDF_DISCARDED|TDF_PON))//~v@@@I~
             	AG.aPlayers.savePieceRectForAddKan(Pplayer,rectPiece); //~v@@@I~
             Bitmap bm=getBitmapPair(td,Pplayer);                   //~v@@@I~
+            saveRectTileCalled(td,PLAYER_RIGHT,rectPiece,bm);      //~vamhI~
 //          Graphics.drawBitmap(canvas,bm,rectPiece.left,rectPiece.top);//~v@@@R~
             Graphics.drawBitmap(bm,rectPiece.left,rectPiece.top);  //~v@@@I~
             yy=rectPiece.top;                                      //~v@@@R~
@@ -453,7 +463,8 @@ public class Earth                                                 //~v@@@R~
     //*******************************************************************//~v@@@I~
 	//* start from right tile                                      //~v@@@I~
 	//*********************************************************    //~v@@@I~
-	public void drawEarthFacing(int Pplayer,Rect Prectpair,TileData[] Ptds)                       //~v@@@I~
+//  public void drawEarthFacing(int Pplayer,Rect Prectpair,TileData[] Ptds)                       //~v@@@I~//~vamhR~
+    private void drawEarthFacing(int Pplayer,Rect Prectpair,TileData[] Ptds)//~vamhI~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Earth.drawEarthFacing player="+Pplayer);//~v@@@R~
 //      Graphics.drawRect(canvas,Prectpair,bgColor); //bg clear required//~v@@@R~
@@ -466,6 +477,7 @@ public class Earth                                                 //~v@@@R~
             if ((td.flag & (TDF_DISCARDED|TDF_PON))==(TDF_DISCARDED|TDF_PON))//~v@@@I~
             	AG.aPlayers.savePieceRectForAddKan(Pplayer,rectPiece); //~v@@@I~
             Bitmap bm=getBitmapPair(td,Pplayer);                   //~v@@@I~
+            saveRectTileCalled(td,PLAYER_FACING,rectPiece,bm);     //~vamhI~
 //          Graphics.drawBitmap(canvas,bm,rectPiece.left,rectPiece.top);//~v@@@R~
             Graphics.drawBitmap(bm,rectPiece.left,rectPiece.top);  //~v@@@I~
             xx=rectPiece.left;                                     //~v@@@I~
@@ -498,7 +510,8 @@ public class Earth                                                 //~v@@@R~
     //*******************************************************************//~v@@@I~
 	//* start from left(top) tile                                  //~v@@@I~
 	//*********************************************************    //~v@@@I~
-	public void drawEarthLeft(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~
+//  public void drawEarthLeft(int Pplayer,Rect Prectpair,TileData[] Ptds)//~v@@@I~//~vamhR~
+    private void drawEarthLeft(int Pplayer,Rect Prectpair,TileData[] Ptds)//~vamhI~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("Earth.drawEarthLeft player="+Pplayer);//~v@@@R~
 //      Graphics.drawRect(canvas,Prectpair,bgColor); //bg clear required//~v@@@R~
@@ -511,6 +524,7 @@ public class Earth                                                 //~v@@@R~
             if ((td.flag & (TDF_DISCARDED|TDF_PON))==(TDF_DISCARDED|TDF_PON))//~v@@@I~
             	AG.aPlayers.savePieceRectForAddKan(Pplayer,rectPiece); //~v@@@I~
             Bitmap bm=getBitmapPair(td,Pplayer);                   //~v@@@I~
+            saveRectTileCalled(td,PLAYER_LEFT,rectPiece,bm);       //~vamhI~
 //          Graphics.drawBitmap(canvas,bm,rectPiece.left,rectPiece.top);//~v@@@R~
             Graphics.drawBitmap(bm,rectPiece.left,rectPiece.top);  //~v@@@I~
             yy=rectPiece.bottom;                                   //~v@@@I~
@@ -824,17 +838,20 @@ public class Earth                                                 //~v@@@R~
         int stroke_width=Pieces.getStrokeWidth(bm.getWidth());      //~v@@@I~
 //      Graphics.drawRectFrameBitmap(r,bgColor,bm,r.left,r.top,COMPLETE_STROKE_WIDTH_ADD_KAN,COMPLETE_COLOR_KAN_ADD);//~v@@@R~
         Graphics.drawRectFrameBitmap(r,bgColor,bm,r.left,r.top,stroke_width,COMPLETE_COLOR_KAN_ADD);//~v@@@I~
+        AG.aAnim.showWin(r,Ptd,Pplayer,KAN_ADD);                   //~vag9R~
         if (Dump.Y) Dump.println("Earth.complete chankan stroke_width="+stroke_width);//~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
 	//*draw ron mark on earth kan  (kokusi ron for ankan)          //~v@@@R~
 	//*********************************************************    //~v@@@I~
-    public void complete(TileData Ptd,int Pflag)                   //~v@@@I~
+//  public void complete(TileData Ptd,int Pflag)                   //~v@@@I~//~vag9R~
+    public void complete(TileData Ptd,int Pflag,int Pplayer)       //~vag9I~
     {                                                              //~v@@@I~
 		Rect r=lastRectPair;                                       //~v@@@I~
         if (Dump.Y) Dump.println("Earth.complete flag="+Pflag+",tile:"+Ptd.toString()+",rect="+r.toString());//~v@@@I~
 //      Graphics.drawRect(r,COMPLETE_COLOR_KAN_TAKEN,COMPLETE_STROKE_WIDTH);//~v@@@R~
         Graphics.drawRect(r,COMPLETE_COLOR_KAN_TAKEN,AG.aRiver.stroke_width_river);//~v@@@I~
+        AG.aAnim.showWin(r,Ptd,Pplayer,KAN_TAKEN);                 //~vag9R~
         if (Dump.Y) Dump.println("Earth.complete ankan ron stroke width="+AG.aRiver.stroke_width_river);//~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
@@ -894,4 +911,34 @@ public class Earth                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Earth.getLastRectPair rc="+Utils.toString(rp));//~v@@@I~
         return rp;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+	//*********************************************************    //~vamhI~
+	//*Tile on Earth called Pon/Chii/KAN_RIVER                     //~vamhI~
+	//*********************************************************    //~vamhI~
+    private boolean saveRectTileCalled(TileData Ptd,int Pplayer,Rect Prect,Bitmap Pbitmap)//~vamhR~
+    {                                                              //~vamhI~
+        boolean rc=false;                                          //~vamhI~
+        if ((Ptd.flag & TDF_DISCARDED)!=0)                         //~vamhI~
+        {                                                          //~vamhI~
+        	if ((Ptd.flag & (TDF_PON | TDF_CHII | TDF_RON | TDF_KAN_RIVER))!=0)//~vamhI~
+            	rc=true;                                           //~vamhI~
+        }                                                          //~vamhI~
+        if ((Ptd.flag & TDF_KAN_TAKEN)!=0)                         //~vamhR~
+        	if ((Ptd.flag & (TDF_KAN_FACEDOWN))==0)
+        	    rc=true;//~vamhI~
+        if (Dump.Y) Dump.println("Earth.saveRectTileCalled rc="+rc+",td="+Ptd);//~vamhI~
+        if (rc)                                                    //~vamhI~
+		    saveRectTileCalled(Pplayer,Prect,Ptd,Pbitmap);         //~vamhR~
+        return rc;                                                 //~vamhI~
+    }                                                              //~vamhI~
+	//*********************************************************    //~vamhI~
+	//*for Animation to Earth tile for also from DrawEarthAddKan   //+vamhR~
+	//*********************************************************    //~vamhI~
+    private void saveRectTileCalled(int Pplayer,Rect Prect,TileData Ptd,Bitmap Pbitmap)//~vamhR~
+    {                                                              //~vamhI~
+    	rectTileCalled=Prect;                                      //~vamhI~
+    	playerDrawEarth=Pplayer;                                   //~vamhI~
+    	tdOnEarth=Ptd;                                             //~vamhI~
+    	bmOnEarth=Pbitmap;                                          //~vamhI~
+        if (Dump.Y) Dump.println("Earth.saveRectTileCalled plyaer="+Pplayer+",rect="+Prect+",tdOnEarth="+Ptd+",bmOnEarth="+bmOnEarth);//~vamhR~
+    }                                                              //~vamhI~
 }//class Hands                                                 //~dataR~//~@@@@R~//~v@@@R~

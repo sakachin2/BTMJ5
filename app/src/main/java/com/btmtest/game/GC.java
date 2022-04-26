@@ -1,7 +1,9 @@
-//*CID://+vakrR~: update#= 864;                                    //~vakrR~
+//*CID://+vamvR~: update#= 873;                                    //~vamvR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2022/04/23 vamv chenge server color for Connect Button and GameType on gameboard//~vamvI~
+//2022/04/05 vamg Animation. at Win call                           //~vamgI~
 //2022/03/09 vakr (Bug)PAN mode; call not postDelayedAutoTakeKan but postDelayedAutoTake when human pushed Kan button//~vakrI~
 //2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2021/12/31 vaii notifyPlayMatch:Chii overrun Pon button push(Chii button lit yellow after Pon pushed for the discarded tile of Pon and Chii)//~vaiiI~
@@ -104,6 +106,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class GC implements UButton.UButtonI                        //~v@@@R~
@@ -168,10 +171,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private static final int COLOR_GST_DEBUG  =Color.argb(0xff,0xc0,0xf0,0x00);//~vaahR~
     private static final int COLOR_GST_DEBUG_CLIENT  =Color.argb(0xff,0xc0,0xf0,0xa0);//~vajiR~
 //  private static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vaahI~//~vajiR~
-    public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vajiR~
+//  public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vajiR~//~vamvR~
+    public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0xff,0xd7,0x00);   //server:Gold//~vamvI~
     public  static final int COLOR_GST_RELEASE_CLIENT=Color.argb(0xff,0xc0,0xf0,0xf0);//~vajiR~
-    private static final int COLOR_GST_RELEASE_TEXT=Color.argb(0xff,0xff,0x00,0x00);//orange//~vaahR~
-    private static final int COLOR_GST_RELEASE_TEXT_CLIENT=Color.argb(0xff,0x40,0x00,0x00);//orange//~vajiI~
+//  private static final int COLOR_GST_RELEASE_TEXT=Color.argb(0xff,0xff,0x00,0x00);//orange//~vaahR~//+vamvR~
+//  private static final int COLOR_GST_RELEASE_TEXT_CLIENT=Color.argb(0xff,0x40,0x00,0x00);//orange//~vajiI~//+vamvR~
                                                                    //~v@@@I~
     private static final int URO_STARTGAME=1;                      //~v@@@I~
     private static final int URO_ADDVIEW=2;                        //~v@@@I~
@@ -553,7 +557,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //                if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin w="+lp.width+",h="+lp.height+"scrnavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~
 //            }                                                    //~vaefR~
             btns1.setLayoutParams(lp);                             //~v@@@I~
-			if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin btn w="+btns1.getWidth()+",h="+btns1.getHeight());//~vaefI~
+			if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin btn1 w="+btns1.getWidth()+",h="+btns1.getHeight());//~vaefI~//~vakrR~
             frame.addView(btns1);                                  //~v@@@I~
                                                                    //~v@@@I~
 //          lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@R~//~vaefR~
@@ -571,10 +575,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
             if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
             {                                                      //~vaefR~
                 lp.setMargins(0/*left*/,0/*top*/,marginLR/*right*/,0/*bottom*/);//~vaefI~
-                if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin w="+lp.width+",h="+lp.height+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~
+                if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 after setMargin w="+lp.width+",h="+lp.height+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~//~vakrR~
             }                                                      //~vaefR~
             btns2.setLayoutParams(lp);                             //~v@@@R~
-			if (Dump.Y) Dump.println("GC.addButton landscape layout after setMarginRight marginLR="+marginLR+",btn w="+btns2.getWidth()+",h="+btns2.getHeight());//~vaefR~
+			if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 after setMarginRight marginLR="+marginLR+",btn w="+btns2.getWidth()+",h="+btns2.getHeight());//~vaefR~//~vakrR~
             frame.addView(btns2);                                   //~v@@@R~
 //          btnLeftW=btns1.getMeasuredWidth();                     //~9808I~
 //          btnRightW=btns2.getMeasuredWidth();                    //~9808I~
@@ -1228,6 +1232,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.endGame swReturn="+PswReturn+",swGameView="+swGameView);                    //~v@@@I~//~9B21R~//~0111R~
         if (!swGameView)	//dup req                              //~0111I~
         	return;                                                //~0111I~
+        AG.aAnim.removeAnimation();                                //~vamgR~
       if (PswReturn)                                               //~9B21I~
       {                                                            //~9B21I~
         if (btns1!=null)                                           //~v@@@I~
@@ -1259,6 +1264,9 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     public  boolean endGameReturn()                                //~9903R~
     {                                                              //~9903I~
 		if (Dump.Y) Dump.println("GC.endGameReturn");              //~9903I~
+        if (Dump.Y) Dump.println("GC.endGameReturn Status.endgameType="+AG.aStatus.endGameType);//~vamgI~
+        if (Dump.Y) Dump.println("GC.endGameReturn Status.isIssuedRon()="+AG.aStatus.isIssuedRon());//~vamgI~
+        if (Dump.Y) Dump.println("GC.endGameReturn Complete.isTotalAgreed()="+AG.aComplete.isTotalAgreed());//~vamgI~
 //  	if (Status.isGamingNow()) //status=21 & ! gameover        //~9903I~//~0410R~//~va02R~
     	if (Status.isGamingNowAndInterRound()) //status=21 & ! gameover//~va02I~
         {                                                          //~9903I~
@@ -1681,6 +1689,10 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private void actionAnyway()                                    //~va06I~
     {                                                              //~va06I~
 		if (Dump.Y) Dump.println("GC.actionAnyway entry swWinAnywayPushed="+swWinAnywayPushed+",swAnywayActive="+swWinAnywayActive);//~vacbI~
+        if (Dump.Y) Dump.println("GC.actionAnyway Status.endgameType="+AG.aStatus.endGameType);//~vamgI~
+        if (Dump.Y) Dump.println("GC.actionAnyway Status.isIssuedRon()="+AG.aStatus.isIssuedRon());//~vamgI~
+        if (Dump.Y) Dump.println("GC.actionAnyway Complete.isTotalAgreed()="+AG.aComplete.isTotalAgreed());//~vamgI~
+    	if (Dump.Y) Dump.println("GC.actionAnyway Status.isGamingNowAndInterRound()="+Status.isGamingNowAndInterRound());//~vamgI~
         swWinAnywayPushed=true;  //activate when Win btn changed to orange//~vacbR~
         swWinAnywayActive=false;                                   //~vacbI~
 		if (Dump.Y) Dump.println("GC.actionAnyway exit swWinAnywayPushed="+swWinAnywayPushed+",swAnywayActive="+swWinAnywayActive);               //~va06I~//~vacbR~
@@ -2354,12 +2366,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        	postAutoDiscardAnkan();                                //~vaahI~//~vakrR~
 //        else                                                     //~vaahI~//~vakrR~
 //  	    GameViewHandler.sendMsg(GCM_NEXT_PLAYER,Players.nextPlayer(player),0,0);	//on server,to UADiscard.nextPlayer()//~va78I~//~vakrR~
-          	if (swCancel)   //cancel button in Notify Mode         //+vakrR~
+          	if (swCancel)   //cancel button in Notify Mode         //~vakrR~
             {                                                      //~vakrI~
           		if (player==PLAYER_YOU)   // you are taken (ankan or kakan)//~vakrI~
 					postAutoDiscardAnkan();                        //~vakrI~
                 else	//Pon or minkan                            //~vakrI~
-					AG.aUADelayed.postDelayedTakablePlayAloneNotifyCanceledPonKan(player);//+vakrR~
+					AG.aUADelayed.postDelayedTakablePlayAloneNotifyCanceledPonKan(player);//~vakrR~
             }                                                      //~vakrI~
             break;                                                 //~va78I~
         default:                                                   //~va78I~
@@ -2405,13 +2417,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
           {                                                        //~vajiI~
   	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE);            //~vaahI~
             setBtnBG(Pbtn,COLOR_GST_RELEASE);                      //~vaahI~
-            Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT);             //~vaahI~
+//          Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT);             //~vaahI~//+vamvR~
           }                                                        //~vajiM~
           else                                                     //~vajiM~
           {                                                        //~vajiM~
   	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE_CLIENT);     //~vajiM~
             setBtnBG(Pbtn,COLOR_GST_RELEASE_CLIENT);               //~vajiM~
-            Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT_CLIENT);      //~vajiI~
+//          Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT_CLIENT);      //~vajiI~//+vamvR~
           }                                                        //~vajiM~
         }                                                          //~vaahI~
         else                                                       //~vaahI~

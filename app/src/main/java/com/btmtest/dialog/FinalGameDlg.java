@@ -1,6 +1,7 @@
-//*CID://+vac5R~:                             update#= 1156;       //+vac5R~
+//*CID://+vamsR~:                             update#= 1157;       //+vamsR~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//+vamsI~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -40,7 +41,7 @@ import static com.btmtest.utils.Alert.*;
 public class FinalGameDlg  extends OKNGDlg //UFDlg                                            //~9312R~//~9321R~//~9504R~//~9520R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.finalgame;             //~9312R~//~9504R~//~9520R~
-    private static final int LAYOUTID_SMALLFONT=R.layout.finalgame_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.finalgame_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_FinalGame;//~9307I~//~9312R~//~9504R~//~9520R~
     private static final String HELPFILE="FinalGameDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9504R~//~9520R~
                                                                    //~9318I~
@@ -144,6 +145,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("FinalGameDlg.defaultConstructor"); //~9221R~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9504R~//~9520R~
         AG.aFinalGameDlg=this;                                         //~9321I~//~9504R~//~9520R~
+        Status.setShownFinalGame();	//server and client            //+vamsI~
 //      swRon=AG.aComplete.isCompletedDealerRon();                       //~9504I~//~9520R~
     }                                                              //~v@@@R~
     //******************************************                   //~v@@@R~
@@ -151,8 +153,8 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("FinalGameDlg.newInstance typeClose="+Integer.toHexString(PtypeClose)+",endgameType="+PendgameType);//~9504R~//~9520R~//~9521R~//~9522R~
     	FinalGameDlg dlg=new FinalGameDlg();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9504R~//~9520R~
-//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~9504R~//~9520R~//+vac5R~
-    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~9504R~//~9520R~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~v@@@I~//~9220R~//~9305R~//~9312R~//~9316R~//~9321R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~//~9520R~
         dlg.typeClose=PtypeClose;                                  //~9520R~
@@ -180,8 +182,8 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     {                                                              //~9520I~
         if (Dump.Y) Dump.println("FinalGameDlg.newInstance amt="+Arrays.toString(Pammount));//~9520I~
     	FinalGameDlg dlg=new FinalGameDlg();                       //~9520I~
-//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9520I~//+vac5R~
-    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//  	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9520I~//~vac5R~
+    	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN,//~9520I~
 				TITLEID,HELPFILE);                                 //~9520I~
         dlg.ammount=Pammount;	//point at last game(not total score)//~9520I~

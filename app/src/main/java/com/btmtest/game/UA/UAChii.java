@@ -1,5 +1,6 @@
-//*CID://+vah4R~: update#= 629;                                    //~vah4R~
+//*CID://+vamhR~: update#= 635;                                    //~vamhR~
 //**********************************************************************//~v101I~
+//2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2021/11/26 vah4 (Bug by vagz)At client, Chii 1 with having 123 put earth   121//~vah4I~
 //2021/11/18 vah0 delete unused UnitTest data statement            //~vah0I~
 //2021/11/18 vagz AT Chii called,discarded tile did not change to shaded even no erase option.//~vagzI~
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
+import static com.btmtest.game.TileData.*;
 import static com.btmtest.game.Tiles.*;
 import static com.btmtest.game.UserAction.*;//~v@@@I~
 import static com.btmtest.BT.enums.MsgIDConst.*;                   //~v@@@I~
@@ -100,11 +102,11 @@ public class UAChii                                                //~v@@@R~
         TileData td=PLS.getLastDiscarded();                        //~v@@@R~
         TileData[] tds=AG.aHands.getHands(PLAYER_YOU);            //~v@@5I~
 	    getTouchSelection();                                       //~v@@@I~
-//        if ((TestOption.option & TestOption.TO_CHII_TEST)!=0) //TODO//~v@@@R~//~vah0R~
-//        {                                                        //~vah0R~
-//            rc=selectInfoTest(tds, td);                       //~v@@@R~//~vah0R~
-//        }                                                        //~vah0R~
-//        else                                                       //~v@@@I~//~vah0R~
+        if ((TestOption.option & TestOption.TO_CHII_TEST)!=0) //TODO//~v@@@R~//~vah0R~//+vamhR~
+        {                                                        //~vah0R~//+vamhR~
+            rc=selectInfoTest(tds, td);                       //~v@@@R~//~vah0R~//+vamhR~
+        }                                                        //~vah0R~//+vamhR~
+        else                                                       //~v@@@I~//~vah0R~//+vamhR~
         	rc=selectInfo(tds,td);                           //~v@@@R~
         if (rc!=-1)                                                //~v@@@I~
         {                                                          //~v@@@I~
@@ -371,7 +373,7 @@ public class UAChii                                                //~v@@@R~
         {                                                          //~v@@@I~
             tds=getReceivedPair(PintParm,PARMPOS_TD,PAIRCTR);      //~v@@@I~
 //          tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded();       //~v@@@R~
-//          tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded(); //PAIRPOS_RIVER_TAKEN(=2) is Pon Only//~vagzI~//+vah4R~
+//          tds[PAIRPOS_RIVER_TAKEN]=PLS.getLastDiscarded(); //PAIRPOS_RIVER_TAKEN(=2) is Pon Only//~vagzI~//~vah4R~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("UAChii.takeChii tds="+TileData.toString(tds));//~v@@@R~
 //      UAPon.setDiscardedPlayer(tds);                            //~v@@@R~//~v@@6R~
@@ -403,6 +405,7 @@ public class UAChii                                                //~v@@@R~
 	    	hands.takeChii(Pplayer);  //draw Hands                 //~v@@@R~
         int playerDiscarded=PLS.getLastDiscardedPlayer();          //~v@@@I~
         river.takeChii(playerDiscarded);                           //~v@@@R~
+        AG.aAnim.calledPonKanChii(TDF_CHII,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,river.playerDiscarded,river.rectTileCalled,river.bmCalledOnRiver);//~vamhR~
 //      UA.UAT.setTimeout(Pplayer,GCM_CHII);	//autodiscard timeout//~v@@@R~
         UA.UAT.setAutoDiscardTimeout(PswServer,Pplayer,GCM_CHII);	//autodiscard timeout//~v@@@I~
     	UA.UAP.drawLightToDiscard(Pplayer);                 //~9C06I~
@@ -487,19 +490,19 @@ public class UAChii                                                //~v@@@R~
 //        UserAction.showInfoAllEswn(opt,Utils.getStr(R.string.UserAction_Chii));//~v@@@R~
 //        UADL.postDelayedActionMsg(delayChii,GCM_CHII,null);      //~v@@@R~
 //    }                                                            //~v@@@R~
-//    //*************************************************************************//~v@@@M~//~vah0R~
-//    //*Test TODO                                                   //~v@@@M~//~vah0R~
-//    //*************************************************************************//~v@@@M~//~vah0R~
-//    private int selectInfoTest(TileData[] Ptds, TileData Ptd)      //~v@@@M~//~vah0R~
-//    {                                                              //~v@@@M~//~vah0R~
+    //*************************************************************************//~v@@@M~//~vah0R~//+vamhR~
+    //*Test TODO                                                   //~v@@@M~//~vah0R~//+vamhR~
+    //*************************************************************************//~v@@@M~//~vah0R~//+vamhR~
+    private int selectInfoTest(TileData[] Ptds, TileData Ptd)      //~v@@@M~//~vah0R~//+vamhR~
+    {                                                              //~v@@@M~//~vah0R~//+vamhR~
 //        utChii();                                                  //~v@@@M~//~vah0R~
-//        if (Dump.Y) Dump.println("UAChii.selectInfoTest river td="+Ptd.toString());//~v@@@M~//~vah0R~
-//        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~//~vah0R~
-//        tds[0]=Ptds[0];                                            //~v@@@M~//~vah0R~
-//        tds[1]=Ptds[1];                                            //~v@@@M~//~vah0R~
-//        tds[2]=Ptd;                                                //~v@@@M~//~vah0R~
-//        int rc=0;                                                  //~v@@@M~//~vah0R~
-//        tdsPair=tds;                                               //~v@@@M~//~vah0R~
+        if (Dump.Y) Dump.println("UAChii.selectInfoTest river td="+Ptd);//~v@@@M~//~vah0R~//+vamhR~
+        TileData[] tds=new TileData[PAIRCTR];                      //~v@@@M~//~vah0R~//+vamhR~
+        tds[0]=Ptds[0];                                            //~v@@@M~//~vah0R~//+vamhR~
+        tds[1]=Ptds[1];                                            //~v@@@M~//~vah0R~//+vamhR~
+        tds[2]=Ptd;                                                //~v@@@M~//~vah0R~//+vamhR~
+        int rc=0;                                                  //~v@@@M~//~vah0R~//+vamhR~
+        tdsPair=tds;                                               //~v@@@M~//~vah0R~//+vamhR~
 //        if ((TestOption.option2 & TestOption.TO2_WAITSELECT_CHII)!=0) //TODO//~9C05I~//~9C12R~//~vah0R~
 //        {                                                          //~9C05I~//~vah0R~
 ////          getTouchSelection();                                   //~9C05R~//~vah0R~
@@ -512,9 +515,9 @@ public class UAChii                                                //~v@@@R~
 //            if (swSelectedMulti!=null && !swSelectedMulti[0])      //~9C05R~//~vah0R~
 //                rc=1;   //wait multi selecion                      //~9C05R~//~vah0R~
 //        }                                                          //~9C05I~//~vah0R~
-//        if (Dump.Y) Dump.println("UAChii.selectInfoTest rc="+rc+",testoption2="+Integer.toHexString(TestOption.option2));//~9C05I~//~vah0R~
-//        return rc;                                                 //~v@@@M~//~vah0R~
-//    }                                                              //~v@@@M~//~vah0R~
+        if (Dump.Y) Dump.println("UAChii.selectInfoTest rc="+rc+",tdsPair="+TileData.toString(tdsPair));//+vamhR~
+        return rc;                                                 //~v@@@M~//~vah0R~//+vamhR~
+    }                                                              //~v@@@M~//~vah0R~//+vamhR~
 //    //*************************************************************************//~v@@@M~//~vah0R~
 //    //*For UnitTest                                                //~v@@@M~//~vah0R~
 //    //*************************************************************************//~v@@@M~//~vah0R~

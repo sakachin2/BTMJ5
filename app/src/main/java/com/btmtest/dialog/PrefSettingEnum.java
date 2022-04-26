@@ -1,5 +1,6 @@
-//*CID://+vae9R~: update#= 367;                                    //~vae9R~
+//*CID://+vamuR~: update#= 370;                                    //~vamuR~
 //**********************************************************************//~v101I~
+//2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vad1I~
 //2021/08/24 vad1 game buttons layout for lefty                    //~vad1I~
@@ -13,6 +14,8 @@ package com.btmtest.dialog;                                          //~@@@@R~
 import java.util.HashMap;
 import java.util.Map;
 import static com.btmtest.StaticVars.AG;                           //~9615I~
+
+import com.btmtest.utils.Dump;
 
 public class PrefSettingEnum                                       //~@@@@R~//~9404R~//~9405R~//~9412R~
 {                                                                  //~0914I~//~@@@@R~
@@ -29,6 +32,8 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     //*********************************************************************//~9412I~
     public static final String PREFKEY_YOURNAME="YourName";        //~vad1I~
     public static final String PREFKEY_SAVED   ="Saved";           //~vad1I~
+                                                                   //~vamuI~
+    public static final int    DEFAULT_PLAY_ALONE_NOTIFY=1;        //~vamuR~
                                                                    //~vad1I~
     public static final int    PSID_ORIENTATION             =1;    //~9412I~
 //  public static final int    PSID_ORIENTATION_PORT_REV    =2;    //~va9fR~
@@ -46,6 +51,8 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     public static final int    PSID_LEFTY_LANDSCAPE         =46;   //~vad1I~
                                                                    //~vad1I~
     public static final int    PSID_YOURNAME                =51;   //~vad1I~
+    public static final int    PSID_ALLOW_ROBOT_ALL_BTN     =60;   //~vamuR~
+    public static final int    PSID_PLAY_ALONE_NOTIFY       =61;   //~vamuR~
     public static final int    PSID_USERBGM0                =100;  //~vae9I~
     public static final int    PSID_USERBGM1                =101;  //~vae9I~
     public static final int    PSID_USERBGM2                =102;  //~vae9I~
@@ -79,7 +86,7 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
                                                                    //~vae9I~
     public static final int    PSID_USERBGM_ROUND           =150;  //~vae9R~
     public static final int    PSID_USERBGM_SELECTION       =151;  //~vae9I~
-    public static final int    PSID_USERBGM_UPICKER         =152;  //+vae9I~
+    public static final int    PSID_USERBGM_UPICKER         =152;  //~vae9I~
                                                                    //~vad1I~
     private static final PSEnumPair[] pairs=                       //~9412I~
     			{                                                  //~9412I~
@@ -99,6 +106,9 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     				new PSEnumPair(PSID_LEFTY_LANDSCAPE      ,"LeftyLand"            ),//~vad1I~
                                                                    //~vad1I~
     				new PSEnumPair(PSID_YOURNAME             ,PREFKEY_YOURNAME       ),//~vad1I~
+                                                                   //~vamuI~
+    				new PSEnumPair(PSID_ALLOW_ROBOT_ALL_BTN  ,"RobotPlayerAllBtnPref"),//~vamuR~
+    				new PSEnumPair(PSID_PLAY_ALONE_NOTIFY    ,"PlayAloneNotifyPref" ),//~vamuR~
                                                                    //~vae9I~
     				new PSEnumPair(PSID_USERBGM0             ,"UserBGM0"             ),//~vae9I~
     				new PSEnumPair(PSID_USERBGM1             ,"UserBGM1"             ),//~vae9I~
@@ -132,7 +142,7 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     				new PSEnumPair(PSID_USERBGM_TITLE9       ,"UserBGMTitle9"        ),//~vae9I~
     				new PSEnumPair(PSID_USERBGM_ROUND        ,"UserBGMRound"       ),//~vae9R~
     				new PSEnumPair(PSID_USERBGM_SELECTION    ,"UserBGMSelection"     ),//~vae9I~
-    				new PSEnumPair(PSID_USERBGM_UPICKER      ,"UserBGMUPicker"       ),//+vae9I~
+    				new PSEnumPair(PSID_USERBGM_UPICKER      ,"UserBGMUPicker"       ),//~vae9I~
                 };                                                  //~9412I~
     //***********************************************************  //~@@@@I~//~9404R~
 //  private static final Map<Integer,String> ID2Key=new HashMap<Integer,String>();//~@@@@I~//~9404R~//~9615R~
@@ -155,6 +165,9 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     public  static String getKeyPS(int Pid)                       //~@@@@R~//~9404R~//~9405R~//~9412R~
     {                                                              //~@@@@I~
 //      return ID2Key.get(Pid);                                      //~@@@@I~//~9404R~//~9615R~
-        return AG.aPrefSettingEnum.ID2Key.get(Pid);                //~9615I~
+//      return AG.aPrefSettingEnum.ID2Key.get(Pid);                //~9615I~//+vamuR~
+        String rc=AG.aPrefSettingEnum.ID2Key.get(Pid);             //+vamuI~
+        if (Dump.Y) Dump.println("PrefSettingEnum.getKeyPS id="+Pid+",rc="+rc);//+vamuI~
+        return rc;                                                 //+vamuI~
     }                                                              //~@@@@I~
 }                                                                  //~@@@@I~

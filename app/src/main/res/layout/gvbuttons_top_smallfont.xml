@@ -82,9 +82,9 @@
                             android:textSize="@dimen/smallfont_textsize_game_buttons"
             />
              <Button
-                        android:id="@+id/MenuInGame"
+                        android:id="@+id/UserAction_Anyway"
                         android:layout_height="@dimen/gvbtn_top_small"
-                        android:text="@string/Label_MenuInGame"
+                        android:text="@string/Label_Anyway"
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"
@@ -96,9 +96,9 @@
                  android:layout_marginBottom="-4dp"
             />
              <Button
-                        android:id="@+id/UserAction_Anyway"
+                        android:id="@+id/MenuInGame"
                         android:layout_height="@dimen/gvbtn_top_small"
-                        android:text="@string/Label_Anyway"
+                        android:text="@string/Label_MenuInGame"
 	                        android:layout_width="fill_parent"
              				android:layout_weight="1"
                  android:textAllCaps="false"

@@ -1,6 +1,13 @@
-//*CID://+vakvR~:                             update#= 393;        //+vakvR~
+//*CID://+vamdR~:                             update#= 424;        //~vamdR~
 //**********************************************************************//~@@@@I~
-//2022/03/23 vakV google exception report; add try catch           //+vakvI~
+//2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
+//2022/03/31 vamc android12(api31) when backed to top from landscape by F1 button, navigation bar is disappeared.//~vamcI~
+//                (from menu or back button, navigation bar is shown before back to top . so navigation bar is kept.)//~vamcI~
+//                this bug of vam5. systembar means statusbar+navigationbar. hide systembar hide both//~vamcI~
+//2022/03/31 vamb android12(api31) LIGHT_STATUS_BAR appears from compiled by abdroid12//~vambI~
+//2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
+//2022/03/28 vam5 android12(api31) deprecated BEHAVIOUR_SHOW_BARS_BY_SWIPE//~vam5I~
+//2022/03/23 vakV google exception report; add try catch           //~vakvI~
 //2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2022/01/31 vajh over vajg/vage, try to allow startgame from client//~vajhI~
 //2022/01/28 vaje (bug)startgame from client should be protected   //~vajeI~
@@ -50,6 +57,8 @@ import android.view.WindowMetrics;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import com.btmtest.BT.BTI;
 import com.btmtest.dialog.HelpDialog;
 import com.btmtest.dialog.MenuDialog;
 import com.btmtest.dialog.MenuDlgConnect;
@@ -61,6 +70,7 @@ import com.btmtest.game.History;
 import com.btmtest.game.HistoryData;
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;                             //~9412R~
+import com.btmtest.game.gv.Anim;
 import com.btmtest.game.gv.Pieces;
 import com.btmtest.utils.AlertDlg;
 import com.btmtest.utils.Dump;
@@ -111,6 +121,7 @@ public class MainActivity extends AppCompatActivity
     public static final int PERMISSION_LOCATION=1;                 //~9930I~
     public static final int PERMISSION_EXTERNAL_STORAGE=2;         //~9B09I~
     public static final int PERMISSION_EXTERNAL_STORAGE_READ=3; //ReadOnly   //~1Ak2I~//~1ak2I~
+    public static final int PERMISSION_BLUETOOTH=4; //SCAN and CONNECT//~vam8I~
                                                                    //~8C29I~
     public static final int TOP_ORIENTATION=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;//~va9fR~
     private static String PLAYLIST_ID;                       //~vaikR~
@@ -193,6 +204,7 @@ public class MainActivity extends AppCompatActivity
 //            }                                                    //~va9fR~
 //        };                                                       //~va9fR~
     	initApp();                                                 //~9106I~
+        new Anim(mainView,frameLayout);                            //~vamdR~
       }                                                            //~vae0I~
       catch(Exception e)                                           //~vae0I~
       {                                                            //~vae0I~
@@ -239,6 +251,7 @@ public class MainActivity extends AppCompatActivity
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);//~vaeeI~
     }                                                              //~vaeeI~
 	//*************************                                    //~1ak4R~
+    @SuppressWarnings("deprecation")                               //~vam5I~
 	@TargetApi(30)                                   //~1A6pI~     //~1ak4R~
     private void setFullscreen30()                                 //~1ak4R~
     {                                                              //~1ak4R~
@@ -251,17 +264,59 @@ public class MainActivity extends AppCompatActivity
         	WindowInsetsController ic=w.getInsetsController();     //~1ak4I~
         	if (ic!=null)                                          //~1ak4R~
             {                                                      //~1ak4I~
-              if (false) //TODO test                               //~1ak4I~
-              {                                                    //~1ak4I~
-        		ic.hide(WindowInsets.Type.statusBars());           //~1ak4R~
+//            if (false) //TODO test                               //~1ak4I~//~vam5R~
+              if (Build.VERSION.SDK_INT>=31)                       //~vam5I~
+    			setFullScreen_from31(ic);                          //~vam5I~
+              else                                                 //~vam5I~
+              {                                                    //~1ak4I~//~vam5R~
+                ic.hide(WindowInsets.Type.statusBars());           //~1ak4R~
+            	if (Dump.Y) Dump.println("MainActivity.setFullScreen30 swEndGame="+swEndGame);//~vamcI~
+		        if (Dump.Y) Dump.println("MainActivity.setFullScreen30 getSystembarBehavior="+ic.getSystemBarsBehavior());//~vamcI~
+		        if (Dump.Y) Dump.println("MainActivity.setFullScreen30 getSystembarAppearance="+ic.getSystemBarsAppearance());//~vamcI~
+               if (swEndGame)	//endgame from landscape           //~vamcR~
+               {                                                   //~vamcI~
+            	if (Dump.Y) Dump.println("MainActivity.setFullScreen30 show navigationBar by swEndGame");//~vamcR~
+		        ic.setSystemBarsBehavior(BEHAVIOR_DEFAULT);         //~vamcI~
+	        	ic.show(WindowInsets.Type.navigationBars());       //~vamcI~
+               }                                                   //~vamcI~
+               else                                                //~vamcR~
+               {                                                   //~vamcR~
+//          	if (Dump.Y) Dump.println("MainActivity.setFullScreen30 hide navigationBar");//~vamcR~
+//              ic.hide(WindowInsets.Type.navigationBars());       //~vam5I~//~vamcR~
+//              ic.hide(WindowInsets.Type.systemBars());           //~vam5I~//~vamcR~
                 int b=BEHAVIOR_SHOW_BARS_BY_SWIPE;                 //~1ak4R~
-	        	ic.setSystemBarsBehavior(b);                       //~1ak4R~
-                int a=APPEARANCE_LIGHT_STATUS_BARS;                //~1ak4I~
-	        	ic.setSystemBarsAppearance(a,a);                   //~1ak4I~
-              }                                                    //~1ak4I~
+                ic.setSystemBarsBehavior(b);                       //~1ak4R~
+//              int a=APPEARANCE_LIGHT_STATUS_BARS;                //~1ak4I~//~vambR~
+//              ic.setSystemBarsAppearance(a,a);                   //~1ak4I~//~vambR~
+               }                                                   //~vamcI~
+              }                                                    //~1ak4I~//~vam5R~
+				if (Dump.Y) Dump.println("MainActivity.setFullScreen30 ic="+ic);//~vam5I~
             }                                                      //~1ak4I~
         }                                                          //~1ak4I~
     }                                                              //~1ak4R~
+	//*************************                                    //~vam5I~
+    @TargetApi(31)                                                 //~vam5I~
+    private void setFullScreen_from31(WindowInsetsController Pic)  //~vam5I~
+    {                                                              //~vam5I~
+		if (Dump.Y) Dump.println("MainActivity.setFullScreen_from31 ic="+Pic);//~vam5I~
+        WindowInsetsController ic=Pic;                             //~vam5I~
+        ic.hide(WindowInsets.Type.statusBars());                   //~vam5I~
+      if (swEndGame)	//endgame from landscape                   //~vamcI~
+      {                                                            //~vamcI~
+		ic.setSystemBarsBehavior(BEHAVIOR_DEFAULT);                //~vamcI~
+        ic.show(WindowInsets.Type.navigationBars());               //~vamcI~
+      }                                                            //~vamcI~
+      else                                                         //~vamcI~
+      {                                                            //~vamcI~
+//      ic.hide(WindowInsets.Type.navigationBars());               //~vam5I~//~vamcR~
+//      ic.hide(WindowInsets.Type.systemBars());                   //~vam5I~//~vamcR~
+//      int b=BEHAVIOR_DEFAULT;                                    //~vam5I~//~vam8R~
+        int b=BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE;                    //~vam8I~//~vamcR~
+        ic.setSystemBarsBehavior(b);                               //~vam5I~
+//      int a=APPEARANCE_LIGHT_STATUS_BARS;                        //~vam5I~//~vambR~
+//      ic.setSystemBarsAppearance(a,a);                           //~vam5I~//~vambR~
+      }                                                            //~vamcI~
+    }                                                              //~vam5I~
 	//*************************                                    //~8B26I~
 //    public static void hideNavigationBar(boolean PswHide)                 //~8B26R~//~8C29R~
 //    {                                                              //~8B26I~//~8C29R~
@@ -452,17 +507,17 @@ public class MainActivity extends AppCompatActivity
     public void onWindowFocusChanged(boolean PhasFocus)         //~8B26I~
     {                                                              //~8B26I~
         super.onWindowFocusChanged(PhasFocus);                     //~8B26I~
-      try                                                          //+vakvI~
-      {                                                            //+vakvI~
+      try                                                          //~vakvI~
+      {                                                            //~vakvI~
         if(Dump.Y) Dump.println("MainActivity.onWindowFocusChanged focus="+PhasFocus+",ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~8B26I~//~vaeeR~//~vaf0R~
 //        hideNavigationBar(true);    //done if portrait             //~8B26I~//~8C29R~
         if (PhasFocus)  //navigationbar reappear when dialog opend //~9511R~
         	hideNavigationBar(true);                               //~9511I~
-      }                                                            //+vakvI~
-      catch(Exception e)                                           //+vakvI~
-      {                                                            //+vakvI~
-        Dump.println(e,"onWindowFocusChanged");                    //+vakvI~
-      }                                                            //+vakvI~
+      }                                                            //~vakvI~
+      catch(Exception e)                                           //~vakvI~
+      {                                                            //~vakvI~
+        Dump.println(e,"onWindowFocusChanged");                    //~vakvI~
+      }                                                            //~vakvI~
     }                                                              //~8B26I~
 //*************************                                        //~8C03I~
     @Override                                                      //~8C03I~
@@ -1031,6 +1086,7 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged swEndGame="+swEndGame+",curOri="+AG.resource.getConfiguration().orientation);//~9610R~//~va66R~
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged getConfig="+AG.resource.getConfiguration().toString());//~9610I~
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged Pcfg="+Pcfg.toString());//~9610I~
+        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged chngOrientation="+chngOrientation);//~vamcR~
         super.onConfigurationChanged(Pcfg);                        //~1120I~//~1413R~//~9101I~
 //      if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged reverseOrientation="+reverseOrientation);        //~1120I~//~1513R~//~9101R~//~9610R~
 //      if (reverseOrientation!=-1)                                //~9610R~
@@ -1176,16 +1232,21 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 WindowInsetsControler="+Utils.toString(ic));//~1ak4I~
         if (ic!=null)                                              //~1ak4R~
         {                                                          //~1ak4R~
+	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 getSystembarBehavior="+ic.getSystemBarsBehavior());//~vamcI~
+	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 getSystembarAppearance="+ic.getSystemBarsAppearance());//~vamcI~
 		  if (AG.portrait)                                         //~vaefI~
           {                                                        //~vaefI~
 	        ic.show(WindowInsets.Type.navigationBars());           //~vaefI~
-	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 portraite always show");//~vaefI~
+	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 portraite show navigationbars swEndGame="+AG.aMainActivity.swEndGame);//~vaefI~//~vamcR~
+	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 after getSystembarBehavior="+ic.getSystemBarsBehavior());//~vamcI~
+	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 after getSystembarAppearance="+ic.getSystemBarsAppearance());//~vamcI~
 		  }                                                        //~vaefI~
           else                                                     //~vaefI~
           {                                                        //~vaefI~
         	if (PswHide)                                           //~1ak4R~
             {                                                      //~1ak4R~
 	        	ic.hide(WindowInsets.Type.navigationBars());       //~1ak4R~
+	            if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 swHide hide navigationbars swEndGame="+AG.aMainActivity.swEndGame);//~vamcR~
 //              int b=BEHAVIOR_SHOW_BARS_BY_SWIPE;                 //~1ak4R~//~vaefR~
                 int b=BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE;       //~vaefI~
             	ic.setSystemBarsBehavior(b);    //allready request by fullscreen//~1ak4R~
@@ -1195,6 +1256,7 @@ public class MainActivity extends AppCompatActivity
             else                                                   //~1ak4R~
             {                                                      //~1ak4I~
 	        	ic.show(WindowInsets.Type.navigationBars());       //~1ak4R~
+	            if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 !swHide show navigationbars swEndGame="+AG.aMainActivity.swEndGame);//~vamcR~
 //              int a=APPEARANCE_LIGHT_STATUS_BARS;                //~1ak4I~//~vaefR~
 //          	ic.setSystemBarsAppearance(a,a);                   //~1ak4I~//~vaefR~
             }                                                      //~1ak4I~
@@ -1220,24 +1282,24 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 swHide="+PswHide);//~8B26I~//~9102I~//~9807R~//~1ak4R~
 //      if (Build.VERSION.SDK_INT==29) //Android10(Q)              //~vaeeR~
 //      	chkInsets29();                                         //~vaeeR~
-      	if (AG==null)                                              //+vakvI~
-      	{                                                          //+vakvI~
-        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG==null");//+vakvI~
-      	}                                                          //+vakvI~
-      	if (AG.activity==null)                                     //+vakvI~
-      	{                                                          //+vakvI~
-        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.Activity==null");//+vakvI~
-      	}                                                          //+vakvI~
-      	if (AG.activity.getWindow()==null)                         //+vakvI~
-      	{                                                          //+vakvI~
-        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.activity.getWindow()=null");//+vakvI~
-      	}                                                          //+vakvI~
+      	if (AG==null)                                              //~vakvI~
+      	{                                                          //~vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG==null");//~vakvI~
+      	}                                                          //~vakvI~
+      	if (AG.activity==null)                                     //~vakvI~
+      	{                                                          //~vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.Activity==null");//~vakvI~
+      	}                                                          //~vakvI~
+      	if (AG.activity.getWindow()==null)                         //~vakvI~
+      	{                                                          //~vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.activity.getWindow()=null");//~vakvI~
+      	}                                                          //~vakvI~
     	View decor=AG.activity.getWindow().getDecorView();             //~8B26I~//~9102I~
-      	if (decor==null)                                           //+vakvI~
-      	{                                                          //+vakvI~
-        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.activity.getWindow().getDecorView()=null");//+vakvI~
-            return;                                                //+vakvI~
-      	}                                                          //+vakvI~
+      	if (decor==null)                                           //~vakvI~
+      	{                                                          //~vakvI~
+        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 @@@@ AG.activity.getWindow().getDecorView()=null");//~vakvI~
+            return;                                                //~vakvI~
+      	}                                                          //~vakvI~
     	int flag=0;                                                //~8B26I~//~9102I~
         if (!PswHide)                                              //~8B26I~//~9102I~
         {                                                          //~8B26I~//~9102I~
@@ -1592,6 +1654,10 @@ public class MainActivity extends AppCompatActivity
             AG.aUScoped.grantedExternalStorageRead(granted);        //~vae0I~
 	        recoverProp();                                         //~vae8I~
         	break;                                                 //~vae0I~
+        case PERMISSION_BLUETOOTH:  //API31                        //~vam8I~
+        	granted=UView.isPermissionGranted(Presults[0]) && UView.isPermissionGranted(Presults[1]);//~vam8I~
+            BTI.grantedPermission(granted);                        //~vam8I~
+        	break;                                                 //~vam8I~
         }                                                          //~9930I~
     }                                                              //~9930I~
 //***************************************************************************//~v107I~//~1ak5I~

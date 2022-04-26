@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 393;                                    //~v@@@R~//~va60R~
+//*CID://+vamdR~: update#= 395;                                    //+vamdR~
 //**********************************************************************//~v101I~
+//2022/04/02 vamd Animation. at first show Dora                    //+vamdI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //**********************************************************************//~va60I~
 //utility around screen                                            //~v@@@I~
@@ -44,8 +45,8 @@ public class GCanvas                                               //~v@@@I~
 //  public GCanvas(SurfaceHolder Pholder,MJTable Ptable,int Pww,int Phh)//~v@@@R~
     public GCanvas(MJTable Ptable,int Pww,int Phh)                 //~v@@@I~
     {                                                              //~0914I~
-//  	if (Dump.Y) Dump.println("GCanvas constructor holder="+Pholder.toString());//~v@@@R~
-    	if (Dump.Y) Dump.println("GCanvas constructor ww="+Pww+",hh="+Phh);           //~v@@@I~//+va60R~
+//  	if (Dump.Y) Dump.println("GCanvas.constructor holder="+Pholder.toString());//~v@@@R~//~va60R~
+    	if (Dump.Y) Dump.println("GCanvas.constructor ww="+Pww+",hh="+Phh);           //~v@@@I~//~va60R~
     	AG.aGCanvas=this;                                          //~v@@@I~
         WW=Pww;                                                    //~v@@@M~
         HH=Phh;                                                    //~v@@@M~
@@ -183,6 +184,7 @@ public class GCanvas                                               //~v@@@I~
     //*********************************************************    //~v@@@I~
     private void drawBG()                                          //~v@@@M~
     {                                                              //~v@@@M~
+        if (Dump.Y) Dump.println("GCanvas.drawBG");                //~va60I~
     	Rect rect=new Rect(0,0,WW,HH);                             //~v@@@M~
 //      gg.drawRect(rect,COLOR_BG_TABLE);                          //~v@@@R~
 //      Graphics.drawRect(canvas,rect,COLOR_BG_TABLE);             //~v@@@R~

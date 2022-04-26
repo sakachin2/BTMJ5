@@ -1,5 +1,6 @@
-//*CID://+vaegR~: update#= 782;                                    //~vaegR~
+//*CID://+vamgR~: update#= 786;                                    //~vamgR~
 //**********************************************************************//~v101I~
+//2022/04/05 vamg Animation. at Win call                           //~vamgI~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/05/06 va8C (Bug)open hand image remains for not PLAYER_YOU after drawn last if called kan(TestOption:openHand)//~va8CI~
 //2021/04/04 va76 open test;robot hand corrupted display           //~va76I~
@@ -76,6 +77,8 @@ public class Hands                                                 //~v@@@R~
 	private Rect[] openRectShiftS=new Rect[PLAYERS];
 //  private Rect openRectShift;//~0328I~                           //~0329R~
     public int complete_stroke_width_hand;                         //~0401R~
+    private TileData tdComplete;                                   //~vamgI~
+    private int playerComplete;                                    //~vamgI~
 //*************************                                        //~v@@@I~
 	public Hands()  //for IT                                       //~va60I~
     {                                                              //~va60I~
@@ -379,6 +382,7 @@ public class Hands                                                 //~v@@@R~
 //  		Graphics.drawRectFrame(Prect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~
 //	    	Graphics.drawRectFrameBitmap(Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,COMPLETE_STROKE_WIDTH,COMPLETE_COLOR);//~v@@@I~//~0401R~
 	    	Graphics.drawRectFrameBitmap(Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,complete_stroke_width_hand,COMPLETE_COLOR);//~0401I~
+            AG.aAnim.showWin(Prect,tdComplete,playerComplete,0);   //+vamgR~
         	if (Dump.Y) Dump.println("Hands.drawPiece swComplete=true stroke_width_hand="+complete_stroke_width_hand);//~0401I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
@@ -443,11 +447,11 @@ public class Hands                                                 //~v@@@R~
 	//*********************************************************    //~vaegI~
 	public static int getLengthHands(int Pctr,int PpieceW)         //~vaegI~
     {                                                              //~vaegI~
-        int len=(PpieceW+PIECE_SPACING)*Pctr-PIECE_SPACING;        //+vaegI~
-        if (Tiles.isTakenStatus(Pctr))                             //+vaegI~
-        	len+=PIECE_SPACING_TAKEN-PIECE_SPACING;                //+vaegI~
-        if (Dump.Y) Dump.println("Hands.getLengthHands with parm pieceW="+PpieceW+",ctr="+Pctr+",len="+len);//+vaegI~
-    	return len;                                                //+vaegI~
+        int len=(PpieceW+PIECE_SPACING)*Pctr-PIECE_SPACING;        //~vaegI~
+        if (Tiles.isTakenStatus(Pctr))                             //~vaegI~
+        	len+=PIECE_SPACING_TAKEN-PIECE_SPACING;                //~vaegI~
+        if (Dump.Y) Dump.println("Hands.getLengthHands with parm pieceW="+PpieceW+",ctr="+Pctr+",len="+len);//~vaegI~
+    	return len;                                                //~vaegI~
     }                                                              //~vaegI~
 	//*********************************************************    //~v@@@I~
 	public  int getLengthHands(int Pctr)                           //~v@@@I~//~v@@5R~
@@ -456,7 +460,7 @@ public class Hands                                                 //~v@@@R~
 //      if ((Pctr-1)%PAIRCTR!=0)                                   //~v@@@R~
         if (Tiles.isTakenStatus(Pctr))                             //~v@@@I~
         	len+=PIECE_SPACING_TAKEN-PIECE_SPACING;                //~v@@@I~
-        if (Dump.Y) Dump.println("Hands.getLengthHands pieceW="+pieceW+",ctr="+Pctr+",len="+len);//~v@@@I~//+vaegR~
+        if (Dump.Y) Dump.println("Hands.getLengthHands pieceW="+pieceW+",ctr="+Pctr+",len="+len);//~v@@@I~//~vaegR~
     	return len;                                                //~v@@@I~
     }                                                              //~v@@@I~
 //    //*********************************************************  //~v@@@R~
@@ -614,12 +618,15 @@ public class Hands                                                 //~v@@@R~
             {                                                          //~v@@@I~//~v@@5R~
     //          if ((Pflag & COMPLETE_TAKEN)!=0)                   //~v@@5R~
                 if ((Pflag & COMPLETE_KAN_TAKEN_OTHER)!=0)	//ankan ron//~v@@5R~
-                	earth.complete(td,Pflag);	//draw ron mark on earth kan//~v@@5M~
+//              	earth.complete(td,Pflag);	//draw ron mark on earth kan//~v@@5M~//~vamgR~
+                	earth.complete(td,Pflag,Pplayer);	//draw ron mark on earth kan//~vamgI~
                 else                                               //~v@@5M~
                 {                                                  //~v@@5I~
                     if (td.isTaken())                              //~v@@5R~
                     {                                              //~v@@5R~
                         swComplete=true;                                       //~v@@@I~//~v@@5R~
+                        tdComplete=td;                             //~vamgI~
+                        playerComplete=Pplayer;                    //~vamgI~
                         takeOne(Pplayer,td);                       //~v@@5R~
                         swComplete=false;                                      //~v@@@I~//~v@@5R~
                     }                                              //~v@@5R~
@@ -628,7 +635,8 @@ public class Hands                                                 //~v@@@R~
             else                                                   //~v@@5R~
             {                                                          //~v@@@I~//~v@@5R~
                 if ((Pflag & COMPLETE_KAN_TAKEN_OTHER)!=0)	//ankan ron//~v@@5I~
-                	earth.complete(td,Pflag);	//draw ron mark on earth kan//~v@@5I~
+//              	earth.complete(td,Pflag);	//draw ron mark on earth kan//~v@@5I~//~vamgR~
+                	earth.complete(td,Pflag,Pplayer);	//draw ron mark on earth kan//~vamgI~
                 drawOpen(Pplayer,td);                             //~v@@@R~//~v@@5R~
             }                                                          //~v@@@I~//~v@@5R~
         }                                                          //~v@@5I~
@@ -854,6 +862,7 @@ public class Hands                                                 //~v@@@R~
                       {                                            //~0401I~
 //      				Graphics.drawRect(r,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@5I~//~0401R~
         				Graphics.drawRect(r,COMPLETE_COLOR,AG.aRiver.stroke_width_river);//~0401R~
+			            AG.aAnim.showWin(r,td,Pplayer,0);          //+vamgR~
 			        	if (Dump.Y) Dump.println("Hands.drawOpenSub td.isRon()=true stroke_width_river="+AG.aRiver.stroke_width_river);//~0401R~
                       }                                            //~0401I~
         			  else                                         //~v@@5I~

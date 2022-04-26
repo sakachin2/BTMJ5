@@ -1,5 +1,6 @@
-//*CID://+vajiR~:                             update#=  498;       //~vajiR~
+//*CID://+vam3R~:                             update#=  500;       //~vam3R~
 //********************************************************************************//~v101I~
+//2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~vam3I~
 //2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2022/01/30 vajf (bug)if canceled on orientation dialog on client at startgame. back button on server cause dump on client//~vajfI~
 //2021/06/19 va9g SwTrainigMode was not cleared, startgame Hung at match as client after play alone//~va9gI~
@@ -86,7 +87,8 @@ public class BTMulti                                               //~1AebR~
 	{                                                              //~1AebI~
     	if (Dump.Y) Dump.println("BTMulti:constructor maxclient="+Pmaxclient+",memberRole="+memberRole);//~1AebI~//~@002R~
         AG.aBTMulti=this;                                          //~1AebR~
-        AG.aBTI=BTI.createBTI();                                   //~1AebI~
+//      AG.aBTI=BTI.createBTI();                                   //~1AebI~//+vam3R~
+        BTI.createBTI();                                           //+vam3I~
         maxClient=Pmaxclient;                                       //~1AebI~
 	    memberNotConnectedId=Utils.getStr(R.string.NotConnected);  //~1AebI~
         BTGroup=new Members(maxClient,memberNotConnectedId);       //~1AebR~
@@ -107,15 +109,15 @@ public class BTMulti                                               //~1AebR~
         ctrClient=BTGroup.getConnectedCtr();                       //~1AebI~
         return true;                                               //~1AebI~
     }                                                              //~1AebI~
-    //*******************************************************      //+vajiI~
-    public static int getConnectedCtr()                            //+vajiI~
-	{                                                              //+vajiI~
-    	int rc=0;                                                  //+vajiI~
-        if (AG.aBTMulti!=null && AG.aBTMulti.BTGroup!=null)        //+vajiI~
-    		rc=AG.aBTMulti.BTGroup.getConnectedCtr();      //+vajiI~
-    	if (Dump.Y) Dump.println("BTMulti.getConnectedCtr rc="+rc);//+vajiI~
-        return rc;                                                 //+vajiI~
-    }                                                              //+vajiI~
+    //*******************************************************      //~vajiI~
+    public static int getConnectedCtr()                            //~vajiI~
+	{                                                              //~vajiI~
+    	int rc=0;                                                  //~vajiI~
+        if (AG.aBTMulti!=null && AG.aBTMulti.BTGroup!=null)        //~vajiI~
+    		rc=AG.aBTMulti.BTGroup.getConnectedCtr();      //~vajiI~
+    	if (Dump.Y) Dump.println("BTMulti.getConnectedCtr rc="+rc);//~vajiI~
+        return rc;                                                 //~vajiI~
+    }                                                              //~vajiI~
     //*******************************************************      //~1AebI~
 //  public boolean updateMember(String Pname,BTIOThread Pthread)   //~1AebI~//~0117R~
     public int updateMember(String Pname,BTIOThread Pthread)       //~0117I~
@@ -708,7 +710,8 @@ public class BTMulti                                               //~1AebR~
 	public Boolean isBTAvailable(Boolean Pshowmsg)                 //~1AebR~
     {                                                              //~1AebI~
         if (Dump.Y) Dump.println("BTMulti isBTAvailable");         //~1AebI~
-	    BluetoothAdapter bta=BluetoothAdapter.getDefaultAdapter(); //~1AebI~
+//      BluetoothAdapter bta=BluetoothAdapter.getDefaultAdapter(); //~1AebI~//~vam3R~
+        BluetoothAdapter bta=BTControl.getDefaultAdapter();        //~vam3I~
         if (bta==null)                                             //~1AebR~
         {                                                          //~1AebI~
         	if (Pshowmsg)                                          //~1AebI~

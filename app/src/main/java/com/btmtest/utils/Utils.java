@@ -1,4 +1,4 @@
-//*CID://+vaf0R~: update#= 315;                                    //~vaf0R~
+//*CID://+vaf0R~: update#= 316;                                    //~vaf0R~
 //**********************************************************************//~1107I~
 //2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
@@ -35,6 +35,7 @@ import android.content.pm.PackageManager;                          //~v107R~
 import android.content.pm.PackageManager.NameNotFoundException;    //~v107R~
 import android.content.res.Resources;
 import android.graphics.ColorFilter;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
@@ -1044,6 +1045,24 @@ public class Utils                                            //~1309R~//~@@@@R~
 //      if (Dump.Y) Dump.println("Utils.toString(Rect[]) out="+s); //~@@01I~//~va40R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
+    //*************************************************            //+vaf0I~
+    public static String toString(Point[] Psa2)                    //+vaf0I~
+    {                                                              //+vaf0I~
+        StringBuffer sb=new StringBuffer();                        //+vaf0I~
+        sb.append("[");                                            //+vaf0I~
+        if (Psa2==null)                                            //+vaf0I~
+	        sb.append("null");                                     //+vaf0I~
+        else                                                       //+vaf0I~
+        for (int ii=0;ii<Psa2.length;ii++)     //account sequence  //+vaf0I~
+        {                                                          //+vaf0I~
+        	if (ii!=0)                                             //+vaf0I~
+    	        sb.append(",");                                    //+vaf0I~
+            sb.append(Psa2[ii]==null ? "null" : Psa2[ii].toString());//+vaf0I~
+        }                                                          //+vaf0I~
+        sb.append("]");                                            //+vaf0I~
+        String s=sb.toString();                                    //+vaf0I~
+        return s;                                                  //+vaf0I~
+    }                                                              //+vaf0I~
     //*************************************************            //~@@01I~
     public static String toString(Rect[][] Psa2)                   //~@@01I~
     {                                                              //~@@01I~
@@ -1246,11 +1265,11 @@ public class Utils                                            //~1309R~//~@@@@R~
     public static int[][] cloneArray2(int[][] Pfrom)               //~vai3R~//~va11I~
     {                                                              //~vai3I~//~va11I~
     	int[][] to=Pfrom.clone();                                  //~vai3I~//~va11I~
-    	if (Dump.Y) Dump.println("Utils.cloneArray2 clone 2dimension 1dimen clone array="+Utils.toString(to));//~vai3I~//~va11I~//+vaf0R~
+    	if (Dump.Y) Dump.println("Utils.cloneArray2 clone 2dimension 1dimen clone array="+Utils.toString(to));//~vai3I~//~va11I~//~vaf0R~
     	int sz1=Pfrom.length;                                      //~vai3I~//~va11I~
         for (int ii=0;ii<sz1;ii++)                                 //~vai3I~//~va11I~
         	to[ii]=Pfrom[ii].clone();                              //~vai3I~//~va11I~
-    	if (Dump.Y) Dump.println("Utils.cloneArray2 clone 2dimension return array="+Utils.toString(to));//~vai3I~//~va11I~//+vaf0R~
+    	if (Dump.Y) Dump.println("Utils.cloneArray2 clone 2dimension return array="+Utils.toString(to));//~vai3I~//~va11I~//~vaf0R~
         return to;                                                 //~vai3I~//~va11I~
     }                                                              //~vai3I~//~va11I~
 //***********                                                      //~va11I~

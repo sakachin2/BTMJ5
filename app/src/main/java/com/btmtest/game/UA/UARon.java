@@ -1,6 +1,6 @@
-//*CID://+vakvR~: update#= 732;                                    //+vakvR~
+//*CID://+vakvR~: update#= 734;                                    //~vakvR~
 //**********************************************************************//~v101I~
-//2022/03/09 vakv (Bug)RinshanTaken was not evaluated for Robot    //+vakvI~
+//2022/03/09 vakv (Bug)RinshanTaken was not evaluated for Robot    //~vakvI~
 //2022/02/19 vak7 drop option chk kataagari(temporally False always AND and option is chk furiten only)//~vak7I~
 //2022/02/16 vak5 with no chk kataagari,do not lit win button in notify mode for human//~vak5I~
 //2022/01/31 vak0 ronable pattern chk was done by kataagari chk option. it should be independent//~vak0I~
@@ -665,11 +665,15 @@ public class UARon                                                 //~v@@@R~//~v
 	//*************************************************************************//~0205I~
 	//* ignore Ronchk                                              //~0205I~
 	//* rc:true: dismiss menuInGame                                //~0205I~
+	//* from GC.actionAnyway and MenuInGameDlg.doWinAnyway         //~vakvI~
 	//*************************************************************************//~0205I~
     public static boolean winAnyway()                                     //~0205I~
     {                                                              //~0205I~
     	boolean rc=true;                                           //~0205I~
     //***********************                                      //~0205I~
+        if (Dump.Y) Dump.println("UARon.winAnyway Status.endgameType="+AG.aStatus.endGameType);//+vakvI~
+        if (Dump.Y) Dump.println("UARon.winAnyway Status.isIssuedRon()="+AG.aStatus.isIssuedRon());//+vakvI~
+        if (Dump.Y) Dump.println("UARon.winAnyway Complete.isTotalAgreed()="+AG.aComplete.isTotalAgreed());//+vakvI~
 //  	boolean swChk= RuleSettingOperation.isCheckRonable();       //~0205I~//~va11R~//~va1aR~
 //      boolean swFix1= RuleSettingOperation.isYakuFix1();         //~va11R~//~vak0R~
 		if (Dump.Y) Dump.println("UARon.winAnyway");//~0205R~//~va11R~//~va1aR~//~vak0R~
@@ -683,10 +687,6 @@ public class UARon                                                 //~v@@@R~//~v
         GameViewHandler.sendMsg(GCM_RON_ANYWAY,null);              //~0205I~
         return rc;                                                 //~0205I~
     }                                                              //~0205I~
-	//*************************************************************************//~va11I~
-	//*************************************************************************//~va11I~
-	//*************************************************************************//~va11I~
-                                                                   //~va11I~
     //*************************************************************************//~va11I~
     //*from UARonValue.chkEnvironmentYaku<--chkCompleteSub         //~va11I~
     //*************************************************************************//~va11I~
@@ -742,7 +742,7 @@ public class UARon                                                 //~v@@@R~//~v
     //*************************************************************************//~vagfI~
     public void chkEnvironmentYaku(boolean PswAllInHand,TileData PtdRonLast,boolean PswTaken,int Pplayer,int PenvironmentYaku)//~vagfI~
     {                                                              //~vagfI~
-        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku PenvironmentYaku="+PenvironmentYaku+",swTaken="+PswTaken+",player="+Pplayer+",swAllInHand="+PswAllInHand+",ptdLast="+TileData.toString(PtdRonLast));//~vagfI~//+vakvR~
+        if (Dump.Y) Dump.println("UARon.chkEnvironmentYaku PenvironmentYaku="+PenvironmentYaku+",swTaken="+PswTaken+",player="+Pplayer+",swAllInHand="+PswAllInHand+",ptdLast="+TileData.toString(PtdRonLast));//~vagfI~//~vakvR~
         completeTD=PtdRonLast;                                     //~vagfI~
         currentEswn=Accounts.playerToEswn(Pplayer);                //~vagfI~
         completeType=PLS.getPlayerCompleteFlag(Pplayer);           //~vagfI~
@@ -754,8 +754,8 @@ public class UARon                                                 //~v@@@R~//~v
         chkTaken(PswAllInHand);  //tsumo                           //~vagfI~
         chkLastTile();	//hitei hotei                              //~vagfI~
 //      chkKan();    //chankan                                     //~vagfI~
-		if (PswTaken)                                               //+vakvI~
-        	chkKanTaken(Pplayer);    //rinshan kaiho               //+vakvI~
+		if (PswTaken)                                               //~vakvI~
+        	chkKanTaken(Pplayer);    //rinshan kaiho               //~vakvI~
 		if (PenvironmentYaku!=0)                                   //~vagfI~
 			UARV.addOtherYaku(PenvironmentYaku,1/*han*/); //add chankan//~vagfR~
     }                                                              //~vagfI~
@@ -908,14 +908,14 @@ public class UARon                                                 //~v@@@R~//~v
         if ((completeType & COMPLETE_KAN_ADD)!=0)	//chankan      //~va11I~
 			UARV.addOtherYaku(RYAKU_KAN_ADD,RANK_KAN_ADD);         //~va11I~
     }                                                              //~va11I~
-    //*************************************************************************//+vakvI~
-    private void chkKanTaken(int Pplayer) //rinshan kaiho          //+vakvI~
-    {                                                              //+vakvI~
-        if (Dump.Y) Dump.println("UARon.chkKanTaken player="+Pplayer);//+vakvI~
-        int kanType=PLS.getKanType();                               //+vakvI~
-        if (kanType!=0)                                            //+vakvI~
-			UARV.addOtherYaku(RYAKU_KAN_TAKEN,RANK_KAN_TAKEN);     //+vakvI~
-    }                                                              //+vakvI~
+    //*************************************************************************//~vakvI~
+    private void chkKanTaken(int Pplayer) //rinshan kaiho          //~vakvI~
+    {                                                              //~vakvI~
+        if (Dump.Y) Dump.println("UARon.chkKanTaken player="+Pplayer);//~vakvI~
+        int kanType=PLS.getKanType();                               //~vakvI~
+        if (kanType!=0)                                            //~vakvI~
+			UARV.addOtherYaku(RYAKU_KAN_TAKEN,RANK_KAN_TAKEN);     //~vakvI~
+    }                                                              //~vakvI~
 	//*************************************************************************//~va96I~
 	//*after chkRank(constraint chk done)                          //~va96R~
 	//*************************************************************************//~va96I~

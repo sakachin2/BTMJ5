@@ -128,8 +128,9 @@
     </style>
     <style name="CustomRBStyleHLDSmallFontSmallButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textSize">@dimen/smallfont_textsize_dialog_radiobutton</item>
-        <item name="android:button">@drawable/radiobutton_smallfont</item>
+        <item name="android:button">@drawable/radiobutton_smallfont_larger</item>
     </style>
+        <!--item name="android:button">@drawable/radiobutton_smallfont</item-->
     <style name="CustomCBStyleHLD" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">@dimen/cb_textsize</item>
     </style>
@@ -140,8 +141,9 @@
     </style>
     <style name="CustomCBStyleHLDSmallFontSmallButton" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">@dimen/smallfont_textsize_dialog_checkbox</item>
-        <item name="android:button">@drawable/checkbox_smallfont_button</item>
+        <item name="android:button">@drawable/checkbox_smallfont_button_more_large</item>
     </style>
+        <!--item name="android:button">@drawable/checkbox_smallfont_button</item-->
     <style name="CustomTVStyleHLD" >
         <item name="android:textSize">@dimen/tv_textsize</item>
     </style>

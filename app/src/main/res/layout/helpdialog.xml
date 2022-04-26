@@ -57,5 +57,21 @@
                 android:layout_gravity="center"
              android:layout_weight="1"
             />
+            <Button
+                android:id="@+id/ZoomUp"                   
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="@string/ZoomUp"
+                android:layout_gravity="center"
+             android:layout_weight="1"
+            />
+            <Button
+                android:id="@+id/ZoomDown"                   
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="@string/ZoomDown"
+                android:layout_gravity="center"
+             android:layout_weight="1"
+            />
         </LinearLayout>
 </LinearLayout>

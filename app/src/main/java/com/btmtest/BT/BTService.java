@@ -1,5 +1,7 @@
-//*CID://+1AebR~:                             update#=  127;       //~1AebR~
+//*CID://+vam3R~:                             update#=  128;       //+vam3R~
 //********************************************************************************//~v101I~
+//2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//+vam3I~
+//********************************************************************************//+vam3I~
 
 package com.btmtest.BT;                                               //~1AedI~//~1AebI~
 
@@ -63,7 +65,8 @@ public class BTService {                                           //~@@@@I~
      * @param handler  A Handler to send messages back to the UI Activity
      */
     public BTService(Context context, Handler handler) {           //~@@@@I~
-        mAdapter = BluetoothAdapter.getDefaultAdapter();
+//      mAdapter = BluetoothAdapter.getDefaultAdapter();           //+vam3R~
+        mAdapter = BTControl.getDefaultAdapter();                  //+vam3I~
         mState = STATE_NONE;
         mHandler = handler;
     }
@@ -73,7 +76,7 @@ public class BTService {                                           //~@@@@I~
      * @param state  An integer defining the current connection state
      */
     private void setState(int state) {                             //~v101I~
-        if (Dump.Y) Dump.println("BTService.setState SYNC " + mState + " -> " + state);//~@@@@I~//~v101R~//+1AebR~
+        if (Dump.Y) Dump.println("BTService.setState SYNC " + mState + " -> " + state);//~@@@@I~//~v101R~//~1AebR~
       synchronized(this)                                           //~v101I~
       {                                                            //~v101I~
         mState = state;
@@ -82,7 +85,7 @@ public class BTService {                                           //~@@@@I~
         // Give the new state to the Handler so the UI Activity can update
         mHandler.obtainMessage(BTControl.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();//~@@@@R~
       }                                                            //~v101I~
-        if (Dump.Y) Dump.println("BTService.setState() SYNC return");        //~v101I~//+1AebR~
+        if (Dump.Y) Dump.println("BTService.setState() SYNC return");        //~v101I~//~1AebR~
     }
     private void notifyFailure(int flag)              //~@@@2I~    //~v101R~
     {                                                              //~@@@2I~
@@ -686,7 +689,8 @@ public class BTService {                                           //~@@@@I~
         }                                                          //~v101I~
         else                                                       //~v101I~
         {                                                          //~v101I~
-        	BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~v101I~
+//      	BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~v101I~//+vam3R~
+        	BluetoothAdapter adapter=BTControl.getDefaultAdapter();//+vam3I~
 			sa=getDeviceList(adapter);                             //~v101I~
         }                                                          //~v101I~
         if (Dump.Y) Dump.println("BTService getPairDevice end");   //~v101R~
@@ -735,16 +739,16 @@ public class BTService {                                           //~@@@@I~
         if (!PswServer)                                            //~1AebI~
 		    notifyStatusChanged(STATE_NONE);                       //~1AebI~
     }                                                              //~1AebR~
-//******************************************                       //+1AebI~
-//*from BTDiscover by ACL_DISCONNECTED                             //+1AebI~
-//******************************************                       //+1AebI~
-    public void onDisconnectedIP()                                 //+1AebI~
-    {                                                              //+1AebI~
-        int old=getState();                                        //+1AebI~
-        if (Dump.Y) Dump.println("BTService.onDisconnectedIP state old="+old);//+1AebI~
-        if (old!=STATE_LISTEN)                                     //+1AebI~
-		    notifyStatusChanged(STATE_NONE);                       //+1AebI~
-    }                                                              //+1AebI~
+//******************************************                       //~1AebI~
+//*from BTDiscover by ACL_DISCONNECTED                             //~1AebI~
+//******************************************                       //~1AebI~
+    public void onDisconnectedIP()                                 //~1AebI~
+    {                                                              //~1AebI~
+        int old=getState();                                        //~1AebI~
+        if (Dump.Y) Dump.println("BTService.onDisconnectedIP state old="+old);//~1AebI~
+        if (old!=STATE_LISTEN)                                     //~1AebI~
+		    notifyStatusChanged(STATE_NONE);                       //~1AebI~
+    }                                                              //~1AebI~
 //******************************************                       //~1AebI~
     public boolean notifyStatusChanged(int Pstatus)                //~1AebI~
     {                                                              //~1AebI~

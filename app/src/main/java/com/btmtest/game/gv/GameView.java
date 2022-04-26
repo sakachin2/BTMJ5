@@ -1,5 +1,6 @@
-//*CID://+vaefR~: update#= 361;                                    //~vaefR~
+//*CID://+vam6R~: update#= 362;                                    //+vam6R~
 //**********************************************************************
+//2022/03/28 vam6 android12(api31) Display.getRealSize, getRealMetrics//+vam6I~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //**********************************************************************//~vaefI~
 //v@21  imageview                                                  //~v@21I~
@@ -84,9 +85,9 @@ public class GameView extends AppCompatImageView                   //~v@21R~
 //              	HH-=AG.scrNavigationbarBottomHeightA11;        //~vaefR~
 //	                WW-=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;	//some device,navigationbar is on the right when landscape and could not hide//~vaefR~
 //	                WW=AG.scrWidth;	//adjusted by ? login on UView.getScreenSize30//~vaefR~
-//	                WW-=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;	//some device has navigationbar space on the right when landscape and could not hide//+vaefR~
+//	                WW-=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;	//some device has navigationbar space on the right when landscape and could not hide//~vaefR~
 //	                WW-=AG.scrNavigationbarRightWidthA11;          //~vaefR~
-  	                WW-=AG.aGC.marginLR;                           //+vaefI~
+  	                WW-=AG.aGC.marginLR;                           //~vaefI~
 		   			if (Dump.Y) Dump.println("GameView.init landscape A11 WW="+WW+",HH="+HH+",scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeightA11+",leftWidthA11="+AG.scrNavigationbarLeftWidthA11+",rightWidthA11="+AG.scrNavigationbarRightWidthA11);//~vaefR~
               }                                                    //~vaefR~
               else                                                 //~vaefI~
@@ -237,7 +238,14 @@ public class GameView extends AppCompatImageView                   //~v@21R~
     public void onDraw(Canvas Pcanvas/*android.graphics.Canvas*/)                           //~v@@@R~//~v@21R~
     {                                                            //~v@@@R~//~v@21R~
         if (Dump.Y) Dump.println("GameView.onDraw HWaccelerate="+Pcanvas.isHardwareAccelerated());             //~v@@@R~//~v@21R~
+      try                                                          //+vam6I~
+      {                                                            //+vam6I~
         Graphics.onDraw(Pcanvas);                                  //~v@21I~
+      }                                                            //+vam6I~
+      catch(Exception e)                                           //+vam6I~
+      {                                                            //+vam6I~
+    	Dump.println(e,"GameView.onDraw");                         //+vam6I~
+      }                                                            //+vam6I~
     }                                                            //~v@@@R~//~v@21R~
     //*************************                                    //~v@@@I~
     @Override                                                      //~v@@@I~

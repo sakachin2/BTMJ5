@@ -1,5 +1,6 @@
-//*CID://+vakWR~:                             update#=  749;       //~vakWR~
+//*CID://+vam2R~:                             update#=  750;       //+vam2R~
 //*****************************************************************//~v101I~
+//2022/03/28 vam2 japanese on RuleSetting at initial               //+vam2I~
 //2022/03/24 vakW rule update msg on dialog                        //~vakWI~
 //2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
 //2022/03/19 vakQ notify update of rule when client received       //~vakQI~
@@ -594,10 +595,12 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     protected void properties2Dialog(Prop Pprop)                     //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("RuleSetting.properties2Dialog");                   //~v@@@I~//~9412R~//~vaehR~
-        tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),"ありありなど"));//~9405I~//~9515R~
+//      tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),"ありありなど"));//~9405I~//~9515R~//+vam2R~
+        tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),Utils.getStr(R.string.RuleNotInitialized)));//+vam2I~
 //      tvIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"));//~9405R~//~9826R~//~9903R~
 //      etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"));//~9903I~//~9905R~
-        etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"),true/*swLostFocus*/);//~9905I~
+//      etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"),true/*swLostFocus*/);//~9905I~//+vam2R~
+        etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),Utils.getStr(R.string.SampleRuleID)),true/*swLostFocus*/);//+vam2I~
         if (swFixed)                                               //~9405I~
 //      	tvIDName.setEnabled(false);                            //~9405I~//~9903R~
         	etIDName.setEnabled(false);                            //~9903I~
@@ -2430,14 +2433,14 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     public void showUpdate(boolean PswUpdate)                      //~vakWI~
     {                                                              //~vakWI~
         if (Dump.Y) Dump.println("RuleSetting.showUpdate PswUpdate="+PswUpdate);//~vakWI~
-        int msgid;                                                 //+vakWR~
-        if (PswUpdate)                                             //+vakWI~
-			msgid=R.string.Info_RuleReceived_ChangeY;              //+vakWI~
-        else                                                       //+vakWI~
-        if (swServer)	//of RuleSettingDlg                        //+vakWI~
- 			msgid=R.string.Info_RuleReceived_ChangeN_Server;       //+vakWI~
-        else                                                       //+vakWI~
-        	msgid=R.string.Info_RuleReceived_ChangeN;              //+vakWI~
+        int msgid;                                                 //~vakWR~
+        if (PswUpdate)                                             //~vakWI~
+			msgid=R.string.Info_RuleReceived_ChangeY;              //~vakWI~
+        else                                                       //~vakWI~
+        if (swServer)	//of RuleSettingDlg                        //~vakWI~
+ 			msgid=R.string.Info_RuleReceived_ChangeN_Server;       //~vakWI~
+        else                                                       //~vakWI~
+        	msgid=R.string.Info_RuleReceived_ChangeN;              //~vakWI~
         showStatus(msgid);	//SettingDlg.showStatus()                     //~vakWI~
     }                                                              //~vakWI~
 }//class                                                           //~v@@@R~

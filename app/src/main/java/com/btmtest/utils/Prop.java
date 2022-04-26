@@ -1,4 +1,4 @@
-//*CID://+vaidR~:                             update#=   75;       //~vaicR~//+vaidR~
+//*CID://+vaidR~:                             update#=   76;       //~vaicR~//~vaidR~
 //**********************************************************************//~@@@@I~
 //2021/12/24 vaid Toast if Scoped file already exists.             //~vaicI~
 //2021/12/24 vaic Dump at send History rule from sdcard device to scoped file device//~vaicI~
@@ -182,9 +182,9 @@ public class Prop                                                  //~@@@@R~
     	boolean rc=false;                                          //~vae0I~
 		try                                                        //~vae0I~
 		{                                                          //~vae0I~
-//      	OutputStreamWriter osw=AG.aUScoped.openOutputDocumentWriter(Pfname,PswOverride);//~vae0R~//+vaidR~
-			String member=AG.aUScoped.parseMember(Pfname);                        //~vae0I~//+vaidR~
-        	OutputStreamWriter osw=AG.aUScoped.openOutputDocumentWriter(member,PswOverride);//+vaidR~
+//      	OutputStreamWriter osw=AG.aUScoped.openOutputDocumentWriter(Pfname,PswOverride);//~vae0R~//~vaidR~
+			String member=AG.aUScoped.parseMember(Pfname);                        //~vae0I~//~vaidR~
+        	OutputStreamWriter osw=AG.aUScoped.openOutputDocumentWriter(member,PswOverride);//~vaidR~
             if (osw!=null)                                         //~vae0I~
             {                                                      //~vae0I~
 				P.store(osw,Pcomment);                             //~vae0R~
@@ -194,7 +194,7 @@ public class Prop                                                  //~@@@@R~
 		}                                                          //~vae0I~
 		catch (IOException e)                                      //~vae0I~
 		{                                                          //~vae0I~
-			Dump.println(e,"Prop.savePropertiesScoped Pfname="+Pfname);//+vaidR~
+			Dump.println(e,"Prop.savePropertiesScoped Pfname="+Pfname);//~vaidR~
 		}                                                          //~vae0I~
         return rc;                                                 //~vae0I~
 	}                                                              //~vae0I~
@@ -306,35 +306,35 @@ public class Prop                                                  //~@@@@R~
 	//************************************************************ //~vae0I~
 	//*write received rule,aviod override ************************ //~vae0I~
 	//************************************************************ //~vae0I~
-//	public  static void savePropertiesStringScoped(String Pmember,String Ptext)//~vae0I~//+vaidR~
-  	public  static boolean savePropertiesStringScoped(String Pmember,String Ptext)//+vaidI~
+//	public  static void savePropertiesStringScoped(String Pmember,String Ptext)//~vae0I~//~vaidR~
+  	public  static boolean savePropertiesStringScoped(String Pmember,String Ptext)//~vaidI~
     {                                                              //~vae0I~
-    	boolean rc=false;                                          //+vaidI~
+    	boolean rc=false;                                          //~vaidI~
     	if (Dump.Y) Dump.println("Prop.savePropertiesStringScoped member="+Pmember+",text="+Ptext);//~vae0I~
 		try                                                        //~vae0I~
 		{                                                          //~vae0I~
-//  		OutputStreamWriter os= AG.aUScoped.openOutputDocumentWriter(Pmember,false/*PswOveride*/);//~vae0I~//+vaidR~
-			String member=AG.aUScoped.parseMember(Pmember);        //+vaidR~
-    		OutputStreamWriter os= AG.aUScoped.openOutputDocumentWriter(member,false/*PswOveride*/);//+vaidR~
-          if (AG.aUScoped.swCouldNotOverride)                      //+vaidR~
-          {                                                        //+vaidR~
-    	    if (Dump.Y) Dump.println("Prop.savePropertiesStringScoped Already exist skip write Pmember="+Pmember+",member"+member);//+vaidR~
-//          UView.showToastLong(Utils.getStr(R.string.Info_AlreadyExist_SkipWrite,member));//+vaidR~
-          }                                                        //+vaidR~
-          else                                                     //+vaidR~
-          {                                                        //+vaidR~
+//  		OutputStreamWriter os= AG.aUScoped.openOutputDocumentWriter(Pmember,false/*PswOveride*/);//~vae0I~//~vaidR~
+			String member=AG.aUScoped.parseMember(Pmember);        //~vaidR~
+    		OutputStreamWriter os= AG.aUScoped.openOutputDocumentWriter(member,false/*PswOveride*/);//~vaidR~
+          if (AG.aUScoped.swCouldNotOverride)                      //~vaidR~
+          {                                                        //~vaidR~
+    	    if (Dump.Y) Dump.println("Prop.savePropertiesStringScoped Already exist skip write Pmember="+Pmember+",member"+member);//~vaidR~
+//          UView.showToastLong(Utils.getStr(R.string.Info_AlreadyExist_SkipWrite,member));//~vaidR~
+          }                                                        //~vaidR~
+          else                                                     //~vaidR~
+          {                                                        //~vaidR~
 			BufferedWriter bw= new BufferedWriter(os);             //~vae0I~
             bw.write(Ptext);                                       //~vae0I~
 			bw.close();                                            //~vae0I~
-            rc=true;                                               //+vaidI~
-          }                                                        //+vaidR~
+            rc=true;                                               //~vaidI~
+          }                                                        //~vaidR~
 		}                                                          //~vae0I~
 		catch (Exception e)                                        //~vae0I~
 		{                                                          //~vae0I~
             Dump.println(e,"Property:"+Pmember+ "save failed");    //~vae0I~
 		}                                                          //~vae0I~
-        if (Dump.Y) Dump.println("Property saved to "+Pmember+",rc="+rc);    //~vae0I~//+vaidR~
-        return rc;                                                 //+vaidI~
+        if (Dump.Y) Dump.println("Property saved to "+Pmember+",rc="+rc);    //~vae0I~//~vaidR~
+        return rc;                                                 //~vaidI~
 	}                                                              //~vae0I~
 //    //************************************************************ //~@@@@I~//~va40R~
 //    public  synchronized boolean saveProperties(String Pfname,FileOutputStream Pfos,String Pcmt)//~@@@@I~//~va40R~
@@ -361,6 +361,7 @@ public class Prop                                                  //~@@@@R~
 			P.put(key,"true");                                     //~@@@@I~
 		else                                                       //~@@@@R~
 			P.put(key,"false");                                    //~@@@@I~
+        if (Dump.Y) Dump.println("Prop.setParameter key="+key+",value="+value);//+vaidI~
 	}
 	//************************************************************ //~@@@@I~
 	public  synchronized boolean getParameter(String key, boolean def)//~@@@@R~

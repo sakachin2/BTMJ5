@@ -1,6 +1,6 @@
-//*CID://+vakKR~: update#= 913;                                    //+vakKR~
+//*CID://+vakKR~: update#= 914;                                    //~vakKR~
 //**********************************************************************//~v101I~
-//2022/03/18 vakK match mode;kanAdd on client, received tile loose flag and added tile on earth corrupted display//+vakKI~
+//2022/03/18 vakK match mode;kanAdd on client, received tile loose flag and added tile on earth corrupted display//~vakKI~
 //2022/03/15 vakE (Bug) take button at kan cause not your turn; by option of take btn for robot may faile but remains action current.//~vakEI~
 //2022/03/09 vaku Msg "do take after kan" is shown for AutoDiscard msg sheduled before TAKABLE_RINSHAN//~vakuI~
 //2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vakqI~
@@ -500,7 +500,7 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~vakEI~
     public boolean isYourTurnActionInfo(int PactionID,int Pplayer,int PprevActionID)//~vakEI~
     {                                                              //~vakEI~
-        if (Dump.Y) Dump.println("Players.isYourTurnActionInfo actionID="+PactionID+",player="+Pplayer+"+prevActionID="+PprevActionID);//~vakEI~
+        if (Dump.Y) Dump.println("Players.isYourTurnActionInfo actionID="+PactionID+",player="+Pplayer+"+prevActionID="+PprevActionID);//~vakEI~//+vakKR~
     	swActionInfo=true;                                         //~vakEI~
 	    boolean rc=isYourTurn(true,PactionID,Pplayer,PprevActionID);//~vakEI~
     	swActionInfo=false;                                        //~vakEI~
@@ -2793,8 +2793,8 @@ public class Players                                               //~v@@@R~
 		        if (Dump.Y) Dump.println("Player.takeKan tileKanAdded="+tileKanAdded);//~vakqI~
                 if (!removeWithCtrRemain(tileKanAdded))	//added tile is on last//~v@@6I~//~9208R~
                     return -1;                                     //~v@@6I~
-//              tileKanAdded=tdRemoveWithCtrRemain;                //~vakqR~//+vakKR~
-//              Ptds[PAIR_KAN_ADDPOS]=tileKanAdded;                //~vakqI~//+vakKR~
+//              tileKanAdded=tdRemoveWithCtrRemain;                //~vakqR~//~vakKR~
+//              Ptds[PAIR_KAN_ADDPOS]=tileKanAdded;                //~vakqI~//~vakKR~
 		        if (Dump.Y) Dump.println("Player.takeKan after remove tileKanAdded="+tileKanAdded);//~vakqR~
 				int idx=getKanAddEarthIndex(td);                    //~v@@6I~
                 if(idx<0)                                          //~v@@6I~

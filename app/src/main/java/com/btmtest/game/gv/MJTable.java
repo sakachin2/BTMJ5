@@ -1,4 +1,4 @@
-//*CID://+vaegR~: update#= 509;                                    //~vaegR~
+//*CID://+vaegR~: update#= 510;                                    //~vaegR~
 //**********************************************************************//~v101I~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vagdI~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
@@ -157,7 +157,7 @@ public class MJTable                                               //~v@@@R~
         bottomButtonH =swPortrait ? AG.aGC.btnBottomH+sizeMsgBar : 0;//~9811I~
         topButtonH    =swPortrait ? AG.aGC.btnTopH : 0;                //~v@@@R~
         if (Dump.Y) Dump.println("MJTable.init GC.btnLeft="+AG.aGC.btnLeftW+",leftButtonW="+leftButtonW);//~9313I~
-        if (Dump.Y) Dump.println("MJTable.init GC.btnRight="+AG.aGC.btnRightW+",leftButtonW="+rightButtonW);//~vaedI~
+        if (Dump.Y) Dump.println("MJTable.init GC.btnRight="+AG.aGC.btnRightW+",rightButtonW="+rightButtonW);//~vaedI~//+vaegR~
         setGeometry();                                             //~v@@@I~
         updateGeometry();                                          //~v@@@I~
         pieces=new Pieces(this,WW,HH);                             //~v@@@M~
@@ -207,12 +207,12 @@ public class MJTable                                               //~v@@@R~
         riverCtrX          =      (swPortrait ? TBL_RIVERCTR_X_P       : TBL_RIVERCTR_X_L);//~v@@@I~
         topSpace=marginTop+topButtonH;                             //~v@@@I~
         leftSpace=marginLeft+leftButtonW;                          //~v@@@I~
-//        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//+vaegR~
-//        {                                                        //+vaegR~
-//            if (!AG.portrait)   //landscape                      //+vaegR~
-//                leftSpace+=AG.scrNavigationbarLeftWidthA11;      //+vaegR~
-//            if (Dump.Y) Dump.println("MJTable.setGeometry A11 scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//+vaegR~
-//        }                                                        //+vaegR~
+//        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaegR~
+//        {                                                        //~vaegR~
+//            if (!AG.portrait)   //landscape                      //~vaegR~
+//                leftSpace+=AG.scrNavigationbarLeftWidthA11;      //~vaegR~
+//            if (Dump.Y) Dump.println("MJTable.setGeometry A11 scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaegR~
+//        }                                                        //~vaegR~
         rightSpace=marginRight+rightButtonW;                       //~v@@@I~
         if (Dump.Y) Dump.println("MJTable.setGeometry margin Bottom="+marginBottom+",top="+marginTop);//~v@@@I~
         if (Dump.Y) Dump.println("MJTable.setGeometry margin stockH="+stockH+",marginStockSide="+marginStockSide);//~v@@@R~

@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.20</string>
+    <string name="app_version">v1.21</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -15,6 +15,7 @@
     <string name="NotConnected">未接続</string>
     <string name="Exit">終了</string>
     <string name="failedBluetooth">Bluetoothの処理の失敗</string>
+    <string name="failedBluetoothPermission">Bluetooth権限をが付与されなかったのでBluetoothは使えません。</string>
     <string name="failedBluetoothUnpair">Bluetoothのペア解除処理の失敗</string>
     <string name="BluetoothUnpairRequested">%1$sのペア解除を要求しました</string>
     <string name="nowDiscoverable">現在は\"可視\"状態です(一定時間有効)</string>
@@ -122,7 +123,7 @@
     <string name="ConnectedBTInSecureConnection">%1$s に 非セキュア接続 しました。</string><!--1Aed-->
     <string name="Info_ConnectionClosed">"%1$s" が接続を閉じました</string>
     <string name="dev_act_msg">デバイスの応答:</string>
-    <string name="bt_not_enabled_leaving">Bluetooth は Off でした.</string>
+    <string name="bt_not_enabled_leaving">Bluetooth は 使用できません。</string>
     <string name="alreadyconnected">既にBluetooth接続があります</string>
     <string name="InfoBTDiscoverable">\"可視\"状態になりました</string> <!--1AbE-->
     <string name="InfoBTDiscoverableRequested">\"可視化\"を要求しました</string>
@@ -762,8 +763,8 @@
 		<!--item>中断取消</item-->
 		<item>中断処理の表示</item>
 		<item>対局終了</item>
-		<item>接続障害処理</item>
 		<item>とにかく和了</item>
+		<item>接続障害処理</item>
 		<item>とにかくリーチ</item>
 		<item>個人設定</item>
 		<item>メニューのヘルプ</item>
@@ -992,7 +993,7 @@
     <string name="Info_GameEndSuspendGameover">中断-精算で終局</string>
     <string name="Info_GameEndSuspend">保存+中断されました。\"対局終了\"してください。</string>
 <!--setting-->
-    <string name="Err_TrySendFromServer">サーバーから送ってください</string>
+    <!--string name="Err_TrySendFromServer">サーバーから送ってください</string-->
     <string name="Err_TryEndgameFromServer">接続しています、サーバーから\"対局終了\"してください</string>
     <string name="Err_TryBackButtonFromServer">サーバーから操作してください</string>
     <string name="Err_GameStatusForMenuInGame">配牌前です</string>
@@ -1134,6 +1135,7 @@
     <string name="Label_PlayMatchNotify">ロン、ポン、カン、チーの可能性を通知</string>
     <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる）</string>
     <string name="Desc_PlayMatchNotify">（ヘルプ参照）</string>
+    <string name="Desc_PlayAloneMoved">(!! 一人遊びのオプションは\"個人設定\"に移動しました)</string>
 
     <string name="Label_GameSet">試合</string>
     <string name="Label_GameSetInterrupted">迄 終了、次は</string>
@@ -1566,6 +1568,7 @@
     <string name="Desc_MultiWait"> : 後付けありなら片上がりはＯＫ。</string>
     <string name="Label_ChkMultiWaitYes">チェックする</string>
     <string name="AE_NoReachErrToForce">リーチ/オープンリーチ失敗の後でのみ有効です</string>
+    <string name="AE_NoCheckReach">テンパイ確認オプションはオフなので通常の立直を使用してください</string>
     <string name="AE_CancelAtFirst">オレンジボタン以外を押す場合は、先に取り消してください</string>
     <string name="Label_LeftyPortrait">縦画面の時、下部のボタン列を逆向きにする</string>
     <string name="Label_LeftyLandscape">横画面の時、左右のボタン列を入れ替える</string>
@@ -1573,11 +1576,18 @@
     <string name="Label_HideDetail">非表示</string>
     <string name="Info_HistoryCtrDetail">計 %1$d ゲーム</string>
 
-    <string name="RequestPickupDocumentSaveDir">Android-11で外部ストレージの仕様が変更になりました。\n
+    <!--string name="RequestPickupDocumentSaveDir">Android-11で外部ストレージの仕様が変更になりました。\n
 (再)インストールにより、ゲームデータの保存先を設定する必要があります。\n
 次に表示されるダイアログで \"%1$s\" を選択してください。\n
-初めての場合は、そのダイアログでそのフォルダーを作成してください。\n
+初めての場合は、そこで\"新規フォルダーを作成\"を押してフォルダーを追加してください。\n
 最初のAndroid-11版の再インストールの時のみ既存の履歴、ルールファイルが移行できます。
+	</string-->
+    <string name="RequestPickupDocumentSaveDir">
+Android-11以降、初回インストール時には、ゲームデータの保存先を設定してください。\n
+次に表示されるダイアログで \"%1$s\" を選択してください。\n
+初めての場合は、そのダイアログで \"新規フォルダーを作成\" してください。\n
+（最初のAndroid-11版の再インストールの時のみ既存の履歴、ルールファイルが移行されます）\n
+\"内部域使用\"では内部ストレージを使用することになりますが、その場合再インストールでデータはクリアーされます。
 	</string>
     <string name="RequestPickupDocumentSaveDirCanceled">"ゲームデータの保存先の設定がキャンセルされました。\n
 再設定する場合は、アプリを再起動してください。
@@ -1599,7 +1609,7 @@
     <string name="ScopedExternalStorageDeniedRead">外部ストレージの\"読み込み権限\"が許可されていません</string>
     <string name="ScopedExternalStorageDeniedWrite">外部ストレージの\"書き込み権限\"が許可されていません</string>
     <string name="ErrCanceledScopedPermission">データ保存先の設定がキャンセルされました。アプリを再起動してください。</string>
-    <string name="NoTryAgain">不許可で決定</string>
+    <string name="NoTryAgain">内部域使用</string>
     <string name="FileTypeDocument">Docs：</string>
     <string name="Info_Transfered">旧版の外部ストレージの %1$d / %2$d ファイルを Android-11 新領域に引き継ぎました</string>
     <string name="btnBGM">設定</string>
@@ -1628,4 +1638,10 @@
     <string name="Info_RuleReceived_ChangeY">受信したルールの変更点を背景色を変えて表示しています。</string>
     <string name="Info_RuleReceived_ChangeN">受信したルールに変更点は有りませんが返信してください。</string>
     <string name="Info_RuleReceived_ChangeN_Server">クライアントから受信したルールに変更点は有りません。</string>
+    <string name="RuleNotInitialized">(初期化未済、OKを押す)</string>
+    <string name="SampleRuleID">ありありなど</string>
+    <string name="ZoomUp">＋</string>
+    <string name="ZoomDown">ー</string>
+    <string name="Err_TryFinalScoreFromServer">終局精算確認が未了です。\"%1$s\" のメニューからやり直してください。</string>
+    <string name="Err_TryFinalGameForGameover">オーラス終局判断が未了です。\"%1$s\" のメニューからやり直してください。</string>
 </resources>

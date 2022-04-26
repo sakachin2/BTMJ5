@@ -1,6 +1,8 @@
-//*CID://+vah2R~: update#= 839;                                    //+vah2R~
+//*CID://+vamsR~: update#= 843;                                    //~vamsR~
 //**********************************************************************//~v101I~
-//2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//+vah2I~
+//2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//~vamsI~
+//2022/04/19 vamr Menu:gameover fail by "During game" when accountDlg canceled//~vamrI~
+//2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//~vah2I~
 //2021/09/16 vae5 (Bug)Property of resumed game did not use sg.rulefile at interrupted.//~vae5I~
 //2021/07/29 vabg (Bug)Test option set final game, 1st dealer is not east player//~vabgI~
 //2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
@@ -304,6 +306,15 @@ public class Accounts                                              //~v@@@R~
         if (Dump.Y) Dump.println("Accounts.getCurrentDealerReal player="+realPlayer);//~9306I~
 		return realPlayer;                                         //~9306I~
     }                                                              //~9306I~
+    //**************************************************           //~vamsI~
+    public String getCurrentDealerRealName()                       //~vamsR~
+    {                                                              //~vamsI~
+	    int player=getCurrentDealerReal();                         //+vamsI~
+		int idxAccount=playerToMember(player);                     //+vamsI~
+        String rc=accounts[idxAccount].name;                       //+vamsI~
+        if (Dump.Y) Dump.println("Accounts.getCurrentDealerRealName rc="+rc+",playerReal="+player+",idxAccounts="+idxAccount);//+vamsR~
+		return rc;                                                 //~vamsI~
+    }                                                              //~vamsI~
     //**************************************************           //~9610I~
     public int getRealPlayer(int Pplayer)                          //~9610I~
     {                                                              //~9610I~
@@ -346,6 +357,14 @@ public class Accounts                                              //~v@@@R~
         if (Dump.Y) Dump.println("Accounts.isFirstDealerReal rc="+rc+",yourESWN="+yourESWN);//~9606I~
 		return rc;                                                 //~9606I~
     }                                                              //~9606I~
+    //**************************************************           //~vamrI~
+    public String getFirstDealerRealName()                         //~vamrI~
+    {                                                              //~vamrI~
+        int pos=getFirstDealerPosReal();                           //~vamrI~
+    	String rc=accountsByESWN[pos].name;                        //~vamrI~
+        if (Dump.Y) Dump.println("Accounts.getFirstDealerRealName rc="+rc+",pos="+pos);//~vamrI~
+		return rc;                                                 //~vamrI~
+    }                                                              //~vamrI~
     //**************************************************           //~9315I~
     public int getCurrentDealerRealEswn()                          //~9315I~
     {                                                              //~9315I~
@@ -1852,17 +1871,17 @@ public class Accounts                                              //~v@@@R~
         }                                                          //~9316I~
         if (Dump.Y) Dump.println("Accounts.updateScore newScore="+Arrays.toString(score));//~9316I~
     }                                                              //~9312I~
-    //**************************************************           //+vah2I~
-    public  void updateScore(int[] Pscore/*eswnSeq*/,int[] Pammount/*eswnSeq*/)//+vah2I~
-    {                                                              //+vah2I~
-        if (Dump.Y) Dump.println("Accounts.updateScore To Parm Score oldScore(PositionSeq)="+Arrays.toString(score)+",add(EswnSeq)="+Arrays.toString(Pammount));//+vah2I~
-        for (int ii=0;ii<PLAYERS;ii++)     //account sequence      //+vah2I~
-        {                                                          //+vah2I~
-            int idx=currentEswnToPosition(ii);                     //+vah2I~
-            Pscore[ii]=score[idx]+Pammount[ii];                    //+vah2I~
-        }                                                          //+vah2I~
-        if (Dump.Y) Dump.println("Accounts.updateScore To Parm Score newScore="+Arrays.toString(Pscore));//+vah2I~
-    }                                                              //+vah2I~
+    //**************************************************           //~vah2I~
+    public  void updateScore(int[] Pscore/*eswnSeq*/,int[] Pammount/*eswnSeq*/)//~vah2I~
+    {                                                              //~vah2I~
+        if (Dump.Y) Dump.println("Accounts.updateScore To Parm Score oldScore(PositionSeq)="+Arrays.toString(score)+",add(EswnSeq)="+Arrays.toString(Pammount));//~vah2I~
+        for (int ii=0;ii<PLAYERS;ii++)     //account sequence      //~vah2I~
+        {                                                          //~vah2I~
+            int idx=currentEswnToPosition(ii);                     //~vah2I~
+            Pscore[ii]=score[idx]+Pammount[ii];                    //~vah2I~
+        }                                                          //~vah2I~
+        if (Dump.Y) Dump.println("Accounts.updateScore To Parm Score newScore="+Arrays.toString(Pscore));//~vah2I~
+    }                                                              //~vah2I~
     //**************************************************           //~9321I~
     public  void setScore(int[] Ptotal/*indexSeq*/)                 //~9321I~
     {                                                              //~9321I~

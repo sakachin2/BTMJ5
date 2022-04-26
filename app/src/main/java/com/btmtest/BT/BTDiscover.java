@@ -1,5 +1,6 @@
-//*CID://+v@@@R~:                             update#=   90;       //~v@@@R~
+//*CID://+vam3R~:                             update#=   92;       //+vam3R~
 //*************************************************************************//~v101I~
+//2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~v@@@I~
 //*************************************************************************//~v101I~
 
 package com.btmtest.BT;                                               //~1AedI~//~1Af1I~
@@ -85,7 +86,8 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
 	{                                                              //~@@@@I~
         if (Dump.Y) Dump.println("BTDiscover constructor");//~1AbGI~//~v@@@R~
         // Get the local Bluetooth adapter
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+//      mBtAdapter = BluetoothAdapter.getDefaultAdapter();         //+vam3R~
+        mBtAdapter = BTControl.getDefaultAdapter();                //+vam3I~
         instBTD=this;                                              //~v@@@R~
     }
 //***************************************************************************//~v@@@I~
@@ -145,7 +147,7 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
                 else                                               //~@@@@I~
 					newDevice=null;                                //~@@@@I~
             	UView.showToastShort(AG.resource.getString(R.string.InfoBTDiscoverFinished,devicelist.size()/2));//~v@@@R~
-	            if (Dump.Y) Dump.println("BTDiscover.onReceive ACTION_DISCOVERY_FINISHED newDevice="+Utils.toString(newDevice));//+v@@@I~
+	            if (Dump.Y) Dump.println("BTDiscover.onReceive ACTION_DISCOVERY_FINISHED newDevice="+Utils.toString(newDevice));//~v@@@I~
             }
             else                                                   //~1AbGI~
             if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action))//~1AbGI~
@@ -409,7 +411,8 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
         String addr=SbondingDeviceAddr;                            //~1AbLR~
     	if (addr!=null && !addr.equals(""))                                      //~1AbLR~
         {                                                          //~1AbLR~
-	        BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~1AbLR~
+//          BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~1AbLR~//+vam3R~
+            BluetoothAdapter adapter=BTControl.getDefaultAdapter();//+vam3I~
 			BluetoothDevice device=adapter.getRemoteDevice(addr);  //~1AbLR~
             int state=device.getBondState();                       //~1AbLR~
 		    if (Dump.Y) Dump.println("BTDiscover resetBonding status="+state);//~1AbLR~

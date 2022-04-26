@@ -1,6 +1,9 @@
-//*CID://+vai2R~:                             update#=  217;       //+vai2R~
+//*CID://+vamsR~:                             update#=  223;       //~vamsR~
 //*****************************************************************//~v101I~
-//2021/12/21 vai2 reject DrawnHW request before deal also in not first round(2nd round status may be (30-32:GS_READY_TO_NEXTGAME_...)//+vai2I~
+//2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//~vamsI~
+//2022/04/19 vamr Menu:gameover fail by "During game" when accountDlg canceled//~vamrI~
+//2022/04/10 vami take distance between WinAnyway and RiichAnyway  //~vamiI~
+//2021/12/21 vai2 reject DrawnHW request before deal also in not first round(2nd round status may be (30-32:GS_READY_TO_NEXTGAME_...)//~vai2I~
 //2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9eI~
 //2020/11/21 va48 (Bug)gameover rejected on client after suspendgame//~va48I~
 //2020/05/08 va07:close menu in game when preference selected      //~va07I~
@@ -12,6 +15,7 @@ import android.widget.Button;
 
 import com.btmtest.R;
 import com.btmtest.game.Accounts;
+import com.btmtest.game.Complete;
 import com.btmtest.game.Status;
 import com.btmtest.game.UA.UAEndGame;
 import com.btmtest.game.UA.UAReach;
@@ -19,6 +23,7 @@ import com.btmtest.game.UA.UARon;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.utils.UView;
+import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;
 import static com.btmtest.dialog.UMenuDlg.*;
@@ -45,8 +50,10 @@ public class MenuInGameDlg                                         //~v@@@R~
 //  public static final int ITEMID_SUSPEND_RESET        =ITEMID_BASE+6;//~9817I~//~0206R~//~0304R~
 	public static final int ITEMID_SUSPEND_DLG          =ITEMID_BASE+5;//~9823I~//~0206R~//~0304R~
 	public static final int ITEMID_RETURN               =ITEMID_BASE+6;//~9903I~//~9A29R~//~9C04R~//~0206R~//~0304R~
-	public static final int ITEMID_IOERR                =ITEMID_BASE+7 ;//~9A18I~//~9A29R~//~9C04R~//~0206R~//~0304R~
-    public static final int ITEMID_WIN_ANYWAY           =ITEMID_BASE+8 ;//~9C04R~//~0205R~//~0206R~//~0304R~
+//  public static final int ITEMID_IOERR                =ITEMID_BASE+7 ;//~9A18I~//~9A29R~//~9C04R~//~0206R~//~0304R~//~vamiR~
+//  public static final int ITEMID_WIN_ANYWAY           =ITEMID_BASE+8 ;//~9C04R~//~0205R~//~0206R~//~0304R~//~vamiR~
+    public static final int ITEMID_WIN_ANYWAY           =ITEMID_BASE+7 ;//~vamiI~
+    public static final int ITEMID_IOERR                =ITEMID_BASE+8 ;//~vamiI~
     public static final int ITEMID_REACH_ANYWAY         =ITEMID_BASE+9 ;//~va9eI~
     public static final int ITEMID_PREF_SETTING         =ITEMID_BASE+10;//~0205I~//~0206R~//~0304R~//~va9eR~
 	public static final int ITEMID_MENU_HELP            =ITEMID_BASE+11;//~v@@@I~//~9817R~//~9823R~//~9903R~//~9A18R~//~9A29R~//~9C04I~//~0205R~//~0206R~//~0304R~//~va9eR~
@@ -132,20 +139,20 @@ public class MenuInGameDlg                                         //~v@@@R~
     	if (Dump.Y) Dump.println("MenuInGameDlg.isGaming rc="+rc); //~0206I~
         return rc;                                                 //~0206I~
     }                                                              //~0206I~
-//**********************************                               //+vai2I~
-	private boolean isGamingNotInterRound()                        //+vai2I~
-    {                                                              //+vai2I~
-    	boolean rc;                                                //+vai2I~
-        if (!Status.isGamingNow())                                 //+vai2I~
-        {                                                          //+vai2I~
-        	UView.showToast(R.string.Err_GameStatusForMenuInGame); //+vai2I~
-            rc=false;                                              //+vai2I~
-        }                                                          //+vai2I~
-        else                                                       //+vai2I~
-        	rc=true;                                               //+vai2I~
-    	if (Dump.Y) Dump.println("MenuInGameDlg.isGamingNotInterRound rc="+rc);//+vai2I~
-        return rc;                                                 //+vai2I~
-    }                                                              //+vai2I~
+//**********************************                               //~vai2I~
+	private boolean isGamingNotInterRound()                        //~vai2I~
+    {                                                              //~vai2I~
+    	boolean rc;                                                //~vai2I~
+        if (!Status.isGamingNow())                                 //~vai2I~
+        {                                                          //~vai2I~
+        	UView.showToast(R.string.Err_GameStatusForMenuInGame); //~vai2I~
+            rc=false;                                              //~vai2I~
+        }                                                          //~vai2I~
+        else                                                       //~vai2I~
+        	rc=true;                                               //~vai2I~
+    	if (Dump.Y) Dump.println("MenuInGameDlg.isGamingNotInterRound rc="+rc);//~vai2I~
+        return rc;                                                 //~vai2I~
+    }                                                              //~vai2I~
 //**********************************                               //~va02I~
 	private boolean isGaming(int Pmsgid)                           //~va02I~
     {                                                              //~va02I~
@@ -185,8 +192,8 @@ public class MenuInGameDlg                                         //~v@@@R~
             	doCompResult();                                    //~v@@@I~
                 break;                                             //~v@@@R~
 			case ITEMID_DRAWN_GAME:                                //~v@@@I~
-//          	if (!isGaming())                                   //~0206I~//+vai2R~
-            	if (!isGamingNotInterRound())                      //+vai2I~
+//          	if (!isGaming())                                   //~0206I~//~vai2R~
+            	if (!isGamingNotInterRound())                      //~vai2I~
                 {
 	        		swDismiss=false;
                 	break;                                         //~0206I~
@@ -384,6 +391,7 @@ public class MenuInGameDlg                                         //~v@@@R~
 //            return;                                              //~va02R~
 //        }                                                        //~va02R~
 		if (Status.isGameOver() || Status.isGameSuspended())       //~va02R~
+        {                                                          //~vamrI~
 			if (!Accounts.isServer())                              //~va02I~
             {                                                      //~va02I~
 			  if (AG.aBTMulti.BTGroup.getConnectedCtr()!=0)        //~va48I~
@@ -393,6 +401,26 @@ public class MenuInGameDlg                                         //~v@@@R~
                 return;                                            //~va02I~
               }                                                    //~va48I~
             }                                                      //~va02I~
+        }                                                          //~vamrI~
+        else                                                       //~vamrI~
+        {                                                          //~vamrI~
+        	Complete cmp=AG.aComplete;                                 //~9322R~//~9402M~//~vamrI~
+        	if (cmp.lastScore!=null)                   //~9322I~        //~9402R~//~9415R~//~vamrI~
+            {                                                      //~vamrI~
+            	String playerName=AG.aAccounts.getFirstDealerRealName();//~vamrI~
+                UView.showToastLong(Utils.getStr(R.string.Err_TryFinalScoreFromServer,playerName));//~vamrR~
+                swDismiss=false;                                   //~vamrI~
+                return;                                            //~vamrI~
+            }                                                      //~vamrI~
+            else                                                   //~vamsI~
+            if (Status.isShownFinalGame())                         //~vamsI~
+            {                                                      //~vamsI~
+            	String playerName=AG.aAccounts.getCurrentDealerRealName();//+vamsI~
+                UView.showToastLong(Utils.getStr(R.string.Err_TryFinalGameForGameover,playerName));//~vamsI~
+                swDismiss=false;                                   //~vamsI~
+                return;                                            //~vamsI~
+            }                                                      //~vamsI~
+        }                                                          //~vamrI~
     	swDismiss=AG.aGC.endGameReturn();                          //~9903R~
     }                                                              //~9903I~
 //**********************************                               //~9A18I~

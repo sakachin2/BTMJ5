@@ -1,4 +1,4 @@
-//*CID://+vabfR~: update#= 554;                                    //~vac1R~//~vabfR~
+//*CID://+vabfR~: update#= 556;                                    //~vac1R~//~vabfR~
 //**********************************************************************//~v101I~
 //2021/07/28 vabf Robot call Honer tile at first if top at near final game//~vabfI~
 //2021/03/11 va6f (BUG)when resume ,1st take occures on player currentEswn!=0//~va6fI~
@@ -101,6 +101,7 @@ public class Status //extends Handler                              //~v@@@R~
     private boolean swGameSuspended;  //finally game end by suspend                             //~0110I~//~0307R~
     private boolean swSuspendRequest; //set by dialog checkbox,open SuspendDlg if set                                    //~0304I~//~0307I~
     private boolean swSuspendGame;    //SuspendDlg once Opened(Svr/Client) for showDismissed                             //~9904R~//~0307R~
+    private boolean swShownFinalGame;    //FinalGame Dlg was shown //+vabfI~
 //*************************                                        //~v@@@I~
 	public Status()                                                //~v@@@R~
     {                                                              //~0914I~
@@ -139,7 +140,7 @@ public class Status //extends Handler                              //~v@@@R~
 	public static boolean isGameOver()                             //~v@@@R~
     {                                                              //~v@@@I~
         boolean rc=(aStatus.flag & GSF_GAMEOVER)!=0;               //~v@@@R~
-        if (Dump.Y) Dump.println("Status.isGameOver rc="+rc);      //~v@@@I~
+        if (Dump.Y) Dump.println("Status.isGameOver rc="+rc+",flag="+Integer.toHexString(aStatus.flag));      //~v@@@I~//~vabfR~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*************************************************************************//~9612I~
@@ -452,6 +453,7 @@ public class Status //extends Handler                              //~v@@@R~
         swRon=false;                                               //~v@@@I~
         endGameType=ENDGAME_NONE;                                //~v@@@I~
     	swGameSuspended=false;                                     //~0110I~
+    	swShownFinalGame=false;                                    //+vabfI~
 //        ctrSuspendRequest=0;                                       //~9818I~//~9823R~
 ////      ctrSuspendRequestOld=0;                                    //~9818I~//~9822R~//~9823R~
 ////      Arrays.fill(swEswnSuspendRequestOld,false);                //~9820I~//~9822R~//~9823R~
@@ -655,7 +657,7 @@ public class Status //extends Handler                              //~v@@@R~
     public static boolean isGamingNowAndInterRound()               //~va02I~
     {                                                              //~va02I~
     	boolean rc=aStatus.gameStatus>=GS_GAME_STARTED && aStatus.gameStatus<GS_BEFORE_DEAL && !isGameOver();    //21<= && <40//~va02I~
-        if (Dump.Y) Dump.println("Status.isGamingNowAndInterRound rc="+rc);     //~va02I~//+vabfR~
+        if (Dump.Y) Dump.println("Status.isGamingNowAndInterRound rc="+rc+",gameStatus="+aStatus.gameStatus);     //~va02I~//~vabfR~
         return rc;                                                 //~va02I~
     }                                                              //~va02I~
 	//*************************************************************************//~0205I~
@@ -1042,4 +1044,17 @@ public class Status //extends Handler                              //~v@@@R~
         if (Dump.Y) Dump.println("Status.isSuspendRequested rc="+rc);//~0304R~
         return rc;
     }                                                              //~0304I~
+    //*************************************************************************//+vabfI~
+    public static boolean isShownFinalGame()                       //+vabfI~
+    {                                                              //+vabfI~
+        boolean rc=aStatus.swShownFinalGame;                       //+vabfI~
+        if (Dump.Y) Dump.println("Status.isShownFinalGame rc="+rc);//+vabfI~
+        return rc;                                                 //+vabfI~
+    }                                                              //+vabfI~
+    //*************************************************************************//+vabfI~
+    public static void setShownFinalGame()                         //+vabfI~
+    {                                                              //+vabfI~
+        aStatus.swShownFinalGame=true;                             //+vabfI~
+        if (Dump.Y) Dump.println("Status.setShownFinalGame");      //+vabfI~
+    }                                                              //+vabfI~
 }//class Status                                                 //~dataR~//~@@@@R~//~v@@@R~

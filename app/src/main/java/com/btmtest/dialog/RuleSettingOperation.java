@@ -1,5 +1,7 @@
-//*CID://+vakRR~:                             update#=  513;       //~vakRR~
+//*CID://+vamuR~:                             update#=  516;       //~vamuR~
 //*****************************************************************//~v101I~
+//2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
+//2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
 //2022/03/19 vakQ notify update of rule when client received       //~vakQI~
 //2022/02/19 vak7 drop option chk kataagari(temporally False always AND and option is chk furiten only)//~vak7I~
@@ -64,8 +66,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     private UCheckBox cb2CheckReach;                               //~va27I~
     private UCheckBox cbChkMultiWait;                              //~va96I~
     private UCheckBox  cbYakuFix1;                                 //~0A15I~
-    private UCheckBox cbAllowRobotAllButton;                       //~va27I~
-    private UCheckBox cbPlayAloneNotify;                           //~va70I~
+//  private UCheckBox cbAllowRobotAllButton;                       //~va27I~//~vamuR~
+//  private UCheckBox cbPlayAloneNotify;                           //~va70I~//~vamuR~
     private UCheckBox cbPlayMatchNotify;                           //~vaa2I~
     //**********************************************************   //~v@@@I~
     private RuleSetting RSD;                                       //~v@@@I~
@@ -109,13 +111,13 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSettingOperation.getDialogWidth swSmallDevice="+AG.swSmallDevice+",ww="+ww);//~9819I~//~v@@@I~
         return ww;                                                 //~9819I~//~v@@@I~
     }                                                              //~9819I~//~v@@@I~
-    //******************************************                   //+vakRI~
-    @Override                                                      //+vakRI~
-    public void onDismissDialog()                                  //+vakRI~
-    {                                                              //+vakRI~
-        if (Dump.Y) Dump.println("RuleSettingOperation.onDismissDialog");//+vakRI~
-        RSD.aRuleSettingOperation=null;                            //+vakRI~
-    }                                                              //+vakRI~
+    //******************************************                   //~vakRI~
+    @Override                                                      //~vakRI~
+    public void onDismissDialog()                                  //~vakRI~
+    {                                                              //~vakRI~
+        if (Dump.Y) Dump.println("RuleSettingOperation.onDismissDialog");//~vakRI~
+        RSD.aRuleSettingOperation=null;                            //~vakRI~
+    }                                                              //~vakRI~
 	//***********************************************************      //~1613I~//~v@@@R~
     private void setupLayout(View PView)                           //~v@@@I~
     {                                                              //~v@@@I~
@@ -135,8 +137,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     	sbTimeoutTake=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKE_MIN,DEFAULT_TIMEOUT_TAKE_MAX,DEFAULT_TIMEOUT_TAKE_INC,DEFAULT_TIMEOUT_TAKE);//~v@@@I~
     	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBTimeoutTakeRobot);//~v@@@I~
     	sbTimeoutTakeRobot=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKEROBOT_MIN,DEFAULT_TIMEOUT_TAKEROBOT_MAX,DEFAULT_TIMEOUT_TAKEROBOT_INC,DEFAULT_TIMEOUT_TAKEROBOT);//~v@@@I~
-        cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//~va27I~
-        cbPlayAloneNotify=new UCheckBox(PView,R.id.cbPlayAloneNotify);//~va70I~
+//      cbAllowRobotAllButton=new UCheckBox(PView,R.id.cbAllowRobotAllButton);//~va27I~//~vamuR~
+//      cbPlayAloneNotify=new UCheckBox(PView,R.id.cbPlayAloneNotify);//~va70I~//~vamuR~
         cbPlayMatchNotify=new UCheckBox(PView,R.id.cbPlayMatchNotify);//~vaa2I~
 //  	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBTimeoutTakeKan);//~v@@@R~
 //  	sbTimeoutTakeKan=USpinBtn.newInstance(llSpinBtn,DEFAULT_TIMEOUT_TAKEKAN_MIN,DEFAULT_TIMEOUT_TAKEKAN_MAX,DEFAULT_TIMEOUT_TAKEKAN_INC,DEFAULT_TIMEOUT_TAKEKAN);//~v@@@R~
@@ -208,8 +210,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         sbTimeoutTake.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKE),DEFAULT_TIMEOUT_TAKE),swFixed);//~v@@@I~
         sbTimeoutTakeRobot.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEROBOT),DEFAULT_TIMEOUT_TAKEROBOT),swFixed);//~v@@@I~
 //      sbTimeoutTakeKan.setVal(Pprop.getParameter(getKeyRS(RSID_TIMEOUT_TAKEKAN),DEFAULT_TIMEOUT_TAKEKAN),swFixed);//~v@@@R~
-        cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~va27I~
-        cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//~va70R~
+//      cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~va27I~//~vamuR~
+//      cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//~va70R~//~vamuR~
         cbPlayMatchNotify.setStateInt(Pprop.getParameter(getKeyRS(RSID_PLAY_MATCH_NOTIFY),DEFAULT_PLAY_MATCH_NOTIFY/*default:true*/),swFixed);//~vaa2I~
     //*2Touch                                                        //~v@@@I~//~9C03R~
 //      cbRuleWait.setStateInt(Pprop.getParameter(getKeyRS(RSID_RULEWAIT),0/*default false*/),swFixed);//~v@@@I~//~9C03R~
@@ -290,8 +292,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         RSD.setBGUpdated(sbDelay2Touch,RSD.isChanged(RSID_DELAY_2TOUCH));//~vakQR~
         RSD.setBGUpdated(sbTimeoutTake,RSD.isChanged(RSID_TIMEOUT_TAKE));//~vakQR~
         RSD.setBGUpdated(sbTimeoutTakeRobot,RSD.isChanged(RSID_TIMEOUT_TAKEROBOT));//~vakQR~
-        RSD.setBGUpdated(cbAllowRobotAllButton,RSD.isChanged(RSID_ALLOW_ROBOT_ALL_BTN));//~vakQR~
-        RSD.setBGUpdated(cbPlayAloneNotify,RSD.isChanged(RSID_PLAY_ALONE_NOTIFY));//~vakQR~
+//      RSD.setBGUpdated(cbAllowRobotAllButton,RSD.isChanged(RSID_ALLOW_ROBOT_ALL_BTN));//~vakQR~//~vamuR~
+//      RSD.setBGUpdated(cbPlayAloneNotify,RSD.isChanged(RSID_PLAY_ALONE_NOTIFY));//~vakQR~//~vamuR~
         RSD.setBGUpdated(cbPlayMatchNotify,RSD.isChanged(RSID_PLAY_MATCH_NOTIFY));//~vakQR~
     //*2Touch                                                      //~vakQI~
         RSD.setBGUpdated(cb2TouchCancelableRon,RSD.isChanged(RSID_2TOUCH_CANCELABLE_RON));//~vakQR~
@@ -323,8 +325,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKE),sbTimeoutTake.getVal());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKEROBOT),sbTimeoutTakeRobot.getVal());//~v@@@I~
 //      changed+=updateProp(getKeyRS(RSID_TIMEOUT_TAKEKAN),sbTimeoutTakeKan.getVal());//~v@@@R~
-        changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//~va27I~
-        changed+=updateProp(getKeyRS(RSID_PLAY_ALONE_NOTIFY),cbPlayAloneNotify.getStateInt());//~va70I~
+//      changed+=updateProp(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//~va27I~//~vamuR~
+//      changed+=updateProp(getKeyRS(RSID_PLAY_ALONE_NOTIFY),cbPlayAloneNotify.getStateInt());//~va70I~//~vamuR~
         changed+=updateProp(getKeyRS(RSID_PLAY_MATCH_NOTIFY),cbPlayMatchNotify.getStateInt());//~vaa2I~
     //*2Touch                                                      //~9C03R~
 //      changed+=updateProp(getKeyRS(RSID_RULEWAIT),cbRuleWait.getStateInt());//~v@@@I~//~9C03R~
@@ -393,7 +395,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
     //************************************************************************//~vaaFI~
-    private static int getDelayUnit()                              //~vaaFI~
+//  private static int getDelayUnit()                              //~vaaFI~//~vamhR~
+    public  static int getDelayUnit()                              //~vamhI~
     {                                                              //~vaaFI~
 		int rc=AG.ruleProp.getParameter(getKeyRS(RSID_DELAY_UNIT),0);//~vaaFI~
         rc=rc==0 ? 1 : 2;	//devider                              //~vaaFI~
@@ -708,16 +711,18 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     //**************************************                       //~va27I~
 	public static boolean isAllowRobotAllButton()                  //~va27I~
     {                                                              //~va27I~
-		int def=0;	//false                                        //~va27I~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//~va27I~
+//  	int def=0;	//false                                        //~va27I~//+vamuR~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//~va27I~//+vamuR~
+		boolean rc=PrefSetting.isAllowRobotAllButton();             //+vamuI~
         if (Dump.Y) Dump.println("RuleSetting.isAllowRobotAllButton rc="+rc);//~va27I~
         return rc;                                                 //~va27I~
     }                                                              //~va27I~
     //**************************************                       //~va70I~
 	public static boolean isPlayAloneNotify()                      //~va70I~
     {                                                              //~va70I~
-		int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~va70R~
-        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),def)!=0;//~va70I~
+//  	int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~va70R~//+vamuR~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),def)!=0;//~va70I~//+vamuR~
+        boolean rc=PrefSetting.isPlayAloneNotify();                //+vamuI~
         if (Dump.Y) Dump.println("RuleSetting.isPlayAloneNotify rc="+rc);//~va70I~
         return rc;                                                 //~va70I~
     }                                                              //~va70I~

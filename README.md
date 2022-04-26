@@ -1,6 +1,6 @@
 ﻿# README.md 
 *************************************************************************
-ｅ雀（eJong)           2022/03/24  V1.20
+ｅ雀（eJong)           2022/04/23  V1.21
 Japanese style Mahjong game to play among your friends playing favorite BGM.
 No specific server machine is required.
 With biginner level robots, you can play alone or among member less than 4.
@@ -21,7 +21,7 @@ Please send your suggestion or bug reports to sakachin2@yahoo.co.jp
 
 *************************************************************************
 (Japanese)
-ｅ雀                  2022/03/24  V1.20
+ｅ雀                  2022/04/23  V1.21
 ***** 
 サーバーが不要な、好きな音楽を聞きながら仲間内で遊ぶ、"麻雀"対戦アプリです。
 多少は考えるロボットを相手に４人揃わなくても、また一人遊びもできます。

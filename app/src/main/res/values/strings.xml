@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.20</string>
+    <string name="app_version">v1.21</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -15,6 +15,7 @@
     <string name="NotConnected">NotConnected</string>
     <string name="Exit">Exit</string>
     <string name="failedBluetooth">Exception on Bluetooth processing.</string>
+    <string name="failedBluetoothPermission">Bluetooth is not available by the reason of permission not granted.</string>
     <string name="failedBluetoothUnpair">Failed to unpair process of Bluetooth.</string>
     <string name="BluetoothUnpairRequested">requested unpair %1$s.</string>
     <string name="nowDiscoverable">Now \"Visible\" status(in a certain minutes).</string>
@@ -119,7 +120,7 @@
     <string name="ConnectedBTInSecureConnection">Connected %1$s(Insecure mode).</string><!--1Aed-->
     <string name="Info_ConnectionClosed">"%1$s" closed connection.</string>
     <string name="dev_act_msg">Device Response:</string>
-    <string name="bt_not_enabled_leaving">Bluetooth is Off.</string>
+    <string name="bt_not_enabled_leaving">Failed to enable Bluetooth.</string>
     <string name="alreadyconnected">Bluetooth connection exists already.</string>
     <string name="InfoBTDiscoverable">Now \"Discoverable\" status.</string> <!--1AbE-->
     <string name="InfoBTDiscoverableRequested">Requested \"Discoverable\".</string>
@@ -773,8 +774,8 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
 		<!--item>Suspend process</item-->
 		<item>Suspend Dialog</item>
 		<item>Gameover</item>
-		<item>Connection failure</item>
 		<item>Win Anyway</item>
+		<item>Connection failure</item>
 		<item>Riichi Anyway</item>
 		<item>Prefeence</item>
 		<item>Help for this menu</item>
@@ -1125,6 +1126,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_PlayMatchNotify">Notify availability of Ron,Pon,Kan,Chii.</string>
     <string name="Desc_PlayAloneNotify">(Quick Robot Action)</string>
     <string name="Desc_PlayMatchNotify">(See \"Help\")</string>
+    <string name="Desc_PlayAloneMoved">(!! Option of PlayAloneMode was moved to \"Preferecnce\" settings.)</string>
 
     <string name="Label_GameSet">Rounds</string>
     <string name="Label_GameSetInterrupted">Comp. Next is</string>
@@ -1569,6 +1571,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Desc_MultiWait">Allow Kata-Agari if \"Fix Yaku\":Filally.</string>
     <string name="Label_ChkMultiWaitYes">Yes</string>
     <string name="AE_NoReachErrToForce">Accepted only after failure of Riichi/OpenRiich.</string>
+    <string name="AE_NoCheckReach">Option \"Confirm Tenpai\" is off, use usual \"Riichi\".</string>
     <string name="AE_CancelAtFirst">\"Cancel\" is required for other action button highlighten.</string>
     <string name="Label_LeftyPortrait">Reverse layout of bottom buttons when portrait mode.</string>
     <string name="Label_LeftyLandscape">Eexchange left and right buttons when Landscape mode.</string>
@@ -1576,11 +1579,18 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Label_HideDetail">Hide</string>
     <string name="Info_HistoryCtrDetail">Total %1$d games.</string>
 
-    <string name="RequestPickupDocumentSaveDir">External storage usage was changed at Android-11.\n
+    <!--string name="RequestPickupDocumentSaveDir">External storage usage was changed at Android-11.\n
 At (re-)installation, it is required to specify a folder to save game data.\n
 Select \"%1$s\" on the dialog shown next.\n
 Make the folder on the dialog if not exists.\n
 At 1st re-instalation of eMahjong only, old version data(history data and rule file) will be migrated to the folder.
+	</string-->
+    <string name="RequestPickupDocumentSaveDir">
+At 1st instlation from Android-11, it is required to specify a folder to save game data.\n
+Select \"%1$s\" on the dialog shown next.\n
+If not exists, make the folder on the dialog using \"CREATE NEW FOLDER\".\n
+At 1st re-instalation only, data(history data and rule file) will be migrated to the folder.\n
+\"Use Int\" means to use internal storage as saving folder which is cleared at re-installation.
 	</string>
     <string name="RequestPickupDocumentSaveDirCanceled">"It was canceled to set the folder to save game data.\n
 Restart this APP to try to set again.
@@ -1602,7 +1612,7 @@ Reinstall this APP to try to set again.
     <string name="ScopedExternalStorageDeniedRead">External Storeage READ permission, it was denied.</string>
     <string name="ScopedExternalStorageDeniedWrite">External storage WRITE permission, it was denied.</string>
     <string name="ErrCanceledScopedPermission">Setting of data folder was canceled. Restart the App.</string>
-    <string name="NoTryAgain">Fix NO</string>
+    <string name="NoTryAgain">Use Int</string>
     <string name="FileTypeDocument">Docs：</string>
     <string name="Info_Transfered">%1$d / %2$d files on External Storage was migrated to Android-11 NEW Storage area.</string>
     <string name="btnBGM">Set</string>
@@ -1631,4 +1641,10 @@ Reinstall this APP to try to set again.
     <string name="Info_RuleReceived_ChangeY">Rule received, change item is shown with different background color.</string>
     <string name="Info_RuleReceived_ChangeN">Rule received, no change exists but reply required.</string>
     <string name="Info_RuleReceived_ChangeN_Server">Server received rule, no change exists.</string>
+    <string name="RuleNotInitialized">(Not initialized, Push OK)</string>
+    <string name="SampleRuleID">NY-rule etc.</string>
+    <string name="ZoomUp">＋</string>
+    <string name="ZoomDown">ー</string>
+    <string name="Err_TryFinalScoreFromServer">try after confirmed final score by \"Final score\" menu item on \"%1$s\".</string>
+    <string name="Err_TryFinalGameForGameover">Final hand process is not completed, retry from menu item on \"%1$s\"</string>
 </resources>

@@ -1,5 +1,6 @@
-//*CID://+vaedR~: update#= 393;                                    //~v@@@R~//~vaedR~
+//*CID://+vamdR~: update#= 396;                                    //~vamdR~
 //**********************************************************************//~v101I~
+//2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //**********************************************************************//~vaedI~
 //utility around screen                                            //~v@@@I~
@@ -43,7 +44,7 @@ public class Pieces                                                //~v@@@R~
     private static final int COMPLETE_STROKE_WIDTH=6;              //~v@@@I~
     private static final double STROKE_WIDTH_RATE=0.1;             //~v@@@M~
     private static final int    STROKE_WIDTH_MIN=4;                //~v@@@I~
-    private static final int    STROKE_WIDTH_MIN_SMALLDIP=2;       //+vaedR~
+    private static final int    STROKE_WIDTH_MIN_SMALLDIP=2;       //~vaedR~
                                                                    //~v@@@M~
 //Small image                                                      //~v@@@R~
     //*standing                                                    //~v@@@I~
@@ -1099,7 +1100,25 @@ public class Pieces                                                //~v@@@R~
         	if (rc<STROKE_WIDTH_MIN)                               //~v@@@I~
             	rc=STROKE_WIDTH_MIN;                               //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("Pieces.getStrokeWidth rc="+rc+"swSmallDip="+AG.swSmallDip+",parmW="+PpieceW+",rate="+STROKE_WIDTH_RATE+",byRate="+byRate+",min="+STROKE_WIDTH_MIN);//~v@@@I~//+vaedR~
+        if (Dump.Y) Dump.println("Pieces.getStrokeWidth rc="+rc+"swSmallDip="+AG.swSmallDip+",parmW="+PpieceW+",rate="+STROKE_WIDTH_RATE+",byRate="+byRate+",min="+STROKE_WIDTH_MIN);//~v@@@I~//~vaedR~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+	//***************************************************************//~vamdI~
+	//*From Anim.getPiece                                          //~vamdI~
+	//***************************************************************//~vamdI~
+    public Bitmap getBitmapDrawable(TileData Ptd)                  //+vamdR~
+    {                                                              //~vamdI~
+        if (Dump.Y) Dump.println("Pieces.getBitmapDrawable td="+Ptd);//+vamdR~
+        int num=Ptd.number;                                        //+vamdI~
+        int type=Ptd.type;                                         //+vamdI~
+        if (type!=TT_JI)                                           //+vamdI~
+        	if (Ptd.isRed5())                                      //+vamdI~
+            	num=0;                                             //+vamdI~
+            else                                                   //+vamdI~
+            	num++;                                             //+vamdI~
+        int resID=resAllS[type][num];                              //+vamdR~
+		Bitmap bmp=loadPieceImage(resID);                          //~vamdI~
+        if (Dump.Y) Dump.println("Pieces.getBitmapDrawable bmp="+bmp);//~vamdI~
+        return bmp;                                                //~vamdI~
+    }                                                              //~vamdI~
 }//class Pieces                                                    //~v@@@R~

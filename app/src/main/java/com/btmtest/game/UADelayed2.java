@@ -1,6 +1,6 @@
-//*CID://+vacdR~: update#=1020;                                    //+vacdR~
+//*CID://+vacdR~: update#=1021;                                    //~vacdR~
 //**********************************************************************//~v101I~
-//2021/08/21 vacd skip msg that robot blocked by human's priority  //+vacdI~
+//2021/08/21 vacd skip msg that robot blocked by human's priority  //~vacdI~
 //2021/08/21 vacc (Bug)Match mode; at blocked by Ron issued, Discard btn issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vaccI~
 //2021/07/24 vab0 PlayAlone mode;no need startTimer for Block timeout. timer used by DrawnReqDlgHW for STOP auto//~vab0I~
 //2021/07/24 vaaZ PlayAlone mode;after Cancel Ron,discard rejected by err msg of "push orange btn" when ron is cancelable//~vaaYI~
@@ -282,17 +282,18 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
             {                                                      //~va60I~
 		        if (swStopAuto2Touch)  //blocked                   //~va60I~
                 {                                                  //~va60I~
-//          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~//+vacdR~
-        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot action was blocked by HswStopAuto2Touch");//+vacdI~
+//          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~//~vacdR~
+        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot action was blocked by HswStopAuto2Touch");//~vacdI~
                     return -1;                                     //~va60I~
                 }                                                  //~va60I~
 		        if (PactionID==GCM_RON && isBlockRobotRon())  //blocked//~va8tR~
                 {                                                  //~va8tR~
-//          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va8tR~//+vacdR~
-        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot Ron was blocked by Human priority");//+vacdI~
+//          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va8tR~//~vacdR~
+        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot Ron was blocked by Human priority");//~vacdI~
                     return -1;                                     //~va8tR~
                 }                                                  //~va8tR~
             }                                                      //~va60I~
+        	if (Dump.Y) Dump.println("UADelayed2.isYourTurn not PLAYER_YOU msgid="+Integer.toHexString(msgid));//+vacdI~
         	return msgid;                                          //~9C06I~
         }                                                          //~va60I~
         if (swStopAuto2Touch)  //blocked                                    //~9C06I~//~9C07R~

@@ -1,5 +1,6 @@
-//*CID://+vaedR~: update#= 592;                                    //~vaedR~
+//*CID://+vam0R~: update#= 611;                                    //~vam0R~
 //**********************************************************************//~v101I~
+//2022/03/24 vam0 show Wareme sign                                 //~vam0I~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
@@ -11,12 +12,16 @@ package com.btmtest.game.gv;                                         //~1107R~  
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 //import android.view.SurfaceHolder;                               //~v@21R~
 
+import com.btmtest.R;
+import com.btmtest.dialog.RuleSetting;
+import com.btmtest.game.Accounts;
 import com.btmtest.game.Players;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
@@ -80,7 +85,7 @@ public class DiceBox extends Thread                                //~v@@@R~
   	private static final int COLOR_WAITING_CIRCLE               =Color.argb(0xff,0x54,0xe8,0x1c);//~v@11R~
   	private static final int COLOR_WAITING_RING                 =Color.argb(0xff,0xff,0xff,0xff);//~v@11R~
     private static final int COLOR_STARTER_CIRCLE               =Color.argb(0xff,0xcc,0x24,0x00);//~v@11R~
-    private static final int COLOR_STARTER_RING                 =Color.argb(0xff,0xff,0xff,0xff);//~v@11R~
+    private static final int COLOR_STARTER_RING                 =Color.argb(0xff,0xff,0x00,0xff);//~v@11R~//~vam0R~
                                                                    //~v@21I~
     private static final double TOUCH_ALLOWANCE=0.4;                //~v@@@I~
     private static final int MAX_SPOTS=6;                          //~v@@@I~
@@ -99,6 +104,14 @@ public class DiceBox extends Thread                                //~v@@@R~
 	private static final int WIDTH_WAITING_RING=2;                 //~v@11I~
     private static final int WIDTH_STARTER_RING=2;                 //~v@11R~
 	private static final int DISTANCE_WAITING_CIRCLE=2;              //~v@11I~
+    private static final int COLOR_SPRITPOS_BG=AG.getColor(R.color.spritposid);//~vam0R~
+    private static final int COLOR_SPRITPOS_FG=0xffffffff;         //~vam0R~
+//  private static final int COLOR_SPRITPOS_FRAME=0xff8080ff;      //+vam0R~
+    private static final int COLOR_SPRITPOS_FRAME=COLOR_SPRITPOS_BG;//+vam0I~
+//  private static final int COLOR_SPRITPOS_FG=AG.getColor(R.color.spritposid);//~vam0I~
+//  private static final int COLOR_SPRITPOS_BG=0xffffff00;         //~vam0I~
+//  private static final int COLOR_SPRITPOS_FRAME=COLOR_SPRITPOS_FG;//~vam0R~
+    private static final int MARGIN_SPRITPOS_STARTER=2;            //~vam0I~
 //    private static final int DISTANCE_STARTER_CIRCLE=2;          //~v@11R~
                                                                    //~v@@@I~
 //  public static boolean swEnable=false;                          //~v@@@I~//~v@21R~
@@ -112,6 +125,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     private Pieces pieces;//~v@@@I~
     private MJTable table;                                                 //~v@@@I~
     private Bitmap[] bmsDice;                                              //~v@@@I~
+    private Bitmap[] bmsSplitPosID;                                //~vam0I~
 //    private final SurfaceHolder holder;                            //~v@@@R~//~v@21R~
     private int[] sleepInterval ={ 10, 20, 50,100,300,800};    //ms//~v@@@R~//~v@11R~
 //  private int[] sleepCtr      ={ 30, 10, 10,  5,  4,  1};    //ms//~v@@@R~//~v@11R~
@@ -122,8 +136,8 @@ public class DiceBox extends Thread                                //~v@@@R~
 //  private Point[] posLight;                                      //~v@@@I~//~v@11R~
     private Point[] posLightWaiting;                               //~v@11I~
     private Point[] posLightStarter;                               //~v@11R~
-    private Rect[]  boxLight;                                      //~v@@@I~//+vaedR~
-//  public  Rect[]  boxLight;  //TODO test                         //+vaedR~
+    private Rect[]  boxLight;                                      //~v@@@I~//~vaedR~
+//  public  Rect[]  boxLight;  //TODO test                         //~vaedR~
     private RectF[]  boxLightArc;                                  //~v@@@I~
     private RectF[]  boxLightArcInner;                             //~v@@@I~
     private Canvas canvas;                                                 //~v@@@I~
@@ -165,6 +179,10 @@ public class DiceBox extends Thread                                //~v@@@R~
     private int colorShadowLamp=COLOR_FG_DISABLE;                  //~va60R~
 	private int LIGHT_EDGE;                                        //~vaedR~
 	private int RADIUS_WAITING_CIRCLE;                             //~vaedI~
+    private Point posLightStarterPrevious=null;                    //~vam0I~
+    private int playerStarter=-1;                                  //~vam0I~
+    private Rect recterGameSeq=null;                               //~vam0I~
+    private boolean swSplitPos;                                    //~vam0I~
     // *************************                                        //~v@@@I~
 	public DiceBox() //default constructor for IT Mocking          //~va60I~
 	{                                                              //~va60I~
@@ -173,6 +191,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     }                                                              //~va60I~
 	public DiceBox(GCanvas Pgcanvas)                               //~v@@@R~
     {                                                              //~0914I~
+        swSplitPos= RuleSetting.isSpritPos();                       //~vam0I~
 //  	diceBox=this;                                              //~v@@@I~//~v@21R~
         AG.aDiceBox=this;                                          //~v@@@I~
         gcanvas=Pgcanvas;                                          //~v@@@I~
@@ -201,6 +220,7 @@ public class DiceBox extends Thread                                //~v@@@R~
         marginDice=(possDice[0].x-rectDiceBox.left)-2;             //~v@@@R~
 //      touchAllowance=(int)(LIGHT_RADIUS*2*TOUCH_ALLOWANCE);      //~v@@@I~//~v@11R~
         touchAllowance=(int)(radiusLight*2*TOUCH_ALLOWANCE);       //~v@11I~
+        createBitmapSplitPosID();                                  //~vam0I~
     	if (Dump.Y) Dump.println("DiceBox constructor marginDice="+marginDice+",touchAllowance="+touchAllowance+",LIGHT_EDGE="+LIGHT_EDGE);//~v@@@R~//~va60R~
     }
     //****************************************************************************************    //~v@@@I~//~v@21R~
@@ -292,6 +312,7 @@ public class DiceBox extends Thread                                //~v@@@R~
         	Point center=new Point(p.x+bm.getWidth()/2,p.y+bm.getHeight()/2);//~v@11I~
             posLightStarter[ii]=center;                            //~v@11I~
         }                                                          //~v@11I~
+        if (Dump.Y) Dump.println("DiceBox.setPosLightStarter posLightStarter="+Utils.toString(posLightStarter));//~vam0I~
     }                                                              //~v@11I~
     //*********************************************************    //~v@11I~
     public Rect[] getLightRect()                                   //~v@11I~
@@ -466,7 +487,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     //*********************************************************    //~v@11I~
     public void drawCurrentStarterMark(int Pplayer,boolean PswErase)//~v@11I~
     {                                                              //~v@11I~
-        if (Dump.Y) Dump.println("DiceBox.drawCurrentStartermark player="+Pplayer+",swErase="+PswErase);//~v@11I~
+        if (Dump.Y) Dump.println("DiceBox.drawCurrentStarterMark player="+Pplayer+",swErase="+PswErase);//~v@11I~//~vam0R~
 //      int r=RADIUS_STARTER_CIRCLE;                               //~v@11R~
         int r=radiusStarterMark;                                     //~v@11I~
         Point p=posLightStarter[Pplayer];                          //~v@11I~
@@ -654,6 +675,7 @@ public class DiceBox extends Thread                                //~v@@@R~
     public void setLightStarter(int Pplayer,boolean PswResetPrev)          //~v@11I~
     {                                                              //~v@11I~
         if (Dump.Y) Dump.println("DiceBox.setLightStarter Pplayer="+Pplayer+",swResetPrev="+PswResetPrev+",currentStarter="+currentStarter+",posDrawnStarterMark="+posDrawnStarterMark);//~va60R~
+    	clearSplitPosID();                                         //~vam0I~
 //      if (PswResetPrev)                                          //~v@11R~
         if (PswResetPrev && posDrawnStarterMark>=0)                //~v@11R~
         {                                                          //~v@11R~
@@ -1068,4 +1090,151 @@ public class DiceBox extends Thread                                //~v@@@R~
         if (Dump.Y) Dump.println("DiceBox.isAnyoneWaiting rc="+rc);
         return rc;//~v@@@I~
     }                                                              //~v@@@I~
+    //*********************************************************    //~vam0I~
+    private void createBitmapSplitPosID()                               //~vam0I~
+    {                                                              //~vam0I~
+        if (Dump.Y) Dump.println("DiceBox.createBitmapSplitPosID swSplitPos="+swSplitPos);//~vam0I~
+    	if (!swSplitPos)                                           //~vam0I~
+        	return;                                                //~vam0I~
+        Bitmap bmp;                                                //~vam0I~
+        Matrix matrix=new Matrix();                                //~vam0I~
+        Paint paint=new Paint();                                   //~vam0I~
+    	bmsSplitPosID=new Bitmap[PLAYERS];                         //~vam0I~
+        int sz=radiusStarterMark*2;                                //~vam0I~
+        if (Dump.Y) Dump.println("DiceBox.createBitmapSplitPosID sz="+sz);//~vam0R~
+        bmp=Graphics.createBitmap(sz,sz,Bitmap.Config.ARGB_8888);  //~vam0I~
+        Canvas cc=new Canvas(bmp);                                 //~vam0M~
+        Rect r=new Rect(0,0,sz,sz);                                //~vam0M~
+        Graphics.drawRect(cc,r,COLOR_SPRITPOS_FRAME);              //~vam0R~
+        int border=2;                                              //~vam0I~
+        r.left+=border; r.right-=border; r.top+=border; r.bottom-=border;//~vam0R~
+        Graphics.drawRect(cc,r,COLOR_SPRITPOS_BG);                 //~vam0I~
+                                                                   //~vam0I~
+	    String text=Utils.getStr(R.string.Label_SpritPosID);       //~vam0I~
+        paint.setColor(COLOR_SPRITPOS_FG);                         //~vam0I~
+    	int textsz=sz-border*2;                                    //~vam0R~
+    	Rect bounds=adjustTextSize(paint,text,textsz/*initial size*/,textsz/*maxW*/,textsz/*maxH*/);//~vam0I~
+        int xx=bounds.left+border;                                 //~vam0R~
+        int yy=textsz-bounds.bottom-(textsz-(-bounds.top+bounds.bottom))/2+border;//~vam0R~
+        if (Dump.Y) Dump.println("DiceBox.createBitmapSplitPosID paint="+paint);//~vam0I~
+        Graphics.drawText(cc,text,xx,yy,paint);                    //~vam0R~
+        bmsSplitPosID[0]=bmp;                                      //~vam0I~
+                                                                   //~vam0I~
+        matrix.setRotate(270,sz/2,sz/2);          //~v@@@I~       //~vam0I~
+        bmp=Graphics.createBitmap(bmp,0,0,sz,sz,matrix,true);      //~vam0I~
+        bmsSplitPosID[1]=bmp;                                      //~vam0I~
+        bmp=Graphics.createBitmap(bmp,0,0,sz,sz,matrix,true);      //~vam0I~
+        bmsSplitPosID[2]=bmp;                                      //~vam0I~
+        bmp=Graphics.createBitmap(bmp,0,0,sz,sz,matrix,true);      //~vam0I~
+        bmsSplitPosID[3]=bmp;                                      //~vam0I~
+    }                                                              //~vam0I~
+    //*********************************************************    //~vam0I~
+    //*from Stock.drawDeal                                         //~vam0I~
+    //*********************************************************    //~vam0I~
+    public  void drawSplitPosID(int Peswn)                         //~vam0R~
+    {                                                              //~vam0I~
+        if (Dump.Y) Dump.println("DiceBox.drawSplitPosID swSplitPos="+swSplitPos+",playerStarter="+playerStarter);//~vam0R~
+    	if (!swSplitPos)                                           //~vam0I~
+        	return;                                                //~vam0I~
+        int player= Accounts.eswnToPlayer(Peswn);                 //~vam0I~
+        Bitmap bmp=bmsSplitPosID[player];                           //~vam0I~
+        Point p=new Point(posLightStarter[player]); //center of circle//~vam0R~
+        if (Dump.Y) Dump.println("DiceBox.drawSplitPosID cutEswn="+Peswn+",player="+player+",starter circlePoint="+p);//~vam0R~
+        int sz=radiusStarterMark;                                  //~vam0I~
+        if (player==playerStarter)	//drawn starterMark            //~vam0I~
+        {                                                          //~vam0I~
+        	Rect r=recterGameSeq;                                  //~vam0I~
+            int margin=MARGIN_SPRITPOS_STARTER;                    //~vam0I~
+            int sz2=sz*2;                                          //~vam0I~
+            switch(player)                                         //~vam0I~
+            {                                                      //~vam0I~
+            case 0:                                                //~vam0I~
+                p.x=r.right+margin;                                //~vam0I~
+                p.y=r.bottom-sz2;                                  //~vam0R~
+                break;                                             //~vam0I~
+            case 1:                                                //~vam0I~
+                p.x=r.right-sz2;                                   //~vam0R~
+                p.y=r.top-sz2-margin;                              //~vam0R~
+                break;                                             //~vam0I~
+            case 2:                                                //~vam0I~
+                p.x=r.left-sz2-margin;                             //~vam0R~
+                p.y=r.top;                                         //~vam0R~
+                break;                                             //~vam0I~
+            case 3:                                                //~vam0I~
+                p.x=r.left;                                        //~vam0R~
+                p.y=r.bottom+margin;                               //~vam0I~
+                break;                                             //~vam0I~
+            }                                                      //~vam0I~
+        }                                                          //~vam0I~
+        else                                                       //~vam0I~
+        {                                                          //~vam0I~
+            switch(player)                                         //~vam0R~
+            {                                                      //~vam0R~
+            case 0:                                                //~vam0R~
+                p.x+=sz;                                           //~vam0R~
+                p.y-=sz;                                           //~vam0R~
+                break;                                             //~vam0R~
+            case 1:                                                //~vam0R~
+                p.x-=sz;                                           //~vam0R~
+                p.y-=sz*3;                                         //~vam0R~
+                break;                                             //~vam0R~
+            case 2:                                                //~vam0R~
+                p.x-=sz*3;                                         //~vam0R~
+                p.y-=sz;                                           //~vam0R~
+                break;                                             //~vam0R~
+            case 3:                                                //~vam0R~
+                p.x-=sz;                                           //~vam0R~
+                p.y+=sz;                                           //~vam0R~
+                break;                                             //~vam0R~
+            }                                                      //~vam0R~
+        }                                                          //~vam0I~
+        Graphics.drawBitmap(bmp,p.x,p.y);                          //~vam0I~
+        posLightStarterPrevious=p;                                 //~vam0R~
+        if (Dump.Y) Dump.println("DiceBox.drawSplitPosID splitPosID point="+p);//~vam0I~
+    }                                                              //~vam0I~
+    //*********************************************************    //~vam0I~
+    //*from Starter.drawDeal                                       //~vam0I~
+    //*********************************************************    //~vam0I~
+    public  void drawSplitPosIDStarter(int Pplayer,Rect PrectGameSeq)//~vam0I~
+    {                                                              //~vam0I~
+        if (Dump.Y) Dump.println("DiceBox.drawSplitPosIDStarter player="+Pplayer+",rectGameSeq="+PrectGameSeq);//~vam0I~
+        playerStarter=Pplayer;                                     //~vam0I~
+        recterGameSeq=PrectGameSeq;                                //~vam0I~
+    }                                                              //~vam0I~
+    //*********************************************************    //~vam0I~
+    public  void clearSplitPosID()                                 //~vam0I~
+    {                                                              //~vam0I~
+        if (Dump.Y) Dump.println("DiceBox.clearSplitPosID oldPoint="+posLightStarterPrevious);//~vam0I~
+        if (posLightStarterPrevious!=null)                         //~vam0I~
+        {                                                          //~vam0I~
+            int xx=posLightStarterPrevious.x;                      //~vam0I~
+            int yy=posLightStarterPrevious.y;                      //~vam0I~
+            int sz=radiusStarterMark*2;                            //~vam0I~
+            Rect r=new Rect(xx,yy,xx+sz,yy+sz);                    //~vam0I~
+            Graphics.drawRect(r,COLOR_BG_TABLE);                   //~vam0R~
+        	posLightStarterPrevious=null;                          //~vam0I~
+        }                                                          //~vam0I~
+    }                                                              //~vam0I~
+    //*********************************************************    //~vam0I~
+    private static Rect adjustTextSize(Paint Ppaint,String Pstr,int PinitialSize,int PmaxW,int PmaxH)//~vam0R~
+    {                                                              //~vam0I~
+        Rect r=new Rect();                                         //~vam0I~
+        int sz=PinitialSize;                                       //~vam0I~
+        int ww,hh;                                                 //~vam0I~
+        for (;;)                                                   //~vam0I~
+        {                                                          //~vam0I~
+            Ppaint.setTextSize(sz);                                //~vam0I~
+            int strsz=(int)Ppaint.measureText(Pstr);               //~vam0I~
+            ww=strsz;                                              //~vam0I~
+    	    Ppaint.getTextBounds(Pstr,0,Pstr.length(),r);          //~vam0I~
+            hh=r.bottom-r.top;                                     //~vam0I~
+            if (Dump.Y) Dump.println("DiceBox.adjustTextSize str="+Pstr+",sz="+sz+",strsz="+strsz+",maxW="+PmaxW+",maxH="+PmaxH+",hh="+hh+",boundrect="+r.toString());//~vam0I~
+            if (strsz<PmaxW && hh<PmaxH)                           //~vam0I~
+                break;                                             //~vam0I~
+//          sz-=2;                                                 //~vam0I~
+            sz--;                                                  //~vam0I~
+        }                                                          //~vam0I~
+        if (Dump.Y) Dump.println("DiceBox.adjustTextSize sz="+sz+",ww="+ww+",hh="+hh);//~vam0I~
+        return r;                                                  //~vam0R~
+    }                                                              //~vam0I~
 }//class DiceBox                                                   //~v@@@R~

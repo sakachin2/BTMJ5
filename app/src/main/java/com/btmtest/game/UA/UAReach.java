@@ -1,5 +1,6 @@
-//*CID://+vaj3R~: update#= 606;                                    //~vaj3R~
+//*CID://+vam1R~: update#= 608;                                    //~vam1R~
 //**********************************************************************//~v101I~
+//2022/03/24 vam1 errmsg for no tenpai chkoption                   //~vam1I~
 //2022/01/19 vaj3 Gmsg:Reach should be show at discard             //~vaj3I~
 //2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9cI~
 //2021/06/17 va9c allow reach and warinig only for 2han-constraint or kataagari err. set reach at discard even issed warning//~va9cI~
@@ -390,7 +391,7 @@ public class UAReach                                                //~v@@@R~//~
         {                                                          //~v@@6I~
 	        sb.append(ACAction.strTD(Ptds[ii])+MSG_SEPAPP2);       //~v@@6I~
         }                                                          //~v@@6I~
-        if (Dump.Y) Dump.println("UAReach.makeMsgDataToClient sb="+sb);//~v@@6I~//~9427R~//+vaj3R~
+        if (Dump.Y) Dump.println("UAReach.makeMsgDataToClient sb="+sb);//~v@@6I~//~9427R~//~vaj3R~
         return sb.toString();                                                              //~v@@@I~//~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~9309I~
@@ -450,6 +451,12 @@ public class UAReach                                                //~v@@@R~//~
         if (Dump.Y) Dump.println("UAReach.reachAnyway player="+Pplayer+",actionID="+actionID+",actionIDErr="+actionIDErr);//~va9eR~
         boolean rc=true;                                           //~va9eI~
         int msgID;	                                               //~va9eI~
+    	if (!swCheckReach)                                         //+vam1R~
+        {                                                          //~vam1I~
+        	GMsg.drawMsgbar(R.string.AE_NoCheckReach);             //~vam1I~
+            UView.showToastLong(R.string.AE_NoCheckReach);         //+vam1I~
+            return false;                                          //~vam1I~
+        }                                                          //~vam1I~
         if (actionIDErr==GCM_REACH_OPEN)	//not FORCE            //~va9eI~
         	msgID=GCM_FORCE_REACH_OPEN;	//    =28;                 //~va9eI~
         else                                                       //~va9eI~

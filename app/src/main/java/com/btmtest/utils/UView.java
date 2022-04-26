@@ -1,5 +1,6 @@
-//*CID://+vaf0R~: update#= 363;                                    //~vaf0R~
+//*CID://+vam6R~: update#= 386;                                    //~vam6R~
 //**********************************************************************//~v101I~
+//2022/03/28 vam6 android12(api31) Display.getRealSize, getRealMetrics//~vam6I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
@@ -113,7 +114,10 @@ public class UView                                                 //~v@@@I~
 //  	Display display=((WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1122M~//~1aj0R~
     	Display display=getDefaultDisplay();                       //~1aj0I~
         Point p=new Point();                                       //~1A6pI~
-	  if (Build.VERSION.SDK_INT>=30)   //android30(R)              //~1aj0I~
+	  if (Build.VERSION.SDK_INT>=31)                               //~vam6I~
+        getDisplaySize(display,p);                                 //~vam6I~
+      else                                                         //~vam6I~
+      if (Build.VERSION.SDK_INT>=30)   //android30(R)              //~1aj0I~
         getDisplaySize30(p);                                       //~1aj0R~
       else                                                         //~1aj0R~
         getDisplaySize(display,p);                                         //~1A6pR~
@@ -217,6 +221,60 @@ public class UView                                                 //~v@@@I~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize30 navigationbar bottomHA11="+AG.scrNavigationbarBottomHeightA11+",leftWA11="+AG.scrNavigationbarLeftWidthA11+",rightWA11="+AG.scrNavigationbarRightWidthA11+",swgesturemode="+AG.swNavigationbarGestureMode);//~vaefR~//~vaegR~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize30 point="+Ppoint.toString()+",statusBarHeight="+AG.scrStatusBarHeight);//~vaefI~
     }                                                              //~1ak2I~
+    //*******************************************************      //~vam6M~
+    @TargetApi(31)   //>=31                                        //~vam6M~
+    public static void getDisplaySize31(Display Pdisplay,Point Ppoint)//~vam6M~
+    {                                                              //~vam6M~
+        WindowMetrics metrics=getRealMetrics_from31(Pdisplay);     //~vam6M~
+        Insets insetGesture=metrics.getWindowInsets().getInsets(WindowInsets.Type.systemGestures());//~vam6I~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 insetGesture="+insetGesture);//~vam6I~
+        AG.swNavigationbarGestureMode=insetGesture.left!=0 && insetGesture.right !=0 && insetGesture.top!=0 && insetGesture.bottom!=0;//~vam6I~
+                                                                   //~vam6I~
+		Rect bounds=metrics.getBounds();                           //~vam6M~
+	    int ww0=bounds.width();                                    //~vam6M~
+	    int hh0=bounds.height();                                   //~vam6M~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 bounds="+bounds);//~vam6I~
+        WindowInsets windowInsets=metrics.getWindowInsets();       //~vam6M~
+        Insets inset=windowInsets.getInsetsIgnoringVisibility      //~vam6M~
+						(WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vam6M~
+        int insetWW=inset.right+inset.left;                        //~vam6M~
+        int insetHH=inset.top+inset.bottom;                        //~vam6M~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 insetWW="+insetWW+",insetHH="+insetHH+",insets="+inset);//~vam6M~
+                                                                   //~vam6M~
+        int ww=ww0-insetWW;                                        //~vam6I~
+        int hh=hh0-insetHH;                                        //~vam6I~
+        if (ww0>hh0)	//landscape                                //~vam6I~
+        {                                                          //~vam6I~
+            hh=hh0;	//hide navigationbar at MainActivity           //~vam6I~
+            ww=ww0; //fill hidden navigationbar, but right buttons has to be shift to left//~vam6I~
+        }                                                          //~vam6I~
+        else                                                       //~vam6I~
+	        ww=ww0;                                                //~vam6I~
+        AG.scrNavigationbarBottomHeightA11=inset.bottom;           //~vam6M~
+        int marginLR;                                              //~vam6M~
+        Rect rectDecor=getDecorViewRect();                         //~vam6M~
+//      if (AG.swNavigationbarGestureMode)                         //~vam6R~
+//      {                                                          //~vam6R~
+//          int left=rectDecor.left;	//landscape effect delayed to Decorview//~vam6R~
+//          int right=ww0-rectDecor.right;                         //~vam6R~
+//      	marginLR=Math.max(left,right);                         //~vam6R~
+//  	    if (Dump.Y) Dump.println("UView:getDisplaySize31 gesture mode marginLR="+marginLR);//~vam6R~
+//      }                                                          //~vam6R~
+//      else  //3button mode                                       //~vam6R~
+//      {                                                          //~vam6R~
+//      	marginLR=ww0-(rectDecor.right-rectDecor.left);	//landscape effect delayed to Decorview//~vam6R~
+//  	    if (Dump.Y) Dump.println("UView:getDisplaySize31 3 button mode marginLR="+marginLR);//~vam6R~
+//      }                                                          //~vam6R~
+        marginLR=0; //hide navigationBar on landscape, no navigationbar on portrait//~vam6I~
+        AG.scrNavigationbarRightWidthA11=marginLR;                 //~vam6M~
+        AG.scrStatusBarHeight=inset.top;                           //~vam6M~
+                                                                   //~vam6M~
+        Ppoint.x=ww;                                               //~vam6R~
+        Ppoint.y=hh;                                               //~vam6R~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 navigationbar bottomHA11="+AG.scrNavigationbarBottomHeightA11+",leftWA11="+AG.scrNavigationbarLeftWidthA11+",rightWA11="+AG.scrNavigationbarRightWidthA11+",swgesturemode="+AG.swNavigationbarGestureMode);//~vam6M~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 point="+Ppoint.toString()+",statusBarHeight="+AG.scrStatusBarHeight);//~vam6M~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 point="+Ppoint.toString()+",bounds="+bounds+",insets="+inset);//~vam6M~
+    }                                                              //~vam6M~
     //*******************************************************      //~1aj0I~
 	public static Display getDefaultDisplay()                      //~1aj0I~
     {                                                              //~1aj0I~
@@ -228,12 +286,20 @@ public class UView                                                 //~v@@@I~
 			d=getDefaultDisplay29();                               //~1aj0I~
         return d;                                                  //~1aj0I~
     }                                                              //~1aj0I~
+    //*******************************************************      //~vam6I~
+	public static WindowManager getWindowManager()                 //~vam6I~
+    {                                                              //~vam6I~
+		WindowManager wm=(WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE));//~vam6I~
+	    if (Dump.Y) Dump.println("UView:getWindowManager mgr="+wm);//~vam6I~
+        return wm;
+    }                                                              //~vam6I~
     //*******************************************************      //~1aj0I~
     @SuppressWarnings("deprecation")                               //~1aj0I~
 	public static Display getDefaultDisplay29()                    //~1aj0I~
     {                                                              //~1aj0I~
 	    if (Dump.Y) Dump.println("UView:getDefaultDisplay29");     //~1aj0I~
-		Display display=((WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1aj0I~
+//  	Display display=((WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1aj0I~//~vam6R~
+    	Display display=getWindowManager().getDefaultDisplay();    //~vam6I~
         return display;                                            //~1aj0I~
     }                                                              //~1aj0I~
     //*******************************************************      //~1aj0I~
@@ -252,7 +318,8 @@ public class UView                                                 //~v@@@I~
         {                                                          //~v@@@I~
 	        Point p=new Point();                                   //~v@@@I~
 //        	Pdisplay.getSize(p);                                   //~v@@@I~
-        	Pdisplay.getRealSize(p); //api17:4.2.2 JELLY bean mr1  //~v@@@R~
+//      	Pdisplay.getRealSize(p); //api17:4.2.2 JELLY bean mr1  //~v@@@R~//~vam6R~
+        	getRealSize(Pdisplay,p); //api17:4.2.2 JELLY bean mr1  //~vam6I~
         	AG.scrWidthReal=p.x;                                   //~v@@@I~
         	AG.scrHeightReal=p.y;                                  //~v@@@I~
 	        if (Dump.Y) Dump.println("UView:getScreenRealSize getRealSize() w="+AG.scrWidthReal+",h="+AG.scrHeightReal);//~v@@@I~//~va40R~
@@ -389,30 +456,37 @@ public class UView                                                 //~v@@@I~
     	showToastLong(R.string.ErrOutOfMemory,Ptext);                //~1B0gI~//~1Ad8I~
 	}                                                              //~1B0gI~//~1Ad8I~
 //**********************************                               //~1A6pI~
-    public static void getDisplaySize(Display Pdisplay,Point Ppoint)//~1A6pI~
+//  public static void getDisplaySize(Display Pdisplay,Point Ppoint)//~1A6pI~//~vam6R~
+    private static void getDisplaySize(Display Pdisplay,Point Ppoint)//~vam6I~
     {                                                              //~1A6pI~
 //      Pdisplay.getSize(Ppoint);                                    //~1A6pI~//~v@@@M~//~1aj0R~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize");          //~1aj0I~
+		if (Build.VERSION.SDK_INT>=31)                             //~vam6I~
+			getDisplaySize31(Pdisplay,Ppoint);                     //~vam6I~
+        else                                                       //~vam6I~
 		if (Build.VERSION.SDK_INT>=30)   //android30(R)            //~1aj0I~
 			getDisplaySize30(Pdisplay,Ppoint);                     //~1aj0I~
         else                                                       //~1aj0I~
 			getDisplaySize29(Pdisplay,Ppoint);                     //~1aj0I~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize point="+Ppoint);//~vam6I~
     }                                                              //~1A6pI~
     //*******************************************************      //~1aj0I~
     //*size contains titlebar exclude statusbar and navigationbar  //~vaefI~
     //*******************************************************      //~vaefI~
     @SuppressWarnings("deprecation")                               //~1aj0I~
-	public static void getDisplaySize29(Display Pdisplay,Point Ppoint)//~1aj0I~
+//  public static void getDisplaySize29(Display Pdisplay,Point Ppoint)//~1aj0I~//~vam6R~
+    private static void getDisplaySize29(Display Pdisplay,Point Ppoint)//~vam6I~
     {                                                              //~1aj0I~
         Pdisplay.getSize(Ppoint);                                  //~1aj0I~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize29 point="+Ppoint.toString());//~1aj0I~
     }                                                              //~1aj0I~
     //*******************************************************      //~1aj0I~
+    @SuppressWarnings("deprecation")                               //~vam6I~
     @TargetApi(Build.VERSION_CODES.R)   //>=30                     //~1aj0I~
     public static void getDisplaySize30(Display Pdisplay,Point Ppoint)//~1aj0I~
     {                                                              //~1aj0I~
 		DisplayMetrics m=new DisplayMetrics();                     //~1aj0I~
-		Pdisplay.getRealMetrics(m);                                //~1aj0I~
+    	Pdisplay.getRealMetrics(m);                                //~1aj0I~
         Ppoint.x=m.widthPixels;                                    //~1aj0I~
         Ppoint.y=m.heightPixels;                                   //~1aj0I~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize30 point="+Ppoint.toString());//~1aj0I~
@@ -525,12 +599,12 @@ public class UView                                                 //~v@@@I~
     	if (Dump.Y) Dump.println("showToastLongDirect text="+Ptext);//~vaf0I~
         new EventToast(Ptext,true/*long*/).showToast();            //~vaf0I~
     }                                                              //~vaf0I~
-//**********************************************************       //+vaf0I~
-    public static void showToastLongDirect(Context Pcontext,String Ptext)//+vaf0I~
-    {                                                              //+vaf0I~
-    	if (Dump.Y) Dump.println("showToastLongDirect text="+Ptext);//+vaf0I~
-        new EventToast(Ptext,true/*long*/).showToast(Pcontext);    //+vaf0I~
-    }                                                              //+vaf0I~
+//**********************************************************       //~vaf0I~
+    public static void showToastLongDirect(Context Pcontext,String Ptext)//~vaf0I~
+    {                                                              //~vaf0I~
+    	if (Dump.Y) Dump.println("showToastLongDirect text="+Ptext);//~vaf0I~
+        new EventToast(Ptext,true/*long*/).showToast(Pcontext);    //~vaf0I~
+    }                                                              //~vaf0I~
 //**********************************************************       //~v@@@M~
     public static void showToast(String Ptext)                     //~v@@@M~
     {                                                              //~v@@@M~
@@ -869,4 +943,45 @@ public class UView                                                 //~v@@@I~
 		if (Dump.Y) Dump.println("UView.showParentPathWidth rc="+s);//~0327I~
         return s;                                                  //~0327I~
     }                                                              //~0327I~
+    //*******************************************************************//~vam6I~
+    //*for APi>=19                                                 //~vam6I~
+    //*******************************************************************//~vam6I~
+    private static void getRealSize(Display Pdisplay,Point Ppoint) //~vam6I~
+    {                                                              //~vam6I~
+		if (Dump.Y) Dump.println("UView.getRealSize apiLevel="+Build.VERSION.SDK_INT);//~vam6I~
+		if (Build.VERSION.SDK_INT>=31)   //Navigationbar can be hidden//~vam6I~
+		    getRealSize_from31(Pdisplay,Ppoint);                   //~vam6I~
+        else                                                       //~vam6I~
+		    getRealSize_19To30(Pdisplay,Ppoint);                   //~vam6I~
+		if (Dump.Y) Dump.println("UView.getRealSize exit point="+Ppoint);//~vam6I~
+    }                                                              //~vam6I~
+    //*******************************************************************//~vam6I~
+    @SuppressWarnings("deprecation")                               //~vam6R~
+    @TargetApi(19)                                                 //~vam6I~
+    private static void getRealSize_19To30(Display Pdisplay,Point Ppoint)//~vam6I~
+    {                                                              //~vam6I~
+		if (Dump.Y) Dump.println("UView.getRealSize_upto30 display="+Pdisplay);//~vam6I~
+		Pdisplay.getRealSize(Ppoint);                              //~vam6I~
+		if (Dump.Y) Dump.println("UView.getRealSize_upto30 exit point="+Ppoint);//~vam6I~
+    }                                                              //~vam6I~
+    //*******************************************************************//~vam6I~
+    @TargetApi(31)                                                 //~vam6I~
+    private static void getRealSize_from31(Display Pdisplay,Point Ppoint)//~vam6I~
+    {                                                              //~vam6I~
+        WindowMetrics metrics=getRealMetrics_from31(Pdisplay);     //~vam6R~
+        Rect rect=metrics.getBounds();                             //~vam6R~
+		if (Dump.Y) Dump.println("UView.getRealSize_from31 display="+Pdisplay+",metrics="+metrics+",getBounds="+rect);//~vam6R~
+        Ppoint.x=rect.right-rect.left;                              //~vam6R~
+        Ppoint.y=rect.bottom-rect.top;                              //~vam6R~
+		if (Dump.Y) Dump.println("UView.getRealSize_from31 exit point="+Ppoint);//~vam6I~
+    }                                                              //~vam6I~
+    //*******************************************************************//~vam6I~
+    @TargetApi(31)                                                 //~vam6I~
+    public static WindowMetrics getRealMetrics_from31(Display Pdisplay)//~vam6I~
+    {                                                              //~vam6I~
+		WindowManager mgr=getWindowManager();                      //~vam6I~
+        WindowMetrics metrics=mgr.getCurrentWindowMetrics();       //~vam6I~
+		if (Dump.Y) Dump.println("UView.getRealMetrics_31 metrics="+metrics);//~vam6R~
+        return metrics;                                            //~vam6I~
+    }                                                              //~vam6I~
 }//class UView                                                     //~9410I~

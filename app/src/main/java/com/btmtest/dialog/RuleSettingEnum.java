@@ -1,6 +1,7 @@
-//*CID://+vakQR~: update#= 525;                                    //+vakQR~
+//*CID://+vamuR~: update#= 526;                                    //+vamuR~
 //**********************************************************************//~v101I~
-//2022/03/19 vakQ notify update of rule when client received       //+vakQI~
+//2022/04/22 vamu move playalone option to preference from operation settings//+vamuI~
+//2022/03/19 vakQ notify update of rule when client received       //~vakQI~
 //2022/03/02 vakn change delay time for Ron 1-->2 for double ron   //~vaknI~
 //2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
@@ -251,7 +252,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~va66I~
     public static final int 	DEFAULT_THINK_ROBOT=1;             //~va66I~
     public static final int 	DEFAULT_ALLOW_ROBOT_ALL=1;         //~va7eR~
-    public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~
+//  public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~//+vamuR~
     public static final int     DEFAULT_PLAY_MATCH_NOTIFY=1;       //~vaa2R~
                                                                    //~9413I~
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
@@ -437,8 +438,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_SUSPEND_PENALTY       =411;    //~9820I~
     public static final int    RSID_SUSPEND_PENALTYIOERR  =412;    //~9A18I~
                                                                    //~9820I~
-//  private static final RSEnumPair[] pairs=                       //~9404I~//~9414R~//+vakQR~
-    public static final RSEnumPair[] pairs=                        //+vakQI~
+//  private static final RSEnumPair[] pairs=                       //~9404I~//~9414R~//~vakQR~
+    public static final RSEnumPair[] pairs=                        //~vakQI~
     			{                                                  //~9404I~
     				new RSEnumPair(RSID_SYNCDATE             ,"SyncDate"             ),//~9404R~
     				new RSEnumPair(RSID_SYNCDATE_FORMATTED   ,"SyncDateFormatted"    ),//~9405I~

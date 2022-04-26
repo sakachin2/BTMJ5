@@ -1,12 +1,16 @@
-//*CID://+DATER~:                             update#=  158;       //~@003R~//~9210R~
+//*CID://+vam8R~:                             update#=  168;       //~vam8R~
 //**********************************************************************//~v107I~
+//2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
 //**********************************************************************//~v107I~
 package com.btmtest.BT;                                               //~1AedI~
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.bluetooth.BluetoothSocket;                          //~v107I~
 
+import com.btmtest.MainActivity;
 import com.btmtest.utils.Alert;
 import com.btmtest.utils.UView;
 import com.btmtest.R;//~1AedI~
@@ -34,16 +38,28 @@ public class BTI                                               //~1122R~//~v107R
     public BTI()                                                   //~v107R~//~v@@@R~
     {                                                              //~1329I~
         if (Dump.Y) Dump.println("===========BTI start============");//~@@@2I~//~v@@@R~
+        AG.aBTI=this;                                              //~2329I~
 		swDestroy=false;               //static clear for after finish()//~@@@2I~
+      if (AG.swGrantedBluetooth)                                   //~vam8I~
+      {                                                            //~vam8I~
 	    mBTC=new BTControl();                                      //~v107R~
 	    mBTD=new BTDiscover();                                     //~@@@2I~
+      }                                                            //~vam8I~
     }
+//********************************************************************//~vam8I~
+//*from BTMulti.constructor                                        //~vam8I~
+//********************************************************************//~vam8I~
     public static BTI createBTI()                                  //~v107R~//~v@@@R~
     {                                                              //~v107I~
 		BTI inst=null;                                             //~v107R~//~v@@@R~
         try                                                        //~v107I~
         {                                                          //~v107I~
+            chkGrantedPermission();                                //+vam8M~
 		    inst=new BTI();                                        //~v107R~//~v@@@R~
+		    if (!AG.swGrantedBluetooth)                            //~vam8I~
+            {                                                      //~vam8M~
+            	return null;                                       //~vam8M~
+            }                                                      //~vam8M~
             if (!inst.mBTC.BTCreate())	//default adapter chk      //~v107R~
             	inst.mBTC=null;                                    //~v107R~
             else                                                   //~@@@@I~//~@@@2R~
@@ -51,10 +67,16 @@ public class BTI                                               //~1122R~//~v107R
 	    		AG.LocalDeviceName=inst.mBTC.getDeviceName();           //~@@@2I~
             }                                                      //~@@@2I~
         }                                                          //~v107I~
+        catch(Exception e)                                         //~2329I~
+        {                                                          //~2329I~
+            Dump.println(e,"BTI.createBTI");                       //~2329I~
+        }                                                          //~2329I~
         catch(Throwable e)                                         //~v107R~
         {                                                          //~v107I~
-            Dump.println(e.toString());                            //~v107R~
+//          Dump.println(e.toString());                            //~v107R~//~2329R~
+            Dump.println("BTI.createBTI Throwable="+e.toString()); //~2329I~
         }                                                          //~v107I~
+		if (Dump.Y) Dump.println("BTI.createBTI exit inst="+inst); //~2329R~
         return inst;                                               //~v107I~
     }                                                              //~v107I~
 //********************************************************************//~@@@2I~
@@ -107,11 +129,16 @@ public class BTI                                               //~1122R~//~v107R
         }                                                          //~v107I~
     }                                                              //~v107I~
 //********************************************************************//~v107I~
-//*from Main by finish, onDestry                                   //~@003I~
+//*from BTMulti                                                    //~vam8R~
 //********************************************************************//~@003I~
     public void destroy()                                          //~v107I~
     {                                                              //~v107I~
-		if (Dump.Y) Dump.println("BTI:destroy");                   //~@@@2I~//~v@@@R~
+		if (Dump.Y) Dump.println("BTI:destroy swGrantedBluetooth="+AG.swGrantedBluetooth);                   //~@@@2I~//~v@@@R~//~vam8R~
+        if (!AG.swGrantedBluetooth)                                //~vam8I~
+        {                                                          //~vam8I~
+	        if (Dump.Y) Dump.println("BTI.destroy return NOP by swGrantedBluetooth");//~vam8I~
+        	return;                                                //~vam8I~
+        }                                                          //~vam8I~
     	swDestroy=true;                                            //~@@@2I~
         try                                                        //~v107I~
         {                                                          //~v107I~
@@ -287,22 +314,39 @@ public class BTI                                               //~1122R~//~v107R
 //***************************************************************************//~1A6bI~
     public void onResume()                                        //~1A6bI~//~v@@@R~
     {                                                              //~1A6bI~
-        if (Dump.Y) Dump.println("BTI onResume");                 //~1A6bI~//~v@@@R~
+        if (Dump.Y) Dump.println("BTI.onResume swGrantedBluetooth="+AG.swGrantedBluetooth);                 //~1A6bI~//~v@@@R~//~vam8R~
+        if (!AG.swGrantedBluetooth)                                //~vam8I~
+        {                                                          //~vam8I~
+	        if (Dump.Y) Dump.println("BTI.onResume return NOP by swGrantedBluetooth");//~vam8I~
+        	return;                                                //~vam8I~
+        }                                                          //~vam8I~
 	    BTDiscover.register();                                          //~1A6bI~//~v@@@R~
         if (mBTC!=null)                                            //~@003I~
 	        mBTC.onResume();	//handle Message                   //~@003I~
     }                                                              //~1A6bI~
+//***************************************************************************//~vam8I~
     public void onPause()                                          //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("BTI onPause");                   //~v@@@I~
+        if (Dump.Y) Dump.println("BTI.onPause swGrantedBluetooth="+AG.swGrantedBluetooth);//~vam8I~
+        if (!AG.swGrantedBluetooth)                                //~vam8I~
+        {                                                          //~vam8I~
+	        if (Dump.Y) Dump.println("BTI.onPause return NOP by swGrantedBluetooth");//~vam8I~
+        	return;                                                //~vam8I~
+        }                                                          //~vam8I~
         BTDiscover.cancelDiscover();                               //~v@@@I~
 	    BTDiscover.unregister();                                   //~v@@@I~
         if (mBTC!=null)                                            //~@003I~
 	        mBTC.onPause();	//handle Message                       //~@003I~
     }                                                              //~v@@@I~
+//***************************************************************************//~vam8I~
     public void onDestroy()                                        //~@003I~
     {                                                              //~@003I~
-        if (Dump.Y) Dump.println("BTI onDestroy");                 //~@003I~
+        if (Dump.Y) Dump.println("BTI.onDestroy swGrantedBluetooth="+AG.swGrantedBluetooth);//~vam8R~
+        if (!AG.swGrantedBluetooth)                                //~vam8I~
+        {                                                          //~vam8I~
+	        if (Dump.Y) Dump.println("BTI.onDestroy return NOP by swGrantedBluetooth");//~vam8I~
+        	return;                                                //~vam8I~
+        }                                                          //~vam8I~
         destroy();                                                 //~@003I~
     }                                                              //~@003I~
 //***************************************************************************//~1AbRI~
@@ -335,11 +379,56 @@ public class BTI                                               //~1122R~//~v107R
     {                                                              //~1AedI~
 		if (Dump.Y) Dump.println("BTI:closeStream");               //~1AedI~//~v@@@R~
     }                                                              //~1AedI~
-//********************************************************************//+0123I~
-    public static void onDisconnectedIP(String Pdevname,boolean PswServer)//+0123I~
-    {                                                              //+0123I~
-		if (Dump.Y) Dump.println("BTI:onDisconnectedIP dev="+Pdevname+",swServer="+PswServer);//+0123I~
-		AG.aBTI.mBTC.onDisconnectedIP(Pdevname,PswServer);                 //+0123I~
-                                                                   //+0123I~
-    }                                                              //+0123I~
+//********************************************************************//~0123I~
+    public static void onDisconnectedIP(String Pdevname,boolean PswServer)//~0123I~
+    {                                                              //~0123I~
+		if (Dump.Y) Dump.println("BTI:onDisconnectedIP dev="+Pdevname+",swServer="+PswServer);//~0123I~
+		AG.aBTI.mBTC.onDisconnectedIP(Pdevname,PswServer);                 //~0123I~
+                                                                   //~0123I~
+    }                                                              //~0123I~
+//********************************************************************//~vam8I~
+    private static boolean chkGrantedPermission()                  //~vam8R~
+    {                                                              //~vam8I~
+        if (Dump.Y) Dump.println("BTI.chkGrantedPermission osVerison="+AG.osVersion+",AG.swGrantedBluetooth="+AG.swGrantedBluetooth);//~vam8R~
+        if (AG.osVersion>=31)                                      //~vam8I~
+        {                                                          //~vam8I~
+			if (!AG.swGrantedBluetooth)                            //~vam8I~
+				AG.swGrantedBluetooth=chkGrantedPermission_from31();//~vam8R~
+        }                                                          //~vam8I~
+        else                                                       //~vam8I~
+        	AG.swGrantedBluetooth=true;                            //~vam8I~
+        boolean rc=AG.swGrantedBluetooth;                          //~vam8R~
+        if (Dump.Y) Dump.println("BTI.chkGrantedPermission exit rc="+rc);//~vam8R~
+        return rc;                                                 //~vam8I~
+    }                                                              //~vam8I~
+//********************************************************************//~vam8I~
+    @TargetApi(31)                                                 //~vam8I~
+    private static boolean chkGrantedPermission_from31()           //~vam8R~
+    {                                                              //~vam8I~
+        if (Dump.Y) Dump.println("BTI.chkGrantedPermission_from31");//~vam8R~
+        boolean swGrantedConnect=UView.isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT);//~vam8I~
+        boolean swGrantedScan=UView.isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN);//~vam8I~
+        boolean rc=swGrantedConnect && swGrantedScan;              //~vam8I~
+        if (!rc)                                                   //~vam8I~
+        {                                                          //~vam8I~
+        	String[] types=new String[]{Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN};//~vam8I~
+        	UView.requestPermission(types, MainActivity.PERMISSION_BLUETOOTH);//~vam8I~
+        }                                                          //~vam8I~
+        if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_from31 swGrantedConnect="+swGrantedConnect+",swGrantedScan="+swGrantedScan+",rc="+rc);//~vam8R~
+        return rc;
+    }                                                              //~vam8I~
+//********************************************************************//~vam8I~
+//*from MAinActivity                                               //~vam8I~
+//********************************************************************//~vam8I~
+    public static void grantedPermission(boolean PswGranted)       //~vam8I~
+    {                                                              //~vam8I~
+        if (Dump.Y) Dump.println("BTI.grantedPermission swGranted="+PswGranted);//~vam8I~
+        if (!PswGranted)                                           //~vam8I~
+        {                                                          //~vam8I~
+            UView.showToastLong(R.string.failedBluetoothPermission);//~vam8I~
+            return;                                                //~vam8I~
+        }                                                          //~vam8I~
+        AG.swGrantedBluetooth=true;                                //~vam8I~
+	    createBTI();                                               //~vam8I~
+    }                                                              //~vam8I~
 }//class                                                           //~1109R~

@@ -1,14 +1,19 @@
-//*CID://+va40R~: update#= 157;                                    //~va40R~
+//*CID://+vamgR~: update#= 159;                                    //~va40R~//~vamgR~
 //**********************************************************************//~v106I~
+//2022/04/05 vamg Animation. at Win call                           //~vamgI~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*run on UIThread after delay time specified                      //~1A6tR~
 //*run on subThread(setRunFuncSubthread())                         //~@@@@I~
 //**********************************************************************//~1107I~
 package com.btmtest.utils;                                //~1107R~  //~1108R~//~1109R~//~@@@@R~//~1A6tR~
 
-//import android.app.ProgressDialog;                               //+va40R~
+//import android.app.ProgressDialog;                               //~va40R~
 
+import static android.os.Looper.*;
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@@@@I~
+
+import android.os.Handler;
+
 //**********************************************************************//~1107I~
 public class URunnable                                             //~@@@@R~
 {                                                                  //~0914I~
@@ -58,6 +63,16 @@ public class URunnable                                             //~@@@@R~
         }                                                          //~@@@@I~
 		if (Dump.Y) Dump.println("setRunFunc return");             //~@@@@R~
     }                                                              //~@@@@I~
+//===============================================================================//~vamgI~
+    public static void runOnUiThread(URunnableI Pcallback,int Pdelay,Object Pparmobj,int Pparmint)//~vamgI~
+    {                                                              //~vamgI~
+		URunnable uh=new URunnable(Pcallback,0/*Pdelay*/,Pparmobj,Pparmint);//~vamgI~
+        CallbackRunnable cbrun=uh.new CallbackRunnable(uh);        //~vamgI~
+		if (Dump.Y) Dump.println("URunnable.runOnUiThread delay="+Pdelay+",callBack="+Pcallback);//+vamgR~
+        Handler handler=new Handler(getMainLooper());              //~vamgI~
+    	handler.postDelayed(cbrun,Pdelay);                         //~vamgI~
+		if (Dump.Y) Dump.println("Urunnable.runOnUiThread return delay="+Pdelay);//~vamgI~
+    }                                                              //~vamgI~
 //===============================================================================//~@@@@I~
 //=request callback on UiThread without delay                      //~@@@@I~
 //=direct call if on mainthread                                    //~@@@@I~

@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.btmtest"
-      android:versionCode="120"
-      android:versionName="1.20">
+      android:versionCode="121"
+      android:versionName="1.21">
  <!--   xmlns:tools="http://schemas.android.com/tools" --> <!-- Warning:never used -->
 
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!--uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android.maxSdkVersion="30"/> <!--vam4-->
+    <!--uses-permission android:name="android.permission.BLUETOOTH" /-->
+    <uses-permission android:name="android.permission.BLUETOOTH" android.maxSdkVersion="30"/>  <!--vam4-->
+    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS"/>  <!--vam9-->
+
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>       <!--vam4-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTIZE"/>       <!--vam4-->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>       <!--vam4-->
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -38,6 +46,8 @@
         <activity android:name=".MainActivity"
                   android:configChanges="orientation|screenSize"
 	    		        android:theme="@style/AppTheme.NoActionBar"
+        											android:exported="true"
+        											android:resizeableActivity="false"
         			android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

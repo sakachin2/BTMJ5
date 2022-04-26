@@ -18,12 +18,29 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.21 : 2022/04/23
+		.For Android-S(12):API31
+        .Utilize animation for action Pon, Kan, Chii, ...
+
+*********************************************************************************************
+V1.21 : 2022/04/23
+		.For Android-S(12):API31
+        .Utilize animation for action Pon, Kan, Chii, ...
+        .Text zooming on Help dialog.
+        .Take a distance for button:Win-Anyway to avoid mistouching.
+        .Gude to menu item usage when Gameover was rejected.
+        .To avoid need of Rule-Sync by option change, move PlayAloneMode option to Preference from Oper settings.
+        .Bugs
+         -Japanese:"‚ ‚è‚ ‚è‚È‚Ç" was shown on rule dialog.
+         -Enabling Bluetooth loops on Emulator on Android studio.
+         -In PlayAlone mode, correct error message for "Draw" button.
+         -In NotifyMatchMode, Buttonn background color was not reset by draw by autotake timeout.
+
 V1.20 : 2022/03/24
         .Inplements Furiten Riichi option.
         .inplements Abortive Draw 4Kans, 4Winds and 4Riichi.
         .Show changed option with different background color when received Rule setting.
         .Strengthen smart Robot and fix Bugs.
-*********************************************************************************************
 V1.20 : 2022/03/24
         .No 1-han constraint check for Win-Anyway.
         .Allow Kataagari if Fix Yaku option is finally, else apply setting  of self-drawn option.

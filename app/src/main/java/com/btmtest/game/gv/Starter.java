@@ -1,4 +1,4 @@
-//*CID://+DATER~: update#= 589;                                    //~v@@@R~//~v@21R~//~9501R~
+//*CID://+DATER~: update#= 591;                                    //~v@@@R~//~v@21R~//~9501R~
 //**********************************************************************//~v101I~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
@@ -334,20 +334,20 @@ public class Starter                                               //~v@@@R~
 //        int yy=p.y;                                                //~v@@@I~//~v@21R~
 //        Graphics.drawBitmap(rect,bm,xx,yy);                        //~v@@@I~//~v@21R~
 //    }                                                              //~v@@@I~//~v@21R~
-//    //*********************************************************    //~v@@@M~//+0322R~
-//    public void showGameSeqTest(Canvas Pcanvas) //TODO test        //~v@@@M~//+0322R~
-//    {                                                              //~v@@@M~//+0322R~
-////        int set,game,dup,posMark;                                  //~v@@@M~//+0322R~
-//    //************************                                     //~v@@@M~//+0322R~
-//        if (Dump.Y) Dump.println("Starter.showGameSeq");           //~v@@@R~//+0322R~
-//        swTest=true;                                               //~v@@@M~//+0322R~
-//        canvasTest=Pcanvas;                                        //~v@@@M~//+0322R~
-//        for (int ii=0;ii<PLAYERS;ii++)                             //~v@@@M~//+0322R~
-//        {                                                          //~v@@@M~//+0322R~
-//            showGameSeq(ii);                                       //~v@@@M~//+0322R~
-//        }                                                          //~v@@@M~//+0322R~
-//        swTest=false;                                              //~v@@@M~//+0322R~
-//    }                                                              //~v@@@M~//+0322R~
+//    //*********************************************************    //~v@@@M~//~0322R~
+//    public void showGameSeqTest(Canvas Pcanvas) //TODO test        //~v@@@M~//~0322R~
+//    {                                                              //~v@@@M~//~0322R~
+////        int set,game,dup,posMark;                                  //~v@@@M~//~0322R~
+//    //************************                                     //~v@@@M~//~0322R~
+//        if (Dump.Y) Dump.println("Starter.showGameSeq");           //~v@@@R~//~0322R~
+//        swTest=true;                                               //~v@@@M~//~0322R~
+//        canvasTest=Pcanvas;                                        //~v@@@M~//~0322R~
+//        for (int ii=0;ii<PLAYERS;ii++)                             //~v@@@M~//~0322R~
+//        {                                                          //~v@@@M~//~0322R~
+//            showGameSeq(ii);                                       //~v@@@M~//~0322R~
+//        }                                                          //~v@@@M~//~0322R~
+//        swTest=false;                                              //~v@@@M~//~0322R~
+//    }                                                              //~v@@@M~//~0322R~
     //*********************************************************    //~v@@@M~
     public void showGameSeq(int Ppos)                              //~v@@@M~
     {                                                              //~v@@@M~
@@ -373,6 +373,7 @@ public class Starter                                               //~v@@@R~
         else                                                       //~v@@@M~
 	        Graphics.drawBitmap(rectSeq,bm);                       //~v@@@M~
         UView.recycle(bm);                                         //~0217I~
+        AG.aDiceBox.drawSplitPosIDStarter(posMark,rectSeq);        //~2327I~
 //        if (dup!=0)                                              //~v@@@R~
 //        {                                                        //~v@@@R~
         	int posRelative=Players.nextPlayer(posMark,game);      //~v@@@R~
@@ -464,7 +465,7 @@ public class Starter                                               //~v@@@R~
 		Matrix matrix=new Matrix();                                //~v@@@M~
     //******************************                               //~v@@@M~
     	Rect r=rectBounds;                                         //~v@@@M~
-        if (Dump.Y) Dump.println("Starter.getBitmapSeq rectBounds="+r.toString());//~9809I~
+        if (Dump.Y) Dump.println("Starter.getBitmapSeq pos="+Ppos+",strseq="+Pstrseq+",rectBounds="+r.toString());//~9809I~//+2327R~
 //      int m=MARGINTEXT;                                          //~v@@@M~//~9809R~
         int m=marginText;                                          //~9809I~
 //      Bitmap bm=Bitmap.createBitmap(strsz+TEXT_MARGIN*2,r.bottom-r.top+TEXT_MARGIN*2,Bitmap.Config.ARGB_8888);//~v@@@M~

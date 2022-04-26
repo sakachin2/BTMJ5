@@ -1,4 +1,4 @@
-//*CID://+vakqR~: update#= 398;                                    //+vakqR~
+//*CID://+vakqR~: update#= 399;                                    //~vakqR~
 //**********************************************************************//~v101I~
 //2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vaaqI~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
@@ -72,6 +72,7 @@ public class TileData                                              //~v@@@R~
         ctrRemain=PIECE_DUPCTR;                                    //~v@@@I~
         if (Pdora)                                                 //~v@@@I~
 	        flag=TDF_RED5;                                         //~v@@@I~
+        if (Dump.Y) Dump.println("TileData constructor swDora td="+this);//+vakqI~
     }                                                              //~v@@@I~
     //*****************************************************        //~v@@@I~
     //*for UnitTest                                                //~v@@@I~
@@ -123,7 +124,7 @@ public class TileData                                              //~v@@@R~
     //*****************************************************        //~v@@@I~
      public String toString()                                      //~v@@@I~
      {                                                             //~v@@@I~
-        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder+",hashCode="+this.hashCode());//~v@@@I~//~v@@6R~//~va8xR~//+vakqR~
+        return (" t="+type+",n="+number+",f=0x"+Integer.toHexString(flag)+",c="+ctrRemain+",p="+player+",e="+eswn+",testSelectionOrder="+testSelectionOrder+",hashCode="+this.hashCode());//~v@@@I~//~v@@6R~//~va8xR~//~vakqR~
      }                                                             //~v@@@I~
     //*****************************************************        //~v@@6I~
      public static String toString(TileData Ptd)                   //~v@@6I~

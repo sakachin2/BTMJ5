@@ -1,5 +1,6 @@
-//*CID://+vakLR~: update#= 753;                                    //~vakLR~
+//*CID://+vamhR~: update#= 759;                                    //~vamhR~
 //**********************************************************************//~v101I~
+//2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2022/03/19 vakL issue DrawKan msg on client and if 4kandrawn     //~vakLI~
 //2022/03/18 vakJ match mode;sendmag:14 is rejected at client by stopAuto sent by chk4KanDrawn//~vakJI~
 //2022/03/17 vakH chk4KanDrawn, it should be before autotakeKanTimeout(time of ron+pon timeout expired)//~vakHI~
@@ -586,7 +587,10 @@ public class UAKan                                                 //~v@@@R~//~v
         {                                                          //~v@@6I~
         	int playerDiscarded=PLS.getLastDiscardedPlayer();          //~v@@@I~//~v@@6R~
         	river.takeKan(playerDiscarded,rc);                                     //~v@@@R~//~v@@6R~
+	        AG.aAnim.calledPonKanChii(TDF_KAN_RIVER,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,river.playerDiscarded,river.rectTileCalled,river.bmCalledOnRiver);//+vamhR~
         }                                                          //~v@@6I~
+        else                                                       //~vamhI~
+        	AG.aAnim.calledPonKanChii(TDF_KAN_TAKEN,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,-1,null,null);//~vamhR~
         AG.aTiles.addCtrKan(true/*swUpdate*/);                     //~v@@6I~
 //      stock.takeKan(Pplayer,rc);	//draw dora                    //~v@@6R~//~9209R~
 //      stock.drawNextOneKan();		//mark wanpai                  //~v@@6I~//~0403R~
@@ -806,8 +810,8 @@ public class UAKan                                                 //~v@@@R~//~v
       if (UADL.isPendingHW())                                      //~vakLI~
       {                                                            //~vakLI~
         if (Dump.Y) Dump.println("UAKan.clientTakableRinshan @@@@ skip postDelayedAutoTakeKan by stopAutoCtr");//~vakLI~
-	    int eswn=AG.aAccounts.playerToEswn(Pplayer);               //+vakLI~
-    	UA.showInfoAllEswnEswn(0,eswn,R.string.Info_StopAutoByDrawnHW);//~0225I~//+vakLI~
+	    int eswn=AG.aAccounts.playerToEswn(Pplayer);               //~vakLI~
+    	UA.showInfoAllEswnEswn(0,eswn,R.string.Info_StopAutoByDrawnHW);//~0225I~//~vakLI~
       }                                                            //~vakLI~
       else                                                         //~vakLI~
       {                                                            //~vakLI~

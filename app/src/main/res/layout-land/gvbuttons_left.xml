@@ -73,22 +73,22 @@
                  android:textColor="@color/btn_normal_fg"
             />
              <Button
-                        android:id="@+id/MenuInGame"
+                        android:id="@+id/UserAction_Anyway"
                         android:layout_width="@dimen/gvbtn_left_land"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:text="@string/Label_MenuInGame_Vertical"
+                        android:text="@string/Label_Anyway_Vertical"
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
                  android:padding="2dp"
             />
              <Button
-                        android:id="@+id/UserAction_Anyway"
+                        android:id="@+id/MenuInGame"
                         android:layout_width="@dimen/gvbtn_left_land"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:text="@string/Label_Anyway_Vertical"
+                        android:text="@string/Label_MenuInGame_Vertical"
                  android:textAllCaps="false"
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
