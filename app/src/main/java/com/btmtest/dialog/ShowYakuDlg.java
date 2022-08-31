@@ -1,5 +1,6 @@
-//*CID://+vac5R~:                             update#=  800;       //~vac5R~
+//*CID://+vap3R~:                             update#=  801;       //+vap3R~
 //*****************************************************************//~v101I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //+vap3I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/26 va8q (Bug)shows "app checkValue option is off" even if option is on;//~va8qI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
@@ -20,7 +21,7 @@ import com.btmtest.utils.Utils;
 
 import static com.btmtest.dialog.CompReqDlg.*;
 import static com.btmtest.game.UA.Rank.*;
-import static com.btmtest.StaticVars.AG;                           //+vac5I~
+import static com.btmtest.StaticVars.AG;                           //~vac5I~
 
 public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9220R~//~va11R~
 {                                                                  //~2C29R~
@@ -88,6 +89,7 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
 	,R.id.cb4SAME2    //4anko                                      //~va11I~
 	,R.id.cb13ALL2      //kokushi                                  //~va11I~
 	,R.id.cb9GATE2      //9gate                                    //~va11I~
+	,R.id.cbOPENREACH   //openReach discard                        //+vap3I~
     						};                                     //~va11I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public ShowYakuDlg()                                           //~v@@@R~//~9220R~//~9221R~//~va11R~

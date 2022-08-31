@@ -1,5 +1,6 @@
-//*CID://+vakVR~:                             update#=  470;       //~vakVR~
+//*CID://+van1R~:                             update#=  474;       //~van1R~
 //*****************************************************************//~v101I~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/03/24 vakW rule update msg on dialog                        //~vakVI~
 //2021/09/12 vae0 Scped for BTMJ5                                  //~vae0I~
 //*****************************************************************//~v101I~
@@ -375,10 +376,18 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     {                                                              //~v@@@I~
 	    saveProperties(false/*swReceived*/);                       //~9621I~
     }                                                              //~9621I~
+    //*******************************************************      //+van1I~
+    //*current on ../Files dir                                     //+van1I~
+    //*******************************************************      //+van1I~
+    public static void saveProperties(Prop Pprop,String Pcmt)           //+van1I~
+    {                                                              //+van1I~
+        if (Dump.Y) Dump.println("SettingDlg.saveProperties Prop="+Pprop+",cmt="+Pcmt);//+van1I~
+        Pprop.savePropDataFile(Pcmt);                              //+van1I~
+    }                                                              //+van1I~
     //*******************************************************      //~9621I~
     protected void saveProperties(boolean PswReceived)             //~9621I~
     {                                                              //~9621I~
-        if (Dump.Y) Dump.println("SettingDlg.saveProperties swReceived="+PswReceived);     //~9616I~//~9621R~
+        if (Dump.Y) Dump.println("SettingDlg.saveProperties swReceived="+PswReceived+",curProp="+curProp);     //~9616I~//~van1R~
         curProp.savePropDataFile(propCmt);                         //~v@@@R~
 	    if (swRuleSetting)                                         //~9622I~
 	        if (AG.aBTMulti!=null)                                     //~9621I~//~9622R~
@@ -415,11 +424,11 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     protected int updateProp(String Pkey,int Pnewval)              //~v@@@R~
     {                                                              //~v@@@I~
     	int rc=0;                                                  //~v@@@I~
-        if (Dump.Y) Dump.println("SettingDlg.updateProp new="+Pnewval);//+vakVI~
+        if (Dump.Y) Dump.println("SettingDlg.updateProp new="+Pnewval);//~vakVI~
         if (Pnewval<0)                                             //~v@@@I~
         	return rc;                                             //~v@@@I~
     	int oldval=curProp.getParameter(Pkey,-1);                  //~v@@@R~
-        if (Dump.Y) Dump.println("SettingDlg.updateProp old="+oldval);//+vakVI~
+        if (Dump.Y) Dump.println("SettingDlg.updateProp old="+oldval);//~vakVI~
         if (oldval!=Pnewval)                                       //~v@@@I~
         {                                                          //~v@@@I~
 	        curProp.setParameter(Pkey,Pnewval);                    //~v@@@R~
@@ -427,6 +436,23 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
         }                                                          //~v@@@I~
         return rc;                                                 //~v@@@I~
     }                                                              //~v@@@I~
+    //*******************************************************      //~van1I~
+    public static int updateProp(Prop Pprop,String Pkey,int Pnewval)//~van1I~
+    {                                                              //~van1I~
+    	int rc=0;                                                  //~van1I~
+        if (Dump.Y) Dump.println("SettingDlg.updateProp static Prop="+Pprop+",new="+Pnewval);//~van1R~
+        if (Pnewval<0)                                             //~van1I~
+        	return rc;                                             //~van1I~
+    	int oldval=Pprop.getParameter(Pkey,-1);                    //~van1I~
+        if (Dump.Y) Dump.println("SettingDlg.updateProp old="+oldval);//~van1I~
+        if (oldval!=Pnewval)                                       //~van1I~
+        {                                                          //~van1I~
+	        Pprop.setParameter(Pkey,Pnewval);                      //~van1I~
+            rc=1;                                                  //~van1I~
+        }                                                          //~van1I~
+        if (Dump.Y) Dump.println("SettingDlg.updateProp static Prop="+Pprop+",rc="+rc);//~van1I~
+        return rc;                                                 //~van1I~
+    }                                                              //~van1I~
     //*******************************************************      //~9404I~
     protected int updateProp(String Pkey,String Pnewval)           //~9404I~
     {                                                              //~9404I~

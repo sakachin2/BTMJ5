@@ -1,5 +1,6 @@
-//*CID://+vamnR~: update#= 804;                                    //~vamnR~
+//*CID://+vap9R~: update#= 805;                                    //+vap9R~
 //**********************************************************************//~v101I~
+//2022/07/24 vap9 avoid resetGmsg for msgid=20(GCM_REACH_OPEN)     //+vap9I~
 //2022/04/23 vamw need reset notified button also when taken by autotake timeout//~vamnI~
 //2022/04/11 vamn (Bug)in PAN mode,errmsg for Draw after Pon/Chii is not "Not Your Turn" but has to be "Discard"//~vamnR~
 //2022/03/15 vakE (Bug) take button at kan cause not your turn; by option of take btn for robot may faile but remains action current.//~vakEI~
@@ -1129,7 +1130,7 @@ public class UserAction       //~v@@@R~
 	        if (PactionID==GCM_TAKE || PactionID==GCM_PON || PactionID==GCM_KAN || PactionID==GCM_CHII || PactionID==GCM_RON)//~vaa2I~
             	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //~vaa2I~
         }                                                          //~vaa2I~
-        if (Pplayer==PLAYER_YOU)    //button or autotake timeout   //+vamnR~
+        if (Pplayer==PLAYER_YOU)    //button or autotake timeout   //~vamnR~
         {                                                          //~vamnI~
 	        if (PactionID==GCM_TAKE)                               //~vamnI~
             	AG.aUAD2Touch.updateBtnPlayMatchNotifyReset();     //~vamnI~
@@ -1543,6 +1544,7 @@ public class UserAction       //~v@@@R~
 	 	case GCM_TIMEOUT_STOPAUTO:                                 //~9B29I~
 	 	case GCM_2TOUCH:                                           //~9C04I~
 	 	case GCM_REACH:                                            //~vaj3I~
+	 	case GCM_REACH_OPEN:                                       //+vap9I~
 	    	if (Dump.Y) Dump.println("UserAction.resetGmsg bypass reset");//~9629I~
         	break;                                                 //~9629I~
         default:                                                   //~9629I~

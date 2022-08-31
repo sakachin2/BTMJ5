@@ -1,5 +1,7 @@
-//*CID://+vakHR~: update#= 969;                                    //~vakGR~//~vakHR~
+//*CID://+vaq7R~: update#= 972;                                    //~vaq7R~
 //**********************************************************************//~v101I~
+//2022/08/18 vaq7 (Bug)robot game hung; after GCM_TAKE rejected by 2 tounch mode Win cancel.//~vaq7I~
+//                no blocked msg remains. if 307(atiotake) was blocked  it will be resheduled after Win canceled//~vaq7I~
 //2022/03/17 vakH chk4KanDrawn, it should be before autotakeKanTimeout(time of ron+pon timeout expired)//~vakHI~
 //2022/03/17 vakG for canceled 4kanDrawn, if blocked msg exist autotake timeout did not work//~vakGI~
 //2022/03/14 vakA DrawnHW; As aResult, try reschedule from runtimer when last action is KAN//~vakAI~
@@ -120,6 +122,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
     private boolean swAtRestart;                                   //~0221I~
     private boolean swResetMsgWaiting;                             //~0226I~
     private int actionBlockedDrawnHW,playerBlockedDrawnHW;         //~vakjI~
+	protected int ctrTakenBlockedRobotTake=-1,ctrDiscardBlockedRobotTake=-1,playerBlockedRobotTake;//~vaq7I~
 //*************************                                        //~v@@@I~
 //  public UADelayed(UserAction Pua)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9B17R~
     public UADelayed()                                             //~9B17I~
@@ -1013,7 +1016,10 @@ public class UADelayed //implements Runnable                            //~v@@@R
             if (msgWaiting!=null)                                  //~9B22I~
             {                                                      //~9B22I~
 	        	if (isStopMsg2Touch(msgWaiting.what))              //~9B23R~
+                {                                                  //~vakHI~
                 	msgWaiting=null;                               //~9B22I~
+				    if (Dump.Y) Dump.println("UADelayed.removePendingMsg2Touch set msgWaiting=null");//~vakHI~
+                }                                                  //~vakHI~
             }                                                      //~9B22I~
         }                                                          //~9B22I~
     }                                                              //~9B22I~
@@ -1352,7 +1358,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
         	return;                                                //~9B20I~
         }                                                          //~9B20I~
         if (Dump.Y) Dump.println("UADelayed.actionReleaseWait player="+Pplayer+",parm="+Arrays.toString(PintParm));//~9627R~
-        if (Dump.Y) Dump.println("UADelayed.actionReleaseWait currentAction="+PLS.getCurrentAction()+",currentPlayer="+PLS.getCurrentPlayer());//+vakHI~
+        if (Dump.Y) Dump.println("UADelayed.actionReleaseWait currentAction="+PLS.getCurrentAction()+",currentPlayer="+PLS.getCurrentPlayer());//~vakHI~
         int eswn=PintParm[PARMPOS_WAIT_RELEASE_PLAYER];            //~9627R~
 	    int player=AG.aAccounts.eswnToPlayer(eswn);                //~9627I~
         int msgid=PintParm[PARMPOS_WAIT_RELEASE_MSGID];            //~9627I~
@@ -1671,6 +1677,7 @@ public class UADelayed //implements Runnable                            //~v@@@R
 //      swResetMsgWaiting=true;	//parm to resetWaitAll             //~0226I~//~0228R~
 //      resetWaitAll(false);                                       //~0226I~//~0228R~
 //      swResetMsgWaiting=false;	//parm to resetWaitAll         //~0226I~//~0228R~
+		ctrTakenBlockedRobotTake=-1;                               //+vaq7I~
     	resetWaitAllClearPendingMsg();                             //~0228I~
     }                                                              //~0226I~
     //************************************************************ //~0228I~

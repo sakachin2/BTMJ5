@@ -14,7 +14,6 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_Yaku7Pair"
                      android:textSize="@dimen/smallfont_textsize_dialog_textview_middle"
-    			android:background="@color/descriptiononly"
         />
     </LinearLayout>
     <LinearLayout

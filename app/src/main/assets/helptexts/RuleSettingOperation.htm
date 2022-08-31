@@ -8,32 +8,32 @@ Set time period after Discard for "Ron", "Pon/Kan", "Chii/Draw".
 <BR>
 <BR>
 <B>
-Ron
+Ron(Red)
 </B>
- : <BIG><B>Red</B></BIG> lamp. Only Ron is accepted.
+ : <BIG><B>Red</B></BIG> lamp interval. Only Ron is accepted.
  "Win" call out of this period is, if not first winner, "Late Ron" and is not accepted regardless "Double-Ron" rule.
  Accordingly, "3Win" is accepted as AbortiveDraw if 3 players issued "Win" in this period.
 <BR>
 To accept Chankan Ron(Robbing a Quad) for added Kan, you can take Rinshan after this period + next "Pon/Kan" period.
- Likewise, 2nd win call is "Late Ron" when this time exhausted.
- If claming win to Ankan is allowed for Yakuman:Kokusi(13 Orphans) by settings, this period applied.
+ 2nd Chankan call is "Late Ron" when this interval expired.
+ If claming Win for Ankan is allowed by another setting for the possibility of Kokusi(13 Orphans), do it in this period.
 <BR>
 <B>(Caution)</B>
 When you did not called Ron for winning tile after called Riichi and other player called other action,
 you can not win anymore in this round and will pay penalty.
 <BR>
 <B>
-Pon/Kan
+Pon/Kan(Yellow)
 </B>
- : <BIG><B>Yellow</B></BIG> lamp. Ron(only first claimer)/Pon/Kan are accepted.
-When this time exhausted, lamp changes to <BIG><B>Green</B></BIG> and Ron(only first claimer)/Chii/Draw/Pon/Kan become available and the first comes.
-Lamp changes to <BIG><B>Blue</B></BIG> when the tile was drawn.
+ : <BIG><B>Yellow</B></BIG> lamp interval. Ron(only first claimant)/Pon/Kan are accepted.
+When this interval expired, lamp changes to <BIG><B>Green</B></BIG> and Ron(only first caller)/Chii/Draw/Pon/Kan become available, and  first comes.
+Lamp changes to <BIG><B>Blue</B></BIG> when the next player did Draw.
 <BR>
 <B>
-After Last Discard</B> : After the last discard, "ExhaustiveDraw" completes after this time exhausted after lamp changed to green.
+After Last Discard</B> : After lamp changed to green for the last Discard, "ExhaustiveDraw" proceeds after this interval expired
 <BR>
 <B>
-AutoDraw</B> : From entered to green(draw-able) period, if this time exhausted next player draw automatically.
+AutoDraw</B> : After green(Draw-able) time interval started, if this time interval expired next player Draw automatically.
  Also applied to drawing Kan tile. 0 means no AutoDraw.
  But, for MinKan and AddKan, this is applied after Ron time exausted.
 <BR>
@@ -45,89 +45,52 @@ AutoDiscard</B> : After (Kan)Draw or after Pon/Chii, tile framed green in hand i
 <BIG><B>Notify availability of Ron,Pon,Kan,Chii.</B></BIG>
 <BR>
 In Match mode(Not Play Alone mode), notify availability of those by button color
- which back to normal state by timeout or other players action.
+ which back to normal color by timeout or the other players operation.
 <BR>
-For Kan, notify for Minkan(Kan for discarded) and at just taken the tile same as Triplet on Earth).
-<!--
-<BR>
-<BIG><B>Notify availability of Ron,Pon,Kan,Chii when playing alone.</B></BIG>
-<BR>
-If set ON, <B>DelayTime</B> except <B>Pon/Kan</B> is ignored and Human player draws automatically in playing alone mode.
-It speed up playing time.
-<BR>
-For Kan, not notify at Drawn a Tile but at other player discarded.
-<BR>
-"Win" is not notified in case of Furiten, Multiple Wait one of which is 1/2 han constraint is NG and violation of Fix Yaku at First. 
-<BR>
-And in Play-Alone-Mode Furiten-Riichi-OK option is effective, you can not call Riich with Furiten if Off.
-2 han constraint error at Riichi is notified if "Confirm Tenpai" option is ON.
-<BR>
-<BR>
-<BIG><B>When playing alone, Robot's "Draw" is by button</B></BIG>
-<BR>
-Robot's "Draw" is not by timeout but by button touch. Set on if you want to take a time hand by hand in playing alone mode.
--->
+For Kan, notify for Minkan(declare Kan for Discard).  And for  Chankan, notify it when you Draw the tile same as Triplet in Earth.
 <BR>
 <BR>
 <BIG><B>Wait!</B></BIG>
 <BR>
 <B>Win call is cancelable</B> : 
-If checked ON, you can block other player's action to take a time to consider the winning is better or worth for your score placement.
+If checked ON, you can block other player's operation to take a time to consider that you have to aim higher point regarding your current score or not.
  In Wait! state, small yellow-green lamp lights notifying blocked status to the other players.
  Other player's Pon/Kan/Chii/Ron is queued, next player's Draw and AutoDraw are rejected. 
  When pressed "Win" again, Win claim complete.
 <BR>
-(This setting is ignored when playing alone with notify mode and win call is cancelable by "Cancel" button notified.)
+(This setting is ignored when playing alone with notify mode and Win call is cancelable by "Cancel" button notified.)
 <BR>
 Win call is canceled when "Cancel" pressed or timeout, if set, exhausted.
  Blocking is released and queued other player's actions are executed sequentially.
  AutoTake timer start if set.
 <BR>
 Pon/Chii may cause Wait! state.
- That is, for Pon, Red-Dora is to be included or not, for Chii, multiple candidate of Melds exists.
- Selecting tile(s) in hand press again Pon/Chii, then the action completes.
+ For example, for Pon, Red-Dora  has to be included to Triplet or not. For Chii,  in the case that Discard constructs multiple  Meld.
+ Selecting tile(s) in hand then press again Pon/Chii, it operation proceeds.
  You can not cancel your Pon/Chii.
 <BR>
 <B>Timeout:Yes</B> : When this time exhausted, The action is canceled and blocking is released.
  Queued action, if exist, is executed.
 <BR>
-e.g.) In green period all action is allowed, anyone called Chii at first and entered to "Wait!" state by Melds of multiple candidate.
+e.g.) In the green period all action is allowed. Someone declared Chii at first and entered to "Wait!" state by the possibility of multiple Meld.
  At this time, if another player called Pon, the action is queued and it is executed when timeout exhausted.
- If Chii pushed again before timeout Chii completes and Pon is canceled.
+ If Chii pushed again before timeout Chii proceeds and Pon is canceled.
 <BR>
 <BR>
 <BIG><B>1-Han Constraint</B></BIG>：
+<BIG><B>1-han Constraint</B></BIG>：(han:Rank)
 <BR>
 If checked ON, your hand is checked that its value is at least 1 han excluding Dora.
  Win call is ignored and other player is not notified about your win call if NG.
- For complete hand, depending on "Win call is cancelable" enters into "Wait!" state or proceed to "Win Claimed".
- If not "Yes"(similar to real mahjong), miss-pressing "Win" button is cancelable if "Win is cancelable" is set,
- otherwise it may be "Chmbo" of mistaken Ron.
-For Locally defined winning pattern, you can proceed Ron by <B>Win-A</B> button or <B>Win anyway</B> of Menu even when err by checking hand.
-When "Cancel" button appeared, use "Win anyway" also for 2nd Win call for the local hand.
+ If OK, depening on option of "Win call is cancelable", game enters into "Wait!" or "Win" proceeds.
+ If OFF, (similar to real Mahjong), if "Win is cancelable" is set, miss-pressing "Win" button is cancelable.
+ If "Win call is cancelable" is Off, it may cause "Chmbo"(錯和) of mistaken Ron.
+To accept not standard and locally defined win pattern, you can proceed Win by <B>Win-A</B> button or <B>Win anyway</B> of Menu even after pattern error was notified.
+When "Cancel" button appeared by Win-A, use "Win anyway" also for 2nd Win call for the local win pattern.
 <!--
-<BR>
-<B>Kata-Agari</B>：(Japanese:One side-Win)
-<BR>
-You are waiting multiple winning tile and one of those dose not meet "1-Han Constraint".
-<BR>
-e.g.
-<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
-<BR>
-Your winning tiles are
-<img src=@drawable/s_man1s> (construncts Yaku of Straight)
- and 
-<img src=@drawable/s_man4s>
-<img src=@drawable/s_man7s> (both missing 1 han).
-You can call win for 
-<img src=@drawable/s_man1s> ?.
-It depend on options of <B>Fix Yaku</B> on settiong of Yaku.
-<BR>
-This option here is to check it or not.
-Of cause, you can call win after you called Riich which meets 1-han constraint.
 -->
 <BR>
-<BIG><B>Furiten</B></BIG>：(Japanese:FURI(discarded)-TENpai(tile to win))
+<BIG><B>Furiten</B></BIG>：(Japanese:FURI(discarded)-TENpai(ready to win))
 <BR>
 It means you are already discarded one of winning tiles.
 <BR>
@@ -137,11 +100,11 @@ And there is another case of Furiten, you can not call win until you draw your n
 <BR>
 e.g. 
 <BR>
- you pass over for next player's <img src=@drawable/s_man1s> by the reason of aiming higher score.
-You can not call win for next of next player's <img src=@drawable/s_man4s>. After you drawn in your next turn you can call win for all of <img src=@drawable/s_man1s><img src=@drawable/s_man4s><img src=@drawable/s_man7s>.
+ you may pass over for next player's <img src=@drawable/s_man1s> by the reason of aiming higher score.
+You can not call Win for other player's <img src=@drawable/s_man1s><img src=@drawable/s_man4s><img src=@drawable/s_man7s> until your next Draw.
 If you drawn one of those at next draw, you can call win by Self-Draw.
 <BR>
-Regardless this setting, after you called Riichi Furiten is checked depending <B>Furiten Riichi</B> of Yaku dialog.
+If you have declared Riichi, regardless this setting, Furiten is checked depending <B>Furiten Riichi</B> of Yaku dialog.
 <BR>
 Like as these option is OFF, in real Mahjong, anyone dose not notify your win violates rule of 1-han constraint and Furiten. 
 <BR>
@@ -150,30 +113,29 @@ If these option are OFF, <BIG>Be careful to violate Chombo</BIG>.
 </B>
 <BR>
 <BR>
-<BIG><B>Evaluate Point By APP.</B></BIG>：
+<BIG><B>Evaluate Point.</B></BIG>：
 <BR>
-"Yes":Evaluate Point(Fu and Han) by this APP. "No":The game is more interesting like real game.
+"Yes":Evaluate Fu(base point) and Han(Rank) by this APP. "No":you have to set those value in "Win clame" dialog by yourself.
 <BR>
 If you do not agree the result, you can modify it on the dialog,
 <BR>
-which allows to manage irregular Local Winning Hand.
+which allows to handle irregular Local Win pattern.
 <BR>
 <BIG><B>Confirm Tenpai</B></BIG>：(Japanese:Tenpai=The hand is in status of ready to win)
 <BR>
-"No":Without checking Ron-able pattern, discards selected(green framed) tile. It may cause chombo of "NoTen Riich".
+"No":Without checking Win-able pattern, do Discard selected(green framed) tile. It may cause Chombo of "NoTen Riich".
 <BR>
 <BR>
 <BIG><B>SuspendOption</B></BIG>
- : "Request suspend" and "Cancel suspend" is menu items of during game.
-By "Request suspend" menu item, "SuspendGame Claim" dialog is shown at end of the hand on server.
+ You can request suspend game in dialogs of End-of-Hand", "AbortiveDraw Confirmation" and "ExhaustiveDraw Confirmation".
  Select "Suspend", "Gameover" or "Continue".
  Default is defined in this topic and can be change by server on the dialog.
  Penalty can not be changed on the dialog while gaming.
- Getting agreements from all clients is required to proceed SuspendGame.
+ Getting agreements from all others is required to proceed SuspendGame.
 <BR>
 In case of ConnectionFailure, "ConnectionFailure Notification" dialog will appear.
- You can try reconnection. If failed to reconnect, select "Suspend"/"Gameover"
- with game status accomplished up to end of the previous hand.
+ You can try reconnection. If failed to reconnect, select "Suspend"/"Gameover".
+ That round status disappear and, it can be resumed by the status of end of previous round.
 <BR>
 <BR>
-<SMALL>RuleSettingOperation 2022/04/22</SMALL>
+<SMALL>RuleSettingOperation 2022/07/08</SMALL>

@@ -1,5 +1,6 @@
-//*CID://+vamuR~:                             update#=  516;       //~vamuR~
+//*CID://+vapbR~:                             update#=  517;       //+vapbR~
 //*****************************************************************//~v101I~
+//2022/07/27 vapb change default of checkFuriten                   //+vapbI~
 //2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
@@ -41,7 +42,8 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
 	private static final int DEFAULT_RONVALUE=1;
 	private static final int DEFAULT_CHK_REACH=1;                  //~va27I~
-	private static final int DEFAULT_CHK_MULTIWAIT=0;              //~va96I~
+//  private static final int DEFAULT_CHK_MULTIWAIT=0;              //+vapbR~
+	private static final int DEFAULT_CHK_MULTIWAIT=1; //for isCheckFuriten//+vapbI~
 	private static final int DEFAULT_FIX1=1;
     //**********************************************************   //~v@@@I~
     private static final int UNIT_SEC=10;                          //~9622I~//~v@@@M~
@@ -711,18 +713,18 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
     //**************************************                       //~va27I~
 	public static boolean isAllowRobotAllButton()                  //~va27I~
     {                                                              //~va27I~
-//  	int def=0;	//false                                        //~va27I~//+vamuR~
-//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//~va27I~//+vamuR~
-		boolean rc=PrefSetting.isAllowRobotAllButton();             //+vamuI~
+//  	int def=0;	//false                                        //~va27I~//~vamuR~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//~va27I~//~vamuR~
+		boolean rc=PrefSetting.isAllowRobotAllButton();             //~vamuI~
         if (Dump.Y) Dump.println("RuleSetting.isAllowRobotAllButton rc="+rc);//~va27I~
         return rc;                                                 //~va27I~
     }                                                              //~va27I~
     //**************************************                       //~va70I~
 	public static boolean isPlayAloneNotify()                      //~va70I~
     {                                                              //~va70I~
-//  	int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~va70R~//+vamuR~
-//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),def)!=0;//~va70I~//+vamuR~
-        boolean rc=PrefSetting.isPlayAloneNotify();                //+vamuI~
+//  	int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~va70R~//~vamuR~
+//      boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_PLAY_ALONE_NOTIFY),def)!=0;//~va70I~//~vamuR~
+        boolean rc=PrefSetting.isPlayAloneNotify();                //~vamuI~
         if (Dump.Y) Dump.println("RuleSetting.isPlayAloneNotify rc="+rc);//~va70I~
         return rc;                                                 //~va70I~
     }                                                              //~va70I~

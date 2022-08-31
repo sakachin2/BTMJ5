@@ -1,6 +1,8 @@
-//*CID://+vakmR~:                                   update#=  274; //+vakmR~
+//*CID://+vaq7R~:                                   update#=  279; //~vaq7R~
 //*************************************************************************//~@002R~
-//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //+vakmI~
+//2022/08/18 vaq7 (Bug)robot game hung; after GCM_TAKE rejected by 2 tounch mode Win cancel.//~vaq7I~
+//                no blocked msg remains. if 307(atiotake) was blocked  it will be resheduled after Win canceled//~vaq7I~
+//2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //~vakmI~
 //2022/02/27 vakj (Bug)hung if drawnRegDlgHW was canceled at the timeing robot discard(discard msg was ignored by swStop)//~vakjI~
 //2021/07/18 vaaR (Bug)GCM_RON from client button may be overtaken by robot take+discard on Server.//~vaaRI~
 //                Ron tile at Win call at client is no more lastDiscarded by robot Take+discard.//~vaaRI~
@@ -307,18 +309,18 @@ public class Robot                                                 //~@002I~
 //    }                                                              //~@002R~//~0222R~
     //**************************************************************//~va66I~
     //*from UADiscard at GCM_NEXT_PLAYER at manual mode(not auto take)//~va66I~
-    //*rc:true:issued Chii                                         //+vakmI~
+    //*rc:true:issued Chii                                         //~vakmI~
     //**************************************************************//~va66I~
-//  public static void nextPlayerManual(int Pplayer)               //~va66I~//+vakmR~
-    public static boolean nextPlayerManual(int Pplayer)            //+vakmI~
+//  public static void nextPlayerManual(int Pplayer)               //~va66I~//~vakmR~
+    public static boolean nextPlayerManual(int Pplayer)            //~vakmI~
     {                                                              //~va66I~
         Robot r=AG.aAccounts.getRobot(Pplayer);                    //~va66I~
         int eswn=r.getCurrentEswnRobot(); //not msg to me          //~va66I~
         if (Dump.Y) Dump.println("Robot.nextPlayerManual player="+Pplayer+",eswn="+eswn);//~va66I~
-//      AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //~va66I~//+vakmR~
-        boolean rc=AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii//+vakmI~
-        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit rc(issued Chii)="+rc);   //~va66I~//+vakmR~
-        return rc;                                                 //+vakmI~
+//      AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii      //~va66I~//~vakmR~
+        boolean rc=AG.aRoundStat.autoTakeTimeout(eswn);	//issued Chii//~vakmI~
+        if (Dump.Y) Dump.println("Robot.nextPlayerManual exit rc(issued Chii)="+rc);   //~va66I~//~vakmR~
+        return rc;                                                 //~vakmI~
     }                                                              //~va66I~
     //**************************************************************//~9630I~
     //*from UADiscard.autoTakeTimeout, UAKan.autoTakeKanTimeout    //~vaaRI~
@@ -335,7 +337,17 @@ public class Robot                                                 //~@002I~
 			if (Dump.Y) Dump.println("Robot.autoTakeTimeout skip send by issueChii");//~va60I~
         	return;                                                //~va60I~
         }                                                          //~va60I~
+        int svdelayRelease=r.delayRelease;            //~vaq7I~
+      if ((TestOption.option5 & TO5_RONCANCEL_TEST)!=0)            //+vaq7R~
+      {                                                            //~vaq7I~
+		if (Dump.Y) Dump.println("Robot.autoTakeTimeout roncancel_test");//~vaq7I~
+        r.delayRelease=5000;     //TODO test                       //~vaq7R~
+      }                                                            //~vaq7I~
         r.sendTake(eswn);                                          //~9630R~
+      if ((TestOption.option5 & TO5_RONCANCEL_TEST)!=0)            //+vaq7R~
+      {                                                            //+vaq7I~
+        r.delayRelease=svdelayRelease;                             //~vaq7R~
+      }                                                            //~vaq7I~
     }                                                              //~9630I~
     //**************************************************************//~va60I~
     //*from UAKan                                                  //~va60I~

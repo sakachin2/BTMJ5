@@ -1,9 +1,10 @@
-//*CID://+vam1R~: update#= 608;                                    //~vam1R~
+//*CID://+vap4R~: update#= 610;                                    //~vap4R~
 //**********************************************************************//~v101I~
+//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap4I~
 //2022/03/24 vam1 errmsg for no tenpai chkoption                   //~vam1I~
 //2022/01/19 vaj3 Gmsg:Reach should be show at discard             //~vaj3I~
 //2021/06/17 va9e del va9c because reach call is expanded to other player. alternatively add force-reach to menu item//~va9cI~
-//2021/06/17 va9c allow reach and warinig only for 2han-constraint or kataagari err. set reach at discard even issed warning//~va9cI~
+//2021/06/17 va9c allow reach and warninig only for 2han-constraint or kataagari err. set reach at discard even issed warning//+vap4R~
 //2021/06/14 va96 When win button pushed in Match mode, issue warning for not ronable hand.//~va96I~
 //2021/04/20 va8j KataAgari chk for also Human Take in PlayAloneNotifyMode//~va8jI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -360,6 +361,7 @@ public class UAReach                                                //~v@@@R~//~
                 }                                                  //~v@@6I~
                 if (optOpen==OPT_OPEN_OPEN)                        //~9A30I~
                 {                                                  //~va96I~
+                    AG.aRoundStat.setItsHandPlayer(Pplayer);       //~vap4I~
                     AG.aRoundStat.reachOpen(Pplayer);              //~va96I~
 //  	            UserAction.showInfoEswn(0/*opt*/,Pplayer,Utils.getStr(R.string.UserAction_Reach_Open));//~9A30R~//~va60R~
         			GMsg.showHLName(0,GCM_REACH_OPEN,Pplayer);     //~va60I~
@@ -451,10 +453,10 @@ public class UAReach                                                //~v@@@R~//~
         if (Dump.Y) Dump.println("UAReach.reachAnyway player="+Pplayer+",actionID="+actionID+",actionIDErr="+actionIDErr);//~va9eR~
         boolean rc=true;                                           //~va9eI~
         int msgID;	                                               //~va9eI~
-    	if (!swCheckReach)                                         //+vam1R~
+    	if (!swCheckReach)                                         //~vam1R~
         {                                                          //~vam1I~
         	GMsg.drawMsgbar(R.string.AE_NoCheckReach);             //~vam1I~
-            UView.showToastLong(R.string.AE_NoCheckReach);         //+vam1I~
+            UView.showToastLong(R.string.AE_NoCheckReach);         //~vam1I~
             return false;                                          //~vam1I~
         }                                                          //~vam1I~
         if (actionIDErr==GCM_REACH_OPEN)	//not FORCE            //~va9eI~

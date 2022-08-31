@@ -2,7 +2,8 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.21</string>
+    <string name="app_version">v1.23</string>
+    <string name="app_MinVersion">v1.23</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -150,7 +151,7 @@
     <string name="Helpfile_Main">Main</string> 
     <string name="Title_Help_Main">基本操作</string>
     <string name="Qexit">アプリケーションを終了しますか</string>
-    <string name="ErrMixedRole">サーバー/クライアントの役割は変更できません、全接続を切断し、ダイアログを閉じてやり直してください</string>
+    <string name="ErrMixedRole">サーバー/クライアントの役割を変更する場合は、全接続を切断し、ダイアログを閉じてやり直してください</string>
     <string name="ErrMemberOverflow">サーバーの最大接続クライアント数は %1$d です</string>
     <string name="ModeServer">サーバー</string>
     <string name="ModeClent">クライアント</string>
@@ -193,6 +194,7 @@
     <string name="Err_ReloadNooneConnected">未接続状態です</string>
     <string name="Err_HistoryNotSameMembers">接続メンバーと履歴のメンバーが全員一致ではありません</string>
     <string name="Err_HistoryIsTrainingMode">履歴は一人遊びです、再開する場合は接続を切断してください</string>
+    <string name="Err_HistoryIsTrainingMode_NotYou">履歴は一人遊びですが名前が一致しません。( %1$s と %2$s )</string>
     <string name="Err_ReloadDataErr">データにエラーがあります</string>
     <string name="Err_ReloadDataErrReceived">%1$s から送られた履歴データにエラーがあります</string>
     <string name="Err_AlreadyFileExists">既存です、保存できません。\
@@ -269,7 +271,7 @@
 											</string>
     <string name="Alert_FinalGameDlgForceOK">\"オーラス終局判断\"に\"NG\"応答がありました。
 											処理を続行する方法は次の２通りです。\
-											この画面で\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"オーラス終局判断\"を再送して\"OK\"をもらう。\
+											この画面で\"キャンセル\"を押し、下の画面の\"終局\"か\"続行\"ボタンで\"オーラス終局判断\"を再送して\"OK\"をもらう。\
 											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に処理を進める。
 											</string>
     <string name="Alert_SuspendIOErrDlgForceOK">接続障害が残ったままか、中断処理 要求\に\"NG\"応答がありました。\
@@ -292,12 +294,13 @@
     <string name="Alert_CompleteDlg_NGCompReqDlg">\"和了 申告\"に\"NG\"応答があります。\
     						                      和了者に再申告をしてもらうか、\
     						                      \"無効\"、\"チョンボ\"を設定して\
-												\"送信\"してください
+												\"送信\"してください。\
+                                                自分が和了者ならこのダイアログを閉じて、"得点"ボタンを押します
 											</string>
     <string name="Alert_CompleteDlgForceOK">\"局の終了 確認\"に\"NG\"応答がありました。
 											ゲームを進行する方法は次の３通りです。\
 											この画面で\"キャンセル\"、下の画面を\"キャンセル\"で閉じ、\
-											和了者にメニューから\"和了 申告\"を再送してもらってやり直す。\
+											和了者に\"得点\"ボタンで\"和了 申告\"を再送してもらってやり直す。\
 											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"局の終了 確認\"を再送して\"OK\"をもらう。\
 											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"局の終了\"とする。
 											\"あがり\"を\"無効\"にするか、チョンボを設定すると局を\"続行\"（対象者は上がり放棄）することもできます。
@@ -317,7 +320,8 @@
     <string name="Title_CompleteDlgResp">局の終了確認 応答</string>
     <string name="Title_CompReqDlg">和了 申告</string>
     <string name="Title_DrawnReqDlgLast">流局 申告</string>
-    <string name="Desc_DrawnReqDlgLast">テンパイのラジオボタンは形式テンパイ/二飜縛りの設定オプションを考慮していません。関連設定を確認して、必要ならノーテンをにしてください</string>
+    <string name="Desc_DrawnReqDlgLast">ノーテンの場合、関連設定で形式テンパイの設定を確認してください</string>
+    <string name="Desc_ReasonNoten">ノーテンの理由：</string>
     <string name="Title_DrawnReqDlgHW">途中流局 申告</string>
     <string name="Title_DrawnDlgHW">途中流局承認 要求</string>
     <string name="Title_DrawnDlgLast">流局承認 要求</string>
@@ -386,14 +390,16 @@
     <string name="NotAgreed">無効</string>
     <string name="Agreed">有効</string>
     <string name="NoGame">ノーテン流れ</string>
-    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。\n
+    <!--string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。\n
 \"フリテン立直\"の設定は操作の\"テンパイ確認\"：有りの場合にのみ有効です。
-立直後の見逃しは自摸でも和了できません。空テン立直は可。</string>
+立直後の見逃しは自摸でも和了できません。空テン立直は可。</string-->
+    <string name="Label_ReachLimit">\"フリテン立直\"の設定は操作の\"テンパイ確認\"：有りの場合にのみ有効です。</string>
     <string name="Label_ReachLimitOpen">オープン立直の振り込みは</string>
     <string name="Label_ReachLimitOpenYakuman">役満払い</string>
-    <string name="Label_ReachLimitOpenChombo">チョンボで続行</string>
-    <string name="Label_ReachLimitOpenRobot">ボット入りの時のオープン</string>
-    <string name="Label_ReachLimitOpenRobotNone">無し</string>
+    <!--string name="Label_ReachLimitOpenChombo">チョンボで続行</string-->
+    <string name="Label_ReachLimitOpenChombo">警告</string>
+    <string name="Label_ReachLimitOpenRobot">ボット入りのオープン</string>
+    <string name="Label_ReachLimitOpenRobotNone">無</string>
     <string name="Label_ReachLimitOpenRobotSkip">ボットの放銃は無視</string>
     <string name="Label_ReachLimitOpenRobotNormal">ボットは通常払い</string>
     <string name="Label_Drawn99Tile">九種九牌</string>
@@ -408,7 +414,8 @@
     <string name="Label_DrawnManganAsDrawn">流局扱い</string>
     <!--string name="Label_DrawnManganDropBird">焼き鳥解除</string-->
     <!--string name="Label_DrawnManganMulti">２家、３家もあり。積み棒による加算やリーチ棒取得なし。飛んだ場合トビ賞はノーテン罰符より先に徴収し決定、複数の場合は東家に近い方から徴収。</string-->
-    <string name="Desc_DrawnMangan">流局扱い：ノーテン罰符対象、リーチ棒回収、積み棒加算共に無し、テンパイしてなければ親でも流れる。和了扱い：ノーテン罰符なし、焼き鳥解除、割れ目対象、親なら連荘。どちらの場合も複数家の場合はダブロンに従う、この場合の頭ハネとは東家に近い方。飛んだ場合トビ賞は流し満貫、ノーテン罰符の順にそれぞれ東家に近い順で徴収し決定。トリプルの流局はなし</string>
+    <!--string name="Desc_DrawnMangan">流局扱い：ノーテン罰符対象、リーチ棒回収、積み棒加算共に無し、テンパイしてなければ親でも流れる。和了扱い：ノーテン罰符なし、焼き鳥解除、割れ目対象、親なら連荘。どちらの場合も複数家の場合はダブロンに従う、この場合の頭ハネとは東家に近い方。飛んだ場合トビ賞は流し満貫、ノーテン罰符の順にそれぞれ東家に近い順で徴収し決定。トリプルの流局はなし</string-->
+    <string name="Desc_DrawnMangan">流し満貫の扱いと(Help参照)、得点を指定する。</string>
     <string name="Label_DrawnManganPending">テ流し満貫</string>
     <string name="Label_DrawnNoManganPendingByEswn">テ流頭ハネ</string>
     <string name="Label_DrawnOther">その他</string>
@@ -832,8 +839,8 @@
     <!--string name="Alert_DrawnHWNG">途中流局承認 要求にNG応答がありました</string-->
     <string name="Alert_DrawnHWNGForceOK">途中流局承認 要求に\"NG\"応答があります。\
 											ゲームを進行する方法は次の３通りです。\
-											この画面で\"キャンセル\"、下の画面を\"閉じる\"で閉じ、
-											要求者にメニューから\"流局の申告\"を再送してもらってやり直す。\
+											この画面で\"キャンセル\"、下の画面を\"キャンセル\"で閉じ、
+											要求者にメニューから\"途中流局の申告\"を再送してもらってやり直す。\
 											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで承認要求を再送して\"OK\"をもらう。\
 											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"流局\"(連荘、親流れ)、\"続行\"、\"やり直し\"をする。</string>
     <string name="Alert_DrawnHWCancel">途中流局をキャンセルしますか？\
@@ -1008,8 +1015,9 @@
     <string name="Info_ResyncRuleAtFirst">ルール設定の同意がされていません、サーバー(%1$s) から設定を送信してください</string>
     <string name="Info_ResyncRuleClientChanged">クライアント（%1$S）がルールを変更しました、再度ルールの同意が必要です</string>
     <string name="Info_ResyncRuleServerChanged">この端末はサーバーです、ルールを変更したので、送信が必要です</string>
-    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています。\"送信\"が必要です</string>
+    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています。再-\"送信\"が必要です</string>
     <string name="Err_RuleIsInitial">ルール設定ができていません。\"設定\"ボタンを押してください</string>
+    <string name="Err_RuleIsInitialMsg">ルール設定ができていません。\"設定\"ボタンから\"ルール設定\"を開き、\"OK\"を押してください</string>
     <string name="Info_ResyncRuleChkOK">ルール設定を確認しました、対局を開始します</string>
     <string name="Info_RuleSynchedAlready">%1$d 人とルールは同期しています、送信は行われません</string>
     <string name="Info_BlockTimeout">\"ちょっと待った\"の時間切れ</string>
@@ -1077,7 +1085,7 @@
 						</string>
     <string name="Desc_CheckRonable">振りテンのチェックはしない。</string>
     <string name="Desc_CheckRonValue">但しダイアログで得点を修正できます</string>
-    <string name="Desc_CheckReach">立直のとき聴牌チェック。フリテン、二飜縛りの片上がりもチェックします。</string>
+    <string name="Desc_CheckReach">立直のとき聴牌、フリテン、二飜縛りをチェックします。</string>
     <string name="Label_S2P">端数調整</string>
     <string name="Label_RankMUp">切り上げ満貫あり</string>
     <string name="Desc_RankMUp">（３０符４飜、６０符３飜は満貫）</string>
@@ -1169,14 +1177,16 @@
     <string name="Label_YakuList">役</string>
     <string name="Label_Operation">操作</string>
     <string name="Label_8Continue">八連荘</string>
-    <string name="Label_8ContDealer">親で８回連続和了の８回目</string>
+    <string name="Label_8ContDealer">親で連続和了の８回目</string>
+    <string name="Label_9ContDealer">親で連続和了の９回目</string>
     <string name="Label_8ContOnePlayer">子からでも８回連続</string>
     <string name="Label_8ContStick">８本場での親の和了</string>
     <string name="Label_8ContStickAnyOne">８本場での親または子の和了</string>
     <string name="Label_8ContNoNeedYaku">１飜、２飜縛りを適用</string>
-    <string name="Label_8ContReset">達成したら回数リセット</string>
+    <string name="Label_8ContReset">次は＋８</string>
     <string name="Label_8ContMulti">ダブルあり</string>
-    <string name="Desc_8Continue">サイコロの周辺に各人連続和了回数が表示され、積み棒の本数と合わせて判定する。\"ダブルあり\"は上がり役の役満と合わせられる。\"回数リセット\"オンの場合次は１６回目/１６本場、オフの場合八連荘のチャンスが続く</string>
+    <!--string name="Desc_8Continue">サイコロの周辺に各人連続和了回数が表示され、積み棒の本数と合わせて判定する。\"ダブルあり\"は上がり役の役満と合わせられる。\"回数リセット\"オンの場合次は１６回目/１６本場、オフの場合八連荘のチャンスが続く</string-->
+    <string name="Desc_8Continue">\"アプリで点数計算\"、\"一翻縛り\"を\"チェックする\"も設定してください</string>
     <string name="Label_YakuFix">役の確定</string>
     <string name="Label_YakuFixFirst">先付け</string>
     <string name="Label_YakuFixLast">後付けあり</string>
@@ -1223,22 +1233,27 @@
 				&lt;/span&gt;
 				の部分は設定で\"アプリで点数計算\"などのオプション設定によります。
 			</string-->
-    <string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は
+    <!--string name="Desc_YakuStatementOnly">この設定は原則、覚書であり、アプリでチェックする項目は
 				&lt;span style="background-color:#80ff80;"&gt;
 				濃い緑
 				&lt;/span&gt;
 				の部分。
-			</string>
+			</string-->
+    <string name="Desc_YakuStatementOnly"></string>
     <string name="Label_Kuitan">食いタンあり</string>
     <string name="Label_DoublePillow">場+風で枕も４符</string>
     <string name="Label_PendingRank0">形式テンパイ</string>
-    <string name="Label_PendingRankNo">全て無し</string>
+    <string name="Label_PendingRankNo">形式テンパイは無し</string>
     <string name="Label_PendingRankEmpty">空聴OK</string>
     <string name="Label_PendingRankFuriten">振聴OK</string>
+    <string name="Label_PendingRankFixMulti">後付け、片上がりOK</string>
     <string name="Label_PendingRank0OK">役無OK</string>
+    <string name="Label_PendingRank1">一飜縛り</string>
     <string name="Label_PendingRank2">二飜縛りの時</string>
-    <string name="Label_PendingRank2Fix1">二飜の可能性が必要</string>
-    <string name="Desc_PendingRank2Fix1">。一飜縛りが役無しOKなら残り一飜</string>
+    <string name="Label_PendingRank2Fix1">一翻が必要</string>
+    <string name="Label_PendingRank2Fix2">二飜が必要</string>
+    <string name="Desc_PendingRank2Fix1">(但し、一飜縛りが\"役無OK\"なら残り一飜)</string>
+    <string name="Desc_PendingRank2">(下の\"２翻縛り\"の設定がしてあるとき)</string>
     <string name="Label_PinfuTaken">ピンヅモあり</string>
     <string name="Label_Yaku7Pair">七対子</string>
     <string name="Label_Yaku7Pair50_1">５０符１飜</string>
@@ -1496,6 +1511,7 @@
         <item>四暗刻単騎</item>   <!--=RYAKU_YAKUMAN+18;   //4anko tanki     -->
         <item>国士１３面待</item> <!--=RYAKU_YAKUMAN+19;   //kokushi 13wait -->
         <item>九蓮宝燈９面待</item><!--=RYAKU_YAKUMAN+20;  //9gate 9wait    -->
+        <item>オープン立直振り込み</item><!--=RYAKU_YAKUMAN+21;  //OpenReach Ron-->
 	</string-array>
 
     <string name="ShowYaku">詳細</string>
@@ -1553,7 +1569,8 @@
     <string name="Desc_ShowAnywayBtn">七対子、国士 以外の変則形を上がるときに必要。アプリの先付、フリテンのチェックに不満があり、強制的にあがるためにも使用できる</string>
     <string name="Err_BS_NotCompleteSelected">終了したゲームを選択してください</string>
     <string name="Err_BSMultipleSelected">ゲームの選択は１行にしてください</string>
-    <string name="AE_FuritenReach">フリテン立直</string>
+    <string name="AE_FuritenReach">フリテン立直、オプションで不可</string>
+    <string name="AE_FuritenReachOK">フリテン立直、オプションは許可、自摸のみで和了</string>
 <!--
     <string name="Label_ChkMultiWait">片上がり、フリテン</string>
     <string name="Desc_ChkMultiWait">自摸の時はフリテンは問われません。片上がりのオプションは役の設定ダイアログの\"役の確定\"の項で設定します。
@@ -1634,6 +1651,7 @@ Android-11以降、初回インストール時には、ゲームデータの保�
     <string name="Label_YouTube">動画</string>
     <string name="Err_FuritenReach">フリテン立直</string>
     <string name="Err_FuritenReachAfter">和了見逃し</string>
+    <string name="Err_NoCheckPendingForReach">注意：\"テンパイ確認\"オプションは\"なし\"です。</string>
     <string name="Err_SelectOrientation">クライアントでは向きの選択はキャンセルできません</string>
     <string name="Info_RuleReceived_ChangeY">受信したルールの変更点を背景色を変えて表示しています。</string>
     <string name="Info_RuleReceived_ChangeN">受信したルールに変更点は有りませんが返信してください。</string>
@@ -1644,4 +1662,41 @@ Android-11以降、初回インストール時には、ゲームデータの保�
     <string name="ZoomDown">ー</string>
     <string name="Err_TryFinalScoreFromServer">終局精算確認が未了です。\"%1$s\" のメニューからやり直してください。</string>
     <string name="Err_TryFinalGameForGameover">オーラス終局判断が未了です。\"%1$s\" のメニューからやり直してください。</string>
+    <string name="BtnLangKO">ハングル</string>
+	<string-array name="BtnLangHungleLabel"> 
+		<item>-&gt;英</item>
+		<item>-&gt;ハングル</item>
+		<item>-&gt;日</item>
+	</string-array>
+    <string name="Err_NoHungleHtmlText">&lt;BR&gt;&lt;BR&gt;Sorry, no Hungle text prepared.
+&lt;BR&gt;
+죄송합니다. 준비된 한글 텍스트가 없습니다.
+&lt;BR&gt;&lt;BR&gt;</string>
+    <string name="Info_IgnoreRobotDiscardToOpenReach">オープン立直へのロボットの放銃は無視されました。</string>
+    <string name="Info_YakumanByHumanDiscardToOpenReach">オープン立直への放銃は役満払い。</string>
+    <string name="Info_ChomboByHumanDiscardToOpenReach">オープン立直への放銃はできません。</string>
+    <string name="Warning_HumanDiscardToOpenReach_SelectOther">オープン立直の放銃、他を打牌してください</string>
+    <string name="Warning_HumanDiscardToOpenReach_SelectOther_Kan">オープン立直の槍槓です</string>
+
+    <string name="Err_PsuedoPending_Not_Shanten0">和了形ではありません</string>
+    <string name="Err_PsuedoPending_Empty">空聴</string>
+    <string name="Err_PsuedoPending_Furiten">フリテン</string>
+    <string name="Err_PsuedoPending_Furiten_Reach">フリテン立直違反</string>
+    <string name="Err_PsuedoPending_Fix1">１翻縛り違反</string>
+    <string name="Err_PsuedoPending_Fix2">２翻縛り違反</string>
+    <string name="Err_PsuedoPending_Multiple">片上がり違反</string>
+    <string name="Err_PsuedoPending_Multiple_Fix2">２翻縛りの片上がり違反</string>
+    <string name="Err_PsuedoPending_Fix">先付け、中付け違反</string>
+    <string name="Err_PsuedoPending_No_Option">オプションは形式聴牌なし</string>
+    <string name="Err_PsuedoPending_Tenpai">（聴牌）</string>
+    <string name="Err_PsuedoPending_Unknown">ノーテン：不明</string>
+    <string name="Alert_AppVersionUnmatch">\"ルール設定\"を受信しましたが、アプリのバージョンが一致しません。\
+											( 受信: %1$s, 最小限必要: %2$s )\
+											アプリを終了し、最新のバージョンをインストールしてください。
+											</string>
+    <string name="Alert_AppVersionUnmatchHD">履歴ファイルの\"ルール設定\"が、アプリのバージョンと一致しません。\
+											( 履歴: %1$s, 最小限必要: %2$s )\
+											このファイルからは再開は問題があるかもしれませんが、OKで再開できます。\
+											</string>
+    <string name="Info_GameEndCanceled">\"終局精算確認\"がキャンセルされました。メニューから終局清算確認ダイアログを開いてください。</string>
 </resources>

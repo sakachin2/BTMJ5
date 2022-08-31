@@ -34,8 +34,8 @@
             android:layout_width="wrap_content"
         />
         <RadioButton
-            android:id="@+id/rb8ContOnePlayer"
-            android:text="@string/Label_8ContOnePlayer"
+            android:id="@+id/rb9ContDealer"
+            android:text="@string/Label_9ContDealer"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
         />
@@ -45,6 +45,12 @@
          android:layout_height="wrap_content"
         android:orientation="horizontal"
     >
+        <RadioButton
+            android:id="@+id/rb8ContOnePlayer"
+            android:text="@string/Label_8ContOnePlayer"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
         <RadioButton
             android:id="@+id/rb8ContStick"
             android:text="@string/Label_8ContStick"
@@ -56,6 +62,7 @@
             android:text="@string/Label_8ContStickAnyOne"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:visibility="gone"
         />
     </LinearLayout> <!--line2-->
     <LinearLayout
@@ -68,12 +75,14 @@
             android:text="@string/Label_8ContNoNeedYaku"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:visibility="gone"
         />
         <CheckBox
             android:id="@+id/cb8ContMulti"
             android:text="@string/Label_8ContMulti"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:visibility="gone"
         />
         <CheckBox
             android:id="@+id/cb8ContReset"

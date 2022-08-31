@@ -1,5 +1,8 @@
-//*CID://+va60R~: update#= 720;                                    //~va60R~
+//*CID://+vappR~: update#= 729;                                    //~vappR~
 //**********************************************************************//~v101I~
+//2022/08/03 vapp Psuedo tenpai; drop allNo(chk tenpai required for repeat/next round)//~vappI~
+//2022/08/02 vapm itsHand contension of main Thraed(DrawnReqDlgLast) and msgHandler Thread(Tand and discard by Robot)//~vapmI~
+//2022/07/30 vapk implements keishiki tenpai                       //~vapkI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -20,8 +23,10 @@ import com.btmtest.dialog.DrawnDlgLast;
 import com.btmtest.dialog.DrawnReqDlgLast;                         //~9307R~
 import com.btmtest.dialog.DrawnReqDlgHW;
 import com.btmtest.dialog.OKNGDlg;
+import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.RA.RoundStat;
+import com.btmtest.game.RA.Shanten;
 import com.btmtest.game.gv.GameViewHandler;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
@@ -670,7 +675,8 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
         if (Dump.Y) Dump.println("UAEndGame.showDlg swFromMenu="+PswFromMenu+",status.endgametype="+AG.aStatus.endGameType+",swResponsedAllPending="+UAEG.swResponsedAllPending+",swResponsedAllConfLast="+UAEG.swResponsedAllConfLast);//~v@@@M~//~9308R~//~9311R~//~9A11R~
         int player=PLAYER_YOU;                                     //~9311I~
         if (AG.aTiles.chkLast()                                  //~v@@@I~//~9311R~
-        ||  (TestOption.option & TO_DRAWNREQDLG_LAST)!=0 // TODO TEST //~9311I~//~9417R~//~9420R~
+        ||  (TestOption.option5 & TO5_DRAWNREQDLG_LASTDIALOG)!=0 // TODO TEST //~9311I~//~9417R~//+vappR~
+        ||  (TestOption.option & TO_DRAWNREQDLG_LAST)!=0 // TODO TEST//+vappI~
         )                                                          //~9311I~
         {                                                          //~9306I~//~9311M~
         	if (Dump.Y) Dump.println("UAEndGame.showDlg DrawnLast TestOption:DrawnLast="+((TestOption.option & TO_DRAWNREQDLG_LAST)!=0));//~9A14I~//~1212R~
@@ -881,48 +887,48 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 				UAReach.postOpenOnly(pl,swReach);                  //~9309I~
         }                                                          //~9309I~
     }                                                            //~9308R~//~9309R~
-//    //*************************************************************************//+va60R~
-//    //*on Server, send GCM_OPEN to dealer with tile of reach/pending robot//+va60R~
-//    //*************************************************************************//+va60R~
-//    private void sendOpenRobot(int Pplayer)                      //+va60R~
-//    {                                                            //+va60R~
-//        if (Dump.Y) Dump.println("UAEndGame.sendOpenRobot player="+Pplayer+",reasonResponse="+Arrays.toString(reasonResponse));//+va60R~
-//        for (int eswn=0;eswn<PLAYERS;eswn++)//all robot          //+va60R~
-//        {                                                        //+va60R~
-//            if (!AG.aAccounts.isDummyByCurrentEswn(eswn))        //+va60R~
-//                continue;                                        //+va60R~
-//            int pl=AG.aAccounts.eswnToPlayer(eswn);   //robot    //+va60R~
-//            int opt;                                             //+va60R~
-//            if (AG.aPlayers.getPosReach(pl)>=0)                  //+va60R~
-//                opt=OPT_OPEN_ONLY_REACH;                         //+va60R~
-//            else                                                 //+va60R~
-//            if (reasonResponse[eswn]==EGDR_PENDING)              //+va60R~
-//                opt=OPT_OPEN_ONLY_PENDING;                       //+va60R~
-//            else                                                 //+va60R~
-//                opt=0;                                           //+va60R~
-//            if (opt!=0)                                          //+va60R~
-//                sendOpenRobotToClient(opt,Pplayer,pl,eswn);      //+va60R~
-//        }                                                        //+va60R~
-//    }                                                            //+va60R~
-//    //*************************************************************************//+va60R~
-//    //*on Server, send GCM_OPEN to dealer with tile of reach/pending robot//+va60R~
-//    //*************************************************************************//+va60R~
-//    private void sendOpenRobotToClient(int PoptOpen,int Pplayer,int PplayerRobot,int PeswnRobot)//+va60R~
-//    {                                                            //+va60R~
-//        if (Dump.Y) Dump.println("UAEndGame.sendOpenRobotToClient opetOpen="+PoptOpen+",player="+Pplayer+",playerRobot="+PplayerRobot+",eswnRobot="+PeswnRobot);//+va60R~
-//        TileData[] tds=AG.aPlayers.getHands(PplayerRobot);       //+va60R~
-//        int ctr=tds.length;                                      //+va60R~
-////        for (int eswn=0;eswn<PLAYERS;eswn++)    //all real     //+va60R~
-////        {                                                      //+va60R~
-////            if (AG.aAccounts.isDummyByCurrentEswn(eswn))       //+va60R~
-////                continue;                                      //+va60R~
-////            int pl=AG.aAccounts.eswnToPlayer(eswn);            //+va60R~
-////            String msgDataToClient=AG.aUAReach.makeMsgDataToClient(pl,PoptOpen,tds,ctr);//+va60R~
-////            sendToClient(swSendAll,PactionID,Pplayer,msgDataToClient);//+va60R~
-////        }                                                      //+va60R~
-//          String msgDataToClient=UA.UARE.makeMsgDataToClient(Pplayer,PoptOpen,tds,ctr);//+va60R~
-//          UA.sendToClient(true/*all*/,false/*robot*/,GCM_OPEN,Pplayer,msgDataToClient);//+va60R~
-//    }                                                            //+va60R~
+//    //*************************************************************************//~va60R~
+//    //*on Server, send GCM_OPEN to dealer with tile of reach/pending robot//~va60R~
+//    //*************************************************************************//~va60R~
+//    private void sendOpenRobot(int Pplayer)                      //~va60R~
+//    {                                                            //~va60R~
+//        if (Dump.Y) Dump.println("UAEndGame.sendOpenRobot player="+Pplayer+",reasonResponse="+Arrays.toString(reasonResponse));//~va60R~
+//        for (int eswn=0;eswn<PLAYERS;eswn++)//all robot          //~va60R~
+//        {                                                        //~va60R~
+//            if (!AG.aAccounts.isDummyByCurrentEswn(eswn))        //~va60R~
+//                continue;                                        //~va60R~
+//            int pl=AG.aAccounts.eswnToPlayer(eswn);   //robot    //~va60R~
+//            int opt;                                             //~va60R~
+//            if (AG.aPlayers.getPosReach(pl)>=0)                  //~va60R~
+//                opt=OPT_OPEN_ONLY_REACH;                         //~va60R~
+//            else                                                 //~va60R~
+//            if (reasonResponse[eswn]==EGDR_PENDING)              //~va60R~
+//                opt=OPT_OPEN_ONLY_PENDING;                       //~va60R~
+//            else                                                 //~va60R~
+//                opt=0;                                           //~va60R~
+//            if (opt!=0)                                          //~va60R~
+//                sendOpenRobotToClient(opt,Pplayer,pl,eswn);      //~va60R~
+//        }                                                        //~va60R~
+//    }                                                            //~va60R~
+//    //*************************************************************************//~va60R~
+//    //*on Server, send GCM_OPEN to dealer with tile of reach/pending robot//~va60R~
+//    //*************************************************************************//~va60R~
+//    private void sendOpenRobotToClient(int PoptOpen,int Pplayer,int PplayerRobot,int PeswnRobot)//~va60R~
+//    {                                                            //~va60R~
+//        if (Dump.Y) Dump.println("UAEndGame.sendOpenRobotToClient opetOpen="+PoptOpen+",player="+Pplayer+",playerRobot="+PplayerRobot+",eswnRobot="+PeswnRobot);//~va60R~
+//        TileData[] tds=AG.aPlayers.getHands(PplayerRobot);       //~va60R~
+//        int ctr=tds.length;                                      //~va60R~
+////        for (int eswn=0;eswn<PLAYERS;eswn++)    //all real     //~va60R~
+////        {                                                      //~va60R~
+////            if (AG.aAccounts.isDummyByCurrentEswn(eswn))       //~va60R~
+////                continue;                                      //~va60R~
+////            int pl=AG.aAccounts.eswnToPlayer(eswn);            //~va60R~
+////            String msgDataToClient=AG.aUAReach.makeMsgDataToClient(pl,PoptOpen,tds,ctr);//~va60R~
+////            sendToClient(swSendAll,PactionID,Pplayer,msgDataToClient);//~va60R~
+////        }                                                      //~va60R~
+//          String msgDataToClient=UA.UARE.makeMsgDataToClient(Pplayer,PoptOpen,tds,ctr);//~va60R~
+//          UA.sendToClient(true/*all*/,false/*robot*/,GCM_OPEN,Pplayer,msgDataToClient);//~va60R~
+//    }                                                            //~va60R~
     //*************************************************************************//~9518I~
     //*on Server send GCM_OPEN                                     //~9518I~
     //*************************************************************************//~9518I~
@@ -1065,11 +1071,11 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
         return rc;                                                 //~0314I~
     }                                                              //~0314I~
     //******************************************************************//~va60I~
-    //*for smartRobot, set robot tenpai status                     //~va60I~
+    //*for smartRobot, set robot tenpai status at Server           //~vapkR~
     //******************************************************************//~va60I~
     private void setPendingRobot()                                 //~va66I~//~va60M~
     {                                                              //~va66I~//~va60M~
-        if (Dump.Y) Dump.println("DrawnDlgLast.setPendingRobot");  //~va60I~
+        if (Dump.Y) Dump.println("UAEndGame.setPendingRobot");     //~vapkR~
         if (!AG.aAccounts.isServer())                                   //~va66I~//~va60I~
         	return;                                                //~va66I~//~va60M~
         if (!AG.aRoundStat.swThinkRobot)                           //~va60I~
@@ -1080,8 +1086,42 @@ public class UAEndGame //extends Handler                           //~v@@@R~//~9
 	        RSP=AG.aRoundStat.RSP[ii];                             //~va66I~//~va60M~
         	if (!RSP.swRobot)                                      //~va66I~//~va60M~
             	continue;                                          //~va66I~//~va60M~
-    		reasonResponse[ii]=(RSP.getCurrentShanten()==0) ? EGDR_PENDING : EGDR_PENDINGNO;//~va60I~
+//            if (RuleSettingYaku.isPendingRankNo())               //~vappR~
+//            {                                                    //~vappR~
+//                if (Dump.Y) Dump.println("UAEndGame.setPendingRobotii=eswn="+ii+",rc=false by allNo option");//~vappR~
+//                reasonResponse[ii]=EGDR_PENDINGNO;               //~vappR~
+//            }                                                    //~vappR~
+//  		reasonResponse[ii]=(RSP.getCurrentShanten()==0) ? EGDR_PENDING : EGDR_PENDINGNO;//~vapkR~
+    		reasonResponse[ii]=setPendingRobot(RSP);               //~vapkR~
         }                                                          //~va66I~//~va60M~
-        if (Dump.Y) Dump.println("DrawnDlgLast.setPendingRobot reasonResponse="+Arrays.toString(reasonResponse));//~va66I~//~va60I~
+        if (Dump.Y) Dump.println("UAEndGame.setPendingRobot reasonResponse="+Arrays.toString(reasonResponse));//~va66I~//~vapkR~
     }                                                              //~va66I~//~va60M~
+    //******************************************************************//~vapkI~
+    //*on Server                                                   //~vapkI~
+    //******************************************************************//~vapkI~
+    private int setPendingRobot(RoundStat.RSPlayer Prsp)           //~vapkR~
+    {                                                              //~vapkI~
+        if (Dump.Y) Dump.println("UAEndGame.setPendingRobot");     //~vapkR~
+//      if (RuleSettingYaku.isPendingRankNo())                     //~vappR~
+//      {                                                          //~vappR~
+//      	if (Dump.Y) Dump.println("UAEndGame.setPendingRobot rc=false by allNo option");//~vappR~
+//      	return EGDR_PENDINGNO;   //no keishiki tenpai allowed  //~vappR~
+//      }                                                          //~vappR~
+        int eswn=Prsp.eswn;                                        //~vapkI~
+        int player=Prsp.player;                                    //~vapkI~
+        boolean swReach=Prsp.isReachCalled();                      //~vapkI~
+        int[] itsH=AG.aRoundStat.getItsHandEswn(eswn);                              //~vapkI~
+        int ctrH=Prsp.ctrHand;                                     //~vapkI~
+//      int shanten=AG.aShanten.getShantenMin(itsH,ctrH);          //~vapmR~
+//      int shanten= Shanten.newInstanceMainThread().getShantenMin(itsH,ctrH);//~vapmR~
+        int shanten=AG.aShanten.getShantenMin(itsH,ctrH); //UAEndGame is on GameViewHandler//~vapmI~
+        boolean swPending;                                         //~vapkI~
+        if (shanten!=0)                                            //~vapkI~
+        	swPending=false;                                       //~vapkI~
+        else                                                       //~vapkI~
+        	swPending=AG.aRAReach.chkPsuedoTenpai(player,eswn,swReach,itsH,ctrH);//~vapkR~
+		int rc=swPending ? EGDR_PENDING : EGDR_PENDINGNO;          //~vapkI~
+        if (Dump.Y) Dump.println("UAEndGame.setPendingRobot player="+player+",eswn="+eswn+",rc="+rc+",swPending="+swPending+",shanten="+shanten);//~vapkR~
+        return rc;
+    }                                                              //~vapkI~
 }//class UAEndGame                                                 //~dataR~//~@@@@R~//~v@@@R~

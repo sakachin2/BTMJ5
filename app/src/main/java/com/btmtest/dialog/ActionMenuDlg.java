@@ -1,5 +1,6 @@
-//*CID://+v@@@R~:                             update#=  163;       //~1Af6R~//~v@@@R~
+//*CID://+v@@@R~:                             update#=  164;       //~1Af6R~//~v@@@R~
 //*****************************************************************//~v101I~
+//*for Test purpos to emulate action button                        //+v@@@I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 
@@ -25,7 +26,7 @@ public class ActionMenuDlg                                         //~v@@@R~
     }                                                              //~v@@@I~
 //**********************************                               //~v@@@M~
 	@Override                                                      //~v@@@I~
-    public void onDestroy()                                        //+v@@@R~
+    public void onDestroy()                                        //~v@@@R~
     {                                                              //~v@@@I~
     	if (Dump.Y) Dump.println("ActionMenuDlg.onDismiss");       //~v@@@I~
     }                                                              //~v@@@I~

@@ -1,0 +1,412 @@
+<! -span style="color:#000000; background-color:#c0d0c0";->
+<B>Yaku</B>(役)에 대한 규칙.
+<BR>
+ Win 호출이 유효한지 확인하려면 <B>Operation</B> 설정 항목 <B>Check 1-han constraint</B>를 ON으로 설정합니다.
+ (그래서 비활성화된 경우에도 메뉴에서 <B>Win anyway</B> 또는 <B>Win-A</B> 버튼을 사용하여 'Win'을 요청할 수 있습니다.)
+<BR>
+'Win'을 호출한 후 <B>Score</B> 버튼으로 <B>Win Claim</B> 대화상자를 엽니다. 여기서 Han(翻)과 Fu(符)를 설정하여 점수를 설정합니다.
+ (<B>Operation</B> 설정에서 <B>EvaluatePoint by APP</B>를 켜면 APP가 자동으로 설정됩니다.)
+<BR>
+ 'Win Claim'이 다른 플레이어에게 전송되고 모든 플레이어가 <B>OK</B> 또는 <B>NG</B>로 응답한 후,
+ <B>End-of-Hand</B> 대화상자가 부모에게 표시됩니다.
+<BR>
+부모가 로봇인 경우 대화 상자는 다음 (반시계 방향) 인간 플레이어에서 열립니다.
+부모는 Win 호출의 유효성을 확인한 다음 대화 상자를 다른 플레이어에게 보냅니다.
+다른 플레이어로부터 'OK'를 받은 후 게임을 <B>Fix</B>하여 'End-of-Hand'를 완료합니다.
+<BR>
+부모가 'Chombo'(錯和)('Furiten'(振聴), 'Noten'(NO 聴牌), 'Noten Riichi(立直)', 'han Constraint' 오류 등)를 발견하면,
+부모는 <B>Invalid</B>(벌금 없음) 또는 <B>Chombo</B>(벌금 있음)를 설정할 수 있습니다.
+이 경우 부모는 'Gameover' 또는 'Continue' 게임을 선택할 수 있습니다.
+'Continue'의 경우 'Chombo' 플레이어는 DeadHand가 되며 타일을 Discard하는 것 이외의 작업을 수행할 수 없습니다.
+<BR>
+<BR>
+<BIG><B>Standard </B> </BIG> :(標準役)
+<BR>
+<B>Riichi:</B>(立直). Menzen에서 'Ready to Win'을 선언합니다.
+선언 이후에는 이기는 타일을 얻을 때까지 Draw 타일을 그대로 Discard 해야 합니다.
+<BR>
+ Menzenn：(面前) 「All-In-Hand」, 「concealed Hand」. Pon /Kan/Chii를 하지 않은 상태입니다. 다만, Ankan(暗槓:conceiled Kan)은 제외한다.
+<BR>
+선택적으로 Open-Riich는 "Tiles in Hand"(手牌)를 표시하여 1-han을 추가할 수 있습니다. 다른 플레이어는 승리하는 타일을 결코 버리지 않으며,
+'Self-Draw'(自摸)에서만 Win할 수 있습니다.
+<BR>
+'One-shot'(一発)은 다음 Discard까지 Win을 하면 1 han 추가되는 옵션입니다.
+다음 Draw까지 다른 플레이어의 Pon/Kan/Chii가 있으면 무효가 됩니다.
+<BR>
+<B>Value Tile</ B>:Dragon(三元牌) 또는 winds(風牌)의 Triplet(刻子).
+<BR>
+Dragon:<img src=@drawable/s_ji3ws> : 흰색, <img src=@drawable/s_ji3gs> : 녹색, <img src=@drawable/s_ji3rs> : 빨간색.
+_winds:<img src=@drawable/s_ji4es>:동쪽,<img src=@drawable/s_ji4ss>:남쪽,<img src=@drawable/s_ji4ws>:서쪽,<img src=@drawable/s_ji4ns>:북.
+<BR>
+ winds는 "round wind"(場風)와 "player wind"(自風:부모(東)와의 상대 위치에 의한 wind)와 일치할 때 1 han의 가치가 있습니다.
+<BR>
+<B>Tanyao</B>:(断么九) All Simples. 패에는 번호 1, 9, 드래곤, 바람 타일이 포함되어 있지 않습니다. 선택적으로 Menzen이 아닌 Tanyao가 허용됩니다.
+<BR>
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s> <img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_man8s> <img src=@drawable/s_pin4s><img src=@drawable/s_pin4s> <img src=@drawable/s_sou3s><img src=@drawable/s_sou3s><img src=@drawable/s_sou3s> <img src=@drawable/s_sou3s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s>
+<BR>
+<B>Pinfu</B> :(平和)All Runs(順子). Melds(面子)는 모두 Run(順子: 번호 타일의 순서)이며, 「Value Tiles」는 없습니다.
+이기는 타일은 Run의 양쪽 타일입니다.
+즉, Win의 타일은 Penchan("辺張": 한쪽, 123의 3, 789의 7) Kanchan("嵌張": 갭, 예를 들어 234의 3)이 아닙니다.
+"Useless wind"(客風:wind not round wind and not player wind)의 페어(対子)는 OK입니다.
+<BR>
+기본적으로 Menzen 전용.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s> <img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s> <img src=@drawable/s_sou3s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> when <img src=@drawable/s_ji4ns> is not your wind.
+<BR>
+<B>Double Run</B> : (二盃口) 중복 Run. Menzen 전용.
+<BR>
+예를 들어 <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou3s>
+
+<BR>
+<B>_All Triples</B> :(対々和). Menzen이 필요하지 않습니다. Menzen이라면 Yakuman(役満)：4-anko(四暗刻)입니다.
+<BR>
+예를 들면
+<! -span style="background-color: #005900"->
+&nbsp;<img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2l><img src=@drawable/s_pin2s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4nl>
+<! -/span->
+<BR>
+<B>3 Color Runs</B> :(三色同順). 3색(Man(萬子: Character), Pin(筒子: Circle), Sou(索子: Bamboo))의 같은 수의 Run(順子).
+<BR>
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s> <img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou4s>
+<BR>
+<B>Straight</ B> : (一気通貫) 1색으로 1~9.
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_man6s> <img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s>
+<BR>
+<B>Mixed outside hand</B> :(混全帯么九) 모든 Melds에는 Terminal(번호 1 또는 9) 또는 Honor가 포함됩니다.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> <img src=@drawable/s_pin9s><img src=@drawable/s_pin9s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou1s>
+<BR>
+<B>Little 3 Dragons:</B>(小三元): 드래곤(三元牌)에서 2 triples(刻子)와 1 pair(対子).
+<BR>
+예를 들어 <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2l> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rl><img src=@drawable/s_ji3rs>
+<BR>
+<B>All Terminals and Honors : </B> (混老頭) : 모두 1, 9, dragon, wind 의 Triplet.
+<BR>
+예를 들어 <img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s> <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_sou9s><img src=@drawable/s_sou9s> <img src=@drawable/s_man1s><img src=@drawable/s_man1l><img src=@drawable/s_man1s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4nl><img src=@drawable/s_ji4ns>
+<BR>
+<B>3 Color Triples:</B>(三色同刻): 동일한 수의 Triples.
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>.
+<BR>
+<B>3 Kans:</B>(三槓子):3 quads
+<BR>
+예를 들어 <img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_sou1s><img src=@drawable/s_sou1s>
+ <img src=@drawable/stock_earth><img src=@drawable/s_pin8s><img src=@drawable/s_pin8s><img src=@drawable/stock_earth>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4sl>
+<BR>
+<B>Pure outside hand:</ B>(純全帯么九): outside hand만, Dragon 과 wind 를 포함하지 않는다.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s> <img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s> <img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s> <img src=@drawable/s_pin9s><img src=@drawable/s_pin9s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou1s>
+
+<BR>
+B>2 Double Run</B>(二盃口): 2개의 동일한 Run. Menzen のみ。
+<BR>
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man4s> <img src=@drawable/s_pin7s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s>
+
+<BR>
+<BR>
+<BIG><B>Show Win-A</B></BIG>:
+이 버튼은 로컬 규칙의 불규칙한 (표준이 아닌) 승리 패턴의 승리를 호출하는 데 사용됩니다.
+Menu 항목 <B>Win anyway</B>는 동일한 기능을 수행하지만 Menu 작업 중에 다른 플레이어가 뭔가 call 할 수 있습니다.
+<BR>
+<BR>
+<BIG><B>Psuedo-Tenpai</BIG></B>
+<BR>
+일본어로는 「Keishiki-Tenpai」. 「Keishiki」는 「형식」입니다만, 「형식적인」이라고 하는 의미입니다.
+<BR>
+ExaustiveDraw 할 때 Noten이라면 Noten 벌금을 지불하지만,
+형식적인 템파이를 인정하고 벌금을 피한다는 것입니다. 또 부모가 형식 템파이라면 "連荘"(부모를 계속할 수 있다)가 됩니다.
+<BR>
+<B>Disable Psuedo-Tenpai</B>:
+<BR>
+다른 플레이어의 Discard로 Ron할 수 있는 상태여야 합니다.
+Furiten, <B>Kata-Agari</B>, <B>Fix Yaku</B> 규칙 위반, 1/2-han(翻) 묶어 위반이 없으면 Tenpai로 간주합니다.
+마지막 _Discard 이후 놓친 것도 _Furiten입니다.
+"空聴"(Win 타일이 모두 보이고 있는 상태로 나머지가 없다)는 문제로 하지 않습니다.
+<BR>
+<B>Furiten Riichi</B>는 <B>Allow(Self-Pick only)</B>로 했을 경우에도, <B>Disable Psuedo-Tenpai</B>가 ON의 설정은, 다른 플레이어 Discard에서 Win을 전제로하고 있기 때문에 Noten입니다.
+<BR>
+<B>Disable Psuedo-Tenpai</B>가 Off인 경우, Tsumo(自摸)로 Win한 가정으로 아래에 따라 Psuedo-Tenpai를 인정합니다.
+<BR>
+<B>0-han OK</B>라면 어떤 형태의 Tenpai도 OK입니다.
+<BR>
+OFF라면, 올라 패 중 하나를 Self-Draw(自摸)했다고 해서, 드라 이외의 1-han(翻)이 있으면 Psuedo-Tenpai로 간주합니다.
+따라서 Menzen(面前)이라면 "面前自摸"(win by self-draw)의 1-han(翻)에서 Psuedo-TenpaiOK입니다.
+프리텐은 OK입니다.
+<BR>
+<B>Furiten Riichi</B>의 경우 설정에 따라 Self-Draw에서도 올라갈 수 없으며 Chombo의 벌금을 지불하게 되는 경우도 있지만,
+Psuedo-Tenpai로 간주합니다.
+<BR>
+<B>When 2-han constraint</B>
+<BR>
+<B>When 2-han constraint</B>: 2-han 구속(縛り)의 상황은 아래의 <B>2-han constraint</B> 항목의 설정에 의해 발생합니다.
+<BR>
+<B>2-han required</B>가 ON이면 win 타일 중 하나에 2-han이 있어야 합니다.
+<BR>
+Riichi(立直)+Tsumeo(自摸)는 2-han입니다만, Tsumo는 우연한 Yaku(役)로서, 이것만으로는 <B>2-han constraint</B>의 상황에서는 오르지 않습니다만,
+Psuedo-Tenpai로 간주합니다.
+<BR>
+<BR>
+<BIG><B>7 Pair</BIG></B></BIG>(七対子):
+<BR>
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<BR>
+'Allow Quads included'의 경우,
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<BR>
+<BR>
+<BIG><B>Fix Yaku</BIG></B>
+<BR>
+「일본식 마작」에서는, 마음대로 Yaku(적어도 1 han)가 필요합니다.
+그리고 승리 타일이 여러 개인 경우 Ron을 금지하는 규칙이 있습니다.
+'First only' 규칙에는 몇 가지 변종이 있으며 'Finally'는 간단하고 문제가 적은 경우입니다. 일반적으로 채택됩니다.
+<BR>
+혼자 놀이의 경우와 로봇은이 규칙을 따릅니다.
+대전 모드일 때의 플레이어는 스스로 판단하고Win 버튼을 눌러 주세요.
+다른 플레이어가 '규칙 위반'을 지적한 경우,
+그런 다음 대화 상자 'Chombo' 또는 'Continue game with the player's abandonment of win'(플레이어의 abandonment of win으로 게임 계속)에서 토론하고 설정합니다.
+<BR>
+<B>First only</B>：
+<BR>
+승리 타일이 여러 개인 경우 Yaku가 성립하지 않는 경우가 Win 할 수 없습니다. 모든 승리 타일이 Yaku를 구축해야한다는 것입니다.
+<BR>
+예를 들면 Kanchan(嵌張)(예: 2-3-4의 3), Penchan(辺張)(예: 1-2-3의 3)은 OK. Ryanmen (両面) (예 : 1-2-3의 1 또는 3)는 NG.
+Honor 타일의 두 쌍 중 하나에 의한 "RON"은 OK.
+승리 타일이 Yaku의 일부가 아닌 경우 Yaku는 이미 손에 있거나
+Earth(副露面子: 호출되어 열린 Meld)와 조합이 Yaku를 구성해야 합니다.
+하지만 Earth의 Meld는 모두 Yaku와 연관되어야 합니다.
+<BR>
+예) 1-han이 손에 있습니다.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+<img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
+<img src=@drawable/s_sou6s> 또는 <img src=@drawable/s_sou9s>에서 이길 수 있습니다.
+<BR>
+예)Ron이 Penchan 타일로 완성하는 'Straight'는 관계가 없는 Meld 멜드가 Earth에 없는 한 OK입니다.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+<img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ : <img src=@drawable/s_pin7s>에서 이길 수 있습니다.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+<img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ : <img src=@drawable/s_pin9s>에서 이길 수 없습니다. 이기는 타일이 여러 개 있고 Yaku 없는 경우가 있는 (KataAgari)에서입니다.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s>
+<img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+<img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2l>
+: <img src=@drawable/s_pin7s> 에서 _Win 할 수 없습니다. <img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2l>은 첫 번째 호출이며 Yaku:Straight와 관련이 없습니다.
+<BR>
+　"Red"(中)와 "Green"(發)의 2쌍이 손 안에 있는 경우, "Red" 또는 "Green"에 대해 Ron을 발행할 수 있습니다.
+ 만약 Honor 이외의 타일을 아직 call 하고 있지 않다면 OK.
+<BR>
+ 3-Dragon-Small의 경우, Earth에 W/G/R의 Triplet 이외의 Meld가 없는 한, 흰색(白)/녹색(發)/적색(中) 쌍의 Ron은 OK입니다.
+ Triplet를 가지고 있다면 손에 Honor 타일이 있기 때문에 Ron을 호출 할 수 있으며 3-Dragon-Small 값이 점수에 추가됩니다.
+<BR>
+예를 들어）
+<BR>
+<img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+<img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
+<img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ : <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>에서 1 han이 확정. 따라서 Win은 <img src=@drawable/s_ji3gs>와 <img src=@drawable/s_ji3rs>입니다.
+<BR>
+<img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+<img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+<img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
+이미 Earth와 관련이 없는 Meld가 있기 때문에 <img src=@drawable/s_ji3gs> 또는 <img src=@drawable/s_ji3rs>에서 이길 수 없습니다.
+<BR>
+ 3-Same-Seq의 경우 1-2-3은 손 안과 Earth로 이미 구성되어 있으므로 4-5-6의 Chii를 부를 수 있습니다.
+다만, 1-2-3의 Chii 뒤의 call이 아니면 안됩니다.
+<BR>
+예를 들면. )
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3ws>
+<img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6l>
+<img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
+ : <img src=@drawable/s_ji3ws>로 이길 수 있습니다.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3ws>
+<img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
+<img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6l>
+ : <img src=@drawable/s_ji3ws>에서는 이길 수 없습니다.
+<BR>
+Honor 타일의 Minkan은 Anko (暗刻 : 숨겨진 트리플)로 간주되지 않습니다. 따라서 첫 번째 호출의 경우 'Fix-First'이고 첫 번째 호출이 아닌 경우 'Fix-Middle'입니다.
+<BR>
+<B>Middle OK</B>:
+<BR>
+Earth에서 호출 시퀀스가 ​​문제가 아니라는 점을 제외하면 'First only'와 동일합니다.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s>
+<img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+<img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2l>
+ : <img src=@drawable/s_pin7s>에서 이길 수 있습니다.
+<BR>
+<img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3gs>
+<img src=@drawable/s_ji3rl><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+<img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+<img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
+ : <img src=@drawable/s_ji3gs>로 이길 수 있습니다.
+<BR>
+<B>Finally</B>:
+<BR>
+어쨌든 Win 할 때 Yaku가 있다면 괜찮습니다.
+여러 개의 Win 타일이 있는 경우 다음 'Kata-Agari'를 따릅니다.
+<BR>
+<BIG> <B>Kata-Agari</B></BIG> : Kata=한쪽,Agari(Win). a 여러 승리 타일 중 Yaku를 구성하지 않는 경우가 있는 경우의 약정입니다.
+<BR>
+'Finally' 옵션은 항상 Kata-Agari OK입니다.
+<BR>
+'Finally' 옵션이 아닌 경우 Win이 Draw인 경우 다음 옵션을 따릅니다.
+<BR>
+<B>All OK</B>: Win이 Draw인 경우 Kata-Agari를 허용합니다. <B>OK if Conceiled Hand</B> : Menzen(All-In-Hand)의 Draw라면 Kata-Agari는 OK.
+<BR>
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+<img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ : <B>Kata-Agari</B> 옵션이 <B>All-OK</B>인 경우 <img src=@drawable/s_pin9s>의 Self-Draw에서 이길 수 있습니다.
+<BR>
+모든 조합이 동일한 Yaku를 구성하는 것이 아니라 다른 Yaku를 구성하는 경우에도 괜찮습니다.
+<BR>
+예를 들어 승리 타일은 1-4, 1은 3-Same-Seq용, 4는 Double-Run용입니다.
+<BR>
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s>
+<img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+<img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+<BR>
+주석.
+<BR>
+Ankan(暗槓)은 Earth에 있지만 손 안에 있는 것으로 간주됩니다.
+Yakuman은 'Fix Yaku' 규칙에 묶이지 않습니다. Earth의 Meld 카운트는 문제가되지 않습니다.
+<BR>
+이 규칙은 '1/2-han constraint'를 확인하는 데 사용됩니다. OK이면 Yaku가 평가됩니다.
+<BR>
+<BR>
+<BIG><B>Riichi</B></BIG>(立直)
+<BR>
+<B>Allow OpenRiichi</B>: 손패를 노출해 1-han(翻)증가. 다른 플레이어는 손패를 보고 Win 타일을 알기 때문에 Tumo(自摸)에서만 Win 할 수 있다.
+<B>One-shot</B>:Riichi하고 다음 Discard까지 다른 플레이어의 call이 없고Win하면 1-han 증가.
+<B>Allow Ankan after Riichi</B>: Riichi하면, 이후는 call 할 수 없지만, Ankan(暗槓)만은 예외적으로 인정한다.
+<BR>
+자신의 Tumo번이 돌아오지 않을 때는 Riichi 할 수 없다. Tobi 있는 경우, Riichi봉(1000점)을 내면 Tobi가 될 때는 Riichi 할 수 없다.
+Win 타일이 남아 있지 않은 (보드상에 모든 것이 노출되고 있다) 경우에서도 Riichi 할 수 있다.
+<BR>
+<BIG><B>Furiten Riichi</B></BIG>:
+<BR>
+<B>No Check</B>:Riichi는 가능하지만 Tsumo에서도 Win할 수 없습니다.
+라운드가 끝날 때 Furiten이 통지됩니다. 부모가 Chombo를 설정할 것입니다.
+<B>Allow</B>:Tsumo에서만 Win할 수 있습니다.
+<B>Reject</B>:FuritenRiichi 수 없습니다.
+<BR>
+Riichi 한 후의 Win 타일을 놓치면 Furiten이 되어 Tsumo에서도 Win 할 수 없습니다. 라운드가 끝날 때 알림을 받습니다. 부모가 Chombo를 설정할 것입니다.
+<BR>
+<BIG><B>When discarded for OpenRiichi</B></BIG>:OpenRiichi의 Win 타일을 Discard했을 때
+<BR>
+<B>Pay Yakuman</B>:Yakuman 점수를 지불하고 그 라운드를 종료. 본래의 Yaku가 Yakuman라면 Yakuman*2를 지불한다.
+<B>Warning</B>:Ron패를 Discard하려고 한다고 경고하지만, 안전한 패가 없을 때는 Yakuman결제.
+<BR>
+단, 자신이 Riichi한 후의 OpenRiichi에의 Discard는 통상 지불.
+<BR>
+<BIG><B>OpenRiichi for Robot game</B></BIG>: 로봇을 넣은 게임의 경우
+<BR>
+<B>No</B>:OpenRiichi 수 없습니다.
+<BR>
+또한 로봇은 다른 Discard 하는 패가 있는 한 OpenRiichi의 WIN 타일은 Discard 하지 않습니다.
+또한 로봇은 OpenRiichi를 적용하지 않습니다.
+<BR>
+<BR>
+<BIG><B>Yakuman</BIG></B>(役満)
+<BR>
+<B>4-anko</B> :(四暗刻) 4개의 triplet는 Menzen. "1 wait"는 "final pair"(雀頭)으로 Win하는 것입니다.
+<BR>
+예를 들어 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s> <img src=@drawable/s_pin4s><img src=@drawable/s_pin4s> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws>
+<BR>
+<B> Kokusi </B> : (国士無双) 1, 9, Wind, Dragons 모두. "13wait"(13面待)는 "final pair"(雀頭)로 이기는 것을 의미합니다.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man9s><img src=@drawable/s_pin1s><img src=@drawable/s_pin9s><img src=@drawable/s_sou1s><img src=@drawable/s_sou9s>
+<img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs> : <img src=@drawable/s_sou1s>
+<BR>
+<BR>
+<B>9 Gates</ B> :(九蓮宝燈) Mans(萬子:Character)의 1과 9가 3개, 2에서 8을 각 1개. 선택적으로 Pin(筒子: Circle) 또는 Sou(索子: Bamboo)도 허용됩니다.
+Menzen 전용. "9 대기"(九面待)는 대기 타일이 1에서 9까지 모두임을 의미합니다.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s><img src=@drawable/s_man9s><img src=@drawable/s_man9s> <img src=@drawable/s_man2s>
+<BR>
+<B>Big 4 wind </B> :(大四喜)
+예를 들어 <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s> <img src=@drawable/s_ji4el><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es>
+<BR>
+<B>Little 4 wind</B> :(小四喜)
+예를 들어 <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns> <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss> <img src=@drawable/s_ji4el><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es>
+<BR>
+<B>Big 3 Dragon</B> :(大三元)
+예를 들어 <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs>
+<BR>
+<B>Big Circle</B> :(大車輪) 2에서 8까지의 7쌍. Menzenn 전용.
+<BR>
+예를 들어 <img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_pin8s>
+<BR>
+<B>All Green</B> :(緑一色) 옵션으로 <img src=@drawable/s_ji3gs>가 없는 경우도 허용됩니다.
+<BR>
+예를 들어 <img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou4s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou4s> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs> <img src=@drawable/s_sou8s><img src=@drawable/s_sou8s> <img src=@drawable/s_sou6s><img src=@drawable/s_sou6l><img src=@drawable/s_sou6s>
+<BR>
+<B>All Honors</B> :(字一色)
+<BR>
+예를 들어 <img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> <img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs> <img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+
+<BR>
+<B>All Terminals</B>(清老頭)
+<BR>
+예를 들어 <img src=@drawable/s_man9s><img src=@drawable/s_man9s><img src=@drawable/s_man9s> <img src=@drawable/s_pin9s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s> <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s><img src=@drawable/s_sou1s> <img src=@drawable/s_sou9s><img src=@drawable/s_sou9s> <img src=@drawable/s_man1s><img src=@drawable/s_man1l><img src=@drawable/s_man1s>
+
+<BR>
+<B>13 broken</B> :(十三不塔) Meld 후보 없음, 1 Pair 있음. 다른 플레이어의 Pon/Kan/Chii 없이 첫 번째 Draw일 때의 상태.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man5s><img src=@drawable/s_man9s><img src=@drawable/s_man9s><img src=@drawable/s_pin2s><img src=@drawable/s_pin7s><img src=@drawable/s_sou3s><img src=@drawable/s_sou6s><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3rs>
+<BR>
+<B>14 broken</B> :(十四不塔) Meld 후보도 Pair도 없습니다.
+<BR>
+예를 들어 <img src=@drawable/s_man1s><img src=@drawable/s_man5s><img src=@drawable/s_man9s><img src=@drawable/s_pin2s><img src=@drawable/s_pin7s><img src=@drawable/s_sou3s><img src=@drawable/s_sou6s><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs>
+<BR>
+<BIG><B>NagashiMangan</B></BIG>(싱크 만관)
+<BR>
+ExhaustiveDraw 때, 다음의 2 조건을 만족할 때 득점을 얻는 특별한 룰.
+1. Discard 가 모두 1, 9, Word(字)패. 2. 다른 플레이어에게 call되지 않았습니다.
+자신은 call하고 있어도 OK.
+<BR>
+<B>No</B>: 이 규칙은 적용하지 않습니다.
+<B>Win</B>:NoTen 벌금 없음, Yakitori(焼き鳥) 해제, 부모라면 부모를 계속한다(連荘).
+<B>Draw</B>:NoTen 벌금 적용. Riichi(立直) 막대기는 남겨둔다, CounterStick(積み棒)에 의하여 가산점 없음, NoTen인 경우에 부모 교류.
+<BR>
+두 경우 모두 다중 플레이어 NagashiMangan의 경우 Double-Ron 규칙을 따릅니다.
+이 경우의 Headbump란 부모(東)에 가까운 쪽.
+Tobi가 발생하는 경우, Tobi상은 NagashiMangan, Noten 벌금의 순서에 각각 부모 또는 부모에 가까운 순서로 징수하여 결정한다.
+3-Win AbortibeDraw 없음.
+<BR>
+<BR>
+<BIG><B>8 consecutive win</B></BIG>
+<BR>
+다음 정의에 따르면 딜러의 win은 Yakuman이 됩니다.
+<BR>
+단, 동작 설정에서 "Evaluate Point"가 OFF인 경우,
+또는 "1-han 제약 확인"이 OFF인 경우 "8 consecutive win"이 비활성화됩니다.
+표준 승리 패턴이 아닌 "Local Yaku"는 유효한 승리가 아닐 수 있습니다. 따라서 "Win Claim" 대화 상자에서 _Yakuman을 설정하십시오.
+"NagashiMangan"의 설정이 "Win"인 경우에도 "NagashiMangan"은 "Number of conecutive win"을 재설정하고 "8 conecutive win"의 승리가 아닙니다.
+<BR>
+각각의 "Number of consecutive wins"는 딜러 마크 근처에 표시됩니다.
+<BR>
+<B>8 times as dealer</B>: "Number of consecutive wins > Number of piled sticks"인 경우, 승리 횟수에는 바로 앞의 논딜러로서의 승리도 포함됩니다.
+"Number of consecutive wins < Number of piles sticks"일 때, 스틱의 수는 무승부(流局)의 카운트를 포함합니다.
+이 옵션은 작은 것이 7일 때 "8 consecutive win"의 Yakuman으로 딜러의 승리를 만듭니다.
+<BR>
+<B>9 times as dealer</B>: Number of consecutive wins 및 Number of piled sticks 중 작은 쪽이 8일 때 딜러의 승리는 Yarkuman으로 간주됩니다.
+<BR>
+<B>Start may be non dealer</B>: Number of consecutive wins가 7일 때 딜러의 승리는 Yakuman으로 간주됩니다.
+<BR>
+<B>Dealer's win when 8 sticks</B>: 스틱 수에는 Drawn-round의 수가 포함될 수 있습니다. 이 옵션은 판단하기 쉽습니다.
+<BR>
+<B>Next is +8</B>: 이것이 OFF이면 딜러의 승리는 non-dealer's win 또는 Drawn-round까지 모두 Yakuman입니다.
+ON이면 다음 8연속이 다음 야쿠만 타이밍입니다.
+<BR>
+<BR>
+<SMALL>RuleSettingYaku 2022/08/16</SMALL>

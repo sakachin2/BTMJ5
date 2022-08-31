@@ -26,7 +26,6 @@
             android:text="@string/UserAction_Reach_Open_YN"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-    			android:background="@color/descriptiononly"
         />
         <TextView
             android:layout_width="wrap_content"
@@ -45,14 +44,12 @@
             android:text="@string/Label_OneShot"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-    			android:background="@color/descriptiononly"
         />
         <CheckBox
             android:id="@+id/cbAnkanAfterReach"
             android:text="@string/Label_AnkanAfterReach"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-    			android:background="@color/descriptiononly"
         />
         <!--CheckBox
             android:id="@+id/cbMissingReach"
@@ -71,7 +68,6 @@
             android:layout_height="wrap_content"
             android:text="@string/Label_FuritenReach"
             android:layout_gravity="center_vertical"
-    			android:background="@color/descriptiononly"
         />
         <RadioGroup
             android:orientation="horizontal"
@@ -173,13 +169,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgOpenReachRobot"
             android:layout_width="wrap_content"
+            android:visibility="gone"
         >
             <RadioButton
                 android:id="@+id/rbOpenReachRobotNone"
                 android:text="@string/Label_ReachLimitOpenRobotNone"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-    			android:background="@color/descriptiononly"
             />
             <RadioButton
                 android:id="@+id/rbOpenReachRobotSkip"
@@ -194,6 +190,12 @@
                 android:layout_width="wrap_content"
             />
         </RadioGroup>
+        <CheckBox
+            android:id="@+id/cbOpenReachRobot"
+            android:text="@string/Label_ReachLimitOpenRobotNone"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        />
     </LinearLayout>  <!--line3-->
 
 </LinearLayout>

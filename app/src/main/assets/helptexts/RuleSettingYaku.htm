@@ -53,12 +53,10 @@ e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_
 e.g. <img src=@drawable/s_sou1s><img src=@drawable/s_sou1s><img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_sou3s>
 
 <BR>
-<B>All Triples</B>: NOT All-In-Hand. It is Yakuman:4-anko if All-In-Hand.0
+<B>All Triples</B>: NOT All-In-Hand. It is Yakuman:4-anko if All-In-Hand.
 <BR>
 e.g.
-<!--span style="background-color:#005900"-->
 &nbsp;<img src=@drawable/s_pin1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin1s> <img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_pin2s><img src=@drawable/s_pin2l><img src=@drawable/s_pin2s> <img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4nl>
-<!--/span-->
 <BR>
 <B>3 Color Runs</B>:same number seqence of 3 color(Man(Character), Pin(Circle) and Sou(Bamboo)).
 <BR>
@@ -107,23 +105,41 @@ Menu item<B>Win anyway</B> dose the same function but you may loose the opportun
 <BR>
 <BIG><B>Psuedo-Tenpai</BIG></B>
 <BR>
-This (by Japanese "Keishiki-Tenpai") means the hand is in the status of waiting winning tile,
- but unable to call win by some reason.
-At ExhaustiveDraw, if your-hand is not status of Tenpai(waiting winning tile) with Yaku, you have to pay penalty of NoTen(Not Tenpai).
- This agreement allows to assume some pattern of hands as Tenpai.
- <BR>
- <B>None all</B>:not allow any Psuedo-Tenpai. 
- <BR>
- <B>Empty OK</B>:Empty means all winning tiles are exhausted on river, earth and in your hands.
- <BR>
- <B>Furiten OK</B>:Allows winning tiles are Furiten state such as you discarded one of winning tile.
- <BR>
- <B>0-han OK</B>:regardless <B>1-han constraint</B> rule.
+By Japanese "Keishiki-Tenpai", Keishiki means formal, only in form or structure.
 <BR>
-<BIG><B>2-han constraint</BIG></B>
+In ExhaustiveDraw, if your-hand is not status of Tenpai with at least 1-han Yaku,
+you have to pay penalty of Noten(Not Tenpai).
+If dealer is Tenpai status, he can repeat next round as the dealer.
+This paragraph loosen the standard of Tenpai.
 <BR>
-Under 2-han constraint condition, <B>0-han OK</b>:no Yaku is required. <B>2-han possibility</b>:requires possibility of Yaku more than 2-han by a winning tile.
- But if Psuedo-Tenpai is "0-han OK", requires 1-han possibility.   
+<B>Disable Psuedo-Tenpai</B>:
+<BR>
+You have to be able to call win by Ron(not by self-draw). It is not recognize as Tenpai for the case of
+Furiten, Kataagari, <B>Fix Yaku</B> violation and 1/2-han constraint violation.
+Missing winning tile after the last Discard is also checked as Furiten.
+Empty winning tile remains is OK.
+<BR>
+<B>Furiten Riichi</B> is not a Tenpai because it can be win only by Self-Draw.
+<BR>
+If this setting is OFF, Psuedo-Tenpai is allowed as followings assuming you have self-drawn a winning tile.
+<BR>
+<B>0-han OK</B>:No Yaku is required by any of winning tile.
+If OFF, at least 1-han except Dora is required by any one of winning tiles.
+Accordingly menzen(All-In-Hand) is recognized as Psuedo-Tenpay by 1-han of Self-Draw.
+Furiten is all OK.
+<BR>
+<B>Furiten Riichi</B> may impose Chombo penalty in some case, bit it is recognized as Psuedo-Tenpai.
+<BR>
+<B>When 2-han constraint</B>
+<BR>
+2-han constraint status occurs by <B>2-han constraint</B> setting bellow.
+<BR>
+<B>2-han required</B>:One of winning tiles have to construct at least 2-han.
+<BR>
+Riich+Self-Draw is 2-han by itself.
+You can not call win under 2-han constraint status because Self-Draw is a accidental Yaku.
+However it is recognized as Psuedo-Tenpai.
+<BR>
 <BR>
 <BIG><B>7 Pairs</BIG></B></BIG>
 e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_sou9s><img src=@drawable/s_sou9s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
@@ -185,7 +201,7 @@ e.g.)
 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
 <img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
 <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
-You can not win by <img src=@drawable/s_ji3gs> or <img src=@drawable/s_ji3rs> because <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> fixed 1-han at first.
+You can win by <img src=@drawable/s_ji3gs> or <img src=@drawable/s_ji3rs> because <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws> fixed 1-han at first.
 <BR>
 <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
 <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
@@ -227,7 +243,7 @@ Same as "First only" except sequence on Earth is not a matter.
 <B>Finally</B> :
 <BR>
 It is OK if the winning tile constructs a Yaku regardless melds on Earth.
-If there are multiple winning tile,  it is OK according to the following "Winning tile selection"
+If there are multiple winning tile,  it is OK according to the following "Kata-Agari"
 <BR>
 <BIG><B>Kata-Agari</B></BIG> : Multiple winning tile one of which dose not construct any Yaku.
 <!--
@@ -263,23 +279,44 @@ Count of meld on Earth is out of matter.
 <BR>
 This rule is used for checking 1/2-han constraint, and if OK value of Yaku is evaluated normally.
 <BR>
-<BIG><B>Riichi</BIG></B>(Reach)
 <BR>
-<B>Furiten Riichi</B>: <B>No Check</B>:Allow Riichi, but you can not get win.
-At end of the round it is notified and you may pay penalty depending on agreement beforehand.  
+<BIG><B>Riichi</B></BIG>(Reach)
+<BR>
+<B>Allow OpenRiichi</B>:1-han is added instead of exposing you hand(other player understands winning tiles.)
+<B>One-shot</B>:1-han is added if you won before your next Discard without other player's interception by some call.
+<B>Allow Ankan after Riichi</B>:After Riichi declared you can not issue any call,but allows Ankan(Concealed Kan) as an exception.
+<BR>
+You can not declare Riichi if you have no tile remaining to draw at near of the exhaustive draw,
+or if Riichi deposit bankrupts you by Tobi option. You can call Riichi even if winning tile is empty.
+When you missed to call Ron after Riichi, you can not get win even by Self-Pick.
+Allow Riichi even when winning tiles is empty(all exposed).
+<BR>
+<BIG><B>Furiten Riichi</B></BIG>:
+<BR>
+<B>No Check</B>:Allow Riichi, but you can not get win even by Self-Pick.
+At end of the round it is notified and you may pay penalty because the dealer will set you as Chombo.
 <B>Allow</B>:You can get win only by Self-Pick. <B>Reject</B>:Riichi will be rejected.
 <BR>
-If you missed win tile after Riichi, you can not get win even by Draw and will pay penalty.
-But in the case of Furiten at Riichi under "Allow" option, you can get win by Draw.
+If you missed win tile after Riichi, you can not get win as "Furiten" even by Self-Pick and will pay penalty pay penalty because the dealer will set you as Chombo.
 <BR>
-<B>OpenRiichi for Robot game</B>:Select from "Disable OpenRiichi", "Ignore Robot's discard" or "Pay usually(Robot pays the normal score with 1-han of "Open" added).
+<BIG><B>When discarded for OpenRiichi</B></BIG>:
+<BR>
+<B>Pay Yakuman</B>:The discarder pays value of Yakuman and the round ends. If Yakuman originally, pays Yakuman x 2.
+<B>Warning</B>:Issue warning if you selected winning tile in your hand to discard, but pays Yakuman if there is no safe tile.
+<BR>
+If the other player called OpenRiichi after your Riichi, pays not Yakuman but usual value for your Discard of winning tile of OpenRiichi.
+<BR>
+<BIG><B>OpenRiichi for Robot game</B></BIG>:
+<BR>
+<B>No</B>:Disable OpenRiichi.
 <BR>
 As much as possible, robot will avoid to discard winning tile for OpenRiichi.
+And Robot dose not call Open-Riichi.
 <BR>
 <BR>
 <BIG><B>Yakuman</BIG></B>
 <BR>
-<B>4-anko</B>:4 trples are All-In-Hand. "1 wait" means win by tile of the pair.
+<B>4-anko</B>:4 triples are All-In-Hand. "1 wait" means win by tile of the pair.
 <BR>
 e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_man2s> <img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s> <img src=@drawable/s_pin4s><img src=@drawable/s_pin4s> <img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs> <img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws>
 <BR>
@@ -331,6 +368,45 @@ e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man5s><img src=@drawable/s_
 <BR>
 e.g. <img src=@drawable/s_man1s><img src=@drawable/s_man5s><img src=@drawable/s_man9s><img src=@drawable/s_pin2s><img src=@drawable/s_pin7s><img src=@drawable/s_sou3s><img src=@drawable/s_sou6s><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3rs>
 <BR>
+<BIG><B>NagashiMangan</B></BIG>
 <BR>
-<SMALL>RuleSettingYaku 2022/02/18</SMALL>
-<!--/span-->
+Special rule to gain points at ExhaustiveDraw to the player that
+all Discards were 1, 9 and word tile, and any Discards were not called by other player.
+The player's call is out of question.
+<BR>
+<B>No</B>:This rule is not applied.
+<B>Win</B>:Regard as Win. No Noten penalty, remove Yakitori mark, stay dealer if dealer win.
+<B>Drawn</B>:Regard as Drawn. Pay Noten penalty, leave Riichi beds, no additional CounterStick payment, rotate dealer if dealer is Noten.
+<BR>
+In both case Multiple Ron setting is applied. HeadBump means nearest to East wind position.
+When Tobi occurred, Tobi prize player is  determined by the paying point of NagashiMangan, then Noten penalty.
+Each is collected from the dealer or nearest position to the dealer.
+AbortiveDraw by "3 Win" rule is not applied.</string>
+<BR>
+<BR>
+<BIG><B>8 consecutive win</B></BIG>
+<BR>
+According to the following definitions, the dealers's win becomes Yakuman.
+<BR>
+However, in the operation settings, if "Evaluate Point" is OFF,
+or if "Check 1-han constraint" is OFF, "8 consecutive win" will be disabled.
+Local Yaku that are not standard winning pattern are not taken into consideration, so please set Yakuman in the "Win Claim" dialog.
+Even if setting of "NagashiMangan" is "Win", "NagashiMangan" resets the number of consecutive win and it will not be a winning of "8 consecutive win".
+<BR>
+The number of consecutive wins for the player is displayed near the Dealer-Mark.
+<BR>
+<B>8 times as dealer</B>: When "Number of consecutive wins > Number of piled sticks", the number of wins includes the win as the immediately preceding non-dealer.
+When "Number of consecutive wins < Number of piles sticks", the number of sticks include the count of Drawn-round.
+This option makes the dealer's win as Yakuman of "8 consecutive win" when the smaller one is 7.
+<BR>
+<B>9 times as dealer</B>: When the Number of consecutive wins and the Number of piled sticks, whichever is smaller, is 8, the dealer's win will be considered as Yarkuman.
+<BR>
+<B>Start may be non-dealer</B>: When the number of consecutive wins is 7, the dealer's win is considered as Yakuman.
+<BR>
+<B>Dealer's win when 8 sticks</B>: Any number of stickes by Drawn-round can be included. This option is easy to judge.
+<BR>
+<B>Next is +8</B>: If this is OFF, all dealer's win is Yakuman until the non-dealer's win or Drawn-round.
+If this is ON, the next 8 consecutive is the next Yakuman timing.
+<BR>
+<BR>
+<SMALL>RuleSettingYaku 2022/08/16</SMALL>

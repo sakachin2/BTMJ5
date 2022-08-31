@@ -1,0 +1,172 @@
+Desc**************
+    <string name="Label_ReachLimit">自ヅモが回らないときはできない。トビありで、リーチ棒供託でトブときはリーチ不可。\n
+\"フリテン立直\"の設定は操作の\"テンパイ確認\"：有りの場合にのみ有効です。
+立直後の見逃しは自摸でも和了できません。空テン立直は可。</string>
+
+
+    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.\n
+\"Furiten Riichi\" option is effective only when \"Confirm Tenpai\" of Oper setting is ON.
+When missed to call Ron after Riichi, you can not get win even by Draw. Allow Riichi even when winning tiles is empty(all exposed).</string>
+
+
+Help**************
+<BIG><B>リーチ</B></BIG>
+<BR>
+<B>フリテン立直</B>：<B>ノーチェック</B>:立直はできますが上がれません、
+局の終了時に通知されます。罰金を払うか否かは取りめておいてください。
+<B>可</B>:自摸でのみ和了できます。<B>拒否</B>:立直できません。
+<BR>
+立直後の見逃しは和了できません、罰金の対象になるでしょう。
+<BR>
+<B>ボット入りのオープン</B>:オープン立直できないか、ロボットが放銃したときこれを無視か、
+通常払い（オープンの1飜増しはあり）かを決めておいてください。
+<BR>
+但し、ボットは手詰まりにならない限りオープン立直のあたり牌は打牌しません。
+<BR>
+
+
+<BIG><B>Riichi</BIG></B>(Reach)
+<BR>
+<B>Furiten Riichi</B>: <B>No Check</B>:Allow Riichi, but you can not get win.
+At end of the round it is notified and you may pay penalty depending on agreement beforehand.  
+<B>Allow</B>:You can get win only by Self-Pick. <B>Reject</B>:Riichi will be rejected.
+<BR>
+If you missed win tile after Riichi, you can not get win even by Draw and will pay penalty.
+<BR>
+<B>OpenRiichi for Robot game</B>:Select from "Disable OpenRiichi", "Ignore Robot's discard" or "Pay usually(Robot pays the normal score with 1-han of "Open" added).
+<BR>
+As much as possible, robot will avoid to discard winning tile for OpenRiichi.
+*NEW***************************************************************************
+Help**************
+<BIG><B>リーチ</B></BIG>
+<BR>
+<B>オープン立直あり</B>:手を晒して1翻増し。
+<B>一発あり</B>:他家の鳴きがなく次の打牌までに上がれば１飜増し。
+<B>立直後の暗槓あり</B>:立直後、他の鳴きはだめだが暗槓だけはよしとする。
+<BR>
+自ヅモが回らないときは立直できない。トビありで、リーチ棒供託でトブときはリーチ不可。空テン立直は可。
+<BR>
+<BIG><B>フリテン立直</B></BIG>：
+<BR>
+<B>ノーチェック</B>:立直はできますが自摸でも上がれません、
+局の終了時にフリテンが通知されます。親がチョンボを設定するでしょう。
+<B>可</B>:自摸でのみ和了できます。<B>拒否</B>:フリテン立直できません。
+<BR>
+立直後の見逃しはフリテンとなり自摸でも和了できません。局の終了時に通知されます。親がチョンボを設定するでしょう。
+<BR>
+<BIG><B>オープン立直の振り込みは</B></BIG>:
+<BR>
+<B>役満払い</B>:役満を払ってその局を終了。<B>チョンボで継続</B>:上がり放棄で継続。局の終了時にチョンボ扱いとする。
+<BR>
+<BIG><B>ボット入りの時のオープン</B></BIG>:
+<BR>
+<B>無</B>:オープン立直できない。<B>ボットの放銃は無視</B>:ロボットがロン牌を捨ててもあがれない。
+<B>ボットは通常払い</B>:オープンの1飜増しで払う。
+<BR>
+尚、ボットは手詰まりにならない限りオープン立直のあたり牌は打牌しません。
+また、ボットはオープン立直をかけません。
+<BR>
+
+
+<BIG><B>Riichi</B></BIG>(Reach)
+<BR>
+<B>Allow OpenRiichi</B>:1-han is added instead of exposing you hand(other player understands winning tiles.)
+<B>One-shot</B>:1-han is added if you won before your next Discard without other player's interception by some call.
+<B>Allow Ankan after Riichi</B>:After Riichi declared you can not issue any call,but allows Ankan(Concealed Kan) as an exception.
+<BR>
+You can not declare Riichi if you have no tile remaining to draw at near of the exhaustive draw,
+or if Riichi deposit bankrupts you by Tobi option. You can call Riichi even if winning tile is empty.
+When you missed to call Ron after Riichi, you can not get win even by Self-Pick.
+Allow Riichi even when winning tiles is empty(all exposed).
+<BR>
+<BIG><B>Furiten Riichi</B></BIG>:
+<BR>
+<B>No Check</B>:Allow Riichi, but you can not get win even by Self-Pick.
+At end of the round it is notified and you may pay penalty because the dealer will set you as Chombo.
+<B>Allow</B>:You can get win only by Self-Pick. <B>Reject</B>:Riichi will be rejected.
+<BR>
+If you missed win tile after Riichi, you can not get win as "Furiten" even by Self-Pick and will pay penalty pay penalty because the dealer will set you as Chombo.
+<BR>
+<BIG><B>When discarded for OpenRiichi</B></BIG>:
+<BR>
+<B>Pay Yakuman</B>:The discarder pay value of Yakuman and the round ends. <B>Continue as Chombo</B>:The discarder becomes Dead-Hand and the round continues.
+At end of the round The discarder pays the penalty of Chombo.   
+<BR>
+<BIG><B>OpenRiichi for Robot game</B></BIG>:
+<BR>
+<B>No</B>:Disable OpenRiichi. <B>Ignore Robot's discard</B>:The round continue without Riich-er's Ron. <B>Robot pays usually</B>:Robot pays the normal score with 1-han of "OpenRiichi" added.
+<BR>
+As much as possible, robot will avoid to discard winning tile for OpenRiichi.
+And Robot dose not call Open-Riichi.
+<BR>
+
+<BIG><B>Riichi</B></BIG>(立直)
+<BR>
+<B>Allow OpenRiichi</B>:手牌を晒して1-han(翻)増し。他のプレーヤーは手牌を見てWinタイルがわかるので_Tumo(自摸)でしか_Winできない。
+<B>One-shot</B>:_Riichiしてから次の_Discardまでに他のプレイヤーの_callがなく_Winすると1-han増し。
+<B>Allow Ankan after Riichi</B>:Riichiしたら、以後は_callできないが、Ankan(暗槓)だけは例外的に認める。
+<BR>
+自分の_Tumo番が回ってこないときは_Riichiできない。_Tobiありのとき、_Riichi棒(1000点)を出すと_Tobiになるときは_Riichiできない。
+_Winタイルが残っていない(ボード上にすべてが晒されている)場合でも_Riichiできる。
+<BR>
+<BIG><B>Furiten Riichi</B></BIG>:
+<BR>
+<B>No Check</B>:_Riichiはできますが_Tsumoでも_Winできません。
+ラウンドの終了時に_Furitenが通知されます。親がChomboを設定するでしょう。
+<B>Allow</B>:_Tsumoでのみ_Winできます。
+<B>Reject</B>:FuritenRiichiできません。
+<BR>
+_Riichiした後の_Win タイルを見逃すと_Furitenとなり_Tsumoでも_Winできません。ラウンドの終了時に通知されます。親がChomboを設定するでしょう。
+<BR>
+<BIG><B>When discarded for OpenRiichi</B></BIG>:OpenRiichiの _Winタイルを _Discardした時
+<BR>
+<B>_Pay _Yakuman</B>:_Yakumanの点数を払ってそのラウンドを終了。
+<B>Continue as Chombo</B>:_Discardしたプレーヤーは、このラウンドをWinできない条件でラウンドを続行する。ラウンドの終了時にChombo扱いになります。
+<BR>
+<BIG><B>OpenRiichi for Robot game</B></BIG>:ロボットを入れたゲームの場合
+<BR>
+<B>No</B>:OpenRiichiできない。<B>Ignore the Robot's discard</B>:ロボットが_Winタイルを_Discardしても_Winとはしないでラウンドを続行する。
+<B>Robot pays usually</B>:ロボットは_OpenRiichiの点数を払う。
+<BR>
+尚、ロボットは他に_Discardする牌がある限り_OpenRiichiの_WINタイルは_Discardしません。
+また、ロボットは_OpenRiichiをかけません。
+<BR>
+
+<BIG><B>Riichi</B></BIG>(立直)
+<BR>
+<B>Allow OpenRiichi</B>: 손패를 노출해 1-han(翻)증가. 다른 플레이어는 손패를 보고 Win 타일을 알기 때문에 Tumo(自摸)에서만 Win 할 수 있다.
+<B>One-shot</B>:Riichi하고 다음 Discard까지 다른 플레이어의 call이 없고Win하면 1-han 증가.
+<B>Allow Ankan after Riichi</B>: Riichi하면, 이후는 call 할 수 없지만, Ankan(暗槓)만은 예외적으로 인정한다.
+<BR>
+자신의 Tumo번이 돌아오지 않을 때는 Riichi 할 수 없다. Tobi 있는 경우, Riichi봉(1000점)을 내면 Tobi가 될 때는 Riichi 할 수 없다.
+Win 타일이 남아 있지 않은 (보드상에 모든 것이 노출되고 있다) 경우에서도 Riichi 할 수 있다.
+<BR>
+<BIG><B>Furiten Riichi</B></BIG>:
+<BR>
+<B>No Check</B>:Riichi는 가능하지만 Tsumo에서도 Win할 수 없습니다.
+라운드가 끝날 때 Furiten이 통지됩니다. 부모가 Chombo를 설정할 것입니다.
+<B>Allow</B>:Tsumo에서만 Win할 수 있습니다.
+<B>Reject</B>:FuritenRiichi 수 없습니다.
+<BR>
+Riichi 한 후의 Win 타일을 놓치면 Furiten이 되어 Tsumo에서도 Win 할 수 없습니다. 라운드가 끝날 때 알림을 받습니다. 부모가 Chombo를 설정할 것입니다.
+<BR>
+<BIG><B>When discarded for OpenRiichi</B></BIG>:OpenRiichi의 Win 타일을 Discard했을 때
+<BR>
+<B>Pay Yakuman</B>:Yakuman의 점수를 지불하고 그 라운드를 종료.
+<B>Continue as Chombo</B>:Discard한 플레이어는 이 라운드를 Win 할 수 없는 조건으로 라운드를 계속한다. 라운드가 끝날 때 Chombo 취급됩니다.
+<BR>
+<BIG><B>OpenRiichi for Robot game</B></BIG>: 로봇을 넣은 게임의 경우
+<BR>
+<B>No</B>:OpenRiichi 수 없습니다. <B>Ignore the Robot's discard</B>: 로봇이 Win 타일을 Discard해도 Win과는 하지 않고 라운드를 계속한다.
+<B>Robot pays usually</B>: 로봇은 OpenRiichi의 점수를 지불한다.
+<BR>
+또한 로봇은 다른 Discard 하는 패가 있는 한 OpenRiichi의 WIN 타일은 Discard 하지 않습니다.
+또한 로봇은 OpenRiichi를 적용하지 않습니다.
+<BR>
+Desc**************
+    <string name="Label_ReachLimit">\"フリテン立直\"の設定は操作の\"テンパイ確認\"：有りの場合にのみ有効です。
+	</string>
+
+    <string name="Label_ReachLimit">\"Furiten Riichi\" option is effective only when \"Confirm Tenpai\" of Operation setting is ON.
+	</string>
+

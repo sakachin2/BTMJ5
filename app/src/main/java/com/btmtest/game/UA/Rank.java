@@ -1,5 +1,6 @@
-//*CID://+vakcR~: update#= 845;                                    //~vakaR~//+vakcR~
+//*CID://+vap3R~: update#= 847;                                    //~vap3R~
 //**********************************************************************//~v101I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2022/02/20 vakc (Bug)resetWGR did not clear WGR ctr(no user until now)//~vakaI~
 //2022/02/20 vaka apply kataagari tsumo option                     //~vakaI~
 //2021/07/25 vab6 change Yaku Name display seq on CompReqDlg       //~vab8I~
@@ -80,6 +81,7 @@ public class Rank                                                  //~va11R~
 	public static final int RYAKU_4SAME2    =RYAKU_YAKUMAN+18;   //4anko tanki//~va11I~
 	public static final int RYAKU_13ALL2    =RYAKU_YAKUMAN+19;  //kokushi 13wait//~va11I~
 	public static final int RYAKU_9GATE2    =RYAKU_YAKUMAN+20;  //52;9gate  9wait//~va11R~
+	public static final int RYAKU_OPENREACH_DISCARD=RYAKU_YAKUMAN+21;  //discarded winning tile for openreach//+vap3R~
                                                                    //~va11I~
     public static final int RYAKU_CTR_DORA      =64; //not bit but ctr only//~va11I~
     public static final int RYAKU_CTR_WGR       =65;  //no bit use  //~va11I~
@@ -91,7 +93,7 @@ public class Rank                                                  //~va11R~
     private static final int WGR_SHIFTIN=60;                       //~va11I~
     private static final int WGR_MASK=0x03;      //max 3,actually 2, else big dragon yakuman//~va11R~
     private static final long DORA_MASK_RESET=0xF0FFFFFFFFFFFFFFL; //~va11M~
-//  private static final long WGR_MASK_RESET =0x3FFFFFFFFFFFFFFFL; //~va11R~//+vakcR~
+//  private static final long WGR_MASK_RESET =0x3FFFFFFFFFFFFFFFL; //~va11R~//~vakcR~
     private static final long WGR_MASK_RESET =0xCFFFFFFFFFFFFFFFL; //~vakaI~
     private static final long MASK_STANDARD  =0x00000000FFFFFFFFL; //~va11R~
     private static final long MASK_LOW       =0x00000000FFFFFFFFL; //~va11R~
@@ -551,7 +553,7 @@ public class Rank                                                  //~va11R~
     public static void setDora(Rank Prank,int PctrDora)            //~va11I~
     {                                                              //~va11I~
     	long old=Prank.rank;                                       //~va11I~
-    	resetDora(Prank);                                           //+vakcI~
+    	resetDora(Prank);                                           //~vakcI~
     	Prank.rank|=((long)PctrDora<<DORA_SHIFTIN);                //~va11I~
     	if (Dump.Y) Dump.println("Rank.setDora PctrDora="+PctrDora+",old="+rankToString(old)+",new="+toString(Prank));//~va11R~
     }                                                              //~va11I~
@@ -564,7 +566,7 @@ public class Rank                                                  //~va11R~
     public static void setWGR(Rank Prank,int PctrDora)             //~va11I~
     {                                                              //~va11I~
     	long old=Prank.rank;                                       //~va11I~
-    	resetWGR(Prank);                                       //~vakaI~//+vakcI~
+    	resetWGR(Prank);                                       //~vakaI~//~vakcI~
     	Prank.rank|=((long)PctrDora<<WGR_SHIFTIN);                 //~va11I~
     	if (Dump.Y) Dump.println("Rank.setWGR PctrDora="+PctrDora+",old="+rankToString(old)+",new="+toString(Prank));//~va11R~
     }                                                              //~va11I~
@@ -645,10 +647,10 @@ public class Rank                                                  //~va11R~
     {                                                              //~vakaI~
     	if (Dump.Y) Dump.println("Rank.resetCtr yaku="+Pyaku+",old rank="+Prank.toString());//~vakaR~
     	if (Pyaku==RYAKU_CTR_DORA)                                 //~vakaI~
-    		resetDora(Prank);                                      //~vakaI~//+vakcR~
+    		resetDora(Prank);                                      //~vakaI~//~vakcR~
         else                                                       //~vakaI~
     	if (Pyaku==RYAKU_CTR_WGR)                                  //~vakaI~
-    		resetWGR(Prank);                                       //~vakaI~//+vakcR~
+    		resetWGR(Prank);                                       //~vakaI~//~vakcR~
     	if (Dump.Y) Dump.println("Rank.resetCtr yaku="+Pyaku+",new rank="+Prank.toString());//~vakaI~
     }                                                              //~vakaI~
 }                                                                  //~va11I~

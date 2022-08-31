@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="@string/Label_DrawnMangan"
             android:textSize="@dimen/textview_middle"
-    			android:background="@color/descriptiononly"
         />
         <RadioGroup
             android:orientation="horizontal"

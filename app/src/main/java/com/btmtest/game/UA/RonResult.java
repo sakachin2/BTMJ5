@@ -1,5 +1,6 @@
-//*CID://+vakhR~: update#= 807;                                    //~vakhR~
+//*CID://+vaq1R~: update#= 808;                                    //+vaq1R~
 //**********************************************************************//~v101I~
+//2022/08/11 vaq1 (Bug)Errmsg for multiple for 2han constraint condition//+vaq1I~
 //2022/02/20 vakh set kataagari err different from fix err         //~vakhI~
 //2021/06/06 va91 sakizukechk for robot                            //~va91I~
 //2021/04/20 va8i KataAgari chk for also Robot Take                //~va8iI~
@@ -22,7 +23,7 @@ public class RonResult                                             //~va11R~
     public boolean swRonChkErr;                                    //~va11R~
     public int hanFixErr;       //accum of yaku fix err han        //~va91R~
     public int hanFixErrMultiWait;       //accum of kata-agari han of hanFixErr//~vakhR~
-    public boolean swMultiWaitErr;                                 //+vakhI~
+    public boolean swMultiWaitErr;                                 //~vakhI~
 	//*************************************************************************//~va11I~
     public RonResult(int Pamt,int Phan,int Ppoint,Rank PlongRank)  //~va11R~
     {                                                              //~va11R~
@@ -32,7 +33,7 @@ public class RonResult                                             //~va11R~
     }                                                              //~va11R~
     public String toString()                                       //~va11R~
     {                                                              //~va11I~
-        return "amt="+amt+",han="+han+",hanFixErr="+hanFixErr+",hanFixErrMultiwait="+hanFixErrMultiWait+",swMultiWaitErr="+swMultiWaitErr+",point="+point+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/)//~va11R~//~va91R~//+vakhR~
+        return "amt="+amt+",han="+han+",hanFixErr="+hanFixErr+",hanFixErrMultiwait="+hanFixErrMultiWait+",swMultiWaitErr="+swMultiWaitErr+",point="+point+",longRank="+Rank.toString(longRank)+"="+Rank.toStringName(longRank,true/*show honor*/)//~va11R~//~va91R~//~vakhR~
                 +",longRankFixErr="+Rank.toString(longRankFixErr)+"="+Rank.toStringName(longRankFixErr,false/*NO show honor*/);//~va91I~
     }                                                              //~va11I~
     public void update(RonResult Pvalue)                         //~va11I~
@@ -112,10 +113,12 @@ public class RonResult                                             //~va11R~
     {                                                              //~vakhI~
 	    int rc=getHanExceptDoraConstraint(PswIgnoreAccidental,PswFix2);//~vakhI~
         rc-=hanFixErr;                                             //~vakhI~
-        swMultiWaitErr=false;                                      //+vakhI~
-        if (rc==0)                                                 //~vakhI~
+        swMultiWaitErr=false;                                      //~vakhI~
+//      if (rc==0)                                                 //~vakhI~//+vaq1R~
+        int minHanForMultiWait=PswFix2 ? 1 : 0;                    //+vaq1I~
+        if (rc==minHanForMultiWait)                                //+vaq1I~
         	if (hanFixErr==hanFixErrMultiWait)                     //~vakhI~
-            	swMultiWaitErr=true;  //id of kataagari-err        //+vakhR~
+            	swMultiWaitErr=true;  //id of kataagari-err        //~vakhR~
         if (Dump.Y) Dump.println("RonResult.getHanExceptDoraConstraintChkFixMultiWait rc="+rc+",hanFixErr="+hanFixErr+",hanFixErrMultiwai="+hanFixErrMultiWait);//~vakhI~
         return rc;                                                 //~vakhI~
     }                                                              //~vakhI~

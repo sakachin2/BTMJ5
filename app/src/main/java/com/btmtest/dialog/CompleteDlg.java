@@ -1,5 +1,9 @@
-//*CID://+vakiR~:                             update#= 1124;       //~vakiR~
+//*CID://+vaq9R~:                             update#= 1130;       //~vaq9R~
 //*****************************************************************//~v101I~
+//2022/08/19 vaq9 change bgcolor of result of completedlg for headbump identify//~vaq9I~
+//2022/08/03 vaps CompleteDlg; display warning CheckTenpai:off(it may be noten reach)//~vapsI~
+//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap4I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2022/02/26 vaki display player name on completedlg               //~vakiI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//~vah2I~
@@ -110,6 +114,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private static final int COLOR_RESPNG=COLOR_RESULT_NG;          //~9227I~
     private static final int COLOR_RESPERR=Color.argb(0xff,0xff,0x00,0x00);//orange//~9227I~
                                                                    //~9214I~
+	private static final int COLOR_EDITABLE          =AG.getColor(R.color.editable);//~v@@@I~//~9B07R~//+vaq9R~
+                                                                   //~vaq9I~
     private static final int UBRGP_PAOESWN=3;                    //~9220I~//~9227R~
     private static final int UBRGP_TYPE_NEXTGAME=4;                //~9B10I~
                                                                    //~9214I~
@@ -261,7 +267,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     public static CompleteDlg newInstance()                        //~v@@@R~//~9315R~
 //  public static CompleteDlg newInstance(int Peswn1stGainer)      //~9315R~
     {                                                              //~v@@@R~
-        if (Dump.Y) Dump.println("CompleteDlg.newInstance");//+vakiI~
+        if (Dump.Y) Dump.println("CompleteDlg.newInstance");//~vakiI~
         CompleteDlg dlg=AG.aCompleteDlg;                           //~v@@@I~//~9226R~
         if (Utils.isShowingDialogFragment(dlg))                    //~v@@@I~//~9226R~
         {                                                          //~v@@@I~//~9226R~
@@ -281,7 +287,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     //******************************************                   //~9225I~
     public static CompleteDlg newInstance(int[] PintParm,int Ppos) //~9225I~
     {                                                              //~9225I~
-        if (Dump.Y) Dump.println("CompleteDlg.newInstance parm="+Arrays.toString(PintParm));//~9315I~//~9410R~//+vakiR~
+        if (Dump.Y) Dump.println("CompleteDlg.newInstance parm="+Arrays.toString(PintParm));//~9315I~//~9410R~//~vakiR~
     	CompleteDlg dlg=AG.aCompleteDlg;                           //~9225I~
         if (Utils.isShowingDialogFragment(dlg))                    //~9225I~//~9226R~
         {                                                          //~9225I~//~9226R~
@@ -432,6 +438,8 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
                                                                  //~9213I~
         getRuleSetting();                                                           //~v@@@I~//~9212R~
         setTitle();                                                //~v@@@I~
+//  	if (!swReceived)                                           //~vap4R~
+//      	setInvalidByLooserErr();                               //~vap4R~
 //      if (getNormalPoint())                                          //~9212I~//~9223R~//~9409R~
         if (getNormalPoint(true))                                  //~9409I~
         {                                                          //~9223I~
@@ -906,6 +914,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //  //          spnsComp[idx].select(COMPTYPE_TAKE);                   //~9223I~//~9228R~//~9601R~
 //  //          spnsComp[idx].selectNoListen(COMPTYPE_TAKE);           //~9228I~//~9315R~//~9601R~
                 tvsCompType[idx].setText(strsCompType[COMPTYPE_TAKE]);     //~9315I~//~9601R~
+                tvsCompType[idx].setBackgroundColor(COLOR_EDITABLE);//~vaq9I~
                 if (swInitLayout)                                      //~9316I~//~9601R~
                     resultCompType[idx]=COMPTYPE_TAKE;                 //~9316R~//~9601R~
             }                                                          //~9223I~//~9601R~
@@ -914,12 +923,14 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
 //  //          spnsComp[idx].select(COMPTYPE_RIVER);                  //~9223I~//~9228R~//~9601R~
 //  //          spnsComp[idx].selectNoListen(COMPTYPE_RIVER);          //~9228I~//~9315R~//~9601R~
                 tvsCompType[idx].setText(strsCompType[COMPTYPE_RIVER]);    //~9315I~//~9601R~
+                tvsCompType[idx].setBackgroundColor(COLOR_EDITABLE);//~vaq9I~
                 if (swInitLayout)                                      //~9316I~//~9601R~
                     resultCompType[idx]=COMPTYPE_RIVER;                //~9316R~//~9601R~
                 idx=eswnToIdx(PlooserEswn);                            //~9223I~//~9601R~
 //  //          spnsComp[idx].select(COMPTYPE_LOOSER);                 //~9223I~//~9228R~//~9601R~
 //  //          spnsComp[idx].selectNoListen(COMPTYPE_LOOSER);         //~9228I~//~9315R~//~9601R~
                 tvsCompType[idx].setText(strsCompType[COMPTYPE_LOOSER]);   //~9315I~//~9601R~
+                tvsCompType[idx].setBackgroundColor(COLOR_EDITABLE);//~vaq9I~
                 if (swInitLayout)                                      //~9316I~//~9601R~
                     resultCompType[idx]=COMPTYPE_LOOSER;               //~9316R~//~9601R~
             }                                                          //~9223I~//~9601R~
@@ -1272,6 +1283,42 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     	}                                                          //~9223I~
         return true;                                               //~9223I~
     }
+//    //******************************************                 //~vap4R~
+//    //*initLayout at not Recived                                 //~vap4R~
+//    //******************************************                 //~vap4R~
+//    private boolean setInvalidByLooserErr()                      //~vap4R~
+//    {                                                            //~vap4R~
+//        boolean rc=false;                                        //~vap4R~
+//        if (Dump.Y) Dump.println("CompleteDlg.setInvalidByLooserErr");//~vap4R~
+//        Complete.Status[] sorted=getSortedCompStat();            //~vap4R~
+//        if (sorted==null)                                        //~vap4R~
+//        {                                                        //~vap4R~
+//            return false;                                        //~vap4R~
+//        }                                                        //~vap4R~
+//        int ctr=sorted.length;                                   //~vap4R~
+//        for (int ii=0;ii<ctr;ii++)                               //~vap4R~
+//        {                                                        //~vap4R~
+//            Complete.Status stat=sorted[ii];                     //~vap4R~
+//            LinearLayout ll=llGainer[ii];                        //~vap4R~
+//            if (Dump.Y) Dump.println("CompleteDlg.setInvalidByLooserErr ii="+ii+",stat="+stat.toString());//~vap4R~
+//            boolean swLooserChombo=stat.swLooserChombo;          //~vap4R~
+//            if (Dump.Y) Dump.println("CompleteDlg.setInvalidByLooserErr swLooserChombo="+swLooserChombo);//~vap4R~
+//            if (swLooserChombo)                                  //~vap4R~
+//            {                                                    //~vap4R~
+//                int idxGainer=eswnToIdx(stat.completeEswn);      //~vap4R~
+//                int idxLooser=eswnToIdx(stat.completeEswnLooser);//~vap4R~
+//                stat.setInvalid(true);                           //~vap4R~
+//                cbsCompType[idxLooser].setState(true);           //~vap4R~
+//                swsInvalid[idxGainer]=true;                      //~vap4R~
+//                swsErrLooser[stat.completeEswnLooser]=true;      //~vap4R~
+//                cbErr[stat.completeEswnLooser].setState(true);   //~vap4R~
+//                rc=true;                                         //~vap4R~
+//            }                                                    //~vap4R~
+//        }                                                        //~vap4R~
+//        if (Dump.Y) Dump.println("CompleteDlg.setInvalidByLooserErr swsInvalid="+Utils.toString(swsInvalid)+",iswsInvalid="+Arrays.toString(swsInvalid));//~vap4R~
+//        if (Dump.Y) Dump.println("CompleteDlg.setInvalidByLooserErr rc="+rc);//~vap4R~
+//        return rc;                                               //~vap4R~
+//    }                                                            //~vap4R~
     //************************************************************************//~0302I~
     //*Status withswErr is not on sortedStatus but need to show on resultlist//~0302I~
     //************************************************************************//~0302I~
@@ -1344,11 +1391,15 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
             	continue;                                          //~vaj7R~
 	        int eswn=AG.aAccounts.playerToEswn(player);            //~vaj7R~
             int callStatus=AG.aRoundStat.RSP[eswn].callStatus;     //~vaj7R~
+	        if (Dump.Y) Dump.println("CompleteDlg.chkFuritenReach eswn="+eswn+",callStatus="+Integer.toHexString(callStatus));//~vapsI~
             if ((callStatus & CALLSTAT_REACH_ERRFURITEN)!=0)       //~vaj7R~
             	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReach);//~vaj7R~
             else                                                   //~vaj7R~
             if ((callStatus & CALLSTAT_REACH_FURITEN_AFTER)!=0)    //~vaj7R~
             	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_FuritenReachAfter);//~vaj7R~
+            else                                                   //~vapsI~
+    		if (!RuleSettingOperation.isCheckReach())              //~vapsI~
+            	msg+="  "+GConst.nameESWN[eswn]+" : "+Utils.getStr(R.string.Err_NoCheckPendingForReach);//~vapsI~
         }                                                          //~vaj7R~
         if (!msg.equals(""))                                       //~vaj7R~
         	PtvFuriten.setText(msg);                               //~vaj7R~

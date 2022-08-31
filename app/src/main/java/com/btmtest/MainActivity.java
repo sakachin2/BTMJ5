@@ -1,5 +1,7 @@
-//*CID://+vamdR~:                             update#= 424;        //~vamdR~
+//*CID://+vaqfR~:                             update#= 430;        //~vaqfR~
 //**********************************************************************//~@@@@I~
+//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//~vaqfI~
+//2022/07/04 van1 hungle suuprt for Help and Msg                   //~van1I~
 //2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
 //2022/03/31 vamc android12(api31) when backed to top from landscape by F1 button, navigation bar is disappeared.//~vamcI~
 //                (from menu or back button, navigation bar is shown before back to top . so navigation bar is kept.)//~vamcI~
@@ -671,9 +673,11 @@ public class MainActivity extends AppCompatActivity
     	    initHistory(false/*PswinitApp*/);	//may not have writable permission,init history by internal storage//~vae0R~
     	    Status.resetEndgameSomeone();                          //~9B20I~
     		AG.resumeHD=null;                                      //~9901I~
+        	AG.resumeHD_Resumed=null;                              //+vaqfR~
 	    	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))        //~0124I~
             {                                                      //~0124I~
             	MainView.drawMsg(R.string.Err_RuleIsInitial);      //~0124I~
+            	UView.showToastLong(R.string.Err_RuleIsInitialMsg);//~van1I~
                 break;                                             //~0124I~
             }                                                      //~0124I~
 //            if (!BTMulti.isServerDevice())                       //~va17R~
@@ -1143,6 +1147,7 @@ public class MainActivity extends AppCompatActivity
 	private void endGame(boolean PswConfigChanged)                                         //~8C30I~//~9102R~
     {                                                              //~8C30I~
         if (Dump.Y) Dump.println("MainActivity.endGame configchanged="+PswConfigChanged+",AG.portrait="+AG.portrait);          //~8C30I~//~9102R~//~9610R~//~va9fR~
+        if (Dump.Y) Dump.println("MainActivity.endGame AG.savePropForResume="+AG.savePropForResume);//~van1I~
         if (AG.savePropForResume!=null)                            //~vae5R~
         {                                                          //~vae5I~
         	AG.ruleProp=AG.savePropForResume;                      //~vae5R~
@@ -1606,8 +1611,11 @@ public class MainActivity extends AppCompatActivity
         	if (Dump.Y) Dump.println("MainActivity.resumeGame canceled by prop get failed");//~vae5I~
             return;                                                //~vae5I~
         }                                                          //~vae5I~
+        AG.resumeHD_Resumed=AG.resumeHD;                           //+vaqfR~
+        if (Dump.Y) Dump.println("MainActivity.resumeGame AG.ruleProp="+AG.ruleProp);//~van1I~
     	AG.savePropForResume=AG.ruleProp;                          //~vae5R~
     	AG.ruleProp=p;                                             //~vae5I~
+        if (Dump.Y) Dump.println("MainActivity.resumeGame new AG.ruleProp="+AG.ruleProp);//~van1I~
         startGame(true/*chk setting*/,true/*swResume*/);           //~9901R~
     }                                                              //~9901I~
 //***************************************************************************//~9B09I~
@@ -1732,7 +1740,7 @@ public class MainActivity extends AppCompatActivity
 	}                                                              //~vaf0I~
 	private void issueDestroyedWarningRestart()                    //~vaf0I~
     {                                                              //~vaf0I~
-        if (Dump.Y) Dump.println(CN+"issueDestroyWarning");        //~vaf0I~
+        if (Dump.Y) Dump.println(CN+"issueDestroyWarningRestart"); //~vamdR~
 //        UView.showToastLongDirect((Context)this,Utils.getStr(getResources(),R.string.Err_AppDestroyedUnexpectedlyRestart));//~vaf0I~
         int msgid=R.string.Err_AppDestroyedUnexpectedlyRestart;    //~vaf0I~
 		String appName=((Context)this).getText(R.string.app_name).toString();//~vaf0I~

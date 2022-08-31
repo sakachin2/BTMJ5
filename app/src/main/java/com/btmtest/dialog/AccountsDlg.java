@@ -1,5 +1,6 @@
-//*CID://+vajkR~:                             update#= 1126;       //~vajkR~
+//*CID://+vaqgR~:                             update#= 1128;       //+vaqgR~
 //*****************************************************************//~v101I~
+//2022/08/22 vaqg issue warning when final score was canceled      //+vaqgI~
 //2022/01/31 vajk (Bug)invalid nameplate color on client(pos on msg:GCM_ENDGAME_ACCOUNT is invalid, then score received is invalid)//~vajkI~
 //2021/08/18 vac9 AccountsDlg, avoid colomn shift by option, keep column same as title//~vac9I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
@@ -199,7 +200,7 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
         if (AG.swSmallDevice)                                      //~0218I~
         {                                                          //~9818R~
           if (AG.portrait)                                         //~0218I~
-            ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH);          //~9818R~//+vajkR~
+            ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH);          //~9818R~//~vajkR~
           else                                                     //~0218I~
             ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH_LANDSCAPE);//~0218I~
         }                                                          //~9818R~
@@ -974,9 +975,12 @@ public class AccountsDlg  extends OKNGDlg //UFDlg                               
     @Override                                                      //~9321I~
     public void onClickCancel()                                    //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("SendDlg.onClickNG");             //~9321I~
+        if (Dump.Y) Dump.println("AccountsDlg.onClickNG");             //~9321I~//~vajkR~
         sendReply(false);                                          //~9321I~
         dismiss     ();                                              //~9321I~
+        if (AG.swTrainingMode)                                     //+vaqgI~
+    		GMsg.drawMsgbar(R.string.Info_GameEndCanceled);        //+vaqgI~
+                                                                   //+vaqgI~
     }                                                              //~9321I~
     //******************************************                   //~9321I~
     @Override                                                      //~9321I~

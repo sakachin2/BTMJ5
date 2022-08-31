@@ -1,0 +1,150 @@
+***********************Jp
+<BIG><B>形式テンパイ</B></BIG>:
+<BR>
+荒牌流局したときにノーテンならノーテン罰符を払いますが、
+和了できない形式的なものでもテンパイとみなすというものです。また親が形式テンパイなら連荘になります。
+<BR>
+<B>形式テンパイは無し</B>:形式テンパイを認めません。
+出あがりした状態で、フリテン、片上がり、先付け/中付けなどの役の確定違反、1翻/2翻縛り違反がなければ、
+テンパイとみなします。空聴は問題としません。
+<BR>
+<B>フリテン立直</B>は<B>可</B>とした場合でも、<B>形式テンパイは無し</B>の設定では、出あがりを前提にしているのでノーテンです。
+<BR>
+この設定がオフの場合、自摸上がりを仮定して、以下に従って形式テンパイを認めます。
+<BR>
+<B>役無OK</B>ならどんな形の聴牌もOKです。
+<BR>
+オフなら、上がり牌のどれかを自摸ったとしてドラ以外の一翻があれば形式テンパイとみなします。
+従って面前なら面前自摸の１翻で形式テンパイOKです。
+<BR>
+<B>フリテン立直</B>の場合、設定によっては自摸でも上がれず、チョンボの罰金を払うようになる場合もありますが、
+形式テンパイとみなます。
+<BR>
+<B>二翻縛りの時</B>：二翻縛りの状況は下の<B>２翻縛り</B>の項目の設定によって発生します。
+<BR>
+<B>二翻が必要</B>がオンの場合、上がり牌のどれかで二翻がなければなりません。
+<BR>
+立直+自摸は２翻ですが、自摸は偶然役として、これだけでは二翻縛りの状況では上がれませんが、
+形式テンパイとみなします。
+<BR>
+
+***********************Eng
+
+<BIG><B>Psuedo-Tenpai</BIG></B>
+<BR>
+"Keishiki-Tenpai" by Japanese, Keishiki means formal, only in form or structure.
+日本語では"Keishiki-Tenpai"。"Keishiki"は"形式"ですが形式的という意味です。
+일본어에서는 "Keishiki-Tenpai"."Keishiki"는 "형식"이지만 형식적이라는 의미입니다.
+<BR>
+In ExhaustiveDraw, if your-hand is not status of Tenpai with at least 1-han Yaku,
+you have to pay penalty of Noten(Not Tenpai).
+If dealer is Tenpai status, he can repeat next round as the dealer.
+This paragraph loosen the standard of Tenpai.
+
+_ExaustiveDrawしたときに_Notenなら_Noten罰符を払いますが、
+形式的なテンパイを認め罰金を逃れるというものです。また親が形式テンパイなら"連荘"(親を続けられる)になります。
+_ExaustiveDraw 할 때 _Noten이라면 _Noten 벌금을 지불하지만,
+형식적인 템파이를 인정하고 벌금을 피한다는 것입니다. 또 부모가 형식 템파이라면 "連荘"(부모를 계속할 수 있다)가 됩니다.
+<BR>
+<B>Disable Psuedo-Tenpai</B>:
+<BR>
+You have to be able to call win by Ron(not by self-draw). It is not recognize as Tenpai for the case of
+Furiten, Kataagari, <B>Fix Yaku</B> violation and 1/2-han constraint violation.
+Empty winning tile remains is OK.
+他のプレイヤーの_Discardで_Ronできる状態である必要があります。
+_Furiten、<B>_Kata-Agari<B>、<B>"Fix Yaku"</B>ルール違反、1/2-han(翻)縛り違反がなければ、_Tenpaiとみなします。
+"空聴"(Winタイルがすべて見えている状態で残りがない)は問題としません。
+
+다른 플레이어의 _Discard로 _Ron할 수 있는 상태여야 합니다.
+_Furiten, <B>_Kata-Agari<B>, <B>"Fix Yaku"</B> 규칙 위반, 1/2-han(농) 묶어 위반이 없으면 _Tenpai로 간주합니다.
+"空聴"(Win 타일이 모두 보이고 있는 상태로 나머지가 없다)는 문제로 하지 않습니다.
+
+<BR>
+<B>Furiten Riichi</B> is not a Tenpai because it can be win only by Self-Draw.
+<B>Furiten Riichi</B>は<B>Allow(Self-Pick only)</B>とした場合でも、<B>Disable Psuedo-Tenpai</B>がオンの設定は、他のプレイヤー_DiscardでのWinを前提にしているので_Notenです。
+
+<B>Furiten Riichi</B>는 <B>Allow(Self-Pick only)</B>로 했을 경우에도, <B>Disable Psuedo-Tenpai</B>가 ON의 설정은, 다른 플레이어_ Discard에서 Win을 전제로하고 있기 때문에 Noten입니다.
+<BR>
+If this setting is OFF, Psuedo-Tenpai is allowed as followings assuming you have self-drawn a winning tile.
+<B>Disable Psuedo-Tenpai</B>が_Offの場合、_Tsumo(自摸)でWinした想定で、以下に従ってPsuedo-Tenpaiを認めます。
+
+<B>Disable Psuedo-Tenpai</B>가 _Off인 경우, _Tsumo(자주)로 Win한 가정으로 아래에 따라 Psuedo-Tenpai를 인정합니다.
+
+<BR>
+<B>0-han OK</B>:No Yaku is required by any of winning tile.
+<B>0-han OK</B>ならどんな形の_TenpaiもOKです。
+
+<B>0-han OK</B>라면 어떤 형태의 _Tenpai도 OK입니다.
+<BR>
+If OFF, at least 1-han except Dora is required by any one of winning tiles.
+Accordingly menzen(All-In-Hand) is recognized as Psuedo-Tenpay by 1-han of Self-Draw.
+_OFFなら、上がり牌のどれかをSelf-Draw(自摸)したとして、ドラ以外の1-han(翻)があればPsuedo-Tenpaiとみなします。
+従って_Menzen(面前)なら"面前自摸"(win by self-draw)の1-han(翻)でPsuedo-TenpaiOKです。
+
+_OFF라면, 올라 패 중 하나를 Self-Draw(自摸)했다고 해서, 드라 이외의 1-han(翻)이 있으면 Psuedo-Tenpai로 간주합니다.
+따라서 _Menzen(面前)이라면 "面前自摸"(win by self-draw)의 1-han(농)에서 Psuedo-TenpaiOK입니다.
+<BR>
+<B>Furiten Riichi</B> may impose Chombo penalty in some case, bit it is recognized as Psuedo-Tenpai.
+<B>Furiten Riichi</B>の場合、設定によってはSelf-Drawでも上がることはできず、Chomboの罰金を払うようになる場合もありますが、
+Psuedo-Tenpaiとみなます。
+
+<B>Furiten Riichi</B>의 경우 설정에 따라 Self-Draw에서도 올라갈 수 없으며 Chombo의 벌금을 지불하게 되는 경우도 있지만,
+Psuedo-Tenpai로 간주합니다.
+
+<BR>
+<B>When 2-han constraint</B>
+<BR>
+2-han constraint status occurs by <B>2-han constraint</B> setting bellow.
+<B>When 2-han constraint</B>：2-han拘束(縛り)の状況は下の<B>2-han constraint</B>の項目の設定によって発生します。
+
+<B>When 2-han constraint</B>: 2-han 구속(縛り)의 상황은 아래의 <B>2-han constraint</B> 항목의 설정에 의해 발생합니다.
+<BR>
+<B>2-han required</B>:One of winning tiles have to construct at least 2-han.
+<B>2-han required</B>がONの場合、win タイルのどれかで2-hanがなければなりません。
+<B>2-han required</B>가 ON이면 win 타일 중 하나에 2-han이 있어야 합니다.
+<BR>
+Riich+Self-Draw is 2-han by itself.
+You can not call win under 2-han constraint status because Self-Draw is a accidental Yaku.
+However it is recognized as Psuedo-Tenpai.
+Riichi(立直)+Tsumeo(自摸)は2-hanですが、_Tsumoは偶然的なYaku(役)として、これだけでは<B>2-han constraint</B>の状況では上がれませんが、
+Psuedo-Tenpaiとみなします。
+
+Riichi(	立直)+Tsumeo(自摸)는 2-han입니다만, _Tsumo는 우연한 Yaku(役)로서, 이것만으로는 <B>2-han constraint</B>의 상황에서는 오르지 않습니다만,
+Psuedo-Tenpai로 간주합니다.
+<BR>
+***********************ko
+
+<BIG><B>Psuedo-Tenpai</BIG></B>
+<BR>
+일본어로는 「Keishiki-Tenpai」. 「Keishiki」는 「형식」입니다만, 「형식적인」이라고 하는 의미입니다.
+<BR>
+ExaustiveDraw 할 때 Noten이라면 Noten 벌금을 지불하지만,
+형식적인 템파이를 인정하고 벌금을 피한다는 것입니다. 또 부모가 형식 템파이라면 "連荘"(부모를 계속할 수 있다)가 됩니다.
+<BR>
+<B>Disable Psuedo-Tenpai</B>:
+<BR>
+다른 플레이어의 Discard로 Ron할 수 있는 상태여야 합니다.
+Furiten, <B>Kata-Agari<B>, <B>Fix Yaku</B> 규칙 위반, 1/2-han(翻) 묶어 위반이 없으면 Tenpai로 간주합니다.
+"空聴"(Win 타일이 모두 보이고 있는 상태로 나머지가 없다)는 문제로 하지 않습니다.
+<BR>
+<B>Furiten Riichi</B>는 <B>Allow(Self-Pick only)</B>로 했을 경우에도, <B>Disable Psuedo-Tenpai</B>가 ON의 설정은, 다른 플레이어 Discard에서 Win을 전제로하고 있기 때문에 Noten입니다.
+<BR>
+<B>Disable Psuedo-Tenpai</B>가 Off인 경우, Tsumo(自摸)로 Win한 가정으로 아래에 따라 Psuedo-Tenpai를 인정합니다.
+<BR>
+<B>0-han OK</B>라면 어떤 형태의 Tenpai도 OK입니다.
+<BR>
+OFF라면, 올라 패 중 하나를 Self-Draw(自摸)했다고 해서, 드라 이외의 1-han(翻)이 있으면 Psuedo-Tenpai로 간주합니다.
+따라서 Menzen(面前)이라면 "面前自摸"(win by self-draw)의 1-han(翻)에서 Psuedo-TenpaiOK입니다.
+<BR>
+<B>Furiten Riichi</B>의 경우 설정에 따라 Self-Draw에서도 올라갈 수 없으며 Chombo의 벌금을 지불하게 되는 경우도 있지만,
+Psuedo-Tenpai로 간주합니다.
+<BR>
+<B>When 2-han constraint</B>
+<BR>
+<B>When 2-han constraint</B>: 2-han 구속(縛り)의 상황은 아래의 <B>2-han constraint</B> 항목의 설정에 의해 발생합니다.
+<BR>
+<B>2-han required</B>가 ON이면 win 타일 중 하나에 2-han이 있어야 합니다.
+<BR>
+Riichi(立直)+Tsumeo(自摸)는 2-han입니다만, Tsumo는 우연한 Yaku(役)로서, 이것만으로는 <B>2-han constraint</B>의 상황에서는 오르지 않습니다만,
+Psuedo-Tenpai로 간주합니다.
+<BR>

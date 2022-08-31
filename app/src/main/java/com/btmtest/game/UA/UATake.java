@@ -1,4 +1,4 @@
-//*CID://+vakqR~: update#= 596;                                    //~vakqR~
+//*CID://+vakqR~: update#= 597;                                    //~vakqR~
 //**********************************************************************//~v101I~
 //2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vakqI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
@@ -382,6 +382,7 @@ public class UATake                                                //~v@@@R~
         {                                                          //~vaj7I~
             int callStatus=PintParm[Ppos+ii];   //furiten info     //~vaj7I~
             AG.aRoundStat.RSP[ii].callStatus=callStatus;                      //~vaj7I~
+	        if (Dump.Y) Dump.println("UATake.saveServerCallStatus RSP["+ii+"].callStatus=0x"+Integer.toHexString(callStatus));//+vakqI~
         }                                                          //~vaj7I~
     }                                                              //~vaj7I~
 }//class                                                           //~v@@@R~

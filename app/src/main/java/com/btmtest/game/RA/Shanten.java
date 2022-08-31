@@ -1,5 +1,6 @@
-//*CID://+va60R~:                             update#=   80;       //~1107I~//~va60R~
+//*CID://+vapmR~:                             update#=   82;       //~vapmR~
 //*******************************************************          //~1107I~
+//2022/08/02 vapm itsHand contension of main Thraed(DrawnReqDlgLast) and msgHandler Thread(Tand and discard by Robot)//~vapmI~
 //2021/01/07 va60 CalcShanten                                      //~va60I~
 //*******************************************************          //~va60I~
 package com.btmtest.game.RA;
@@ -52,6 +53,7 @@ public Shanten()                                                   //~va60R~
 	AG.aShanten=this;                                              //~va60I~
 	init(null);                                               //~va60R~
 }                                                                  //~va60I~
+//*******************************************                      //~vapmI~
 public Shanten(String PfnmTbl,FileWriter PfwOut)                   //~va60R~
 {                                                                  //~va60I~
 	AG.aShanten=this;                                              //~va60I~
@@ -67,6 +69,31 @@ private void init(String PfnmTbl)                                  //~va60R~
     else                                                           //~va60I~
     	tblShanten=readTableZipFile(PfnmTbl);                          //~va60R~
 }                                                                  //~va60I~
+//**********************************************************       //~vapmI~
+//*to avoid contension,make new instance if on MainThread          //~vapmI~
+//**********************************************************       //~vapmI~
+public static Shanten newInstanceMainThread()                             //~vapmI~
+{                                                                  //~vapmI~
+    if (Dump.Y) Dump.println("Shanten.newInstanceMainTHread AG.aShantenMainthread="+AG.aShantenMainThread);//+vapmR~
+	Shanten shanten=AG.aShantenMainThread;                         //+vapmI~
+    if (shanten==null)                                             //+vapmI~
+		shanten=new Shanten(true);                                 //+vapmI~
+    return shanten;                                                //~vapmI~
+}                                                                  //~vapmI~
+//*******************************************                      //~vapmI~
+public Shanten(boolean PmainThread)                                //~vapmI~
+{                                                                  //~vapmI~
+	AG.aShantenMainThread=this;                                    //+vapmI~
+	initMainThread();                                              //~vapmI~
+    if (Dump.Y) Dump.println("Shanten.constructor on MainTHread"); //~vapmI~
+}                                                                  //~vapmI~
+//*******************************************                      //~vapmI~
+private void initMainThread()                                      //~vapmI~
+{                                                                  //~vapmI~
+    if (Dump.Y) Dump.println("Shanten.initMainThread");            //~vapmI~
+	sw7PairKan=RuleSettingYaku.is7Pair4Pair();                     //~vapmI~
+    tblShanten=AG.aShanten.tblShanten;                             //~vapmI~
+}                                                                  //~vapmI~
 //*******************************************                      //~va60I~
 private byte[] readTable(String Pfnm)                              //~va60R~
 {                                                                  //~va60I~
@@ -324,7 +351,7 @@ private int getShanten_Normal(int PmaxMeld)                 //~1106R~//~va60R~
 		restoreOrphan(itsTile);                                    //~va60I~
 	rc=Math.min(rc,shanten);                                       //~1106I~
 	rc=rc-(CTR_MAXMELD-PmaxMeld)*2;                                //~1106R~
-    if (Dump.Y) Dump.println("Shanten.getShanten_Normal exit rc="+rc+",maxMeld="+PmaxMeld+",itsTile="+ Utils.toString(itsTile,9));//+va60I~
+    if (Dump.Y) Dump.println("Shanten.getShanten_Normal exit rc="+rc+",maxMeld="+PmaxMeld+",itsTile="+ Utils.toString(itsTile,9));//~va60I~
     return rc;                                                     //~1106R~
 }                                                                  //~1106I~
 //*******************************************************          //~1106I~

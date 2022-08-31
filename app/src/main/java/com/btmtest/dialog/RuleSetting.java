@@ -1,6 +1,8 @@
-//*CID://+vam2R~:                             update#=  750;       //+vam2R~
+//*CID://+vaqhR~:                             update#=  766;       //~vaqhR~
 //*****************************************************************//~v101I~
-//2022/03/28 vam2 japanese on RuleSetting at initial               //+vam2I~
+//2022/08/22 vaqh allow optio to resume ignoring app version       //~vaqhI~
+//2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
+//2022/03/28 vam2 japanese on RuleSetting at initial               //~vam2I~
 //2022/03/24 vakW rule update msg on dialog                        //~vakWI~
 //2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
 //2022/03/19 vakQ notify update of rule when client received       //~vakQI~
@@ -35,6 +37,7 @@ import com.btmtest.gui.UEditText;                                  //~9903I~
 import com.btmtest.gui.UButtonRG;
 import com.btmtest.gui.URadioGroup;
 import com.btmtest.gui.USpinBtn;
+import com.btmtest.utils.Alert;
 import com.btmtest.utils.Prop;                                     //~v@@@R~
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.gui.UCheckBox;
@@ -106,6 +109,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
                                                                    //~9407I~
 //  private TextView tvSyncDate,tvIDName;                          //~9405I~//~9903R~
     private TextView tvSyncDate;                                   //~9903I~
+    private TextView tvAppVersion;                                 //~vaqaI~
     private UEditText etIDName;                                    //~9903I~
                                                                    //~9407I~
 //  private EditText etOrderPrizeTop,etOrderPrize2nd;              //~9407R~
@@ -238,6 +242,11 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //      Prop p=AG.ruleProp;                                        //~9404I~//~9405M~//~9616R~
 //      p.loadFromString(Pprops);                                  //~9404R~//~9405M~//~9616R~
 //      AG.ruleSyncDate=p.getParameter(getKeyRS(RSID_SYNCDATE),"");//~9404I~//~9405M~//~9616R~
+        if (isAppVersionUnmatch(Pprops))                           //~vaqaR~
+        {                                                          //~vaqaR~
+	        if (Dump.Y) Dump.println("RuleSetting.received AppVersion Unmatch");//~vaqaR~
+        	return;                                                //~vaqaR~
+        }                                                          //~vaqaR~
         AG.aBTMulti.setLockRuleSetting(false);	//release lock until reply OK at client//~9406I~
         if (Utils.isShowingDialogFragment(AG.aRuleSetting))        //~9404I~
         {                                                          //~9404I~
@@ -437,6 +446,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.setupLayout");         //~9403I~//~9412R~
     //*                                                            //~9405I~
         tvSyncDate=(TextView)       UView.findViewById(PView,R.id.tvSyncDate);//~9405I~
+        tvAppVersion=(TextView)     UView.findViewById(PView,R.id.tvAppVersion);//~vaqaI~
 //      tvIDName  =(TextView)       UView.findViewById(PView,R.id.tvIDName);//~9405I~//~9903R~
         etIDName  =UEditText.bind(PView,R.id.etIDName,null/*CommonListener*/);//~9903I~
 //		tvSyncDate.requestFocus();	//to avoid kbd up for EditText; by xml focusable attribute//~9405R~
@@ -595,12 +605,13 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     protected void properties2Dialog(Prop Pprop)                     //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("RuleSetting.properties2Dialog");                   //~v@@@I~//~9412R~//~vaehR~
-//      tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),"ありありなど"));//~9405I~//~9515R~//+vam2R~
-        tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),Utils.getStr(R.string.RuleNotInitialized)));//+vam2I~
+//      tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),"ありありなど"));//~9405I~//~9515R~//~vam2R~
+        tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),Utils.getStr(R.string.RuleNotInitialized)));//~vam2I~
+        tvAppVersion.setText(Pprop.getParameter(getKeyRS(RSID_APPVERSION_MIN),"Unknown AppVer"));//~vaqaR~
 //      tvIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"));//~9405R~//~9826R~//~9903R~
 //      etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"));//~9903I~//~9905R~
-//      etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"),true/*swLostFocus*/);//~9905I~//+vam2R~
-        etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),Utils.getStr(R.string.SampleRuleID)),true/*swLostFocus*/);//+vam2I~
+//      etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),"RuleA"),true/*swLostFocus*/);//~9905I~//~vam2R~
+        etIDName.setText(Pprop.getParameter(getKeyRS(RSID_IDNAME),Utils.getStr(R.string.SampleRuleID)),true/*swLostFocus*/);//~vam2I~
         if (swFixed)                                               //~9405I~
 //      	tvIDName.setEnabled(false);                            //~9405I~//~9903R~
         	etIDName.setEnabled(false);                            //~9903I~
@@ -1164,7 +1175,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     //*******************************************************************************//~vae8I~
     public static boolean saveProp(String Pmember)                    //~vae8R~
     {                                                              //~vae8I~
-    	if (Dump.Y) Dump.println("RuleSetting.saveProp");          //~vae8I~
+    	if (Dump.Y) Dump.println("RuleSetting.saveProp member="+Pmember);//~vam2R~
         if (!AG.swChangedRule                                     //~vae8I~
 //      &&  !(AG.ruleProp.getParameter(getKeyRS(RSID_SAVED_RULE),"")).equals(""))	//not copy of asset//~vae8R~
         )                                                          //~vae8I~
@@ -2004,6 +2015,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     }                                                              //~9501I~
     public static int getGameSetType()                             //~9501I~
     {                                                              //~9501I~
+        if (Dump.Y) Dump.println("RuleSetting.getGameSetType ruleProp="+AG.ruleProp);//~vaqaI~
 		int idx=AG.ruleProp.getParameter(getKeyRS(RSID_GAMESET_TYPE),0);//~9501I~
         int rc=intsGameSetType[idx];                               //~9501I~
         if (Dump.Y) Dump.println("RuleSetting.getGameSetType rc="+rc);//~9501I~
@@ -2443,4 +2455,61 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         	msgid=R.string.Info_RuleReceived_ChangeN;              //~vakWI~
         showStatus(msgid);	//SettingDlg.showStatus()                     //~vakWI~
     }                                                              //~vakWI~
+    //*******************************************************      //~vaqaR~
+    private static boolean isAppVersionUnmatch(String PstrProp)    //~vaqaR~
+    {                                                              //~vaqaR~
+        if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch prop="+PstrProp);//~vaqaR~
+    	boolean rc=true;   //unmatch                               //~vaqaR~
+        int pos=PstrProp.indexOf(RSID_STR_APPVERSION);             //~vaqaR~
+        String verReceived="Unknown";                              //~vaqaR~
+        String appVerMin=Utils.getStr(R.string.app_MinVersion);    //~vaqaR~
+        if (pos>0)                                                 //~vaqaR~
+        {                                                          //~vaqaR~
+        	int pos2=pos+RSID_STR_APPVERSION.length()+1;           //~vaqaR~
+        	if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch pos2="+pos2+"="+(pos2>=0 ? PstrProp.substring(pos2):"null"));//~vaqaI~
+            int pos22=PstrProp.indexOf('\n',pos2);                 //~vaqaR~
+        	if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch pos22="+pos22);//~vaqaI~
+            if (pos22>pos2)                                        //~vaqaR~
+	            verReceived=PstrProp.substring(pos2,pos22);        //~vaqaR~
+        	if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch pos2="+pos2+",pos22="+pos22+",verReceived="+verReceived+",appVerMin="+appVerMin);//~vaqaR~
+            if (verReceived.compareTo(appVerMin)>=0)               //~vaqaR~
+            	rc=false;   //match                                //~vaqaR~
+        }                                                          //~vaqaR~
+        if (!rc)                                                   //~vaqaR~
+        	return false;                                          //~vaqaR~
+        issueUnmatchAlert(verReceived,appVerMin);                     //~vaqaR~
+        return true;                                               //~vaqaR~
+    }                                                              //~vaqaR~
+    //*******************************************************      //~vaqaI~
+    //*from ResumeDlg                                              //~vaqaI~
+    //*******************************************************      //~vaqaI~
+    public  static boolean isAppVersionUnmatch(Prop Pprop/*of HistoryData*/)//~vaqaI~
+    {                                                              //~vaqaI~
+        if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch prop="+Pprop);//~vaqaI~
+    	boolean rc=true;   //unmatch                               //~vaqaI~
+        String verHD=Pprop.getParameter(getKeyRS(RSID_APPVERSION),"Unknown");//~vaqaI~
+        String appVerMin=Utils.getStr(R.string.app_MinVersion);    //~vaqaI~
+        if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch verHD="+verHD+",appVerMin="+appVerMin);//~vaqaI~
+        if (verHD.compareTo(appVerMin)>=0)                         //~vaqaI~
+        	rc=false;   //match                                    //~vaqaI~
+        if (!rc)                                                   //~vaqaI~
+        	return false;                                          //~vaqaI~
+//      issueUnmatchAlertHD(verHD,appVerMin);                //~vaqaI~//~vaqhR~
+        if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch rc="+true);//+vaqhI~
+        return true;                                               //~vaqaI~
+    }                                                              //~vaqaI~
+    //*******************************************************      //~vaqaR~
+    private static void issueUnmatchAlert(String PverReceived,String PverApp)//~vaqaR~
+    {                                                              //~vaqaR~
+        if (Dump.Y) Dump.println("RuleSetting.issueUnmatchAlert"); //~vaqaR~
+        String msg=Utils.getStr(R.string.Alert_AppVersionUnmatch,PverReceived,PverApp);//~vaqaR~
+        Alert.showMessage(TITLEID,msg);                            //~vaqaR~
+    }                                                              //~vaqaR~
+//    //*******************************************************      //~vaqaI~//~vaqhR~
+//    private static void issueUnmatchAlertHD(String PverReceived,String PverApp)//~vaqaI~//~vaqhR~
+//    {                                                              //~vaqaI~//~vaqhR~
+//        if (Dump.Y) Dump.println("RuleSetting.issueUnmatchAlertHD");//~vaqaI~//~vaqhR~
+//        String msg=Utils.getStr(R.string.Alert_AppVersionUnmatchHD,PverReceived,PverApp);//~vaqaI~//~vaqhR~
+//        Alert.showMessage(TITLEID,msg);                            //~vaqaI~//~vaqhR~
+//    }                                                              //~vaqaI~//~vaqhR~
 }//class                                                           //~v@@@R~

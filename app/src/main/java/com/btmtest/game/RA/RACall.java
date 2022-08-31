@@ -1,6 +1,7 @@
-//*CID://+vaKNR~: update#= 581;                                    //+vaKNR~
+//*CID://+vapeR~: update#= 583;                                    //~vapeR~
 //**********************************************************************//~v101I~
-//2022/03/19 vakN (Bug)MakeChii Dump.e;chii for straight,missing color check//+vaKNI~
+//2022/07/28 vape Robot avoids issueKan for OpenReach              //~vapeI~
+//2022/03/19 vakN (Bug)MakeChii Dump.e;chii for straight,missing color check//~vaKNI~
 //2022/01/23 vajc (bug)Add kan was not notified when at just taken(should chk all in hand)-->bothersome notify only at take//~vajcI~
 //2022/01/23 vaj9 Not Notify Ankan but notify addKan               //~vaj9I~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
@@ -175,6 +176,8 @@ public class RACall                                               //~v@@@R~//~va
         }                                                          //~1117I~
         else                                                       //~1117I~
 		    posKan=callKanTaken(PeswnPlayer,PmyShanten,PitsHand,PctrHand,PtdTaken);	//consider to call kan      //~1117R~//~1119R~//~1124R~//~1219R~
+        if (posKan>=0 && chkOpenReachForKan(KAN_TAKEN,posKan,PeswnPlayer))//~vapeI~
+        	posKan=-1;                                             //+vapeR~
         if (posKan>=0)                                     //~1117R~//~1124R~
         {                                                          //~1124I~
         	issueKan(KAN_TAKEN,Pplayer,PeswnPlayer,tdsPairKan);	                   //~1117R~//~1118R~//~1124R~
@@ -190,6 +193,8 @@ public class RACall                                               //~v@@@R~//~va
           else                                                     //~vag4I~
           {                                                        //~vag4I~
     		posKan=callKanAdd(Pplayer,PeswnPlayer,PmyShanten,PitsHand,PctrHand);//~1124R~
+            if (posKan>=0 && chkOpenReachForKan(KAN_ADD,posKan,PeswnPlayer))//~vapeI~
+        		posKan=-1;                                         //+vapeR~
         	if (posKan>=0)                                             //~1117I~//~1124I~
         		issueKan(KAN_ADD,Pplayer,PeswnPlayer,tdsPairKan);                     //~1117I~//~1118R~//~1119R~//~1124R~
           }                                                        //~vag4I~
@@ -2229,11 +2234,11 @@ public class RACall                                               //~v@@@R~//~va
 //      	if (Dump.Y) Dump.println("RACall.selectSeqMeldForStraight return -1 by isFixedStraight");//~vaf9I~//~vafbR~
 //      	return -1;                                             //~vaf9I~//~vafbR~
 //      }                                                          //~vaf9I~//~vafbR~
-        if (Ppos/CTR_NUMBER_TILE!=color)                           //+vaKNI~
-        {                                                          //+vaKNI~
-        	if (Dump.Y) Dump.println("RACall.selectSeqMeldForStraight @@@@ return -1 by different color");//+vaKNI~
-        	return -1;                                             //+vaKNI~
-        }                                                          //+vaKNI~
+        if (Ppos/CTR_NUMBER_TILE!=color)                           //~vaKNI~
+        {                                                          //~vaKNI~
+        	if (Dump.Y) Dump.println("RACall.selectSeqMeldForStraight @@@@ return -1 by different color");//~vaKNI~
+        	return -1;                                             //~vaKNI~
+        }                                                          //~vaKNI~
         int num=Ppos%CTR_NUMBER_TILE;                              //~vaf9I~
         if (num>=TN1 && num<=TN3)                                  //~vaf9I~
             num1=TN1;                                              //~vaf9R~
@@ -2938,7 +2943,7 @@ public class RACall                                               //~v@@@R~//~va
 //      		tdsPair[ctrPair++]=RAUtils.selectTileInHand(PeswnPlayer,ii);//~1129I~//~vab3R~
         		tdsPair[ctrPair++]=RAUtils.selectTileInHandRed5(PeswnPlayer,ii);//~vab3I~
         }                                                          //~1129I~
-        if (Dump.Y) Dump.println("RACall.makeChii ctrPair="+ctrPair+",posChiiStart="+PposChiiStart);//+vaKNI~
+        if (Dump.Y) Dump.println("RACall.makeChii ctrPair="+ctrPair+",posChiiStart="+PposChiiStart);//~vaKNI~
         tdsPair[ctrPair++]=PtdDiscarded;                           //~1129I~
         PtdDiscarded.setTakenRiver();	//tdLastDiscarded is different instance by sendmsg//~1129I~
         if (Dump.Y) Dump.println("RACall.makeChii eswnPlayer="+PeswnPlayer+",posstart="+PposChiiStart+",posDiscarded="+PposDiscarded+",tdDiscarded="+PtdDiscarded.toString()+",tdsPair="+TileData.toString(tdsPair));//~1129I~
@@ -4525,4 +4530,17 @@ public class RACall                                               //~v@@@R~//~va
         if (Dump.Y) Dump.println("RACall.getIdxNextHigh idx="+idxNextHigh);//~vaipI~
         return idxNextHigh;                                        //~vaipI~
     }                                                              //~vaipI~
+    //*******************************************************************************************//~vapeI~
+    //*rc=true:avoid issueKan                                      //~vapeI~
+    //*return true if other OpenReach exist, no chk posKan to avoid increase KanDora for reacher//~vapeI~
+    //*******************************************************************************************//~vapeI~
+    private boolean chkOpenReachForKan(int PtypeKan,int Ppos,int PeswnPlayer)//~vapeI~
+    {                                                              //~vapeI~
+    	boolean rc=false;                                           //~vapeI~
+        if (Dump.Y) Dump.println("RACall.chkOpenReachForKan kanType="+PtypeKan+",pos="+Ppos+",eswnPlayer="+PeswnPlayer);//~vapeI~
+	    if (RS.getCtrOtherReachOpen(PeswnPlayer)>0)                //~vapeI~
+        	rc=true;                                               //~vapeI~
+        if (Dump.Y) Dump.println("RACall.chkOpenReachForKan rc="+rc);//~vapeI~
+        return rc;
+    }                                                              //~vapeI~
 }//class RACall                                                    //~1117R~

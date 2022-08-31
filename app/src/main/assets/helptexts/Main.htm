@@ -1,46 +1,49 @@
 <BIG><BIG><B>ｅ雀</B></BIG></BIG>
 <BR>
-Japanese style Mahjong game to play among your friends.
+A Japanese style Mahjong game to play among your friends.
 No specific server machine is required.
 <BR>
-You can play among leth than 4 member or play alone with Robot.
+You can also play among less than 4 member or play alone with 3 Robots.
 <BR>
-I suppose you are familiar to rule and operation of Japanese style Mahjong.
-You may be required to become familiar with some Kanji glyph a bit. 
+I suppose you are familiar with the rules and operation of Japanese style Mahjong.
+You may be required to become familiar with some Kanji(漢字) glyph a bit. 
 <BR>
-Evaluation of Value of Hands is optional(Default is on on Setting:Operation dialog.
- "dialog" means panel popup to accept your response.）
+Evaluation of Value of Hands is optional(the default is in "Setting,Operation" dialog.
+ "Dialog" means panels popup to accept your response.）
 <BR>
 If you do not agree the score called, you can adjust the score.
 <BR>
-Depending on setting of <B>Check winning hand</B>, <B>Chombo</B> by mistaken Ron Call may occur.
+Depending on setting of <B>"Check winning hand"</B>, <B>錯和</B>("Chombo") by mistaken "Win" call may occur.
 <BR>
-Optional <B>Win anyway</B> button allows any irregular local <B>Yaku</B>(winning pattern).
+<B>Win anyway</B> Menu-Item allows any irregular local <B>Yaku</B>(=役=winning pattern).
 <BR>
-Rule of <B>Yakitori</B>, <B>Wareme</B> and <B>Tobi</B> is optional
+Rule of <B>焼き鳥</B>(=Yakitori), <B>割目</B>(=Yareme) and <B>飛</B>(=Tobi) is optional
 (See Help of RuleSettings dialog about those terms).
 <BR>
 Suspend and resume is supported.
 <BR>
 Device is required portrait width 600 pixels over and 800 pixels is recommended.
 <BR>
-From Android-6.0(Marshmallow), you will be asked to allow the permission of "Write to external storage".
+From Android-6.0(Marshmallow), you will be asked to allow the permission of "Write to external storage"(Write to external storage).
 Give the permission for saving Rule files and History-Record files.
 Without permission, those are saved to internal storage which are cleared at re-installation.
 If you denied with "Don't ask again", re-installation required to allow the permission again. 
 <BR>
 From Android-11, you will be asked to specify the folder in external storage at first startup after (re-)installation.
-Select "eMahjong". If it not exist, make the folder using the dialog. Old data will be migrated to the folder.
-"Cancel":ask at restart, "Fix NO":ask again after reinstall.
+Select folder:eMahjong. If it not exist, make the folder using the dialog. Old data will be migrated to the folder.
+"Cancel":ask at restart, "Fix=NO":ask again after reinstall.
 If not granted, saved to internal folder which cleared at re-installation.
 <BR>
-Additinally you will be asked to allow READ permission to listup audio file for BGM.
+Additinally you will be asked to allow "READ permission" to listup audio file for BGM.
 <BR>
 And permission:ACCESS_FINE_LOCTION is required to use WiFi-Direct. Allow it.
 <BR>
 <BR>
+For Lang=ko environment, help text by Hungle is obtained by Google translation(https:translate.google.com) 
+<BR>
+<BR>
 <BIG>
-<BIG><B>Caution! : I do not take any responsibility for loss or damage by using this App.</B></BIG>
+<BIG><B>Caution! : I do not take any responsibility for loss or damage by using this =0App.</B></BIG>
 </BIG>
 <BR>
 <BR>
@@ -50,12 +53,16 @@ Followings are outline to start game.
 <BR>
 Select one server device out of 4 devices, all clients <B>Connect</B> to the server.
 Server setups Rule then send to all clients.  
-After all clients agreed to the rule, Server pushes <B>game</B> to switch to game panel.
+After all clients agreed to the rule, Server pushes <B>Game</B> to switch to game panel.
+<BR>
+On the game screen, until the first dealer's _Draw, the procedure of deciding a temporary parent, deciding seat and dealing tiles have to be done.
+The procedure proceeds by touching the dice or semicircular lamp in the center of board.
+When your device shines, you have to touch it.
 <BR>
 For details see <B>Help</B> on each dialog.
 <BR>
 To start play-alone push "Game" button without connection. 
-On setting dialog, select trigger of robot's action "Draw" by timeout or by "Draw" button.
+<!--On setting dialog, select trigger of robot's action "Draw" by timeout or by "Draw" button.-->
 <BR>
 ----------------------------------------------------------------------------
 <BR>
@@ -67,21 +74,25 @@ When connected, button background changes and server is Gold color.
 <BR>
  Wireless can reach about 50M, I suppose to play in the distance of analog conversation available,
  which may be frequently required. However, due to various factors, keep social distance.
+<BR>
+ If connection is cut off by telephone call, you may have to set "Aeroplane mode" in Android "Network &amp; Internet" setting.
 <BR><BR>
 <BIG><B>Settings</B></BIG>：RuleSettings and Preference.
 <BR>
-<B>RuleSettings</B>：Set "Rounds" of game, "PlacingPrize", "Yakitori", "Wareme", "Tobi",...
+<B>RuleSettings</B>：Set "Rounds", "PlacingPrize", "Yakitori", "Wareme", "Tobi",...
 <BR>
-It is required to open Rule setting dialog, update and push OK once after installation before start game.  
+Once at after installation, before starting game,
+It is required to open Rule setting dialog, update and push OK.
 <BR>
 By child dialog, set rule related to <B>Yaku</B> and <B>Operation</B>.
 <BR>
 After rule was synchronized among all players,<B>Game</B> can be start.
- At first time of connection and after rule was changed Warning "Runle unmatch" will be issued.
+ At first time of connection and after rule was changed Warning "Rule unmatch" will be issued.
+ Synchronization may fail by the reason of APP version unmatch.
  Open <B>Settings</B> dialog and <B>Send</B> it to all clients to obtain O.K.'ing.
  Rule files can be saved/reloaded, select a file suitable for the group each.
 <BR>
-Game advances by claiming and O.K.'ing by dialogs sent and received at each scene.
+Game advances by claiming and O.K. by dialogs sent and received at each scene.
  The player other than claimer may send response "NG".
  The dealer of the hand has authority of final decision regardless of "NG" response.
 <BR>
@@ -104,23 +115,24 @@ Some items of rule are not checked by the App and are merely promises, those wil
 <BIG><B>Records</B></BIG> : shows List of game results.
 <BR>
 Suspended game is resumed from this List.
-To suspend game, select "Request suspend" on menu during game.
- When connection failure occurred game can be suspended also.
- The former, "SuspendGame Claim" dialog is shown at end of the hand, and SuspendGame or Gameover are selectable.
- The latter, you can try "Reconnect" and continue the hand if recovery succeeded.
- Otherwise SuspendGame or Gameover are selectable as the current hand was lost.
+See SuspendOption of RuleSetting-&gt;Operations,_Help for how to ssuspend game.
 <BR>
-You can show Balance Sheet of all games or specific member's game from records.
+You can show Balance Sheet of all games, or specific member's game from records.
 <BR>
 <BR>
-Note.
-  "hand" is used in two way.
+----------------------------------------------------------------------------
 <BR>
-    1. tiles in hand.    2. end of hand:anyone won in the hand(shot).
+<BIG><B>Note.</B></BIG>
 <BR>
-  "draw" is used in two way.
+.<BIG><B>hand</B></BIG> is used in two way.
+<BR>
+    1. tiles in hand.    2. end of hand:someone won in the hand(shot).
+<BR>
+.<BIG><B>draw</B></BIG> is used in two way.
 <BR>
     1. draw tile:pick up a tile from wall.    2. drawn hand:shot in which no one won.
 <BR>
+.<BIG><B>Earth</B></BIG>패의 오른쪽. Ron/Kan/Chii를 한 Meld(면자)를 두는 장소.
 <BR>
-<SMALL>Main 2022/04/23</SMALL>
+<BR>
+<SMALL>Main 2022/07/31</SMALL>

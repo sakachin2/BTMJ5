@@ -1,5 +1,6 @@
-//*CID://+vakQR~:                             update#=   37;       //~vakQR~
+//*CID://+van0R~:                             update#=   38;       //+van0R~
 //**************************************************************************//~1B0bI~//~v1EjI~
+//2022/06/19 van0 Xlint:unchecked warning                          //+van0I~
 //2022/03/19 vakQ notify update of rule when client received       //~vakQI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //**************************************************************************//~1B0bI~//~v1EjI~
@@ -48,7 +49,8 @@ public class USpinner                                              //~v1EjI~
     {                                                              //~1112I~//~v1EjI~
 		spinner=(Spinner)UView.findViewById(Playout,Pid);        //~v@@@I~//~v1EjI~
 //  	adapter=new ArrayAdapter(AG.context,itemlayout);           //~v1EjR~//~vac5R~
-    	adapter=new ArrayAdapter(AG.context,(AG.swSmallFont ? itemlayout_smallfont : itemlayout));//~vac5I~
+//      adapter=new ArrayAdapter(AG.context,(AG.swSmallFont ? itemlayout_smallfont : itemlayout));//+van0R~
+        adapter=new ArrayAdapter<CharSequence>(AG.context,(AG.swSmallFont ? itemlayout_smallfont : itemlayout));//+van0I~
 //  	adapter.setDropDownViewResource(dropdownlayout);           //~v1EjR~//~vac5R~
     	adapter.setDropDownViewResource(AG.swSmallFont ? dropdownlayout_smallfont : dropdownlayout);//~vac5I~
         spinner.setAdapter(adapter);                               //~v1EjI~

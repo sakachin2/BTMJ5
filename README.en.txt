@@ -18,11 +18,85 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.23 : 2022/08/25
+        .Implemented "Determination of NagashiMangan", "8 consecutive win" and Psuedo-Tenpai.
+		.Change of Open-Riichi option.
+		 Player called Riich before Open-Riich is issued don't need to pay Yakuman.
+		.Check inconsistency of APP version between connected devices.
+        .Bugs.
+		 -Furiten was not checked for Chankan against Add-Kan.
+         -Missing check "_Fix _Yaku" error for "_Double-Run" and "3_conceiled_Triples".
+		 -Around resume game from History record.
+
+V1.23 : 2022/08/25 shorten
+        .Implemented "Determination of NagashiMangan", "8 consecutive win" and Psuedo-Tenpai.
+		.Change of Open-Riichi option.
+		.Check inconsistency of APP version between connected devices.
+        .Bugs.
+		 -Furiten was not checked for Chankan against Add-Kan.
+         -Missing check "_Fix _Yaku" error for "_Double-Run" and "3_conceiled_Triples".
+		 -Around resume game from History record.
+
+V1.23 : 2022/08/25
+		."NagashiMangan", "8 consecutive win" 및 "Psuedo-Tenpai"의 결정을 구현했습니다.
+        .Open-Riichi 옵션을 변경했습니다.
+         Open-Riich가 발행되기 전에 Riich를 호출한 플레이어는 Yakuman을 지불할 필요가 없습니다.
+		.Check inconsistency of APP version between connected devices.
+        .연결된 장치 간의 APP 버전 불일치를 확인합니다.
+        .Bugs.
+         -Add-Kan(加槓)에 대한 Chanken(槍槓)의 동순 Furiten 체크를 하지 않았다.
+         -Double-Run(一盃口)/3 conceiled Triples(三暗刻)의 "Fix Yaku" 룰 체크가 되어 있지 않았다.
+         - 2-han 제약 조건에서 2차 명예 타일에 대한 "야쿠 수정" 오류 확인.
+         -히스토리 레코드에서 게임 재개에 대해.
+
+V1.23 : 2022/08/25    ( shorten)  
+		."NagashiMangan", "8 consecutive win" 및 "Psuedo-Tenpai"의 결정을 구현했습니다.
+        .Open-Riichi 옵션을 변경했습니다.
+		.Check inconsistency of APP version between connected devices.
+        .연결된 장치 간의 APP 버전 불일치를 확인합니다.
+        .Bugs.
+         -Add-Kan(加槓)에 대한 Chanken(槍槓)의 동순 Furiten 체크를 하지 않았다.
+         -Double-Run(一盃口)/3 conceiled Triples(三暗刻)의 "Fix Yaku" 룰 체크가 되어 있지 않았다.
+         - 2-han 제약 조건에서 2차 명예 타일에 대한 "야쿠 수정" 오류 확인.
+         -히스토리 레코드에서 게임 재개에 대해.
+
+*********************************************************************************************
+V1.23 : 2022/08/25
+        .Implemented "Determination of NagashiMangan" and "8 consecutive win".
+		.Implemented Psuedo-Tenpai.
+		."Disable":ON means win-able for other player's Discard.
+		 "Disable":OFF means win-able by self-draw allowing Furiten, Kataagari and err by "Fix Yaku".
+         Constraint check is optional.
+		 Noten Riichi are possible, so Riichi itself is not a Tenpai condition.
+		.Implemented Discarding for Open-Riichi. Opptionally issues warning.
+		 Check for also Chankan against Add-Kan whether it is winning tile or not for Open-Riichi.
+		 For Open-Riichi after your normal Riichi, your need not to pay Yakuman.
+		.Open Riichi option for the game included Robot is changed to simply "Yes" or "No". Robot pays Yakuman if "Yes".
+		.When "Check Furiten" option is set to OFF, the message for Furiten error is not displayed, andthe button notification is not done.
+		 Change the default to ON.
+		.Check inconsistency of APP version between connected devices.
+        .Strengthen smart Robot.
+		 -Skip Riichi if winning tile for 7-pair is Dora tile.
+		 - Do not Riichi when Open-Riichi is issued.
+		 - Check furiten against Open-Riichi and choose a Discard.
+		 -7-Pairs do not discard Word tiles as much as possible when 1-Shanten.
+		 -Avoid waiting for Honor tile for 7-Pairs.
+        .Bugs.
+		 -Didn't check Furiten of "in the same sequence" for Chankan against Add-Kan.
+		 -Didn't check "Fix Yaku" violation for Double-Run/3 conceiled Triples.
+		 -Didn't check "Fix Yaku" violation for 2'nd honor tile in 2-han constraint condition.
+		 -Game including Robot may hung if "Win call is cancelable" option is ON.
+		 -Around resume game from History record.
+		  .Rule file used in the resumed game is used continuingly in the next game.
+		  .Rule file used in the game resumed and gameoved is deleted.
+		   It disturbs to resume the suspended games using the same rule file.
+		  .Record resumed and gameovered is remains in the history.
+
+V1.22 : 2022/07/16
+		.Hungle support for Help and some Message dialog.
 V1.21 : 2022/04/23
 		.For Android-S(12):API31
         .Utilize animation for action Pon, Kan, Chii, ...
-
-*********************************************************************************************
 V1.21 : 2022/04/23
 		.For Android-S(12):API31
         .Utilize animation for action Pon, Kan, Chii, ...
@@ -31,7 +105,7 @@ V1.21 : 2022/04/23
         .Gude to menu item usage when Gameover was rejected.
         .To avoid need of Rule-Sync by option change, move PlayAloneMode option to Preference from Oper settings.
         .Bugs
-         -Japanese:"���肠��Ȃ�" was shown on rule dialog.
+         -Japanese:"ありありなど" was shown on rule dialog.
          -Enabling Bluetooth loops on Emulator on Android studio.
          -In PlayAlone mode, correct error message for "Draw" button.
          -In NotifyMatchMode, Buttonn background color was not reset by draw by autotake timeout.
@@ -69,7 +143,7 @@ V1.19 : 2022/02/01
         .Use different background color for PlayAloneMode game on History dialog.
         .Add NoDump option to TestOption for parformance of AndroidStudio DebugRun.
         .Adjust text of player name on Nameplate to center.
-        .Link to YouTube playlist:"How-To-Play ����" from Help dialog of top panel.
+        .Link to YouTube playlist:"How-To-Play e雀" from Help dialog of top panel.
         .Show Message of "Riichi called" at not called Riichi but discarded after Riichi.
         .Issue warning of Furiten Riichi if Furiten-Riichi option is not only Reject but also Yes.
         .Implements "You can not win even bay Draw for Furiten Riichi if the option is No".

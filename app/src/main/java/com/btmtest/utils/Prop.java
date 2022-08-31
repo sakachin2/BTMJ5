@@ -1,4 +1,4 @@
-//*CID://+vaidR~:                             update#=   76;       //~vaicR~//~vaidR~
+//*CID://+vaidR~:                             update#=   77;       //~vaicR~//~vaidR~
 //**********************************************************************//~@@@@I~
 //2021/12/24 vaid Toast if Scoped file already exists.             //~vaicI~
 //2021/12/24 vaic Dump at send History rule from sdcard device to scoped file device//~vaicI~
@@ -242,7 +242,7 @@ public class Prop                                                  //~@@@@R~
 	{                                                              //~@@@@I~
     	boolean rc=false;                                          //~@@@@I~
         String fnm=propFilename;                                   //~@@@@I~
-    	if (Dump.Y) Dump.println("Prop.savePropDataFile fnm="+fnm);//~9616I~
+    	if (Dump.Y) Dump.println("Prop.savePropDataFile fnm="+fnm+",cmt="+Pcomment);//+vaidR~
 		try                                                        //~@@@@I~
 		{                                                          //~@@@@I~
         	FileOutputStream fos=UFile.openOutputData(fnm);//private//~@@@@R~
@@ -361,7 +361,7 @@ public class Prop                                                  //~@@@@R~
 			P.put(key,"true");                                     //~@@@@I~
 		else                                                       //~@@@@R~
 			P.put(key,"false");                                    //~@@@@I~
-        if (Dump.Y) Dump.println("Prop.setParameter key="+key+",value="+value);//+vaidI~
+        if (Dump.Y) Dump.println("Prop.setParameter key="+key+",value="+value);//~vaidI~
 	}
 	//************************************************************ //~@@@@I~
 	public  synchronized boolean getParameter(String key, boolean def)//~@@@@R~

@@ -1,5 +1,6 @@
-//*CID://+vae9R~:                             update#=  135;       //~vae9R~
+//*CID://+vaqiR~:                             update#=  136;       //+vaqiR~
 //*************************************************************************//~v106I~
+//2022/08/25 vaqi real cause of vapb is call paly at resume after permission granted even noBGM on.//+vaqiI~
 //2021/09/19 vaea stop also non userBGM when pause                 //~vae8I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8R~
@@ -115,6 +116,11 @@ public class BGMList                                               //~va06I~
     public void onResume()                                         //~vaeaR~
     {                                                              //~vaeaR~
     	if (Dump.Y) Dump.println("BGMList.onResume swNoSound="+swNoSound);//~vaeaR~
+        if (swNoSound)                                             //+vaqiI~
+        {                                                          //+vaqiI~
+	    	if (Dump.Y) Dump.println("BGMList.onResume return by swNoSound");//+vaqiI~
+        	return;                                                //+vaqiI~
+        }                                                          //+vaqiI~
         try                                                        //~vaeaI~
         {                                                          //~vaeaI~
             if (pausedPlayer!=null)                                //~vaeaI~
@@ -179,7 +185,7 @@ public class BGMList                                               //~va06I~
 //	public synchronized void play(String name)                     //~va06R~
   	public synchronized void play(int Psoundid)                    //~va06I~
 	{                                                              //~9C02R~
-        if (Dump.Y) Dump.println("BGMList.play swVolChanged="+swVolChanged+",currentID="+currentID+",swNosound="+swNoSound+",id="+Psoundid+",currentID="+currentID+",isPlaying="+isPlaying(Psoundid));     //~9C02I~//~9C03R~//~va06R~//+vae9R~
+        if (Dump.Y) Dump.println("BGMList.play swVolChanged="+swVolChanged+",currentID="+currentID+",swNosound="+swNoSound+",id="+Psoundid+",currentID="+currentID+",isPlaying="+isPlaying(Psoundid));     //~9C02I~//~9C03R~//~va06R~//~vae9R~
         if (swNoSound || Psoundid<0) //BGM for before startgame    //~va06R~
         {                                                          //~va06I~
 	    	stopSound();                                           //~va06I~
@@ -193,7 +199,7 @@ public class BGMList                                               //~va06I~
 //  	playSound();//~1327I~                                      //~va06R~
 		if (Psoundid!=currentID || swVolChanged || currentPlayer==null || !currentPlayer.isPlaying())//~va06R~
         {                                                          //~va06I~
-    		stopAll();      //also UserBGM                                     //~va06R~//+vae9R~
+    		stopAll();      //also UserBGM                                     //~va06R~//~vae9R~
     		playSound(Psoundid);                                   //~va06R~
         }                                                          //~va06I~
 	}

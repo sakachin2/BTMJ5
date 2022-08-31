@@ -6,6 +6,7 @@
     <!--dimen name="textview_middle">24sp</dimen-->
     <dimen name="textview_middle">22sp</dimen>
     <dimen name="textview_small_middle">20sp</dimen>
+    <dimen name="textview_small_middle_small">18sp</dimen>
     <dimen name="textview_large">30sp</dimen>
     <dimen name="textview_small">16sp</dimen>
     <dimen name="lisview_row_small">12sp</dimen>

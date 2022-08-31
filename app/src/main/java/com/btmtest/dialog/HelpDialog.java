@@ -1,5 +1,6 @@
-//*CID://+vamfR~:                             update#=  166;       //~vamfR~
+//*CID://+van1R~:                             update#=  179;       //~van1R~
 //*****************************************************************//~v101I~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/04/04 vamf TextView Zooming for HelpDialog by Button        //~vamfI~
 //2022/04/04 vame TextView Zooming for HelpDialog                  //~vameI~
 //2022/01/11 vaik Youtube movie as help                            //~vaikI~
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;                                //~v@@@I~
 import android.view.View;                                          //~v@@@I~
 
 import com.btmtest.R;                                              //~v@@@I~
+import com.btmtest.TestOption;
 import com.btmtest.gui.UButton;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.utils.UFile;
@@ -32,7 +34,9 @@ import com.btmtest.utils.Utils;                                    //~v@@@I~
 import com.btmtest.utils.Utube;
 
 import static android.text.Html.*;
+import static com.btmtest.AG.*;
 import static com.btmtest.StaticVars.AG;
+import static com.btmtest.TestOption.*;
 
 public class HelpDialog extends UFDlg                              //~v@@@R~
 {                                                                  //~2C29R~
@@ -50,6 +54,9 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
     private String playlistID,videoID;                             //~vaikI~
     private Button btnMovie;                                       //~vaikI~
 	private Button btnZoomUp,btnZoomDown;                          //~vamfI~
+	private Button btnHungle;                                      //~van1I~
+  	private String txt,htmltxt;                                    //~van1I~
+  	private String[] langLabels;                                   //~van1I~
 //**********************************                               //~v@@@I~
 	public HelpDialog()                                              //~v@@@I~
     {                                                              //~v@@@I~
@@ -84,47 +91,99 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
     {                                                              //~v@@@I~
     	return newInstance(TITLEID,DEFAULT_FILENAME);              //~v@@@R~
     }                                                              //~v@@@I~
+    //******************************************                   //~van1I~
+    private boolean isHungleHelp()                                 //~van1I~
+    {                                                              //~van1I~
+    	boolean rc=true;                                           //~van1I~
+        if ((TestOption.option5 & TO5_LANG_KO)==0)                 //~van1R~
+        	if (!AG.isLangKO)                                      //~van1I~
+        		return false;                                      //~van1I~
+        if (Dump.Y) Dump.println("HelpDialog.isHungleHelp rc="+rc+",AG.isLangKO="+AG.isLangKO);//~van1R~
+        return rc;                                                 //~van1I~
+    }                                                              //~van1I~
     //******************************************                   //~v@@@M~
 	@Override                                                      //~v@@@M~
     public void initLayout(View Playoutview)                       //~v@@@R~
 	{                                                              //~v@@@M~
-		String txt,htmltxt;                                        //~v@@@I~
+//  	String txt,htmltxt;                                        //~van1R~
     //******************************                               //~v@@@I~
     	super.initLayout(Playoutview);                             //~v@@@I~
+	    btnHungle=UButton.bind(Playoutview,R.id.BtnLangKO,this);         //~van1I~
+        langLabels=AG.resource.getStringArray(R.array.BtnLangHungleLabel);//~van1I~
         tvMessage=(TextView)UView.findViewById(Playoutview,R.id.Message); //~v@@@I~
-        htmltxt=UFile.getHelpFileExt(helpFilename,".htm",false);   //~v@@@R~
-      if (colorBG!=colorFG)                                        //~vaa0I~
-      {                                                            //~vaa0M~
-        txt=htmltxt;                                               //~vaa0I~
-        Spanned s=Utils.fromHtmlImage(txt);                        //~vaa0M~
-        tvMessage.setBackgroundColor(colorBG);                     //~vaa0I~
-        tvMessage.setTextColor(colorFG);                           //~vaa0I~
-        tvMessage.setText(s);                                      //~vaa0M~
-      }                                                            //~vaa0M~
-      else                                                         //~vaa0M~
-      {                                                            //~vaa0M~
-        if (htmltxt!=null)                                         //~v@@@I~
-        {                                                          //~v@@@I~
-//      	txt=adjustHtml(htmltxt);                               //~v@@@R~
-        	txt=htmltxt;                                           //~v@@@I~
-//            Spanned s;                                           //~va40R~
-//            if (AG.osVersion>=24) // Nougat:android 7.0          //~va40R~
-//                s=getHtmlSpanned(txt);                           //~va40R~
-//            else                                                 //~va40R~
-//                s=Html.fromHtml(txt);                            //~va40R~
-            Spanned s=Utils.fromHtml(txt);                         //~va40R~
-            tvMessage.setText(s);                                  //~v@@@I~
-        }                                                          //~v@@@I~
-        else                                                       //~v@@@I~
-        {                                                          //~v@@@I~
-		    txt=UFile.getHelpFileText(helpFilename);               //~v@@@R~
-	    	tvMessage.setText(txt);                                //~v@@@R~
-        }                                                          //~v@@@I~
-      }                                                              //~v@@@M~//~vaa0R~
+	    htmltxt=null;                                              //~van1I~
+        if (isHungleHelp())                                        //~van1I~
+        {                                                          //~van1I~
+        	AG.currentHelpLang=PrefSetting.getCurrentLangHelp();  //~van1I~
+	       	btnHungle.setVisibility(View.VISIBLE);                 //~van1I~
+            htmltxt=getTextKO();                                           //~van1I~
+        }                                                          //~van1I~
+        setHelpMsg();                                              //~van1I~
+//      if (htmltxt==null)                                         //~van1R~
+//        htmltxt=UFile.getHelpFileExt(helpFilename,".htm",false); //~van1R~
+//      if (colorBG!=colorFG)                                      //~van1R~
+//      {                                                          //~van1R~
+//        txt=htmltxt;                                             //~van1R~
+//        Spanned s=Utils.fromHtmlImage(txt);                      //~van1R~
+//        tvMessage.setBackgroundColor(colorBG);                   //~van1R~
+//        tvMessage.setTextColor(colorFG);                         //~van1R~
+//        tvMessage.setText(s);                                    //~van1R~
+//      }                                                          //~van1R~
+//      else                                                       //~van1R~
+//      {                                                          //~van1R~
+//        if (htmltxt!=null)                                       //~van1R~
+//        {                                                        //~van1R~
+////          txt=adjustHtml(htmltxt);                             //~van1R~
+//            txt=htmltxt;                                         //~van1R~
+////            Spanned s;                                         //~van1R~
+////            if (AG.osVersion>=24) // Nougat:android 7.0        //~van1R~
+////                s=getHtmlSpanned(txt);                         //~van1R~
+////            else                                               //~van1R~
+////                s=Html.fromHtml(txt);                          //~van1R~
+//            Spanned s=Utils.fromHtml(txt);                       //~van1R~
+//            tvMessage.setText(s);                                //~van1R~
+//        }                                                        //~van1R~
+//        else                                                     //~van1R~
+//        {                                                        //~van1R~
+//            txt=UFile.getHelpFileText(helpFilename);             //~van1R~
+//            tvMessage.setText(txt);                              //~van1R~
+//        }                                                        //~van1R~
+//      }                                                              //~v@@@M~//~van1R~
       setBtnMovie(Playoutview);                                    //~vaikI~
 //    initZoom(tvMessage);                                         //~vameI~//~vamfR~
       initZoomButton(Playoutview,tvMessage);                                   //~vamfI~
     }                                                              //~vaa0I~
+    //******************************************                   //~van1I~
+    private void setHelpMsg()                                      //~van1I~
+    {                                                              //~van1I~
+    	if (Dump.Y) Dump.println("HelpDialog setHelpMsg helpFilename="+helpFilename+",htmltext="+htmltxt);//+van1R~
+      if (htmltxt==null)                                           //~van1I~
+        htmltxt=UFile.getHelpFileExt(helpFilename,".htm",false);   //~van1I~
+    	if (Dump.Y) Dump.println("HelpDialog setHelpMsg htmltext="+htmltxt);//~van1I~
+//    if (colorBG!=colorFG)                                        //+van1R~
+      if (colorBG!=colorFG && htmltxt!=null)                      //+van1I~
+      {                                                            //~van1I~
+        txt=htmltxt;                                               //~van1I~
+        Spanned s=Utils.fromHtmlImage(txt);                        //~van1I~
+        tvMessage.setBackgroundColor(colorBG);                     //~van1I~
+        tvMessage.setTextColor(colorFG);                           //~van1I~
+        tvMessage.setText(s);                                      //~van1I~
+      }                                                            //~van1I~
+      else                                                         //~van1I~
+      {                                                            //~van1I~
+        if (htmltxt!=null)                                         //~van1I~
+        {                                                          //~van1I~
+        	txt=htmltxt;                                           //~van1I~
+            Spanned s=Utils.fromHtml(txt);                         //~van1I~
+            tvMessage.setText(s);                                  //~van1I~
+        }                                                          //~van1I~
+        else                                                       //~van1I~
+        {                                                          //~van1I~
+		    txt=UFile.getHelpFileText(helpFilename);               //~van1I~
+	    	tvMessage.setText(txt);                                //~van1I~
+        }                                                          //~van1I~
+      }                                                            //~van1I~
+    }                                                              //~van1I~
 //**********************************                               //~v@@@I~
     private String adjustHtml(String Ptxt)                                        //~v@@@I~
     {                                                              //~v@@@I~
@@ -216,6 +275,9 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
             case R.id.ZoomDown:                                    //~vamfI~
                 onClickZoom(tvMessage,-1);                         //~vamfI~
                 break;                                             //~vamfI~
+            case R.id.BtnLangKO:                                   //~van1I~
+                onClickLangKO();                                   //~van1I~
+                break;                                             //~van1I~
         }                                                          //~vamfI~
     }                                                              //~vamfI~
     //*****************************************************        //~vamfI~
@@ -236,7 +298,7 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
         	szNew=pixTextSize0;                                    //~vamfI~
         PtextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,szNew); //sp//~vamfI~
 		if (Dump.Y) Dump.println("HelpDialog.onClickZoom setTextSize szNew=+"+szNew+",pixTextSize0="+pixTextSize0);//~vamfI~
-    	pixTextSize=szNew;                                         //+vamfI~
+    	pixTextSize=szNew;                                         //~vamfI~
     }                                                              //~vamfI~
     //*****************************************************        //~2403I~//~vameI~
     private static final int NONE = 0;                             //~2403I~//~vameI~
@@ -331,4 +393,38 @@ public class HelpDialog extends UFDlg                              //~v@@@R~
 		if (Dump.Y) Dump.println("HelpDialog.spacing rc="+rc);     //~vameI~
         return rc;                                                 //~2403I~//~vameI~
     }                                                              //~2403I~//~vameI~
+    //*****************************************************        //~van1I~
+    private String getTextKO()                                     //~van1I~
+    {                                                              //~van1I~
+    	String html;                                               //~van1I~
+		if (Dump.Y) Dump.println("HelpDialog.getTextKO currentHelpLang="+AG.currentHelpLang);//~van1I~
+	    html=UFile.getHelpFileExtKO(helpFilename,".htm",false);    //~van1I~
+        if (html==null)                                            //~van1I~
+        {                                                          //~van1I~
+			if (AG.currentHelpLang==CHL_KO_FROM_EN                 //~van1I~
+//  		||  AG.currentHelpLang==CHL_KO_FROM_JP                 //~van1R~
+            )                                                      //~van1I~
+	    		html=Utils.getStr(R.string.Err_NoHungleHtmlText);  //~van1R~
+        }                                                          //~van1I~
+	    setLabelHungle();
+        return html;//~van1I~
+    }                                                              //~van1I~
+    //*****************************************************        //~van1I~
+    private void onClickLangKO()                                   //~van1I~
+    {                                                              //~van1I~
+		if (Dump.Y) Dump.println("HelpDialog.onClickLangKO");      //~van1R~
+        AG.currentHelpLang=(AG.currentHelpLang+1)%CHL_CTR;         //~van1R~
+        PrefSetting.setCurrentLangHelp(AG.currentHelpLang);       //~van1I~
+	    htmltxt=getTextKO();                                       //~van1R~
+	    setLabelHungle();                                          //~van1I~
+	    setHelpMsg();                                              //~van1I~
+    }                                                              //~van1I~
+    //*****************************************************        //~van1I~
+    private void setLabelHungle()                                  //~van1I~
+    {                                                              //~van1I~
+        int next=(AG.currentHelpLang+1)%CHL_CTR;                   //~van1R~
+	    String label=langLabels[next];                             //~van1I~
+        btnHungle.setText(label);                                  //~van1I~
+		if (Dump.Y) Dump.println("HelpDialog.setLabelHungle currentHelpLang="+AG.currentHelpLang+"next label="+label);//~van1I~
+    }                                                              //~van1I~
 }//class                                                           //~v@@@R~//~vameM~

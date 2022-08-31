@@ -1,6 +1,6 @@
-//*CID://+vae7R~:                             update#= 1246;       //+vae7R~
+//*CID://+vae7R~:                             update#= 1247;       //~vae7R~
 //*****************************************************************//~v101I~
-//2021/09/17 vae7 (Bug)APlayAlone mode;Fix button on suspend dialog was disabled when clicked radio button/checkbox.//+vae7I~
+//2021/09/17 vae7 (Bug)APlayAlone mode;Fix button on suspend dialog was disabled when clicked radio button/checkbox.//~vae7I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -544,7 +544,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
     @Override                                                      //~9321I~
     public void setButton()                                        //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("SuspendDlg.setButton swAllOK="+swAllOK);    //~9819I~//~9A31R~//+vae7R~
+        if (Dump.Y) Dump.println("SuspendDlg.setButton swAllOK="+swAllOK);    //~9819I~//~9A31R~//~vae7R~
     	super.setButton();                                         //~9321I~
         if (swRequester)                                           //~9321I~
 	        btnTotal.setEnabled(swAllOK);                          //~9321I~
@@ -572,7 +572,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
         if (swChanged)                                             //~0308I~
         {                                                          //~0308I~
 	        CMP.swSent=false;                                      //~0314I~
-          if (!AG.swTrainingMode)                                     //~va66I~//+vae7I~
+          if (!AG.swTrainingMode)                                     //~va66I~//~vae7I~
             swAllOK=false;                                         //~0308I~
             resetRespStat();	//OKNGDlg                          //~0308I~
     		setButton();                                           //~0308I~
@@ -600,7 +600,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
         if (swChanged)                                             //~0308I~
         {                                                          //~0308I~
 	        CMP.swSent=false;                                      //~0314I~
-          if (!AG.swTrainingMode)                                  //+vae7I~
+          if (!AG.swTrainingMode)                                  //~vae7I~
             swAllOK=false;                                         //~0308I~
             resetRespStat();	//OKNGDlg                          //~0308I~
     		setButton();                                           //~0308I~
@@ -683,7 +683,7 @@ public class SuspendDlg  extends AccountsDlg                       //~9818R~
 //    @Override                                                      //~9321I~//~9819R~
 //    public void onClickCancel()                                    //~9321I~//~9819R~
 //    {                                                              //~9321I~//~9819R~
-//        if (Dump.Y) Dump.println("SendDlg.onClickNG");             //~9321I~//~9819R~
+//        if (Dump.Y) Dump.println("SuspendDlg.onClickNG");             //~9321I~//~9819R~//+vae7R~
 //        sendReply(false);                                          //~9321I~//~9819R~
 //        dismiss     ();                                              //~9321I~//~9819R~
 //    }                                                              //~9321I~//~9819R~

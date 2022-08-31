@@ -1,5 +1,6 @@
-//*CID://+vamhR~: update#= 759;                                    //~vamhR~
+//*CID://+vapfR~: update#= 761;                                    //~vapfR~
 //**********************************************************************//~v101I~
+//2022/07/28 vapf chankan warning by openreach option(no implementation for ankan-chankan for kokusi which may not issue openreach)//~vapfI~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2022/03/19 vakL issue DrawKan msg on client and if 4kandrawn     //~vakLI~
 //2022/03/18 vakJ match mode;sendmag:14 is rejected at client by stopAuto sent by chk4KanDrawn//~vakJI~
@@ -220,7 +221,12 @@ public class UAKan                                                 //~v@@@R~//~v
         		if (!UADL.chkSelectInfo2Touch(PswServer,GCM_KAN,Pplayer,PintParm))//~9B30M~
             		return false;                                  //~9B30M~
 			if (rc==0)                                             //~9B30I~
+            {                                                      //~vapfI~
+              if (isWinTileForOpenReach(kanType,Pplayer,tdsPair))  //~vapfI~
+                rc=-2;	//err ,skip errmsg at UA.selectionErr      //+vapfR~
+              else                                                 //~vapfI~
 				setKanType();                                      //~9B30I~
+            }                                                      //~vapfI~
         }                                                          //~9B30I~
         if (rc!=0)                                                 //~v@@@I~//~v@@6R~
         {                                                          //~v@@@I~
@@ -230,6 +236,7 @@ public class UAKan                                                 //~v@@@R~//~v
 	            AG.aHandsTouch.enableMultiSelectionMode(false,true/*swKan*/);//~v@@6I~
                 rc=2;	//kan select msg                           //~v@@6I~
             }                                                      //~v@@6I~
+          if (rc!=-2)                                              //+vapfI~
         	UA.selectionErr(rc); //-1:err,1:ambiguous                                  //~v@@@I~//~v@@6R~
         	return false;                                          //~v@@@I~
         }                                                          //~v@@@I~
@@ -587,7 +594,7 @@ public class UAKan                                                 //~v@@@R~//~v
         {                                                          //~v@@6I~
         	int playerDiscarded=PLS.getLastDiscardedPlayer();          //~v@@@I~//~v@@6R~
         	river.takeKan(playerDiscarded,rc);                                     //~v@@@R~//~v@@6R~
-	        AG.aAnim.calledPonKanChii(TDF_KAN_RIVER,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,river.playerDiscarded,river.rectTileCalled,river.bmCalledOnRiver);//+vamhR~
+	        AG.aAnim.calledPonKanChii(TDF_KAN_RIVER,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,river.playerDiscarded,river.rectTileCalled,river.bmCalledOnRiver);//~vamhR~
         }                                                          //~v@@6I~
         else                                                       //~vamhI~
         	AG.aAnim.calledPonKanChii(TDF_KAN_TAKEN,AG.aEarth.playerDrawEarth,AG.aEarth.rectTileCalled,AG.aEarth.tdOnEarth,AG.aEarth.bmOnEarth,-1,null,null);//~vamhR~
@@ -1014,4 +1021,15 @@ public class UAKan                                                 //~v@@@R~//~v
        	}                                                          //~vakJI~
         if (Dump.Y) Dump.println("UAKan.sendToClientchk4KanDrawn exit player="+Pplayer);//~vakJI~
     }                                                              //~vakJI~
+	//*************************************************************************//~vapfI~
+    private boolean isWinTileForOpenReach(int PkanType,int Pplayer,TileData[] PtdsPair)//~vapfI~
+    {                                                              //~vapfI~
+        if (Dump.Y) Dump.println("UAKan.isWinTileForOpenReach player="+Pplayer+",kanType="+PkanType+",tdsPair="+TileData.toString(PtdsPair));//~vapfI~
+        boolean rc=false;                                          //~vapfI~
+        if (PkanType==KAN_ADD)                                     //~vapfI~
+        {                                                          //~vapfI~
+        	rc=UA.UAD.isOpenReachWinningTileKan(PtdsPair[0]);	//skip kan//~vapfI~
+        }
+        return rc;//~vapfI~
+    }                                                              //~vapfI~
 }//class                                                           //~v@@@R~

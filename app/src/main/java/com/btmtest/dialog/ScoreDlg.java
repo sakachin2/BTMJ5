@@ -1,6 +1,6 @@
-//*CID://+vac5R~:                             update#= 1121;       //+vac5R~
+//*CID://+vac5R~:                             update#= 1122;       //~vac5R~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*****************************************************************//~1312I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.text.Spanned;
@@ -37,7 +37,7 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
 //            implements UCheckBox.UCheckBoxI                        //~9322I~//~9408R~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.score;              //~9312R~
-    private static final int LAYOUTID_SMALLFONT=R.layout.score_theme;//+vac5I~
+    private static final int LAYOUTID_SMALLFONT=R.layout.score_theme;//~vac5I~
     private static final int TITLEID=R.string.Title_ScoreDlg;//~9307I~//~9312R~
     private static final String HELPFILE="ScoreDlg";                //~9220I~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~
                                                                    //~9318I~
@@ -110,8 +110,8 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("ScoreDlg.newInstance amt="+Arrays.toString(Pammount));//~9312R~
     	ScoreDlg dlg=new ScoreDlg();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~
-//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//+vac5R~
-      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//+vac5I~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),//~vac5I~
     			FLAG_OKBTN|FLAG_CANCELBTN|FLAG_CLOSEBTN|FLAG_HELPBTN|FLAG_RULEBTN,//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         dlg.ammount=Pammount;	//point at last game(not total score)                                      //~9312R~//~9320R~
@@ -824,7 +824,7 @@ public class ScoreDlg  extends OKNGDlg //UFDlg                                  
     @Override                                                      //~9321I~
     public void onClickCancel()                                    //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("SendDlg.onClickNG");             //~9321I~
+        if (Dump.Y) Dump.println("ScoreDlg.onClickNG");             //~9321I~//+vac5R~
         sendReply(false);                                          //~9321I~
         dismiss     ();                                              //~9321I~
     }                                                              //~9321I~

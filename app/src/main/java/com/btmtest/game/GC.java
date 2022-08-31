@@ -1,8 +1,9 @@
-//*CID://+vamvR~: update#= 873;                                    //~vamvR~
+//*CID://+vaq8R~: update#= 882;                                    //~vaq8R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
-//2022/04/23 vamv chenge server color for Connect Button and GameType on gameboard//~vamvI~
+//2022/08/19 vaq8 (Bug)doubleRon by Win-Anyway;2nd ron ignored Win-Anyway requested and issie compose err//~vaq8I~
+//2022/04/23 vamv change server color for Connect Button and GameType on gameboard//~vamvR~
 //2022/04/05 vamg Animation. at Win call                           //~vamgI~
 //2022/03/09 vakr (Bug)PAN mode; call not postDelayedAutoTakeKan but postDelayedAutoTake when human pushed Kan button//~vakrI~
 //2022/01/31 vaji change color of top left to identify server      //~vajiI~
@@ -174,8 +175,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //  public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0x00,0xf0,0xc0);//~vajiR~//~vamvR~
     public  static final int COLOR_GST_RELEASE=Color.argb(0xff,0xff,0xd7,0x00);   //server:Gold//~vamvI~
     public  static final int COLOR_GST_RELEASE_CLIENT=Color.argb(0xff,0xc0,0xf0,0xf0);//~vajiR~
-//  private static final int COLOR_GST_RELEASE_TEXT=Color.argb(0xff,0xff,0x00,0x00);//orange//~vaahR~//+vamvR~
-//  private static final int COLOR_GST_RELEASE_TEXT_CLIENT=Color.argb(0xff,0x40,0x00,0x00);//orange//~vajiI~//+vamvR~
+//  private static final int COLOR_GST_RELEASE_TEXT=Color.argb(0xff,0xff,0x00,0x00);//orange//~vaahR~//~vamvR~
+//  private static final int COLOR_GST_RELEASE_TEXT_CLIENT=Color.argb(0xff,0x40,0x00,0x00);//orange//~vajiI~//~vamvR~
                                                                    //~v@@@I~
     private static final int URO_STARTGAME=1;                      //~v@@@I~
     private static final int URO_ADDVIEW=2;                        //~v@@@I~
@@ -234,6 +235,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	private boolean swShownBtnCancel;                              //~vaahI~
 	private boolean swChankan;                                     //~vaaVI~
 	private boolean swWinAnywayPushed,swWinAnywayActive;           //~vacbR~
+	private boolean swWinAnywayMore;                               //~vaq8I~
 	private boolean swLeftyPortrait,swLeftyLandscape;              //~vad1I~
 	public int marginLR;                                           //~vaefI~
 //*************************                                        //~v@@@I~
@@ -254,6 +256,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
 			swWinAnywayPushed=false; swWinAnywayActive=false;      //~vacbI~
+			swWinAnywayMore=false;                                 //~vaq8I~
 //          UView.fixOrientation(true);                            //~v@@@I~//~va9fR~
 	    	UView.getScreenSize();                                 //~v@@@I~
             swPortrait=AG.scrWidth<AG.scrHeight;                   //~v@@@I~
@@ -749,7 +752,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~v@@@I~
     	int player;                                                //~v@@@I~
     	int id=Pbtn.getId();                                       //~v@@@I~
-        if (Dump.Y) Dump.println("GC.onClickButton id="+Integer.toHexString(id)+"="+Pbtn.getText()+",swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed);//~v@@@R~//~9B18R~//~vacbR~
+        if (Dump.Y) Dump.println("GC.onClickButton id="+Integer.toHexString(id)+"="+Pbtn.getText()+",swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed+",swWinAnywayMore="+swWinAnywayMore);//~v@@@R~//~9B18R~//~vacbR~//~vaq8R~
         if (id==BTNID_RON)                                         //~vacbI~
         {                                                          //~vacbI~
 	        if (swWinAnywayActive)                                 //~vacbI~
@@ -1885,17 +1888,29 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //      	Utils.setSpanBG(Pbtn,Pcolor);                          //~vaa2R~//~vaafR~
 //      else                                                       //~vaa2I~//~vaafR~
 //  		Utils.setTintBG(Pbtn,Pcolor);                          //~vaa2I~//~vaafR~
-		if (Dump.Y) Dump.println("GC.setBtnBG entry swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed);//~vacbI~
+		if (Dump.Y) Dump.println("GC.setBtnBG entry swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed+",swWinAnywayMore="+swWinAnywayMore);//~vacbI~//~vaq8R~
         swWinAnywayActive=false;                                   //~vacbI~
 		if (Pbtn.getId()==BTNID_RON)                               //~vacbI~
         {                                                          //~vacbI~
-        	if (Pcolor==UAD2Touch.COLOR_BLOCKING && swWinAnywayPushed)//~vacbR~
+//      	if (Pcolor==UAD2Touch.COLOR_BLOCKING && swWinAnywayPushed)//~vacbR~//~vaq8R~
+           	if (Pcolor==UAD2Touch.COLOR_MORE)                      //+vaq8I~
+            {                                                      //+vaq8I~
+              	if (swWinAnywayPushed)                             //+vaq8M~
+        			swWinAnywayMore=true;                          //+vaq8M~
+            }                                                      //+vaq8I~
+            else                                                   //+vaq8I~
+        	if (Pcolor==UAD2Touch.COLOR_BLOCKING)                  //~vaq8I~
             {                                                      //~vacbI~
+              if (swWinAnywayPushed)                               //~vaq8I~
             	swWinAnywayActive=true;                             //~vacbI~
+              else                                                 //~vaq8I~
+        	  if (swWinAnywayMore)  //2nd Win                      //~vaq8I~
+            	swWinAnywayActive=true;                            //~vaq8I~
+              swWinAnywayMore=false;                               //+vaq8I~
             }                                                      //~vacbI~
         }                                                          //~vacbI~
         swWinAnywayPushed=false;	//effective only once              //~vacbI~
-		if (Dump.Y) Dump.println("GC.setBtnBG return swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed);//~vacbR~
+		if (Dump.Y) Dump.println("GC.setBtnBG return swWinAnywayActive="+swWinAnywayActive+",swWinAnywayPushed="+swWinAnywayPushed+",swWinAnyWayMore="+swWinAnywayMore);//~vacbR~//~vaq8R~
     }                                                              //~vaa2I~
     //*******************************************************************//~va70I~
 	private boolean isAvailableOpenReach()                         //~0329I~
@@ -1904,7 +1919,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (rc)	//available                                        //~0329I~
         {                                                          //~0329I~
         	if (isRobotGame())                                     //~0329R~
-		    	if (!RuleSettingYaku.isAvailableOpenReachRobot())  //~0329R~
+//  	    	if (!RuleSettingYaku.isAvailableOpenReachRobot())  //~vamvR~
+    	    	if (!RuleSettingYaku.isAvailableOpenReachRobotNo())//~vamvI~
     	        	rc=false;                                      //~0329R~
         }                                                          //~0329I~
 		if (Dump.Y) Dump.println("GC.isAvailableOpenReach rc="+rc);
@@ -2417,13 +2433,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
           {                                                        //~vajiI~
   	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE);            //~vaahI~
             setBtnBG(Pbtn,COLOR_GST_RELEASE);                      //~vaahI~
-//          Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT);             //~vaahI~//+vamvR~
+//          Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT);             //~vaahI~//~vamvR~
           }                                                        //~vajiM~
           else                                                     //~vajiM~
           {                                                        //~vajiM~
   	        Pbtn.setBackgroundColor(COLOR_GST_RELEASE_CLIENT);     //~vajiM~
             setBtnBG(Pbtn,COLOR_GST_RELEASE_CLIENT);               //~vajiM~
-//          Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT_CLIENT);      //~vajiI~//+vamvR~
+//          Pbtn.setTextColor(COLOR_GST_RELEASE_TEXT_CLIENT);      //~vajiI~//~vamvR~
           }                                                        //~vajiM~
         }                                                          //~vaahI~
         else                                                       //~vaahI~

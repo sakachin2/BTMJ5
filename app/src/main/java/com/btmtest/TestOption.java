@@ -1,5 +1,6 @@
-//*CID://+vaihR~: update#= 575;                                    //~vagvR~//~vaihR~
+//*CID://+van1R~: update#= 582;                                    //~van1R~
 //**********************************************************************//~v@@@I~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vagvI~
 //2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
@@ -170,6 +171,11 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static final int TO5_NODUMP                         =  0x00008000;//~vaihI~
     public static final int TO5_AVOID_FURITEN                  =  0x00010000;//~vaihI~
     public static final int TO5_SETDISCARD                     =  0x00020000;//~vaihI~
+    public static final int TO5_LANG_KO                        =  0x00040000;//~van1I~
+    public static final int TO5_NAGASHIMANGAN                  =  0x00080000;//~van1I~
+    public static final int TO5_OPENREACHRON                   =  0x00100000;//~van1I~
+    public static final int TO5_DRAWNREQDLG_LASTDIALOG         =  0x00200000;   //Drawn menu is DrawnReqDlgLast//~van1I~
+    public static final int TO5_RONCANCEL_TEST                 =  0x00400000;   //Drawn menu is DrawnReqDlgLast//~van1I~
     public static int option2;                                     //~v@@@I~
     public static int option3;                                     //~va66I~
     public static int option4;                                     //~vaa6I~
@@ -180,11 +186,12 @@ public class TestOption //extends Handler                          //~v@@@I~
     public static int testCaseRonValue;                            //~v@@@I~
     public static int testDoraUpType,testDoraUpNumber;             //~v@@@I~
     public static int testDoraDownType,testDoraDownNumber;         //~v@@@I~
-    public static int testDiscardType,testDiscardNumber;           //+vaihI~
+    public static int testDiscardType,testDiscardNumber;           //~vaihI~
     public static int testKanUpType,testKanUpNumber;               //~v@@@I~
     public static int testKanDownType,testKanDownNumber;           //~v@@@I~
     public static int testKanUpType2,testKanUpNumber2;             //~v@@@I~
     public static int testKanDownType2,testKanDownNumber2;         //~v@@@I~
+    public static int testContinueStick,testContinueWin;           //~van1I~
     public static boolean swDisableBT;                             //~v@@@I~
     public static int timingDisableBT;                             //~v@@@I~
     public static final int BTIOE_AFTER_TAKE=0;                    //~v@@@I~
@@ -232,6 +239,7 @@ public class TestOption //extends Handler                          //~v@@@I~
     	option2|=TO2_UNIT_MILISEC;                                 //~v@@@I~
     	option2|=TO2_ROBOT_TOAST;                                  //~va66I~
 //  	option2|=TO2_ROBOT_SKIP_REACH;	//TODO test                //~va66R~
+//  	option5|=TO5_RONCANCEL_TEST  ;                             //+van1R~
         Dump.println("TestOption.static sst="+sst);                      //~v@@@I~
         sst2="sst2";                                               //~v@@@I~
     }                                                              //~v@@@I~

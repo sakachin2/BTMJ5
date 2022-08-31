@@ -1,0 +1,140 @@
+조작 관련 규칙.
+<BR>
+<BR>
+<BIG><B>DelayTime</B></BIG>
+<BR>
+'Ron(栄和)', 'Pon(碰)/Kan(槓)', 'Chii(吃)/Draw(自摸)'의 Discard(打牌) 이후의 시간 간격을 설정합니다.
+ 보드 중앙의 반원 램프는 빨간색, 노란색, 녹색, 파란색 순으로 켜집니다.
+<BR>
+<BR>
+<B>
+Ron(Red)
+</B>
+ : <BIG><B>빨강</B></BIG> 램프 간격. Ron만 허용됩니다.
+ 이 간격이 경과하면, 'Win'(和了)은 최초의 선언자만이 받아들여집니다. 두 번째 'Win' 호출은 'Double-Ron' 규칙에 관계없이 'Late Ron'(遅-Ron)으로 거부됩니다.
+ 따라서, 이 기간에 3명의 플레이어가 「Win」을 발행한 경우에만, 「3Win」의 AbortiveDraw(途中流局)가 됩니다.
+<BR>
+Chankan (槍槓) (AddKan (加槓)에 대한 Ron (Robbing a Quad))을 수락하기 위해이 간격 + 다음 "Pon / Kan"간격 다음에 Rinshan (嶺上)을 "Draw"할 수 있습니다 .
+ 이 간격이 경과하면 두 번째 Chankan 호출은 "Late Ron"이 됩니다.
+ 다른 설정에서 Ankan(暗槓)의 Win이 허용된 경우 이 기간에 Win을 누르십시오. Kokusi (国士無双:13Orphans)가 가능합니다.
+<BR>
+<B>(주의)</B>
+예를 들어, 이미 Riichi를 선언했다고 가정합니다. 다른 플레이어가 Ron 선언 전에 Discard에 대해 Pon을 선언했습니다.
+Win을 놓쳤기 때문에 이 라운드에서는 Win을 호출할 수 없으며 페널티를 지불하게 됩니다.
+<BR>
+<B>
+Pon/Kan(Yellow)
+</B>
+ : <BIG><B>황색</B></BIG> 램프 간격. Ron (첫 번째 선언자 전용) / Pon/Kan이 허용됩니다.
+이 간격이 경과하면 램프가 <BIG><B>녹색</B></BIG>으로 바뀌고 Ron(첫 번째 발신자만)/Chii/Draw/Pon/Kan이 가능합니다.
+다음 플레이어가 Draw를 하면 램프가 <BIG><B>파랑</B></BIG>으로 바뀝니다.
+<BR>
+<B>
+After Last Discard</B>: 마지막 Discard에서 램프가 녹색으로 바뀐 후 이 간격이 경과하면 'ExhaustiveDraw(流局)'가 됩니다.
+<BR>
+<B>
+AutoDraw</B>: 녹색(Draw-able) 시간 간격이 시작된 후 이 시간이 경과하면 다음 플레이어가 자동으로 Draw합니다.
+ 0은 AutoDraw가 없음을 의미합니다. 이것은 DrawKan에도 적용됩니다.
+ 그러나 MinKan(明槓) 및 AddKan(加槓)의 경우 Ron 간격이 만료된 후에 적용됩니다.
+<BR>
+<B>
+AutoDiscard</B>: Draw/Kan-Draw 이후 또는 Pon/Chii 이후에 이 간격이 경과하면 손 안의 녹색으로 바뀐 타일이 자동으로 Discard됩니다.
+ 설정하면, 「9-9Tile」(九種九牌), 「13broken」(十三不塔), 「14broken」(十四不塔)등의 선언의 기회를 놓칠지도.
+ 0은 AutoDiscard가 없음을 의미합니다.
+<BR>
+<BIG><B>Notification availability of Ron, Pon, Kan, Chii. </B></BIG>
+<BR>
+매치 모드(단독 플레이 모드가 아님)는 버튼 색상으로 가용성을 알려줍니다.
+ 타임아웃 또는 다른 플레이어의 조작으로 정상적인 색상으로 돌아갑니다.
+<BR>
+Kan에 대해서는 Minkan(Discard에 대한 Kan)을 통지합니다. Chankan은 Earth(副露牌)의 Triplet(刻子)와 같은 타일을 Draw할 때 알려줍니다. Ankan (손 안에 Kan이 되어 있다)는 통지하지 않습니다.
+<BR>
+<BR>
+<BIG><B>Wait! </B> </BIG>
+<BR>
+<B>Win call is cancelable</B>:
+ON을 체크하면 다른 플레이어의 액션을 차단하고 더 높은 포인트를 목표로 할지 ​​여부를 고려할 시간이 있습니다.
+"Wait!" 상태에서 작은 황록색 램프가 켜지고 다른 플레이어에게 차단된 상태를 알립니다.
+ 다른 플레이어의 Pon/Kan/Chii/Ron은 대기열에 넣어지고 다음 플레이어의 Draw와 AutoDraw는 거부됩니다.
+ "Win"을 다시 누르면 Win 호출이 계속됩니다.
+<BR>
+(알림 모드에서 단독 플레이의 경우 이 설정은 무시되며 Win 호출은 'Cancel' 버튼으로 취소할 수 있습니다.)
+<BR>
+Win 호출은 'Cancel'을 누르거나 타임아웃(설정된 경우)이 만료될 때 취소됩니다.
+ 다른 플레이어의 차단이 해제되고 큐에 넣은 다른 플레이어의 액션이 차례로 실행됩니다.
+ AutoTake 타이머가 설정되어 있으면 시작됩니다.
+<BR>
+Pon/Chii가 'Wait!'을 유발할 수도 있습니다.
+ 예를 들어, Pon의 경우 Red-Dora가 있는 경우 트리플릿에 포함할지 여부를 지정해야 합니다. Chii의 경우, 그 Discard가 복수의 Meld(面子)를 구성하는 경우입니다.
+ 손 타일을 선택하고 Meld를 ​​확인하고 Pon/Chii를 다시 누르면 작업이 계속됩니다.
+ Pon/Chii를 취소할 수 없습니다.
+<BR>
+<B>Timeout:Yes</B>: 이 시간이 지나면 작업이 취소되고 차단이 해제됩니다.
+ 차단된 작업이 있으면 실행됩니다.
+<BR>
+예) 녹색 기간에는 모든 작업이 허용됩니다. 누군가가 먼저 Chii를 선언하고 여러 Meld의 가능성을 이유로 'Wait!'상태로 들어갔습니다.
+ 이 때 다른 플레이어가 Pon하면 큐에 넣어지고 타임 아웃이 경과하면 실행됩니다.
+ 시간 초과 전에 Chii가 다시 푸시되면 Chii는 계속되고 Pon은 취소됩니다.
+<BR>
+<BR>
+<BIG><B>1-han Constraint</B></BIG>：(han=翻=랭크)
+<BR>
+켜져 있으면 Win 버튼을 누를 때 Win 패턴을 확인하고 드라를 제외하고 1-han 이상이어야합니다.
+ NG의 경우 Win 호출은 무시되며 다른 플레이어에게는 Win 호출을 알리지 않습니다.
+ OK의 경우 'Win call is cancelable' 옵션에 따라 게임이 'Wait!'에 들어가거나 'Win'이 계속됩니다.
+꺼져 있으면 "Win is cancelable"이 설정되어 있으면 실수로 "Win"버튼을 눌러도 취소할 수 있습니다.
+  'Win call is cancelable'이 설정되어 있지 않으면 잘못된 Ron의 'Chombo'(錯和)가 발생할 수 있습니다.
+비표준 로컬 승리 패턴을 수락하려면 패턴 오류가 발생한 후 메뉴의 <B>Win-A</B> 버튼 또는 <B>Win anyway</B>를 사용하여 Win을 계속할 수 있습니다. 。
+Win anyway에서 'Cancel' 버튼이 표시되면 두 번째 Win 통화에도 'Win anyway'를 사용합니다.
+<！-
+->
+<BR>
+<BIG> <B>Furiten</B> </ BIG> :(振聴: 일본어: FURI(Discard)-TENpai(Win을 호출할 수 있는 상태로 되어 있다))
+<BR>
+이것은 Win 타일 중 하나가 이미 Discard되어 있음을 의미합니다.
+<BR>
+예를 들어 Win의 타일은 <img src=@drawable/s_man1s><img src=@drawable/s_man4s><img src=@drawable/s_man7s>입니다.
+이미 <imgsrc=@drawable/s_man1s>를 Discard한 경우 <img src=@drawable/s_man1s>, <img src=@drawable/s_man4s>, <img src=@drawable/s_man7s>에 대해 Win을 호출할 수 없습니다.
+또한 Furiten의 또 다른 경우가 있습니다. 다른 플레이어가 Win 타일 중 하나를 Discard 할 때 그것을 놓친 경우 다음 타일을 Draw 할 때까지 Win을 호출 할 수 없습니다.
+<BR>
+예를 들면
+<BR>
+ 보다 높은 점수를 목표로 하는 이유로, 다른 플레이어의 <img src=@drawable/s_man1s>를 놓친다고 합니다.
+다음 Draw까지 다른 플레이어의 <img src=@drawable/s_man1s><img src=@drawable/s_man4s><img src=@drawable/s_man7s>에 대해 Win을 호출할 수 없습니다.
+그러나 Win 타일 중 하나를 Draw하면 Win을 호출할 수 있습니다.
+<BR>
+Riichi를 선언하면 이 설정이 아닌 Yaku 대화 상자의 <B>Furiten Riichi</B> 설정에서 Furite 위반이 확인됩니다.
+<BR>
+실제 마작에서는, 다른 플레이어가 Win 했을 때, 1-han constraint 제약과 Furiten의 위반이 없는지, 전원이 확인합니다.
+<BR>
+<B>
+이러한 옵션이 해제된 경우 <BIG>Chombo</BIG>가 되지 않도록 주의하십시오.
+</B>
+<BR>
+<BR>
+<BIG><B>Evaluate Point</B></BIG>:
+<BR>
+　'Yes': 이 앱에서 Fu(符: base point)와 Han(翻: 순위)을 평가합니다. 'No': 'Win clame' 대화상자에서 이러한 값을 직접 설정해야 합니다.
+<BR>
+결과에 동의할 수 없는 경우 대화상자에서 변경할 수 있습니다.
+<BR>
+이렇게 하면 로컬 점수 설정이 가능합니다.
+<BR>
+<BIG><B>Confirm Tenpai</B></BIG>: (Tenpai(聴牌): 일본어, Win 타일을 기다리는 상태)
+<BR>
+"No": Win 가능 여부를 확인하지 않고 선택한 (녹색 테두리로 둘러싸인) 타일이 Discard되고 Riichi가 성립합니다. "NoTen Riich"의 Chombo가 발생할 수 있습니다 。
+<BR>
+<BR>
+<BIG><B>SuspendOption</B></BIG>
+ 'End-of-Hand', 'AbortiveDraw Confirmation', 'ExhaustiveDraw Confirmation' 대화상자에서 게임 일시중지를 요청할 수 있습니다.
+ Suspend, Gameover 또는 Continue를 선택합니다.
+ 이 주제는 기본값을 정의하며 대화 상자에서 변경할 수 있습니다.
+ 게임 중인 대화상자에서 페널티 값을 변경할 수 없습니다.
+ SuspendGame을 계속하려면 다른 모든 사용자의 동의를 받아야 합니다.
+<BR>
+ConnectionFailure의 경우 ConnectionFailure Notification 대화 상자가 표시됩니다.
+ 재연결을 시도할 수 있습니다. 재연결에 실패한 경우 '일시 중지'/'게임 오버'를 선택합니다.
+ 그 라운드는 없었던 것으로서, 그 라운드의 처음부터 재개합니다.
+<BR>
+<BR>
+<SMALL>RuleSettingOperation 2022/07/08</SMALL>

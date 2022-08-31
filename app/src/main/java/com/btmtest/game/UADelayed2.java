@@ -1,5 +1,7 @@
-//*CID://+vacdR~: update#=1021;                                    //~vacdR~
+//*CID://+vaq7R~: update#=1033;                                    //~vaq7R~
 //**********************************************************************//~v101I~
+//2022/08/18 vaq7 (Bug)robot game hung; after GCM_TAKE rejected by 2 tounch mode Win cancel.//~vaq7I~
+//                no blocked msg remains. if 307(atiotake) was blocked  it will be resheduled after Win canceled//~vaq7I~
 //2021/08/21 vacd skip msg that robot blocked by human's priority  //~vacdI~
 //2021/08/21 vacc (Bug)Match mode; at blocked by Ron issued, Discard btn issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vaccI~
 //2021/07/24 vab0 PlayAlone mode;no need startTimer for Block timeout. timer used by DrawnReqDlgHW for STOP auto//~vab0I~
@@ -22,6 +24,7 @@ import android.graphics.Rect;
 import android.os.Message;
 
 import com.btmtest.R;
+import com.btmtest.TestOption;
 import com.btmtest.dialog.ActionAlert;
 import com.btmtest.dialog.RuleSettingOperation;
 import com.btmtest.game.gv.GameViewHandler;
@@ -33,7 +36,7 @@ import com.btmtest.utils.Utils;
 import java.util.Arrays;
 
 import static com.btmtest.BT.enums.MsgIDConst.*;
-import static com.btmtest.dialog.RuleSettingEnum.*;
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GCMsgID.*;                          //~v@@@M~
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.game.GConst.*;
@@ -283,7 +286,10 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 		        if (swStopAuto2Touch)  //blocked                   //~va60I~
                 {                                                  //~va60I~
 //          		UView.showToast(R.string.ActionBlockedByHumanForRobot);//~va60I~//~vacdR~
-        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot action was blocked by HswStopAuto2Touch");//~vacdI~
+					ctrTakenBlockedRobotTake=AG.aPlayers.ctrTakenAll;//~vaq7I~
+					ctrDiscardBlockedRobotTake=AG.aPlayers.ctrDiscardedAll;//~vaq7I~
+					playerBlockedRobotTake=Pplayer;                //~vaq7I~
+        			if (Dump.Y) Dump.println("UADelayed2.isYourTurn@@@@ Robot action was blocked by swStopAuto2Touch");//~vacdR~
                     return -1;                                     //~va60I~
                 }                                                  //~va60I~
 		        if (PactionID==GCM_RON && isBlockRobotRon())  //blocked//~va8tR~
@@ -293,7 +299,7 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
                     return -1;                                     //~va8tR~
                 }                                                  //~va8tR~
             }                                                      //~va60I~
-        	if (Dump.Y) Dump.println("UADelayed2.isYourTurn not PLAYER_YOU msgid="+Integer.toHexString(msgid));//+vacdI~
+        	if (Dump.Y) Dump.println("UADelayed2.isYourTurn not PLAYER_YOU msgid="+Integer.toHexString(msgid));//~vacdI~
         	return msgid;                                          //~9C06I~
         }                                                          //~va60I~
         if (swStopAuto2Touch)  //blocked                                    //~9C06I~//~9C07R~
@@ -704,11 +710,16 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         releaseActionBlocked(PswServer,PactionID,Pplayer);          //~9B23I~
         AG.aHandsTouch.resetSelection();                           //~9C01I~
 //        boolean swNextTop=false;                                   //~9C07I~
+        boolean swRescheduled=false;                               //~vaq7I~
         if (PswServer)                                             //~9B23I~
         {                                                          //~9B23I~
         	UA.msgDataToClient=makeMsgData2Touch(PactionID,Pplayer,STAT_CONFIRMED_CANCEL);//~9B23I~
             if (msg!=null && msgWaiting==null)	//clear by removePendingMsg2Touch, :GCM_NEXT_PLAYER_AUTODISCARD,AUTOTAKE//~9B23I~
+            {                                                      //~vaq7I~
             	rescheduleMsg2Touch(msg);                          //~9B23I~
+                swRescheduled=true;                                 //~vaq7I~
+		        if (Dump.Y) Dump.println("UADelayed2.actionCanceled resvheduled msg="+msg);//~vaq7I~
+            }                                                      //~vaq7I~
 //            Rect r=UAD2T.getTopBlockerPlayer();                    //~9C07R~//~9C10R~
 //            if (r!=null)                                           //~9C07R~//~9C10R~
 //            {                                                      //~9C07I~//~9C10R~
@@ -724,30 +735,36 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         else                                                       //~9C07I~
         if (newTop==0)                                             //~9C10I~
 	    	UA.showInfo(0,R.string.Info_BlockCanceled);            //~9C07I~
+        else                                                       //~vaq7I~
+        {                                                          //~vaq7I~
+        	if (!swRescheduled)                                     //~vaq7I~
+            	rescheduleRobotTake(PswServer,PactionID,Pplayer);  //~vaq7I~
+		}                                                          //~vaq7I~
     }                                                              //~9B23I~
-    //*************************************************************************//~va70I~
-    //*reschedule pending msg                                      //~va70I~
-    //*************************************************************************//~va70I~
-    public void actionCanceledPlayAlone(int PactionID)             //~va70I~
-    {                                                              //~va70I~
-        Message msg=msgWaiting;                                    //~va70I~
-        if (Dump.Y) Dump.println("UADelayed2.actionCanceledPlayAlone actionID="+PactionID+",msgWaiting="+ Utils.toString(msgWaiting));//~va70I~
-        removePendingMsg2Touch();                                  //~va70I~
-        releaseActionBlocked(true/*PswServer*/,PactionID,PLAYER_YOU);//~va70I~
-//      AG.aHandsTouch.resetSelection();                           //~va70I~
-//      if (PswServer)                                             //~va70I~
-//      {                                                          //~va70I~
-//      	UA.msgDataToClient=makeMsgData2Touch(PactionID,Pplayer,STAT_CONFIRMED_CANCEL);//~va70I~
-            if (msg!=null && msgWaiting==null)	//clear by removePendingMsg2Touch, :GCM_NEXT_PLAYER_AUTODISCARD,AUTOTAKE//~va70I~
-            	rescheduleMsg2Touch(msg);                          //~va70I~
-//      }                                                          //~va70I~
-//  	int newTop=scheduleNextTop(PactionID,PswServer);           //~va70I~
-//      if (newTop==1)                                             //~va70I~
-//      	UA.showInfo(0,R.string.Info_BlockCanceledYouAreNewTop);//~va70I~
-//      else                                                       //~va70I~
-//      if (newTop==0)                                             //~va70I~
-//      	UA.showInfo(0,R.string.Info_BlockCanceled);            //~va70I~
-    }                                                              //~va70I~
+//    //*************************************************************************//~va70I~//~vaq7R~
+//    //*reschedule pending msg                                      //~va70I~//~vaq7R~
+//    //*Not Used                                                  //~vaq7I~
+//    //*************************************************************************//~va70I~//~vaq7R~
+//    public void actionCanceledPlayAlone(int PactionID)             //~va70I~//~vaq7R~
+//    {                                                              //~va70I~//~vaq7R~
+//        Message msg=msgWaiting;                                    //~va70I~//~vaq7R~
+//        if (Dump.Y) Dump.println("UADelayed2.actionCanceledPlayAlone actionID="+PactionID+",msgWaiting="+ Utils.toString(msgWaiting));//~va70I~//~vaq7R~
+//        removePendingMsg2Touch();                                  //~va70I~//~vaq7R~
+//        releaseActionBlocked(true/*PswServer*/,PactionID,PLAYER_YOU);//~va70I~//~vaq7R~
+////      AG.aHandsTouch.resetSelection();                           //~va70I~//~vaq7R~
+////      if (PswServer)                                             //~va70I~//~vaq7R~
+////      {                                                          //~va70I~//~vaq7R~
+////          UA.msgDataToClient=makeMsgData2Touch(PactionID,Pplayer,STAT_CONFIRMED_CANCEL);//~va70I~//~vaq7R~
+//            if (msg!=null && msgWaiting==null)  //clear by removePendingMsg2Touch, :GCM_NEXT_PLAYER_AUTODISCARD,AUTOTAKE//~va70I~//~vaq7R~
+//                rescheduleMsg2Touch(msg);                          //~va70I~//~vaq7R~
+////      }                                                          //~va70I~//~vaq7R~
+////      int newTop=scheduleNextTop(PactionID,PswServer);           //~va70I~//~vaq7R~
+////      if (newTop==1)                                             //~va70I~//~vaq7R~
+////          UA.showInfo(0,R.string.Info_BlockCanceledYouAreNewTop);//~va70I~//~vaq7R~
+////      else                                                       //~va70I~//~vaq7R~
+////      if (newTop==0)                                             //~va70I~//~vaq7R~
+////          UA.showInfo(0,R.string.Info_BlockCanceled);            //~va70I~//~vaq7R~
+//    }                                                              //~va70I~//~vaq7R~
     //*************************************************************************//~9C05I~
     private void actionCanceledTimeout(int PactionID,boolean PswServer,boolean PswReceived,int Pplayer)//~9C05I~//~va60R~
     {                                                              //~9C05I~
@@ -756,10 +773,15 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         removePendingMsg2Touch();                                  //~9C05I~
         releaseActionBlocked(PswServer,PactionID,Pplayer);         //~9C05I~
         AG.aHandsTouch.resetSelection();                           //~9C05I~
+        boolean swRescheduled=false;                               //~vaq7I~
         if (PswServer)                                             //~9C05I~
         {                                                          //~9C05I~
             if (msg!=null && msgWaiting==null)	//clear by removePendingMsg2Touch, :GCM_NEXT_PLAYER_AUTODISCARD,AUTOTAKE//~9C05I~
+            {                                                      //~vaq7I~
             	rescheduleMsg2Touch(msg);                          //~9C05I~
+                swRescheduled=true;                                 //~vaq7I~
+		        if (Dump.Y) Dump.println("UADelayed2.actionCanceled resvheduled msg="+msg);//~vaq7I~
+            }                                                      //~vaq7I~
 	    	sendToClient2Touch(PactionID,Pplayer,STAT_CONFIRMED_CANCEL_TIMEOUT);//~9C05I~
         }                                                          //~9C05I~
 //        Rect r=UAD2T.getTopBlockerPlayer();   //player,eswn-action,flag//~9C07R~
@@ -780,7 +802,11 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
 	    	UA.showInfo(opt,R.string.Info_BlockTimeoutYouAreNewTop); //~9C07I~//~9C10R~
 //      else                                                       //~9C07I~//~9C10R~
         if (newTop!=0)  //not 2nd                                  //~9C10R~
+        {                                                          //~vaq7I~
 	    	UA.showInfo(opt,R.string.Info_BlockTimeout);              //~9C05I~//~9C10R~
+        	if (!swRescheduled)                                     //~vaq7I~
+            	rescheduleRobotTake(PswServer,PactionID,Pplayer);  //~vaq7I~
+		}                                                          //~vaq7I~
     }                                                              //~9C05I~
     //*************************************************************************//~9C07I~
     //*rc:-1:dup cancel(btn and timeout),0:not you, 1: your are new top//~9C10I~
@@ -1421,4 +1447,32 @@ public class UADelayed2 extends UADelayed                          //~9B17R~
         if(Dump.Y) Dump.println("UADelayed2.isBlockedTop rc="+rc); //~va19I~
         return rc;                                                 //~va19I~
     }                                                              //~va19I~
+    //*************************************************************************//~vaq7I~
+    private boolean rescheduleRobotTake(boolean PswServer,int PactionID/*blocking action*/,int Pplayer/*blocking player*/)//~vaq7I~
+    {                                                              //~vaq7I~
+        if(Dump.Y) Dump.println("UADelayed2.rescheduleRobotTake entry swServer="+PswServer+",action="+PactionID+",player="+Pplayer+",playerBlockedRobotTake="+playerBlockedRobotTake);//~vaq7R~
+        if(Dump.Y) Dump.println("UADelayed2.rescheduleRobotTake	ctrTakenBlockedRobotTake="+ctrTakenBlockedRobotTake+",AG.aPlayers.ctrTakenAll="+AG.aPlayers.ctrTakenAll);//~vaq7I~
+        if(Dump.Y) Dump.println("UADelayed2.rescheduleRobotTake	ctrDiscardBlockedRobotTake="+ctrDiscardBlockedRobotTake+",AG.aPlayers.ctrDiscardedAll="+AG.aPlayers.ctrDiscardedAll);//~vaq7I~
+        boolean rc=false;
+      if ((TestOption.option5 & TO5_RONCANCEL_TEST)!=0) //TODO test//~vaq7R~
+      {                                                            //~vaq7R~
+    	if (Dump.Y) Dump.println("Robot.autoTakeTimeout roncancel_test return false");//~vaq7R~
+//      return rc;	                                               //+vaq7R~
+      }                                                            //~vaq7R~
+        if (swServer)                                              //~vaq7I~
+        {                                                          //~vaq7I~
+        	if (ctrTakenBlockedRobotTake==AG.aPlayers.ctrTakenAll && ctrDiscardBlockedRobotTake==AG.aPlayers.ctrDiscardedAll)//~vaq7I~
+            {                                                      //~vaq7I~
+            	int cp=AG.aPlayers.getCurrentPlayer();             //~vaq7I~
+	        	if (playerBlockedRobotTake==Players.nextPlayer(cp))	//blocked robot player//~vaq7I~
+                {                                                  //~vaq7I~
+					postDelayedAutoTake(PswServer,playerBlockedRobotTake/*nextPlayer*/,ctrTakenBlockedRobotTake);//~vaq7I~
+			        if(Dump.Y) Dump.println("UADelayed2.rescheduleRobotTake	rescheduled robot autotake timeout");//~vaq7I~
+                    rc=true;
+                }                                                  //~vaq7I~
+            }                                                      //~vaq7I~
+        }                                                          //~vaq7I~
+        if(Dump.Y) Dump.println("UADelayed2.rescheduleRobotTake	rc="+rc);//~vaq7I~
+        return rc;
+    }                                                              //~vaq7I~
 }//class                                                           //~v@@@R~

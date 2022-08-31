@@ -1,8 +1,9 @@
-//*CID://+1A25R~:                             update#=    4;       //~3325I~//~1A25I~
+//*CID://+van0R~:                             update#=    5;       //~3325I~//+van0R~
 //**************************************************************** //~3325I~//~1A25I~
+//2022/06/19 van0 Xlint:unchecked warning                          //+van0I~
 //1A25 2013/03/25 StringParser:consideration quotation             //~3325I~//~1A25I~
 //**************************************************************** //~3325I~//~1A25I~
-package com.btmtest.utils;                                         //+1A25R~
+package com.btmtest.utils;                                         //~1A25R~
 
 import java.util.Vector;
 
@@ -260,7 +261,9 @@ public class StringParser
 	@return a Vector with lines
 	*/
 	public Vector<String> wraplines (int columns)
-	{	Vector v=new Vector(10,10);
+//  {	Vector v=new Vector(10,10);                                //+van0R~
+    {                                                              //+van0I~
+     	Vector<String> v=new Vector<String>(10,10);                //+van0I~
 		String s;
 		while (!Error)
 		{	s=wrapline(columns);
@@ -296,7 +299,9 @@ public class StringParser
 	}
 
 	public Vector wrapwords (int columns)
-	{	Vector v=new Vector(10,10);
+//  {	Vector v=new Vector(10,10);                                //+van0R~
+    {                                                              //+van0I~
+     	Vector<String> v=new Vector<String>(10,10);                //+van0I~
 		String s;
 		while (!Error)
 		{	s=wraplineword(columns);

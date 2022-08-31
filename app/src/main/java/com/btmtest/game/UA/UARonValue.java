@@ -1,5 +1,7 @@
-//*CID://+vajaR~: update#= 964;                                    //~vajaR~
+//*CID://+vaq3R~: update#= 966;                                    //+vaq3R~
 //**********************************************************************//~v101I~
+//2022/08/13 vaq3 implements Yakuman 8continued                    //+vaq3I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2022/01/23 vaja Not Notify Chankan to human                      //~vajaI~
 //2021/11/10 vagf (Bug)Robot could not by chankan                  //~vagfI~
 //2021/11/06 vag0 (Bug)Kan call is not shanten up                  //~vag0I~
@@ -104,6 +106,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private int flagEmulationCall2nd;                              //~vafzI~
     private boolean swEvaluateRon;                                  //~vagfI~
     private int parmEnvironmentYaku;                               //~vagfI~
+    private boolean swCompReqDlg,sw8Cont;                          //+vaq3I~
     //*************************                                        //~v@@@I~
 	public UARonValue()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9C11R~//~0925R~//~va11R~
     {                                                              //~0914I~
@@ -209,6 +212,17 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         tdChkRankTaken=null;                                       //~va88I~
         return rc;                                                 //~va88I~
     }                                                              //~va88I~
+    //*************************************************************************//+vaq3I~
+    public RonResult getValueCompReqDlg(int Pplayer,boolean Psw8Cont)//+vaq3I~
+    {                                                              //+vaq3I~
+        if (Dump.Y) Dump.println("UARonValue.getValueCompReqDlg player="+Pplayer+",sw8Cont="+sw8Cont);//+vaq3I~
+        swCompReqDlg=true;                                         //+vaq3I~
+        sw8Cont=Psw8Cont;                                          //+vaq3I~
+    	RonResult r=getValue(Pplayer);                             //+vaq3I~
+        swCompReqDlg=false;                                        //+vaq3I~
+        if (Dump.Y) Dump.println("UARonValue.getValueCompReqDlg player="+Pplayer+",ronResult="+r);//+vaq3I~
+        return r;                                                  //+vaq3I~
+	}                                                              //+vaq3I~
     //*************************************************************************//~va11I~
     public RonResult getValue(int Pplayer)                         //~va11R~
 //  public RonResult getValue(CompReqDlg PcompReqDlg,int Pplayer)  //~va11R~
@@ -584,6 +598,11 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //                swRonChkDone=true;                               //~va11R~
 //            }                                                    //~va11R~
     	chkYakumanStandard();                                      //~va11I~
+        if (swCompReqDlg && sw8Cont)                               //+vaq3I~
+        {                                                          //+vaq3I~
+            if (Dump.Y) Dump.println("UARonValue.chkRonValueSub addYakuman 8cont by swCompReqDlg & sw8Cont");//+vaq3I~
+	    	addYakuman(RYAKU_8CONT,false/*double*/);               //+vaq3I~
+        }                                                          //+vaq3I~
         if (swYakuman)                                             //~va11I~
         {                                                          //~va11I~
 //            if (!swRonChkDone)   //ronchk not done               //~va11R~
@@ -759,7 +778,8 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //        return rank;                                             //~va11R~
 //    }                                                            //~va11R~
 	//*************************************************************************//~va11I~
-    private void addYakuman(int Pyaku,boolean PswDouble)          //~va11I~
+//  private void addYakuman(int Pyaku,boolean PswDouble)           //~vap3R~
+    public void addYakuman(int Pyaku,boolean PswDouble)            //~vap3I~
     {                                                              //~va11I~
         if (Dump.Y) Dump.println("UARonValue.addYakuman yaku="+Pyaku+",dowble="+PswDouble);//~va11I~
         UARDT.addYakuman(Pyaku,PswDouble);                         //~va11I~
@@ -1207,7 +1227,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 	//*************************************************************************//~va11I~
 	private void chkEnvironmentYaku()                              //~va11R~
     {                                                              //~va11I~
-	  	if (Dump.Y) Dump.println("UARonValue.chkEnvironmentYaku swReach="+swReach+",swEvaluateRon="+swEvaluateRon+",swRobot="+swRobot);//+vajaI~
+	  	if (Dump.Y) Dump.println("UARonValue.chkEnvironmentYaku swReach="+swReach+",swEvaluateRon="+swEvaluateRon+",swRobot="+swRobot);//~vajaI~
 	    swYakuOtherEnvironment=false;                              //~va11I~
 //  	AG.aUARon.chkEnvironmentYaku(swAllInHand);                 //~va11R~
       if (swReach)                                                 //~vagfI~

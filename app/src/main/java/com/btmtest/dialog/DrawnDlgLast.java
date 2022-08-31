@@ -1,6 +1,7 @@
-//*CID://+vaj7R~:                             update#= 1093;       //+vaj7R~
+//*CID://+vaprR~:                             update#= 1094;       //+vaprR~
 //*****************************************************************//~v101I~
-//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//+vaj7I~
+//2022/08/03 vapr DrawnDlgLast;reach dose not mean Tenpay if ChkTenpai is off.//+vaprI~
+//2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2021/08/18 vac8 always display point stick value on drawnDlglast(no reason to limit DrawnmanganAsRon)//~vac8I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
@@ -184,7 +185,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 	private UCheckBox cbSuspend;                                   //~0308I~
     private boolean swSuspend;                                     //~0308I~
 	public int widthPendingEswn,widthReacherEswn;                //~0327I~
-    private TextView tvFuritenReach;                               //+vaj7I~
+    private TextView tvFuritenReach;                               //~vaj7I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public DrawnDlgLast()                                           //~v@@@R~//~9220R~//~9221R~//~9302R~//~9303R~//~9304R~//~9307R~
     {                                                              //~v@@@R~
@@ -318,7 +319,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         	gameReach=r.bottom;                                    //~9513R~
             }                                                      //~9511I~
         }                                                          //~9506M~//~9511M~
-        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//+vaj7I~
+        tvFuritenReach  =(TextView)    UView.findViewById(PView,R.id.tvFuritenReach);//~vaj7I~
     }                                                              //~9413I~
     //******************************************                   //~0217I~
     private void hideResponseEswn(boolean PswHide)                 //~0217R~
@@ -705,7 +706,8 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
         {                                                          //~9709I~
 			if (RuleSetting.isPendingCont())	//                 //~9709I~
 //      		swContinue=swsPending[0];   //dealer pending           //~9424I~//~9504R~//~9506R~//~9709R~
-        		swContinue=swsPending[0]||swsReach[0];   //dealer reach//~9709I~
+//        		swContinue=swsPending[0]||swsReach[0];   //dealer reach//+vaprR~
+          		swContinue=swsPending[0];   //dealer pending       //+vaprI~
             else                                                   //~9709I~
         		swContinue=false;                                  //~9709I~
         }                                                          //~9709I~
@@ -1168,7 +1170,7 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
                 }                                                  //~9927I~
 		        if (Dump.Y) Dump.println("DrawnDlgLast.showReach widthTileImage="+widthTileImage);//~9927I~
             }                                                      //~9308I~
-        	CompleteDlg.chkFuritenReach(tvFuritenReach);           //+vaj7I~
+        	CompleteDlg.chkFuritenReach(tvFuritenReach);           //~vaj7I~
         }                                                          //~9308I~
         ctrReach=reachctr;                                         //~9309I~
     }                                                              //~9307I~
@@ -1235,11 +1237,13 @@ public class DrawnDlgLast extends DrawnReqDlgLast                 //~9303R~//~93
 //      	  if (AG.swTrainingMode)                               //~va66R~
               if (AG.aRoundStat.swThinkRobot && AG.aAccounts.isDummyByCurrentEswn(ii))//~va66I~
               {                                                    //~va66I~
-            	cbsPending[ii].setState(swsPending[ii]||swsReach[ii],false/*swFixed*/);//~va66I~
+//          	cbsPending[ii].setState(swsPending[ii]||swsReach[ii],false/*swFixed*/);//+vaprR~
+            	cbsPending[ii].setState(swsPending[ii],false/*swFixed*/);//+vaprI~
 		        cbsPending[ii].setListener(this,UCBP_PENDING);     //~va66I~
               }                                                    //~va66I~
               else                                                 //~va66I~
-            	cbsPending[ii].setState(swsPending[ii]||swsReach[ii],swFixed);//~9709I~
+//          	cbsPending[ii].setState(swsPending[ii]||swsReach[ii],swFixed);//+vaprR~
+            	cbsPending[ii].setState(swsPending[ii],swFixed);   //+vaprI~
         		if (Dump.Y) Dump.println("DrawnDlgLast.showPendingTile set swThinkRobot="+AG.aRoundStat.swThinkRobot+".swRequester="+swRequester+",swFixed="+swFixed+",cbsPending ii="+ii+",state="+(swsPending[ii]||swsReach[ii]));//~9709R~//~0217R~//~va66R~
             }                                                      //~9309I~
     }                                                              //~9307I~//~9309R~

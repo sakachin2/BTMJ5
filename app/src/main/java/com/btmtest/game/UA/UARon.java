@@ -1,5 +1,11 @@
-//*CID://+vakvR~: update#= 734;                                    //~vakvR~
+//*CID://+vaq3R~: update#= 762;                                    //~vaq3R~
 //**********************************************************************//~v101I~
+//2022/08/13 vaq3 implements Yakuman 8continued, drop option for child//~vaq3I~
+//2022/07/27 vapc no yakuman for openreach after reach             //~vapcI~
+//2022/07/24 vap5 OpenReach Robot option change; chkbox No(default)//~vap5I~
+//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap4I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
+//2022/07/23 vap2 Players.open() is not used                       //~vap2I~
 //2022/03/09 vakv (Bug)RinshanTaken was not evaluated for Robot    //~vakvI~
 //2022/02/19 vak7 drop option chk kataagari(temporally False always AND and option is chk furiten only)//~vak7I~
 //2022/02/16 vak5 with no chk kataagari,do not lit win button in notify mode for human//~vak5I~
@@ -64,6 +70,7 @@ import java.util.Arrays;
 
 import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 import static com.btmtest.dialog.CompReqDlg.*;
+import static com.btmtest.dialog.RuleSettingEnum.*;
 import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
@@ -102,6 +109,8 @@ public class UARon                                                 //~v@@@R~//~v
     private boolean swChkCompleteTake;                             //~va88I~
     private TileData tdNotifyTake;                                 //~va88I~
     private int constraintFix2;                                    //~va88I~
+    private boolean sw8ContReset,sw8ContNeedYaku;                  //~vaq3R~
+    private int type8Cont;                                         //~vaq3I~
 //*************************                                        //~v@@@I~
 	public UARon(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~v@@6R~
     {                                                              //~0914I~
@@ -135,6 +144,9 @@ public class UARon                                                 //~v@@@R~//~v
 //      swCheckMultiWait=RuleSettingOperation.isCheckMultiWait();  //~va96R~//~vak7R~
         constraintFix2=RuleSettingYaku.getYakuFix2Constraint();//~1117I~//~1118I~//~va88I~
         if (Dump.Y) Dump.println("UARon.init swCheckFix1="+swCheckFix1);//~va96I~//~vak7R~
+//      sw8ContNeedYaku=RuleSettingYaku.is8ContNeedYaku();         //~vaq3R~
+	    sw8ContReset=RuleSettingYaku.is8ContReset();               //~vaq3I~
+	    type8Cont=RuleSettingYaku.get8Continue();                  //~vaq3I~
     }                                                              //~v@@@I~
 //    //*************************************************************************//~v@@@I~//~v@@6R~
 //    public boolean complete(int Pplayer)                            //~v@@@I~//~v@@6R~
@@ -185,6 +197,10 @@ public class UARon                                                 //~v@@@R~//~v
             }                                                      //~va19I~
         	return false;                                          //~9C11R~
         }                                                          //~9C12I~
+        if (!chkOpenReachDiscardErr(Pplayer))                      //~vap3I~
+        {                                                          //~vap3I~
+        	return false;                                          //~vap3I~
+        }                                                          //~vap3I~
 //    if (AG.swPlayAloneNotify)                                    //~va70I~//~vaagR~
 //    {                                                            //~va70I~//~vaagR~
 //      if (Dump.Y) Dump.println("UARon.selectInfo playAloneNotify mode not cancelable, rc=true");//~va70I~//~vaagR~
@@ -354,7 +370,7 @@ public class UARon                                                 //~v@@@R~//~v
             	}                                                  //~va96I~
 //          }                                                      //~va96I~//~vak0R~
         }                                                          //~va11R~
-        if (Dump.Y) Dump.println("UARon.chkComplete rc="+rc);      //~va70I~
+        if (Dump.Y) Dump.println("UARon.chkComplete rc="+rc+",swChkCompleteTake="+swChkCompleteTake);      //~va70I~//~vaq3R~
 		return rc;                                          //~9C11I~
 	}                                                              //~9C11I~
     //*************************************************************************//~va88I~
@@ -475,6 +491,7 @@ public class UARon                                                 //~v@@@R~//~v
             AG.aPlayers.resetReachDone(Accounts.eswnToPlayer(eswnLooser));//~va6dI~
 //          Status.setRon(true,Accounts.playerToEswn(Pplayer),typeComplete,td.eswn/*looser*/);//~v@@6R~
             Complete.Status compStat=AG.aComplete.new Status(typeComplete,Accounts.playerToEswn(Pplayer),eswnLooser,td,tdCompKanTake);//~v@@6R~
+//  		setOpenReachDiscardErr(Pplayer/*Winner*/,compStat);    //~vap4R~
             Status.setCompleteStatus(compStat);                          //~v@@6I~
         }                                                          //~v@@6I~
 //      if (PswServer)                                             //~v@@6I~//~9B11R~
@@ -671,9 +688,9 @@ public class UARon                                                 //~v@@@R~//~v
     {                                                              //~0205I~
     	boolean rc=true;                                           //~0205I~
     //***********************                                      //~0205I~
-        if (Dump.Y) Dump.println("UARon.winAnyway Status.endgameType="+AG.aStatus.endGameType);//+vakvI~
-        if (Dump.Y) Dump.println("UARon.winAnyway Status.isIssuedRon()="+AG.aStatus.isIssuedRon());//+vakvI~
-        if (Dump.Y) Dump.println("UARon.winAnyway Complete.isTotalAgreed()="+AG.aComplete.isTotalAgreed());//+vakvI~
+        if (Dump.Y) Dump.println("UARon.winAnyway Status.endgameType="+AG.aStatus.endGameType);//~vakvI~
+        if (Dump.Y) Dump.println("UARon.winAnyway Status.isIssuedRon()="+AG.aStatus.isIssuedRon());//~vakvI~
+        if (Dump.Y) Dump.println("UARon.winAnyway Complete.isTotalAgreed()="+AG.aComplete.isTotalAgreed());//~vakvI~
 //  	boolean swChk= RuleSettingOperation.isCheckRonable();       //~0205I~//~va11R~//~va1aR~
 //      boolean swFix1= RuleSettingOperation.isYakuFix1();         //~va11R~//~vak0R~
 		if (Dump.Y) Dump.println("UARon.winAnyway");//~0205R~//~va11R~//~va1aR~//~vak0R~
@@ -771,8 +788,8 @@ public class UARon                                                 //~v@@@R~//~v
         	rc=true;                                               //~va11I~
         if (chk1stChildRon())       //renho                        //~va11I~
         	rc=true;                                               //~va11I~
-        if (chk8ContinuedRon())     //8renchan                     //~va11I~
-        	rc=true;                                               //~va11I~
+//      if (chk8ContinuedRon())     //8renchan  ,call from CompReqDlg after constraint OK confirmed                   //~va11I~//~vaq3R~
+//      	rc=true;                                               //~va11I~//~vaq3R~
         if (Dump.Y) Dump.println("UARon.chkTimingYakuman rc="+rc); //~va11R~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
@@ -831,12 +848,63 @@ public class UARon                                                 //~v@@@R~//~v
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
     //*************************************************************************//~va11I~
-    private boolean chk8ContinuedRon()                  //8renchan //~va11I~
+    //*from CompReqDlg                                             //~vaq3I~
+    //*************************************************************************//~vaq3I~
+    public boolean chk8ContinuedRon(RonResult PronResult,int PeswnComplete)                  //8renchan //~va11I~//~vaq3R~
     {                                                              //~va11I~
-    	boolean rc=false;                                          //~va11I~
-        //TODO set manually                                        //~va11I~
-        if (Dump.Y) Dump.println("UARon.8ContinuedRon rc="+rc);    //~va11R~
-        return rc;                                                 //~va11I~
+    	boolean swYakuman=false;                                         //~vaq3R~
+        int ctrCont=AG.aAccounts.getCtrContinueWin(PeswnComplete); //~vaq3R~
+		int ctrStick=AG.aStatus.gameCtrDup,ctrMin;                        //~vaq3I~
+        if (Dump.Y) Dump.println("UARon.chk8ContinuedRon type8Cont="+type8Cont+",ctrStick="+ctrStick+",eswnComplete="+PeswnComplete+",ronResult="+PronResult);//~vaq3R~
+        switch (type8Cont)                                         //~vaq3I~
+        {                                                          //~vaq3I~
+        case Y8C_NO:        //0                                    //~vaq3R~
+        	swYakuman=false;                                       //~vaq3I~
+        	break;                                                 //~vaq3I~
+        case Y8C_DEALER:  	//1:8cont as all dealer                //~vaq3R~
+        	if (PeswnComplete!=ESWN_E)                             //~vaq3I~
+            	break;                                             //~vaq3I~
+            ctrMin=Math.min(ctrCont,ctrStick);                  //~vaq3I~
+            if (sw8ContReset)                                       //~vaq3I~
+	        	swYakuman=((ctrMin+1) % 8)==0;                     //~vaq3R~
+            else                                                   //~vaq3I~
+	        	swYakuman=(ctrMin+1)>=8;                           //~vaq3R~
+        	break;                                                 //~vaq3I~
+        case Y8C_DEALER9:  	//9cont as all dealer                  //~vaq3I~
+        	if (PeswnComplete!=ESWN_E)                             //~vaq3I~
+            	break;                                             //~vaq3I~
+            ctrMin=Math.min(ctrCont,ctrStick);                  //~vaq3I~
+            if (ctrMin==0)                                         //+vaq3I~
+            	break;                                             //+vaq3I~
+            if (sw8ContReset)                                      //~vaq3I~
+	        	swYakuman=((ctrMin) % 8)==0;                       //~vaq3R~
+            else                                                   //~vaq3I~
+	        	swYakuman=(ctrMin)>=8;                             //~vaq3R~
+        	break;                                                 //~vaq3I~
+        case Y8C_ANYONE:  //2:continued win 8 times from allow from ron as child//~vaq3R~
+        	if (PeswnComplete!=ESWN_E)                             //~vaq3I~
+            	break;                                             //~vaq3I~
+            if (sw8ContReset)                                       //~vaq3I~
+	        	swYakuman=((ctrCont+1) % 8)==0;                    //~vaq3R~
+            else                                                   //~vaq3I~
+	        	swYakuman=(ctrCont+1)>=8;                          //~vaq3R~
+        	break;                                                 //~vaq3I~
+        case Y8C_STICK:       //3:parent ron at 8 stick            //~vaq3R~
+        	if (PeswnComplete!=ESWN_E)                             //~vaq3R~
+            	break;                                             //~vaq3I~
+//      case Y8C_STICK_ANYONE: //4:Parent/Child ron at 8 stick     //~vaq3R~
+        	if (ctrStick==0)                                       //~vaq3R~
+            	break;                                             //~vaq3I~
+            if (sw8ContReset)                                       //~vaq3I~
+        		swYakuman=(ctrStick % 8)==0;                       //~vaq3R~
+            else                                                   //~vaq3I~
+        		swYakuman=ctrStick>=8;                             //~vaq3R~
+        	break;                                                 //~vaq3I~
+        }                                                          //~vaq3I~
+//      if (swYakuman)                                             //~vaq3R~
+//          UARV.addTimingYakuman(RYAKU_8CONT,1/*yakumanRank*/,0/*amt*/);//~vaq3R~
+        if (Dump.Y) Dump.println("UARon.chk8ContinuedRon swYakuman="+swYakuman+",ctrStick="+ctrStick+",ctrCont="+ctrCont);//~vaq3R~
+        return swYakuman;                                                 //~va11I~//~vaq3R~
     }                                                              //~va11I~
     //*************************************************************************//~va11I~
 //  private void chkReach()  //reach, double-reach, open-reach and taken jasut after reach//~va11I~//~va49R~
@@ -847,8 +915,8 @@ public class UARon                                                 //~v@@@R~//~v
         if (PLS.getReachStatus(Pplayer)==REACH_DONE)               //~va49I~
         {                                                          //~va11I~
 //      	if (PLS.isOpen(PLAYER_YOU))                         //~va11R~//~va49R~
-        	if (PLS.isOpen(Pplayer))                               //~va49I~
-	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~va11I~
+//      	if (PLS.isOpen(Pplayer))                               //~vap2R~
+//          	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~vap2R~
         	int ctrTaken=PLS.ctrTakenAll;                          //~va11R~
         	int ctrDiscarded=PLS.ctrDiscardedAll;                  //~va11R~
 //          Point p=PLS.getCtrReachDone(PLAYER_YOU);               //~va11R~//~va49R~
@@ -864,7 +932,12 @@ public class UARon                                                 //~v@@@R~//~v
 	        	UARV.addOtherYaku(RYAKU_REACH,RANK_REACH);         //~va11I~
 //          if (PLS.isOpenReach(PLAYER_YOU))                       //~va29I~//~va49R~
             if (PLS.isOpenReach(Pplayer))                          //~va49I~
+            {                                                      //~vap3I~
+              if (swTake)                                          //~vap3I~
 	        	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~va29I~
+              else                                                 //~vap3I~
+	        	openReachDiscard(Pplayer);                         //~vap3I~
+            }                                                      //~vap3I~
     	  if (RuleSettingYaku.isReachOneShot())                    //~va11I~
             if (swTake)	//                                         //~va11I~
             {                                                      //~va11I~
@@ -932,4 +1005,111 @@ public class UARon                                                 //~v@@@R~//~v
         if (Dump.Y) Dump.println("UARon.chkCompleteMultiWaitHuman rc="+rc);//~va96I~//~va9aR~
 		return rc;                                                 //~va96R~
 	}                                                              //~va96I~
+	//*************************************************************************//~vap3I~
+	//*rc:false:err reject                                         //~vap3I~
+	//*************************************************************************//~vap3I~
+	private boolean chkOpenReachDiscardErr(int Pplayer/*Winner*/)  //~vap3I~
+    {                                                              //~vap3I~
+    	boolean rc=true;	//go to complete                       //~vap3I~
+        int completeType=PLS.getCompleteFlag(Pplayer);             //~vap3I~
+        boolean swTake=(completeType & (COMPLETE_TAKEN|COMPLETE_KAN_TAKEN))!=0;//~vap3I~
+        if (Dump.Y) Dump.println("UARon.chkOpenReachDiscardErr swTake="+swTake+",player="+Pplayer);//~vap3I~
+        if (!swTake)                                               //~vap3I~
+        {                                                          //~vap3I~
+	        int playerDiscard=PLS.getCurrentPlayer();              //~vap3I~
+            if (PLS.isOpenReach(Pplayer))                          //~vap3I~
+            {                                                      //~vap3I~
+		        if (AG.aAccounts.isRobotPlayer(playerDiscard))     //~vap3I~
+        		{                                                  //~vap3I~
+//          		int robotOption=RuleSettingYaku.getOpenReachDiscardRobotOption();//~vap5R~
+//      			if (robotOption==OPENREACH_ROBOT_SKIP)         //~vap5R~
+//                  {                                              //~vap5R~
+//                  	UserAction.showInfoAll(0,-1,R.string.Info_IgnoreRobotDiscardToOpenReach);//~vap5R~
+//                  	rc=false;	//ignore Robot discard for openreach//~vap5R~
+//                  }                                              //~vap5R~
+        			if (Dump.Y) Dump.println("UARon.chkOpenReachDiscardErr allow all discard to robot");//~vap5I~
+                }                                                  //~vap3I~
+                else 	//human discard                            //~vap3I~
+                {                                                  //~vap3I~
+//  		        boolean swYakuman=RuleSettingYaku.isYakumanOpenReachDiscard();	//false//~vap4R~
+//      			if (swYakuman)	//chombo and continue          //~vap4R~
+//*Discard was rejected if !swYakuman except having no tile except ron tile//~vap4I~
+                    	UserAction.showInfoAll(0,-1,R.string.Info_YakumanByHumanDiscardToOpenReach);//~vap3I~
+//                  else                                           //~vap4R~
+//                  {                                              //~vap4R~
+//                  	UserAction.showInfoAll(0,-1,R.string.Info_ChomboByHumanDiscardToOpenReach);//~vap4R~
+//                  	rc=false;	//ignore Robot discard for openreach//~vap3R~
+//                  }                                              //~vap4R~
+                }                                                  //~vap3I~
+            }                                                      //~vap3I~
+        }                                                          //~vap3I~
+        if (Dump.Y) Dump.println("UARon.chkOpenReachDiscardErr rc="+rc);//~vap3I~
+        return rc;                                                 //~vap3I~
+    }                                                              //~vap3I~
+//    //*************************************************************************//~vap4R~
+//    //*set Inavlid for human discard to openreach                //~vap4R~
+//    //*************************************************************************//~vap4R~
+//    private void setOpenReachDiscardErr(int Pplayer/*Winner*/,Complete.Status PcompStat)//~vap4R~
+//    {                                                            //~vap4R~
+//        if (Dump.Y) Dump.println("UARon.setOpenReachDiscardErr player="+Pplayer+",compStat="+PcompStat);//~vap4R~
+//        int completeType=PcompStat.completeType;                 //~vap4R~
+//        boolean swTake=PcompStat.swTake;                         //~vap4R~
+//        if (!swTake)                                             //~vap4R~
+//        {                                                        //~vap4R~
+//            if (PLS.isOpenReach(Pplayer))                        //~vap4R~
+//            {                                                    //~vap4R~
+//                int playerDiscard=PLS.getCurrentPlayer();        //~vap4R~
+//                if (!AG.aAccounts.isRobotPlayer(playerDiscard)) //Human//~vap4R~
+//                {                                                //~vap4R~
+//                    boolean swYakuman=RuleSettingYaku.isYakumanOpenReachDiscard();  //false//~vap4R~
+//                    if (!swYakuman) //chombo and continue        //~vap4R~
+//                    {                                            //~vap4R~
+//                        PcompStat.setErrLooser(true);   //chombo //~vap4R~
+//                    }                                            //~vap4R~
+//                }                                                //~vap4R~
+//            }                                                    //~vap4R~
+//        }                                                        //~vap4R~
+//        if (Dump.Y) Dump.println("UARon.setOpenReachDiscardErr exit");//~vap4R~
+//    }                                                            //~vap4R~
+	//*************************************************************************//~vap3I~
+	//*under OpenReach and swTake=false                            //~vap3I~
+	//*************************************************************************//~vap3I~
+	private boolean openReachDiscard(int Pplayer/*Reacher*/)       //~vap3I~
+    {                                                              //~vap3I~
+    	boolean rc=false;	//ignore ron                           //~vap3I~
+        int playerDiscard=PLS.getCurrentPlayer();                      //~vap3I~
+        if (Dump.Y) Dump.println("UARon.openReachDiscard Pplayer="+Pplayer+",playerDiscrd="+playerDiscard);//~vap3I~
+        if (AG.aRoundStat.isReachBeforeOpenReach(Pplayer,playerDiscard))	//no yakuman if reach is before other openreach//~vapcR~
+        {                                                          //~vapcR~
+	        if (Dump.Y) Dump.println("UARon.openReachDiscard usual pay by reach timing playerOpenReach="+Pplayer+",playerDiscard="+playerDiscard);//~vapcR~
+        	rc=true;                                               //~vapcR~
+        }                                                          //~vapcR~
+        else                                                       //~vap4I~
+        if (AG.aAccounts.isRobotPlayer(playerDiscard))             //~vap3I~
+        {                                                          //~vap3I~
+//          int robotOption=RuleSettingYaku.getOpenReachDiscardRobotOption();//~vap5R~
+//      	if (robotOption==OPENREACH_ROBOT_PAY_NORMAL)           //~vap5R~
+//          {                                                      //~vap5R~
+//          	UARV.addOtherYaku(RYAKU_REACH_OPEN,RANK_REACH_OPEN);//~vap5R~
+	        	UARV.addYakuman(RYAKU_OPENREACH_DISCARD,false/*swDouble*/);//~vap5I~
+                rc=true;                                           //~vap3I~
+//          }                                                      //~vap5R~
+        }                                                          //~vap3I~
+        else	//human discard                                    //~vap3I~
+        {                                                          //~vap3I~
+//          boolean swYakuman=RuleSettingYaku.isYakumanOpenReachDiscard();//~vap4R~
+//      	if (swYakuman)                                         //~vap4R~
+//          {                                                      //~vap4R~
+	        	UARV.addYakuman(RYAKU_OPENREACH_DISCARD,false/*swDouble*/);//~vap3I~
+            	rc=true;	//end of round                         //~vap3R~
+//          }                                                      //~vap4R~
+//          else   //continue as chombo                            //~vap4R~
+//          {                                                      //~vap4R~
+//          	UARV.addYakuman(RYAKU_OPENREACH_DISCARD,false/*swDouble*/);//~vap4R~
+//          	rc=true;	//once end of round, later by completeDlg continue after set chombo//~vap4R~
+//          }                                                      //~vap4R~
+        }                                                          //~vap3I~
+        if (Dump.Y) Dump.println("UARon.openReachDiscard rc="+rc); //~vap3I~
+        return rc;                                                 //~vap3I~
+    }                                                              //~vap3I~
 }//class                                                           //~v@@@R~

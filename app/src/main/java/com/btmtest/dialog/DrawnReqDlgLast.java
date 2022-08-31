@@ -1,6 +1,12 @@
-//*CID://+vac5R~:                             update#=  718;       //+vac5R~
+//*CID://+vaq2R~:                             update#=  741;       //+vaq2R~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2022/08/11 vaq2 (Bug of vap1)currentEswn was not yet set at initLayoutAdditional//+vaq2I~
+//2022/08/06 vapx add Psuedo-Tennpai:No option                     //~vapxI~
+//2022/08/03 vapp Psuedo tenpai; drop allNo(chk tenpai required for repeat/next round)//~vapmI~
+//2022/08/02 vapm itsHand contension of main Thraed(DrawnReqDlgLast) and msgHandler Thread(Tand and discard by Robot)//~vapmI~
+//2022/07/30 vapk implements keishiki tenpai                       //~vapkI~
+//2022/07/18 vap1 Chk NagasiMangan on drawreqdlgLast               //~vap1I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -12,6 +18,7 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.btmtest.R;
 import com.btmtest.TestOption;
@@ -19,6 +26,7 @@ import com.btmtest.game.Accounts;
 import com.btmtest.game.GConst;
 import com.btmtest.game.RA.RAUtils;
 import com.btmtest.game.RA.RoundStat;
+import com.btmtest.game.RA.Shanten;
 import com.btmtest.game.Status;
 import com.btmtest.game.UA.UAEndGame;
 import com.btmtest.game.gv.GameViewHandler;
@@ -33,12 +41,13 @@ import static com.btmtest.StaticVars.AG;                           //~9303I~
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.RA.RAConst.*;
+import static com.btmtest.game.RA.RAReach.*;
 import static com.btmtest.game.UA.UAEndGame.*;
 
 public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~//~9220R~//~9302R~//~9307R~
 {                                                                  //~2C29R~
     protected static final int LAYOUTID=R.layout.drawnreqdlglast;      //~9220I~//~9302R~//~9303R~//~9413R~
-    protected static final int LAYOUTID_SMALLFONT=R.layout.drawnreqdlglast_theme;//+vac5I~
+    protected static final int LAYOUTID_SMALLFONT=R.layout.drawnreqdlglast_theme;//~vac5I~
     protected static final int TITLEID=R.string.Title_DrawnReqDlgLast;//~9220I~//~9302R~//~9303R~//~9307R~
     protected static final String HELPFILE="DrawnReqDlgLast";           //~9719R~//~9C13R~
                                                                    //~9214I~
@@ -72,6 +81,8 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
     private boolean swDrawnManganAvailable,swDrawnMangan;//,swDrawnManganPending;//swDrawnManganRon;       //~9413I~//~9422R~//~9505R~
 //  private boolean swDrawnManganAsRon;                            //~9505I~//~9506R~
     protected Button btnShowRule;                                  //~9417I~
+    private int errPsuedoPending;                                  //~vapkI~
+    private TextView tvReasonNoten;                                //~vapkI~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public DrawnReqDlgLast()                                           //~v@@@R~//~9220R~//~9221R~//~9302R~//~9307R~
     {                                                              //~v@@@R~
@@ -89,8 +100,8 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
             return null;                                           //~9304I~
         }                                                          //~9308I~
     	DrawnReqDlgLast dlg=new DrawnReqDlgLast();                                     //~v@@@I~//~9220R~//~9221R~//~9302R~//~9307R~
-//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//+vac5R~
-      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT  : LAYOUTID),//+vac5I~
+//    	UFDlg.setBundle(dlg,TITLEID,LAYOUTID,                      //~9227R~//~vac5R~
+      	UFDlg.setBundle(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT  : LAYOUTID),//~vac5I~
     			UFDlg.FLAG_OKBTN|UFDlg.FLAG_CLOSEBTN|UFDlg.FLAG_HELPBTN|UFDlg.FLAG_RULEBTN,//~v@@@I~//~9220R~//~9708R~
 				TITLEID,HELPFILE);         //~v@@@I~               //~9220R~
         AG.aUAEndGame.reqDlgLast=dlg;                                          //~9304I~//~9308M~
@@ -132,8 +143,9 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
                                                                    //~9417I~
         btnShowRule     =              UButton.bind(PView,R.id.ShowRule,this);//~9417I~
                                                                    //~9417I~
+        setupValue();                                              //+vaq2I~
         initLayoutAdditional(PView);                               //~9413I~
-        setupValue();                                              //~9212I~//~9219M~//~9302R~//~9413R~
+//      setupValue();                                              //~9212I~//~9219M~//~9302R~//~9413R~//+vaq2R~
         setButton();                                               //~9221I~//~9302R~
         setRadioGroup(PView);                                      //~9302I~//~9307R~//~9308R~
         setTitle();                                                //~v@@@I~//~9220R~//~9302R~
@@ -163,6 +175,7 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
         {                                                          //~9307I~
       	currentEswn=Accounts.getCurrentEswn();                         //~9302I~//~9303R~
         }                                                          //~9307I~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.currentEswn="+currentEswn);//+vaq2I~
     }                                                              //~9302I~
     //******************************************                   //~9413I~
     protected void initLayoutAdditional(View PView)                //~9413I~
@@ -171,6 +184,7 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
 //      UCheckBox cbDrawnManganYN       =new UCheckBox(PView,R.id.cbDrawnManganYN);//~9413M~//~9422R~
 //      UCheckBox cbDrawnManganSameAsRon=new UCheckBox(PView,R.id.cbDrawnManganSameAsRon);//~9413M~//~9422R~
 //      TextView tvDrawnManganRank     =(TextView)UView.findViewById(PView,R.id.tvDrawnManganRank);//~9413M~//~9422R~
+        tvReasonNoten  =(TextView)UView.findViewById(PView,R.id.tvReasonNoten);//~vapkR~
                                                                    //~9413M~
 //      cbDrawnManganYN.setState(swDrawnManganAvailable,true/*fixed*/);//~9413M~//~9422R~//~9505R~
 //      cbDrawnManganSameAsRon.setState(swDrawnManganRon,true/*fixed*/);//~9413M~//~9422R~
@@ -198,6 +212,10 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
 //      	rbDrawnManganPend.setEnabled(false);                   //~9413M~//~9422R~
         	cbDrawnMangan.setEnabled(false);                       //~9422I~
         }                                                          //~9413M~
+        else                                                       //~vap1I~
+        {                                                          //~vap1I~
+        	cbDrawnMangan.setState(isDrawnMangan(currentEswn));    //~vap1I~
+        }                                                          //~vap1I~
         RuleSettingYaku.setKeiten(PView,true/*swFixed*/);          //~va6bR~
     }                                                              //~9413I~
     //******************************************                   //~v@@@I~//~9220R~
@@ -225,8 +243,10 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
 //      rgDrawnType  = new URadioGroup(PView,R.id.rgDrawnType,0);   //~9303R~//~9422R~
         rgDrawnType  = new URadioGroup(PView,R.id.rgDrawnType,0,rbIDs);//~9422I~
         int pending=AG.aPlayers.getPosReach(PLAYER_YOU)<0 ? 0/*no pending*/ : 1;//~0329I~
-        if (pending==0) //not reach issued                         //~va66I~
-            pending=isTenpai(currentEswn) ? 1 : 0;                 //~va66I~
+//      if (pending==0) //not reach issued                         //~vapkR~
+//          pending=isTenpai(currentEswn) ? 1 : 0;                 //~vapkR~
+            pending=isTenpai(currentEswn,pending) ? 1 : 0;         //~vapkI~
+        showPsuedoPending(errPsuedoPending);                       //~vapkM~
         rgDrawnType.setCheckedID(pending,false/*swFixed*/);                          //~9303I~//~9422R~//~0329R~
     }                                                              //~9302I~
     //*******************************************************      //~9303I~
@@ -330,14 +350,105 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
     //*******************************************************      //~9304I~//~9307R~//~va66R~
     //*set tenpai without considering keiten,2han constriant       //~va66I~
     //*******************************************************      //~va66I~
-    private boolean isTenpai(int Peswn)                            //~va66I~
+//  private boolean isTenpai(int Peswn)                            //~vapkR~
+    private boolean isTenpai(int Peswn,int Ppending/*1:reach issued*/)//~vapkI~
     {                                                              //~va66I~
-        if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn);//~va66I~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn+",reach issued="+Ppending);//~vapkR~
+    	errPsuedoPending=0;                                        //~vapkI~
+//        if (RuleSettingYaku.isPendingRankNo())                   //~vapmR~
+//        {                                                        //~vapmR~
+//            if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn+",rc=false by allNo option");//~vapmR~
+//            errPsuedoPending=ERR_PSUEDO_PENDING_NO_OPTION;       //~vapmR~
+//            return false;   //no keishiki tenpai allowed         //~vapmR~
+//        }                                                        //~vapmR~
         int[] itsHand=new int[CTR_TILETYPE];            //for Shanten calc//~va66R~
         int ctrHand=RAUtils.setItsHand(PLAYER_YOU,itsHand);        //~va66R~
-        int shanten=AG.aShanten.getShantenMin(itsHand,ctrHand); //~va66R~
-        boolean rc=shanten==0;                                     //~va66R~
+//      int shanten=AG.aShanten.getShantenMin(itsHand,ctrHand);    //~vapmR~
+        int shanten= Shanten.newInstanceMainThread().getShantenMin(itsHand,ctrHand);//~vapmI~
+//      boolean rc=shanten==0;                                     //~vapkR~
+        if (shanten!=0)                                            //~vapkI~
+        {                                                          //~vapkI~
+        	if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn+",rc=false by shanten=0");//~vapkI~
+    		errPsuedoPending=ERR_PSUEDO_PENDING_NOT_SHANTEN0;      //~vapkI~
+        	return false;                                          //~vapkI~
+        }                                                          //~vapkI~
+        boolean rc=chkPsuedoTenpai(PLAYER_YOU,Peswn,Ppending==1,itsHand,ctrHand);//~vapkR~
 	    if (Dump.Y) Dump.println("DrawnReqDlgLast.isTenpai eswn="+Peswn+",return rc="+rc+",shanten="+shanten);//~va66R~
         return rc;                                                 //~va66R~
     }                                                              //~va66I~
+    //*******************************************************      //~vap1I~
+    //*requested only PLAYER_YOU                                   //~vap1R~
+    //*chk DrawnMangan,not yet called once,disscard is all 1,9,ji  //~vap1I~
+    //*call myself is allowed                                      //~vap1I~
+    //*******************************************************      //~vap1I~
+    private boolean isDrawnMangan(int Peswn/*PLAYER_YOU*/)         //~vap1R~
+    {                                                              //~vap1I~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.isDrawnMangan eswn="+Peswn);//~vap1I~
+        boolean rc=false;                                          //~vap1I~
+        if (AG.aRoundStat.getCalledStatus(Peswn)==0)               //~vap1I~
+	        rc=AG.aRoundStat.chkNagashiManganDiscard(Peswn);       //~vap1I~
+	    if (Dump.Y) Dump.println("DrawnReqDlgLast.isDrawnMangan eswn="+Peswn+",rc="+rc);//~vap1I~
+        return rc;                                                 //~vap1I~
+    }                                                              //~vap1I~
+    //*******************************************************      //~vapkI~
+    //*under shanten=0                                             //~vapmR~
+    //*******************************************************      //~vapkI~
+    private boolean chkPsuedoTenpai(int Pplayer,int Peswn,boolean PswReach,int[] PitsHand,int PctrHand)//~vapkR~
+    {                                                              //~vapkI~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.chkPsuedoTenpai player="+Pplayer+",eswn="+Peswn+",swReach="+PswReach+",itsHand="+Utils.toString(PitsHand,9));//~vapkR~
+        boolean rc=AG.aRAReach.chkPsuedoTenpai(Pplayer,Peswn,PswReach,PitsHand,PctrHand);//~vapkR~
+    	errPsuedoPending=AG.aRAReach.errPsuedoPending;              //~vapkI~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.chkPsuedoTenpai eswn="+Peswn+",rc="+rc);//~vapkR~
+        return rc;
+    }                                                              //~vapkI~
+    //*******************************************************      //~vapkI~
+    private void showPsuedoPending(int PerrPsuedoPending)          //~vapkI~
+    {                                                              //~vapkI~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.showPsuedoPending err="+PerrPsuedoPending);//~vapkI~
+    	int msgid=0;                                               //~vapkI~
+    	switch(PerrPsuedoPending)                                  //~vapkI~
+        {                                                          //~vapkI~
+   		case ERR_PSUEDO_PENDING_NOT_SHANTEN0:	//=1;              //~vapkI~
+        	msgid=R.string.Err_PsuedoPending_Not_Shanten0;         //~vapkI~
+        	break;                                                 //~vapkI~
+    	case ERR_PSUEDO_PENDING_EMPTY:			//=2;              //~vapkI~
+        	msgid=R.string.Err_PsuedoPending_Empty;                //~vapkI~
+        	break;                                                 //~vapkI~
+    	case ERR_PSUEDO_PENDING_FURITEN:		//=3;              //~vapkI~
+        	msgid=R.string.Err_PsuedoPending_Furiten;              //~vapkI~
+        	break;                                                 //~vapkI~
+    	case ERR_PSUEDO_PENDING_FURITEN_REACH:	//=4;              //~vapkI~
+        	msgid=R.string.Err_PsuedoPending_Furiten_Reach;        //~vapkI~
+        	break;                                                 //~vapkI~
+    	case ERR_PSUEDO_PENDING_FIX1:			//=5;              //~vapkI~
+        	msgid=R.string.Err_PsuedoPending_Fix1;                 //~vapkI~
+        	break;                                                 //~vapkI~
+    	case ERR_PSUEDO_PENDING_FIX2:			//=6;              //~vapkI~
+        	msgid=R.string.Err_PsuedoPending_Fix2;                 //~vapkI~
+        	break;                                                 //~vapkI~
+//  	case ERR_PSUEDO_PENDING_USER:			//=6;              //~vapkI~
+//      	msgid=R.string.Err_PsuedoPending_User;                 //~vapkI~
+//      	break;                                                 //~vapkI~
+    	case ERR_PSUEDO_PENDING_UNKNOWN:		                   //~vapmI~
+        	msgid=R.string.Err_PsuedoPending_Unknown;              //~vapmI~
+        	break;                                                 //~vapmI~
+    	case ERR_PSUEDO_PENDING_MULTIPLE:   	//=7;              //~vapmI~
+        	msgid=R.string.Err_PsuedoPending_Multiple;             //~vapmI~
+        	break;                                                 //~vapmI~
+    	case ERR_PSUEDO_PENDING_MULTIPLE_FIX2: 	//=10;             //~vapxI~
+        	msgid=R.string.Err_PsuedoPending_Multiple_Fix2;        //~vapxI~
+        	break;                                                 //~vapxI~
+    	case ERR_PSUEDO_PENDING_FIX:   	//=8;                      //~vapmI~
+        	msgid=R.string.Err_PsuedoPending_Fix;                  //~vapmI~
+        	break;                                                 //~vapmI~
+//    	case ERR_PSUEDO_PENDING_NO_OPTION:		//=9;              //~vapkI~
+//        	msgid=R.string.Err_PsuedoPending_No_Option;            //~vapkI~
+//        	break;                                                 //~vapkI~
+        default:                                                   //~vapmI~
+        	msgid=R.string.Err_PsuedoPending_Tenpai;               //~vapmI~
+        }                                                          //~vapkI~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.showPsuedoPending msgid="+Integer.toHexString(msgid)+",tvReasonNoten="+tvReasonNoten);//~vapkI~
+        if (msgid!=0)                                              //~vapkI~
+        	tvReasonNoten.setText(Utils.getStr(msgid));             //~vapkI~
+    }                                                              //~vapkI~
 }//class                                                           //~v@@@R~

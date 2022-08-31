@@ -90,16 +90,17 @@ public class ITUAFixChk                                          //~0B02R~//~160
 //      UARVS.ronTestValue(0);                     //~1408I~       //~1607R~//~2220R~//~2221R~
 //      UARVS.ronTestValue(101);     //3shiki                      //~1607R~//~1608R~//~1609R~//~1610R~//~1611R~//~2221R~
 //      UARVS.ronTestValue(10901);   //3shiki                      //~2220R~//~2221R~//~2223R~
+//      UARVS.ronTestValue(10950);   //sameseq 1/2 peiko           //~2807R~
 //      UARVS.ronTestValue(201);     //ittsu                       //~1607R~//~1611R~//~2219R~//~2220R~
 //      UARVS.ronTestValue(20231);     //ittsu                     //~2219R~//~2220R~
 //      UARVS.ronTestValue(2023);     //ittsu                      //~2220R~
-        UARVS.ronTestValue(209401);   //ittsu                      //~2220R~//~2221R~//~2223R~//+2225R~
+//      UARVS.ronTestValue(209401);   //ittsu                      //~2220R~//~2221R~//~2223R~//~2225R~//~2807R~
 //      UARVS.ronTestValue(301);     //3tonko                      //~1607R~//~1611R~//~2222R~//~2223R~
-//      UARVS.ronTestValue(320);     //3anko,chanta                //~2222I~//~2223R~
+//      UARVS.ronTestValue(320);     //3anko,chanta                //~2222I~//~2223R~//~2807R~
 //      UARVS.ronTestValue(3401);    //tanyao                      //~2223R~
 //      UARVS.ronTestValue(401);     //3kan                        //~1607R~//~1609R~//~2222R~
-//      UARVS.ronTestValue(501);     //3dragonSmall                //~1607I~//~1608R~//~1611R~//~2222R~
-//      UARVS.ronTestValue(601);     //honor tile                  //~1610R~//~1611R~//~2219R~//~2221R~//~2222R~//~2223R~//+2225R~
+        UARVS.ronTestValue(501);     //3dragonSmall                //~1607I~//~1608R~//~1611R~//~2222R~//~2807R~//~2808R~//~2809R~//+2810R~
+//      UARVS.ronTestValue(601);     //honor tile                  //~1610R~//~1611R~//~2219R~//~2221R~//~2222R~//~2223R~//~2225R~//~2808R~//~2809R~//+2810R~
     }                                                              //~0B01I~
     private void setUpEnv()                                             //~0B01I~
     {                                                              //~0B01I~

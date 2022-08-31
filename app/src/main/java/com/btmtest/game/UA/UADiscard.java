@@ -1,5 +1,7 @@
-//*CID://+vakmR~: update#= 662;                                    //~vakmR~
+//*CID://+vapfR~: update#= 673;                                    //+vapfR~
 //**********************************************************************//~v101I~
+//2022/07/28 vapf chankan warning by openreach option(no implementation for ankan-chankan for kokusi which may not issue openreach)//+vapfI~
+//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vakmI~
 //2022/03/01 vakm auto popup darwnDlgHW for 4 wind,4 kan, 4 reach  //~vakmI~
 //2022/01/20 vaj7 display furiten err after reach on complte/drawnhw/drawnlast dialog//~vaj7I~
 //2021/10/26 vaf7 (Bug)kuikae chk; inhibit other size only when ryanmen chii//~vaf7I~
@@ -26,6 +28,7 @@ import com.btmtest.dialog.DrawnReqDlgHW;
 import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.dialog.RuleSettingOperation;
+import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.GC;
@@ -73,6 +76,8 @@ public class UADiscard                                             //~v@@@R~
     private boolean sw4R;                                          //~vakmI~
     public boolean sw4RCanceled;                                   //~vakmI~
 //  private TileData tdPlayAlone;                                  //~va70R~
+    private boolean swOpenReachYakuman;                            //~vap4I~
+    private boolean swOpenReachForKan;                             //+vapfI~
 //*************************                                        //~v@@@I~
 	public UADiscard(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~
     {                                                              //~0914I~
@@ -100,6 +105,7 @@ public class UADiscard                                             //~v@@@R~
         if (AG.swTrainingMode)                                     //~va66I~
 	    	swManualRobot=RuleSettingOperation.isAllowRobotAllButton();//~va66R~
     	sw4R=RuleSetting.isDrawnHW4R();                            //~vakmI~
+	    swOpenReachYakuman=RuleSettingYaku.isYakumanOpenReachDiscard();//~vap4I~
         if (Dump.Y) Dump.println("UADiscard init sw4R="+sw4R);//~v@@@R~       //~v@@6R~//~vakmR~
     }                                                              //~v@@@I~
 	//*************************************************************************//~v@@@I~
@@ -170,6 +176,8 @@ public class UADiscard                                             //~v@@@R~
 			return false;                                          //~va27I~
     	if (isSameMeld(td))                                        //~va15I~
         	return false;                                          //~va15I~
+    	if (isOpenReachWinningTile(td)==1)	//select other to avoid discard to OpenReach//~vap4R~
+        	return false;                                          //~vakmI~
         infoSelectedTD=td;                                         //~v@@@I~
 //      UA.msgDataToServer=UserAction.makeMsgDataToServer(Pplayer,td);//~v@@@R~
 		if (!PswServer)                                            //~v@@@I~
@@ -477,7 +485,7 @@ public class UADiscard                                             //~v@@@R~
             }                                                      //~va66I~
 //          return;                                                //~va66R~//~va77R~
         }                                                          //~va66R~
-        chk4Reach(PswServer,Pplayer,false/*swRobot*/);	//drawn by 4reach//+vakmR~
+        chk4Reach(PswServer,Pplayer,false/*swRobot*/);	//drawn by 4reach//~vakmR~
         UA.UADL.postDelayedAutoTake(PswServer,Pplayer,PLS.ctrTakenAll);//~v@@6R~
     }                                                              //~v@@6I~
 	//*************************************************************************//~v@@6I~
@@ -757,4 +765,68 @@ public class UADiscard                                             //~v@@@R~
         if (Dump.Y) Dump.println("UADiscard.chk4Reach rc="+rc+",nextPlayer="+PnextPlayer+",swRobot="+PswRobot+",ctrReach="+ctrReach);//~vakmR~
         return rc;
     }                                                              //~vakmI~
+    //*************************************************************************//~vakmI~
+    //*chk winning tile to openreach and return false, if no tile remains return true//~vakmI~
+    //return 0:Ptd is discardable, -1:no discardable tile remains, 1:select other//~vap4I~
+    //*************************************************************************//~vakmI~
+    private int isOpenReachWinningTile(TileData PtdDiscard)        //~vap4R~
+    {                                                              //~vakmI~
+        if (Dump.Y) Dump.println("UADiscard.isOpenReachWinningTile swOpenReachYakuman="+swOpenReachYakuman+",tdDiscard="+PtdDiscard);//~vap4M~
+	    if (swOpenReachYakuman)                                    //~vap4I~
+        	return 0;                //pay yakuman                 //~vap4I~
+        int rc;                                                    //~vap4I~
+        boolean swErr=false;	//pay Yakuman                      //~vap4I~
+        boolean swSelectOther=false;	                           //~vap4I~
+        for (int player=0;player<PLAYERS;player++)                 //~vap4I~
+        {                                                          //~vap4I~
+            if (!PLS.isOpenReach(player))                          //~vap4I~
+            	continue;                                         //~vap4I~
+			int eswnReach=Accounts.playerToEswn(player);               //~vap4I~
+			int eswnDiscard=Accounts.playerToEswn(PLAYER_YOU);         //~vap4I~
+            if (eswnDiscard==eswnReach)                            //~vap4I~
+            	continue;                                          //~vap4I~
+            int ctrDiscardable=AG.aRARon.chkRonableOpenReach(eswnReach,eswnDiscard,PtdDiscard);//~vap4I~
+            switch(ctrDiscardable)                                 //~vap4I~
+            {                                                      //~vap4I~
+            case -1:                                               //~vap4I~
+            	swErr=true;                                        //~vap4I~
+            	break;	                                           //~vap4I~
+            case  0:                                               //~vap4I~
+            	continue;                                          //~vap4I~
+            default:  //Ptd is not discardable,select other        //~vap4I~
+		        swSelectOther=true;                                //~vap4I~
+            }                                                      //~vap4I~
+        }                                                          //~vap4I~
+        if (swErr)                                                 //~vap4I~
+        	rc=-1;                                                 //~vap4I~
+        else                                                       //~vap4I~
+		if (swSelectOther)                                         //~vap4I~
+        {                                                          //~vap4I~
+	      if (!swOpenReachForKan)                                  //+vapfI~
+            GMsg.drawMsgbar(R.string.Warning_HumanDiscardToOpenReach_SelectOther);//~vap4I~
+        	rc=1;                                                  //~vap4I~
+        }                                                          //~vap4I~
+        else                                                       //~vap4I~
+        	rc=0;                                                  //~vap4I~
+        if (Dump.Y) Dump.println("UADiscard.isOpenReachWinningTile rc="+rc);//~vap4R~
+        return rc;
+    }                                                              //~vakmI~
+    //*************************************************************************//+vapfI~
+    //return true:skip kan                                         //+vapfI~
+    //*************************************************************************//+vapfI~
+    public boolean isOpenReachWinningTileKan(TileData PtdKan)      //+vapfI~
+    {                                                              //+vapfI~
+    	boolean rc=false;                                          //+vapfI~
+        if (Dump.Y) Dump.println("UADiscard.isOpenReachWinningTileKan swOpenReachYakuman="+swOpenReachYakuman+",tdKan="+PtdKan);//+vapfI~
+        swOpenReachForKan=true;                                    //+vapfI~
+    	int rcSelect=isOpenReachWinningTile(PtdKan);               //+vapfI~
+        swOpenReachForKan=false;                                   //+vapfI~
+        if (rcSelect!=0)		//1:select other, -1:all winning tile:stop kan to avoid han up//+vapfI~
+        {                                                          //+vapfI~
+            GMsg.drawMsgbar(R.string.Warning_HumanDiscardToOpenReach_SelectOther_Kan);//+vapfI~
+            rc=true;                                               //+vapfI~
+        }                                                          //+vapfI~
+        if (Dump.Y) Dump.println("UADiscard.isOpenReachWinningTileKan rc="+rc);//+vapfI~
+        return rc;                                                 //+vapfI~
+    }                                                              //+vapfI~
 }//class                                                           //~v@@@R~

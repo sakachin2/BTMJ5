@@ -1,6 +1,7 @@
-//*CID://+vampR~: update#= 615;                                    //~vampR~
+//*CID://+vapdR~: update#= 627;                                    //~vapdR~
 //**********************************************************************//~v101I~
-//2022/04/12 vamp Animation. for Riichi                            //+vampR~
+//2022/07/28 vapd change color of openreach tile                   //~vapdI~
+//2022/04/12 vamp Animation. for Riichi                            //~vampR~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2022/04/05 vamg Animation. at Win call                           //~vamgI~
 //2021/12/24 vaif protect dup touch on position acception          //~vaifI~
@@ -52,6 +53,8 @@ public class River                                                 //~v@@@R~
     private static final int COLOR_DISCARDED          =Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~v@@@I~
 //  private static final int COLOR_ERASE_FRAME        =Color.argb(0xff,0xff,0xff,0xff);   //white//~v@@@R~
 //  private static final int COMPLETE_COLOR           =Color.argb(0xff,0xff,0x66,0x00);   //Ron's orange//~v@@@I~
+    private static final int COLOR_REACH              =Color.argb(0xff,0x72,0xff,0xff);//light blue//~vapdR~
+    private static final int COLOR_OPENREACH          =Color.argb(0xff,0xf6,0x37,0xec);//pink//~vapdI~
     private static final int COLOR_INNER_FRAME        =Color.argb(0xff,0x00,0x00,0x00);   //black//~v@@@R~
     private static final int RIVER_MAXTILE=24;                     //~0324I~
                                                                    //~v@@@I~
@@ -86,6 +89,7 @@ public class River                                                 //~v@@@R~
     public int playerDiscarded;                                    //~vamhR~
     public TileData tdCalledOnRiver;                               //~vamhR~
     public Bitmap bmCalledOnRiver;                                 //~vamhR~
+    private int  typeReach;                                        //~vapdR~
 //*************************                                        //~v@@@I~
 	public River()  //for IT extends                               //~va60I~
     {                                                              //~va60I~
@@ -462,6 +466,7 @@ public class River                                                 //~v@@@R~
             	if ((td.flag & TDF_TAKEN_RIVER)!=0)                //~v@@@R~
                 {                                                  //~v@@@I~
     	        	Graphics.drawRect(rect,COLOR_FG_DISABLE);      //~v@@@I~
+				    drawOpenReach(rectDiscarded);                    //+vapdI~
 					rectDiscarded=null ;                               //~v@@@I~
                 }                                                  //~v@@@I~
                 if (swComplete)                                    //~v@@@I~
@@ -497,6 +502,7 @@ public class River                                                 //~v@@@R~
 	public void drawDiscarded(int Pplayer,TileData Ptd)            //~v@@@R~
     {                                                              //~v@@@I~
 	    if (Dump.Y) Dump.println("River.drawDiscarded tile parm player="+Pplayer+",swComplete="+swComplete);//~v@@@R~
+        typeReach=-1;                                              //~vapdR~
 //      TileData td=players.tileLastDiscarded;                     //~v@@@I~
         TileData td=Ptd;                                           //~v@@@I~
         if (td==null)                                              //~v@@@I~
@@ -532,6 +538,8 @@ public class River                                                 //~v@@@R~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
 		    rectDiscarded=rect;	//redraw frame when timeout changed//~v@@@I~
+            if (swReach)                                           //~vapdR~
+            	typeReach=isOpenReach(player) ? 1 : 0 ;            //~vapdI~
 			drawFrameDiscardedTile(GCM_DISCARD);                   //~v@@@I~
         }                                                          //~v@@@I~
         if (!swComplete && swReach)                                //~vampR~
@@ -1093,6 +1101,7 @@ public class River                                                 //~v@@@R~
             {                                                      //~v@@@I~
     	        Graphics.drawRect(rectDiscarded,bgColor);          //~v@@@I~
         		Graphics.drawBitmap(bmDiscarded,rectDiscarded.left,rectDiscarded.top);//~v@@@I~
+	    		drawOpenReach(rectDiscarded);                      //~vapdI~
 	            rectDiscarded=null;	//skip frame draw              //~v@@@I~
             }                                                      //~v@@@I~
         	break;                                                 //~v@@@I~
@@ -1115,6 +1124,8 @@ public class River                                                 //~v@@@R~
             	                rectDiscarded.bottom-stroke_width_river+1);//~0401I~
 	    		Graphics.drawRect(r,COLOR_INNER_FRAME,1);          //~v@@@I~
             }                                                      //~v@@@I~
+        	if (Pmsgid==GCM_DISCARD)                               //~vapdI~
+	    		drawOpenReach(rectDiscarded);                      //~vapdI~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~0303I~
@@ -1140,4 +1151,22 @@ public class River                                                 //~v@@@R~
     	tdCalledOnRiver=Ptd;                                       //~vamhR~
 	    if (Dump.Y) Dump.println("River.resetComplete saveRectTileCalled player="+Pplayer+",rect="+Prect+",td="+Ptd+",bitmap="+Pbitmap);//~vamhR~
     }                                                              //~vamhI~
+	//*********************************************************    //~vapdM~
+    private boolean isOpenReach(int Pplayer)                       //~vapdM~
+    {                                                              //~vapdM~
+    	boolean rc=players.isOpenReach(Pplayer);                   //~vapdI~
+        if (Dump.Y) Dump.println("River.isOpenReach rc="+rc+",player="+Pplayer);//~vapdI~
+    	return rc;                                                 //~vapdM~
+    }                                                              //~vapdM~
+	//*********************************************************    //~vapdI~
+    private void drawOpenReach(Rect Prect)                         //~vapdR~
+    {                                                              //~vapdI~
+	    if (Dump.Y) Dump.println("River.drawOpenReach typeReach="+typeReach+",rect="+Prect);//~vapdR~
+        if (typeReach>=0)                                          //~vapdR~
+        {                                                          //~vapdI~
+        	int color=typeReach==0 ? COLOR_REACH : COLOR_OPENREACH;//~vapdI~
+            int width=stroke_width_river;                          //~vapdR~
+	        Graphics.drawRect(Prect,color,width);                  //~vapdR~
+        }                                                          //~vapdI~
+    }                                                              //~vapdI~
 }//class River                                                 //~dataR~//~@@@@R~//~v@@@R~

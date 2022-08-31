@@ -1,5 +1,7 @@
-//*CID://+vac5R~:                             update#= 1191;       //+vac5R~
+//*CID://+vaqhR~:                             update#= 1196;       //~vaqhR~
 //*****************************************************************//~v101I~
+//2022/08/22 vaqh allow optio to resume ignoring app version       //~vaqhI~
+//2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
@@ -46,6 +48,7 @@ import static com.btmtest.utils.Alert.*;
 import static com.btmtest.utils.Utils.*;
 
 public class ResumeDlg  extends OKNGDlg //UFDlg                                            //~9312R~//~9321R~//~9322R~//~9828R~
+            implements Alert.AlertI                                //~vaqhI~
 {                                                                  //~2C29R~
     private static final int LAYOUTID=R.layout.resumedlg;              //~9312R~//~9322R~//~9828R~
     private static final int LAYOUTID_SMALLFONT=R.layout.resumedlg_theme;//~vac5I~
@@ -260,7 +263,13 @@ public class ResumeDlg  extends OKNGDlg //UFDlg                                 
             saveProp=AG.ruleProp;                                  //~9830I~
             Prop P=Phd.getRuleProp();                              //~9830R~
             if (P!=null)                                           //~9830I~
+            {                                                      //~vaqaI~
                 AG.ruleProp=P;                                     //~9830I~
+                boolean rc=RuleSetting.isAppVersionUnmatch(P);     //~vaqaR~
+                if (rc)	//unmatch                                  //~vaqaI~
+//              	dismiss();                                     //~vaqaI~//~vaqhR~
+  			    	issueUnmatchAlertHD(P);                        //~vaqhI~
+            }                                                      //~vaqaI~
         }                                                          //~9830I~
         else                                                       //~9830I~
         	if (saveProp!=null)                                    //~9830I~
@@ -538,7 +547,7 @@ public class ResumeDlg  extends OKNGDlg //UFDlg                                 
     @Override                                                      //~9321I~
     public void onClickCancel()                                    //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("SendDlg.onClickNG");             //~9321I~
+        if (Dump.Y) Dump.println("ResumeDlg.onClickNG");             //~9321I~//~vaqaR~
         sendReply(false);                                          //~9321I~
         dismiss     ();                                              //~9321I~
     }                                                              //~9321I~
@@ -1054,4 +1063,35 @@ public class ResumeDlg  extends OKNGDlg //UFDlg                                 
     {                                                              //~0213I~
     	Alert.showMessage(R.string.Title_ResumeDlg,R.string.Warn_ResumeDialogNoRuleFound);//~0213I~
     }                                                              //~0213I~
+    //*******************************************************      //~vaqhI~
+    private static void issueUnmatchAlertHD(Prop Pprop)            //~vaqhI~
+    {                                                              //~vaqhI~
+        if (Dump.Y) Dump.println("ResumeDlg.issueUnmatchAlertHD"); //~vaqhI~
+        String verHD=Pprop.getParameter(getKeyRS(RSID_APPVERSION),"Unknown");//~vaqhI~
+        String appVerMin=Utils.getStr(R.string.app_MinVersion);    //~vaqhI~
+        String msg=Utils.getStr(R.string.Alert_AppVersionUnmatchHD,verHD,appVerMin);//~vaqhI~
+        int flag=BUTTON_POSITIVE|BUTTON_NEGATIVE;                  //~vaqhI~
+        Alert.showAlert(TITLEID,msg,flag,AG.aResumeDlg/*callBack*/);//+vaqhR~
+    }                                                              //~vaqhI~
+    //*******************************************************      //~vaqhI~
+    @Override   //AlertI                                           //~vaqhI~
+	public int alertButtonAction(int Pbuttonid,int Prc)            //~vaqhI~
+    {                                                              //~vaqhI~
+        if (Dump.Y) Dump.println("ResumeDlg.alertButtonAction buttonID="+Pbuttonid+",rc="+Prc);//~vaqhI~
+		alertActionReceived(Pbuttonid,Prc);                        //~vaqhI~
+        return 0;                                                  //~vaqhI~
+    }                                                              //~vaqhI~
+    //*******************************************************      //~vaqhI~
+    //*Override this                                               //~vaqhI~
+    //*******************************************************      //~vaqhI~
+	protected void alertActionReceived(int Pbuttonid,int Prc)      //~vaqhI~
+    {                                                              //~vaqhI~
+        if (Dump.Y) Dump.println("DrawnDlgLast.alertActionReceived buttonID="+Pbuttonid+",rc="+Prc);//~vaqhI~
+    	if (Pbuttonid==BUTTON_NEGATIVE)                            //~vaqhI~
+        {                                                          //~vaqhI~
+        	if (Dump.Y) Dump.println("DrawnDlgLast.alertActionReceived NEGATIVE issue dismiss()");//~vaqhI~
+            dismiss();                                              //~vaqhI~
+            return;                                                //~vaqhI~
+        }                                                          //~vaqhI~
+    }                                                              //~vaqhI~
 }//class                                                           //~v@@@R~

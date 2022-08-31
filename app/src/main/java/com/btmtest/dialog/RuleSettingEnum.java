@@ -1,6 +1,12 @@
-//*CID://+vamuR~: update#= 526;                                    //+vamuR~
+//*CID://+vaqaR~: update#= 539;                                    //~vaqaR~
 //**********************************************************************//~v101I~
-//2022/04/22 vamu move playalone option to preference from operation settings//+vamuI~
+//2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
+//2022/08/04 vapu PsuedoTenpai;simplify 0han ok or not(allow kataagari,fix last)//~vapuI~
+//2022/08/04 vapt PsuedoTenpai;allow kataagari,fix yaku err if furiten OK//~vaptI~
+//2022/07/24 vap5 OpenReach Robot option change; chkbox No(default)//~vap5I~
+//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap4I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
+//2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2022/03/19 vakQ notify update of rule when client received       //~vakQI~
 //2022/03/02 vakn change delay time for Ron 1-->2 for double ron   //~vaknI~
 //2021/11/22 vah3 add Furiten reach reject option                  //~vah3I~
@@ -49,10 +55,15 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9421I~
     public  static final int PAY_BY_NOT_PENDING=3000;              //~9412I~//~9421I~
                                                                    //~9421I~
-    public static final int[] rbIDPendingRank2=new int[]{R.id.rbPendingRank2No,R.id.rbPendingRank2Fix1};//~0330R~
+//  public static final int[] rbIDPendingRank2=new int[]{R.id.rbPendingRank2No,R.id.rbPendingRank2Fix1};//~0330R~//~vaptR~
+//  public static final int[] rbIDPendingRank2=new int[]{R.id.rbPendingRank2No,R.id.rbPendingRank2Fix1,R.id.rbPendingRank2Fix2};//~vaptI~//~vapuR~
+    public static final int[] rbIDPendingRank2=new int[]{R.id.rbPendingRank2No,R.id.rbPendingRank2Fix2};//~vapuI~
     public static final int PENDING_RANK2_RANK0OK=0;               //~0330R~
-    public static final int PENDING_RANK2_FIX1=1;                  //~0330I~
-    public static final int PENDING_RANK2_DEFAULT=PENDING_RANK2_FIX1;//~0330I~
+//  public static final int PENDING_RANK2_FIX1=1;                  //~0330I~//~vapuR~
+//  public static final int PENDING_RANK2_FIX2=2;                  //~vaptI~//~vapuR~
+    public static final int PENDING_RANK2_FIX2=1;                  //~vapuI~
+//  public static final int PENDING_RANK2_DEFAULT=PENDING_RANK2_FIX1;//~0330I~//~vaptR~
+    public static final int PENDING_RANK2_DEFAULT=PENDING_RANK2_FIX2;//~vaptI~
                                                                    //~0330I~
     public static final int[] rbIDMinusStopByErr=new int[]{R.id.rbMinusStopByErrNo,R.id.rbMinusStopByErrSprit,R.id.rbMinusStopByErrAll};//~9414I~
     public static final int MINUSSTOP_BYERR_NO=0;                  //~9414I~
@@ -132,12 +143,17 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9516I~
     public static final int Y8C_NO=0;                              //~9516I~
     public static final int Y8C_DEALER=1;                          //~9516I~
-    public static final int Y8C_ANYONE=2;                          //~9516I~
-    public static final int Y8C_STICK=3;                           //~9516I~
-    public static final int Y8C_STICK_ANYONE=4;                    //~9517I~
+    public static final int Y8C_DEALER9=2;                         //~vapuI~
+//  public static final int Y8C_ANYONE=2;                          //~9516I~//~vapuR~
+    public static final int Y8C_ANYONE=3;                          //~vapuI~
+//  public static final int Y8C_STICK=3;                           //~9516I~//~vapuR~
+    public static final int Y8C_STICK=4;                           //~vapuI~
+//  public static final int Y8C_STICK_ANYONE=4;                    //~9517I~//~vapuR~
     public static final int Y8C_DEFAULT=Y8C_DEALER;                //~9516I~
-    public static final int[] rbs8Continue=new int[]{R.id.rb8ContNo,R.id.rb8ContDealer,R.id.rb8ContOnePlayer,R.id.rb8ContStick,R.id.rb8ContStickAnyOne};//~9516I~//~9517R~
-    public static final int[] ID8Continue=new int[]{Y8C_NO,Y8C_DEALER,Y8C_ANYONE,Y8C_STICK,Y8C_STICK_ANYONE};//~9516I~//~9517R~
+//  public static final int[] rbs8Continue=new int[]{R.id.rb8ContNo,R.id.rb8ContDealer,R.id.rb8ContOnePlayer,R.id.rb8ContStick,R.id.rb8ContStickAnyOne};//~9516I~//~9517R~//~vapuR~
+    public static final int[] rbs8Continue=new int[]{R.id.rb8ContNo,R.id.rb8ContDealer,R.id.rb9ContDealer,R.id.rb8ContOnePlayer,R.id.rb8ContStick};//~vapuR~
+//  public static final int[] ID8Continue=new int[]{Y8C_NO,Y8C_DEALER,Y8C_ANYONE,Y8C_STICK,Y8C_STICK_ANYONE};//~9516I~//~9517R~//~vapuR~
+    public static final int[] ID8Continue=new int[]{Y8C_NO,Y8C_DEALER,Y8C_DEALER9,Y8C_ANYONE,Y8C_STICK          };//~vapuR~
                                                                    //~9516I~
 //  public static final int[] rbsYakuFix=new int[]{R.id.rbYakuFixLast,R.id.rbYakuFixFirst};//~9516I~//~va93R~
     public static final int[] rbsYakuFix=new int[]{R.id.rbYakuFixLast,R.id.rbYakuFixMiddle,R.id.rbYakuFixFirst};//~va93I~
@@ -174,13 +190,15 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9C03I~
     public static final int[] rbsOpenReach=new int[]{R.id.rbOpenReachYakuman,R.id.rbOpenReachChombo};//~0329I~
     public static final int OPENREACH_YAKUMAN=0;                   //~0329I~
-    public static final int OPENREACH_CHOMBO=1;                    //~0329I~
+//  public static final int OPENREACH_CHOMBO=1;                    //~vap4R~
+    public static final int OPENREACH_REJECT=1;                    //~vap4I~
     public static final int OPENREACH_DEFAULT=OPENREACH_YAKUMAN;   //~0329I~
                                                                    //~0329I~
 //  public static final int[] rbsOpenReachRobot=new int[]{R.id.rbOpenReachRobotNone,R.id.rbOpenReachRobotSkip};//~0329R~//~va7cR~
     public static final int[] rbsOpenReachRobot=new int[]{R.id.rbOpenReachRobotNone,R.id.rbOpenReachRobotSkip,R.id.rbOpenReachRobotNormal};//~va7cI~
     public static final int OPENREACH_ROBOT_NONE=0;                //~0329I~
     public static final int OPENREACH_ROBOT_SKIP=1;                //~0329I~
+    public static final int OPENREACH_ROBOT_PAY_NORMAL=2;          //~vap3I~
     public static final int OPENREACH_ROBOT_DEFAULT=OPENREACH_ROBOT_NONE;//~0329I~
                                                                    //~0329I~
 //    public static final int[] rbs2Touch=new int[]{R.id.rb2TouchNo,R.id.rb2TouchYes,R.id.rb2TouchWithCancel};//~9C03I~//~9C07R~
@@ -252,7 +270,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~va66I~
     public static final int 	DEFAULT_THINK_ROBOT=1;             //~va66I~
     public static final int 	DEFAULT_ALLOW_ROBOT_ALL=1;         //~va7eR~
-//  public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~//+vamuR~
+//  public static final int     DEFAULT_PLAY_ALONE_NOTIFY=1;       //~va70I~//~vamuR~
     public static final int     DEFAULT_PLAY_MATCH_NOTIFY=1;       //~vaa2R~
                                                                    //~9413I~
     public static final int[]   pointsDrawnMangan=new int[]{8000,12000,16000,24000,32000};//~9413I~
@@ -279,6 +297,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_SYNCDATE_FORMATTED    =2;      //~9405I~
     public static final int    RSID_FILENAME              =3;      //~9405R~
     public static final int    RSID_IDNAME                =4;      //~9405I~
+    public static final int    RSID_APPVERSION            =8;      //~vaqaR~
+    public static final int    RSID_APPVERSION_MIN        =9;      //~vaqaI~
     public static final int    RSID_INITSCORE             =12;     //~9404R~
     public static final int    RSID_POINT_DUP             =13;     //~9512I~
     public static final int    RSID_INITSCORE_TESTE       =20;     //~9425I~
@@ -339,6 +359,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_OPENREACH_ROBOT       =164;    //~0329I~
     public static final int    RSID_ONESHOT               =165;    //~va11I~
     public static final int    RSID_REACH_FURITEN         =166;    //~vah3I~
+    public static final int    RSID_OPENREACH_ROBOT_CBNO  =167;    //~vap5I~
                                                                    //~9427I~
     public static final int    RSID_MINUSSTOP_ROBOT       =170;     //~9404I~//~9429I~
     public static final int    RSID_ROBOT_PAY             =171;    //~9429I~
@@ -387,6 +408,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_CHK_MULTIWAIT         =317;    //~va96I~
                                                                    //~9516I~
     public static final int    RSID_EATCHANGE             =320;    //~9516I~
+                                                                   //~vaptI~
+//  public static final int    RSID_PENDING_RANKFIXMULTI  =325;    //~vaptI~//~vapuR~
                                                                    //~9517I~
     public static final int    RSID_DOUBLE_PILLOW         =329;    //~va12I~
     public static final int    RSID_KUITAN                =330;    //~9404I~//~9517I~
@@ -439,12 +462,16 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int    RSID_SUSPEND_PENALTYIOERR  =412;    //~9A18I~
                                                                    //~9820I~
 //  private static final RSEnumPair[] pairs=                       //~9404I~//~9414R~//~vakQR~
+    public static final String RSID_STR_APPVERSION= "AppVersion";    //~vaqaI~
+    public static final String RSID_STR_APPVERSION_MIN= "AppMinVersion";//+vaqaR~
     public static final RSEnumPair[] pairs=                        //~vakQI~
     			{                                                  //~9404I~
     				new RSEnumPair(RSID_SYNCDATE             ,"SyncDate"             ),//~9404R~
     				new RSEnumPair(RSID_SYNCDATE_FORMATTED   ,"SyncDateFormatted"    ),//~9405I~
     				new RSEnumPair(RSID_FILENAME             ,"FileName"                 ),//~9405R~
     				new RSEnumPair(RSID_IDNAME               ,"Name"                 ),//~9405I~
+    				new RSEnumPair(RSID_APPVERSION_MIN       ,RSID_STR_APPVERSION_MIN),//~vaqaI~
+    				new RSEnumPair(RSID_APPVERSION           ,RSID_STR_APPVERSION    ),//~vaqaR~
     				new RSEnumPair(RSID_INITSCORE            ,"InitScore"            ),//~9404I~
     				new RSEnumPair(RSID_INITSCORE_TESTE     ,"InitScoreTestE"       ),//~9425I~
     				new RSEnumPair(RSID_INITSCORE_TESTS     ,"InitScoreTestS"       ),//~9425I~
@@ -513,6 +540,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_ANKAN_AFTER_REACH    ,"AnkanReach"           ),//~9530I~
     				new RSEnumPair(RSID_OPENREACH_PAY        ,"OpenReachPay"         ),//~0329I~
     				new RSEnumPair(RSID_OPENREACH_ROBOT      ,"OpenReachRobot"        ),//~0329I~
+    				new RSEnumPair(RSID_OPENREACH_ROBOT_CBNO ,"OpenReachRobotCBNo"    ),//~vap5I~
     				new RSEnumPair(RSID_ONESHOT              ,"OneShot"               ),//~va11I~
     				new RSEnumPair(RSID_REACH_FURITEN        ,"FuritenReach"         ),//~vah3I~
                                                                    //~9427I~
@@ -561,6 +589,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_PENDING_RANKNO       ,"KeiTenNo"             ),//~0330I~
     				new RSEnumPair(RSID_PENDING_RANKEMPTY    ,"KeiTenEmpty"          ),//~0330I~
     				new RSEnumPair(RSID_PENDING_RANKFURITEN  ,"KeiTenFuriten"        ),//~0330I~
+    //				new RSEnumPair(RSID_PENDING_RANKFIXMULTI ,"KeiTenFixMulti"       ),//~vaptI~
     				new RSEnumPair(RSID_PENDING_RANK2        ,"KeiTenRank2"          ),//~0330I~
     				new RSEnumPair(RSID_SHOW_ANYWAY_BTN      ,"ShowAnyway"           ),//~va86I~
                                                                    //~9516I~

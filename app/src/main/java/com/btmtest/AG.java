@@ -1,6 +1,10 @@
-//*CID://+vamdR~:                             update#=  494;       //+vamdR~
+//*CID://+vaqfR~:                             update#=  509;       //+vaqfR~
 //******************************************************************************************************************//~v101R~
-//2022/04/02 vamd Animation. at first show Dora                    //+vamdI~
+//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//+vaqfI~
+//2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
+//2022/08/02 vapm itsHand contension of main Thraed(DrawnReqDlgLast) and msgHandler Thread(Tand and discard by Robot)//~vapmI~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
+//2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
 //2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//~vajgI~
 //2021/10/21 vaf1 Dump, initially terminal and follow test option to investigate vaf0//~vaf1I~
@@ -68,7 +72,7 @@ import com.btmtest.game.gv.DiceBox;
 import com.btmtest.game.gv.GCanvas;
 import com.btmtest.game.gv.GameView;                               //~@@01I~
 import com.btmtest.game.gv.Hands;
-import com.btmtest.game.gv.Anim;                                   //+vamdI~
+import com.btmtest.game.gv.Anim;                                   //~vamdI~
 import com.btmtest.game.gv.HandsTouch;                             //~@@01I~
 import com.btmtest.game.gv.River;
 import com.btmtest.game.gv.Stock;
@@ -208,7 +212,17 @@ public class AG                                                    //~1107R~
     public String language;                                 //~1531I~//~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~
 //    public static String Glocale;                                  //~@@@@I~//~1Ad7R~
     public  boolean isLangJP;                                //~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~
+    public  boolean isLangKO;                                      //~van1R~
+                                                                   //~van1I~
+    public  int currentHelpLang;                                   //~van1I~
+    public  static final int CHL_EN        =0;                     //~van1I~
+    public  static final int CHL_KO_FROM_EN=1;                     //~van1R~
+//  public  static final int CHL_KO_FROM_JP=2;                     //~van1R~
+    public  static final int CHL_JP        =2;                     //~van1R~
+    public  static final int CHL_CTR       =3;                     //~van1R~
+                                                                   //~van1I~
     public  String helpFileSuffix;                           //~v@@@I~//~@@01R~
+    public  String helpFileSuffixKO;                               //~van1I~
     public  boolean isDebuggable;                            //~v107I~//~1Ad7R~//~@@01R~
 	public  int RemoteStatus;                                //~@@@@R~//~1Ad7R~//~v@@@R~//~@@01R~
     public  int RemoteStatusAccept;                          //~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~
@@ -408,6 +422,7 @@ public class AG                                                    //~1107R~
     public  ActionAlert aActionAlert;                              //~@@01I~
     public  UAD2Touch aUAD2Touch;                                  //~@@01R~
     public  Shanten aShanten;                                      //~va60I~
+    public  Shanten aShantenMainThread;                            //~vapmR~
     public  RoundStat aRoundStat;                                  //~va60R~
     public  RADiscard aRADiscard;                                  //~va60I~
     public  RADSmart  aRADSmart;                                   //~va60I~
@@ -446,6 +461,7 @@ public class AG                                                    //~1107R~
     public String ruleSyncDate="";                                 //~@@01I~
                                                                    //~@@01I~
     public HistoryData resumeHD;                                   //~@@01I~
+    public HistoryData resumeHD_Resumed;                           //+vaqfI~
     public CommonListener.CommonListenerI aCommonListenerI;        //~@@01I~
     public int dialogPaddingHorizontal; //by UFDlg                 //~@@01I~
     public int ctrSaveAlert;                                       //~@@01R~
@@ -464,7 +480,7 @@ public class AG                                                    //~1107R~
 	public boolean swChangedPreference,swChangedRule;              //~vae8R~
 	public boolean swNewA10=true;	//navigationbar hide logic for Android10//~vaeeI~
     public OrientationMenuDlg aOrientationMenuDlg;                           //~vaf0I~//~vajgR~
-    public Anim aAnim;                                             //+vamdI~
+    public Anim aAnim;                                             //~vamdI~
 //    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //~vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
@@ -540,7 +556,9 @@ public class AG                                                    //~1107R~
         language=locale.getLanguage();   //ja(Locale.JAPANESE) or ja_JP(Locale.JAPAN)//~1531R~//~@@@@I~//~1Ad7R~//~v@@@R~
 ////      isLangJP=language.substring(0,2).equals(Locale.JAPANESE);  //~@@@@I~//~v102R~//~1Ad7R~
         isLangJP=language.substring(0,2).equals(Locale.JAPANESE.getLanguage());  //~@@@@I~//~v102I~//~1Ad7R~//~v@@@R~
+        isLangKO=language.substring(0,2).equals(Locale.KOREAN.getLanguage());//"ko"//~van1R~
         helpFileSuffix=isLangJP ? "_ja" : "";                      //~v@@@I~
+        helpFileSuffixKO="_ko";                                     //~van1R~
 //        Options=Prop.getPreference(PKEY_OPTIONS,                   //~@@@@R~//~1Ad7R~
 //                0                                                  //~@@@@I~//~1Ad7R~
 //                |OPTIONS_BIG_TIMER                                 //~@@@@I~//~1Ad7R~
@@ -601,6 +619,9 @@ public class AG                                                    //~1107R~
     	if (Dump.Y) Dump.println("AG.loadProp ruleSyncDAte="+AG.ruleSyncDate);//~@@01I~
     	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))            //~@@01I~
 	        AG.ruleProp.setParameter(getKeyRS(RSID_SYNCDATE),PROP_INIT_SYNCDATE);//~@@01I~
+        AG.ruleProp.setParameter(getKeyRS(RSID_APPVERSION),Utils.getStr(R.string.app_version));//~vaqaR~
+        AG.ruleProp.setParameter(getKeyRS(RSID_APPVERSION_MIN),Utils.getStr(R.string.app_MinVersion));//~vaqaR~
+    	if (Dump.Y) Dump.println("AG.loadProp APP_VERSION="+AG.ruleProp.getParameter(getKeyRS(RSID_APPVERSION),""));//~vaqaI~
     }                                                              //~v@@@I~
 //*************************************************************    //~vae8I~
 //*1st run after (re-)instlation before recoverProp                //~vae8I~

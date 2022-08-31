@@ -1,5 +1,6 @@
-//*CID://+vaccR~:                             update#=  276;       //~vaccR~
+//*CID://+vaq8R~:                             update#=  278;       //+vaq8R~
 //*****************************************************************//~v101I~
+//2022/08/19 vaq8 (Bug)doubleRon by Win-Anyway;2nd ron ignored Win-Anyway requested and issie compose err//+vaq8I~
 //2021/08/21 vacc (Bug)Match mode; at blocked by Ron issued, Discard btn issue msg  select meld then push orange.(Ron is not select multi meld candidate case)//~vaccI~
 //2021/08/18 vacb Win btn do AinAny after WinAny button.           //~vacbI~
 //					(if Win is not cancalable Win btn dose not change to orange and Score btn winn change to orange directly)//~vacbI~
@@ -30,7 +31,8 @@ public class UAD2Touch                                             //~v@@@R~
 {                                                                  //~2C29R~
 //  private static final int COLOR_BLOCKING= Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~v@@@R~//~vacbR~
     public  static final int COLOR_BLOCKING= Color.argb(0xff,0xff,0x66,0x00);   //Light's orange//~vacbI~
-    private static final int COLOR_MORE= Color.argb(0xff,0xff,0xff,0x00);   //Light's orange//~v@@@I~
+//  private static final int COLOR_MORE= Color.argb(0xff,0xff,0xff,0x00);   //Light's orange//~v@@@I~//+vaq8R~
+    public  static final int COLOR_MORE= Color.argb(0xff,0xff,0xff,0x00);   //Light's orange//+vaq8I~
     private static final int COLOR_NOTIFY= AG.getColor(R.color.btn_notify);		//yellow//~vaa2R~
     public static final int COLOR_NORMAL=-1;   //gc.btnbackground  //~v@@@R~
 	public static final int BTN_STATUS_ENABLE_CANCEL=1;            //~v@@@R~
@@ -417,7 +419,7 @@ public class UAD2Touch                                             //~v@@@R~
         else                                                       //~9C09I~
         	action=PactionID;                                       //~9C09I~
 	    boolean rc=UADL.isWaitSelectMultipleMode(action);          //~9C09I~
-        if (Dump.Y) Dump.println("UAD2Touch.isWaitSelecMultipletMode action="+action+",yourStatus="+yourStatus+",rc="+rc);//~9C09I~//~1130R~
+        if (Dump.Y) Dump.println("UAD2Touch.isWaitSelectMultipletMode action="+action+",yourStatus="+yourStatus+",rc="+rc);//~9C09I~//~1130R~//~vaccR~
         return rc;                                                 //~9C09I~
     }                                                              //~9C09I~
 //**********************************                               //~9C09I~
@@ -563,11 +565,11 @@ public class UAD2Touch                                             //~v@@@R~
     private void runUpdateBtnUIPlayAloneNotify(final int PmsgID,final int Pstat,final int Pcolor)//~va70R~
     {                                                              //~va70I~
         if (Dump.Y) Dump.println("UAD2Touch.runUpdateBtnUIPlayAloneNotify msgID="+PmsgID+",stat=0x"+Integer.toHexString(Pstat)+",color="+Integer.toHexString(Pcolor));//~va70R~//~vaa2R~
-//        if (PmsgID==13) //TODO test  Pon and Chii for a tile     //+vaccR~
-//        {                                                        //+vaccR~
-//            UView.showToast("UAD2Touch runBtnPAN msgid="+PmsgID);//+vaccR~
-//            Utils.sleep(3000);                           //TODO test//+vaccR~
-//        }                                                        //+vaccR~
+//        if (PmsgID==13) //TODO test  Pon and Chii for a tile     //~vaccR~
+//        {                                                        //~vaccR~
+//            UView.showToast("UAD2Touch runBtnPAN msgid="+PmsgID);//~vaccR~
+//            Utils.sleep(3000);                           //TODO test//~vaccR~
+//        }                                                        //~vaccR~
         AG.activity.runOnUiThread(                                 //~va70I~
             new Runnable()                                         //~va70I~
             {                                                      //~va70I~

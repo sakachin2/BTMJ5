@@ -1,5 +1,7 @@
-//*CID://+vabfR~: update#= 556;                                    //~vac1R~//~vabfR~
+//*CID://+vaq6R~: update#= 566;                                    //~vaq6R~
 //**********************************************************************//~v101I~
+//2022/08/15 vaq6 for DrawnMangan clear 8contRon even defained as Ron not to make yakuman by drawnMangan//~vaq6I~
+//2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3R~
 //2021/07/28 vabf Robot call Honer tile at first if top at near final game//~vabfI~
 //2021/03/11 va6f (BUG)when resume ,1st take occures on player currentEswn!=0//~va6fI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -101,7 +103,7 @@ public class Status //extends Handler                              //~v@@@R~
     private boolean swGameSuspended;  //finally game end by suspend                             //~0110I~//~0307R~
     private boolean swSuspendRequest; //set by dialog checkbox,open SuspendDlg if set                                    //~0304I~//~0307I~
     private boolean swSuspendGame;    //SuspendDlg once Opened(Svr/Client) for showDismissed                             //~9904R~//~0307R~
-    private boolean swShownFinalGame;    //FinalGame Dlg was shown //+vabfI~
+    private boolean swShownFinalGame;    //FinalGame Dlg was shown //~vabfI~
 //*************************                                        //~v@@@I~
 	public Status()                                                //~v@@@R~
     {                                                              //~0914I~
@@ -453,7 +455,7 @@ public class Status //extends Handler                              //~v@@@R~
         swRon=false;                                               //~v@@@I~
         endGameType=ENDGAME_NONE;                                //~v@@@I~
     	swGameSuspended=false;                                     //~0110I~
-    	swShownFinalGame=false;                                    //+vabfI~
+    	swShownFinalGame=false;                                    //~vabfI~
 //        ctrSuspendRequest=0;                                       //~9818I~//~9823R~
 ////      ctrSuspendRequestOld=0;                                    //~9818I~//~9822R~//~9823R~
 ////      Arrays.fill(swEswnSuspendRequestOld,false);                //~9820I~//~9822R~//~9823R~
@@ -474,8 +476,13 @@ public class Status //extends Handler                              //~v@@@R~
         if ((TestOption.option3 & TO3_SET_DUPCTR)!=0)              //~va6fI~
         {                                                          //~va6fI~
     		aStatus.gameCtrDup=5;                                  //~va6fI~
-        	if (Dump.Y) Dump.println("Status.resetForNewGameSets test set DupCtr set="+aStatus.gameCtrSet+",game="+aStatus.gameCtrGame+",dupctr="+aStatus.gameCtrDup);//~va6fI~
+        	if (Dump.Y) Dump.println("Status.resetForNewGameSets test set DupCtr by 2hanconstarint option set="+aStatus.gameCtrSet+",game="+aStatus.gameCtrGame+",dupctr="+aStatus.gameCtrDup);//~va6fI~//~vaq3R~
         }                                                          //~va6fI~
+        if (TestOption.testContinueStick!=0)                       //~vaq3R~
+        {                                                          //~vaq3R~
+    		aStatus.gameCtrDup=TestOption.testContinueStick;       //~vaq3R~
+        	if (Dump.Y) Dump.println("Status.resetForNewGameSets test set DupCtr by continueStick set="+aStatus.gameCtrSet+",game="+aStatus.gameCtrGame+",dupctr="+aStatus.gameCtrDup);//~vaq3R~
+        }                                                          //~vaq3R~
         if (AG.aUADelayed!=null)                                   //~9704I~
 //        	AG.aUADelayed.resetWaitAll(false/*swRon*/);            //~9704R~//~0226R~
           	AG.aUADelayed.resetWaitAllNewGame();                   //~0226I~
@@ -754,7 +761,8 @@ public class Status //extends Handler                              //~v@@@R~
     	boolean swContinue=PnextgameType==NGTP_CONTINUE;           //~9519I~
     	boolean swNextRound=PnextgameType==NGTP_NEXTROUND;                       //~9526I~
         boolean swDrawn=PendgameType!=EGDR_NORMAL;	//DrawnMangan as Drawn at setCtrContinuedGain//~9819I~
-        AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue);//before gamectr up//~9519I~
+//      AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue);//before gamectr up//~9519I~//+vaq6R~
+        AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue,PendgameType==EGDR_MANGAN_RON);//before gamectr up//+vaq6I~
         if (swGameOver)                          //~v@@@I~         //~9519R~
     		aStatus.gameOver();                                            //~v@@@I~
         else                                                       //~v@@@I~
@@ -1044,17 +1052,17 @@ public class Status //extends Handler                              //~v@@@R~
         if (Dump.Y) Dump.println("Status.isSuspendRequested rc="+rc);//~0304R~
         return rc;
     }                                                              //~0304I~
-    //*************************************************************************//+vabfI~
-    public static boolean isShownFinalGame()                       //+vabfI~
-    {                                                              //+vabfI~
-        boolean rc=aStatus.swShownFinalGame;                       //+vabfI~
-        if (Dump.Y) Dump.println("Status.isShownFinalGame rc="+rc);//+vabfI~
-        return rc;                                                 //+vabfI~
-    }                                                              //+vabfI~
-    //*************************************************************************//+vabfI~
-    public static void setShownFinalGame()                         //+vabfI~
-    {                                                              //+vabfI~
-        aStatus.swShownFinalGame=true;                             //+vabfI~
-        if (Dump.Y) Dump.println("Status.setShownFinalGame");      //+vabfI~
-    }                                                              //+vabfI~
+    //*************************************************************************//~vabfI~
+    public static boolean isShownFinalGame()                       //~vabfI~
+    {                                                              //~vabfI~
+        boolean rc=aStatus.swShownFinalGame;                       //~vabfI~
+        if (Dump.Y) Dump.println("Status.isShownFinalGame rc="+rc);//~vabfI~
+        return rc;                                                 //~vabfI~
+    }                                                              //~vabfI~
+    //*************************************************************************//~vabfI~
+    public static void setShownFinalGame()                         //~vabfI~
+    {                                                              //~vabfI~
+        aStatus.swShownFinalGame=true;                             //~vabfI~
+        if (Dump.Y) Dump.println("Status.setShownFinalGame");      //~vabfI~
+    }                                                              //~vabfI~
 }//class Status                                                 //~dataR~//~@@@@R~//~v@@@R~

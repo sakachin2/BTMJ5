@@ -1,5 +1,6 @@
-//*CID://+vaihR~:                             update#=  576;       //~vaihR~
+//*CID://+van1R~:                             update#=  585;       //~van1R~
 //*****************************************************************//~v101I~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
 //2021/08/02 vabs drop robot option to discard just taken,remains as test option//~vabsI~
@@ -64,12 +65,15 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DORA_KANUPNUMBER2="Dora5Num";      //~0A12R~
     private static final String DORA_KANDOWNTYPE2="Dora6Type";     //~0A12I~
     private static final String DORA_KANDOWNNUMBER2="Dora6Num";    //~0A12I~
+    private static final String CONTINUE_STICK="ContinueStick";    //+van1I~
+    private static final String CONTINUE_WIN="ContinueWin";        //+van1I~
     private static final String CHII_TEST="Chii_Test";             //~v@@@I~
     private static final String KAN_TEST="Kan_Test";               //~v@@@I~
 //  private static final String POSITIONING="Positioning";         //~v@@@R~
     private static final String SKIPDICE="SkipDice";               //~v@@@I~
     private static final String TAKEDISCARD="TakeDiscard";         //~v@@@I~
     private static final String DRAWNREQDLG_LAST="DrawnReqDlg_Last";//~v@@@I~
+    private static final String DRAWNREQDLG_LASTDIALOG="DrawnReqDlg_LastDialog";//~van1I~
     private static final String SHOWF2="ShowF2";                   //~v@@@I~
     private static final String FINAL_GAME="FinalGame";            //~v@@@I~
     private static final String INITIAL_POSITION="InitialPosition";//~va66I~
@@ -168,22 +172,28 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DEAL_CHANTA            ="DealChanta"          ;//~vad5I~
     private static final String DEAL_CHANTA_PON        ="DealChantaPon"       ;//~vad5I~
     private static final String DEAL_AVOID_FURITEN     ="DealAvoidFuriten"    ;//~vaihI~
+    private static final String LANG_KO                ="LangKO"              ;//~van1I~
+    private static final String DEAL_NAGASHIMANGAN     ="DealNagashiMangan"   ;//~van1I~
+    private static final String DEAL_OPENREACHRON      ="DealOpenReachRon"   ;//~van1I~
                                                                    //~v@@@I~
     private static final int[] rbIDFirstDealer=new int[]{R.id.rbFirstDealer0,R.id.rbFirstDealer1,R.id.rbFirstDealer2,R.id.rbFirstDealer3,R.id.rbFirstDealer4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrSet=new int[]{R.id.rbFinalSet1,R.id.rbFinalSet2,R.id.rbFinalSet3,R.id.rbFinalSet4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrGame=new int[]{R.id.rbFinalGame1,R.id.rbFinalGame2,R.id.rbFinalGame3,R.id.rbFinalGame4};//~v@@@I~
     private static final int[] rbIDBTIOErr=new int[]{R.id.rbBTIOE_AfterTake,R.id.rbBTIOE_AfterDiscard,R.id.rbBTIOE_AfterPon,R.id.rbBTIOE_AfterKan,R.id.rbBTIOE_AfterRon,R.id.rbBTIOE_AfterOpen,R.id.rbBTIOE_AfterRobotTake};//~v@@@R~
     private UCheckBox cbPon_Test,cbChii_Test,cbKan_Test,/*cbPositioning,*/cbSkipDice,cbTakeDiscard,cbDrawnReqDlg_Last;//~v@@@R~
+    private UCheckBox cbDrawnReqDlg_LastDialog;                    //~van1I~
     private UCheckBox cbRon_Test;                                  //~v@@@I~
     private UCheckBox cbRonValue_Test,cbRonValue_NoDora;                             //~0A02I~//~0A08R~
     private UCheckBox cbSetDora;                                   //~0A14I~
     private UCheckBox cbSetDiscard;                                //~vaihI~
     private UCheckBox cbChkRank;                                   //~0A16I~
     private UCheckBox cbDumpSDCard,cbDumpNo;                                //~0A08I~//~vaihR~
+    private UCheckBox cbLangKO;                                    //~van1I~
     private EditText etRonValue_Case;                             //~0A07I~
     private EditText etDoraDownType,etDoraDownNumber;              //~0A12I~
     private EditText etDoraUpType,etDoraUpNumber;                  //~0A12I~
     private EditText etKanDownType,etKanDownNumber;                //~0A12I~
+    private EditText etCtrContinueStick,etCtrContinueWin;          //+van1I~
     private EditText etKanUpType,etKanUpNumber;                    //~0A12I~
     private EditText etKanUpType2,etKanUpNumber2;                  //~0A12I~
     private EditText etKanDownType2,etKanDownNumber2;              //~0A12I~
@@ -225,6 +235,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbDealStraight,cbDealStraightChii,cbDeal3SameSeq,cbDealTanyao,cbDealTanyaoPon;//~vad5R~
     private UCheckBox cbDealMultiRon,cbDealSingleRon,cbDealChanta,cbDealChantaPon;              //~va66I~//~vad5R~
     private UCheckBox cbDealAvoidFuriten;                          //~vaihI~
+    private UCheckBox cbNagashiMangan;                             //~van1I~
+    private UCheckBox cbOpenReachRon;                              //~van1I~
     private Prop prop;                                             //~v@@@I~
     private boolean swChanged;                                     //~v@@@I~
     private URadioGroup rgFirstDealer;                             //~v@@@I~
@@ -241,8 +253,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     {                                                              //~v@@@I~
         TODlg dlg=new TODlg();                                     //~v@@@R~
         UFDlg.setBundle(dlg,"TestOption",LAYOUTID,           //SettingDlg//~v@@@R~
-//                  UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~//+vaihR~
-                    UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN,         //+vaihI~
+//                  UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@I~//~vaihR~
+                    UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN,         //~vaihI~
                     0,"NoHelp");                            //~v@@@R~
         return dlg;                                                //~v@@@I~
     }                                                              //~v@@@I~
@@ -256,6 +268,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbRon_Test=new UCheckBox(PView,R.id.cbRon_Test);           //~v@@@I~
     	cbDumpSDCard=new UCheckBox(PView,R.id.cbDumpSDCard);       //~0A08I~
     	cbDumpNo=new UCheckBox(PView,R.id.cbDumpNo);               //~vaihI~
+    	cbLangKO=new UCheckBox(PView,R.id.cbLangKO);               //~van1I~
     	cbRonValue_Test=new UCheckBox(PView,R.id.cbRonValue_Test); //~0A02I~
     	cbRonValue_NoDora=new UCheckBox(PView,R.id.cbRonValue_NoDora);//~0A08I~
     	cbChkRank=new UCheckBox(PView,R.id.cbChkRank);             //~0A16I~
@@ -270,6 +283,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	etDoraUpNumber=(EditText) UView.findViewById(PView,R.id.etDoraUpNumber);//~0A12I~
     	etKanDownType=(EditText) UView.findViewById(PView,R.id.etKanDownType);//~0A12I~
     	etKanDownNumber=(EditText) UView.findViewById(PView,R.id.etKanDownNumber);//~0A12I~
+    	etCtrContinueStick=(EditText) UView.findViewById(PView,R.id.etCtrContinueStick);//+van1I~
+    	etCtrContinueWin=(EditText) UView.findViewById(PView,R.id.etCtrContinueWin);//+van1I~
     	etKanUpType=(EditText) UView.findViewById(PView,R.id.etKanUpType);//~0A12I~
     	etKanUpNumber=(EditText) UView.findViewById(PView,R.id.etKanUpNumber);//~0A12I~
     	etKanDownType2=(EditText) UView.findViewById(PView,R.id.etKanDownType2);//~0A12I~
@@ -282,6 +297,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbSkipDice=new UCheckBox(PView,R.id.cbSkipDice);           //~v@@@I~
     	cbTakeDiscard=new UCheckBox(PView,R.id.cbTakeDiscard);     //~v@@@I~
     	cbDrawnReqDlg_Last=new UCheckBox(PView,R.id.cbDrawnReqDlg_Last);//~v@@@I~
+    	cbDrawnReqDlg_LastDialog=new UCheckBox(PView,R.id.cbDrawnReqDlg_LastDialog);//~van1I~
     	cbShowF2=new UCheckBox(PView,R.id.cbShowF2);               //~v@@@I~
     	cbFinalGame=new UCheckBox(PView,R.id.cbFinalGame);         //~v@@@I~
     	cbSetPosition=new UCheckBox(PView,R.id.cbSetPosition);     //~va66I~
@@ -340,6 +356,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealTanyaoPon =new UCheckBox(PView,R.id.cbDealTanyaoPon);//~vad5I~
     	cbDealChantaPon =new UCheckBox(PView,R.id.cbDealChantaPon);//~vad5I~
     	cbDealAvoidFuriten=new UCheckBox(PView,R.id.cbAvoidFuriten);//~vaihI~
+    	cbNagashiMangan=new UCheckBox(PView,R.id.cbNagashiMangan); //~van1I~
+    	cbOpenReachRon=new UCheckBox(PView,R.id.cbOpenReachRon);   //~van1I~
     	cbDealChanta =new UCheckBox(PView,R.id.cbDealChantaChii);      //~vad5I~
     	cbDealStraightChii =new UCheckBox(PView,R.id.cbDealStraightChii);//~vad5I~
     	cbDealAtodukeTakeYakuhai    =new UCheckBox(PView,R.id.cbDealAtodukeTakeYakuhai  );//~va66I~
@@ -417,6 +435,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbRon_Test.setStateInt(Pprop.getParameter(RON_TEST,0));    //~v@@@I~
     	cbDumpSDCard.setStateInt(Pprop.getParameter(DUMP_SDCARD,0));//~0A08I~
     	cbDumpNo.setStateInt(Pprop.getParameter(DUMP_NO,0));       //~vaihI~
+    	cbLangKO.setStateInt(Pprop.getParameter(LANG_KO,0));       //~van1I~
     	cbRonValue_Test.setStateInt(Pprop.getParameter(RONVALUE_TEST,0));//~0A02I~
     	cbRonValue_NoDora.setStateInt(Pprop.getParameter(RONVALUE_NODORA,0));//~0A08I~
     	cbChkRank.setStateInt(Pprop.getParameter(CHKRANK,0));      //~0A16I~
@@ -431,6 +450,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	etDoraUpNumber.setText(Integer.toString(Pprop.getParameter(DORA_UPNUMBER,0)));//~0A12I~
     	etKanDownType.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNTYPE,0)));//~0A12I~
     	etKanDownNumber.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNNUMBER,0)));//~0A12I~
+    	etCtrContinueStick.setText(Integer.toString(Pprop.getParameter(CONTINUE_STICK,0)));//+van1I~
+    	etCtrContinueWin.setText(Integer.toString(Pprop.getParameter(CONTINUE_WIN,0)));//+van1I~
     	etKanUpType.setText(Integer.toString(Pprop.getParameter(DORA_KANUPTYPE,0)));//~0A12I~
     	etKanUpNumber.setText(Integer.toString(Pprop.getParameter(DORA_KANUPNUMBER,0)));//~0A12I~
     	etKanUpType2.setText(Integer.toString(Pprop.getParameter(DORA_KANUPTYPE2,0)));//~0A12I~
@@ -443,6 +464,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbSkipDice.setStateInt(Pprop.getParameter(SKIPDICE,0));    //~v@@@I~
     	cbTakeDiscard.setStateInt(Pprop.getParameter(TAKEDISCARD,0));//~v@@@I~
     	cbDrawnReqDlg_Last.setStateInt(Pprop.getParameter(DRAWNREQDLG_LAST,0));//~v@@@I~
+    	cbDrawnReqDlg_LastDialog.setStateInt(Pprop.getParameter(DRAWNREQDLG_LASTDIALOG,0));//~van1I~
     	cbShowF2.setStateInt(Pprop.getParameter(SHOWF2,0));        //~v@@@I~
     	cbFinalGame.setStateInt(Pprop.getParameter(FINAL_GAME,0)); //~v@@@I~
     	cbSetPosition.setStateInt(Pprop.getParameter(INITIAL_POSITION,0));//~va66I~
@@ -507,6 +529,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealTanyaoPon.setStateInt(Pprop.getParameter(DEAL_TANYAO_PON,0));//~vad5I~
     	cbDealChantaPon.setStateInt(Pprop.getParameter(DEAL_CHANTA_PON,0));//~vad5I~
     	cbDealAvoidFuriten.setStateInt(Pprop.getParameter(DEAL_AVOID_FURITEN,0));//~vaihI~
+    	cbNagashiMangan.setStateInt(Pprop.getParameter(DEAL_NAGASHIMANGAN,0));//~van1R~
+    	cbOpenReachRon.setStateInt(Pprop.getParameter(DEAL_OPENREACHRON,0));//~van1I~
     	cbDealChanta.setStateInt(Pprop.getParameter(DEAL_CHANTA,0));//~vad5I~
     	cbDealStraightChii.setStateInt(Pprop.getParameter(DEAL_STRAIGHT_CHII,0));//~vad5I~
     	cbDealAtodukeTakeYakuhai.setStateInt(Pprop.getParameter(DEALATODUKETAKEYAKUHAI,0));//~va66I~
@@ -665,6 +689,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
 		TestOption.testDoraUpNumber=Pprop.getParameter(DORA_UPNUMBER,0);//~0A12I~
 		TestOption.testKanDownType=Pprop.getParameter(DORA_KANDOWNTYPE,0);//~0A12I~
 		TestOption.testKanDownNumber=Pprop.getParameter(DORA_KANDOWNNUMBER,0);//~0A12I~
+		TestOption.testContinueStick=Pprop.getParameter(CONTINUE_STICK,0);//+van1I~
+		TestOption.testContinueWin=Pprop.getParameter(CONTINUE_WIN,0);//+van1I~
 		TestOption.testKanUpType=Pprop.getParameter(DORA_KANUPTYPE,0);//~0A12I~
 		TestOption.testKanUpNumber=Pprop.getParameter(DORA_KANUPNUMBER,0);//~0A12I~
 		TestOption.testKanUpType2=Pprop.getParameter(DORA_KANUPTYPE2,0);//~0A12I~
@@ -696,6 +722,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option|=TO_DRAWNREQDLG_LAST;                //~v@@@I~
         else                                                       //~v@@@I~
 			TestOption.option&=~TO_DRAWNREQDLG_LAST;               //~v@@@I~
+        if (Pprop.getParameter(DRAWNREQDLG_LASTDIALOG,0)!=0)       //~van1I~
+			TestOption.option5|=TO5_DRAWNREQDLG_LASTDIALOG;        //~van1R~
+        else                                                       //~van1I~
+			TestOption.option5&=~TO5_DRAWNREQDLG_LASTDIALOG;       //~van1R~
         if (Pprop.getParameter(SHOWF2,0)!=0)                       //~v@@@I~
 			TestOption.option2|=TO2_SHOWF2;                        //~v@@@I~
         else                                                       //~v@@@I~
@@ -1035,6 +1065,14 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option5|=TO5_AVOID_FURITEN;                 //~vaihI~
         else                                                       //~vaihI~
 			TestOption.option5&=~TO5_AVOID_FURITEN;                //~vaihI~
+        if (Pprop.getParameter(DEAL_NAGASHIMANGAN,0)!=0)           //~van1I~
+			TestOption.option5|=TO5_NAGASHIMANGAN;                 //~van1I~
+        else                                                       //~van1I~
+			TestOption.option5&=~TO5_NAGASHIMANGAN;                //~van1I~
+        if (Pprop.getParameter(DEAL_OPENREACHRON,0)!=0)            //~van1I~
+			TestOption.option5|=TO5_OPENREACHRON;                  //~van1I~
+        else                                                       //~van1I~
+			TestOption.option5&=~TO5_OPENREACHRON;                 //~van1I~
         if (Pprop.getParameter(DEAL_CHANTA,0)!=0)                  //~vad5I~
 			TestOption.option5|=TO5_DEAL_CHANTA;                   //~vad5I~
         else                                                       //~vad5I~
@@ -1083,6 +1121,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option3|=TO3_DEAL_DOUBLERUN_CHII;           //~va66I~
         else                                                       //~va66I~
 			TestOption.option3&=~TO3_DEAL_DOUBLERUN_CHII;          //~va66I~
+        if (Pprop.getParameter(LANG_KO,0)!=0)                      //~van1I~
+			TestOption.option5|=TO5_LANG_KO;                       //~van1I~
+        else                                                       //~van1I~
+			TestOption.option5&=~TO5_LANG_KO;                      //~van1I~
                                                                    //~va66I~
         TestOption.ioerr=Pprop.getParameter(SUSPEND_IOERR,0);      //~v@@@I~
                                                                    //~v@@@I~
@@ -1124,6 +1166,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(RON_TEST,cbRon_Test.getStateInt());    //~v@@@I~
         changed+=updateProp(DUMP_SDCARD,cbDumpSDCard.getStateInt());//~0A08I~
         changed+=updateProp(DUMP_NO,cbDumpNo.getStateInt());       //~vaihI~
+        changed+=updateProp(LANG_KO,cbLangKO.getStateInt());       //~van1I~
         changed+=updateProp(RONVALUE_TEST,cbRonValue_Test.getStateInt());//~0A02R~
         changed+=updateProp(RONVALUE_NODORA,cbRonValue_NoDora.getStateInt());//~0A08I~
         changed+=updateProp(CHKRANK,cbChkRank.getStateInt());      //~0A16I~
@@ -1138,6 +1181,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DORA_UPNUMBER,Integer.valueOf(etDoraUpNumber.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANDOWNTYPE,Integer.valueOf(etKanDownType.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANDOWNNUMBER,Integer.valueOf(etKanDownNumber.getText().toString()));//~0A12I~
+        changed+=updateProp(CONTINUE_STICK,Integer.valueOf(etCtrContinueStick.getText().toString()));//+van1I~
+        changed+=updateProp(CONTINUE_WIN,Integer.valueOf(etCtrContinueWin.getText().toString()));//+van1I~
         changed+=updateProp(DORA_KANUPTYPE,Integer.valueOf(etKanUpType.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANUPNUMBER,Integer.valueOf(etKanUpNumber.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANDOWNTYPE2,Integer.valueOf(etKanDownType2.getText().toString()));//~0A12I~
@@ -1150,6 +1195,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(SKIPDICE,cbSkipDice.getStateInt());    //~v@@@I~
         changed+=updateProp(TAKEDISCARD,cbTakeDiscard.getStateInt());//~v@@@I~
         changed+=updateProp(DRAWNREQDLG_LAST,cbDrawnReqDlg_Last.getStateInt());//~v@@@I~
+        changed+=updateProp(DRAWNREQDLG_LASTDIALOG,cbDrawnReqDlg_LastDialog.getStateInt());//~van1I~
         changed+=updateProp(SHOWF2,cbShowF2.getStateInt());        //~v@@@I~
         changed+=updateProp(FINAL_GAME,cbFinalGame.getStateInt()); //~v@@@I~
         changed+=updateProp(INITIAL_POSITION,cbSetPosition.getStateInt());//~va66I~
@@ -1209,6 +1255,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DEAL_TANYAO_PON,cbDealTanyaoPon.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_CHANTA_PON,cbDealChantaPon.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_AVOID_FURITEN,cbDealAvoidFuriten.getStateInt());//~vaihI~
+        changed+=updateProp(DEAL_NAGASHIMANGAN,cbNagashiMangan.getStateInt());//~van1R~
+        changed+=updateProp(DEAL_OPENREACHRON,cbOpenReachRon.getStateInt());//~van1R~
         changed+=updateProp(DEAL_CHANTA,cbDealChanta.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_STRAIGHT_CHII,cbDealStraightChii.getStateInt());//~vad5I~
         changed+=updateProp(DEALATODUKETAKEYAKUHAI,cbDealAtodukeTakeYakuhai.getStateInt());//~va66I~

@@ -1,5 +1,6 @@
-//*CID://+vaauR~: update#= 576;                                    //~vaauR~
+//*CID://+vap0R~: update#= 578;                                    //~vap0R~
 //**********************************************************************//~v101I~
+//2022/07/17 vap0 shuffle by Randomizing, try 34*4 for base        //+vap0R~
 //2021/07/08 vaau split test deal to TilesTest.java                //~vaauI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -56,6 +57,7 @@ public class Tiles                                 //~v@@@R~
     private int posNextTile,posCurrentTile;                        //~v@@@I~
     private boolean swPendingOpen;                                 //~v@@5I~
     private TilesTest aTilesTest;                                  //~vaauI~
+    private boolean swShuffle136=true;                             //~vap0I~
     //*********************************************************************//~v@@@I~
     public Tiles()                                                 //~v@@@R~
     {                                                              //~0914I~
@@ -73,9 +75,9 @@ public class Tiles                                 //~v@@@R~
         if (Dump.Y) Dump.println("Tiles.init posNextTile="+posNextTile);//~9225I~
       	if (AG.isDebuggable)                                       //~vaauI~
         {                                                          //~vaauI~
-          if (TestOption.aTilesTest!=null)                         //+vaauI~
-		    aTilesTest=TestOption.aTilesTest;                      //+vaauI~
-          else                                                     //+vaauI~
+          if (TestOption.aTilesTest!=null)                         //~vaauI~
+		    aTilesTest=TestOption.aTilesTest;                      //~vaauI~
+          else                                                     //~vaauI~
 	        aTilesTest=new TilesTest();                            //~vaauI~
             aTilesTest.init(this);                                 //~vaauI~
         }                                                          //~vaauI~
@@ -230,7 +232,17 @@ public class Tiles                                 //~v@@@R~
 //          for (int ii = 0; ii < PIECE_TILECTR; ii++)                   //~v@@@R~//~1315R~
             for (;;)                                               //~1315I~
             {                                                      //~v@@@R~
-                int jj = Utils.getRandom(typectr);   //max 34-1        //~v@@@R~//~v@@5R~//~9C01R~
+//              int jj = Utils.getRandom(typectr);   //max 34-1        //~v@@@R~//~v@@5R~//~vap0R~
+                int jj;                                            //~vap0I~
+              if (swShuffle136)                                    //~vap0I~
+              {                                                    //~vap0I~
+                jj=Utils.getRandom(typectr*PIECE_DUPCTR);   //max 34-1//~vap0I~
+                jj/=PIECE_DUPCTR;                                  //~vap0I~
+              }                                                    //~vap0I~
+              else                                                 //~vap0I~
+              {                                                    //~vap0I~
+                jj = Utils.getRandom(typectr);   //max 34-1        //~vap0I~
+              }                                                    //~vap0I~
                 if (Dump.Y) Dump.println("Tiles.shuffle rand="+jj);//~v@@@I~//~v@@5R~
                 TileData td = al.get(jj);                            //~v@@@R~
                 td.ctrRemain--;                                    //~v@@@R~

@@ -1,5 +1,7 @@
-//*CID://+vaidR~:                             update#=  565;       //+vaidR~
+//*CID://+vaqfR~:                             update#=  570;       //+vaqfR~
 //*****************************************************************//~v101I~
+//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//+vaqfI~
+//2022/08/21 vaqe (Bug of vae6)chk delatable suspended rulefile at gameover whether other game use it or not.//~vaqeI~
 //2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
 //2021/12/24 vaid Toast if Scoped file already exists.             //~vaidI~
 //2021/09/16 vae6 (Bug)rule file of interrupted game(.sg.rulefile) should be deleted at gameover(normal end or suspended)//~vae6R~
@@ -121,6 +123,7 @@ public class History                                               //~9614R~
     	String txt=makeHistoryData(Pfnm,Paccountnames,Pscores);    //~9826I~
         boolean rc=writeFile(fpath,txt);                                      //~9614I~//~9615R~
         deleteSuspendedRuleFile();                                 //~vae6R~
+        deleteResumeGameStarted();                                 //+vaqfI~
     }                                                              //~9613I~
 	//**********************************                           //~9823I~
 	//*GameOver by suspend                                         //~9824I~
@@ -137,6 +140,7 @@ public class History                                               //~9614R~
     	String txt=makeHistoryData(Pfnm,Paccountnames,Pscores);    //~9826I~
         boolean rc=writeFile(fpath,txt);                           //~9823I~
         deleteSuspendedRuleFile();                                 //~vae6R~
+        deleteResumeGameStarted();                                 //+vaqfI~
     }                                                              //~9823I~
 	//**********************************                           //~9824I~
 	//*Save for restart by suspend                                 //~9824I~
@@ -153,6 +157,7 @@ public class History                                               //~9614R~
         String fpath=UFile.makeFullpath(pathHistory,Pfnm,EXT_HISTORY);//~9826I~
     	String txt=makeHistoryData(Pfnm,Paccountnames,Pscores)+"\n"+scoreToStringInterrupted(Pscores);//~9826I~
         boolean rc=writeFile(fpath,txt);                           //~9824I~
+        deleteResumeGameStarted();                                 //+vaqfI~
     }                                                              //~9824I~
 	//**********************************                           //~9825I~
 	//*from HistoryDlg static received()                           //~9825I~
@@ -184,6 +189,7 @@ public class History                                               //~9614R~
         }                                                          //~9825I~
     	String txt=makeHistoryData(Phd);                           //~9825I~
         boolean rc=writeFile(fpath,txt);                           //~9825I~
+        deleteResumeGameStarted();                                 //+vaqfI~
         UView.showToast(Utils.getStr(R.string.Info_FileWritten,fpath));//~9825I~
         return rc;                                                 //~9828I~
     }                                                              //~9825I~
@@ -466,6 +472,11 @@ public class History                                               //~9614R~
 		if (Dump.Y) Dump.println("History.deleteSuspendedRuleFile fpath="+fpath);//~vae6R~
         if (fpath==null)                                           //~vae6R~
         	return;                                                //~vae6R~
+        if (isSharedRuleFile(fpath))                               //~vaqeI~
+        {                                                          //~vaqeI~
+			if (Dump.Y) Dump.println("History.deleteSuspendedRuleFile return by shared");//~vaqeI~
+            return;                                                //~vaqeI~
+        }                                                          //~vaqeI~
         if (swScoped)                                              //~vae6R~
         {                                                          //~vae6R~
 		    deleteSuspendedRuleFileScoped(fpath);                  //~vae6R~
@@ -491,6 +502,12 @@ public class History                                               //~9614R~
 		if (Dump.Y) Dump.println("History.deleteSuspendedRuleFileScoped fpath="+Pfpath);//~vae6R~
     	AG.aUScoped.deleteDocument(Pfpath);                        //~vae6R~
     }                                                              //~vae6R~
+	//************************************************************ //+vaqfI~
+    public void deleteSuspendedGameFileScoped(String Pfpath)       //+vaqfI~
+    {                                                              //+vaqfI~
+		if (Dump.Y) Dump.println("History.deleteSuspendedGameFileScoped fpath="+Pfpath);//+vaqfI~
+    	AG.aUScoped.deleteDocument(Pfpath);                        //+vaqfI~
+    }                                                              //+vaqfI~
 	//************************************************************ //~9826I~
 	//*From SuspendDlg for Suspend.interrupted                     //~9826I~
 	//************************************************************ //~9826I~
@@ -748,4 +765,91 @@ public class History                                               //~9614R~
 		if (Dump.Y) Dump.println("History.makePathHistoryForScoped path="+Ppath+",pathHistory="+pathHistory+",swSD="+swSD+",rc="+rc);//~vaieI~
         return rc;                                                 //~vaieI~
     }                                                              //~vaieI~
+	//************************************************************ //~vaqeI~
+    private boolean isSharedRuleFile(String Ppath)                 //~vaqeI~
+    {                                                              //~vaqeI~
+		if (Dump.Y) Dump.println("History.isSharedRuleFile path="+Ppath);//~vaqeI~
+		if (Dump.Y) Dump.println("History.isSharedRuleFile AG.resumeHD="+AG.resumeHD);//~vaqeI~
+        int pos=Ppath.lastIndexOf("/");                            //~vaqeI~
+		if (Dump.Y) Dump.println("History.isSharedRuleFile lastIndexOf="+pos);//~vaqeI~
+        if (pos<0)                                                 //~vaqeI~
+        {                                                          //~vaqeI~
+        	return false;                                          //~vaqeI~
+        }                                                          //~vaqeI~
+        int pos2=Ppath.indexOf(".",pos);                           //~vaqeI~
+        if (pos2<pos)                                              //~vaqeI~
+        {                                                          //~vaqeI~
+        	return false;                                          //~vaqeI~
+        }                                                          //~vaqeI~
+        String fnm=Ppath.substring(pos+1,pos2);                    //~vaqeR~
+		if (Dump.Y) Dump.println("History.isSharedRuleFile fnm="+fnm);//~vaqeI~
+        int ctr=getCtrRuleFileShared(fnm);                         //~vaqeI~
+        boolean rc=ctr>1;                                          //~vaqeI~
+		if (Dump.Y) Dump.println("History.isSharedRuleFile rc="+rc);//~vaqeI~
+        return rc;                                                 //~vaqeI~
+    }                                                              //~vaqeI~
+    //****************************************************************//~vaqeI~
+    private int getCtrRuleFileShared(String Pfnm)                  //~vaqeI~
+    {                                                              //~vaqeI~
+        if (Dump.Y) Dump.println("History.getCtrRuleFileShared Pfnm="+Pfnm);//~vaqeI~
+        int ctr=0,ctrShared=0;;                                    //~vaqeI~
+    	for (Map.Entry<String,HistoryData> entry:HDMap.entrySet()) //~vaqeI~
+        {                                                          //~vaqeI~
+        	HistoryData hd=entry.getValue();                       //~vaqeI~
+            ctr++;                                                 //~vaqeI~
+		    if (Dump.Y) Dump.println("History:getCtrRuleFileShared ctr="+ctr+",swComplete="+hd.swComplete+",hd="+hd);//~vaqeR~
+        	if (hd.swComplete)                                     //~vaqeI~
+            {                                                      //~vaqeI~
+            	continue;                                          //~vaqeI~
+            }                                                      //~vaqeI~
+            String fnm=hd.HD[HDPOS_HDR][POS_RULEID];
+            int pos=fnm.lastIndexOf(":");                          //~vaqeI~
+            if (pos<0)                                             //~vaqeI~
+            	continue;                                          //~vaqeI~
+            fnm=fnm.substring(pos+1);                              //~vaqeI~
+            if (fnm.equals(Pfnm))                                  //~vaqeI~
+            	ctrShared++;                                       //~vaqeI~
+		    if (Dump.Y) Dump.println("History:getCtrRuleFileShared ctrShared="+ctrShared+",fnm="+fnm+",Pfnm="+Pfnm);//~vaqeI~
+        }                                                          //~vaqeI~
+		if (Dump.Y) Dump.println("History:getCtrRuleFileShared exit ctrShared="+ctrShared);//~vaqeI~
+        return ctrShared;                                          //~vaqeI~
+    }                                                              //~vaqeI~
+    //****************************************************************//+vaqfI~
+    private void deleteResumeGameStarted()                         //+vaqfI~
+    {                                                              //+vaqfI~
+	    HistoryData hd=AG.resumeHD_Resumed;                           //+vaqfI~
+		if (Dump.Y) Dump.println("History:deleteResumeGameStarted resumedHD_Resumed="+hd);//+vaqfI~
+        if (hd==null)                                              //+vaqfI~
+        	return;                                                //+vaqfI~
+        String fnm=hd.HD[HDPOS_HDR][POS_TIMESTAMP];                   //+vaqfI~
+		if (Dump.Y) Dump.println("History:deleteResumeGameStarted fnm="+fnm);//+vaqfI~
+        deleteSuspendedGameFile(fnm);                              //+vaqfI~
+    }                                                              //+vaqfI~
+	//************************************************************ //+vaqfI~
+    private void deleteSuspendedGameFile(String Pfnm)               //+vaqfI~
+    {                                                              //+vaqfI~
+		if (Dump.Y) Dump.println("History.deleteSuspendedGameFile fnm="+Pfnm);//+vaqfI~
+        String fpath=UFile.makeFullpath(pathHistory,Pfnm,EXT_HISTORY);//+vaqfI~
+		if (Dump.Y) Dump.println("History.deleteSuspendedGameFile fpath="+fpath);//+vaqfI~
+        if (fpath==null)                                           //+vaqfI~
+        	return;                                                //+vaqfI~
+        if (swScoped)                                              //+vaqfI~
+        {                                                          //+vaqfI~
+		    deleteSuspendedGameFileScoped(fpath);                  //+vaqfI~
+            return;                                                //+vaqfI~
+        }                                                          //+vaqfI~
+        try                                                        //+vaqfI~
+        {                                                          //+vaqfI~
+            File f=new File(fpath);                                //+vaqfI~
+            if (f.exists())                                        //+vaqfI~
+            	f.delete();                                        //+vaqfI~
+            else                                                   //+vaqfI~
+				if (Dump.Y) Dump.println("History.deleteSuspendedGameFile Not Exist fpath="+fpath);//+vaqfI~
+		}                                                          //+vaqfI~
+		catch (Exception e)                                        //+vaqfI~
+		{                                                          //+vaqfI~
+			Dump.println(e,"History.deleteSuspendedGameFile fnm="+Pfnm+",fpath="+fpath);//+vaqfI~
+		}                                                          //+vaqfI~
+		if (Dump.Y) Dump.println("History.deleteSuspendedGameFile exit fpath="+fpath);//+vaqfI~
+    }                                                              //+vaqfI~
 }//class                                                           //~v@@@R~

@@ -2,7 +2,8 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.21</string>
+    <string name="app_version">v1.23</string>
+    <string name="app_MinVersion">v1.23</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -147,7 +148,7 @@
     <string name="Helpfile_Main">Main</string> 
     <string name="Title_Help_Main">Overview</string>
     <string name="Qexit">Exit confirmation</string>
-    <string name="ErrMixedRole">You could not change role of Server/Client. Disconnect all connection, the try new connection.</string>
+    <string name="ErrMixedRole">You could not change role of Server/Client. Disconnect all connection, close dialog then try new connection.</string>
     <string name="ErrMemberOverflow">Max count of client is %1$d.</string>
     <string name="ModeServer">Server</string>
     <string name="ModeClent">Client</string>
@@ -189,7 +190,8 @@
     <string name="Err_ReloadNotInterrupted">Select a suspended game for \"Restart\".</string>
     <string name="Err_ReloadNooneConnected">No connection.</string>
     <string name="Err_HistoryNotSameMembers">Member connected now is not all same as the record\'s one.</string>
-    <string name="Err_HistoryIsTrainingMode">The history data is "play alone" mode, try after disconnected all connection.</string>
+    <string name="Err_HistoryIsTrainingMode">The history data is \"play alone\" mode, try after disconnected all connection.</string>
+    <string name="Err_HistoryIsTrainingMode_NotYou">The history is \"play alone\" mode, but player name(%1$s) is not you(%2$s).</string>
     <string name="Err_ReloadDataErr">The records contains error.</string>
     <string name="Err_ReloadDataErrReceived">Record received from %1$s contains error.</string>
     <string name="Err_AlreadyFileExists">It is already exists, could not save to\
@@ -269,7 +271,7 @@
 											</string>
     <string name="Alert_FinalGameDlgForceOK">Received \"NG\" for \"On FinalHand\".
 											To proceed the game,\
-											1. Press \"Cancel\", then press \"Send\" again to get \"OK\" by the new dialog popup.\
+											1. Press \"Cancel\", then press \"Gameover\" or \"Continue\" again to get \"OK\" by the new dialog popup.\
                                             OR,\
 											2. Press \"OK\", then press \"Fix\" to force the decision.
 											</string>
@@ -294,7 +296,8 @@
 											</string>
     <string name="Alert_CompleteDlg_NGCompReqDlg">Received \"NG\" for \"Win Claim\",\
     						                      Ask to the winner to \"Send\" \"Win Claim\" again.\
-    						                      Or \"Send\" with setting of \"Invalid\" or \"Error\".
+    						                      Or \"Send\" with setting of \"Invalid\" or \"Error\".\
+                                                  If you are winner, close this dialog and push "Score" button.
 											</string>
     <string name="Alert_CompleteDlgForceOK">Received \"NG\" for \"End-of-Hand\" call.
 											To proceed game,\
@@ -307,14 +310,14 @@
 											3. Press \"OK\", then Press \"Fix\" to force End-of-Hand.
 											</string>
     <string name="Info_CompleteDlgForceOK">Forced End-of-Hand by the dealer</string>
-    <string name="Alert_DrawnLastNGForceOK">Received \"NG\" for the \"AbortiveDraw Claim\".
+    <string name="Alert_DrawnLastNGForceOK">Received \"NG\" for the \"ExhaustiveDraw Claim\".
 											To proceed the game,\
 											1. Press \"Cancel" on this and the dialog behind, 
-											ask to the claimer to \"Send\" again "AbortiveDraw Claim".\
+											ask to the claimer to \"Send\" again \"ExhaustiveDraw Claim\".\
                                             OR,\
 											2. Press \"Cancel\", then \"Send\" again to get \"OK\" on the new dialog popup.\
                                             OR,\
-											3. Press \"OK\", then press \"Fix\" to force proceed AbortiveDraw.
+											3. Press \"OK\", then press \"Fix\" to force proceed ExhaustiveDraw.
 											</string>
     <string name="Err_ResumeDlgNG">Received \"NG\" for \"ResumeSuspended Confirmation\",\
 											You can ask again.
@@ -323,7 +326,8 @@
     <string name="Title_CompleteDlgResp">End-of-Hand Response</string>
     <string name="Title_CompReqDlg">Win Claim</string>
     <string name="Title_DrawnReqDlgLast">ExhaustiveDraw Claim</string>
-    <string name="Desc_DrawnReqDlgLast">NoTen or Tenpai radioButton status is set without considering Psude-Tenpai/2-han-constraint setting. Change it if required referencing \"Related\" rules.</string>
+    <string name="Desc_DrawnReqDlgLast">If Noten, confirm Psude-Tenpai settings by \"Related\".</string>
+    <string name="Desc_ReasonNoten">Reason of Noten：</string>
     <string name="Title_DrawnReqDlgHW">AbortiveDraw Claim</string>
     <string name="Title_DrawnDlgHW">AbortiveDraw Confirmation</string>
     <string name="Title_DrawnDlgLast">ExhaustiveDraw Confirmation</string>
@@ -337,7 +341,7 @@
     <string name="Title_CompNotenDlg">Drawn hand</string>
     <string name="CompDlg_Gainer">Player:%1$s（%2$s）</string>
     <string name="Err_NowShowingTheDlg">Now showing</string>
-    <string name="NormalGain">Winning points</string>
+    <string name="NormalGain">Winning pts</string>
     <string name="AbnormalGain">Chombo</string>
     <string name="NormalGainPao">Pao</string>
     <string name="LabelReachers">Riichi</string>
@@ -384,7 +388,7 @@
     <string name="Label_Minus0">Also when score=0</string>
     <string name="Label_MinusPay">Negative score</string>
     <string name="Label_MinusPayYes">Pay for negative</string>
-    <string name="Label_MinusPayNoGetPointAll">return after placing</string>
+    <string name="Label_MinusPayNoGetPointAll">Return after placing</string>
     <string name="Label_MinusPayNoGetPointLimited">Limit winner\'s point</string>
     <string name="Label_MinusGain">Tobi prize</string>
     <string name="Label_Payer">Payer</string>
@@ -393,16 +397,18 @@
     <string name="NotAgreed">Inv.</string>
     <string name="Agreed">Agreed</string>
     <string name="NoGame">DrawWithNotTenpai</string>
-    <string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.\n
+    <!--string name="Label_ReachLimit">Could not declare Riichi if you have no tile to draw at near of the exhaustive draw, or Riichi deposit bankrupt you.\n
 \"Furiten Riichi\" option is effective only when \"Confirm Tenpai\" of Oper setting is ON.
-When missed to call Ron after Riichi, you can not get win even by Draw. Allow Riichi even when winning tiles is empty(all exposed).</string>
+When missed to call Ron after Riichi, you can not get win even by Draw. Allow Riichi even when winning tiles is empty(all exposed).</string-->
+    <string name="Label_ReachLimit">\"Furiten Riichi\" option is effective only when \"Confirm Tenpai\" of Operation setting is ON.</string>
     <string name="Label_ReachLimitOpen">When discarded for OpenRiichi</string>
     <string name="Label_ReachLimitOpenYakuman">Pay Yakuman</string>
-    <string name="Label_ReachLimitOpenChombo">Continue as Chombo</string>
+    <!--string name="Label_ReachLimitOpenChombo">Continue as Chombo</string-->
+    <string name="Label_ReachLimitOpenChombo">Warning</string>
     <string name="Label_ReachLimitOpenRobot">OpenRiichi for robot game</string>
-    <string name="Label_ReachLimitOpenRobotNone">Disable</string>
-    <string name="Label_ReachLimitOpenRobotSkip">Ignore the discard.</string>
-    <string name="Label_ReachLimitOpenRobotNormal">Pay usually.</string>
+    <string name="Label_ReachLimitOpenRobotNone">No</string>
+    <string name="Label_ReachLimitOpenRobotSkip">Ignore the Robot\'s discard.</string>
+    <string name="Label_ReachLimitOpenRobotNormal">Robot pays usually.</string>
     <!--string name="Label_OpenReachRon">Pay Yakuman for OpenRiichi-er\'s ron</string-->
     <string name="Label_Drawn99Tile">9-9Tile</string>
     <string name="Label_Drawn3Ron">3Win</string>
@@ -416,11 +422,12 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_DrawnManganAsDrawn">Draw</string>
     <!--string name="Label_DrawnManganDropBird">RemoveChicken</string-->
     <!--string name="Label_DrawnManganMulti">Allow multiple. No point by CounterStick, RiichiBeds is left. Score is calculated at first paying the point then penalty of NotTenpai, which determines BankruptPrize gainer, if multiple, BankruptPrize is given by HeadBump rule.</string-->
-    <string name="Desc_DrawnMangan">a Drawn: Pay Noten penalty, leave Riichi beds, no additional CounterStick, rotate dealer if dealer is Noten.\n
+    <!--string name="Desc_DrawnMangan">a Drawn: Pay Noten penalty, leave Riichi beds, no additional CounterStick, rotate dealer if dealer is Noten.\n
 									a Win: No Noten penalty, remove Yakitori mark, apply Split rule, stay dealer if dealer win.\n
 									In both case Multiple Ron setting is applied. HeadBump means nearest to East wind position.
 									When Tobi occurred, Tobi prize player is  determined by the paying point of NagashiMangan then Noten penalty each from nearest position to the dealer.
-									Triple Ron rule is not applied.</string>
+									Triple Ron rule is not applied.</string-->
+    <string name="Desc_DrawnMangan">Specify option of NagashiMangan(See Help) and the value of NagashiMangan.</string>
     <string name="Label_DrawnManganPending">Tenpai+NagashiMangan</string>
     <string name="Label_DrawnNoManganPendingByEswn">HeadBump</string>
     <string name="Label_DrawnOther">Others</string>
@@ -843,7 +850,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <!--string name="Alert_DrawnHWNG">Received \"NG\" for \"AbortiveDraw Confirmation\".</string-->
     <string name="Alert_DrawnHWNGForceOK">Received \"NG\" for \"AbortiveDraw Confirmation\".\
 											To proceed game,\
-											1. Press \"Cancel\", press \"Close\" on the dialog behind, then ask to the claimer to \"Send\" again \"AbortiveDraw Claim\".\
+											1. Press \"Cancel\", press \"Cancel\" on the dialog behind, then ask to the claimer to \"Send\" again \"AbortiveDraw Claim\".\
                                             OR,\
 											2. Press \"Cancel\", press \"Send\" again to get \"OK\" for new dialog popup.\
                                             OR,\
@@ -1021,8 +1028,9 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Info_ResyncRuleAtFirst">The rule is not agreed, Server(%1$s) send rule file.</string>
     <string name="Info_ResyncRuleClientChanged">Client (%1$S) changed rule. Getting Agreement required anew.</string>
     <string name="Info_ResyncRuleServerChanged">This device is server, send the rule because it is updated.</string>
-    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\". \"Send\" is required.</string>
+    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\". Re-\"Send\" is required.</string>
     <string name="Err_RuleIsInitial">Rule is not established yet. Press \"Settings\".</string>
+    <string name="Err_RuleIsInitialMsg">Rule is not established yet. Press \"Settings\", \"RuleSettings\", then close the dialog by \"OK\".</string>
     <string name="Info_ResyncRuleChkOK">Rule was synchronized, game will start.</string>
     <string name="Info_RuleSynchedAlready">Rule is synchronized with %1$d players, no send required.</string>
     <string name="Info_BlockTimeout">Timeout of \"Wait!\"</string>
@@ -1069,7 +1077,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
 						</string>
     <string name="Desc_CheckRonable">Furiten not checked.</string>
     <string name="Desc_CheckRonValue">You can correct score on Dialog.</string>
-    <string name="Desc_CheckReach">Check your hand is ready to win or not.</string>
+    <string name="Desc_CheckReach">At Riichi called, check Tenpai, Furiten and 2-han constraint environment.</string>
     <string name="Label_S2P">Fraction</string>
     <string name="Label_RankMUp">Rounded Mangan</string>
     <string name="Desc_RankMUp">(30fu4han and 60fu3han is Mangan）</string>
@@ -1157,14 +1165,16 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_YakuList">Yaku</string>
     <string name="Label_Operation">Oper</string>
     <string name="Label_8Continue">8 consecutive win</string>
-    <string name="Label_8ContDealer">All as dealer</string>
+    <string name="Label_8ContDealer">8 times as dealer</string>
+    <string name="Label_9ContDealer">9 times as dealer</string>
     <string name="Label_8ContOnePlayer">Start may be non-dealer</string>
-    <string name="Label_8ContStick">Dealers\'s win when counter=8</string>
-    <string name="Label_8ContStickAnyOne">Any win when counter=8</string>
+    <string name="Label_8ContStick">Dealer\'s win when 8 sticks</string>
+    <string name="Label_8ContStickAnyOne">Anyone win when 8 sticks</string>
     <string name="Label_8ContNoNeedYaku">Apply 1/2-han constraint</string>
-    <string name="Label_8ContReset">Reset counter</string>
+    <string name="Label_8ContReset">Next is +8</string>
     <string name="Label_8ContMulti">Combinable</string>
-    <string name="Desc_8Continue">Consecutive counter is shown around the dice. Completion is confirmed by it or counterStick. \"Combinable\" allow multiple Yakuman if the win itself has worth of Yakuman. If \"Reset counter\" is On, next is (16th hand)/(16 CounterStick). If Off, chance of this Yakuman continues.</string>
+    <!--string name="Desc_8Continue">Consecutive counter is shown around the dice. Completion is confirmed by it or counterStick. \"Combinable\" allow multiple Yakuman if the win itself has worth of Yakuman. If \"Reset counter\" is On, next is (16th hand)/(16 CounterStick). If Off, chance of this Yakuman continues.</string-->
+    <string name="Desc_8Continue">Also set \"Evaluate Point\" and \"Check 1-han constraint\" option.</string>
     <string name="Label_YakuFix">Fix Yaku</string>
     <string name="Label_YakuFixFirst">First only</string>
     <string name="Label_YakuFixLast">Finally</string>
@@ -1210,22 +1220,27 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
 				&lt;/span&gt;
 					 are checked depending Setting option of \"Evaluate Point by APP\" etc.
 		</string-->
-    <string name="Desc_YakuStatementOnly">This is basically note of rule, items with 
+    <!--string name="Desc_YakuStatementOnly">This is basically note of rule, items with 
 				&lt;span style="background-color:#80ff80;"&gt;
 					dark green
 				&lt;/span&gt;
 					are checked by this App.
-		</string>
+		</string-->
+    <string name="Desc_YakuStatementOnly"></string>
     <string name="Label_Kuitan">Kuitan</string>
     <string name="Label_DoublePillow">By Wind+Round, 4 fu for Pair</string>
     <string name="Label_PendingRank0">Psuedo-Tenpai</string>
-    <string name="Label_PendingRankNo">None all</string>
+    <string name="Label_PendingRankNo">Disable Psuedo-Tenpai</string>
     <string name="Label_PendingRankEmpty">Empty OK</string>
     <string name="Label_PendingRankFuriten">Furiten OK</string>
+    <string name="Label_PendingRankFixMulti">Fix finally and Kataagari OK</string>
     <string name="Label_PendingRank0OK">0-han OK</string>
-    <string name="Label_PendingRank2">2-han constraint</string>
-    <string name="Label_PendingRank2Fix1">2-han possibility</string>
-    <string name="Desc_PendingRank2Fix1">(conditionally 1-han)</string>
+    <string name="Label_PendingRank1">1-han constraint</string>
+    <string name="Label_PendingRank2">When 2-han constraint</string>
+    <string name="Label_PendingRank2Fix1">1-han required</string>
+    <string name="Label_PendingRank2Fix2">2-han required</string>
+    <string name="Desc_PendingRank2Fix1">(more 1 han if \"0-han OK\" for 1-han constraint)</string>
+    <string name="Desc_PendingRank2">(when \"2-han constraint\" is set bellow)</string>
     <string name="Label_PinfuTaken">Pinfu by Draw</string>
     <string name="Label_Yaku7Pair">7 pairs</string>
     <string name="Label_Yaku7Pair50_1">50-fu 1-han</string>
@@ -1487,6 +1502,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
         <item>4 Triples for 1 Tile</item>     <!--=RYAKU_YAKUMAN+18;     //4anko tank           -->
         <item>13 Orphans 13Win</item>        <!--=RYAKU_YAKUMAN+19;   //kokushi 13wait          -->
         <item>9 Gates for 9</item>                  <!--=RYAKU_YAKUMAN+20;  //13poto           -->
+        <item>OpenReach Ron</item>            <!--=RYAKU_YAKUMAN+21;  //discarded ron tile to OpenReach-->
 	</string-array>
 
     <string name="ShowYaku">Details</string>
@@ -1552,7 +1568,8 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Desc_ShowAnywayBtn">Use to call win for irregular pattern except \"7 pairs\"、\"13 Orphans\". Or used when you may not agree on APP\'s decision for violation of Furiten and Fix-First.</string>
     <string name="Err_BS_NotCompleteSelected">Select a game overed.</string>
     <string name="Err_BSMultipleSelected">Select only one game.</string>
-    <string name="AE_FuritenReach">Furiten Riichi</string>
+    <string name="AE_FuritenReach">Furiten Riichi, option rejects it.</string>
+    <string name="AE_FuritenReachOK">Furiten Riichi, option allows it, winnable by Self-Pick.</string>
 <!--
     <string name="Label_ChkMultiWait">Check \"Kata-Agari\" and \"Furiten\"</string>
     <string name="Desc_ChkMultiWait">Checked at \"Win\" is pushed. \"1-han constraint\" is also checked. You may select option of \"Yaku \"to show \"Win-A\" for the case you do not agree to APP\'s decision.
@@ -1637,6 +1654,7 @@ Reinstall this APP to try to set again.
     <string name="Label_YouTube">Video</string>
     <string name="Err_FuritenReach">Furiten-Riichi</string>
     <string name="Err_FuritenReachAfter">Missed-WinningTile</string>
+    <string name="Err_NoCheckPendingForReach">Caution：option \"Confirm Tenpai\" is \"No\".</string>
     <string name="Err_SelectOrientation">Setting orientation is not canceled on Client.</string>
     <string name="Info_RuleReceived_ChangeY">Rule received, change item is shown with different background color.</string>
     <string name="Info_RuleReceived_ChangeN">Rule received, no change exists but reply required.</string>
@@ -1647,4 +1665,40 @@ Reinstall this APP to try to set again.
     <string name="ZoomDown">ー</string>
     <string name="Err_TryFinalScoreFromServer">try after confirmed final score by \"Final score\" menu item on \"%1$s\".</string>
     <string name="Err_TryFinalGameForGameover">Final hand process is not completed, retry from menu item on \"%1$s\"</string>
+    <string name="BtnLangKO">hungle</string>
+	<string-array name="BtnLangHungleLabel"> 
+		<item>-&gt; en</item>
+		<item>-&gt; Hungle</item>
+		<item>-&gt; jp</item>
+	</string-array>
+    <string name="Err_NoHungleHtmlText">&lt;BR&gt;&lt;BR&gt;Sorry, no Hungle text prepared.
+&lt;BR&gt;
+죄송합니다. 준비된 한글 텍스트가 없습니다.
+&lt;BR&gt;&lt;BR&gt;</string>
+    <string name="Info_IgnoreRobotDiscardToOpenReach">Robot\'s Discard for OpenRiichi was ignored.</string>
+    <string name="Info_YakumanByHumanDiscardToOpenReach">Looser to OpenRiichi has to pay Yakuman.</string>
+    <string name="Warning_HumanDiscardToOpenReach_SelectOther">Discard to OpenRiichi, select the other.</string>
+    <string name="Warning_HumanDiscardToOpenReach_SelectOther_Kan">Chankan(Ron for Kan-Add) to OpenRiichi.</string>
+
+    <string name="Err_PsuedoPending_Not_Shanten0">Not a standard winning pattern</string>
+    <string name="Err_PsuedoPending_Empty">Empty winning tile</string>
+    <string name="Err_PsuedoPending_Furiten">Furiten</string>
+    <string name="Err_PsuedoPending_Furiten_Reach">Furiten-Riichi violation</string>
+    <string name="Err_PsuedoPending_Fix1">1-han constraint err</string>
+    <string name="Err_PsuedoPending_Fix2">2-han constraint err</string>
+    <string name="Err_PsuedoPending_Multiple">Kataagari err</string>
+    <string name="Err_PsuedoPending_Multiple_Fix2">Kataagari err in 2-han constraint</string>
+    <string name="Err_PsuedoPending_Fix">Fix Yaku(Middle,First) err</string>
+    <string name="Err_PsuedoPending_No_Option">option is \"Psuedo-Tenpai:None all\"</string>
+    <string name="Err_PsuedoPending_Tenpai">（Tenpai）</string>
+    <string name="Err_PsuedoPending_Unknown">Unknown Noten</string>
+    <string name="Alert_AppVersionUnmatch">Received \"RuleSettings\" and detected App-version unmatch.\n
+											( Received: %1$s, Minimum required: %2$s )\n
+											Re-install latest version.\n
+											</string>
+    <string name="Alert_AppVersionUnmatchHD">\"RuleSettings\" of the Record is too old.\
+											( Record: %1$s, Minimum required: %2$s )\
+											Do you want to force to resume from this file?\
+											</string>
+    <string name="Info_GameEndCanceled">\"Final score\" was canceled, reopen from menu.</string>
 </resources>

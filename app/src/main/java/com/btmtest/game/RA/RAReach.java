@@ -1,5 +1,17 @@
-//*CID://+vajdR~: update#= 219;                                    //~vajdR~
+//*CID://+vapxR~: update#= 297;                                    //~vapxR~
 //**********************************************************************
+//2022/08/11 vaq1 (Bug)Errmsg for multiple for 2han constraint condition//~vaq1R~
+//2022/08/06 vapx add Psuedo-Tennpai:No option                     //~vapxI~
+//2022/08/04 vapu PsuedoTenpai;simplify 0han ok or not(allow kataagari,fix last)//~vapuI~
+//2022/08/04 vapt PsuedoTenpai;allow kataagari,fix yaku err if furiten OK//~vaptI~
+//2022/08/03 vapq Psuedo tenpai; change 2-han constraint option to require 2-han regardless 0-han OK for 1-han constraint option.//~vapqI~
+//2022/08/03 vapp Psuedo tenpai; drop allNo(chk tenpai required for repeat/next round) and apply Fix Yaku,Kata-Agari err//~vappI~
+//2022/08/03 vapn allow furiten reach err as PsuedoTenpay          //~vapnI~
+//2022/07/30 vapk implements keishiki tenpai                       //~vapkI~
+//2022/07/30 vapj 7pair reach, select non valueword                //~vapjI~
+//2022/07/29 vapg reach by 7pair, skip reach if waiting dora       //~vapgI~
+//2022/07/24 vap8 furiten reach msg; change for furitenReachOK to notify dicardable and allow win by take//~vap8I~
+//2022/07/24 vap6 OpenReach Robot,chk furiten to allow to discard  //~vap6I~
 //2022/01/25 vajd (bug)FuritenReach err was not set for reach on client//~vajdI~
 //2022/01/19 vaj5 Not ronable when furiten even if taken if furitenreachoption=No//~vaj5I~
 //2022/01/19 vaj4 issue waring for furiten reach even if not reject option//~vaj2I~
@@ -31,6 +43,7 @@
 package com.btmtest.game.RA;
 import com.btmtest.R;
 import com.btmtest.TestOption;
+import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.game.ACAction;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Robot;
@@ -44,6 +57,7 @@ import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.RA.RAConst.*;                           //~va60I~
+import static com.btmtest.game.RA.RARon.*;
 import static com.btmtest.game.Tiles.*;
 
 import java.util.Arrays;
@@ -75,6 +89,24 @@ public class RAReach
     private boolean swNoChkEmpty;                                  //~va9dI~
     private int amtRonValue,amtMax,amtHanMax;                      //~vaajI~
     private boolean swErrFuritenReach;                                 //~vaj5I~
+    private boolean swEmptyOK,swFuritenOK,swRank0OK,swRank2Rank0OK;//~vapkR~
+    private boolean swRank2Rank1OK;                                //~vapuI~
+    private boolean swFixMultiOK;                                  //~vaptI~
+                                                                   //~vapkI~
+    public int errPsuedoPending;                                   //~vapkI~
+    public static final int ERR_PSUEDO_PENDING_NOT_SHANTEN0     =1;//~vapkR~
+    public static final int ERR_PSUEDO_PENDING_EMPTY            =2;//~vapkR~
+    public static final int ERR_PSUEDO_PENDING_FURITEN          =3;//~vapkR~
+    public static final int ERR_PSUEDO_PENDING_FURITEN_REACH    =4;//~vapkR~
+    public static final int ERR_PSUEDO_PENDING_FIX1             =5;//~vapkR~
+    public static final int ERR_PSUEDO_PENDING_FIX2             =6;//~vapkR~
+//  public static final int ERR_PSUEDO_PENDING_USER             =7;//~vapqR~//~vapxR~
+    public static final int ERR_PSUEDO_PENDING_MULTIPLE         =7; //kataagari err//~vapqI~
+    public static final int ERR_PSUEDO_PENDING_FIX              =8; //Fix 1st/middle err//~vapqI~
+//  public static final int ERR_PSUEDO_PENDING_NO_OPTION        =9;//~vapkR~//~vapxR~
+    public static final int ERR_PSUEDO_PENDING_UNKNOWN          =9;//~vapxI~
+    public static final int ERR_PSUEDO_PENDING_MULTIPLE_FIX2    =10; //kataagari err//~vapxI~
+    private int errMultiWait;                                      //~vaptI~
 //*************************
 	public RAReach()
     {
@@ -208,8 +240,9 @@ public class RAReach
                 {                                                  //~1122I~
         			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach pos="+pos+",v="+v+",old itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~
 	                itsHandValue[ii]+=DV_REACH+v;	//		         = 3000000;		//discard for reach//~1122R~//~1216R~//~1218R~
+        			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach add DV_REACH pos="+pos+",v="+v+",new itsHandValue["+ii+"]="+itsHandValue[ii]);//~vapgI~
 	                itsHandValue[ii]+=AG.aRADSEval.adjustByTileForReach(playerEswn,pos,ii,itsHand,ctrHand);	   //		//discard for reach//~va70R~
-        			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach new pos="+pos+",hanMAxMax="+hanMaxMax+",hanMax="+hanMax+",amtMax="+amtMax+",itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~//~vaajR~//~vaj2R~
+        			if (Dump.Y) Dump.println("RAReach.selectDiscard doReach adjustByTileForReach new pos="+pos+",hanMAxMax="+hanMaxMax+",hanMax="+hanMax+",amtMax="+amtMax+",itsHandValue["+ii+"]="+itsHandValue[ii]);//~1218I~//~1219R~//~vaajR~//~vapgR~
                     itsReachPos[ctrReachPos++]=pos;                //~1122R~
                     if (hanMaxMax<hanMax)                          //~1122I~
                     {                                              //~vaazI~
@@ -221,7 +254,8 @@ public class RAReach
                        		amtHanMax=amtMax;                      //~vaajI~
 			            if (evaluateWinListPosWait1!=-1)           //~vaazM~
                         {                                          //~vaazM~
-                        	if (ctrWait1<itsWait1.length)    //tanki list//~vaazM~
+//                      	if (ctrWait1<itsWait1.length)    //tanki list//~vapgR~
+                        	if (ctrWait1+3<=itsWait1.length)    //tanki list, for safety//~vapgI~
                             {                                      //~vaazM~
                             	itsWait1[ctrWait1++]=ii;	//idx,discard tile cause wait1//~vaazR~
                             	itsWait1[ctrWait1++]=evaluateWinListPosWait1;	//discard tile cause wait1//~vaazM~
@@ -263,11 +297,14 @@ public class RAReach
     }
     //***********************************************************************//~vaazI~
     //*itsWait1: (posDiscard+posWait1)*2                           //~vaazI~
+    //*rc=false:skip Reach                                         //~vapgR~
     //***********************************************************************//~vaazI~
 //  private void evaluateWait1()                                   //~vaazR~//~vaixR~
     private boolean evaluateWait1(int PplayerEswn)                 //~vaixI~
     {                                                              //~vaazI~
         if (Dump.Y) Dump.println("RAReach.evaluateWait1 ctrWait1="+ctrWait1+",itsWait1="+Arrays.toString(itsWait1));//~vaazR~
+        if (Dump.Y) Dump.println("RAReach.evaluateWait1 entry itsHandValue="+Utils.toString(itsHandValue));//~vapgR~
+        if (Dump.Y) Dump.println("RAReach.evaluateWait1 entry itsHandPos="+Utils.toString(itsHandPos));//~vapgI~
 //      if ((Pintent & INTENT_TANYAO)!=0)   //if tanyao/chanta,rank is up; chk under the same rank//~vaazR~
 //      {                                                          //~vaazR~
 //          if (Dump.Y) Dump.println("RAReach.evaluateWait1 return by Tanyao intent");//~vaazR~
@@ -288,14 +325,15 @@ public class RAReach
         boolean swTanyao2=RAUtils.isTanyaoTile(posWait2);            //~vaazI~
         int intent=RS.RSP[PplayerEswn].intent;                 //~vaixI~//~vaj2I~
         if (Dump.Y) Dump.println("RAReach.evaluateWait1 intent="+Integer.toHexString(intent));//~vaixI~//~vaj2I~
-	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 posWait1="+posWait1+",swTanyao1="+swTanyao1+",posWait2="+posWait2+",swTanyao="+swTanyao2);//~vaixI~
+	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 posWait1="+posWait1+",swTanyao1="+swTanyao1+",posWait2="+posWait2+",swTanyao2="+swTanyao2);//~vapgR~
+	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 idxDiscard1="+idxDiscard1+",idxDiscard2="+idxDiscard2);//~vapgI~
         if (!swTanyao1 && !swTanyao2)                              //~vaixI~
         {                                                          //~vaixI~
           if (!RADS.isDoraOpen(posWait1) && !RADS.isDoraOpen(posWait2))//~vaixI~
           {                                                        //~vaixI~
             if ((intent & INTENT_7PAIR)!=0 && (intent & INTENT_TANYAO)!=0)//~vaixI~
             {                                                      //~vaixI~
-	    	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 return false tanyao 7pair and wait1/2 is both not tanyao");//~vaixI~//~vaiyR~
+	    	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 return false tanyao 7pair and wait1/2 is both not tanyao nand dora");//~vaixI~//~vapgR~
                 return false;                                      //~vaixI~
             }                                                      //~vaixI~
           }                                                        //~vaixI~
@@ -321,12 +359,37 @@ public class RAReach
                 }                                                  //~vaj2I~
             }                                                      //~vaj2I~
         }                                                          //~vaj2I~
-        if (totalWait1==0 || totalWait2==0 || totalWait1!=totalWait2)//~vaixI~
-        {                                                          //~vaixI~
-            if (Dump.Y) Dump.println("RAReach.evaluateWait1 return true by totalWait ctr");//~vaixI~
-            return true;                                           //~vaixI~
-        }                                                          //~vaixI~
+        if (Dump.Y) Dump.println("RAReach.evaluateWait1 totalWait1="+totalWait1+",totalWait2="+totalWait2);//~vap8I~
+//      if (totalWait1==0 || totalWait2==0 || totalWait1!=totalWait2)//~vapgR~
+//      {                                                          //~vapgR~
+//          if (Dump.Y) Dump.println("RAReach.evaluateWait1 return true(doReach) by totalWait ctr");//~vapgR~
+//          return true;                                           //~vapgR~
+//      }                                                          //~vapgR~
+        if (totalWait1==0 && totalWait2==0)                        //~vapgI~
+        {                                                          //~vapgI~
+            if (Dump.Y) Dump.println("RAReach.evaluateWait1 return false(skipReach) by totalWait ctr=empty");//~vapgI~
+            return false;                                          //~vapgI~
+        }                                                          //~vapgI~
+        if ((intent & INTENT_7PAIR)!=0)                            //~vapgI~
+        {                                                          //~vapgI~
+          	if (RADS.isDoraOpen(posWait1) || RADS.isDoraOpen(posWait2))//~vapgI~
+    	    {                                                      //~vapgI~
+        	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 return false(skip reach) by 7pair waiting dora");//~vapgR~
+            	return false;    //skip reach                      //~vapgR~
+        	}                                                      //~vapgI~
+        }                                                          //~vapgI~
         int idxAdd=-1;                                             //~vaazR~
+        if ((intent & INTENT_7PAIR)!=0 &&  (posWait1>=OFFS_WORDTILE && posWait2>=OFFS_WORDTILE))//~vapjI~
+        {                                                          //~vapjI~
+            int vw1=RAUtils.chkValueWordTile(posWait1,PplayerEswn);//~vapjI~
+            int vw2=RAUtils.chkValueWordTile(posWait2,PplayerEswn);//~vapjI~
+            if (vw1==0)                                            //~vapjI~
+                idxAdd=idxDiscard1;                                //~vapjI~
+            else                                                   //~vapjI~
+            if (vw2==0)                                            //~vapjI~
+                idxAdd=idxDiscard2;                                //~vapjI~
+        }                                                          //~vapjI~
+        else                                                       //~vapjI~
         if (posWait1>=OFFS_WORDTILE)                               //~vaazI~
         	idxAdd=idxDiscard1;                                    //~vaazR~
 	    else                                                       //~vaazI~
@@ -338,13 +401,15 @@ public class RAReach
         else                                                       //~vaazI~
         if (!swTanyao2)                                            //~vaazI~
         	idxAdd=idxDiscard2;                                    //~vaazR~
-	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 idxAdd1="+idxAdd);//~vaazR~
+	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 idxAdd="+idxAdd+",posWait="+(idxAdd==idxDiscard1?posWait1:posWait2));//~vap8R~
         if (idxAdd!=-1)                                            //~vaazR~
         {                                                          //~vaazI~
 		    if (Dump.Y) Dump.println("RAReach.evaluateWait1 old="+itsHandValue[idxAdd]);//~vaazR~
         	itsHandValue[idxAdd]+=DV_WAIT1_CHANTA;	//	        = 2000000;		//discard for reach//~vaazR~
 		    if (Dump.Y) Dump.println("RAReach.evaluateWait1 new="+itsHandValue[idxAdd]);//~vaazR~
         }                                                          //~vaazI~
+        if (Dump.Y) Dump.println("RAReach.evaluateWait1 exit itsHandValue="+Utils.toString(itsHandValue));//~vapgR~
+	    if (Dump.Y) Dump.println("RAReach.evaluateWait1 rc="+true);//~vapgR~
         return true;                                               //~vaixI~
     }                                                              //~vaazI~
     //***********************************************************************//~vaajI~
@@ -459,7 +524,7 @@ public class RAReach
     	}                                                          //~vabmI~
         if (swSkipReach)                                           //~vabmI~
         {                                                          //~vabmI~
-        	if (Dump.Y) Dump.println("RAReach.evaluateWinList@@@@ skipreach alreacy determined");//~vabmI~
+        	if (Dump.Y) Dump.println("RAReach.evaluateWinList@@@@ skipreach already determined");//~vapkR~
 		}                                                          //~vabmI~
         else                                                       //~vabmI~
 	    if (!(ctrWinTotal>=HV_CTRWIN_TO_REACH_FORCE && hanMax>=HV_HAN_TO_FORCE_REACH))	//Not special high value of 13han even winlistctr>=1//~1217R~
@@ -556,6 +621,11 @@ public class RAReach
 	        if (hanMax<HV_HAN_TO_REACH_IGNORE_OTHER)    //if han<6 //~1216R~
 	        	swSkipReach=true;
         }
+        if ((TestOption.option3 & TO3_ROBOT_DO_REACH)!=0) //TODO test//~vapkI~
+        {                                                          //~vapkI~
+        	if (Dump.Y) Dump.println("RAReach.evaluateWinList @@@@ skipreach=False by testOption ROBOT DO REACH");//~vapkI~
+   	 	    swSkipReach=false;                                     //~vapkI~
+        }                                                          //~vapkI~
         if (swSkipReach)
         {                                                          //~1215I~
 	        valueTotal=-valueTotal;                                //~1120R~
@@ -742,8 +812,12 @@ public class RAReach
 //      }                                                          //~va8jI~//~vaj4R~
         if (rc)                                                    //~va8jI~
         {                                                          //~vaj4R~
-          if (RS.swFuritenReachOK || RS.swFuritenReachReject) //furitenReach:None; no msg may cause chombo//~vaj4R~
+//        if (RS.swFuritenReachOK || RS.swFuritenReachReject) //furitenReach:None; no msg may cause chombo//~vap8R~
+          if (RS.swFuritenReachReject) //furitenReach:None; no msg may cause chombo//~vap8I~
             GMsg.drawMsgbar(R.string.AE_FuritenReach);             //~va8jI~
+          else                                                     //~vap8I~
+          if (RS.swFuritenReachOK) //furitenReach:None; no msg may cause chombo//~vap8I~
+            GMsg.drawMsgbar(R.string.AE_FuritenReachOK);           //~vap8I~
 //        else             //err regardless FuritenReach option, set reach err status at RoundStat at reach by the option//~vaj5R~
           	swErrFuritenReach=true;	//furiten but do reach silently by option FuritenReach:No//~vaj5I~
         }                                                          //~vaj4R~
@@ -843,6 +917,17 @@ public class RAReach
         if (Dump.Y) Dump.println("RAReach.getBtsWinListMerge ctrWin="+ctrWin+",return PbtsWin="+Utils.toString(PbtsWin,9));
         return ctrWin;
     }
+    private int getBtsWinListMerge(int[] PitsHand,int PctrHand,boolean[] PbtsWin,boolean[] PbtsWinByEswn)//~vap6I~
+    {                                                              //~vap6I~
+		int ctrWin=getItsWinList(PitsHand,PctrHand,itsWinWork);    //~vap6R~
+        for (int ii=0;ii<ctrWin;ii++)                              //~vap6I~
+        {                                                          //~vap6I~
+        	PbtsWin[itsWinWork[ii]]=true;                          //~vap6I~
+        	PbtsWinByEswn[itsWinWork[ii]]=true;                    //~vap6I~
+        }                                                          //~vap6I~
+        if (Dump.Y) Dump.println("RAReach.getBtsWinListMerge ctrWin="+ctrWin+",return PbtsWin="+Utils.toString(PbtsWin,9)+",PbtsWinByEswn="+Utils.toString(PbtsWinByEswn,9));//~vap6R~
+        return ctrWin;                                             //~vap6I~
+    }                                                              //~vap6I~
     //*********************************************************
     //*by itsTile[34 entry]
     //*********************************************************
@@ -886,6 +971,15 @@ public class RAReach
         int ctrHandEswn=RS.RSP[eswn].ctrHand;
     	getBtsWinListMerge(itsHandEswn,ctrHandEswn,PbtsWinAll);
 	}
+    public void getWinTileAll(int Pplayer,boolean[] PbtsWinAll,boolean[] PbtsWinByEswn)//~vap6I~
+    {                                                              //~vap6I~
+        //*************                                            //~vap6I~
+        if (Dump.Y) Dump.println("RAReach.getWinTileAll set also each btsWinByEswnPplayer="+Pplayer);//~vap6R~
+    	int eswn=Accounts.playerToEswn(Pplayer);                   //~vap6I~
+        int[] itsHandEswn=RS.getItsHandEswn(eswn);                 //~vap6I~
+        int ctrHandEswn=RS.RSP[eswn].ctrHand;                      //~vap6I~
+    	getBtsWinListMerge(itsHandEswn,ctrHandEswn,PbtsWinAll,PbtsWinByEswn);//~vap6I~
+	}                                                              //~vap6I~
     //*********************************************************
     private int getWinList_Standard(int[] PitsTile,int PctrHand,int[] PitsWin)
     {
@@ -1102,9 +1196,376 @@ public class RAReach
 	    chkFuritenReach(Peswn,itsWinWork,ctrWin,PposDiscard);      //~vajdR~
         itsH[PposDiscard]++;                                       //~vajdI~
         if (swErrFuritenReach)	                                   //~vajdI~
-	        RS.RSP[Peswn].setReachStatusErrFuriten(); //set REACH_ERRFURITEN or REACH_OKFURITEN//+vajdR~
+	        RS.RSP[Peswn].setReachStatusErrFuriten(); //set REACH_ERRFURITEN or REACH_OKFURITEN//~vajdR~
         rc=swErrFuritenReach;                                      //~vajdI~
         if (Dump.Y) Dump.println("RAReach.chkFuritenMultiWait rc="+rc);//~vajdI~
         return rc;                                                 //~vajdI~
     }                                                              //~vajdI~
+    //*******************************************************      //~vapkI~
+    //*from DrawnReqDlg.chkPseudoTenpai                            //~vaptI~
+    //*from UAEndGame.setPendingRobot                              //~vaptI~
+    //*called under shanten=0                                             //~vaptI~//~vapuR~
+    //*******************************************************      //~vaptI~
+    public boolean chkPsuedoTenpai(int Pplayer,int Peswn,boolean PswReach,int[] PitsHand,int PctrHand)//~vapkR~
+    {                                                              //~vapkI~
+    	boolean rc;                                                //~vapkI~
+	    errPsuedoPending=0;                                        //~vapkI~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai player="+Pplayer+",eswn="+Peswn+",swReach="+PswReach+",itsHand="+Utils.toString(PitsHand,9));//~vapkR~
+//      swEmptyOK=RuleSettingYaku.isPendingRankEmpty();            //~vapkI~//~vapuR~
+//      swFuritenOK=RuleSettingYaku.isPendingRankFuriten();        //~vapkI~//~vapuR~
+//      swFixMultiOK=RuleSettingYaku.isPendingRankFixMulti();      //~vaptI~//~vapuR~
+        swRank0OK= RuleSettingYaku.isPendingRankRank0();                //~vapkI~
+        swRank2Rank0OK= RuleSettingYaku.isPendingRankRank2Rank0OK();     //~vapkI~
+    //    swRank2Rank1OK= RuleSettingYaku.isPendingRankRank2Rank1OK();//~vapuI~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai swFix2="+RS.swFix2+",swRank0OK="+swRank0OK+",swRank2Rank0OK="+swRank2Rank0OK);//~vapkR~//~vapuR~
+        if (RuleSettingYaku.isPendingRankNo()) //no Shuedo-Tenpai but ronable tenpai//~vapxI~
+        {                                                          //~vapxI~
+		    return chkPsuedoTenpaiNo(Pplayer,Peswn,PswReach,PitsHand,PctrHand);//~vapxI~
+        }                                                          //~vapxI~
+        if ((!RS.swFix2 && swRank0OK)                          //~vapuR~
+        ||   (RS.swFix2 && swRank2Rank0OK))                          //~vapuI~
+        {                                                      //~vaptI~//~vapuR~
+        	if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=true by Rank0OK or Ran2kRank0OK");//~vaptI~//~vapuR~
+            return true;                                       //~vaptI~//~vapuR~
+        }                                                          //~vaptI~//~vapuI~
+        if (!RS.swFix2 && !swRank0OK)   	//1han required        //~vapuI~
+        {                                                          //~vapuI~
+        	if (PswReach || RAUtils.isAllInHand(Peswn))	//allow no call or ankan only//~vapuI~
+            {                                                      //~vapuI~
+	        	if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=true by 1han constraint and !swRank0OK and Reach or all in hand");//~vapuR~//~vapxR~
+    	        return true;                                       //~vapuI~
+            }                                                      //~vapuI~
+        }                                                          //~vapuI~
+//        int ctrTile=getWinListTileCtr(PitsHand,PctrHand);   //output itsWinWork and ctrWinList//~vapkI~//~vapuR~
+//        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai itsWinWork="+Utils.toString(itsWinWork));//~vapkR~//~vapuR~
+//        if (!swEmptyOK)                                            //~vapkI~//~vapuR~
+//        {                                                          //~vapkI~//~vapuR~
+//            if (ctrTile==0)                                        //~vapkI~//~vapuR~
+//            {                                                      //~vapkI~//~vapuR~
+//                if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=false by empty win tile");//~vapkR~//~vapuR~
+//                errPsuedoPending=ERR_PSUEDO_PENDING_EMPTY; //            2;//~vapkR~//~vapuR~
+//                return false;                                      //~vapkI~//~vapuR~
+//            }                                                      //~vapkI~//~vapuR~
+//        }                                                          //~vapkI~//~vapuR~
+        int[] itsWL=getItsWinList(PitsHand,PctrHand);   //itsWL is new int[]//~vapuI~
+        int ctrWL=itsWL.length;                                  //~vapuI~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai ctrWinList="+ctrWL+",itsWinList="+Utils.toString(itsWL));//~vapuI~
+        if (ctrWL==0)                                              //~vapxI~
+        {                                                          //~vapxI~
+        	errPsuedoPending=ERR_PSUEDO_PENDING_NOT_SHANTEN0;      //~vapxI~
+            return false;                                          //~vapxI~
+        }                                                          //~vapxI~
+//        if (PswReach)                                            //~vaptR~
+//        {                                                        //~vaptR~
+////            if (RS.RSP[Peswn].isReachStatusErrFuriten())    //furiten under nochk option or missed win tile after reach//~vaptR~
+////            {                                                  //~vaptR~
+////                if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=false by furitenReach under nochk option or missed win tile after Reach");//~vaptR~
+////                errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN_REACH; //            4;//~vaptR~
+////                return false;                                  //~vaptR~
+////            }                                                  //~vaptR~
+//            //*no need chk 2han constrint because assuming ron by take//~vaptR~
+//            if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=true(furiten was chked,no need chk fix1,kataagari) by reach");//~vaptR~
+//            return true;                                         //~vaptR~
+//        }                                                        //~vaptR~
+        if (PswReach)                                              //~vapxI~
+        {                                                          //~vapxI~
+            //*no need chk 2han constrint because assuming ron by take//~vapxI~
+            if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=true by reach(furiten OK)");//~vapxI~
+            return true;                                           //~vapxI~
+        }                                                          //~vapxI~
+//        if (!swFuritenOK)                                          //~vaptR~//~vapuR~
+//        {                                                          //~vaptR~//~vapuR~
+//            if (RS.RSP[Peswn].isReachStatusErrFuriten())    //furiten under nochk option or missed win tile after reach//~vaptI~//~vapuR~
+//            {                                                      //~vaptI~//~vapuR~
+//                if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=false by furitenReach under nochk option or missed win tile after Reach");//~vaptI~//~vapuR~
+//                errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN_REACH; //            4;//~vaptI~//~vapuR~
+//                return false;                                      //~vaptI~//~vapuR~
+//            }                                                      //~vaptI~//~vapuR~
+//            if (isPsuedoTenpaiFuriten(Peswn,itsWinWork,ctrWinList,false/*chkLast*/))//~vaptR~//~vapuR~
+//            {                                                      //~vaptR~//~vapuR~
+//                if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=false by Furiten");//~vaptR~//~vapuR~
+//                errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN; //            3;//~vaptR~//~vapuR~
+//                return false;                                      //~vaptR~//~vapuR~
+//            }                                                      //~vaptR~//~vapuR~
+//        }                                                          //~vaptR~//~vapuR~
+//        if (RS.swFix2)                                           //~vaptR~
+//        {                                                        //~vaptR~
+////          rc=chkPsuedoTenpai2(Pplayer,Peswn,PitsHand,PctrHand,swRank0OK,itsWinWork,ctrWinList);//~vaptR~
+//            rc=chkPsuedoTenpai2(Pplayer,Peswn,PitsHand,PctrHand,itsWinWork,ctrWinList);//~vaptR~
+//            if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai swFix2=true eswn="+Peswn+",rc="+rc);//~vaptR~
+//            if (!rc)                                             //~vaptR~
+//                errPsuedoPending=ERR_PSUEDO_PENDING_FIX2; //            6;//~vaptR~
+//            return rc;                                           //~vaptR~
+//        }                                                        //~vaptR~
+//        if (swRank0OK)                                           //~vaptR~
+//        {                                                        //~vaptR~
+//            if (Dump.Y) Dump.println("DrawnReqDlgLast.chkPsuedoTenpai eswn="+Peswn+",rc=true by swRanbk0OK");//~vaptR~
+//            return true;                                         //~vaptR~
+//        }                                                        //~vaptR~
+//      rc=isPsuedoTenpaiRonable(Pplayer,Peswn,PitsHand,PctrHand,itsWinWork,ctrWinList,false/*swChkFix2*/);//~vaptR~
+//      rc=isPsuedoTenpaiRonable(Pplayer,Peswn,PitsHand,PctrHand,itsWinWork,ctrWinList,PswReach);//~vaptI~//~vapuR~
+        rc=isPsuedoTenpaiRonable(Pplayer,Peswn,PitsHand,PctrHand,itsWL,ctrWL,PswReach);//~vapuI~
+//      if (!rc)                                                   //~vaptR~
+//  		errPsuedoPending=ERR_PSUEDO_PENDING_FIX1; //            5;//~vaptR~
+//        if (!swFuritenOK)                                          //~vaptI~//~vapuR~
+//            if (errMultiWait==0)                                   //~vaptR~//~vapuR~
+//            {                                                      //~vaptI~//~vapuR~
+//                if (isPsuedoTenpaiFuriten(Peswn,itsWinWork,ctrWinList,true/*chkLast*/)) //*chk last if ronable//~vaptR~//~vapuR~
+//                {                                                  //~vaptI~//~vapuR~
+//                    errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN; //            3;//~vaptI~//~vapuR~
+//                    rc=false;                                      //~vaptI~//~vapuR~
+//                    if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai eswn="+Peswn+",rc=false by Furiten of chkLast");//~vaptI~//~vapuR~
+//                }                                                  //~vaptI~//~vapuR~
+//            }                                                      //~vaptI~//~vapuR~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai rc="+rc+",eswn="+Peswn);//~vapkR~//~vapuR~
+        return rc;
+    }                                                              //~vapkI~
+    //*******************************************************      //~vapxI~
+    public boolean chkPsuedoTenpaiNo(int Pplayer,int Peswn,boolean PswReach,int[] PitsHand,int PctrHand)//~vapxI~
+    {                                                              //~vapxI~
+    	boolean rc;                                                //~vapxI~
+	    errPsuedoPending=0;                                        //~vapxI~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpaiNo player="+Pplayer+",eswn="+Peswn+",swReach="+PswReach+",itsHand="+Utils.toString(PitsHand,9));//~vapxI~
+        int[] itsWL=getItsWinList(PitsHand,PctrHand);   //itsWL is new int[]//~vapxI~
+        int ctrWL=itsWL.length;                                    //~vapxI~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpaiNo ctrWinList="+ctrWL+",itsWinList="+Utils.toString(itsWL));//~vapxI~
+        if (ctrWL==0)                                              //~vapxI~
+        {                                                          //~vapxI~
+        	errPsuedoPending=ERR_PSUEDO_PENDING_NOT_SHANTEN0;      //~vapxI~
+            return false;                                          //~vapxI~
+        }                                                          //~vapxI~
+        if (PswReach)                                              //~vapxR~
+        {                                                          //~vapxR~
+            if (RS.RSP[Peswn].isReachStatusErrFuriten(false/*swTake*/))    //err even if furitenReach OK//~vapxR~
+            {                                                      //~vapxR~
+                if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpaiNo eswn="+Peswn+",rc=false by furitenReach under nochk option or missed win tile after Reach");//~vapxR~
+                errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN_REACH; //            4;//~vapxR~
+                return false;                                      //~vapxR~
+            }                                                      //~vapxR~
+        	if (!RS.swFix2)                                        //~vapxI~
+            {                                                      //~vapxI~
+                if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpaiNo eswn="+Peswn+",rc=true by reach and not 2-han constraint");//~vapxI~
+                return true;                                       //~vapxI~
+            }                                                      //~vapxI~
+        }                                                          //~vapxR~
+        rc=isPsuedoTenpaiRonableNo(Pplayer,Peswn,PitsHand,PctrHand,itsWL,ctrWL,PswReach);//~vapxI~
+        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpaiNo rc="+rc+",eswn="+Peswn);//~vapxI~
+        return rc;                                                 //~vapxI~
+    }                                                              //~vapxI~
+    //*******************************************************      //~vaptR~//~vapuR~//~vapxR~
+//  private boolean isPsuedoTenpaiFuriten(int Peswn,int[] PitsWinList,int PctrWinList)//~vaptR~//~vapuR~//~vapxR~
+    private boolean isPsuedoTenpaiFuriten(int Peswn,int[] PitsWinList,int PctrWinList,boolean PswChkLast)//~vaptI~//~vapuR~//~vapxR~
+    {                                                              //~vaptR~//~vapuR~//~vapxR~
+        boolean rc=false;                                          //~vaptR~//~vapuR~//~vapxR~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiFuriten swChkLast="+PswChkLast+",eswn="+Peswn+",ctrWinList="+PctrWinList+",itsWinList="+Utils.toString(PitsWinList));//~vaptR~//~vapuR~//~vapxR~
+        for (int ii=0;ii<PctrWinList;ii++)                         //~vaptR~//~vapuR~//~vapxR~
+        {                                                          //~vaptR~//~vapuR~//~vapxR~
+            int pos=PitsWinList[ii];                               //~vaptR~//~vapuR~//~vapxR~
+//          if (RS.RSP[Peswn].isFuritenDrawnLast(pos))             //~vaptR~//~vapuR~//~vapxR~
+            if (RS.RSP[Peswn].isFuritenDrawnLast(pos,PswChkLast))  //~vaptI~//~vapuR~//~vapxR~
+            {                                                      //~vaptR~//~vapuR~//~vapxR~
+                if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiFuriten true at pos="+pos);//~vaptR~//~vapuR~//~vapxR~
+                rc=true;                                           //~vaptR~//~vapuR~//~vapxR~
+                break;                                             //~vaptR~//~vapuR~//~vapxR~
+            }                                                      //~vaptR~//~vapuR~//~vapxR~
+        }                                                          //~vaptR~//~vapuR~//~vapxR~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiFuriten rc="+rc);//~vaptR~//~vapuR~//~vapxR~
+        return rc;                                                 //~vaptR~//~vapuR~//~vapxR~
+    }                                                              //~vaptR~//~vapuR~//~vapxR~
+    //*******************************************************      //~vapkI~
+//  private boolean isPsuedoTenpaiRonable(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,int[] PitsWinList,int PctrWinList,boolean PswChkFix2)//~vaptR~
+    private boolean isPsuedoTenpaiRonable(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,int[] PitsWinList,int PctrWinList,boolean PswReach)//~vaptI~
+    {                                                              //~vapkI~
+//  	boolean rc=false;                                          //~vappR~
+//  	boolean rc=true;                                           //~vappI~//~vapuR~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonable entry player="+Pplayer+",eswn="+Peswn+",PswReach="+PswReach+",ctrWinList="+PctrWinList+",itsWinList="+Utils.toString(PitsWinList)+",itsHand="+Utils.toString(PitsHand,9));//+vapkR~//~vaptR~//+vapxR~
+        errMultiWait=0;                                        //~vapqI~//~vaptR~
+//        for (int ii=0;ii<PctrWinList;ii++)                         //~vapkI~//~vapuR~
+//        {                                                          //~vapkI~//~vapuR~
+//            int pos=PitsWinList[ii];                               //~vapkI~//~vapuR~
+//            PitsHand[pos]++;                                      //~vapkI~//~vapuR~
+//            int ctrHand=PctrHand+1;                                //~vapkI~//~vapuR~
+////          boolean rc2=AG.aRARon.isRonableMultiWaitDrawnLast(true/*swTake*/,Pplayer,Peswn,PitsHand,ctrHand,pos,PswChkFix2);  //ronable as tusmo; 1 han constarint, with fixlast(kataagari ok//~vapqR~//~vapuR~
+////          int rc2=AG.aRARon.isRonableMultiWaitDrawnLast(true/*swTake*/,Pplayer,Peswn,PitsHand,ctrHand,pos,PswChkFix2);  //ronable as tusmo; 1 han constarint, with fixlast(kataagari ok//~vaptR~//~vapuR~
+//            int rc2=AG.aRARon.isRonableMultiWaitDrawnLast(true/*swTake*/,Pplayer,Peswn,PitsHand,ctrHand,pos,PswReach);  //ronable as tusmo; 1 han constarint, with fixlast(kataagari ok//~vaptI~//~vapuR~
+//            PitsHand[pos]--;                                      //~vapkI~//~vapuR~
+////          if (rc2)                                               //~vappR~//~vapuR~
+////          {                                                      //~vappR~//~vapuR~
+////              if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonable true by 1/2 han constraint ok at pos="+pos+",chkFix2="+PswChkFix2);//~vappR~//~vapuR~
+////              rc=true;                                           //~vappR~//~vapuR~
+////              break;                                             //~vappR~//~vapuR~
+////          }                                                      //~vappR~//~vapuR~
+////          if (!rc2)                                              //~vapqR~//~vapuR~
+//            if (rc2!=0)                                            //~vapqI~//~vapuR~
+//            {                                                      //~vapqR~//~vapuR~
+//                if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonable false by rc of RARon.isRonableMultiWaitDrawnLast pos="+pos);//~vapqR~//~vapuR~
+////              rc=false;                                          //~vaptR~//~vapuR~
+////              errMultiWait=rc2;                                  //~vaptR~//~vapuR~
+//                errMultiWait|=rc2;                                 //~vaptI~//~vapuR~
+////              break;                                             //~vaptR~//~vapuR~
+//            }                                                      //~vapqR~//~vapuR~
+//        }                                                          //~vapkI~//~vapuR~
+    	boolean rc=false;                                          //~vapuI~
+        for (int ii=0;ii<PctrWinList;ii++)                         //~vapuI~
+        {                                                          //~vapuI~
+            int pos=PitsWinList[ii];                               //~vapuI~
+            PitsHand[pos]++;                                       //~vapuI~
+            int ctrHand=PctrHand+1;                                //~vapuI~
+            int rc2=AG.aRARon.isRonableMultiWaitDrawnLast(true/*swTake*/,Pplayer,Peswn,PitsHand,ctrHand,pos,PswReach);  //ronable as tusmo; 1 han constarint, with fixlast(kataagari ok//~vapuR~
+            PitsHand[pos]--;                                       //~vapuI~
+            if ((rc2 & RARON_ERR_CONSTRAINT)==0)	//furiten,fixerr may exist//~vapuR~
+            {                                                      //~vapuI~
+                if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonable true by 1/2 han constraint ok at pos="+pos+",swReach="+PswReach);//~vapuI~
+                rc=true;                                           //~vapuI~
+                break;                                             //~vapuI~
+            }                                                      //~vapuI~
+        }                                                          //~vapuI~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonable after all win tile errMultiWait="+Integer.toHexString(errMultiWait));//~vaptR~
+//        if (RS.swFix2)                                           //~vaptR~
+//        {                                                        //~vaptR~
+//            if (swRank2Rank0OK)                                  //~vaptR~
+//                errMultiWait &= ~RARON_ERR_CONSTRAINT;           //~vaptR~
+//        }                                                        //~vaptR~
+//        else                                                     //~vaptR~
+//        {                                                        //~vaptR~
+//            if (swRank0OK)                                       //~vaptR~
+//                errMultiWait &= ~RARON_ERR_CONSTRAINT;           //~vaptR~
+//        }                                                        //~vaptR~
+//        if (swFuritenOK)                                         //~vaptR~
+//        {                                                        //~vaptR~
+//            errMultiWait &= ~(RARON_ERR_FURITEN | RARON_ERR_FURITEN_REACH);//~vaptR~
+//                            | RARON_ERR_MULTIPLE | RARON_ERR_FIX | RARON_ERR_FIXFIRST | RARON_ERR_FIXMIDDLE);//~vaptR~
+//        }                                                        //~vaptR~
+//      if ((errMultiWait & RARON_ERR_FURITEN)!=0)                 //~vaptR~
+//          errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN;           //~vaptR~
+//      else                                                       //~vaptR~
+//        if ((errMultiWait & RARON_ERR_MULTIPLE)!=0)                //~vaptM~//~vapuR~
+//        {                                                          //~vaptI~//~vapuR~
+//            if (!swFixMultiOK)                                     //~vaptI~//~vapuR~
+//                errPsuedoPending=ERR_PSUEDO_PENDING_MULTIPLE;      //~vaptR~//~vapuR~
+//        }                                                          //~vaptI~//~vapuR~
+//        else                                                       //~vaptM~//~vapuR~
+//        if ((errMultiWait & RARON_ERR_FIX)!=0)                     //~vaptM~//~vapuR~
+//        {                                                          //~vaptI~//~vapuR~
+//            if (!swFixMultiOK)                                     //~vaptI~//~vapuR~
+//                errPsuedoPending=ERR_PSUEDO_PENDING_FIX;           //~vaptR~//~vapuR~
+//        }                                                          //~vaptI~//~vapuR~
+//        else                                                       //~vaptI~//~vapuR~
+//      if ((errMultiWait & RARON_ERR_CONSTRAINT)!=0)              //~vaptI~//~vapuR~
+        if (!rc)                                                   //~vapuI~
+        {                                                          //~vaptI~
+        	if (RS.swFix2)                                         //~vaptI~
+	            errPsuedoPending=ERR_PSUEDO_PENDING_FIX2;          //~vapqI~
+            else                                                   //~vapqI~
+	            errPsuedoPending=ERR_PSUEDO_PENDING_FIX1;          //~vapqI~
+        }                                                          //~vapqI~
+        rc=errPsuedoPending==0;                                    //~vaptR~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonable rc="+rc+",errMultiWait="+Integer.toHexString(errMultiWait)+",errPsudoPending="+errPsuedoPending);//~vapqR~
+        return rc;
+    }                                                              //~vapkI~
+    //*******************************************************      //~vapxI~
+    private boolean isPsuedoTenpaiRonableNo(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,int[] PitsWinList,int PctrWinList,boolean PswReach)//~vapxI~
+    {                                                              //~vapxI~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo player="+Pplayer+",eswn="+Peswn+",PswReach="+PswReach+",ctrWinList="+PctrWinList+",itsWinList="+Utils.toString(PitsWinList)+",itsHand="+Utils.toString(PitsHand,9));//~vapxI~
+        if (isPsuedoTenpaiFuriten(Peswn,PitsWinList,ctrWinList,true/*chkLast*/)) //*chk last if ronable//~vapxI~
+        {                                                          //~vapxI~
+            if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo reurn false by isFuriten");//~vapxI~
+        	errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN;           //~vapxI~
+            return false;                                          //~vapxI~
+        }                                                          //~vapxI~
+        errMultiWait=0;                                            //~vapxI~
+//      boolean swMulti=false,swConstraintNG=false;                //~vapxR~//~vaq1R~
+        int ctr2hanY=0,ctr2hanN=0;                                 //~vaq1R~
+        for (int ii=0;ii<PctrWinList;ii++)                         //~vapxI~
+        {                                                          //~vapxI~
+            int pos=PitsWinList[ii];                               //~vapxI~
+//            if (RS.RSP[Peswn].isFuritenDrawnLast(pos,true/*swChkLast*/))//~vapxR~
+//            {                                                    //~vapxR~
+//                if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo isFuriten=true at pos="+pos);//~vapxR~
+//                errMultiWait|=RARON_ERR_FURITEN;                 //~vapxR~
+//                break;                                           //~vapxR~
+//            }                                                    //~vapxR~
+            int ctrHand=PctrHand;                                  //~vapxR~
+            int rc2=AG.aRARon.isRonableMultiWaitDrawnLastNo(false/*swTake*/,Pplayer,Peswn,PitsHand,ctrHand,pos,PswReach);  //ronable as Ron, ; 1 han constarint, with fixlast(kataagari ok//~vapxR~
+            if (rc2>=2)                                            //~vaq1R~
+            {                                                      //~vaq1R~
+                if ((rc2 & RARON_ERR_FIX)==0)  //no FIX_FIRST/FIX_MIDDLE vioration//~vaq1R~
+	            	ctr2hanY++; //valid win tile for 2han constraint//~vaq1R~
+            }                                                      //~vaq1R~
+            else                                                   //~vaq1R~
+            	ctr2hanN++; //2han constarint err in 2han constraint env//~vaq1R~
+            if (rc2!=0)                                            //~vapxI~
+            {                                                      //~vapxI~
+                errMultiWait|=rc2;                                 //~vapxI~
+//  	      	if ((errMultiWait & RARON_ERR_CONSTRAINT)!=0)      //~vapxR~//~vaq1R~
+//              	swConstraintNG=true;                           //~vapxR~//~vaq1R~
+            }                                                      //~vapxI~
+//          else                                                   //~vapxR~//~vaq1R~
+//          	swMulti=true;                                      //~vapxR~//~vaq1R~
+            if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo rc2="+Integer.toHexString(rc2)+",errMultiWait="+Integer.toHexString(errMultiWait));//~vapxI~
+        }                                                          //~vapxI~
+//      if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo swFix2="+RS.swFix2+",swMulti="+swMulti+",swConstraintNG="+swConstraintNG);//~vapxR~//~vaq1R~
+//      if (RS.swFix2 && swConstraintNG && swMulti)	//2han constraint,kataagari//~vapxR~//~vaq1R~
+//      {                                                          //~vapxR~//~vaq1R~
+//          if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo set kataagari err in 2 han constraint");//~vapxR~//~vaq1R~
+//      	errMultiWait|=RARON_ERR_MULTIPLE;	//kataagari in 2 han constraint//~vapxR~//~vaq1R~
+//      }                                                          //~vapxR~//~vaq1R~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo ctr2hanY="+ctr2hanY+",ctr2hanN="+ctr2hanN+",swFix2="+RS.swFix2);//~vaq1R~
+        if (RS.swFix2)	//2han constraint,kataagari,UARank not chk kataagari if YAKU_FIX_LAST//~vaq1R~
+        {                                                          //~vaq1R~
+            if (ctr2hanY!=0 && ctr2hanN!=0)                        //~vaq1R~
+        	errMultiWait|=RARON_ERR_MULTIPLE;	//kataagari in 2 han constraint//~vaq1R~
+            if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo set kataagari err in 2 han constraint");//~vaq1R~
+        }                                                          //~vaq1R~
+        if (errMultiWait!=0)                                       //~vapxI~
+        {                                                          //~vapxI~
+      		if ((errMultiWait & RARON_ERR_FURITEN)!=0)             //~vapxI~
+          		errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN;       //~vapxI~
+      		else                                                   //~vapxI~
+      		if ((errMultiWait & RARON_ERR_FURITEN_REACH)!=0)       //~vapxI~
+          		errPsuedoPending=ERR_PSUEDO_PENDING_FURITEN_REACH; //~vapxI~
+      		else                                                   //~vapxI~
+        	if ((errMultiWait & RARON_ERR_MULTIPLE)!=0)            //~vapxI~
+            {                                                      //~vaq1R~
+  			  if (RS.swFix2)                                       //~vaq1R~
+                errPsuedoPending=ERR_PSUEDO_PENDING_MULTIPLE_FIX2; //~vaq1R~
+              else                                                 //~vaq1R~
+                errPsuedoPending=ERR_PSUEDO_PENDING_MULTIPLE;      //~vapxI~
+            }                                                      //~vaq1R~
+	        else                                                   //~vapxI~
+    		if ((errMultiWait & RARON_ERR_FIX)!=0)                 //~vapxI~
+                errPsuedoPending=ERR_PSUEDO_PENDING_FIX;           //~vapxI~
+        	else                                                   //~vapxI~
+	      	if ((errMultiWait & RARON_ERR_CONSTRAINT)!=0)          //~vapxI~
+            {                                                      //~vapxI~
+        		if (RS.swFix2)                                     //~vapxI~
+	            	errPsuedoPending=ERR_PSUEDO_PENDING_FIX2;      //~vapxI~
+            	else                                               //~vapxI~
+	            	errPsuedoPending=ERR_PSUEDO_PENDING_FIX1;      //~vapxI~
+            }                                                      //~vapxI~
+            else                                                   //~vapxI~
+	            errPsuedoPending=ERR_PSUEDO_PENDING_UNKNOWN;       //~vapxI~
+        }                                                          //~vapxI~
+        boolean rc=errPsuedoPending==0;                                    //~vapxI~
+        if (Dump.Y) Dump.println("RAReach.isPsuedoTenpaiRonableNo rc="+rc+",errMultiWait="+Integer.toHexString(errMultiWait)+",errPsudoPending="+errPsuedoPending);//~vapxR~
+        return rc;                                                 //~vapxI~
+    }                                                              //~vapxI~
+//    //*******************************************************    //~vaptR~
+//    //*RS.swFix2:on, chk keiten option of 2han constraint        //~vaptR~
+//    //*******************************************************    //~vaptR~
+////  private boolean chkPsuedoTenpai2(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,boolean PswRank0OK,int[] PitsWinList,int PctrWinList)//~vaptR~
+//    private boolean chkPsuedoTenpai2(int Pplayer,int Peswn,int[] PitsHand,int PctrHand,int[] PitsWinList,int PctrWinList)//~vaptR~
+//    {                                                            //~vaptR~
+//        if (swRank2Rank0OK)                                      //~vaptR~
+//        {                                                        //~vaptR~
+//            if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai2 eswn="+Peswn+",rc=true by Rank2Rank0OK");//~vaptR~
+//            return true;                                         //~vaptR~
+//        }                                                        //~vaptR~
+//        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai2 eswn="+Peswn+",ctrWinList="+PctrWinList+",itsWinList="+Utils.toString(PitsWinList)+",itsHand="+Utils.toString(PitsHand,9));//~vaptR~
+////      boolean swChkFix2=(swRank0OK)?false:true;   //need 2 han if 1 han constraint=No//~vaptR~
+//        boolean swChkFix2=true; //need 2 han                     //~vaptR~
+//        boolean rc=isPsuedoTenpaiRonable(Pplayer,Peswn,PitsHand,PctrHand,PitsWinList,PctrWinList,swChkFix2);//~vaptR~
+//        if (Dump.Y) Dump.println("RAReach.chkPsuedoTenpai2 rc="+rc);//~vaptR~
+//        return rc;                                               //~vaptR~
+//    }                                                            //~vaptR~
 }//class RAReach

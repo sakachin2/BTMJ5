@@ -1,6 +1,8 @@
-//*CID://+vakUR~:                             update#=  889;       //+vakUR~
+//*CID://+vaq5R~:                             update#=  896;       //~vaq5R~
 //*****************************************************************//~v101I~
-//2022/03/23 vakU Shift required for received ReqDlg               //+vakUI~
+//2022/08/15 vaq5 if chkFix1 is OFF, confirm no fix err before apply 8cont yakuman//~vaq5I~
+//2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3I~
+//2022/03/23 vakU Shift required for received ReqDlg               //~vakUI~
 //2022/03/23 vakT (Bug)Score button show Robot CompReqDlg after receved it from oter supporter Eswn//~vakTI~
 //2022/01/14 vaip near finalgame aim higher score; consider current value and intent//~vaipI~
 //2021/10/22 vaf2 static variable to AG or final                   //~vaf2I~
@@ -176,6 +178,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private RonResult ronResult;                                   //~va11I~
     private Rank longRank;                                         //~va11I~
     private boolean swRonChkErr;                                           //~va16I~
+    private boolean swCheckFix1;                                   //~vaq5I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public CompReqDlg()                                           //~v@@@R~//~9220R~//~9221R~
     {                                                              //~v@@@R~
@@ -390,6 +393,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     {                                                              //~9212I~
     	swRankMUp=RuleSetting.isRankMUp();   //kiriage mangan      //~9212I~
     	swRuleChkRonValue=RuleSettingOperation.isCheckRonValue();  //~va11I~
+        swCheckFix1=RuleSettingOperation.isYakuFix1();             //~vaq5I~
     	cutEswn=ACC.getCutEswn();                                       //~9530I~
     }                                                              //~9212I~
     //******************************************                   //~9212I~
@@ -1179,8 +1183,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             }                                                      //~9226I~
             Complete.setAmmount(amts,CALC_AMT_POS,stat);           //~9221R~
         	stat.requestSent();                                    //~9222I~//~9227R~
-//          newInstance(stat).show();                              //~9221R~//+vakUR~
-            newInstance(stat).show(srcEswn);                       //+vakUI~
+//          newInstance(stat).show();                              //~9221R~//~vakUR~
+            newInstance(stat).show(srcEswn);                       //~vakUI~
 //          skipEswn=srcEswn;                                      //~9227I~//~va60R~
             skipEswn=AG.aAccounts.getRealSenderEswn(srcEswn);	//completeEswn or realDealer for Robot//~va60R~
         }                                                          //~9221R~
@@ -1340,6 +1344,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     //*******************************************************************//~9403I~
     private static int showComplete()                                      //~9403R~//~9410R~
     {                                                              //~9403I~
+        if (Dump.Y) Dump.println("CompReqDlg.showComplete");       //~vakUI~
 //        Complete.Status ss[]=AG.aComplete.statusS;               //~9403I~
 //        int ctr=0;                                               //~9403I~
 //        for (int ii=0;ii<PLAYERS;ii++)                           //~9403I~
@@ -1367,11 +1372,13 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         	return -1;                                             //~9612R~
         }                                                          //~9612I~
         Complete.Status ss[]=AG.aComplete.sortStatusS();           //~9403I~
+        if (Dump.Y) Dump.println("CompReqDlg.showComplete CompleteStatus="+ss);//~vakUI~
         int ctr;                                                   //~9403I~
         if (ss==null)                                              //~9403I~
             ctr=0;                                                 //~9403I~
         else                                                       //~9403I~
             ctr=ss.length;                                         //~9403R~
+        if (Dump.Y) Dump.println("CompReqDlg.showComplete CompleteStatus ctr="+ctr);//~vakUI~
         if (ctr==0)                                                //~0106I~
         {                                                          //~0106I~
             UView.showToast(R.string.Err_NoneCompleted);           //~0106I~
@@ -1383,6 +1390,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         boolean swRobot=false;                                     //~va60I~
         for (int ii=0;ii<ctr;ii++)                                 //~9403I~
         {                                                          //~9403I~
+    	    if (Dump.Y) Dump.println("CompReqDlg.showComplete Complete.Status["+ii+"]="+ss[ii]);//~vakUI~
             if (ss[ii].completeEswn==curEswn)                      //~0106I~
                 swYou=true;                                        //~0106I~
 //          if (ss[ii].isShowable())                               //~9403I~//~9410R~
@@ -1409,6 +1417,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //            if (!(ss[ii].swInvalid || ss[ii].swErr))               //~9B11I~//~0106R~
 //                UView.showToast(R.string.Err_CompReqMultipleRon);     //~9B11I~//~0106R~
         }                                                          //~9403I~
+    	if (Dump.Y) Dump.println("CompReqDlg.showComplete swRobot="+swRobot+",swYou="+swYou);//~vakUI~
       if (!swRobot)                                                //~0106I~//~va60I~
         if (!swYou)                                                //~va60I~
         {                                                          //~0106I~
@@ -1462,7 +1471,20 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //      	UARV=new UARonValue(this);                             //~va11R~
         	UARV=AG.aUARonValue;                                   //~va11I~
 //      	ronResult=UARV.getValue(PLAYER_YOU);	//left:amt,top:yaku,right:rank,bottom:point//~va11R~//~va60R~
-        	ronResult=UARV.getValue(completePlayer);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~va60I~
+            boolean sw8Cont=AG.aUARon.chk8ContinuedRon(ronResult,completeEswn); //set yakuman 8cont after constraint confirmed//~vaq3I~
+//        	ronResult=UARV.getValue(completePlayer);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~va60I~//~vaq3R~
+	        if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank swCheckFix1="+swCheckFix1+",sw8Cont="+sw8Cont);//~vaq5I~
+          if (!sw8Cont || swCheckFix1)                             //~vaq5I~
+          {                                                        //~vaq5I~
+          	ronResult=UARV.getValueCompReqDlg(completePlayer,sw8Cont);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~vaq3I~
+          }                                                        //~vaq5I~
+          else	//sw8Cont under !swCheckFix1                       //~vaq5I~
+          {                                                        //~vaq5I~
+          	ronResult=UARV.getValueCompReqDlg(completePlayer,false);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~vaq5I~
+            if (chkApply8Cont(ronResult))                          //+vaq5I~
+	          	ronResult=UARV.getValueCompReqDlg(completePlayer,true);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//+vaq5I~
+	        if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank by sw8Cont=False onece ronResult="+ronResult);//~vaq5I~
+          }                                                        //~vaq5I~
         	longRank=ronResult.longRank;                           //~va11I~
         	swRonChkErr=ronResult.swRonChkErr;                     //~va16I~
             setYaku();                                             //~va11R~//~va16R~
@@ -1743,4 +1765,12 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //        if ((completeType & COMPLETE_KAN_ADD)!=0)   //chankan      //~va11I~//~va16R~
 //            UARV.addOtherYaku(RYAKU_KAN_ADD,RANK_KAN_ADD);         //~va11R~//~va16R~
 //    }                                                              //~va11I~//~va16R~
+    //*************************************************************************//+vaq5I~
+    private boolean chkApply8Cont(RonResult PronResult)            //+vaq5I~
+    {                                                              //+vaq5I~
+        if (Dump.Y) Dump.println("CompReqDlg.chkApply8Cont ronResult="+PronResult);//+vaq5I~
+		boolean rc=AG.aRARon.isRonable(PronResult);                //+vaq5I~
+        if (Dump.Y) Dump.println("CompReqDlg.chkApply8Cont rc="+rc);//+vaq5I~
+        return rc;
+    }                                                              //+vaq5I~
 }//class                                                           //~v@@@R~

@@ -1,5 +1,7 @@
-//*CID://+vak6R~: update#= 435;                                    //~vaj5R~//~vak6R~
+//*CID://+vapvR~: update#= 440;                                    //~vaphR~//+vapvR~
 //**********************************************************************
+//2022/08/05 vapv (Bug)Furiten chk after discarded was not done    //+vapvI~
+//2022/07/29 vapg need clear itshandvalue. vaiw is not enough if call swDoreach=false//~vaphI~
 //2022/02/18 vak6 differenciate kataagari err  and fix err         //~vak6I~
 //                fixLast:allow kataagari, else chk kataagari with chk option if not fix err//~vak6I~
 //2022/02/16 vak5 with no chk kataagari,do not lit win button in notify mode for human
@@ -237,7 +239,7 @@ public class RADSmart
 		    if (Dump.Y) Dump.println("RADSmart.selectSmartTaken return taken because after reach tdDiscard="+PtdTaken.toString());//~1126I~//~1218R~
             return PtdTaken;                                   //~1126I~//~1218R~
         }                                                          //~1126I~
-        getDoraOpen();                                             //~vaaqI~
+//      getDoraOpen();                                             //~vaphR~
         myShanten=getShanten(true/*swIntent*/,ctrHand);	//output also myIntent;//~1201R~
         if (myShanten!=-1)                                         //~va84I~
         {                                                          //~va84I~
@@ -276,11 +278,14 @@ public class RADSmart
             if (tdDiscard==null)                                   //~1309I~
             {                                                      //~vaiwI~
             	swDoReach=false;                                   //~1309R~
-            	Arrays.fill(itsHandValue,DV_BASE); //avoid duplicated chkOther value by selectDiscardReach//~vaiwI~
+//          	Arrays.fill(itsHandValue,DV_BASE); //avoid duplicated chkOther value by selectDiscardReach//~vaphR~
             }                                                      //~vaiwI~
         }
       if (!swDoReach)                                         //~1309I~
+      {                                                            //~vaphI~
+        Arrays.fill(itsHandValue,DV_BASE); //reset itsHandValue by callReach()//~vaphI~
 	    tdDiscard=selectDiscard(myShanten);                                   //~1126I~//~1127R~//~1201R~
+      }                                                            //~vaphI~
         if (tdDiscard==null)                                       //~1126I~
         	tdDiscard=PtdTaken;                                    //~1126I~
         if (callKanTaken(false/*reach*/,PtdTaken,posTaken))  //not take but discard timing for selected tile//~1222I~
@@ -333,7 +338,8 @@ public class RADSmart
     //***********************************************************************//~1222I~
     private boolean callReach()
     {
-        if (Dump.Y) Dump.println("RADSmart.callReach");
+        if (Dump.Y) Dump.println("RADSmart.callReach entry itsHandValue="+Utils.toString(itsHandValue));//~vak6R~
+        getDoraOpen();                                             //~vaphI~
         int hanMaxMax=AG.aRAReach.callReach(playerDiscard,eswnDiscard,posTaken,itsHand,itsHandPos,ctrHand,itsHandValue);//~1122R~
         boolean rc=hanMaxMax!=0;    //not skipReach                //~1309R~
         hanMaxReach=hanMaxMax;                                     //~1122I~
@@ -460,6 +466,7 @@ public class RADSmart
     	TileData tdDiscard;
         //**************************
         if (Dump.Y) Dump.println("RADSmart.selectDiscard swDoReach="+swDoReach+",PmyShanten="+PmyShanten);        //~1201R~//~1309R~//~vak6R~
+        if (Dump.Y) Dump.println("RADSmart.selectDiscard entry itsHandValue="+Utils.toString(itsHandValue));//~vak6I~
         setNonDiscardable();	//pao and no tile
 //      getStatistic();    //suit,19ji                             //~1201R~
         getDoraOpen();
@@ -925,22 +932,28 @@ public class RADSmart
     	boolean rc=false;                                          //~1213I~
 //  	getWinList(PitsHand,PctrHand);                             //~1213I~//~vagwR~
     	getWinListNoChkEmpty(PitsHand,PctrHand);                   //~vagwI~
+        int ctrAfter=0;                                            //+vapvI~
         for (int ii=0;ii<CTR_TILETYPE;ii++)                        //~1213I~
         {                                                          //~1213I~
         	if (btsWin[ii])                                        //~1213I~
+            {                                                      //+vapvI~
 //          	if (RS.isFuriten(PeswnOther,ii))                    //~1213I~//~1306R~
             	if (RS.isFuritenRon(PeswnOther,ii))                //~1306I~
                 {                                                  //~1213I~
                 	rc=true;                                       //~1213I~
                     break;                                         //~1213I~
                 }                                                  //~1213I~
+        		ctrAfter+=RS.RSP[PeswnOther].isFuritenAfterDiscard(ii);//+vapvI~
+            }                                                      //+vapvI~
         }                                                          //~1213I~
-        if (Dump.Y) Dump.println("RADSmart.chkFuriten rc="+rc);    //~1213I~
+        if (ctrAfter>1)	//multiple winning tile after Discard until nex Discard//+vapvI~
+        	rc=true;                                               //+vapvI~
+        if (Dump.Y) Dump.println("RADSmart.chkFuriten rc="+rc+",ctrAfter="+ctrAfter);    //~1213I~//+vapvR~
         return rc;                                                 //~1213I~
 	}                                                              //~1213I~
     //***********************************************************************//~va8fI~
     //*from RARon.isRonableMultiWait only,chk furiten and MultiWait:NG         //~va8fI~//~vak5R~
-    //*NOT Used                                                    //+vak6I~
+    //*NOT Used                                                    //~vak6I~
     //***********************************************************************//~va8fI~
     public  boolean chkFuritenMultiWait(boolean PswTake,int Pplayer,int Peswn,int[] PitsHand,int PctrHand,TileData PtdDiscarded)//~va8fR~
     {                                                              //~va8fI~

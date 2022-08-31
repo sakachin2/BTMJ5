@@ -1,5 +1,6 @@
-//*CID://+vaibR~:                             update#=  621;       //~vaibR~
+//*CID://+vaqcR~:                             update#=  623;       //~vaqcR~
 //*****************************************************************//~v101I~
+//2022/08/20 vaqc resume playalone game; if changed yourName errmsg is no connection, it have to change to not your game.//~vaqcI~
 //2021/12/24 vaib History list;change background of playalone game //~vaibI~
 //2021/09/15 vae4 (Bug)No connection err if AG.Yourname="" at reload interrupted play alone game//~vae4I~
 //2021/09/12 vae0 Scped for BTMJ5                                  
@@ -62,7 +63,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     private static final int COLOR_NOT_INTERRUPTED=Color.argb(0xff,0x00,0x00,0x00);//~9824I~
     private static final int COLOR_BG_HUMAN=AG.getColor(R.color.greenyellow);     //same as layout textrowlist_historydlg//~vaibR~
     private static final int COLOR_BG_ROBOT=AG.getColor(R.color.history_robotname_bg);//~vaibR~
-    private static final int COLOR_BG_PLAYALONE=Color.argb(0xff,0xe0,0xe0,0xf0);//+vaibR~
+    private static final int COLOR_BG_PLAYALONE=Color.argb(0xff,0xe0,0xe0,0xf0);//~vaibR~
                                                                    //~9613I~
     private static final int UNIT_SHIFT=-100;                      //~0113I~
     private static final int UCBP_MULTISELECT=1;                   //~0114I~
@@ -492,8 +493,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         if (hds!=null)                                             //~9615I~
 //          setHD(v,hds);                                          //~9615R~//~vaibR~
             swPlayAlone=setHD(v,hds);                              //~vaibI~
-        if (!swSelected && swPlayAlone)                            //+vaibR~
-        	v1.setBackgroundColor(COLOR_BG_PLAYALONE);             //+vaibR~
+        if (!swSelected && swPlayAlone)                            //~vaibR~
+        	v1.setBackgroundColor(COLOR_BG_PLAYALONE);             //~vaibR~
         return v;                                                  //~v@@@I~//~9614I~
     }                                                              //~v@@@I~//~9614I~
     //***********************************************              //~9615I~
@@ -621,6 +622,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         String yn=AG.YourName;                                     //~vae4I~
         if (yn.equals(""))                                         //~vae4I~
         	yn=robotYourNameDefaultConst[0];                //~vae4I~
+        String playerHumanName="";                                 //~vaqcI~
         for (int ii=0;ii<PLAYERS;ii++)                             //~va66I~
         {                                                          //~va66I~
             boolean swFound=false;                                 //~va66I~
@@ -631,6 +633,8 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             else                                                   //~va66I~
             if (Accounts.isRobotName(name)>0)                      //~va66I~
                 ctrRobot++;                                        //~va66I~
+            else                                                   //~vaqcI~
+            	playerHumanName=name;                              //~vaqcI~
         }                                                          //~va66I~
         if (ctrFound==1 && ctrRobot==PLAYERS-1)	//trainingMode     //~va66I~
 		{                                                          //~va66I~
@@ -647,6 +651,13 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         		rc=MS_SERVER;                                      //~va66I~
             }                                                      //~va66I~
         }                                                          //~va66I~
+        else         //not training mode                           //~vaqcI~
+        if (ctrFound==0 && ctrRobot==PLAYERS-1)	//trainingMode and human name unmatch//~vaqcI~
+		{                                                          //~vaqcI~
+			String msg=Utils.getStr(R.string.Err_HistoryIsTrainingMode_NotYou,playerHumanName,yn);//~vaqcI~
+			UView.showToastLong(msg);                              //+vaqcR~
+            rc=-1;     //err                                       //~vaqcI~
+        }                                                          //~vaqcI~
         else         //not training mode                           //~va66I~
         {                                                          //~va66I~
         	if (role==-1)	//have connection                      //~va66R~

@@ -14,7 +14,6 @@
             android:layout_width="wrap_content"
                 android:text="@string/Label_Yakuman"
             android:textSize="@dimen/textview_middle"
-    			android:background="@color/descriptiononly"
         />
     </LinearLayout>
     <LinearLayout
@@ -132,7 +131,6 @@
                 android:layout_width="wrap_content"
                 android:text="@string/Label_Yakuman_Renho"
                 android:textSize="@dimen/textview_middle"
-    			android:background="@color/descriptiononly"
             />
             <TextView
                 android:layout_height="wrap_content"

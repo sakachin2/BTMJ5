@@ -1,6 +1,7 @@
-//*CID://+vamtR~: update#= 656;                                    //+vamtR~
+//*CID://+vap7R~: update#= 657;                                    //+vap7R~
 //**********************************************************************//~v101I~
-//2022/04/20 vamt hidden dora was cut at clearRiver when EndOfHand is fixed at Final Round//+vamtI~
+//2022/07/24 vap7 change complete color of nameplate to see score clearly//+vap7I~
+//2022/04/20 vamt hidden dora was cut at clearRiver when EndOfHand is fixed at Final Round//~vamtI~
 //2022/01/31 vajk (Bug)invalid nameplate color on client(pos on msg:GCM_ENDGAME_ACCOUNT is invalid, then score received is invalid)//~vajkI~
 //2021/12/31 vaij Nameplate Name;justify center                    //~vaijI~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
@@ -42,7 +43,9 @@ public class NamePlate                                             //~v@@@R~
     private static final int TEXT_COLOR_SCORE_BG_UNDER_BASE=Color.argb(0xff,0xff,0xcc,0x99);    //orange//~9415I~
     private static final int TEXT_COLOR_SCORE_FG=Color.argb(0xff,0x00,0x00,0x00);//~9317I~
     private static final int TEXT_COLOR_DISABLE=Color.argb(0x80,0x00,0x59,0x00);//~v@@@I~
-    private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//~0408R~
+//  private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//+vap7R~
+//COMPLETE_COLOR=Color.argb(0xff,0xff,0x33,0x66); //Complete.java  //+vap7I~
+    private static final int COMPLETE_COLOR_SCORE=Color.argb(0x60,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//+vap7I~
     private static final int PLATE_EDGE_WIDTH=2;                  //~v@@@R~//~9317R~//~0407R~
 //  private static final int PLATE_EDGE_WIDTH=4; //TODO            //~0407R~
     private static final int TEXT_MARGIN_SIDE=10;                  //~v@@@I~
@@ -255,7 +258,7 @@ public class NamePlate                                             //~v@@@R~
         	showPlate(newPosition); //name and score               //~0324R~
         else                                                       //~0324I~
 		    showScore();                                           //~0324I~
-        AG.aStock.clearHiddenDora();                                //+vamtI~
+        AG.aStock.clearHiddenDora();                                //~vamtI~
     }                                                              //~0324I~
     //*********************************************************    //~9317I~
     public void showScore()                            //~9317I~   //~9318R~

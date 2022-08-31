@@ -1,5 +1,6 @@
-//*CID://+DATER~: update#= 591;                                    //~v@@@R~//~v@21R~//~9501R~
+//*CID://+DATER~: update#= 594;                                    //+2813R~
 //**********************************************************************//~v101I~
+//**********************************************************************//+2813R~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -18,6 +19,7 @@ import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.Status.*;
 import static com.btmtest.StaticVars.AG;                           //~v@21I~
 
+import com.btmtest.TestOption;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.Players;
 import com.btmtest.game.Status;//~v@@@R~
@@ -465,7 +467,7 @@ public class Starter                                               //~v@@@R~
 		Matrix matrix=new Matrix();                                //~v@@@M~
     //******************************                               //~v@@@M~
     	Rect r=rectBounds;                                         //~v@@@M~
-        if (Dump.Y) Dump.println("Starter.getBitmapSeq pos="+Ppos+",strseq="+Pstrseq+",rectBounds="+r.toString());//~9809I~//+2327R~
+        if (Dump.Y) Dump.println("Starter.getBitmapSeq pos="+Ppos+",strseq="+Pstrseq+",rectBounds="+r.toString());//~9809I~//~2327R~
 //      int m=MARGINTEXT;                                          //~v@@@M~//~9809R~
         int m=marginText;                                          //~9809I~
 //      Bitmap bm=Bitmap.createBitmap(strsz+TEXT_MARGIN*2,r.bottom-r.top+TEXT_MARGIN*2,Bitmap.Config.ARGB_8888);//~v@@@M~

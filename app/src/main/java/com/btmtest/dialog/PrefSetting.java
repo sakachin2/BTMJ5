@@ -1,5 +1,6 @@
-//*CID://+vamuR~:                             update#=  545;       //~vamuR~
+//*CID://+van1R~:                             update#=  554;       //~van1R~
 //*****************************************************************//~v101I~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2021/12/21 vai0 (Bug)Id of NoBGM was shown by Japanese on english env.//~vai0I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
@@ -229,7 +230,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	//*********************************************************    //~vae9I~
     public static void setupUserBGM(Prop Pprop,String[] PstrsUri,String[] PstrsTitle)//~vae9R~
     {                                                              //~vae9I~
-        if (Dump.Y) Dump.println("PrefSetting.setupUserBGM");      //~vae9I~
+        if (Dump.Y) Dump.println("PrefSetting.setupUserBGM prefProp="+AG.prefProp);//~van1R~
 	    Prop cp=AG.prefProp;                                        //~vae9I~
         for (int ii=0;ii<MAX_USERBGM;ii++)                         //~vae9I~
         {                                                          //~vae9I~
@@ -571,7 +572,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         if (fpath==null)                                           //~vae8I~
         	return;                                                //~vae8I~
         boolean rc=AG.prefProp.loadProperties(fpath);              //~vae8R~
-    	if (Dump.Y) Dump.println("PrefSetting.recoverProp rc="+rc+",AG.prefProp="+AG.prefProp.toString());//~vae8R~
+    	if (Dump.Y) Dump.println("PrefSetting.recoverProp rc="+rc+",fpath="+fpath+",AG.prefProp="+AG.prefProp.toString());//~van1R~
         if (rc)                                                    //~vae8I~
 	        recoverSharedPreference();                             //~vae8R~
     }                                                              //~vae8I~
@@ -597,7 +598,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	        rc=AG.prefProp.savePropertiesScoped(fpath,PROP_NAME,true/*swOverride*/);      //~9B08I~//~vae0R~//~vae8I~
         else                                                       //~vae8I~
 	        rc=AG.prefProp.saveProperties(fpath,PROP_NAME);//~vae8I~
-    	if (Dump.Y) Dump.println("PrefSetting.saveProp rc="+rc);   //~vae8I~
+    	if (Dump.Y) Dump.println("PrefSetting.saveProp fpath="+fpath+",rc="+rc+",prop="+AG.prefProp);//~van1R~
         return rc;
     }                                                              //~vae8I~
     //*******************************************************************************//~vae8I~
@@ -909,7 +910,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	public static boolean isAllowRobotAllButton()                  //~vamuI~
     {                                                              //~vamuI~
     	int def=0;	//false                                        //~vamuI~
-        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//+vamuR~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),def)!=0;//~vamuR~
         if (Dump.Y) Dump.println("PrefSetting.isAllowRobotAllButton rc="+rc);//~vamuI~
         return rc;                                                 //~vamuI~
     }                                                              //~vamuI~
@@ -917,8 +918,26 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	public static boolean isPlayAloneNotify()                      //~vamuI~
     {                                                              //~vamuI~
     	int def=DEFAULT_PLAY_ALONE_NOTIFY;	//true                 //~vamuR~
-        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_PLAY_ALONE_NOTIFY),def)!=0;//+vamuR~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_PLAY_ALONE_NOTIFY),def)!=0;//~vamuR~
         if (Dump.Y) Dump.println("PrefSetting.isPlayAloneNotify rc="+rc);//~vamuI~
         return rc;                                                 //~vamuI~
     }                                                              //~vamuI~
+    //**************************************                       //~van1I~
+	public static int getCurrentLangHelp()                         //~van1I~
+    {                                                              //~van1I~
+    	int def=0;                                                 //~van1I~
+        int rc=AG.prefProp.getParameter(getKeyPS(PSID_CURRENT_LANG_HELP),def);//~van1I~
+        if (Dump.Y) Dump.println("PrefSetting.getCurrentLangHelp rc="+rc);//~van1I~
+        return rc;                                                 //~van1I~
+    }                                                              //~van1I~
+    //**************************************                       //~van1I~
+	public static void setCurrentLangHelp(int PidxLang)            //~van1I~
+    {                                                              //~van1I~
+	    Prop cp=AG.prefProp;                                       //~van1I~
+        updateProp(cp,getKeyPS(PSID_CURRENT_LANG_HELP),PidxLang);  //~van1R~
+        String propCmt=PROP_NAME;                                         //+van1I~
+    	SettingDlg.saveProperties(cp,propCmt);	//save to File dir //+van1I~
+        AG.swChangedPreference=true;	//for saveProp at APP exit //~van1I~
+        if (Dump.Y) Dump.println("PrefSetting.setCurrentLangHelp PidxLang="+PidxLang);//~van1I~
+    }                                                              //~van1I~
 }//class                                                           //~v@@@R~

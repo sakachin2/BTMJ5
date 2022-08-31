@@ -1,5 +1,8 @@
-//*CID://+vamsR~: update#= 843;                                    //~vamsR~
+//*CID://+vaqdR~: update#= 856;                                    //+vaqdR~
 //**********************************************************************//~v101I~
+//2022/08/20 vaqd (Bug)savePropForResume is duplicatedly set. so normar startGame use HistoryProp//+vaqdI~
+//2022/08/15 vaq6 for DrawnMangan clear 8contRon even defained as Ron not to make yakuman by drawnMangan//~vaq6I~
+//2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3R~
 //2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//~vamsI~
 //2022/04/19 vamr Menu:gameover fail by "During game" when accountDlg canceled//~vamrI~
 //2021/11/20 vah2 show total score on complete dialog like as DrawndlgLast/DrawnDlgHW//~vah2I~
@@ -309,10 +312,10 @@ public class Accounts                                              //~v@@@R~
     //**************************************************           //~vamsI~
     public String getCurrentDealerRealName()                       //~vamsR~
     {                                                              //~vamsI~
-	    int player=getCurrentDealerReal();                         //+vamsI~
-		int idxAccount=playerToMember(player);                     //+vamsI~
-        String rc=accounts[idxAccount].name;                       //+vamsI~
-        if (Dump.Y) Dump.println("Accounts.getCurrentDealerRealName rc="+rc+",playerReal="+player+",idxAccounts="+idxAccount);//+vamsR~
+	    int player=getCurrentDealerReal();                         //~vamsI~
+		int idxAccount=playerToMember(player);                     //~vamsI~
+        String rc=accounts[idxAccount].name;                       //~vamsI~
+        if (Dump.Y) Dump.println("Accounts.getCurrentDealerRealName rc="+rc+",playerReal="+player+",idxAccounts="+idxAccount);//~vamsR~
 		return rc;                                                 //~vamsI~
     }                                                              //~vamsI~
     //**************************************************           //~9610I~
@@ -1112,6 +1115,11 @@ public class Accounts                                              //~v@@@R~
 //        currentESWN=yourESWN;   //advance by nextgame            //~v@@@R~
         if ((TestOption.option2 & TestOption.TO2_FINAL_GAME)!=0)              //~9527I~
 			AG.aAccounts.finalGameTest();                          //~9527I~
+        if (TestOption.testContinueWin!=0)                         //~vaq3M~
+        {                                                          //~vaq3I~
+            if (Dump.Y) Dump.println("Accounts.positionMoved test set ctrContinueWin="+TestOption.testContinueWin);//~vaq3I~
+            AG.aAccounts.setContinueWinTest(TestOption.testContinueWin);//~vaq3I~
+        }                                                          //~vaq3I~
     }                                                              //~v@@@I~
     //**************************************************           //~9901I~
     private void positionMovedResume(HistoryData Phd)              //~9901I~
@@ -1151,6 +1159,15 @@ public class Accounts                                              //~v@@@R~
         }                                                          //~9B01I~
         AG.aStarter.showCtrContinuedGain(ctrContinuedGain);        //~9B01M~
     }                                                              //~9B01I~
+    //**************************************************           //~vaq3I~
+    public int getCtrContinueWin(int PcurrentEswn)                 //~vaq3R~
+    {                                                              //~vaq3I~
+        if (Dump.Y) Dump.println("Accounts.getCtrContinueWin currentEswn="+PcurrentEswn);//~vaq3I~
+        int idx=currentEswnToPosition(PcurrentEswn);               //~vaq3I~
+        int rc=ctrContinuedGain[idx];                              //~vaq3I~
+        if (Dump.Y) Dump.println("Accounts.getCtrContinueWin rc="+rc+",currentEswn="+PcurrentEswn+",idx="+idx+",ctrContinuedGain="+ctrContinuedGain);//~vaq3I~
+        return rc;                                                 //~vaq3I~
+    }                                                              //~vaq3I~
     //**************************************************           //~9901I~
     private void setNextGameResume()                               //~9901R~//~9B01R~
     {                                                              //~9901I~
@@ -1323,9 +1340,10 @@ public class Accounts                                              //~v@@@R~
     //**************************************************           //~9519I~
     //*callback from Status.endGame                                //~9519I~
     //**************************************************           //~9519I~
-    public void setCtrContinuedGain(boolean PswGameover,boolean PswDrawn,boolean PswContinue)//~9519I~
+//  public void setCtrContinuedGain(boolean PswGameover,boolean PswDrawn,boolean PswContinue)//~9519I~//~vaq6R~
+    public void setCtrContinuedGain(boolean PswGameover,boolean PswDrawn,boolean PswContinue,boolean PswDrawnManganRon)//~vaq6I~
     {                                                              //~9519I~
-        if (Dump.Y) Dump.println("Accounts.setCtrContinuedGain swGameover="+PswGameover+",swDrawn="+PswDrawn+",swContinue="+PswContinue+",ctrContinuedGain="+Arrays.toString(ctrContinuedGain));//~9519I~
+        if (Dump.Y) Dump.println("Accounts.setCtrContinuedGain swGameover="+PswGameover+",swDrawn="+PswDrawn+",swContinue="+PswContinue+",swDrawnManganRon="+PswDrawnManganRon+",ctrContinuedGain="+Arrays.toString(ctrContinuedGain));//~9519I~//~vaq6R~
         if (PswGameover)                                           //~9519I~
 	    	Arrays.fill(ctrContinuedGain,0);                       //~9519I~
         else                                                       //~9519I~
@@ -1354,6 +1372,9 @@ public class Accounts                                              //~v@@@R~
             	    }                                              //~9520I~
                 }                                                  //~9520I~
             }                                                      //~9520I~
+            if (PswDrawnManganRon)                                 //~vaq6M~
+		    	Arrays.fill(ctrContinuedGain,0);                   //~vaq6M~
+            else                                                   //~vaq6I~
             if (!swMangan)                                         //~9520I~
 		    	Arrays.fill(ctrContinuedGain,0);                       //~9519I~//~9520R~
         }                                                          //~9520I~
@@ -2024,9 +2045,23 @@ public class Accounts                                              //~v@@@R~
         	if (Dump.Y) Dump.println("Accounts.loadResumeProperties canceled by prop get failed");//~vae5R~
             return;                                                //~vae5R~
         }                                                          //~vae5R~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties AG.savePropForResume="+AG.savePropForResume);//+vaqdR~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties AG.ruleProp="+AG.ruleProp);//+vaqdR~
+      if (AG.savePropForResume==null)	//MainActivity already set it//+vaqdR~
     	AG.savePropForResume=AG.ruleProp;                          //~vae5R~
     	AG.ruleProp=p;                                             //~vae5R~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties new AG.ruleProp="+AG.ruleProp);//~vaq6I~
     }                                                              //~vae5R~
+	//******************************************************************************//~vaq3R~
+	//*from Starter by testOption                                  //~vaq3R~
+	//******************************************************************************//~vaq3R~
+    public void setContinueWinTest(int Pctr)                       //~vaq3R~
+    {                                                              //~vaq3R~
+        int pos=currentEswnToPosition(ESWN_E);                     //~vaq3R~
+    	ctrContinuedGain[pos]=Pctr;                                //~vaq3R~
+		if (Dump.Y) Dump.println("Accounts.setContinueWinTest ctr="+Pctr+",pos="+pos);//~vaq3R~
+    	AG.aStarter.showCtrContinuedGain(ctrContinuedGain);        //~vaq3I~
+    }                                                              //~vaq3R~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~
 //******************************************************************************//~v@@@I~

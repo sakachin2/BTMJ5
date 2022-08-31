@@ -73,5 +73,14 @@
                 android:layout_gravity="center"
              android:layout_weight="1"
             />
+            <Button
+                android:id="@+id/BtnLangKO"                   
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="@string/BtnLangKO"
+                android:layout_gravity="center"
+             android:layout_weight="1"
+                    android:visibility="gone"
+            />
         </LinearLayout>
 </LinearLayout>

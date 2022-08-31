@@ -1,0 +1,153 @@
+<BIG><B>八連荘</B></BIG>
+<BIG><B>8 consecutive win</B></BIG>
+<BR>
+以下の定義に従って親の連荘が役満になる。
+According to the following definitions, the dealers's win becomes Yakuman.
+<BR>
+但し、操作設定で、"アプリで点数計算"がOFFの場合と、
+"一翻縛り"の"チェックする"がOFFの場合は八連荘は無効になる。
+However, in the operation settings, if "Evaluate Point" is OFF,
+or if "Check 1-han constraint" is OFF, "8 consecutive win" will be disabled.
+標準役でないローカル役の場合も考慮されないので"和了申告"ダイアログで設定してください。
+Local Yaku that are not standard Yaku are not taken into consideration, so please set them in the "Win Claim" dialog.
+"流し満貫"を"和了扱い"としても連続和了数はリセットされ八連荘の和了ともなりません。
+Even if setting of "NagashiMangan" is "Win", the number of consecutive winnings will be reset and it will not be a winning of "8 consecutive win".
+<BR>
+親マークのそばにそのプレーヤーの連続和了数が表示されています。
+The number of consecutive wins for that player is displayed near the parent mark.
+<BR>
+<B>親で連続和了の８回目</B>："連続和了数＞積み棒本数" のとき和了数には直前の子としての上がりが含まれる。
+<B>8 times as dealer</B>: When "Number of consecutive wins > Number of piled sticks", the number of wins includes the win as the immediately preceding non-dealer.
+"連続和了数＜積み棒本数" のとき積み棒に親流れの流局数が含まれる。
+When "Number of consecutive wins < Number of piles sticks", the number of sticks include the count of drawn.
+このオプションは、小さいほうが７の時の親の和了を八連荘の役満とする。
+This option makes the dealer's win as Yakuman of "8 consecutive win" when the smaller one is 7.
+<BR>
+<B>親で連続和了の９回目</B>：連続和了数と積み棒本数の小さいほうが８の時親の和了を八連荘の役満とする。
+<B>9 times as dealer</B>: When the Number of consecutive wins and the Number of piled sticks, whichever is smaller, is 8, the parent's win will be considered as Yarkuman.
+<BR>
+<B>子からでも８連続</B>：連続和了数が 7 の時の親の和了を八連荘の役満とする。
+<B>Start may be non-dealer</B>: When the number of consecutive wins is 7, the parent's win is considered as Yakuman.
+<BR>
+<B>８本場で親の和了</B>：流局の積み棒が何本含まれていてもＯＫ。分かりやすい。
+<B>Dealer's win when 8 sticks</B>: Any number of stickes by Drawn-round can be included. Easy to understand.
+<BR>
+<B>次は＋８</B>：OFFなら子が上がるか流局するまでまで親の上りはすべて役満。
+<B>Next is +8</B>: If it's OFF, all dealer's win is Yakuman until the non-dealer's win or Drawn-round.
+ONなら次の８連続目で役満。
+If it is ON, the next 8 consecutive is the next Yakuman timing.
+<BR>
+-------------------------------------------------------
+<BIG><B>八連荘</B></BIG>
+<BR>
+以下の定義に従って親の連荘が役満になる。
+<BR>
+但し、操作設定で、"アプリで点数計算"がOFFの場合と、
+"一翻縛り"の"チェックする"がOFFの場合は八連荘は無効になる。
+標準役でないローカル役の場合も考慮されないので"和了申告"ダイアログで設定してください。
+"流し満貫"を"和了扱い"としても連続和了数はリセットされ八連荘の和了ともなりません。
+<BR>
+親マークのそばにそのプレーヤーの連続和了数が表示されています。
+<BR>
+<B>親で連続和了の８回目</B>："連続和了数＞積み棒本数" のとき和了数には直前の子としての上がりが含まれる。
+"連続和了数＜積み棒本数" のとき積み棒に親流れの流局数が含まれる。
+このオプションは、小さいほうが７の時の親の和了を八連荘の役満とする。
+<BR>
+<B>親で連続和了の９回目</B>：連続和了数と積み棒本数の小さいほうが８の時親の和了を八連荘の役満とする。
+<BR>
+<B>子からでも８連続</B>：連続和了数が 7 の時の親の和了を八連荘の役満とする。
+<BR>
+<B>８本場で親の和了</B>：流局の積み棒が何本含まれていてもＯＫ。分かりやすい。
+<BR>
+<B>次は＋８</B>：OFFなら子が上がるか流局するまでまで親の上りはすべて役満。
+ONなら次の８連続目で役満。
+<BR>
+-------------------------------------------------------
+<BIG><B>8 consecutive win</B></BIG>
+<BR>
+According to the following definitions, the dealers's win becomes Yakuman.
+<BR>
+However, in the operation settings, if "Evaluate Point" is OFF,
+or if "Check 1-han constraint" is OFF, "8 consecutive win" will be disabled.
+Local Yaku that are not standard winning pattern are not taken into consideration, so please set Yakuman in the "Win Claim" dialog.
+Even if setting of "NagashiMangan" is "Win", "NagashiMangan" resets the number of consecutive win and it will not be a winning of "8 consecutive win".
+<BR>
+The number of consecutive wins for the player is displayed near the Dealer-Mark.
+<BR>
+<B>8 times as dealer</B>: When "Number of consecutive wins > Number of piled sticks", the number of wins includes the win as the immediately preceding non-dealer.
+When "Number of consecutive wins < Number of piles sticks", the number of sticks include the count of Drawn-round.
+This option makes the dealer's win as Yakuman of "8 consecutive win" when the smaller one is 7.
+<BR>
+<B>9 times as dealer</B>: When the Number of consecutive wins and the Number of piled sticks, whichever is smaller, is 8, the dealer's win will be considered as Yarkuman.
+<BR>
+<B>Start may be non-dealer</B>: When the number of consecutive wins is 7, the dealer's win is considered as Yakuman.
+<BR>
+<B>Dealer's win when 8 sticks</B>: Any number of stickes by Drawn-round can be included. This option is easy to judge.
+<BR>
+<B>Next is +8</B>: If this is OFF, all dealer's win is Yakuman until the non-dealer's win or Drawn-round.
+If this is ON, the next 8 consecutive is the next Yakuman timing.
+<BR>
+-------------------------------------------------------
+<BIG><B>8 consecutive win</B></BIG>
+<BR>
+According to the following definitions, the dealers's _win becomes Yakuman.
+다음 정의에 따르면 딜러의 win은 Yakuman이 됩니다.
+<BR>
+However, in the operation settings, if "Evaluate Point" is OFF,
+or if "Check 1-han constraint" is OFF, "8 _consecutive _win" will be disabled.
+단, 동작 설정에서 "Evaluate Point"가 OFF인 경우,
+또는 "1-han 제약 확인"이 OFF인 경우 "8 consecutive win"이 비활성화됩니다.
+"Local Yaku" which is not a standard winning pattern may not be a valid win. So please set _Yakuman in the "_Win _Claim" dialog.
+표준 승리 패턴이 아닌 "Local Yaku"는 유효한 승리가 아닐 수 있습니다. 따라서 "Win Claim" 대화 상자에서 _Yakuman을 설정하십시오.
+Even if setting of "_NagashiMangan" is "_Win", "_NagashiMangan" resets the "_Number _of _consecutive _win" and it will not be a winning of "8 _consecutive _win".
+"NagashiMangan"의 설정이 "Win"인 경우에도 "NagashiMangan"은 "Number of conecutive win"을 재설정하고 "8 conecutive win"의 승리가 아닙니다.
+<BR>
+The "_number_of_consecutive_wins" for each is displayed near the Dealer-Mark.
+각각의 "Number of consecutive wins"는 딜러 마크 근처에 표시됩니다.
+<BR>
+<B>8_times_as_dealer</B>: When "Number_of_consecutive_wins > Number_of_piled_sticks", the number of wins includes the win as the immediately preceding non-dealer.
+<B>8 times as dealer</B>: "Number of consecutive wins > Number of piled sticks"인 경우, 승리 횟수에는 바로 앞의 논딜러로서의 승리도 포함됩니다.
+When "Number_of_consecutive_wins < Number_of_piles_sticks", the number of sticks include the count of Drawn-round(流局).
+"Number of consecutive wins < Number of piles sticks"일 때, 스틱의 수는 무승부(流局)의 카운트를 포함합니다.
+This option makes the dealer's win as Yakuman of "8_consecutive_win" when the smaller one is 7.
+이 옵션은 작은 것이 7일 때 "8 consecutive win"의 Yakuman으로 딜러의 승리를 만듭니다.
+<BR>
+<B>9_times_as_dealer</B>: When the Number_of_consecutive_wins and the Number_of_piled_sticks, whichever is smaller, is 8, the dealer's win will be considered as Yarkuman.
+<B>9 times as dealer</B>: Number of consecutive wins 및 Number of piled sticks 중 작은 쪽이 8일 때 딜러의 승리는 Yarkuman으로 간주됩니다.
+<BR>
+<B>Start_may_be_non-dealer</B>: When Number_of_consecutive_wins is 7, the dealer's win is considered as Yakuman.
+<B>Start may be non dealer</B>: Number of consecutive wins가 7일 때 딜러의 승리는 Yakuman으로 간주됩니다.
+<BR>
+<B>Dealer's_win_when_8_sticks</B>: Number of stickes may contains count of _Drawn_round. This option is easy to judge.
+<B>Dealer's win when 8 sticks</B>: 스틱 수에는 Drawn-round의 수가 포함될 수 있습니다. 이 옵션은 판단하기 쉽습니다.
+<BR>
+<B>Next is +8</B>: If this is OFF, the dealer's win is all Yakuman until the _non-dealer's_win or _Drawn-round.
+<B>Next is +8</B>: 이것이 OFF이면 딜러의 승리는 non-dealer's win 또는 Drawn-round까지 모두 Yakuman입니다.
+If this is ON, the next 8 consecutive is the next Yakuman timing.
+ON이면 다음 8연속이 다음 야쿠만 타이밍입니다.
+<BR>
+-------------------------------------------------------
+<BIG><B>8 consecutive win</B></BIG>
+<BR>
+다음 정의에 따르면 딜러의 win은 Yakuman이 됩니다.
+<BR>
+단, 동작 설정에서 "Evaluate Point"가 OFF인 경우,
+또는 "1-han 제약 확인"이 OFF인 경우 "8 consecutive win"이 비활성화됩니다.
+표준 승리 패턴이 아닌 "Local Yaku"는 유효한 승리가 아닐 수 있습니다. 따라서 "Win Claim" 대화 상자에서 _Yakuman을 설정하십시오.
+"NagashiMangan"의 설정이 "Win"인 경우에도 "NagashiMangan"은 "Number of conecutive win"을 재설정하고 "8 conecutive win"의 승리가 아닙니다.
+<BR>
+각각의 "Number of consecutive wins"는 딜러 마크 근처에 표시됩니다.
+<BR>
+<B>8 times as dealer</B>: "Number of consecutive wins > Number of piled sticks"인 경우, 승리 횟수에는 바로 앞의 논딜러로서의 승리도 포함됩니다.
+"Number of consecutive wins < Number of piles sticks"일 때, 스틱의 수는 무승부(流局)의 카운트를 포함합니다.
+이 옵션은 작은 것이 7일 때 "8 consecutive win"의 Yakuman으로 딜러의 승리를 만듭니다.
+<BR>
+<B>9 times as dealer</B>: Number of consecutive wins 및 Number of piled sticks 중 작은 쪽이 8일 때 딜러의 승리는 Yarkuman으로 간주됩니다.
+<BR>
+<B>Start may be non dealer</B>: Number of consecutive wins가 7일 때 딜러의 승리는 Yakuman으로 간주됩니다.
+<BR>
+<B>Dealer's win when 8 sticks</B>: 스틱 수에는 Drawn-round의 수가 포함될 수 있습니다. 이 옵션은 판단하기 쉽습니다.
+<BR>
+<B>Next is +8</B>: 이것이 OFF이면 딜러의 승리는 non-dealer's win 또는 Drawn-round까지 모두 Yakuman입니다.
+ON이면 다음 8연속이 다음 야쿠만 타이밍입니다.
+<BR>

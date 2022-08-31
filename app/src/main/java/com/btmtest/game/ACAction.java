@@ -1,5 +1,6 @@
-//*CID://+va66R~: update#= 677;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~
+//*CID://+vaqfR~: update#= 678;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~//+vaqfR~
 //**********************************************************************//~v101I~
+//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//+vaqfI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //v@@7 20190131 del GCM_DORA msg exchange(deal msg contains wanpai)//~v@@7R~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@7I~
@@ -519,6 +520,7 @@ public class ACAction                                              //~v@@@R~
             return;                                                //~9902I~
         }                                                          //~9902I~
         HistoryData hd=AG.resumeHD;                                //~9902I~
+        AG.resumeHD_Resumed=hd;                                    //+vaqfI~
         AG.resumeHD=null;                                          //~9902I~
         AG.aAccounts.resumeGame(false/*swServer*/,hd);             //~9902I~
     }                                                              //~9902I~
@@ -1162,8 +1164,8 @@ public class ACAction                                              //~v@@@R~
         AG.aGCanvas.drawStock(posStarter,spot);  //after setShuffled//~v@@7I~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
-    //*not used                                                    //+va66I~
-    //*******************************************************************//+va66I~
+    //*not used                                                    //~va66I~
+    //*******************************************************************//~va66I~
 	private void user_Action_Dora(String Pdata)                    //~v@@@I~
     {                                                              //~v@@@I~
 		if (Dump.Y) Dump.println("ACAction.user_Action_Dora isServer="+isServer+",data="+Pdata);//~v@@@I~

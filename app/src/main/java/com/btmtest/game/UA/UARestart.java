@@ -1,5 +1,6 @@
-//*CID://+va04R~: update#= 659;                                    //~va04R~
+//*CID://+van0R~: update#= 662;                                    //~van0R~
 //**********************************************************************//~v101I~
+//2022/06/19 van0 Xlint:unchecked warning                          //~van0I~
 //2020/04/16 va04:rule sync faile by msgseqno overrun              //~va04I~
 //2020/04/13 va02:At Server,BackButton dose not work when client app canceled by androiud-Menu button//~va02I~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@6I~
@@ -50,7 +51,10 @@ public class UARestart                                                //~v@@@R~/
 	private Accounts ACC;                                          //~v@@@R~
 	private Members MEMB;                                          //~9A28I~
 	private boolean[] swsWaitingResp=new boolean[PLAYERS];         //~9A28R~
-    private LinkedList<String>[] pendingMsg=new LinkedList[PLAYERS];            //member seq//~9A28R~
+//  private LinkedList<String>[] pendingMsg=new LinkedList[PLAYERS];            //member seq//~van0R~
+//  private LinkedList<String>[] pendingMsg=(LinkedList<String>[])new LinkedList<?>[PLAYERS];            //member seq//+van0R~
+    class LinkedListString  extends LinkedList<String>{}           //+van0I~
+    private LinkedListString[] pendingMsg=new LinkedListString[PLAYERS];            //member seq//+van0I~
 //  private boolean swRestarted,swIOExceptionOccured;              //~9A29R~
 //*************************                                        //~v@@@I~
 	public UARestart(UserAction PuserAction)                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9A28R~
@@ -67,7 +71,8 @@ public class UARestart                                                //~v@@@R~/
         MEMB=AG.aBTMulti.BTGroup;                                  //~9A28I~
         isServer=Accounts.isServer();                              //~v@@@R~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9A28I~
-		    pendingMsg[ii]=new LinkedList<String>();               //~9A28I~
+//  	    pendingMsg[ii]=new LinkedList<String>();               //+van0R~
+    	    pendingMsg[ii]=new LinkedListString();                 //+van0I~
         init2();                                                   //~0220I~
         if (Dump.Y) Dump.println("UARestart init isServer="+isServer);//~v@@@I~//~9A28R~
     }                                                              //~v@@@I~
@@ -118,7 +123,7 @@ public class UARestart                                                //~v@@@R~/
 //      MD[Pidx].pendingMsg=null;                                  //~9A28I~
         String msg=null;                                           //~9A28I~
         if (!pendingMsg[Pidx].isEmpty())                           //~9A28I~
-            msg=pendingMsg[Pidx].removeFirst();                    //~9A28I~
+            msg=pendingMsg[Pidx].removeFirst();                    //~van0R~
         if (Dump.Y) Dump.println("UARestart.getPendingMsg idx="+Pidx+",msg="+msg);//~9A28I~
         return msg;                                                //~9A28I~
     }                                                              //~9A28I~
@@ -466,14 +471,18 @@ public class UARestart                                                //~v@@@R~/
 //******************************************************************************//~0220I~
 //******************************************************************************//~0222I~
 //******************************************************************************//~0222I~
-    private LinkedList<MsgData>[] msgDataLists=new LinkedList[PLAYERS];            //member seq//~0220I~
+//  private LinkedList<MsgData>[] msgDataLists=new LinkedList[PLAYERS];            //member seq//~van0R~
+//  private LinkedList<MsgData>[] msgDataLists=(LinkedList<MsgData>[])new LinkedList<?>[PLAYERS];            //member seq//+van0R~
+    class LinkedListMsgData extends LinkedList<MsgData>{}          //+van0I~
+    private LinkedListMsgData[] msgDataLists=new LinkedListMsgData[PLAYERS];            //member seq//+van0I~
     private int[] receivedSeqNo=new int[PLAYERS];                  //~0220I~
 //*************************************************************************//~0220I~
 	public void init2()                                            //~0220I~
     {                                                              //~0220I~
         if (Dump.Y) Dump.println("UARestart init2");               //~0220I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~0220I~
-		    msgDataLists[ii]=new LinkedList<MsgData>();             //~0220I~
+//		    msgDataLists[ii]=new LinkedList<MsgData>();            //+van0R~
+  		    msgDataLists[ii]=new LinkedListMsgData();              //+van0I~
     }                                                              //~0220I~
 //******************************************************************************//~0220I~
     public static boolean saveMsg(int Pidx,long PseqNo,String Pmsg) //~0220R~//~0222R~
@@ -529,7 +538,7 @@ public class UARestart                                                //~v@@@R~/
 //******************************************************************************//~0220I~
     public boolean receivedRequestSeqNo(boolean PswServer,int Pidx,int PseqNo,String Pmsg,int Ppos/*senderDevicename*/)//~0220I~//~0224R~
     {                                                              //~0220I~
-		if (Dump.Y) Dump.println("UARestart.receivedRequestSeqNo swServer="+PswServer+",idx="+Pidx+",seq="+PseqNo+",receivedSeqno="+Arrays.toString(receivedSeqNo));//+va04R~
+		if (Dump.Y) Dump.println("UARestart.receivedRequestSeqNo swServer="+PswServer+",idx="+Pidx+",seq="+PseqNo+",receivedSeqno="+Arrays.toString(receivedSeqNo));//~va04R~
         int idx;                                                   //~0220I~
 //      if (PswServer)                                             //~0220I~//~0221R~
         	idx=Pidx;                                              //~0220I~
@@ -762,7 +771,7 @@ public class UARestart                                                //~v@@@R~/
         String msg=null;                                           //~0220I~
 		if (!isEmptyPendingMsgSeqNo(Pidx))                         //~0220I~
         {                                                          //~0220I~
-            MsgData msgData=msgDataLists[Pidx].removeLast();       //~0220R~
+            MsgData msgData=msgDataLists[Pidx].removeLast();       //~van0R~
             msg=msgData.msg;                                       //~0220I~
         }                                                          //~0220I~
         if (Dump.Y) Dump.println("UARestart.getPendingMsg idx="+Pidx+",msg="+msg+",size after="+msgDataLists[Pidx].size());//~0220I~
@@ -797,7 +806,8 @@ public class UARestart                                                //~v@@@R~/
         if (Dump.Y) Dump.println("UARestart.getPendingMsgSeqNoAll ctr="+mapCtr+",low="+lowKey+",high="+highKey);//~0222I~
         if (mapCtr==0)                                             //~0222I~
             return null;                                           //~0222I~
-    	LinkedList<MsgData> listAll=new LinkedList();              //~0222I~
+//  	LinkedList<MsgData> listAll=new LinkedList();              //~van0R~
+    	LinkedList<MsgData> listAll=new LinkedList<>();            //~van0I~
         for (int key=lowKey;key<=highKey;key++)                    //~0222I~
         {                                                          //~0222I~
         	if (map.containsKey(key))                              //~0222I~

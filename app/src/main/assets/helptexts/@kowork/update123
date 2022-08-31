@@ -1,0 +1,85 @@
+V1.23 : 2022/08/16
+		.流し満貫の判定、八連荘、形式聴牌をインプリメント
+        .Implemented "Determination of NagashiMangan", "8 consecutive win" and Psuedo-Tenpai.
+		.Change of Open-Riichi option.
+		 Riich-er before Open-Riich is issued don't need to pay pay Yakuman.
+        .Bugs.
+		 -Furiten of Chankan against Add-Kan. "Fix Yaku" error of Double-Run/3 conceiled Triples.
+		  "Fix yaku" error for 2nd Honor tile in 2-han constraint condition.
+
+*********************************************************************************************
+V1.23 : 2022/08/16
+		.流し満貫の判定、八連荘をインプリメント
+        .Implemented "Determination of NagashiMangan" and "8 consecutive win".
+		.形式聴牌をインプリメント
+		.Implemented Psuedo-Tenpai.
+         無しは、ロン上がりできるとき聴牌とする。
+		."Disable":ON means win-able for other discarded.
+         有リはフリテン、片上がり、先付けエラーはOK。縛りはオプションとする。
+		 "Disable":OFF means win-able by self-draw allowing Furiten, Kataagari and err by "Fix Yaku".
+         Constraint check is optional.
+         ノーテン立直がありうるので立直だけで聴牌とはみなさない。
+		 Noten Riichi are possible, so Riichi itself is not a Tenpai condition.
+		.オープン立直の振り込みをインプリメント、また警告オプションも追加。
+		.Implemented Discarding for Open-Riichi.  Opptionally issues warning.
+		 加槓の時もオープン立直の槍槓にならないかチェックする。
+		 Check for also Chankan(Add-Kan) whether it is winning tile or not.
+		 また通常立直後のオープン立直への振り込みは役満とはしない。
+		 For Open-Riichi after your normal Riichi, your need not to pay Yakuman.
+		.ロボット入りゲームのオープン立直オプションは有無のみにし、払いは役満とする。
+		.Open Riichi option for the game included Robot is changed to simply "Yes" or "No". Robot pays Yakuman if "Yes".
+		."フリテンをチェックする"がOFFの設定の時フリテンエラーのメッセージは出さないがボタン通知はしない。
+		.When "Check Furiten" is set to OFF, the message for Furiten error is not displayed, but the button notification is not done.
+		 デフォルトはONに変更する。
+		 Change the default to ON.
+		.ロボットの強化
+        .Strengthen smart Robot.
+         -七対子のドラ待ちは立直しない。
+		 -Skip Riichi if Waiting for 7-pair is Dora tile.
+		 -オープン立直がかかっているときは槓はしない。
+		 - Do not Riichi when Open-Riichi is issued.
+		 -オープン立直に対しフリテンをチェックして捨て牌を選ぶ。
+		 - Check furiten against Open-Riichi and choose a Discard.
+		 -七対子は１シャンテンのときできるだけ字牌を捨てない。
+		 -7-Pairs do not discard Word tiles as much as possible when 1-Shanten.
+		 -七対子の立直の時、役牌待ちは避ける。
+		 -Avoid waiting for Honor tiles for 7-Pairs.
+        .Bugs.
+		 -加槓に対する槍槓の同順フリテンチェックをしていなかった。
+		 -Didn't check Furiten in the same sequence for Chankan against Add-Kan.
+		 -Didn't check "Fix Yaku" violation for Double-Run/3 conceiled Triples.
+		 -Didn't check "Fix Yaku" violation for 2'nd honor tile in 2-han constraint condition.
+------------------------
+V1.23 : 2022/08/16
+        .Implemented "Determination of NagashiMangan", "8 consecutive win" and Psuedo-Tenpai.
+		.Change of Open-Riichi option.
+		 Riich-er before Open-Riich is issued don't need to pay pay Yakuman.
+        .Bugs.
+		 -Furiten of Chankan against Add-Kan. "Fix Yaku" error of Double-Run/3 conceiled Triples.
+		  "Fix yaku" error for 2nd Honor tile in 2-han constraint condition.
+
+*********************************************************************************************
+V1.23 : 2022/08/16
+        .Implemented "Determination of NagashiMangan" and "8 consecutive win".
+		.Implemented Psuedo-Tenpai.
+		."Disable":ON means win-able for other player's Discard.
+		 "Disable":OFF means win-able by self-draw allowing Furiten, Kataagari and err by "Fix Yaku".
+         Constraint check is optional.
+		 Noten Riichi are possible, so Riichi itself is not a Tenpai condition.
+		.Implemented Discarding for Open-Riichi. Opptionally issues warning.
+		 Check for also Chankan against Add-Kan whether it is winning tile or not for Open-Riichi.
+		 For Open-Riichi after your normal Riichi, your need not to pay Yakuman.
+		.Open Riichi option for the game included Robot is changed to simply "Yes" or "No". Robot pays Yakuman if "Yes".
+		.When "Check Furiten" option is set to OFF, the message for Furiten error is not displayed, andthe button notification is not done.
+		 Change the default to ON.
+        .Strengthen smart Robot.
+		 -Skip Riichi if winning tile for 7-pair is Dora tile.
+		 - Do not Riichi when Open-Riichi is issued.
+		 - Check furiten against Open-Riichi and choose a Discard.
+		 -7-Pairs do not discard Word tiles as much as possible when 1-Shanten.
+		 -Avoid waiting for Honor tile for 7-Pairs.
+        .Bugs.
+		 -Didn't check Furiten of "in the same sequence" for Chankan against Add-Kan.
+		 -Didn't check "Fix Yaku" violation for Double-Run/3 conceiled Triples.
+		 -Didn't check "Fix Yaku" violation for 2'nd honor tile in 2-han constraint condition.
+------------------------

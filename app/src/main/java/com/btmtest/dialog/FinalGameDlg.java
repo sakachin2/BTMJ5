@@ -1,6 +1,6 @@
-//*CID://+vamsR~:                             update#= 1157;       //+vamsR~
+//*CID://+vamsR~:                             update#= 1158;       //~vamsR~
 //*****************************************************************//~v101I~
-//2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//+vamsI~
+//2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//~vamsI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //*****************************************************************//~v101I~
@@ -145,7 +145,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     {                                                              //~v@@@R~
         if (Dump.Y) Dump.println("FinalGameDlg.defaultConstructor"); //~9221R~//~9302R~//~9303R~//~9304R~//~9307R~//~9312R~//~9504R~//~9520R~
         AG.aFinalGameDlg=this;                                         //~9321I~//~9504R~//~9520R~
-        Status.setShownFinalGame();	//server and client            //+vamsI~
+        Status.setShownFinalGame();	//server and client            //~vamsI~
 //      swRon=AG.aComplete.isCompletedDealerRon();                       //~9504I~//~9520R~
     }                                                              //~v@@@R~
     //******************************************                   //~v@@@R~
@@ -598,7 +598,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     @Override                                                      //~9321I~
     public void onClickCancel()                                    //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("SendDlg.onClickCancel");             //~9321I~//~9523R~
+        if (Dump.Y) Dump.println("FinalGameDlg.onClickCancel");             //~9321I~//~9523R~//+vamsR~
         sendToAllReply(false);                                          //~9321I~//~9523R~
         dismiss();                                              //~9321I~//~9523R~
     }                                                              //~9321I~

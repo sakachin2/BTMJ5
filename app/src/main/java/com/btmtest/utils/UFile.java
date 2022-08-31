@@ -1,6 +1,7 @@
-//*CID://+vaieR~:                             update#=  119;       //+vaieR~
+//*CID://+van1R~:                             update#=  123;       //~van1R~
 //************************************************************************//~v102I~
-//2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//+vaieI~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
+//2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
 //2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
@@ -14,12 +15,16 @@
 package com.btmtest.utils;                                        //~1110I~//~v107R~//~1Ad2R~
                                                                    //~1110I~
                                                                    //~1110I~
+import com.btmtest.AG;
 import com.btmtest.MainActivity;
 import com.btmtest.MainView;
 import com.btmtest.R;                                              //~v@@@I~
+import com.btmtest.TestOption;
 
 import static android.os.Environment.*;
+import static com.btmtest.AG.*;
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~v@@@I~
+import static com.btmtest.TestOption.*;
 import static com.btmtest.game.GConst.*;
 
 import java.io.BufferedInputStream;
@@ -257,6 +262,34 @@ public class UFile                                                 //~v@@@R~
         }                                                          //~v@@@I~
 		return txt;                                                //~v@@@I~
 	}                                                              //~v@@@I~
+//********************************************************         //~van1I~
+//*get help file text extension specified for Lang=ko              //~van1I~
+//********************************************************         //~van1I~
+	public static String getHelpFileExtKO(String Pfilename,String Pextension,boolean PswNFMsg)//~van1I~
+	{                                                              //~van1I~
+    	InputStream is;                                            //~van1I~
+        String txt,suffix="";                                         //~van1I~
+    //***************************                                  //~van1I~
+        if (Dump.Y) Dump.println("UFile.getHelpFileTextKO fnm="+Pfilename+",ext="+Pextension+"AG.isLangKO="+AG.isLangKO);//~van1I~
+        switch(AG.currentHelpLang)                                 //~van1I~
+        {                                                          //~van1I~
+        case CHL_EN:    //english                               //~van1I~
+        	suffix="";                                             //~van1I~
+        	break;                                                 //~van1I~
+        case CHL_JP:    //japanese                              //~van1I~
+        	suffix="_ja";                                          //~van1I~
+        	break;                                                 //~van1I~
+        case CHL_KO_FROM_EN: //translate en to ko               //~van1I~
+        	suffix=AG.helpFileSuffixKO;                           //~van1I~
+        	break;                                                 //~van1I~
+//      case CHL_KO_FROM_JP: //translate en to ko                  //~van1R~
+//      	suffix=AG.helpFileSuffixKO+"_ja";                      //~van1R~
+//      	break;                                                 //~van1R~
+        }                                                          //~van1I~
+    	String fnm="helptexts/"+Pfilename+suffix+Pextension;       //~van1I~
+	    txt=loadAssetTextFile(fnm,null/*encoding=utf8*/,false);    //~van1I~
+		return txt;                                                //~van1I~
+	}                                                              //~van1I~
 //********************************************************         //~v@@@I~
 //*get asset file text                                             //~v@@@I~
 //********************************************************         //~v@@@I~
@@ -287,6 +320,7 @@ public class UFile                                                 //~v@@@R~
         {                                                          //~v@@@I~
         	UView.showToastLong(R.string.ErrAssetFileRead,Pfnm);   //~v@@@R~
         }                                                          //~v@@@I~
+        if (Dump.Y) Dump.println("loadAssetFile filename="+Pfnm+",txt="+txt);//+van1I~
 		return txt;                                                //~v@@@I~
 	}                                                              //~v@@@I~
     private static String loadText(InputStream Pis,String Pencoding) throws IOException//~v@@@I~
@@ -1159,12 +1193,12 @@ public class UFile                                                 //~v@@@R~
     {                                                              //~v@@@I~
         StringBuffer sb=new StringBuffer();                        //~v@@@R~
         if (Dump.Y) Dump.println("UFile.fileToStringBuffer fpath="+Pfpath);//~v@@@R~
-      if (AG.swScoped) //android11 api30                           //+vaieI~
-      {                                                            //+vaieI~
-      	sb=AG.aUScoped.fileToStringBuffer(Pfpath);                  //+vaieI~
-      }                                                            //+vaieI~
-      else                                                         //+vaieI~
-      {                                                            //+vaieI~
+      if (AG.swScoped) //android11 api30                           //~vaieI~
+      {                                                            //~vaieI~
+      	sb=AG.aUScoped.fileToStringBuffer(Pfpath);                  //~vaieI~
+      }                                                            //~vaieI~
+      else                                                         //~vaieI~
+      {                                                            //~vaieI~
         try                                                        //~v@@@I~
         {                                                          //~v@@@I~
         	BufferedReader r=new BufferedReader(new FileReader(Pfpath));//~v@@@I~
@@ -1181,7 +1215,7 @@ public class UFile                                                 //~v@@@R~
 	        Dump.println(e,"UFile.fileToString fnm="+Pfpath);      //~v@@@R~
             sb=null;                                               //~v@@@I~
         }                                                          //~v@@@I~
-      }                                                            //+vaieI~
+      }                                                            //~vaieI~
         if (Dump.Y) Dump.println("UFile.fileToStringBuffer sb="+sb.toString());//~v@@@R~
         return sb;                                                 //~v@@@R~
     }                                                              //~v@@@I~

@@ -57,7 +57,6 @@
                      android:id="@+id/tvComp"
                      android:layout_height="wrap_content"
                      android:layout_width="0dp"
-	                android:background="@color/editable"
 		             android:layout_weight="0.4"
 		             android:layout_gravity="center_vertical"
                 />

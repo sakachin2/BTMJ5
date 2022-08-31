@@ -2,3 +2,4 @@
 # do not define Saved, it is id of copy of asset
 preference=1
 Orientation=1
+BGMType=1

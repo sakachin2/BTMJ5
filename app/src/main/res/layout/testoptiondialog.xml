@@ -39,6 +39,12 @@
                     android:text="No Dump"
                 />
                 <CheckBox
+                    android:id="@+id/cbLangKO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ハングル for Help"
+                />
+                <CheckBox
                     android:id="@+id/cbOpenHand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -376,8 +382,42 @@
                     android:id="@+id/cbSetDupCtr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="set dupctr for 2han constraint"
+                    android:text="二翻縛りにする"
                 />
+    			<LinearLayout
+         			android:layout_width="fill_parent"
+         			android:orientation="horizontal"
+            		android:layout_height="wrap_content"
+    			>
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="親の積み棒"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etCtrContinueStick"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                    <TextView
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                    	android:text="連続和了数"
+                    />                                 
+                    <EditText
+                         android:id="@+id/etCtrContinueWin"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                        android:inputType="number"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:minEms="3"
+                    />                                 
+                </LinearLayout>
                 <CheckBox
                     android:id="@+id/cbFinalGame"
                     android:layout_width="wrap_content"
@@ -535,6 +575,18 @@
                     android:text="フリテン待ち(10021)"
                 />
                 <CheckBox
+                    android:id="@+id/cbNagashiMangan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="流し満貫　喰い(10022)"
+                />
+                <CheckBox
+                    android:id="@+id/cbOpenReachRon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="オープン立直ロン(106)"
+                />
+                <CheckBox
                     android:id="@+id/cbDealStraight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -664,7 +716,7 @@
                     android:id="@+id/cbDealDoubleRunNotFixNG"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="一盃口 両面 NG(12)"
+                    android:text="一盃口 両面 NG(12) 形式聴牌テスト"
                 />
                 <CheckBox
                     android:id="@+id/cbDealMultiWaitWGR"
@@ -982,13 +1034,19 @@
                     android:id="@+id/cbTakeDiscard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Just Discard after Taken"
+                    android:text="自摸切り"
                 />
                 <CheckBox
                     android:id="@+id/cbDrawnReqDlg_Last"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="show DrwanReqDlg Last at 6 tile discard"
+                    android:text="６タイル　Discardで　流局"
+                />
+                <CheckBox
+                    android:id="@+id/cbDrawnReqDlg_LastDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ダイアログ　オープンは荒牌流局"
                 />
                 <CheckBox
                     android:id="@+id/cbShowF2"

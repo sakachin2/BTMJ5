@@ -1,5 +1,7 @@
-//*CID://+vakKR~: update#= 914;                                    //~vakKR~
+//*CID://+vapvR~: update#= 920;                                    //+vapvR~
 //**********************************************************************//~v101I~
+//2022/08/05 vapv (Bug)Furiten chk after discarded was not done    //~vapvI~
+//2022/07/23 vap2 Players.open() is not used                       //~vap2I~
 //2022/03/18 vakK match mode;kanAdd on client, received tile loose flag and added tile on earth corrupted display//~vakKI~
 //2022/03/15 vakE (Bug) take button at kan cause not your turn; by option of take btn for robot may faile but remains action current.//~vakEI~
 //2022/03/09 vaku Msg "do take after kan" is shown for AutoDiscard msg sheduled before TAKABLE_RINSHAN//~vakuI~
@@ -500,7 +502,7 @@ public class Players                                               //~v@@@R~
     //*********************************************************************//~vakEI~
     public boolean isYourTurnActionInfo(int PactionID,int Pplayer,int PprevActionID)//~vakEI~
     {                                                              //~vakEI~
-        if (Dump.Y) Dump.println("Players.isYourTurnActionInfo actionID="+PactionID+",player="+Pplayer+"+prevActionID="+PprevActionID);//~vakEI~//+vakKR~
+        if (Dump.Y) Dump.println("Players.isYourTurnActionInfo actionID="+PactionID+",player="+Pplayer+"+prevActionID="+PprevActionID);//~vakEI~//~vakKR~
     	swActionInfo=true;                                         //~vakEI~
 	    boolean rc=isYourTurn(true,PactionID,Pplayer,PprevActionID);//~vakEI~
     	swActionInfo=false;                                        //~vakEI~
@@ -1364,6 +1366,7 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.discardOtherOnClient player="+Pplayer+",tileLastDiscarded="+Ptd.toString());//~vaadI~
         playerLastDiscarded=Pplayer;                               //~v@@@I~
     	players[Pplayer].discardOtherOnClient(Ptd);                //~v@@@I~
+        AG.aRoundStat.discardOtherOnClient(Pplayer,Ptd);           //~vapvI~
         if (PswLight)                                              //~v@@@I~
         {                                                          //~v@@@I~
 //	        setNextPlayer(Pplayer,PswShadow);                      //~v@@@R~
@@ -1620,6 +1623,8 @@ public class Players                                               //~v@@@R~
         return rc;                                                 //~v@@6I~
     }                                                              //~v@@6I~
     //*********************************************************************//~v@@6I~
+    //*from UAKan onClient                                         //~vapwI~
+    //*********************************************************************//~vapwI~
 	public int takeKanOtherOnClient(boolean PswShadow,int Pplayer,TileData[] Ptds)//~v@@6R~
     {                                                              //~v@@6I~
         if (Dump.Y) Dump.println("Players.takeKanOtherOnClient shadow="+PswShadow+",player="+Pplayer);//~v@@6I~//~va60R~
@@ -1663,12 +1668,14 @@ public class Players                                               //~v@@@R~
         if (Dump.Y) Dump.println("Players.setNotRonable player="+Pplayer);//~9A14I~
         players[Pplayer].setNotRonable();                          //~9A14I~
      }                                                             //~9A14I~
-    //*********************************************************************//~v@@@I~
-	public void open(int Pplayer)                                  //~v@@@I~
-    {                                                              //~v@@@I~
-        players[Pplayer].open();                            //~v@@@I~
-        if (Dump.Y) Dump.println("Players.open player="+Pplayer);  //~v@@@I~
-     }                                                             //~v@@@I~
+//    //*********************************************************************//~vap2R~
+//    //*no user, reachOpen set swOpenReach                        //~vap2I~
+//    //*********************************************************************//~vap2I~
+//    public void open(int Pplayer)                                //~vap2R~
+//    {                                                            //~vap2R~
+//        players[Pplayer].open();                                 //~vap2R~
+//        if (Dump.Y) Dump.println("Players.open player="+Pplayer);//~vap2R~
+//     }                                                           //~vap2R~
     //*********************************************************************//~v@@@I~
 	public boolean isOpen(int Pplayer)                             //~v@@@I~
     {                                                              //~v@@@I~
@@ -3306,12 +3313,14 @@ public class Players                                               //~v@@@R~
             if (Dump.Y) Dump.println("Player.setNotRonable player="+player);//~9A14I~
         	status|=STF_NOTRONABLE;    //game continue but err/invalid ron//~9A14I~
         }                                                          //~9A14I~
-        //*********************************************************************//~v@@@I~
-        private void open()                                        //~v@@@I~
-        {                                                          //~v@@@I~
-            if (Dump.Y) Dump.println("Player.complete player="+player);//~v@@@I~
-            status|=STF_OPEN;                               //~v@@@I~
-        }                                                          //~v@@@I~
+//        //*********************************************************************//~vap2R~
+//        //*not used                                              //~vap2I~
+//        //*********************************************************************//~vap2I~
+//        private void open()                                      //~vap2R~
+//        {                                                        //~vap2R~
+//            status|=STF_OPEN;                                    //~vap2R~
+//            if (Dump.Y) Dump.println("Player.open player="+player+",status="+Integer.toHexString(status));//~vap2R~
+//        }                                                        //~vap2R~
         //*********************************************************************//~v@@@I~
         private void setTileSelected(int Ppos)                        //~v@@@I~
         {                                                          //~v@@@I~

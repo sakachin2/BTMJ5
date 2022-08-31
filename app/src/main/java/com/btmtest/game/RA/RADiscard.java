@@ -1,4 +1,4 @@
-//*CID://+vak2R~: update#=  76;                                    //~vak2R~
+//*CID://+vak2R~: update#=  81;                                    //+vak2R~
 //**********************************************************************//~v101I~
 //2022/02/15 vak2 Test option, specify discard tile                //~vak2I~
 //2021/01/07 va60 CalcShanten                                      //~1108I~
@@ -96,7 +96,7 @@ public class RADiscard                                               //~v@@@R~//
 		int type= TestOption.testDiscardType-1;                     //~vak2R~
 		int num=TestOption.testDiscardNumber-1;                    //~vak2R~
     	TileData tdDiscard=null;                                   //~vak2I~
-        if (PtdTaken!=null && PtdTaken.type==type && PtdTaken.number==num)//+vak2R~
+        if (PtdTaken!=null && PtdTaken.type==type && PtdTaken.number==num)//~vak2R~
         	tdDiscard=PtdTaken;                                     //~vak2I~
         else                                                       //~vak2I~
         	for (TileData td:PtdsHand)                             //~vak2I~
@@ -257,7 +257,7 @@ public class RADiscard                                               //~v@@@R~//
     private boolean isFuriten(int Peswn/*targetEswn*/,int Ppos)     //~1111R~
     {                                                              //~1111I~
     	boolean rc=RS.isFuriten(Peswn,Ppos);                       //~1111R~
-        if (Dump.Y) Dump.println("RADiscard.isFuriTen rc="+rc+",eswn="+Peswn+",Ppos="+Ppos);//~1111I~
+        if (Dump.Y) Dump.println("RADiscard.isFuriten rc="+rc+",eswn="+Peswn+",Ppos="+Ppos);//+vak2R~
         return rc;                                                 //~1111I~
     }                                                              //~1111I~
     //*********************************************************    //~1113I~

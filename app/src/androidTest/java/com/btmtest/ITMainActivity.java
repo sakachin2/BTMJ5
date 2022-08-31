@@ -36,7 +36,7 @@ import static com.btmtest.TestOption.*;                            //~vagvI~
 public class ITMainActivity                                        //~vagvR~
 {                                                                  //~0A31I~
 	@Rule                                                          //~vagvI~
-    public ActivityScenarioRule<MainActivity> mASR=new ActivityScenarioRule(MainActivity.class);//~vagvR~
+    public ActivityScenarioRule<MainActivity> mASR=new ActivityScenarioRule<MainActivity>(MainActivity.class);//~vagvR~
     public ActivityScenario mAS;                                   //~vagvR~
     private ITTilesTest mTT=new ITTilesTest();                     //~vagvR~
     //*************************************************************************//~0A31I~

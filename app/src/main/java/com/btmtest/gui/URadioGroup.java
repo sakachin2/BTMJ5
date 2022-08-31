@@ -1,5 +1,6 @@
-//*CID://+vakQR~:                             update#=   69;       //~vakQR~
+//*CID://+vapxR~:                             update#=   71;       //+vapxR~
 //*************************************************************************//~v106I~
+//2022/08/06 vapx add Psuedo-Tennpai:No option                     //+vapxI~
 //2022/03/19 vakQ notify update of rule when client received       //~vakQI~
 //1Afc 2016/09/22 like V1C1 fuego, add ray as player               //~1AfcI~
 //*************************************************************************//~v106I~
@@ -43,7 +44,7 @@ public class URadioGroup                                              //~1AfcR~/
 		radioGroup=(RadioGroup)UView.findViewById(Playout,Pid);    //~9214I~
         URGParm=Pparm;                                             //~9214R~
 		setListener(createListener());                             //~9902I~
-        if (Dump.Y) Dump.println("URadioGroup.constructor id="+Integer.toHexString(Pid));//~9214R~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.constructor id="+Integer.toHexString(Pid));//~9214R~//~vakQR~
     }                                                              //~9214I~
 //********************************************************************//~9306I~
     public URadioGroup(View Playout, int Pid,int Pparm,int[] PIDs) //~9306I~
@@ -53,13 +54,13 @@ public class URadioGroup                                              //~1AfcR~/
         URGParm=Pparm;                                             //~9306I~
         rbIDs=PIDs;                                                //~9306I~
 		setListener(createListener());                             //~9902I~
-        if (Dump.Y) Dump.println("URadioGroup.constructor id="+Integer.toHexString(Pid));//~9306I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.constructor id="+Integer.toHexString(Pid));//~9306I~//~vakQR~
     }                                                              //~9306I~
 	//***************************************************************************//~1AfcM~
 	public void setChecked(int Prbid)                           //~1AfcR~//~9214R~
     {                                                              //~1AfcM~
 		radioGroup.check(Prbid);                                   //~9214R~
-        if (Dump.Y) Dump.println("URadioGroup.setChecked id="+Integer.toHexString(Prbid));//~9214I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setChecked id="+Integer.toHexString(Prbid));//~9214I~//~vakQR~
     }//setChecked                                                  //~1AfcI~
 	//***************************************************************************//~9320I~
 	public void resetWithoutListener()                             //~9320R~
@@ -69,12 +70,12 @@ public class URadioGroup                                              //~1AfcR~/
 		radioGroup.check(-1);                                      //~9320I~
     	if (rbListener!=null)                                      //~9320I~
 	        radioGroup.setOnCheckedChangeListener(rbListener);     //~9320I~
-        if (Dump.Y) Dump.println("URadioGroup.restWithoutListener");//~9320I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.restWithoutListener");//~9320I~//~vakQR~
     }                                                              //~9320I~
 	//***************************************************************************//~9226I~
 	public void setChecked(int Prbid,boolean PswFixed)             //~9226I~
     {                                                              //~9226I~
-        if (Dump.Y) Dump.println("URadioGroup.setChecked swFixed="+PswFixed+",id="+Integer.toHexString(Prbid));//~9226I~//~0302M~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setChecked swFixed="+PswFixed+",id="+Integer.toHexString(Prbid));//~9226I~//~0302M~//~vakQR~
 		radioGroup.check(Prbid);                                   //~9226I~
         swFixed=PswFixed;                                          //~9226I~
         idFixed=Prbid;                                             //~9226I~
@@ -88,7 +89,7 @@ public class URadioGroup                                              //~1AfcR~/
 	public void setFixed(boolean PswFixed)                         //~9311I~
     {                                                              //~9311I~
         swFixed=PswFixed;                                          //~9311I~
-        if (Dump.Y) Dump.println("URadioGroup.setFixed swFixed="+PswFixed+",idFixed="+Integer.toHexString(idFixed));//~9311R~//~9A14R~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setFixed swFixed="+PswFixed+",idFixed="+Integer.toHexString(idFixed));//~9311R~//~9A14R~//~vakQR~
     }                                                              //~9704R~
 	//***************************************************************************//~9704I~
 	public boolean getFixed()                                      //~9704R~
@@ -99,7 +100,7 @@ public class URadioGroup                                              //~1AfcR~/
 	//***************************************************************************//~9306I~
 	public void setCheckedID(int Pid,boolean PswFixed)             //~9306I~
     {                                                              //~9306I~
-        if (Dump.Y) Dump.println("URadioGroup.setCheckedID swFixed="+PswFixed+",id="+Pid);//~9306I~//~0302I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setCheckedID swFixed="+PswFixed+",id="+Pid);//~9306I~//~0302I~//~vakQR~
     	int rbid;                                                  //~9306I~
     	if (rbIDs!=null && Pid>=0 && Pid<rbIDs.length)             //~9306I~
 			rbid=rbIDs[Pid];                                      //~9306I~
@@ -111,19 +112,28 @@ public class URadioGroup                                              //~1AfcR~/
 	public void setEnabled(boolean Penable)                        //~9225I~
     {                                                              //~9225I~
 		radioGroup.setEnabled(Penable);                            //~9225I~
-        if (Dump.Y) Dump.println("URadioGroup.setEnabled enable="+Penable);//~9225I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setEnabled enable="+Penable);//~9225I~//~vakQR~
     }                                                              //~9707R~
+	//***************************************************************************//+vapxR~
+	public void setEnabledAll(boolean Penable)                     //+vapxR~
+    {                                                              //+vapxR~
+    	for (int ii=0;ii<radioGroup.getChildCount();ii++)         //+vapxR~
+        {                                                          //+vapxR~
+			radioGroup.getChildAt(ii).setEnabled(Penable);        //+vapxR~
+        }                                                          //+vapxR~
+        if (Dump.Y) Dump.println("URadioGroup.setEnabledAll enable="+Penable);//+vapxR~
+    }                                                              //+vapxR~
 	//***************************************************************************//~9531I~
 	public void setEnabledButton(int Prbid,boolean Penable)              //~9531I~
     {                                                              //~9531I~
-        if (Dump.Y) Dump.println("URadioGroup.setEnabledButton rbid="+Integer.toHexString(Prbid)+",enable="+Penable);//~9531I~//~9707R~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setEnabledButton rbid="+Integer.toHexString(Prbid)+",enable="+Penable);//~9531I~//~9707R~//~vakQR~
 		RadioButton rb=(RadioButton)UView.findViewById(rgLayout,Prbid);//~9531I~
 		rb.setEnabled(Penable);                                    //~9531I~
     }                                                              //~9707R~
 	//***************************************************************************//~9531I~
 	public void setEnabled(int Pid,boolean Penable)                //~9531I~
     {                                                              //~9531I~
-        if (Dump.Y) Dump.println("URadioGroup.setEnabled id="+Pid+",enable="+Penable);//~9531I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setEnabled id="+Pid+",enable="+Penable);//~9531I~//~vakQR~
     	int rbid;                                                  //~9531I~
     	if (rbIDs!=null && Pid>=0 && Pid<rbIDs.length)             //~9531I~
         {                                                          //~9531I~
@@ -134,7 +144,7 @@ public class URadioGroup                                              //~1AfcR~/
 	//***************************************************************************//~9705I~
 	public void setVisibility(int Pid,int Pvisibility)             //~9705I~
     {                                                              //~9705I~
-        if (Dump.Y) Dump.println("URadioGroup.setVisivility id="+Pid+",visibility="+Pvisibility);//~9705I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.setVisivility id="+Pid+",visibility="+Pvisibility);//~9705I~//~vakQR~
     	int rbid;                                                  //~9705I~
     	if (rbIDs!=null && Pid>=0 && Pid<rbIDs.length)             //~9705I~
         {                                                          //~9705I~
@@ -146,7 +156,7 @@ public class URadioGroup                                              //~1AfcR~/
     public int getChecked()                                        //~1AfcR~
     {                                                              //~1AfcM~
     	int id=radioGroup.getCheckedRadioButtonId();                    //~9214I~
-        if (Dump.Y) Dump.println("URadioGroup.getChecked id="+Integer.toHexString(id));//~9214R~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.getChecked id="+Integer.toHexString(id));//~9214R~//~vakQR~
         return id;                                             //~1AfcI~//~9214R~
 	}                                                              //~9214R~
 	//***************************************************************************//~9306I~
@@ -156,7 +166,7 @@ public class URadioGroup                                              //~1AfcR~/
     	int id=radioGroup.getCheckedRadioButtonId();               //~9306I~
         if (rbIDs!=null)                                           //~9306I~
         	rc=searchID(id);                                       //~9306I~
-        if (Dump.Y) Dump.println("URadioGroup.getChecked rc="+rc); //~9306I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.getChecked rc="+rc); //~9306I~//~vakQR~
         return rc;                                                 //~9306I~
 	}                                                              //~9306I~
 	//***************************************************************************//~9306I~
@@ -171,13 +181,13 @@ public class URadioGroup                                              //~1AfcR~/
                 break;                                             //~9306I~
             }                                                      //~9306I~
         }                                                          //~9306I~
-        if (Dump.Y) Dump.println("URadioGroup.searchID id="+Integer.toHexString(Pid)+",rc="+rc);//~9306I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.searchID id="+Integer.toHexString(Pid)+",rc="+rc);//~9306I~//~vakQR~
         return rc;                                                 //~9306I~
 	}                                                              //~9306I~
 	//***************************************************************************//~9214I~
     public OnCheckedChangeListener createListener()                //~9214I~
     {                                                              //~9214I~
-        if (Dump.Y) Dump.println("URadioGroup.createListener");    //~9226I~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.createListener");    //~9226I~//~vakQR~
     	RadioGroup.OnCheckedChangeListener l=                               //~9214R~
     	new OnCheckedChangeListener()                              //~9214I~
         	{                                                      //~9214I~
@@ -186,7 +196,7 @@ public class URadioGroup                                              //~1AfcR~/
                 {                                                  //~9214I~
                 	try                                            //~9228I~
                     {                                              //~9228I~
-                        if (Dump.Y) Dump.println("URadioGroup.onCheckChanged swFixed="+swFixed+",btnid="+Integer.toHexString(Prbid));//~9214R~//~9226R~//~9228R~//+vakQR~
+                        if (Dump.Y) Dump.println("URadioGroup.onCheckChanged swFixed="+swFixed+",btnid="+Integer.toHexString(Prbid));//~9214R~//~9226R~//~9228R~//~vakQR~
                         if (swFixed)                                   //~9226I~//~9228R~
                         {                                              //~9226I~//~9228R~
                             if (Prbid!=idFixed)                        //~9226I~//~9228R~
@@ -207,7 +217,7 @@ public class URadioGroup                                              //~1AfcR~/
                     }                                              //~9228I~
                 }                                                  //~9214I~
         	};                                                     //~9214I~
-        if (Dump.Y) Dump.println("URadioGroup.createListener listener="+l.toString());//~9214R~//+vakQR~
+        if (Dump.Y) Dump.println("URadioGroup.createListener listener="+l.toString());//~9214R~//~vakQR~
         rbListener=l;                                              //~9214I~
         return l;                                                  //~9214I~
     }                                                              //~9214I~
