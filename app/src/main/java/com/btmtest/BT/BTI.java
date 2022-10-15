@@ -1,5 +1,6 @@
-//*CID://+vam8R~:                             update#=  168;       //~vam8R~
+//*CID://+vas6R~:                             update#=  188;       //~vas6R~
 //**********************************************************************//~v107I~
+//2022/10/12 vas6 bluetooth scan failes. Api31(Android12) bluetooth permission?//~vas6I~
 //2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
 //**********************************************************************//~v107I~
@@ -17,6 +18,9 @@ import com.btmtest.R;//~1AedI~
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@003I~
 
 import com.btmtest.utils.Dump;                                            //~v107I~//~1AedR~
+import com.btmtest.utils.Utils;
+
+import java.util.ArrayList;
 
 //********************************************************************//~1212I~
 //* Interface to BT                                                //~v107R~
@@ -45,6 +49,12 @@ public class BTI                                               //~1122R~//~v107R
 	    mBTC=new BTControl();                                      //~v107R~
 	    mBTD=new BTDiscover();                                     //~@@@2I~
       }                                                            //~vam8I~
+      else                                                         //~vas6I~
+      if (AG.swGrantBluetoothFailed)                               //~vas6I~
+      {                                                            //~vas6I~
+	    mBTC=new BTControl();                                      //~vas6I~
+	    mBTD=new BTDiscover();                                     //~vas6I~
+      }                                                            //~vas6I~
     }
 //********************************************************************//~vam8I~
 //*from BTMulti.constructor                                        //~vam8I~
@@ -52,14 +62,23 @@ public class BTI                                               //~1122R~//~v107R
     public static BTI createBTI()                                  //~v107R~//~v@@@R~
     {                                                              //~v107I~
 		BTI inst=null;                                             //~v107R~//~v@@@R~
+		if (Dump.Y) Dump.println("BTI.createBTI entry swGrantedBluetooth="+AG.swGrantedBluetooth+",swGrantBluetoothFailed="+AG.swGrantBluetoothFailed);//~vas6I~
         try                                                        //~v107I~
         {                                                          //~v107I~
-            chkGrantedPermission();                                //+vam8M~
+          if (AG.swGrantBluetoothFailed)                           //~vas6R~
+          {                                                        //~vas6I~
+		    inst=new BTI();                                        //~vas6M~
+          }                                                        //~vas6I~
+          else                                                     //~vas6I~
+          {                                                        //~vas6I~
+            chkGrantedPermission();                                //~vam8M~
 		    inst=new BTI();                                        //~v107R~//~v@@@R~
 		    if (!AG.swGrantedBluetooth)                            //~vam8I~
             {                                                      //~vam8M~
+            	//*wait onRequestPermissionResult callback         //~vas6I~
             	return null;                                       //~vam8M~
             }                                                      //~vam8M~
+          }                                                        //~vas6I~
             if (!inst.mBTC.BTCreate())	//default adapter chk      //~v107R~
             	inst.mBTC=null;                                    //~v107R~
             else                                                   //~@@@@I~//~@@@2R~
@@ -396,7 +415,11 @@ public class BTI                                               //~1122R~//~v107R
 				AG.swGrantedBluetooth=chkGrantedPermission_from31();//~vam8R~
         }                                                          //~vam8I~
         else                                                       //~vam8I~
+        {                                                          //~vas6I~
+			if (!AG.swGrantedBluetooth)                            //~vas6I~
+				AG.swGrantedBluetooth=chkGrantedPermission_upto30();//~vas6I~
         	AG.swGrantedBluetooth=true;                            //~vam8I~
+        }                                                          //~vas6I~
         boolean rc=AG.swGrantedBluetooth;                          //~vam8R~
         if (Dump.Y) Dump.println("BTI.chkGrantedPermission exit rc="+rc);//~vam8R~
         return rc;                                                 //~vam8I~
@@ -406,29 +429,101 @@ public class BTI                                               //~1122R~//~v107R
     private static boolean chkGrantedPermission_from31()           //~vam8R~
     {                                                              //~vam8I~
         if (Dump.Y) Dump.println("BTI.chkGrantedPermission_from31");//~vam8R~
+        ArrayList<String> requestList=new ArrayList<>();           //~vas6I~
         boolean swGrantedConnect=UView.isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT);//~vam8I~
         boolean swGrantedScan=UView.isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN);//~vam8I~
-        boolean rc=swGrantedConnect && swGrantedScan;              //~vam8I~
-        if (!rc)                                                   //~vam8I~
-        {                                                          //~vam8I~
-        	String[] types=new String[]{Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN};//~vam8I~
-        	UView.requestPermission(types, MainActivity.PERMISSION_BLUETOOTH);//~vam8I~
-        }                                                          //~vam8I~
-        if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_from31 swGrantedConnect="+swGrantedConnect+",swGrantedScan="+swGrantedScan+",rc="+rc);//~vam8R~
+                                                                   //~vas6I~
+        if (!swGrantedConnect)                                     //~vas6I~
+        	requestList.add(Manifest.permission.BLUETOOTH_CONNECT);//~vas6I~
+        if (!swGrantedScan)                                        //~vas6I~
+        	requestList.add(Manifest.permission.BLUETOOTH_SCAN);   //~vas6I~
+        if (!UView.isPermissionGranted(Manifest.permission.BLUETOOTH_ADVERTISE))//~vas6I~
+        	requestList.add(Manifest.permission.BLUETOOTH_ADVERTISE);//~vas6I~
+        if (!UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))//~vas6I~
+        	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vas6I~
+//      if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_from31 isGranted FINE_LOCATION="+UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION));//~vas6R~
+//      boolean rc=swGrantedConnect && swGrantedScan;              //~vam8I~//~vas6R~
+//      if (!rc)                                                   //~vam8I~//~vas6R~
+//      {                                                          //~vam8I~//~vas6R~
+//      	String[] types=new String[]{Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.BLUETOOTH_SCAN};//~vam8I~//~vas6R~
+//      	UView.requestPermission(types, MainActivity.PERMISSION_BLUETOOTH);//~vam8I~//~vas6R~
+//      }                                                          //~vam8I~//~vas6R~
+        boolean rc=true;                                           //~vas6I~
+        if (!requestList.isEmpty())                                //~vas6I~
+        {                                                          //~vas6I~
+	      	String[] reqs=(String[])(requestList.toArray(new String[requestList.size()]));//~vas6R~
+	        if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_from31 requestPermission list="+Utils.toString(reqs));//~vas6I~
+	      	UView.requestPermission(reqs,MainActivity.PERMISSION_BLUETOOTH);//~vas6I~
+            rc=false;                                              //~vas6I~
+        }                                                          //~vas6I~
+        if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_from31 exit");//~vas6R~
         return rc;
     }                                                              //~vam8I~
+//********************************************************************//~vas6I~
+    private static boolean chkGrantedPermission_upto30()           //~vas6I~
+    {                                                              //~vas6I~
+        if (Dump.Y) Dump.println("BTI.chkGrantedPermission_upto30");//~vas6I~
+        ArrayList<String> requestList=new ArrayList<>();           //~vas6I~
+        UView.isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT);   //for debug//~vas6R~
+        UView.isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN);      //for debug//~vas6R~
+        UView.isPermissionGranted(Manifest.permission.BLUETOOTH_ADVERTISE);	//for debug//~vas6R~
+        if (!UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))//~vas6R~
+        {                                                          //~vas6I~
+        	if (AG.osVersion>=29) 	//android10,11                 //~vas6R~
+	        	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vas6R~
+        }                                                          //~vas6I~
+        boolean rc=true;                                           //~vas6I~
+        if (!requestList.isEmpty())                                //~vas6I~
+        {                                                          //~vas6I~
+	      	String[] reqs=(String[])(requestList.toArray(new String[requestList.size()]));//~vas6I~
+	        if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_upto30 requestPermission list="+Utils.toString(reqs));//~vas6R~
+          	UView.requestPermission(reqs,MainActivity.PERMISSION_BLUETOOTH); //TODO test//~vas6R~
+            rc=false;                                              //~vas6I~
+        }                                                          //~vas6I~
+        if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_upto30 exit");//~vas6I~
+        return rc;                                                 //~vas6I~
+    }                                                              //~vas6I~
 //********************************************************************//~vam8I~
 //*from MAinActivity                                               //~vam8I~
 //********************************************************************//~vam8I~
-    public static void grantedPermission(boolean PswGranted)       //~vam8I~
-    {                                                              //~vam8I~
-        if (Dump.Y) Dump.println("BTI.grantedPermission swGranted="+PswGranted);//~vam8I~
-        if (!PswGranted)                                           //~vam8I~
-        {                                                          //~vam8I~
-            UView.showToastLong(R.string.failedBluetoothPermission);//~vam8I~
-            return;                                                //~vam8I~
-        }                                                          //~vam8I~
-        AG.swGrantedBluetooth=true;                                //~vam8I~
-	    createBTI();                                               //~vam8I~
-    }                                                              //~vam8I~
+//    public static void grantedPermission(boolean PswGranted)       //~vam8I~//~vas6R~
+//    {                                                              //~vam8I~//~vas6R~
+//        if (Dump.Y) Dump.println("BTI.grantedPermission swGranted="+PswGranted);//~vam8I~//~vas6R~
+//        if (!PswGranted)                                           //~vam8I~//~vas6R~
+//        {                                                          //~vam8I~//~vas6R~
+//            UView.showToastLong(R.string.failedBluetoothPermission);//~vam8I~//~vas6R~
+//            return;                                                //~vam8I~//~vas6R~
+//        }                                                          //~vam8I~//~vas6R~
+//        AG.swGrantedBluetooth=true;                                //~vam8I~//~vas6R~
+//        createBTI();                                               //~vam8I~//~vas6R~
+//    }                                                              //~vam8I~//~vas6R~
+    public static void grantedPermission(String[] Pname,int[] Presults/*0:granted,denied*/)//~vas6R~
+    {                                                              //~vas6I~
+        if (Dump.Y) Dump.println("BTI.grantedPermission name="+ Utils.toString(Pname)+",result="+Utils.toString(Presults));//~vas6I~
+        boolean ok=true;                                           //~vas6I~
+        boolean swFailedAdvertize=false;                           //~vas6I~
+        for (int ii=0;ii<Pname.length;ii++)                        //~vas6I~
+        {                                                          //~vas6I~
+        	if (!UView.isPermissionGranted(Presults[ii]))           //~vas6I~
+            {                                                      //~vas6I~
+                if (Pname[ii].equals(Manifest.permission.BLUETOOTH_ADVERTISE))//~vas6I~
+                {                                                  //~vas6I~
+                    AG.swFailedGrantBluetoothAdvertize=true;       //~vas6R~
+//	            	without this permission, pairing available     //+vas6I~
+//	            	UView.showToastLong(Utils.getStr(R.string.failedBluetoothPermissionTypeAdvertize,Pname[ii]));//+vas6R~
+                }                                                  //~vas6I~
+                else                                               //~vas6I~
+                {                                                  //~vas6I~
+            		ok=false;                                      //~vas6R~
+	            	UView.showToastLong(Utils.getStr(R.string.failedBluetoothPermissionType,Pname[ii]));//~vas6R~
+                }                                                  //~vas6I~
+            }                                                      //~vas6I~
+        }                                                          //~vas6I~
+        if (ok)                                                    //~vas6I~
+        	AG.swGrantedBluetooth=true;                            //~vas6I~
+        else                                                       //~vas6I~
+        	AG.swGrantBluetoothFailed=true;                        //~vas6I~
+        createBTI();                                               //~vas6I~
+        	                                                       //~vas6I~
+    }                                                              //~vas6I~
 }//class                                                           //~1109R~

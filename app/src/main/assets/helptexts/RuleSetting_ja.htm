@@ -2,6 +2,7 @@
 鳴きの時間差、自動自摸、和了形の確認などの設定は<BIG><B>操作</B></BIG>ボタンを押して子ダイアログで設定してください。
 <BR>
 <BR>
+<!--
 <BIG><B>ID名</B></BIG>に"ありあり関西"などの名前を付けて、複数の設定をメンバーによって使い分けができます。
 よく使うルールは<BIG><B>保存</B></BIG>/<BIG><B>読込</B></BIG>ボタンを使用してください。
 <BR>
@@ -9,7 +10,7 @@
 サーバーとクライアントのルールの"更新日"が異なると、
 内容が同じでも"対局"を開始できません。
 サーバーでルールを変更した場合は、"接続"後に、サーバーから<BIG><B>送信</B></BIG>してください。
-クライアントに表示されるダイアログでは背景色で現在の設定と異なる箇所が分ります。
+クライアントに表示されるダイアログでは背景色で現在の設定と異なる箇所が分かります。
 全クライアントが<BIG><B>同意</B></BIG>を返すと対局できます。
 クライアントが保存しているルールを使用する場合は、クライアントはルールファイルを"読込"みサーバーに送信します。
 サーバーはルール設定ダイアログが開かれるので改めて"送信"して全クライアントから同意を得てください。
@@ -21,6 +22,7 @@
 "現在値"はルールファイルフォルダーとは別の場所にあり再インストールで消されます。
 <BR>
 <BR>
+-->
 <BIG><B>端数調整</B></BIG>：100点端数処理
 <BR>
 切り上げ、四捨五入、五捨六入はマイナスのときは以下のようになる
@@ -55,6 +57,28 @@
 <B>ダブロン</B>ありの時は上家どりに従って徴収しハコ下負担者が決まる。
 <BR>
 <B>流し満貫</B>のときは放銃者はいないので、上家どりは東家あるいは東家に近い方から徴収する。
+<BR>
+<BR>
+<BIG><B>喰い変え</B></BIG>：
+<BR>
+ポン/チーしたときの打牌の制限です。
+<BR>
+例えば、
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s>
+<img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s>
+<img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s>
+<img src=@drawable/s_man5l><img src=@drawable/s_man4s><img src=@drawable/s_man6s>
+の役無し聴牌しているとき、上家が<img src=@drawable/s_man1s>を打牌したら一通を確定するためにチーして筋牌にあたる<img src=@drawable/s_man4s>
+を捨てることができるか？
+<BR>
+また
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s>
+<img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s>
+<img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<img src=@drawable/s_man5s><img src=@drawable/s_man5s><img src=@drawable/s_man5l>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws>
+でホンイツ聴牌しているとき、上家が<img src=@drawable/s_man2s>を打牌して立直をかけてきた場合、
+立直一発を避けるために<img src=@drawable/s_man2s>をチーして手牌中の現物<img src=@drawable/s_man2s>を打牌できるか？
 <BR>
 <BR>
 <BIG><B>途中流局</B></BIG>：
@@ -97,4 +121,4 @@
 　　　精算値は +30600, -400, -30000, 0
 <BR>
 <BR>
-<SMALL>RuleSetting 2022/07/09</SMALL>
+<SMALL>RuleSetting 2022/09/10</SMALL>

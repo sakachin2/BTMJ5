@@ -1,5 +1,6 @@
-//*CID://+vajmR~: update#= 377;                                    //~vajmR~
+//*CID://+var8R~: update#= 379;                                    //~vajmR~//~var8R~
 //**********************************************************************//~v101I~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2022/01/31 vajm AccountsDlg orderprize was cut by dialog width   //~vajmI~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
@@ -69,7 +70,7 @@ public class GConst                                                    //~v@@@R~
 	public static final int COLOR_EDITABLE_DISABLED =R.color.markabletext; //editabledisabled;//~v@11I~
                                                                    //~v@11I~
 //  public static final double RATE_SMALLDEVICE_WIDTH=0.95;       //~9818I~//~v@11I~//~vajmR~
-    public static final double RATE_SMALLDEVICE_WIDTH=0.99;        //+vajmR~
+    public static final double RATE_SMALLDEVICE_WIDTH=0.99;        //~vajmR~
     public static final double RATE_SMALLFONT_WIDTH=0.99;          //~vac5R~
     public static final double RATE_SMALLDEVICE_WIDTH_LANDSCAPE=0.7;//~v@11R~
     public static final double RATE_MAX_WIDTH=0.95;                //~v@11I~
@@ -98,6 +99,7 @@ public class GConst                                                    //~v@@@R~
 //  public  static final int ECB_COMPRESULT_RESP =ECB_ACTION+4;    //~v@11R~
 //    public  static final int ECB_DRAWNHW_RESP =ECB_ACTION+5;     //~v@11R~
 	public  static final int ECB_ACTION_REACH=ECB_ACTION+6;        //~v@11I~
+//  public  static final int ECB_ACTION_PROFILE=ECB_ACTION+7;      //+var8R~
                                                                    //~v@11I~
 	public  final static int PARMPOS_PLAYER=0;                     //~v@@@I~//~v@11M~
 	public  final static int PARMPOS_CTRFORTD=5;  //type/number/flag/ctrRemain/eswn//~v@@@I~//~v@11M~

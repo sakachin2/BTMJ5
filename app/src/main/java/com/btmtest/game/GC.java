@@ -1,7 +1,8 @@
-//*CID://+vaq8R~: update#= 882;                                    //~vaq8R~
+//*CID://+var8R~: update#= 885;                                    //~var8R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2022/08/19 vaq8 (Bug)doubleRon by Win-Anyway;2nd ron ignored Win-Anyway requested and issie compose err//~vaq8I~
 //2022/04/23 vamv change server color for Connect Button and GameType on gameboard//~vamvR~
 //2022/04/05 vamg Animation. at Win call                           //~vamgI~
@@ -432,7 +433,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~
 //*************************                                        //~v@@@I~
-	public void addGCView()                                        //~v@@@I~
+	private void addGCView()                                        //~v@@@I~//+var8R~
     {                                                              //~v@@@I~
         if(Dump.Y) Dump.println("GC.addGCView");                   //~v@@@I~
 		init3();                                                   //~v@@@I~
@@ -1236,6 +1237,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         if (!swGameView)	//dup req                              //~0111I~
         	return;                                                //~0111I~
         AG.aAnim.removeAnimation();                                //~vamgR~
+        AG.aProfileIcon.endGame(PswReturn);                        //~var8R~
       if (PswReturn)                                               //~9B21I~
       {                                                            //~9B21I~
         if (btns1!=null)                                           //~v@@@I~
@@ -1893,12 +1895,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Pbtn.getId()==BTNID_RON)                               //~vacbI~
         {                                                          //~vacbI~
 //      	if (Pcolor==UAD2Touch.COLOR_BLOCKING && swWinAnywayPushed)//~vacbR~//~vaq8R~
-           	if (Pcolor==UAD2Touch.COLOR_MORE)                      //+vaq8I~
-            {                                                      //+vaq8I~
-              	if (swWinAnywayPushed)                             //+vaq8M~
-        			swWinAnywayMore=true;                          //+vaq8M~
-            }                                                      //+vaq8I~
-            else                                                   //+vaq8I~
+           	if (Pcolor==UAD2Touch.COLOR_MORE)                      //~vaq8I~
+            {                                                      //~vaq8I~
+              	if (swWinAnywayPushed)                             //~vaq8M~
+        			swWinAnywayMore=true;                          //~vaq8M~
+            }                                                      //~vaq8I~
+            else                                                   //~vaq8I~
         	if (Pcolor==UAD2Touch.COLOR_BLOCKING)                  //~vaq8I~
             {                                                      //~vacbI~
               if (swWinAnywayPushed)                               //~vaq8I~
@@ -1906,7 +1908,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
               else                                                 //~vaq8I~
         	  if (swWinAnywayMore)  //2nd Win                      //~vaq8I~
             	swWinAnywayActive=true;                            //~vaq8I~
-              swWinAnywayMore=false;                               //+vaq8I~
+              swWinAnywayMore=false;                               //~vaq8I~
             }                                                      //~vacbI~
         }                                                          //~vacbI~
         swWinAnywayPushed=false;	//effective only once              //~vacbI~

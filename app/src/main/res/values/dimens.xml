@@ -75,4 +75,6 @@
     <dimen name="smallfont_buttonheight_smallbutton">36dp</dimen>
     <dimen name="smallfont_buttonwidth_spinbutton">30dp</dimen>
     <dimen name="smallfont_buttonwidth_spinner">100dp</dimen>
+    <dimen name="pref_profile_width">42dp</dimen>
+    <dimen name="pref_profile_height">56dp</dimen>
 </resources>

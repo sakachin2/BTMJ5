@@ -1,5 +1,7 @@
-//*CID://+vaqhR~:                             update#=  766;       //~vaqhR~
+//*CID://+varbR~:                             update#=  797;       //~varbR~
 //*****************************************************************//~v101I~
+//2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//~varbI~
+//2022/09/03 var0 summary rule setting dialog                      //~var0I~
 //2022/08/22 vaqh allow optio to resume ignoring app version       //~vaqhI~
 //2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
 //2022/03/28 vam2 japanese on RuleSetting at initial               //~vam2I~
@@ -110,7 +112,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //  private TextView tvSyncDate,tvIDName;                          //~9405I~//~9903R~
     private TextView tvSyncDate;                                   //~9903I~
     private TextView tvAppVersion;                                 //~vaqaI~
-    private UEditText etIDName;                                    //~9903I~
+//  private UEditText etIDName;                                    //~9903I~//~var0R~
+    protected UEditText etIDName;                                  //~var0I~
                                                                    //~9407I~
 //  private EditText etOrderPrizeTop,etOrderPrize2nd;              //~9407R~
     private USpinner spnOrderPrize;                                //~9407I~
@@ -125,7 +128,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //  private UCheckBox  cbDrawnHWNext,cbDrawnManganDropBird;                              //~9425I~//~9430R~//~9B13R~
     private UCheckBox  cbDrawnManganDropBird;                      //~9B13I~
 //  private USpinner spnDrawnManganRank;                           //~9413I~//~9516R~
-    private String strReceivedProp;                                //~9616I~
+//  private String strReceivedProp;                                //~9616I~//~var0R~
+    protected String strReceivedProp;                              //~var0I~
                                                                    //~9501I~
 //	private URadioGroup rgScoreToPoint;                            //~9416I~//~9417R~
     protected UButtonRG bgScoreToPoint;                            //~9417I~
@@ -164,19 +168,22 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //    private static int[] orderPrize=new int[]{DEFAULT_ORDERPRIZE_TOP,DEFAULT_ORDERPRIZE_2ND,-DEFAULT_ORDERPRIZE_2ND,-DEFAULT_ORDERPRIZE_TOP};//~v@@@I~//~9407R~
     private static boolean swOrderByEswn=false;                    //~v@@@R~
                                                                    //~9405I~
-    private boolean swOpenAfterDismiss;                            //~9405R~
-    private String senderYourName;                                 //~9405I~
+//  private boolean swOpenAfterDismiss;                            //~9405R~//~var0R~
+    protected boolean swOpenAfterDismiss;                          //~var0I~
+//  private String senderYourName;                                 //~9405I~//~var0R~
+    protected String senderYourName;                               //~var0I~
     public boolean swChangedYaku;                                  //~9516I~
     public boolean swChangedOperation;                             //~9624I~
     public boolean swChildInitializing;                            //~9B10I~
-    private boolean swAnyUpdate;                                   //~vakWI~
+//  private boolean swAnyUpdate;                                   //~vakWI~//~var0R~
+    protected boolean swAnyUpdate;                                 //~var0I~
     //******************************************                   //~v@@@M~
 	public RuleSetting()
     {
         super();
         AG.aRuleSetting=this;                                      //~9404I~
         swRuleSetting=true;		//update AG.ruleSyncDate           //~9622I~
-        if (Dump.Y) Dump.println("SettingDlg.defaultConstructor"); //~v@@@I~
+        if (Dump.Y) Dump.println("RuleSetting.defaultConstructor"); //~v@@@I~//~vaqhR~
     }
     //******************************************                   //~9902I~
     @Override //CommonListenerI                                    //~9B10I~
@@ -192,7 +199,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //                UFDlg.FLAG_OKBTN|UFDlg.FLAG_CANCELBTN|UFDlg.FLAG_HELPBTN,//~v@@@R~
 //                HELP_TITLEID,HELP_FILENAME);                     //~v@@@R~
 //    }                                                            //~v@@@R~
-//    //******************************************                 //~v@@@I~
+    //******************************************                 //~v@@@I~//~var0R~
     public static RuleSetting newInstance()                        //~v@@@I~
     {                                                              //~v@@@I~
         RuleSetting dlg=new RuleSetting();                         //~v@@@I~
@@ -258,7 +265,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         else                                                       //~9404I~
         {                                                          //~9405I~
 //  		RuleSetting.newInstance(true/*swReceived*/,PsenderYourName).show();//~9405R~//~9616R~
-    		RuleSetting.newInstance(true/*swReceived*/,PsenderYourName,Pprops).show();//~9616I~
+//  		RuleSetting.newInstance(true/*swReceived*/,PsenderYourName,Pprops).show();//~9616I~//~var0R~
+    		RuleSettingSumm.newInstance(true/*swReceived*/,PsenderYourName,Pprops).show();//~var0I~
         }                                                          //~9405I~
 	    AG.aBTMulti.setRuleSettingSynchedAll(false/*swOK*/,""/*syncDate*/);//~9406I~
 		UView.showToast(R.string.Info_ReceivedRuleSetting);        //~9404I~//~9405I~
@@ -567,6 +575,14 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     //*PendingCont                                                 //~9709I~
     	cbPendingCont=new UCheckBox(PView,R.id.cbPendingCont);     //~9709I~
     }                                                              //~9403I~
+	//*****************                                            //~var0I~
+	//*Detail will override                                        //~var0I~
+	//*****************                                            //~var0I~
+    protected void getCurProp()                                    //~var0I~
+    {                                                              //~var0I~
+        curProp=AG.ruleProp.getClone();                            //~var0I~
+        if (Dump.Y) Dump.println("RuleSetting.getCurProp curProp="+curProp);//~var0I~
+    }                                                              //~var0I~
 	//*****************                                                //~1613I~//~v@@@I~
     protected void setInitialValue()                                 //~v@@@I~
     {                                                              //~1613I~//~v@@@M~
@@ -575,7 +591,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
 //      spnInitialScore.setArray(R.array.InitialScore);            //~v@@@M~//~9416R~
         spnInitialScore.setArray(strInitialScore);                 //~9416I~
         spnDupPoint.setArray(strDupPoint);                         //~9512I~
-	    curProp=AG.ruleProp.getClone();                            //~v@@@M~
+//      curProp=AG.ruleProp.getClone();                            //~v@@@M~//~var0R~
+        getCurProp();                                              //~var0I~
         if (swReceived)                                            //~9616I~
         {                                                          //~vaehI~
         	curProp.loadFromString(strReceivedProp);               //~9616I~
@@ -604,7 +621,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     @Override //SettingDlg                                         //~v@@@I~
     protected void properties2Dialog(Prop Pprop)                     //~v@@@R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("RuleSetting.properties2Dialog");                   //~v@@@I~//~9412R~//~vaehR~
+        if (Dump.Y) Dump.println("RuleSetting.properties2Dialog Pprop="+Pprop);                   //~v@@@I~//~9412R~//~vaehR~//~var0R~
 //      tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),"ありありなど"));//~9405I~//~9515R~//~vam2R~
         tvSyncDate.setText(Pprop.getParameter(getKeyRS(RSID_SYNCDATE_FORMATTED),Utils.getStr(R.string.RuleNotInitialized)));//~vam2I~
         tvAppVersion.setText(Pprop.getParameter(getKeyRS(RSID_APPVERSION_MIN),"Unknown AppVer"));//~vaqaR~
@@ -708,7 +725,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     	cbPendingCont.setStateInt(Pprop.getParameter(getKeyRS(RSID_PENDING_CONT),1),swFixed);//~9709I~
     }                                                              //~v@@@I~
     //*******************************************************      //~vakQI~
-    private void chkUpdateOperYaku()                               //~vakQI~
+//  private void chkUpdateOperYaku()                               //~vakQI~//~var0R~
+    protected void chkUpdateOperYaku()                             //~var0I~
     {                                                              //~vakQI~
     	if (RuleSettingOperation.chkUpdateCheckOnly(this))           //~vakQI~
         {                                                          //~vakWI~
@@ -724,7 +742,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     //*******************************************************      //~vakQI~
     //*change BG color of option changed by received parm          //~vakQI~
     //*******************************************************      //~vakQI~
-    private void chkUpdate()                                       //~vakQR~
+//  private void chkUpdate()                                       //~vakQR~//~var0R~
+    protected void chkUpdate()                                     //~var0I~
     {                                                              //~vakQI~
 		if (Dump.Y) Dump.println("RuleSetting.chkUpdate curProp="+curProp.toString());//~vaehR~//~vakQR~
 	    if (Dump.Y) Dump.println("RuleSetting.chkUpdate AG.ruleProp="+AG.ruleProp.toString());//~vaehR~//~vakQR~
@@ -762,7 +781,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         setBGUpdated(cbDrawnHW4KCont,isChanged(RSID_DRAWN_HW4KC)); //~vakQR~
         setBGUpdated(cbDrawnHW4RCont,isChanged(RSID_DRAWN_HW4RC)); //~vakQR~
     //*scoreToPoint                                                //~vakQI~
-        setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT);          //~vakQR~
+//      setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT);          //~vakQR~//~varbR~
+        setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT,0);        //~varbI~
     //*robot                                                       //~vakQI~
         setBGUpdated(cbAllowRobot,isChanged(RSID_ALLOW_ROBOT));    //~vakQR~
         setBGUpdated(cbThinkRobot,isChanged(RSID_THINK_ROBOT));    //~vakQR~
@@ -988,7 +1008,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     @Override                                                      //~9616I~
     public void onClickSave()                                      //~9616I~
     {                                                              //~9616I~
-        if (Dump.Y) Dump.println("SettingDlg.onClickSave");        //~9616I~
+        if (Dump.Y) Dump.println("RuleSetting.onClickSave");        //~9616I~//~vaqhR~
 //      String	saveFilename=tvIDName.getText().toString();        //~9616I~//~9903R~
         String	saveFilename=etIDName.getText().toString();        //~9903I~
 //      FileDialog.newInstance(getFilter()/*extension*/,false/*not load*/).show(this/*FileDialogI*/,AG.ruleFile/*defaultitemname*/,saveFilename);//~9616R~
@@ -1146,7 +1166,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     //*******************************************************      //~9406I~
     public static void repaint()                                   //~9406R~
     {                                                              //~9406I~
-        if (Dump.Y) Dump.println("RuleSettingDlg.repaintOKNG");    //~9406I~
+        if (Dump.Y) Dump.println("RuleSetting.repaint");    //~9406I~//~var0R~
         if (!Utils.isShowingDialogFragment(AG.aRuleSetting))       //~9406I~
         	return;                                                //~9406I~
         AG.aRuleSetting.repaintOKNG();                             //~9406R~
@@ -2015,7 +2035,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     }                                                              //~9501I~
     public static int getGameSetType()                             //~9501I~
     {                                                              //~9501I~
-        if (Dump.Y) Dump.println("RuleSetting.getGameSetType ruleProp="+AG.ruleProp);//~vaqaI~
+        if (Dump.Y) Dump.println("RuleSetting.getGameSetType");//~vaqaI~//+varbR~
 		int idx=AG.ruleProp.getParameter(getKeyRS(RSID_GAMESET_TYPE),0);//~9501I~
         int rc=intsGameSetType[idx];                               //~9501I~
         if (Dump.Y) Dump.println("RuleSetting.getGameSetType rc="+rc);//~9501I~
@@ -2110,7 +2130,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     	int def=DORA_KANDORA_OPEN_DEFAULT;                         //~9529I~
         int id=AG.ruleProp.getParameter(getKeyRS(RSID_KANDORA_OPEN),def);//~9529I~
         boolean rc=id==DORA_KANDORA_OPEN_JUSTNOW;                  //~9529I~
-        if (Dump.Y) Dump.println("isOpenKanDoraJustNow rc="+rc);   //~9529I~
+        if (Dump.Y) Dump.println("RuleSetting.isOpenKanDoraJustNow rc="+rc);   //~9529I~//~vaqhR~
         return rc;                                                 //~9529I~
     }                                                              //~9529I~
     public static boolean isOpenKanDoraExceptRon()                 //~9529I~
@@ -2329,6 +2349,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     public boolean isChanged(int Pid)                       //~vakQR~
     {                                                              //~vakQI~
 	    boolean rc=isChanged(Pid,curProp,AG.ruleProp);             //~vakQR~
+        if (Dump.Y) Dump.println("RuleSetting.isChanged rc="+rc+",id="+Pid);//~var0I~
         return rc;                                                 //~vakQI~
     }                                                              //~vakQI~
     //*******************************************************      //~vakQI~
@@ -2338,17 +2359,21 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         return rc;                                                 //~vakQI~
     }                                                              //~vakQI~
     //*******************************************************      //~vakQI~
-    public boolean isChanged(int Pid,Prop PnewProp,Prop PoldProp)  //~vakQR~
+//  public boolean isChanged(int Pid,Prop PnewProp,Prop PoldProp)  //~vakQR~//~varbR~
+    private boolean isChanged(int Pid,Prop PnewProp,Prop PoldProp) //~varbI~
     {                                                              //~vakQI~
     	String key=getKeyRS(Pid);                                  //~vakQI~
-    	int oldval=PoldProp.getParameter(key,-1);                  //~vakQI~
-    	int newval=PnewProp.getParameter(key,-1);                  //~vakQI~
+    	int oldval=PoldProp.getParameter(key,-1); //TODO test     //~vakQI~//~varbR~
+    	int newval=PnewProp.getParameter(key,-1); //TODO test      //~vakQI~//~varbR~
+//  	int oldval=PoldProp.getParameter(key,0);                   //~varbR~
+//  	int newval=PnewProp.getParameter(key,0);                   //~varbR~
         boolean rc=newval!=oldval;                                 //~vakQI~
         if (Dump.Y) Dump.println("RuleSetting.isChanged rc="+rc+",id="+Pid+",key="+key+",old="+oldval+",new="+newval);//~vakQI~
         return rc;                                                 //~vakQI~
     }                                                              //~vakQI~
     //*******************************************************      //~vakQI~
-    public boolean isChangedText(int Pid,Prop PnewProp,Prop PoldProp)//~vakQR~
+//  public boolean isChangedText(int Pid,Prop PnewProp,Prop PoldProp)//~vakQR~//~varbR~
+    private boolean isChangedText(int Pid,Prop PnewProp,Prop PoldProp)//~varbI~
     {                                                              //~vakQI~
     	String key=getKeyRS(Pid);                                  //~vakQI~
     	String oldval=PoldProp.getParameter(key," ");              //~vakQI~
@@ -2424,15 +2449,20 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         return PswChanged;                                         //~vakQI~
     }                                                              //~vakQI~
     //*******************************************************      //~vakQI~
-    public boolean setBGUpdated(UButtonRG Pgui,int Pid)            //~vakQR~
+//  public boolean setBGUpdated(UButtonRG Pgui,int Pid)            //~vakQR~//~varbR~
+    public boolean setBGUpdated(UButtonRG Pgui,int Pid,int Pdefault)//~varbI~
     {                                                              //~vakQI~
-	    return setBGUpdated(AG.ruleProp,Pgui,Pid);                 //~vakQR~
+//      return setBGUpdated(AG.ruleProp,Pgui,Pid);        //~vakQR~//~varbR~
+        return setBGUpdated(AG.ruleProp,Pgui,Pid,Pdefault);        //~varbI~
     }                                                              //~vakQI~
     //*******************************************************      //~vakQI~
-    public boolean setBGUpdated(Prop PoldProp,UButtonRG Pgui,int Pid)//~vakQR~
+//  public boolean setBGUpdated(Prop PoldProp,UButtonRG Pgui,int Pid)//~vakQR~//~varbR~
+    private boolean setBGUpdated(Prop PoldProp,UButtonRG Pgui,int Pid,int Pdefault)//~varbI~
     {                                                              //~vakQI~
+        if (Dump.Y) Dump.println("RuleSetting.setBGUpdated UButtonRG id="+Pid+",default="+Pdefault);//~var0I~//~varbR~
     	String key=getKeyRS(Pid);                                  //~vakQI~
-    	int oldval=PoldProp.getParameter(key,-1);                  //~vakQI~
+//    	int oldval=PoldProp.getParameter(key,-1);    //TODO test  //~vakQI~//~varbR~
+    	int oldval=PoldProp.getParameter(key,Pdefault);            //~varbR~
         boolean swChanged=Pgui.setBGUpdated(COLOR_BG_CHANGED_RULE,oldval);//~vakQR~
     	if (swChanged)                                            //~vakWI~
         {                                                          //~vakWI~
@@ -2456,7 +2486,8 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         showStatus(msgid);	//SettingDlg.showStatus()                     //~vakWI~
     }                                                              //~vakWI~
     //*******************************************************      //~vaqaR~
-    private static boolean isAppVersionUnmatch(String PstrProp)    //~vaqaR~
+//  private static boolean isAppVersionUnmatch(String PstrProp)    //~vaqaR~//~var0R~
+    public  static boolean isAppVersionUnmatch(String PstrProp)    //~var0I~
     {                                                              //~vaqaR~
         if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch prop="+PstrProp);//~vaqaR~
     	boolean rc=true;   //unmatch                               //~vaqaR~
@@ -2495,7 +2526,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
         if (!rc)                                                   //~vaqaI~
         	return false;                                          //~vaqaI~
 //      issueUnmatchAlertHD(verHD,appVerMin);                //~vaqaI~//~vaqhR~
-        if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch rc="+true);//+vaqhI~
+        if (Dump.Y) Dump.println("RuleSetting.isAppVersionUnmatch rc="+true);//~vaqhI~
         return true;                                               //~vaqaI~
     }                                                              //~vaqaI~
     //*******************************************************      //~vaqaR~

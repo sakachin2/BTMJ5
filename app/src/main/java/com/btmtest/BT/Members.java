@@ -1,5 +1,6 @@
-//*CID://+va9iR~:                             update#= 308;        //~va9iR~
+//*CID://+var8R~:                             update#= 310;        //~var8R~
 //**********************************************************************//~v@@@I~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2021/06/19 va9i (Bug)err by lacking member ast startGame after matchi mode anded bu disconnecting.//~va9iI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
@@ -581,8 +582,12 @@ public class Members                                                      //~v@@
         {                                                          //~v@@@I~
 		    if (Dump.Y) Dump.println("Members.searchByYourname MD["+ii+"]="+MD[ii].toString());//~9B07R~//~0110R~
         	if (MD[ii].yourname!=null && Pyourname.equals(MD[ii].yourname))//~v@@@R~
+            {                                                      //+var8I~
+				if (Dump.Y) Dump.println("Members.searchByYourname parm="+Pyourname+",rc="+ii);//+var8I~
             	return ii;                                         //~v@@@I~
+            }                                                      //+var8I~
         }                                                          //~v@@@I~
+		if (Dump.Y) Dump.println("Members.searchByYourname not found parm="+Pyourname);//+var8I~
         return -1;                                                 //~v@@@I~
     }                                                              //~v@@@I~
     //*************************************************************//~0305I~
@@ -1574,6 +1579,7 @@ public class Members                                                      //~v@@
         private String ruleSyncDateBTIO;                            //~v@@@R~//~0124R~
         public Robot robot;                                        //~v@@@I~
         public int connectionMode=CM_NONE;                         //~0108R~
+        public int optProfile;                                     //~var8I~
 //      private String pendingMsg;                                 //~v@@@R~
 //      private LinkedList<String> pendingMsg=new LinkedList<String>();//~v@@@R~
         //*******************************************              //~v@@@I~

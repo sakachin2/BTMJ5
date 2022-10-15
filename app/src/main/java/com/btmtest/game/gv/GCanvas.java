@@ -1,6 +1,7 @@
-//*CID://+vamdR~: update#= 395;                                    //+vamdR~
+//*CID://+vas3R~: update#= 396;                                    //+vas3R~
 //**********************************************************************//~v101I~
-//2022/04/02 vamd Animation. at first show Dora                    //+vamdI~
+//2022/10/11 vas3 tecLast(Android12) portrait icon before move overrup on stock//+vas3I~
+//2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //**********************************************************************//~va60I~
 //utility around screen                                            //~v@@@I~
@@ -35,7 +36,8 @@ public class GCanvas                                               //~v@@@I~
     public  MJTable table;                                         //~v@@@R~
     private boolean swPortrait;                                    //~v@@@R~
     public  DiceBox diceBox;
-    private Stock stock;
+//  private Stock stock;                                           //+vas3R~
+    public  Stock stock;                                           //+vas3I~
     private River river;//~v@@@R~
     private Hands hands;                                           //~v@@@R~
     private Graphics aGraphics;                                    //~v@@@I~

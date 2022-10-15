@@ -89,6 +89,8 @@
                     >
                         <include layout="@layout/setting_rule_opt_gameset"
                         />
+                        <include layout="@layout/setting_rule_opt_final"
+                        />
                     </LinearLayout>
                     <include layout="@layout/setting_rule_opt_pending_cont"
                     />

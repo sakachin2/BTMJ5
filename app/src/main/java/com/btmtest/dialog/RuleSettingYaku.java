@@ -1,5 +1,8 @@
-//*CID://+vapuR~:                             update#=  549;       //~vaq3R~//~vap5R~//~vapuR~
+//*CID://+varbR~:                             update#=  556;       //+varbR~
 //*****************************************************************//~v101I~
+//2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//+varbI~
+//2022/09/09 var1 summary rule setting dialog;drop yakuman         //~var1I~
+//2022/09/03 var0 summary rule setting dialog                      //~var0I~
 //2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3I~
 //2022/08/06 vapx add Psuedo-Tennpai:No option                     //~vapxI~
 //2022/08/04 vapu PsuedoTenpai;simplify 0han ok or not(allow kataagari,fix last)//~vapuI~
@@ -373,6 +376,41 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 	    if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly rc="+rc);//~vakQI~
         return rc;                                                 //~vakQI~
     }                                                              //~vakQI~
+	//***********************************************************  //~var0M~
+    public  static boolean chkUpdateCheckOnly_ExceptSumm(RuleSetting Prsd)//~var0M~
+    {                                                              //~var0M~
+		if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly_ExceptSumm curProp="+Prsd.curProp.toString());//~var0M~
+	    if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly_ExceptSumm AG.ruleProp="+AG.ruleProp.toString());//~var0M~
+        boolean rc=false;                                          //~var0I~
+        for (;;)                                                   //~var0I~
+        {                                                          //~var0I~
+    //*Yakuman2                                                    //~var1I~
+            if  (Prsd.isChanged(RSID_4ANKO1))                  {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_KOKUSI13))                {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_9REN9))                   {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_4WIND))                   {rc=true; break;}//~var1I~
+    //*Yakuman                                                     //~var1I~
+            if  (Prsd.isChanged(RSID_ALLGREEN_NOBLUE))         {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_9RENPINSOU))              {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_NOPAIR13))                {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_NOPAIR14))                {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_BIGRING))                 {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_RANK13))                  {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_KOKUSI_ANKANRON))         {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_5THKAN))                  {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_RENHOMIX))                {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_RENHORANK))               {rc=true; break;}//~var1I~
+    //*drawnMangan                                                 //~var1I~
+            if  (Prsd.isChanged(RSID_DRAWN_MANGAN_TYPE))       {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_DRAWN_MANGAN_RANK))       {rc=true; break;}//~var1I~
+    //*8Continue                                                   //~var0I~
+            if  (Prsd.isChanged(RSID_8CONTINUE))               {rc=true; break;}//~var0I~
+            if  (Prsd.isChanged(RSID_8CONT_RESET))             {rc=true; break;}//~var0I~
+            break;                                                 //~var0I~
+        }                                                          //~var0I~
+	    if (Dump.Y) Dump.println("RuleSettingYaku.chkUpdateCheckOnly_ExceptSumm rc="+rc);//~var0M~
+        return rc;                                                 //~var0M~
+    }                                                              //~var0M~
 	//***********************************************************  //~vakQI~
     private void chkUpdate()                                       //~vakQI~
     {                                                              //~vakQI~
@@ -382,10 +420,10 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         RSD.setBGUpdated(cbShowAnywayBtn,RSD.isChanged(RSID_SHOW_ANYWAY_BTN));//~vakQR~
         RSD.setBGUpdated(cbDoublePillow,RSD.isChanged(RSID_DOUBLE_PILLOW));//~vakQR~
         RSD.setBGUpdated(cbPinfuTaken,RSD.isChanged(RSID_PINFUTAKEN));//~vakQR~
-    //*Pending                                                     //+vapuI~
+    //*Pending                                                     //~vapuI~
         RSD.setBGUpdated(cbPendingRankNo,RSD.isChanged(RSID_PENDING_RANKNO));//~vakQR~
-//      RSD.setBGUpdated(cbPendingRankEmpty,RSD.isChanged(RSID_PENDING_RANKEMPTY));//~vakQR~//+vapuR~
-//      RSD.setBGUpdated(cbPendingRankFuriten,RSD.isChanged(RSID_PENDING_RANKFURITEN));//~vakQR~//+vapuR~
+//      RSD.setBGUpdated(cbPendingRankEmpty,RSD.isChanged(RSID_PENDING_RANKEMPTY));//~vakQR~//~vapuR~
+//      RSD.setBGUpdated(cbPendingRankFuriten,RSD.isChanged(RSID_PENDING_RANKFURITEN));//~vakQR~//~vapuR~
      //   RSD.setBGUpdated(cbPendingRankFixMulti,RSD.isChanged(RSID_PENDING_RANKFIXMULTI));//~vaptI~
         RSD.setBGUpdated(cbPendingRank0OK,RSD.isChanged(RSID_PENDING_RANK0));//~vakQR~
         RSD.setBGUpdated(rgPendingRank2,RSD.isChanged(RSID_PENDING_RANK2));//~vakQR~
@@ -393,7 +431,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         RSD.setBGUpdated(rgDrawnMangan,RSD.isChanged(RSID_DRAWN_MANGAN_TYPE));//~vakQR~
         RSD.setBGUpdated(spnDrawnManganRank,RSD.isChanged(RSID_DRAWN_MANGAN_RANK));//~vakQR~
     //*8Continue                                                   //~vakQI~
-        RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE);//~vakQR~
+//      RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE);//~vakQR~     //+varbR~
+        RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE,Y8C_DEFAULT);  //+varbI~
 //  	RSD.setBGUpdated(cb8ContNoNeedYaku,RSD.isChanged(RSID_8CONT_NONEEDYAKU));//~vakQR~//~vapuR~
     	RSD.setBGUpdated(cb8ContReset,RSD.isChanged(RSID_8CONT_RESET));//~vakQR~
 //  	RSD.setBGUpdated(cb8ContMulti,RSD.isChanged(RSID_8CONT_MULTI));//~vakQR~//~vapuR~

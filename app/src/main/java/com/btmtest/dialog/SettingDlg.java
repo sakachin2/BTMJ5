@@ -1,5 +1,7 @@
-//*CID://+van1R~:                             update#=  474;       //~van1R~
+//*CID://+var9R~:                             update#=  478;       //+var9R~
 //*****************************************************************//~v101I~
+//2022/10/05 var9 (bug)updateProp crash when newval=null           //+var9I~
+//2022/09/03 var0 summary rule setting dialog                      //~var0I~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/03/24 vakW rule update msg on dialog                        //~vakVI~
 //2021/09/12 vae0 Scped for BTMJ5                                  //~vae0I~
@@ -48,6 +50,7 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     protected boolean swServer,swClient;    //undefined status may exist before connectted//~9405R~
     protected String propCmt;                                      //~v@@@I~
     protected boolean swRuleSetting;                               //~9622I~
+    protected boolean swRuleSettingSumm;                           //~var0I~
     protected boolean swSaveDialog2Properties;                     //~9B09I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     protected abstract Prop checkValidity(String Pfname);                        //~1A4zI~//~v@@@R~
@@ -107,6 +110,8 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
                 btnShowStatus.setVisibility(View.GONE);                //~9406I~//~9408R~
                 if (swReceived)                                        //~9406R~//~9408R~
                 {                                                      //~9406I~//~9408R~
+    			  if (swRuleSettingSumm)                           //~var0I~
+                  {                                                //~var0I~
                     btnSendBackOK.setVisibility(View.VISIBLE);         //~9406I~//~9408R~
                     btnSendBackNG.setVisibility(View.VISIBLE);         //~9406I~//~9408R~
                     btnLoad.setEnabled(false);                     //~9408R~
@@ -114,6 +119,7 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
                     btnSend.setVisibility(View.GONE);                  //~9406I~//~9408R~
 //                  btnCancel.setText(Utils.getStr(R.string.Close));   //~9406I~//~9408R~//~9409R~
 //  			    setButtonClose(true);                          //~9409R~
+                  }                                                //~var0I~
                 }                                                      //~9406I~//~9408R~
             }                                                          //~9406I~//~9408R~
             else                                                       //~9406I~//~9408R~
@@ -197,7 +203,8 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
 //      setButtonClose(true);                                      //~9409R~
     }                                                              //~9406I~
     //*******************************************************      //~9405I~
-    private void showSyncStatus()                                       //~9405I~//~9406R~
+//  private void showSyncStatus()                                       //~9405I~//~9406R~//~var0R~
+    protected void showSyncStatus()                                //~var0I~
     {                                                              //~9405I~
         if (Dump.Y) Dump.println("SettingDlg.showSyncStatus");         //~9405I~//~9B03R~
         boolean swSynched=BTMulti.isRuleSynched();                     //~9405I~
@@ -376,14 +383,14 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     {                                                              //~v@@@I~
 	    saveProperties(false/*swReceived*/);                       //~9621I~
     }                                                              //~9621I~
-    //*******************************************************      //+van1I~
-    //*current on ../Files dir                                     //+van1I~
-    //*******************************************************      //+van1I~
-    public static void saveProperties(Prop Pprop,String Pcmt)           //+van1I~
-    {                                                              //+van1I~
-        if (Dump.Y) Dump.println("SettingDlg.saveProperties Prop="+Pprop+",cmt="+Pcmt);//+van1I~
-        Pprop.savePropDataFile(Pcmt);                              //+van1I~
-    }                                                              //+van1I~
+    //*******************************************************      //~van1I~
+    //*current on ../Files dir                                     //~van1I~
+    //*******************************************************      //~van1I~
+    public static void saveProperties(Prop Pprop,String Pcmt)           //~van1I~
+    {                                                              //~van1I~
+        if (Dump.Y) Dump.println("SettingDlg.saveProperties Prop="+Pprop+",cmt="+Pcmt);//~van1I~
+        Pprop.savePropDataFile(Pcmt);                              //~van1I~
+    }                                                              //~van1I~
     //*******************************************************      //~9621I~
     protected void saveProperties(boolean PswReceived)             //~9621I~
     {                                                              //~9621I~
@@ -459,9 +466,12 @@ public abstract class SettingDlg extends UFDlg                //~v@@@R~
     	int rc=0;                                                  //~9404I~
     	String oldval=curProp.getParameter(Pkey,"");               //~9404I~
 		if (Dump.Y) Dump.println("SettingDlg.updateProp old="+oldval+",new="+Pnewval);//~9405I~
-        if (oldval.compareTo(Pnewval)!=0)                          //~9404I~
+      	String newval=(Pnewval==null)? "" : Pnewval;               //+var9I~
+//      if (oldval.compareTo(Pnewval)!=0)                          //~9404I~//+var9R~
+        if (oldval.compareTo(newval)!=0)                           //+var9I~
         {                                                          //~9404I~
-	        curProp.setParameter(Pkey,Pnewval);                    //~9404I~
+//          curProp.setParameter(Pkey,Pnewval);                    //~9404I~//+var9R~
+            curProp.setParameter(Pkey,newval);                     //+var9I~
             rc=1;                                                  //~9404I~
         }                                                          //~9404I~
         return rc;                                                 //~9404I~

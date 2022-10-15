@@ -1,5 +1,7 @@
-//*CID://+vam3R~:                             update#=  500;       //~vam3R~
+//*CID://+varaR~:                             update#=  508;       //~varaR~
 //********************************************************************************//~v101I~
+//2022/10/06 vara chk appversion unmatch other than rule version unmatch//~varaI~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~vam3I~
 //2022/01/31 vaji change color of top left to identify server      //~vajiI~
 //2022/01/30 vajf (bug)if canceled on orientation dialog on client at startgame. back button on server cause dump on client//~vajfI~
@@ -55,7 +57,9 @@ public class BTMulti                                               //~1AebR~
 //    public static final int MSGID_NEWNAME=4;                     //~@002R~
 //    public static final int MSGID_APP=5;//~1AebI~                //~@002R~
     private static final int MSG_NAMEQ_POS_RECONNECT=2;            //~0107I~
+    private static final int MSG_NAMEQ_POS_APPVERSION=3;           //~varaI~
     private static final int MSG_NAMER_POS_RECONNECT=3;            //~0107I~
+    private static final int MSG_NAMER_POS_APPVERSION=4;           //~varaI~
 	                                                               //~1AebI~
     public static final String DEVICENAME_TRAINING="#This#";       //~va66I~
                                                                    //~va66I~
@@ -87,8 +91,8 @@ public class BTMulti                                               //~1AebR~
 	{                                                              //~1AebI~
     	if (Dump.Y) Dump.println("BTMulti:constructor maxclient="+Pmaxclient+",memberRole="+memberRole);//~1AebI~//~@002R~
         AG.aBTMulti=this;                                          //~1AebR~
-//      AG.aBTI=BTI.createBTI();                                   //~1AebI~//+vam3R~
-        BTI.createBTI();                                           //+vam3I~
+//      AG.aBTI=BTI.createBTI();                                   //~1AebI~//~vam3R~
+        BTI.createBTI();                                           //~vam3I~
         maxClient=Pmaxclient;                                       //~1AebI~
 	    memberNotConnectedId=Utils.getStr(R.string.NotConnected);  //~1AebI~
         BTGroup=new Members(maxClient,memberNotConnectedId);       //~1AebR~
@@ -347,7 +351,7 @@ public class BTMulti                                               //~1AebR~
     public boolean updateNotified(String[] Pdnyn)                  //~1AebI~
 	{                                                              //~1AebI~
     	int sz=Pdnyn.length;                                        //~1AebI~
-        if (Dump.Y) Dump.println("BTMulti updateNotified dnyn size="+sz);//~1AebI~
+        if (Dump.Y) Dump.println("BTMulti updateNotified dnyn size="+sz+",Pdnyn="+Utils.toString(Pdnyn));//~1AebI~//~vam3R~
         for (int ii=1;ii+2<sz;ii+=3)                               //~1AebI~//~@002R~
         {                                                          //~1AebI~
         	if (Dump.Y) Dump.println("BTMulti.updateNotified name="+Pdnyn[ii]+",yourname="+Pdnyn[ii+1]);//~@002I~
@@ -848,10 +852,15 @@ public class BTMulti                                               //~1AebR~
     {                                                              //~1AebI~
         String devicename,yourname;
         String[] strs=BTIOThread.parse(Pmsg);                      //~1AebR~
-        if (Dump.Y) Dump.println("BTMulti msgRead id="+Pmsgid+",msg="+Pmsg+",strs="+Arrays.toString(strs));//~0107I~
+        if (Dump.Y) Dump.println("BTMulti.msgRead id="+Pmsgid+",msg="+Pmsg+",strs="+Arrays.toString(strs));//~0107I~//~varaR~
         switch(Pmsgid)                                             //~1AebI~
         {                                                          //~1AebI~
         case MSGID_NAME:    //=2                                   //~1AebI~//~9A24R~
+        	if (!chkAppVerison(strs,MSG_NAMER_POS_APPVERSION))	//unmatch//~varaI~
+            {                                                      //~varaI~
+        		if (Dump.Y) Dump.println("BTMulti.msgRead MSGQ_NAME appversion unmatch return");//~varaI~
+                break;                                             //~varaI~
+            }                                                      //~varaI~
         	devicename=strs[0];                             //~1AebI~
         	yourname=strs[1];                               //~1AebI~
 //          updateMember(devicename,yourname);                 //~1AebI~//~9619R~
@@ -862,6 +871,11 @@ public class BTMulti                                               //~1AebR~
             BTCDialog.renewal(BTCDialog.RENEWAL_MEMBER,devicename,yourname);//~9A24I~
         	break;                                                 //~1AebI~
         case MSGID_QNAME:   //MSGQ_NAME with synchDate =6 and swReconnecting         //~9619I~//~9A24R~//~0107R~
+        	if (!chkAppVerison(strs,MSG_NAMEQ_POS_APPVERSION))	//unmatch//~varaI~
+            {                                                      //~varaI~
+        		if (Dump.Y) Dump.println("BTMulti.msgRead MSGQ_NAME appversion unmatch return");//~varaI~
+                break;                                             //~varaI~
+            }                                                      //~varaI~
         	devicename=strs[0];                                    //~9619I~
             updateMember(devicename,strs[1]/*syncDate*/);          //~9619R~
             if (!chkReconnecting(devicename,strs,MSG_NAMEQ_POS_RECONNECT))//~0107R~//~0110M~
@@ -945,7 +959,8 @@ public class BTMulti                                               //~1AebR~
 //***************************************************************************//~9621I~
 	private void sendStartGame(String PsyncDate)                    //~9621I~//~va66R~
     {                                                              //~9621I~
-        if (Dump.Y) Dump.println("BTMulti.sendStartGame");         //~9621I~
+        if (Dump.Y) Dump.println("BTMulti.sendStartGame send SYNCOK to all client");         //~9621I~//~var8R~
+        AG.aProfileIcon.startSyncProfileServer(localDeviceName);          //~var8I~
         sendMsgToAllClient(true/*Pswapp*/,GCM_SETTING_NOTIFY_SYNCOK,PsyncDate);//~9621I~
     }                                                              //~9621I~
 ////***************************************************************************//~1AebI~//~9A27R~
@@ -1581,4 +1596,23 @@ public class BTMulti                                               //~1AebR~
         if (Dump.Y) Dump.println("BTMulti:isConnected idx="+PidxMember+",rc="+rc);//~9B01I~
         return rc;                                                 //~9B01I~
     }                                                              //~9B01I~
+//***************************************************************************//~varaI~
+    private boolean/*true if OK*/ chkAppVerison(String[] Pparm,int PposAppVersion)//~varaI~
+    {                                                              //~varaI~
+        if (Dump.Y) Dump.println("BTMulti:chkAppVersion parm="+Utils.toString(Pparm)+",pos="+PposAppVersion);//~varaI~
+        boolean rc=true;                                           //~varaI~
+        if (Pparm.length<PposAppVersion+1)                         //~varaI~
+        	rc=false;                                              //~varaI~
+        else                                                       //~varaI~
+        {                                                          //~varaI~
+        	String senderVersion=Pparm[PposAppVersion];               //~varaI~
+	        if (Dump.Y) Dump.println("BTMulti:chkAppVersion sender="+senderVersion+",AG.appVersionMinConnect="+AG.appVersionMinConnect);//~varaI~
+            if (senderVersion.compareTo(AG.appVersionMinConnect)<0)//~varaI~
+            	rc=false;                                          //~varaI~
+        }                                                          //~varaI~
+        if (Dump.Y) Dump.println("BTMulti:chkAppVersion rc="+rc);  //~varaI~
+        if (!rc)                                                   //~varaI~
+		    Alert.showMessage(null,Utils.getStr(R.string.Err_AppVersionConnect,Pparm[0]/*devname*/,AG.appVersionMinConnect));//+varaR~
+        return rc;                                                 //~varaI~
+    }                                                              //~varaI~
 }

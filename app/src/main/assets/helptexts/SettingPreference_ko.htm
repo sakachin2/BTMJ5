@@ -6,12 +6,12 @@
 <BR>
 방향은 게임 중에는 고정되어 있습니다.
 <BR>
-Android-11から、Androidの設定で「navigation bar」のタイプを「gesture」か「3 button」か、 선택할 수 있습니다.
-가로 화면에서 "navigation bar"가 숨겨져 있어도,
-스와이프 조작으로 표시할 수 있습니다.
+Android-11 이후, 제스처 내비게이션인지 3 버튼-네비게이션 바인지를 설정할 수 있습니다.
+두 설정 모두 옆으로 가면 탐색 모음이 숨겨지지만,
+위쪽 가장자리를 스와이프 다운하면 탐색 모음이 다시 표시됩니다.
 <BR>
 <BIG> <B> Remove the tile called from Discard Pile</B></BIG>：
-OFFなら、callされた牌は影をつけて"Discard Pile"(河）に残ります。
+체크하지 않으면 울린 패가 그림자와 함께 "河"에 남아 있습니다. 리얼 마작은 아니지만, 남겨두면"Furiten"이 체크하기 쉬울지도.
 <BR>
 <BR>
 <BIG> <B> Hide related </B> </BIG>：
@@ -19,7 +19,7 @@ OFFなら、callされた牌は影をつけて"Discard Pile"(河）に残りま�
 <BR>
 <BR>
 <BIG><B>Hide Draw</B></BIG>：
-wall(山)の小さな円に触れても牌をDraw 할 수 있습니다、
+Wall(山)의 빛나는 작은 원을 터치하여Draw할 수 있으므로,
 이 기능을 켜면 버튼 열에 여유가 생기고 진짜 마작과 비슷한 Draw 동작이 됩니다.
 <BR>
 <BIG><B>Hide Discard</B></BIG>：
@@ -29,9 +29,13 @@ wall(山)の小さな円に触れても牌をDraw 할 수 있습니다、
 <BR>
 <BIG> <B> Notify availability of Ron,Pon,Kan,Chii when playing alone.</B></BIG>
 <BR>
-1인 놀이 모드일 때, call 가능한 경우는 버튼의 색으로 통지합니다.
-<B>RuleSettings</B>, <B>Operation</B> 설정의 <B>DelayTime</B>과는 별도로, 인간 플레이어는 자동으로 Draw합니다.
-게임의 진행이 빨라집니다.
+켜지면 가능한 경우 버튼이 주황색이 되고 "Cancel"로 취소할 수 있습니다.
+울리는 타이밍을 잃지 않으므로 규칙 설정, "Oper"
+"DelayTime" 설정은 무시되고 게임 속도가 빨라집니다.
+<BR>
+플레이어도 자동으로 Draw합니다.
+(따라서, 로컬 룰에 의한 표준의 Yaku 이외의 Yaku 를 _Ron_ 하는 타이밍은 취할 수 없습니다.
+로봇은 표준Yaku 이외의 Yaku는 오르지 않기 때문에,그것은 짝수입니다.)
 <BR>
 Ankan(暗槓)은 통지하지 않습니다.Minkan(明槓)은 통지합니다.
 <BR>
@@ -42,7 +46,15 @@ Furiten(振聴)、"Fix Yaku"違反、"1/2 han constraint"違反。 "Kata-Agari"�
 <BR>
 로봇은 타임아웃이 아니고, 버튼의 터치로Draw합니다.혼자 놀 때, 차분히 생각하면서 플레이하고 싶은 경우에 설정합니다.
 <BR>
-Robot의 AutoDraw는 설정한 경우에는 유효하지만 버튼으로 빠르게 Draw 할 수 있습니다.
+OFF의 경우, 통지 모드라면 로봇은 자동으로"Draw"합니다. 통지 모드로 없으면 타임 아웃으로 "Draw" 합니다만, 타임 아웃 전에도 버튼으로 로봇에 "Draw" 시키게 됩니다.
+<BR>
+<BR>
+<BIG><B>Profile</B></BIG>：각 플레이어의 아이콘을 표시할 수 있습니다.
+<BR>
+<B>Set</B>버튼을 눌러 별도로 카메라로 촬영한 이미지나 다운로드한 이미지 등 장치의 이미지를 선택합니다.
+<BR>
+<B>Display Image</B>를 끄면 모든 사람의 아이콘이 표시되지 않습니다.
+<B>Use my profile</B>을 사용 중지하면 Dummy가 표시됩니다. Robot은 기본 Icon이 됩니다.
 <BR>
 <BR>
 <BIG> <B> Sound </B> </BIG>：
@@ -72,4 +84,4 @@ Robot의 AutoDraw는 설정한 경우에는 유효하지만 버튼으로 빠르�
 Chrome 등의 브라우저를 사용하여 미리 각 음악을 다운로드하세요.
 <BR>
 <BR>
-<SMALL>SettingPreference 2022/07/12</SMALL>
+<SMALL>SettingPreference 2022/09/22</SMALL>

@@ -1,6 +1,11 @@
-//*CID://+vaqfR~:                             update#=  509;       //+vaqfR~
+//*CID://+vas6R~:                             update#=  516;       //~vas6R~
 //******************************************************************************************************************//~v101R~
-//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//+vaqfI~
+//2022/10/12 vas6 bluetooth scan failes. Api31(Android12) bluetooth permission?//~vas6I~
+//2022/10/09 vas0 print history                                    //~vas0I~
+//2022/10/06 vara chk appversion unmatch other than rule version unmatch//~varaI~
+//2022/09/24 var8 display profile icon                             //~var8I~
+//2022/09/03 var0 summary rule setting dialog                      //~var0I~
+//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//~vaqfI~
 //2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
 //2022/08/02 vapm itsHand contension of main Thraed(DrawnReqDlgLast) and msgHandler Thread(Tand and discard by Robot)//~vapmI~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
@@ -57,6 +62,8 @@ import com.btmtest.dialog.OrientationMenuDlg;
 import com.btmtest.game.UA.UARonValue;
 import com.btmtest.game.UA.UAReachChk;                             //~va27I~
 import com.btmtest.game.UA.UARon;                                  //~@@01I~
+import com.btmtest.game.gv.ProfileIcon;
+import com.btmtest.prt.PrtDoc;
 import com.btmtest.wifi.IPMulti;                                   //~@@01I~
 import com.btmtest.dialog.BTCDialog;//~v@@@R~                      //~@@01I~
 import com.btmtest.dialog.BTRDialog;                               //~@@01I~
@@ -109,6 +116,7 @@ import com.btmtest.utils.UScoped;                                  //~1ak0I~
 import com.btmtest.utils.UMediaStore;                              //~1ak2I~
 import com.btmtest.gui.CommonListener;                             //~@@01I~
 import com.btmtest.dialog.RuleSetting;                             //~@@01R~
+import com.btmtest.dialog.RuleSettingSumm;                         //~var0I~
 import com.btmtest.dialog.RuleSettingEnum;                         //~@@01I~
 import com.btmtest.dialog.PrefSettingEnum;                         //~@@01I~
 import com.btmtest.dialog.PrefSetting;                             //~@@01I~
@@ -153,6 +161,7 @@ public class AG                                                    //~1107R~
 //    public static final int ACTIVITY_REQUEST_ENABLE_BT = 2;        //~v@@@I~//~@@01R~
 //    public static final int ACTIVITY_REQUEST_NFCBEAM   = 3;       //~1A6aI~//~1Ad7R~
     public static final int ACTIVITY_REQUEST_PICKUP_AUDIO   = 10;  //~1Ak2I~//~1ak2I~
+    public static final int ACTIVITY_REQUEST_PICKUP_IMAGE   = 11;  //~var8I~
     public static final int ACTIVITY_REQUEST_SCOPED    = 100;      //~1Ak0I~//~1ak0I~
     public static final int ACTIVITY_REQUEST_SCOPED_OPEN_TREE = (ACTIVITY_REQUEST_SCOPED+1);//~1Ak0I~//~1ak0I~
     public static final int ACTIVITY_REQUEST_SCOPED_LAST=110;      //~1Ak0I~//~1ak0I~
@@ -248,6 +257,7 @@ public class AG                                                    //~1107R~
     public  String    appNameE;	//by alphabet                      //~@@01I~
 //    public static String    pkgName;                               //~1A6aI~//~1Ad7R~
 //    public static String    appVersion;                            //~1506I~//~1Ad7R~
+    public  String    appVersion,appVersionMinConnect;             //~varaI~
     public  int       scrWidth,scrHeight;                    //~1428R~//~1Ad7R~//~v@@@R~//~@@01R~
     public  int       scrWidthReal,scrHeightReal;                  //~@@01R~
     public  int       scrStatusBarHeight;	//API30, by insets     //~vaj0I~
@@ -408,6 +418,7 @@ public class AG                                                    //~1107R~
     public  SuspendDlg aSuspendDlg;                                //~@@01I~
     public  ResumeDlg aResumeDlg;                                  //~@@01I~
     public  RuleSetting aRuleSetting;                              //~@@01I~
+    public  RuleSettingSumm aRuleSettingSumm;                      //~var0I~
     public  PrefSetting aPrefSetting;                              //~@@01I~
     public  RuleSettingEnum aRuleSettingEnum;                      //~@@01I~
     public  PrefSettingEnum aPrefSettingEnum;                      //~@@01I~
@@ -461,7 +472,7 @@ public class AG                                                    //~1107R~
     public String ruleSyncDate="";                                 //~@@01I~
                                                                    //~@@01I~
     public HistoryData resumeHD;                                   //~@@01I~
-    public HistoryData resumeHD_Resumed;                           //+vaqfI~
+    public HistoryData resumeHD_Resumed;                           //~vaqfI~
     public CommonListener.CommonListenerI aCommonListenerI;        //~@@01I~
     public int dialogPaddingHorizontal; //by UFDlg                 //~@@01I~
     public int ctrSaveAlert;                                       //~@@01R~
@@ -475,12 +486,16 @@ public class AG                                                    //~1107R~
 	public boolean swScoped;                               //~1Ak0I~//~1ak0I~
 	public boolean swScopedGranted;                                //~vae0I~
 	public boolean swGrantedBluetooth;                             //~vam8I~
+	public boolean swGrantBluetoothFailed;                         //~vas6I~
+    public boolean swFailedGrantBluetoothAdvertize;                //+vas6I~
 	public UMediaStore aUMediaStore;                       //~1Ak2I~//~1ak2I~
 	public boolean swGrantedExternalStorageRead,swGrantedExternalStorageWrite;//~1Ak2R~//~1ak2I~
 	public boolean swChangedPreference,swChangedRule;              //~vae8R~
 	public boolean swNewA10=true;	//navigationbar hide logic for Android10//~vaeeI~
     public OrientationMenuDlg aOrientationMenuDlg;                           //~vaf0I~//~vajgR~
     public Anim aAnim;                                             //~vamdI~
+    public ProfileIcon aProfileIcon;                               //~var8I~
+    public PrtDoc aPrtDoc;                                         //~vas0I~
 //    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //~vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
@@ -547,6 +562,8 @@ public class AG                                                    //~1107R~
         appNameE=Utils.getStr(R.string.app_nameE);                 //~@@01I~
 //        pkgName=context.getPackageName();                          //~1A6aI~//~1Ad7R~
 //        appVersion=context.getText(R.string.Version).toString();   //~1506I~//~1Ad7R~
+        appVersion=context.getText(R.string.app_version).toString();//~varaI~
+        appVersionMinConnect=context.getText(R.string.app_versionMinConnect).toString();//~varaI~
 //                                                                   //~v101I~//~1Ad7R~
 //        if (osVersion>=HONEYCOMB && osVersion<ICE_CREAM_SANDWICH)  //android3 api11-13//~vab0R~//~v101I~//~1Ad7R~
 //            bottomSpaceHeight=SYSTEMBAR_HEIGHT;                    //~vab0I~//~v101I~//~1Ad7R~

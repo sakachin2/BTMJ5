@@ -1,5 +1,6 @@
-//*CID://+v@@@R~:                             update#=  163;       //~1Af6R~//~v@@@R~
+//*CID://+var0R~:                             update#=  164;       //+var0R~
 //*****************************************************************//~v101I~
+//2022/09/03 var0 summary rule setting dialog                      //+var0I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                         //~v@@@R~
 
@@ -96,10 +97,10 @@ public class MenuDialog                                            //~v@@@R~
                 settingPreference();                               //~v@@@I~
                 break;                                             //~v@@@I~
             case 2: //operation setting                            //~v@@@I~
-        	  if (AG.isDebuggable)                                 //+v@@@I~
+        	  if (AG.isDebuggable)                                 //~v@@@I~
                 settingOperation();                                //~v@@@M~
-              else                                                 //+v@@@I~
-				umdlg.dismiss();                                   //+v@@@I~
+              else                                                 //~v@@@I~
+				umdlg.dismiss();                                   //~v@@@I~
                 break;                                             //~v@@@M~
             default:	//Cancel                                   //~v@@@I~
 				umdlg.dismiss();                                   //~v@@@I~
@@ -121,7 +122,8 @@ public class MenuDialog                                            //~v@@@R~
     private void settingRule()                                    //~v@@@I~
     {                                                              //~v@@@I~
     	if (Dump.Y) Dump.println("MenuDialog.settingRule");        //~v@@@I~
-    	RuleSetting.newInstance().show();                          //~v@@@R~
+//  	RuleSetting.newInstance().show();                          //~v@@@R~//+var0R~
+    	RuleSettingSumm.newInstance().show();                      //+var0I~
     }                                                              //~v@@@I~
 //**********************************                               //~v@@@I~
     private void settingPreference()                              //~v@@@I~

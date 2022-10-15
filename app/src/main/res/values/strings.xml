@@ -2,8 +2,9 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.23</string>
-    <string name="app_MinVersion">v1.23</string>
+    <string name="app_version">v1.25</string>
+    <string name="app_versionMinConnect">v1.24</string>
+    <string name="app_MinVersion">v1.24</string>
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -17,6 +18,8 @@
     <string name="Exit">Exit</string>
     <string name="failedBluetooth">Exception on Bluetooth processing.</string>
     <string name="failedBluetoothPermission">Bluetooth is not available by the reason of permission not granted.</string>
+    <string name="failedBluetoothPermissionType">Bluetooth permission(%1%s) is not granted. Bluetooth is not available.</string>
+    <string name="failedBluetoothPermissionTypeAdvertize">Bluetooth permission(%1%s) is not granted.</string>
     <string name="failedBluetoothUnpair">Failed to unpair process of Bluetooth.</string>
     <string name="BluetoothUnpairRequested">requested unpair %1$s.</string>
     <string name="nowDiscoverable">Now \"Visible\" status(in a certain minutes).</string>
@@ -166,7 +169,8 @@
     <string name="Title_HistoryDlg">Records</string>
     <string name="Title_HistoryBSDlg">Balance Sheet</string>
     <string name="Title_HistoryDlgFolder">Record &lt;font color=\"#000000\"&gt;(%1$s)</string>
-    <string name="Title_RuleSetting">RuleSettings</string>
+    <string name="Title_RuleSetting">RuleSettings:Detail</string>
+    <string name="Title_RuleSettingSumm">RuleSettings</string>
     <string name="Title_PrefSetting">Preference</string>
     <string name="Desc_Preference">DarkGreen indicates changeable during game.</string>
     <string name="Title_OperationSetting">Operations</string>
@@ -215,13 +219,13 @@
 		<item>30000</item>
 	</string-array-->
 	<string-array name="MenuDialog_Setting_Debug"> 
-		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_RuleSettingSumm</item>
 		<item>@string/Title_PrefSetting</item>
 		<item>TestOptions</item>
 		<item>@string/Cancel</item>
 	</string-array>
 	<string-array name="MenuDialog_Setting"> 
-		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_RuleSettingSumm</item>
 		<item>@string/Title_PrefSetting</item>
 		<item>@string/Cancel</item>
 	</string-array>
@@ -1028,7 +1032,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Info_ResyncRuleAtFirst">The rule is not agreed, Server(%1$s) send rule file.</string>
     <string name="Info_ResyncRuleClientChanged">Client (%1$S) changed rule. Getting Agreement required anew.</string>
     <string name="Info_ResyncRuleServerChanged">This device is server, send the rule because it is updated.</string>
-    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\". Re-\"Send\" is required.</string>
+    <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\". (Re)Send from Server.</string>
     <string name="Err_RuleIsInitial">Rule is not established yet. Press \"Settings\".</string>
     <string name="Err_RuleIsInitialMsg">Rule is not established yet. Press \"Settings\", \"RuleSettings\", then close the dialog by \"OK\".</string>
     <string name="Info_ResyncRuleChkOK">Rule was synchronized, game will start.</string>
@@ -1164,6 +1168,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
 	
     <string name="Label_YakuList">Yaku</string>
     <string name="Label_Operation">Oper</string>
+    <string name="Label_RuleSettingDetail">Detail</string>
     <string name="Label_8Continue">8 consecutive win</string>
     <string name="Label_8ContDealer">8 times as dealer</string>
     <string name="Label_9ContDealer">9 times as dealer</string>
@@ -1701,4 +1706,14 @@ Reinstall this APP to try to set again.
 											Do you want to force to resume from this file?\
 											</string>
     <string name="Info_GameEndCanceled">\"Final score\" was canceled, reopen from menu.</string>
+
+    <string name="Label_Profile">Profile</string>
+    <string name="Label_DisplayProfile">Display Image</string>
+    <string name="Label_UseProfile">Use my profile</string>
+    <string name="btnSelectProfile">Set</string>
+    <string name="Info_ImageExchanging">Exchanging profile Icon.</string>
+    <string name="Err_AppVersionConnect">App version of %1$s is old, version %2$s is required.</string>
+
+    <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4 or above.</string>
+    <string name="Print">Print</string>
 </resources>

@@ -18,6 +18,58 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.25 : 2022/10/14
+        .Android 12 compatible with Bluetooth permissions.
+        .Add History print function.
+        .Bugs(balance seet of 4-player game, response when connection is broken)
+
+V1.25 : 2022/10/14
+        .Bluetooth 연결 권한과 관련하여 Android12 대응
+        .히스토리 인쇄 기능 추가
+        .Bugs(4 명 플레이 게임의 이력 집계, 접속이 끊어졌을 때의 대응)
+
+*********************************************************************************************
+V1.25 : 2022/10/14
+        .Android 12 compatible with Bluetooth permissions
+        .Add history print function
+        .Bugs.
+         -When selecting a 4-player game, the aggregated history is aggregated for all games.
+         -Profile ICON may overwarp stocks depending on the model
+         -message loops when connection is lost
+
+        .Bluetooth 연결 권한과 관련하여 Android12 대응
+        .히스토리 인쇄 기능 추가
+        .Bugs.
+         -4인 플레이 게임을 선택했을 때, 이력의 집계가 모든 게임의 집약이 되어 버린다.
+         -모델에 따라 프로파일 ICON이 스톡에 겹칠 수 있음.
+         -연결이 끊어지면 메시지가 반복됩니다.
+
+V1.24 : 2022/10/08
+		.Put rules commonly used together into one page of dialog.
+		.Support to display profile-Icon set by preference dialog.
+		.Check application version consistency at connection between devices.
+        .(Bugs) Rule synchronization fails with device on which this App was installed at first.
+
+V1.24 : 2022/10/08
+		.Put rules commonly used together into one page of dialog.
+		.Support to display profile-Icon set by preference dialog.
+		.Check application version consistency at connection between devices.
+        .(Bugs) Rule synchronization fails with device on which this App was installed at first.
+
+        .대표적인 규칙 설정 항목을 한 페이지로 집계.
+        .개인 설정으로 프로필 아이콘 표시 지원.
+        .연결할 때 앱 버전이 일치하는지 확인.
+        .(결함) 첫 번째 설치의 경우 규칙 동기화가 실패합니다.
+
+V1.24 : 2022/10/08
+		.Put rules commonly used together into one page of dialog.
+		.Provide some messages in .ko.
+		.Adjust spacing between characters for vertical writing on landscape panel.
+		.Support to display profile-Icon set by preference dialog.
+		.Check application version consistency at connection between devices.
+        .Bugs.
+		 -Rule synchronization fails with device on which this App was installed at first.
+
 V1.23 : 2022/08/25
         .Implemented "Determination of NagashiMangan", "8 consecutive win" and Psuedo-Tenpai.
 		.Change of Open-Riichi option.
@@ -60,7 +112,6 @@ V1.23 : 2022/08/25    ( shorten)
          - 2-han 제약 조건에서 2차 명예 타일에 대한 "야쿠 수정" 오류 확인.
          -히스토리 레코드에서 게임 재개에 대해.
 
-*********************************************************************************************
 V1.23 : 2022/08/25
         .Implemented "Determination of NagashiMangan" and "8 consecutive win".
 		.Implemented Psuedo-Tenpai.

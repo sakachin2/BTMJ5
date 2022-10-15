@@ -1,6 +1,11 @@
-//*CID://+vaf5R~: update#= 640;                                    //+vaf5R~
+//*CID://+var7R~: update#= 661;                                    //~var7R~
 //**********************************************************************//~v101I~
-//2021/10/23 vaf5 (Bug)TTop panel msgbar overflow, adjust textsize //+vaf5I~
+//2022/09/20 var7 vertical Top2Bottom,doublequatation u201c/201d   //~var7I~
+//2022/09/20 var6 vertical Top2Bottom,(") distance is too large    //~var6I~
+//2022/09/20 var5 vertical Top2Bottom,change () to u-fe35/fe36(vertical kakko)//~var5I~
+//2022/09/20 var4 vertical Top2Bottom,space distance is too large  //~var4I~
+//2022/09/19 var3 Magbar for .ko                                   //~var3I~
+//2021/10/23 vaf5 (Bug)TTop panel msgbar overflow, adjust textsize //~vaf5I~
 //2021/06/17 va99 protect loop by msgBar size                      //~va99I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -65,7 +70,12 @@ public class GMsg                                                  //~v@@@R~
 					new Tables(Utils.getStr(R.string.UserAction_Reach_Open),GCM_REACH_OPEN),	//last is longest text//~va66I~
                     };                                             //~1A08I~//~v@@@I~
     private static final String SHIFTCHAR="。、";                              //~0215R~//~0216I~
-    private static final String SHIFTUP=".,";                      //~0216I~
+    private static final char   SHIFTCHAR_DQL='“'; //u201c        //~var7I~
+    private static final char   SHIFTCHAR_DQR='”'; //u201d        //~var7I~
+//  private static final String SHIFTUP=".,";                      //~0216I~//~var4R~
+//  private static final String SHIFTUP="., ";                     //~var4I~//~var6R~
+    private static final String SHIFTUP="., \"\'";                 //~var6I~
+    private static final String SHIFTUP2="\"\'";   //shift for followings//~var6I~
 //  private static final String SHIFTDOWN="\"\'";                  //~0216I~
 //  private GCanvas gcanvas;                                       //~v@@@R~
 //  private Canvas canvas;                                         //~v@@@I~
@@ -86,10 +96,13 @@ public class GMsg                                                  //~v@@@R~
     private int colorHL;//~v@@@I~
     private Rect rectDraw,rectTextHL;                              //~v@@@I~
     private boolean swVerticalB2T;	//vertical bottom to top       //~0215I~
+    private boolean swVerticalT2B;	//vertical top to bottom for !JP and !Portrait(for .ko msg)//~var3I~
     private Bitmap bmB2T;                                          //~0215I~
     private Rect rectB2T,rectB2TText;	//horizontal<--virtical, rotate later//~0215R~
 //  private String SshiftCharSbcs="\",.";                          //~0216R~
 //  private double pxToSp;                                         //~v@@@R~
+    private String msgVertical;                                    //~var5I~
+    private boolean swCharShiftSbcsType2;                          //~var6I~
 //*************************                                        //~v@@@I~
 	public GMsg()   //for IT override                              //~va60I~
     {                                                              //~va60I~
@@ -360,7 +373,8 @@ public class GMsg                                                  //~v@@@R~
         else                                                       //~9C02I~
         {                                                          //~9C02I~
             setMsgbarVertical(Pmsg);                             //~9C02I~
-      	  if (swVerticalB2T)	//landscape english                //~0215M~
+//    	  if (swVerticalB2T)	//landscape english                //~0215M~//~var3R~
+      	  if (swVerticalB2T && !swVerticalT2B)	//landscape english but not KO//~var3I~
           {                                                        //~0215I~
             r=new Rect(rectB2TText);                               //~0215R~
             r.left-=HL_MARGIN;                                     //~0215I~
@@ -372,6 +386,9 @@ public class GMsg                                                  //~v@@@R~
             r=new Rect(rectDraw);                                  //~9C02I~
             r.top-=HL_MARGIN;                                      //~9C02I~
             r.bottom+=HL_MARGIN;                                   //~9C02I~
+           if (msgVertical!=null) //output of setMsgbarVertical    //~var5I~
+        	AG.aGMsg.drawTextHL(msgVertical,fposDraw,paintHL,r);   //~var5I~
+           else                                                    //~var5I~
         	AG.aGMsg.drawTextHL(Pmsg,fposDraw,paintHL,r);              //~9C02I~
           }                                                        //~0215I~
         }                                                          //~9C02I~
@@ -593,12 +610,18 @@ public class GMsg                                                  //~v@@@R~
     private void setMsgbarVertical(String Pmsg)                    //~v@@@R~
     {                                                              //~v@@@I~
 	    if (Dump.Y) Dump.println("GMsg.setMsgBarVertical swVerticalB2T="+swVerticalB2T+",msg="+Pmsg);//~va66I~
+        msgVertical=null;                                          //~var5I~
+    	swVerticalT2B=swVerticalB2T && isDBCSText(Pmsg); //!JP and landscape, chk ko//~var3I~
+      if (!swVerticalT2B)                                          //~var3I~
     	if (swVerticalB2T)	//landscape english                    //~0215I~
         {                                                          //~0215I~
 		    setMsgbarVerticalB2T(Pmsg);                            //~0215I~
             return;                                                //~0215I~
         }                                                          //~0215I~
-    	int charH=adjustTextSizeVertical(Pmsg);	//setup paint      //~v@@@R~
+        msgVertical=replaceVertical(Pmsg);	                       //~var5I~
+        if (msgVertical!=null)                                    //~var5I~
+            Pmsg=msgVertical;                                       //~var5I~
+    	int charH=adjustTextSizeVertical(Pmsg);	//setup paint      //~v@@@R~//~var5R~
         int ctr=Pmsg.length();                                     //~v@@@I~
         int xx=rectMsgbar.left;                                    //~v@@@I~
         int yy=rectMsgbar.top+(rectMsgbar.bottom-rectMsgbar.top-charH*ctr)/2;//~v@@@I~
@@ -612,8 +635,29 @@ public class GMsg                                                  //~v@@@R~
 //      if (msgbarSize>charW)                                      //~v@@@I~//~0218R~
 //      	xx+=(msgbarSize-charW)/2-ADJUSTVJ;                              //~v@@@I~//~0216R~//~0218R~
         int charW=msgbarSize;                                      //~0218I~
-        if (Dump.Y) Dump.println("drawMsgbarVertical msgbarSize="+msgbarSize+",charW="+charW);//~0216I~
+        if (Dump.Y) Dump.println("Gmsg.setMsgbarVertical msgbarSize="+msgbarSize+",charW="+charW);//~0216I~//~var5R~
         float[] fpos=new float[ctr*2];                             //~v@@@I~
+        int totalShiftY=0;                                         //~var4I~
+        for (int ii=0;ii<ctr;ii++)                                 //~var4I~
+        {                                                          //~var4I~
+            int wwch=(int)paint.measureText(Pmsg,ii,ii+1);         //~var4I~
+	        Point shift;                                           //~var4I~
+            shift=chkCharShift(Pmsg,ii,charW,charH);               //~var4I~
+          if (shift.x==0 && shift.y==0)                            //~var4I~
+            if (wwch<charW)                                        //~var4I~
+            {                                                      //~var4I~
+                shift=new Point((charW-wwch)/2,0);                 //~var4I~
+//              int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);         //+var7R~
+//            if (shiftDQ!=0)                                      //+var7R~
+//              shift.y=-shiftDQ;                                  //+var7R~
+//            else                                                 //+var7R~
+	            shift.y=-chkCharShiftSbcs(Pmsg,ii,charH);          //~var4I~
+            }                                                      //~var4I~
+            totalShiftY+=shift.y;                                  //~var4I~
+	        if (Dump.Y) Dump.println("GMsg.setTextHeightVertical getTextBounds ii="+ii+",shift="+shift+",totalShiftY="+totalShiftY);//~var4I~
+        }                                                          //~var4I~
+        yy+=totalShiftY/2;                                         //~var4I~
+	    if (Dump.Y) Dump.println("GMsg.setTextHeightVertical getTextBounds totalShiftY="+totalShiftY+",yy="+yy);//~var6I~
         for (int ii=0;ii<ctr;ii++)                                 //~v@@@I~
         {                                                          //~v@@@I~
             int wwch=(int)paint.measureText(Pmsg,ii,ii+1);         //~0215R~
@@ -626,20 +670,37 @@ public class GMsg                                                  //~v@@@R~
 //              	shift=new Point((charW-wwch)/3,0);             //~0216I~
 //              else                                               //~0216I~
                 	shift=new Point((charW-wwch)/2,0);                 //~0215I~//~0216R~
+//              int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);         //+var7R~
+//            if (shiftDQ!=0)                                      //+var7R~
+//              shift.y=-shiftDQ;                                  //+var7R~
+//            else                                                 //+var7R~
 	            shift.y=-chkCharShiftSbcs(Pmsg,ii,charH);          //~0216R~
             }                                                      //~0216I~
 //          else                                                   //~0215I~//~0218R~
 //              shift=chkCharShift(Pmsg,ii,charW,charH);           //~0215R~//~0218R~
         	fpos[ii*2]=xx+shift.x;                                         //~v@@@I~//~0215R~
-            fpos[ii*2+1]=yy+charH*ii-shift.y;                              //~v@@@I~//~0215R~
-	        if (Dump.Y) Dump.println("GMsg.setTextHeightVertical getTextBounds ii="+ii+",descent="+descent+",measure="+wwch+",charW="+charW+",shift="+shift+",xx="+xx);//~0215I~//~0216R~//~va66R~
+//          fpos[ii*2+1]=yy+charH*ii-shift.y;                              //~v@@@I~//~0215R~//~var6R~
+          int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);               //+var7I~
+          if (shiftDQ!=0)                                          //+var7I~
+            fpos[ii*2+1]=yy+charH*ii+shiftDQ;                      //+var7I~
+          else                                                     //+var7I~
+    	  if (swCharShiftSbcsType2) //quotation                               //~var6I~
+            fpos[ii*2+1]=yy+charH*ii;                              //~var6M~
+          else                                                     //~var6I~
+            fpos[ii*2+1]=yy+charH*ii-shift.y;                      //~var6M~
+            yy-=shift.y;                                           //~var4I~
+	        if (Dump.Y) Dump.println("GMsg.setMsgbarVertical getTextBounds ii="+ii+",descent="+descent+",measure=wwch="+wwch+",charW="+charW+",shift="+shift+",xx="+xx);//~0215I~//~0216R~//~va66R~//~var5R~//~var6R~
+	        if (Dump.Y) Dump.println("GMsg.setMsgbarVertical yy="+yy+",fpos="+fpos[ii*2]+","+fpos[ii*2+1]);//~var4I~//~var5R~//~var6R~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("GMsg.drawMsgbarVertical fpos="+Arrays.toString(fpos));//~v@@@I~//~0218R~
+        if (Dump.Y) Dump.println("GMsg.setMsgbarVertical fpos="+Arrays.toString(fpos));//~v@@@I~//~0218R~//~var5R~
 //      Graphics.drawText(rectMsgbar,COLOR_BG_TABLE,Pmsg,fpos,paint);//~v@@@R~
         fposDraw=fpos;                                             //~v@@@I~
-        rectDraw=new Rect(rectMsgbar.left,yy0,rectMsgbar.right,yy0+charH*(ctr));//~v@@@R~
+        rectDraw=new Rect(rectMsgbar.left,yy0,rectMsgbar.right,yy0+charH*(ctr));//~v@@@R~//~var4R~
+        if (Dump.Y) Dump.println("GMsg.setMsgbarVertical exit msgVertical="+msgVertical);//~var5I~
     }                                                              //~v@@@I~
     //********************************************                 //~0215I~
+    //*adjust char spacinf for for DBCS 。、                       //~var6I~
+    //********************************************                 //~var6I~
     private Point chkCharShift(String Pmsg,int Ppos,int PcharW,int PcharH)//~0215R~
     {                                                              //~0215I~
     	int rcW=0,rcH=0;                                           //~0215R~
@@ -652,11 +713,34 @@ public class GMsg                                                  //~v@@@R~
         if (Dump.Y) Dump.println("GMsg.chkCharShift rcW="+rcW+",ch="+ch+",rcH="+rcH+",charH="+PcharH+",charW="+PcharW);//~0215R~
         return new Point(rcW,rcH);                                 //~0215R~
     }                                                              //~0215I~
-    //********************************************                 //~0216I~
+    //********************************************                 //~var7I~
+    //*adjust char for DBCS double quote                           //+var7R~
+    //********************************************                 //~var7I~
+    private int  chkCharShiftDQ(String Pmsg,int Ppos,int PcharH)   //~var7I~
+    {                                                              //~var7I~
+    	int shiftH=0;                                              //+var7R~
+    	char ch=Pmsg.charAt(Ppos);                                 //~var7I~
+        if (ch==SHIFTCHAR_DQL)    //left dquote                    //~var7I~
+        {                                                          //~var7I~
+        	shiftH=PcharH/2;      //shift down                       //+var7R~
+        }                                                          //~var7I~
+//        else                                                     //+var7R~
+//        if (ch==SHIFTCHAR_DQR)   //right dquote                  //+var7R~
+//        {                                                        //+var7R~
+//            rcH=PcharH/2;                                        //+var7R~
+//            swCharShiftSbcsType2=true;                           //+var7R~
+//        }                                                        //+var7R~
+        if (Dump.Y) Dump.println("GMsg.chkCharShiftDQ pos="+Ppos+",ch="+ch+",shiftH="+shiftH+",PcharH="+PcharH);//+var7R~
+        return shiftH;                                                //~var7I~
+    }                                                              //~var7I~
+    //***********************************************************                 //~0216I~//~var6R~
+    //*adjust char spacinf for for SBCS  .,(space),"(Quate)        //~var6I~
+    //***********************************************************  //~var6I~
     private int chkCharShiftSbcs(String Pmsg,int Ppos,int PcharH)  //~0216I~
     {                                                              //~0216I~
 		Rect r=new Rect();                                         //~0216I~
         paint.getTextBounds(Pmsg,Ppos,Ppos+1,r);                       //~0216I~
+        if (Dump.Y) Dump.println("GMsg.chkCharShiftSbcs rect="+r); //~var6I~
         int h=r.bottom-r.top;                                      //~0216I~
     	int rcH=0;                                                 //~0216I~
     	char ch=Pmsg.charAt(Ppos);                                 //~0216R~
@@ -669,7 +753,8 @@ public class GMsg                                                  //~v@@@R~
         	rcH=(PcharH-h)/2;                                      //~0216I~
     	if (SHIFTUP.indexOf(ch)>=0)                                //~0216I~
             rcH=-rcH;                                              //~0216I~
-        if (Dump.Y) Dump.println("GMsg.chkCharShiftSbcs ch="+Pmsg.charAt(Ppos)+",h="+h+",rcH="+rcH+",charH="+PcharH);//~0216I~//~0224R~
+    	swCharShiftSbcsType2=SHIFTUP2.indexOf(ch)>=0;             //~var6I~
+        if (Dump.Y) Dump.println("GMsg.chkCharShiftSbcs ch="+Pmsg.charAt(Ppos)+",swCharShiftSbcsType2="+swCharShiftSbcsType2+",h="+h+",rcH="+rcH+",charH="+PcharH);//~0216I~//~0224R~//~var6R~
         return rcH;                                                //~0216I~
     }                                                              //~0216I~
     //********************************************                 //~0215I~
@@ -723,10 +808,16 @@ public class GMsg                                                  //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("GMsg.drawMsgbarVerticalWithBG bgColor="+Integer.toHexString(PbgColor));//~v@@@I~
 	    setMsgbarVertical(Pmsg);                                   //~v@@@R~
-      if (swVerticalB2T)	//landscape english                    //~0215I~
+//    if (swVerticalB2T)	//landscape english                    //~0215I~//~var3R~
+      if (swVerticalB2T && !swVerticalT2B)	//landscape english    //~var3I~
         drawTextB2T(PbgColor,Pmsg,fposDraw,paint);      //~0215I~
       else                                                         //~0215I~
+      {                                                            //~var5I~
+       if (msgVertical!=null)                                      //~var5I~
+        Graphics.drawText(rectMsgbar,PbgColor,msgVertical,fposDraw,paint);//~var5I~
+       else                                                        //~var5I~
         Graphics.drawText(rectMsgbar,PbgColor,Pmsg,fposDraw,paint);//~v@@@I~
+      }                                                            //~var5I~
         swDrawn=true;                                              //~v@@@I~
     }                                                              //~v@@@I~
     //********************************************                 //~v@@@I~
@@ -933,26 +1024,87 @@ public class GMsg                                                  //~v@@@R~
         if (Dump.Y) Dump.println("GMsg.parseSendMsg ints="+Arrays.toString(ints));//~0224I~
         return ints;                                               //~0224I~
     }                                                              //~0224I~
-    //*********************************************************    //+vaf5I~
-    public static float adjustTextSize(float PpixTextSize,int Pwidth,String Pmsg)//+vaf5I~
-    {                                                              //+vaf5I~
-        if (Dump.Y) Dump.println("GMsg.adjustTextSize pixTextSize="+PpixTextSize+",layoutWidth="+Pwidth);//+vaf5I~
-        Paint paint=new Paint();                                         //+vaf5I~
-        int maxW=(int)(Pwidth*MSGH_ALLOWANCE);                            //+vaf5I~
-        int unit= TypedValue.COMPLEX_UNIT_PX;                       //+vaf5I~
-        float sz=PpixTextSize;                                     //+vaf5I~
-        for (;;)                                                   //+vaf5I~
-        {                                                          //+vaf5I~
-            paint.setTextSize(sz);                            //+vaf5I~
-            int strsz=(int)paint.measureText(Pmsg);                //+vaf5I~
-            if (Dump.Y) Dump.println("GMsg.adjustTextSize sz="+sz+",strsz="+strsz);//+vaf5I~
-            if (strsz<maxW)                                        //+vaf5I~
-                break;                                             //+vaf5I~
-            if (sz<=4.0)                                           //+vaf5I~
-            	break;                                             //+vaf5I~
-            sz-=4;                                                 //+vaf5I~
-        }                                                          //+vaf5I~
-        if (Dump.Y) Dump.println("GMsg.adjustTextSize rc="+sz);    //+vaf5I~
-        return sz;                                                 //+vaf5I~
-    }                                                              //+vaf5I~
+    //*********************************************************    //~vaf5I~
+    public static float adjustTextSize(float PpixTextSize,int Pwidth,String Pmsg)//~vaf5I~
+    {                                                              //~vaf5I~
+        if (Dump.Y) Dump.println("GMsg.adjustTextSize pixTextSize="+PpixTextSize+",layoutWidth="+Pwidth);//~vaf5I~
+        Paint paint=new Paint();                                         //~vaf5I~
+        int maxW=(int)(Pwidth*MSGH_ALLOWANCE);                            //~vaf5I~
+        int unit= TypedValue.COMPLEX_UNIT_PX;                       //~vaf5I~
+        float sz=PpixTextSize;                                     //~vaf5I~
+        for (;;)                                                   //~vaf5I~
+        {                                                          //~vaf5I~
+            paint.setTextSize(sz);                            //~vaf5I~
+            int strsz=(int)paint.measureText(Pmsg);                //~vaf5I~
+            if (Dump.Y) Dump.println("GMsg.adjustTextSize sz="+sz+",strsz="+strsz);//~vaf5I~
+            if (strsz<maxW)                                        //~vaf5I~
+                break;                                             //~vaf5I~
+            if (sz<=4.0)                                           //~vaf5I~
+            	break;                                             //~vaf5I~
+            sz-=4;                                                 //~vaf5I~
+        }                                                          //~vaf5I~
+        if (Dump.Y) Dump.println("GMsg.adjustTextSize rc="+sz);    //~vaf5I~
+        return sz;                                                 //~vaf5I~
+    }                                                              //~vaf5I~
+    //*********************************************************    //~var3I~
+    //*for !JAP and !Portrait                                      //~var3I~
+    //*rc=true if no SBCS except space and contains DBCS           //~var3I~
+    //*********************************************************    //~var3I~
+    private static boolean isDBCSText(String Pmsg)                 //~var3I~
+    {                                                              //~var3I~
+        if (Dump.Y) Dump.println("GMsg.isDBCSText msg="+Pmsg+",isLangKO="+AG.isLangKO);//~var3I~
+    	if (!AG.isLangKO)                                          //~var3I~
+    		return false;                                          //~var3I~
+        int ctr=Pmsg.length();                                     //~var3I~
+        boolean swDBCS=false;                                      //~var3I~
+        boolean swSBCS=false;                                      //~var3I~
+        for (int ii=0;ii<ctr;ii++)                                 //~var3I~
+        {                                                          //~var3I~
+            int num=Pmsg.codePointAt(ii);                          //~var3R~
+//      	if (Dump.Y) Dump.println("GMsg.isDBCSText ii="+ii+",codePoint="+num);//~var3R~
+            if (num>=0xac00 && num<=0xd7a3)   //hungle             //~var3R~
+            	swDBCS=true;                                       //~var3I~
+            else                                                   //~var3I~
+            if ((num>=0x41 && num<=0x7f)                           //~var3R~
+//          || (num==0x28||num==0x29||num==0x22)//()"              //~var3I~//~var5R~
+            )                                                      //~var3I~
+            {                                                      //~var3I~
+                swSBCS=true;                                       //~var3I~
+                break;                                             //~var3I~
+            }                                                      //~var3I~
+        }                                                          //~var3I~
+        boolean rc=!swSBCS && swDBCS;                              //~var3I~
+        if (Dump.Y) Dump.println("GMsg.isDBCSText rc="+rc);        //~var3R~
+        return rc;                                                 //~var3R~
+    }                                                              //~var3I~
+    //*********************************************************    //~var5I~
+    //*replace char such as () for veritical writing               //~var5I~
+    //*********************************************************    //~var5I~
+    private static String replaceVertical(String Pmsg)             //~var5I~
+    {                                                              //~var5I~
+    	String msg=Pmsg;                                           //~var5I~
+        if (msg.indexOf('(')>=0)                                   //~var5I~
+        	msg=msg.replace('(',(char)0xfe35);                     //~var5R~
+        if (msg.indexOf(')')>=0)                                   //~var5I~
+        	msg=msg.replace(')',(char)0xfe36);                     //~var5R~
+        if (msg.indexOf('（')>=0)                                  //~var5I~
+        	msg=msg.replace('（',(char)0xfe35);                    //~var5R~
+        if (msg.indexOf('）')>=0)                                  //~var5I~
+        	msg=msg.replace('）',(char)0xfe36);                    //~var5R~
+        if (msg.indexOf('「')>=0)                                  //~var5I~
+        	msg=msg.replace('「',(char)0xfe41);                    //~var5R~
+        if (msg.indexOf('」')>=0)                                  //~var5I~
+        	msg=msg.replace('」',(char)0xfe42);                    //~var5R~
+//        if (AG.isLangKO)         //"." may be used as decimal point//~var6R~
+//        {                                                          //~var5I~//~var6R~
+//            if (msg.indexOf('.')>=0)                               //~var5I~//~var6R~
+//                msg=msg.replace('.','。');   //vertical only       //~var5R~//~var6R~
+//            if (msg.indexOf(',')>=0)                               //~var5I~//~var6R~
+//                msg=msg.replace(',','、');   //vertical only       //~var5R~//~var6R~
+//        }                                                          //~var5I~//~var6R~
+        if (msg==Pmsg)                                             //~var5I~
+            msg=null;                                              //~var5I~
+        if (Dump.Y) Dump.println("GMsg.replaceVertical Pmsg="+Pmsg+",rc="+msg);//~var5I~
+        return msg;                                                //~var5I~
+    }                                                              //~var5I~
 }//class GMsg                                                 //~dataR~//~@@@@R~//~v@@@R~

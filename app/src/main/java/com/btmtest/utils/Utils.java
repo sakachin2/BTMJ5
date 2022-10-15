@@ -1,5 +1,6 @@
-//*CID://+vaf0R~: update#= 316;                                    //~vaf0R~
+//*CID://+vas0R~: update#= 318;                                    //+vas0R~
 //**********************************************************************//~1107I~
+//2022/10/09 vas0 print history                                    //+vas0I~
 //2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
@@ -170,8 +171,10 @@ public class Utils                                            //~1309R~//~@@@@R~
 	public static final int TS_DATE_TIME=1;                        //~1425I~
 	public static final int TS_MILI_TIME=2;                        //~1425I~
 	public static final int TS_DATE_TIME2=3;                       //~@@01I~
+	public static final int TS_DATE_TIME3=4;                       //+vas0I~
 	private static final SimpleDateFormat fmtdt=new SimpleDateFormat("yyyyMMdd-HHmmss");//~1425I~
 	private static final SimpleDateFormat fmtdt2=new SimpleDateFormat("yyyyMMdd:HHmmss");//~@@01R~
+	private static final SimpleDateFormat fmtdt3=new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");//+vas0I~
 	private static final SimpleDateFormat fmtms=new SimpleDateFormat("HHmmss.SSS");//~1425I~
 	public static String getTimeStamp(int Popt,Date Pdate)                    //~1425I~//~v@@@R~
     {                                                              //~1425I~
@@ -185,6 +188,9 @@ public class Utils                                            //~1309R~//~@@@@R~
         case TS_DATE_TIME2:                                        //~@@01I~
         	f=fmtdt2;                                              //~@@01I~
             break;                                                 //~@@01I~
+        case TS_DATE_TIME3:                                        //+vas0I~
+        	f=fmtdt3;                                              //+vas0I~
+            break;                                                 //+vas0I~
         case TS_MILI_TIME:                                         //~1425I~
         	f=fmtms;                                               //~1425I~
             break;                                                 //~1425I~
@@ -797,7 +803,7 @@ public class Utils                                            //~1309R~//~@@@@R~
 	        s="null";                                              //~@@01I~
         else                                                       //~@@01I~
             s=Arrays.toString(Psa);                                //~@@01I~
-        if (Dump.Y) Dump.println("Utils.toString(String[]) out="+s);//~@@01I~
+//      if (Dump.Y) Dump.println("Utils.toString(String[]) out="+s);//~@@01I~//~vaf0R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
     //*************************************************            //~@@01I~
@@ -816,7 +822,7 @@ public class Utils                                            //~1309R~//~@@@@R~
         }                                                          //~@@01I~
         sb.append("]");                                            //~@@01I~
         String s=sb.toString();                                    //~@@01I~
-        if (Dump.Y) Dump.println("Utils.toString(String[][]) out="+s);//~@@01R~
+//      if (Dump.Y) Dump.println("Utils.toString(String[][]) out="+s);//~@@01R~//~vaf0R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
     //*************************************************            //~va60I~
@@ -1045,24 +1051,24 @@ public class Utils                                            //~1309R~//~@@@@R~
 //      if (Dump.Y) Dump.println("Utils.toString(Rect[]) out="+s); //~@@01I~//~va40R~
         return s;                                                  //~@@01I~
     }                                                              //~@@01I~
-    //*************************************************            //+vaf0I~
-    public static String toString(Point[] Psa2)                    //+vaf0I~
-    {                                                              //+vaf0I~
-        StringBuffer sb=new StringBuffer();                        //+vaf0I~
-        sb.append("[");                                            //+vaf0I~
-        if (Psa2==null)                                            //+vaf0I~
-	        sb.append("null");                                     //+vaf0I~
-        else                                                       //+vaf0I~
-        for (int ii=0;ii<Psa2.length;ii++)     //account sequence  //+vaf0I~
-        {                                                          //+vaf0I~
-        	if (ii!=0)                                             //+vaf0I~
-    	        sb.append(",");                                    //+vaf0I~
-            sb.append(Psa2[ii]==null ? "null" : Psa2[ii].toString());//+vaf0I~
-        }                                                          //+vaf0I~
-        sb.append("]");                                            //+vaf0I~
-        String s=sb.toString();                                    //+vaf0I~
-        return s;                                                  //+vaf0I~
-    }                                                              //+vaf0I~
+    //*************************************************            //~vaf0I~
+    public static String toString(Point[] Psa2)                    //~vaf0I~
+    {                                                              //~vaf0I~
+        StringBuffer sb=new StringBuffer();                        //~vaf0I~
+        sb.append("[");                                            //~vaf0I~
+        if (Psa2==null)                                            //~vaf0I~
+	        sb.append("null");                                     //~vaf0I~
+        else                                                       //~vaf0I~
+        for (int ii=0;ii<Psa2.length;ii++)     //account sequence  //~vaf0I~
+        {                                                          //~vaf0I~
+        	if (ii!=0)                                             //~vaf0I~
+    	        sb.append(",");                                    //~vaf0I~
+            sb.append(Psa2[ii]==null ? "null" : Psa2[ii].toString());//~vaf0I~
+        }                                                          //~vaf0I~
+        sb.append("]");                                            //~vaf0I~
+        String s=sb.toString();                                    //~vaf0I~
+        return s;                                                  //~vaf0I~
+    }                                                              //~vaf0I~
     //*************************************************            //~@@01I~
     public static String toString(Rect[][] Psa2)                   //~@@01I~
     {                                                              //~@@01I~

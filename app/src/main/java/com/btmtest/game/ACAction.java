@@ -1,6 +1,7 @@
-//*CID://+vaqfR~: update#= 678;                                    //~v@@@R~//~v@@5R~//~v@@6R~//~v@@7R~//~9214R~//~va66R~//+vaqfR~
+//*CID://+var8R~: update#= 685;                                    //~var8R~
 //**********************************************************************//~v101I~
-//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//+vaqfI~
+//2022/09/24 var8 display profile icon                             //~var8I~
+//2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//~vaqfI~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //v@@7 20190131 del GCM_DORA msg exchange(deal msg contains wanpai)//~v@@7R~
 //v@@6 20190129 send ctrRemain and eswn                            //~v@@7I~
@@ -125,6 +126,15 @@ public class ACAction                                              //~v@@@R~
         if (Dump.Y) Dump.println("ACAction.receivedAppMsg msgid="+Pmsgid+",sender="+Psender+",data1="+Pdata1+",data2="+Pdata2+",data3="+Pdata3);//~v@@@R~
         GameViewHandler.sendMsg(GCM_RECEIVED_APPMSG,Pmsgid,Psender,Pdata1,Pdata2,Pdata3);  //switch to GameViewHandler thread and callback tempStarterClient//~v@@@I~
     }                                                              //~v@@@M~
+//***************************************************************************//~var8I~
+//*for byte send/receive                                           //~var8I~
+//*on BTIOThread go to action.receivedMsg(Message) through GVH     //~var8I~
+//***************************************************************************//~var8I~
+	public void receivedAppMsg(int Psender,int Pmsgid,String Pdata1,String Pdata2,byte[] Pbyte)//~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("ACAction.receivedAppMsg msgid="+Pmsgid+",sender="+Psender+",data1="+Pdata1+",data2="+Pdata2+",Pbyte="+Pbyte);//~var8I~
+        GameViewHandler.sendMsg(GCM_RECEIVED_APPMSG,Pmsgid,Psender,Pdata1,Pdata2,Pbyte);  //switch to GameViewHandler thread and callback//~var8I~
+    }                                                              //~var8I~
 //***************************************************************************//~9524I~
 //emulatee recieved from myself                                    //~9524I~
 //***************************************************************************//~9524I~
@@ -271,6 +281,22 @@ public class ACAction                                              //~v@@@R~
         	int tempstarter=Utils.parseInt(data1,1);              //~v@@@I~
         	GameViewHandler.sendMsg(msgid,tempstarter,0,0);  //switch to GameViewHandler thread and callback//~v@@@I~
             break;                                                 //~v@@@I~
+        case GCM_PROFILE_STARTSYNC:     //on Server; client to server at syncOK//~var8I~
+			AG.aProfileIcon.startSyncProfileReceived(sender,data1); //~var8I~
+            break;                                                 //~var8I~
+//      case GCM_PROFILE_GETIMAGE_C2S:     //on Client;            //~var8R~
+//          AG.aProfileIcon.receivedRequestImageC2S(sender,data1); //~var8R~
+//          break;                                                 //~var8R~
+        case GCM_PROFILE_GETIMAGE_C2SR:     //on Server received bitmap//~var8I~
+		    byte[] buff=GameViewHandler.getMsgDataByteArray(Pmsg); //~var8R~
+			AG.aProfileIcon.receivedRequestImageC2SR(sender,data1,data2,buff);//~var8I~
+            break;                                                 //~var8I~
+        case GCM_PROFILE_SENDIMAGE_S2CR:     //on Server received bitmap//+var8I~
+			AG.aProfileIcon.receivedSendImageS2CR(sender,data1);   //+var8I~
+            break;                                                 //+var8I~
+        case GCM_PROFILE_NOTIFY_ALL_RESP:     //on Server; client to server at syncOK//~var8I~
+	        AG.aProfileIcon.receivedProfileNotifyAllResp(sender,data1);//~var8I~
+            break;                                                 //~var8I~
         default:                                                   //~v@@@I~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~
@@ -520,7 +546,7 @@ public class ACAction                                              //~v@@@R~
             return;                                                //~9902I~
         }                                                          //~9902I~
         HistoryData hd=AG.resumeHD;                                //~9902I~
-        AG.resumeHD_Resumed=hd;                                    //+vaqfI~
+        AG.resumeHD_Resumed=hd;                                    //~vaqfI~
         AG.resumeHD=null;                                          //~9902I~
         AG.aAccounts.resumeGame(false/*swServer*/,hd);             //~9902I~
     }                                                              //~9902I~

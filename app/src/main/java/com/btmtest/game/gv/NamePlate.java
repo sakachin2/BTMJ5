@@ -1,6 +1,10 @@
-//*CID://+vap7R~: update#= 657;                                    //+vap7R~
+//*CID://+vas5R~: update#= 670;                                    //+vas5R~
 //**********************************************************************//~v101I~
-//2022/07/24 vap7 change complete color of nameplate to see score clearly//+vap7I~
+//2022/10/12 vas5 robot name oveflow in nameplate                  //+vas5I~
+//2022/10/11 vas3 tecLast(Android12) portrait icon before move overrup on stock//~vas3I~
+//2022/10/08 vard Adjust iconsize of before move not to override stock or nameplete for landscape mode//~vardI~
+//2022/09/24 var8 display profile icon                             //~var8I~
+//2022/07/24 vap7 change complete color of nameplate to see score clearly//~vap7I~
 //2022/04/20 vamt hidden dora was cut at clearRiver when EndOfHand is fixed at Final Round//~vamtI~
 //2022/01/31 vajk (Bug)invalid nameplate color on client(pos on msg:GCM_ENDGAME_ACCOUNT is invalid, then score received is invalid)//~vajkI~
 //2021/12/31 vaij Nameplate Name;justify center                    //~vaijI~
@@ -24,10 +28,12 @@ import static com.btmtest.game.Complete.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.StaticVars.AG;                           //~v@21I~
 
+import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;
 import com.btmtest.game.Players;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
+import com.btmtest.utils.Utils;
 
 import java.util.Arrays;
 
@@ -43,9 +49,9 @@ public class NamePlate                                             //~v@@@R~
     private static final int TEXT_COLOR_SCORE_BG_UNDER_BASE=Color.argb(0xff,0xff,0xcc,0x99);    //orange//~9415I~
     private static final int TEXT_COLOR_SCORE_FG=Color.argb(0xff,0x00,0x00,0x00);//~9317I~
     private static final int TEXT_COLOR_DISABLE=Color.argb(0x80,0x00,0x59,0x00);//~v@@@I~
-//  private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//+vap7R~
-//COMPLETE_COLOR=Color.argb(0xff,0xff,0x33,0x66); //Complete.java  //+vap7I~
-    private static final int COMPLETE_COLOR_SCORE=Color.argb(0x60,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//+vap7I~
+//  private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//~vap7R~
+//COMPLETE_COLOR=Color.argb(0xff,0xff,0x33,0x66); //Complete.java  //~vap7I~
+    private static final int COMPLETE_COLOR_SCORE=Color.argb(0x60,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//~vap7I~
     private static final int PLATE_EDGE_WIDTH=2;                  //~v@@@R~//~9317R~//~0407R~
 //  private static final int PLATE_EDGE_WIDTH=4; //TODO            //~0407R~
     private static final int TEXT_MARGIN_SIDE=10;                  //~v@@@I~
@@ -59,8 +65,10 @@ public class NamePlate                                             //~v@@@R~
                                                                    //~v@@@I~
     private MJTable table;                                         //~v@@@I~
     private Rect[] boundsPlate=new Rect[PLAYERS];                  //~v@@@R~
-    private Rect[] rectPlate;                                      //~v@@@R~
-    private Rect[] rectScore=new Rect[PLAYERS];                    //~9317I~
+//  private Rect[] rectPlate;                                      //~v@@@R~//~vardR~
+    public  Rect[] rectPlate;                                      //~vardI~
+//  private Rect[] rectScore=new Rect[PLAYERS];                    //~9317I~//~vas3R~
+    public  Rect[] rectScore=new Rect[PLAYERS];                    //~vas3I~
     private Rect[] rectScoreName=new Rect[PLAYERS];                //~0303I~
     private Rect[] rectBitmap=new Rect[PLAYERS];                   //~v@@@I~
     private String[] memberName;                                   //~v@@@I~
@@ -192,7 +200,7 @@ public class NamePlate                                             //~v@@@R~
     public void showPlate()                                        //~v@@@R~
     {                                                              //~v@@@I~
     //**************************                                   //~v@@@I~
-        if (Dump.Y) Dump.println("NamePlate.showPlate");           //~v@@@M~
+        if (Dump.Y) Dump.println("NamePlate.showPlate rectPlate="+Utils.toString(rectPlate));           //~v@@@M~//~vardR~
     	if (bitmapPlate==null)                                     //~v@@@I~
         	init();                                                //~v@@@R~
         for (int ii=0;ii<PLAYERS;ii++)                             //~v@@@I~
@@ -210,14 +218,15 @@ public class NamePlate                                             //~v@@@R~
             Graphics.drawRectBitmap(rect,COLOR_BG_TABLE,bm,rectbm.left,rectbm.top);//~v@@@I~
 //          }                                                      //~v@21R~
         }                                                          //~v@@@I~
+        AG.aProfileIcon.showOnNamePlate();    //~var8R~
     }                                                              //~v@@@I~
     //*********************************************************    //~v@21I~
-    //*after positioning end                                       //~v@21I~
+    //*after positioning end  from Acconts.showNamePlate           //~v@21I~//~var8R~
     //*********************************************************    //~v@21I~
     public void showPlate(int[] PnewPosition)                      //~v@21I~
     {                                                              //~v@21I~
     //**************************                                   //~v@21I~
-        if (Dump.Y) Dump.println("NamePlate.showPlate newPosition");//~v@21I~
+        if (Dump.Y) Dump.println("NamePlate.showPlate newPosition PnewPosition="+ Utils.toString(PnewPosition));//~v@21I~//~var8R~
         for (int ii=0;ii<PLAYERS;ii++)                             //~v@21R~
         {                                                          //~v@21I~
         	int player=PnewPosition[ii];                           //~v@21R~
@@ -230,8 +239,9 @@ public class NamePlate                                             //~v@@@R~
             if (bmr!=bm)                                           //~v@21I~
                 UView.recycle(bmr);                                //~v@21I~
         }                                                          //~v@21I~
+        AG.aProfileIcon.beforeShowNewPosition();                   //~var8R~
         showScore();                              //~9317I~        //~9318R~
-        newPosition=PnewPosition;                                  //~0324I~
+        newPosition=PnewPosition;
     }                                                              //~v@21I~
     //*********************************************************    //~9317I~
     private Bitmap createBMScore()                                  //~9317I~//~0217R~
@@ -306,6 +316,7 @@ public class NamePlate                                             //~v@@@R~
                 UView.recycle(bmr);                                //~9317I~
         	Graphics.drawRect(rectBitmap[ii],TEXT_COLOR_EDGE,PLATE_EDGE_WIDTH);//~0303I~//~0407R~
         }                                                          //~9317I~
+        AG.aProfileIcon.showOnNamePlate();     //~var8R~
     }                                                              //~9317I~
     //*********************************************************    //~0407I~
     private void drawLinesText(Canvas Pcanvas,Rect Prect,int Pcolor,int Pwidth)//~0407I~
@@ -418,6 +429,7 @@ public class NamePlate                                             //~v@@@R~
     	adjustRectHeight();                                        //~v@@@I~
     	createBitmap();                                            //~v@@@I~
     	adjustRectWidth();                                         //~v@@@I~
+        AG.aProfileIcon.setRect(rectScore);                           //~var8R~
     }                                                              //~v@@@I~
     //*********************************************************    //~v@@@I~
     private void adjustRectHeight()                                     //~v@@@I~
@@ -600,7 +612,8 @@ public class NamePlate                                             //~v@@@R~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~vaegI~
       else                                                         //~vaegI~
         adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH-TEXTBOX_MARGINH*2);//~9806I~
-        s="あいうえお";        //5 DBCS                            //~9317R~
+//      s="あいうえお";        //5 DBCS                            //~9317R~//+vas5R~
+        s="あいうえおか";        //6 DBCS                          //+vas5I~
 //      nameH=adjustTextSize(paint,s,TEXT_SIZE,textBoxW-TEXTBOX_MARGINH*2,textBoxH-TEXTBOX_MARGINH*2);//~9317M~//~9319R~
         nameH=adjustTextSize(paint,s,TEXT_SIZE,textBoxW,textBoxH);          //~9319I~
         nameplateW=textBoxW;                                       //~9317R~
@@ -622,6 +635,7 @@ public class NamePlate                                             //~v@@@R~
     	for (int ii=0;ii<PLAYERS;ii++)                                 //~v@@@I~
         {                                                          //~v@@@I~
         	String nm=memberName[ii];                              //~v@@@I~
+        	nm=nm.trim();                                          //+vas5I~
         	if (Dump.Y) Dump.println("NamePlate.createBitmap ii="+ii+",name="+nm);//~v@21I~
           if (swVerticalEarth)                                     //~9317I~
           {                                                        //~9317I~

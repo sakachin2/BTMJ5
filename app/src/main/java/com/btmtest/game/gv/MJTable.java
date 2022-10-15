@@ -1,5 +1,8 @@
-//*CID://+vaegR~: update#= 510;                                    //~vaegR~
+//*CID://+vas3R~: update#= 533;                                    //~vas3R~
 //**********************************************************************//~v101I~
+//2022/10/11 vas3 tecLast(Android12) portrait icon before move overrup on stock//~vas3I~
+//2022/10/08 vard Adjust iconsize of before move not to override stock or nameplete for landscape mode//~vardI~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vagdI~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //**********************************************************************//~vaedI~
@@ -23,6 +26,8 @@ import android.os.Build;
 public class MJTable                                               //~v@@@R~
 {                                                                  //~0914I~
                                                                    //~v@@@I~
+    private static final float  PROFILE_HWRATE=0.75f;	//W:3 vs H:4//~var8R~
+    private static final int    PROFILE_MARGIN_LANDSCAPE=4;        //~var8R~
                                                                    //~v@@@I~
     public static final int    TBL_RIVERCTR_X_P         =6; //it is mannar//~v@@@R~
     public static final int    TBL_RIVERCTR_Y_P         =3;        //~v@@@R~
@@ -116,10 +121,12 @@ public class MJTable                                               //~v@@@R~
     private int topSpace,leftSpace,rightSpace;                     //~v@@@R~
     private Rect[] openRect=new Rect[PLAYERS];                     //~v@@@I~
     public  Rect[] rectNamePlate=new Rect[PLAYERS];                //~v@@@R~
+    public Rect[] rectProfile=new Rect[PLAYERS];                   //~var8R~
     private boolean swVerticalEarth=false;                         //~9317I~
     private int marginDiceBox;                                     //~9808I~
     public  int sizeMsgBar=SIZE_MSGBAR;                             //~9811I~
     public  int shift_back;                                         //~vaedI~
+//  public  ProfileIcon aProfileIcon;                              //~var8R~
 //*************************                                        //~v@@@I~
 //*from GameView                                                   //~vaegI~
 //*************************                                        //~vaegI~
@@ -127,6 +134,7 @@ public class MJTable                                               //~v@@@R~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("MJTable.Constructor Pww="+Pww+",Phh="+Phh);         //~1506R~//~@@@@R~//~v@@@R~//~9807R~//~1918R~
         AG.aMJTable=this;                                          //~v@@@I~
+//      aProfileIcon=new ProfileIcon();   //construct at MainActivity//~var8R~
         WW=Pww;	//framelayout width                                //~v@@@R~
         HH=Phh;                                                    //~v@@@R~
         init();                                                    //~v@@@I~
@@ -157,7 +165,7 @@ public class MJTable                                               //~v@@@R~
         bottomButtonH =swPortrait ? AG.aGC.btnBottomH+sizeMsgBar : 0;//~9811I~
         topButtonH    =swPortrait ? AG.aGC.btnTopH : 0;                //~v@@@R~
         if (Dump.Y) Dump.println("MJTable.init GC.btnLeft="+AG.aGC.btnLeftW+",leftButtonW="+leftButtonW);//~9313I~
-        if (Dump.Y) Dump.println("MJTable.init GC.btnRight="+AG.aGC.btnRightW+",rightButtonW="+rightButtonW);//~vaedI~//+vaegR~
+        if (Dump.Y) Dump.println("MJTable.init GC.btnRight="+AG.aGC.btnRightW+",rightButtonW="+rightButtonW);//~vaedI~//~vaegR~
         setGeometry();                                             //~v@@@I~
         updateGeometry();                                          //~v@@@I~
         pieces=new Pieces(this,WW,HH);                             //~v@@@M~
@@ -263,6 +271,7 @@ public class MJTable                                               //~v@@@R~
         riverRightY        =riverLeftY+riverLength-riverPieceW;    //left top of 1st tile//~v@@@I~
         setOpenRect();                                             //~v@@@I~
         setNamePlateRect();                                        //~v@@@I~
+        setProfileRect();                                          //~var8I~
         if (Dump.Y) Dump.println("MJTable.updateGeometry topSpace="+topSpace+",marginStockTop="+marginStockTop+",bottom="+marginStockBottom+",stockH="+stockH+",stockPieceH="+stockPieceH);//~v@@@R~
         if (Dump.Y) Dump.println("MJTable.updateGeometry stockFacing X="+stockFacingX+",Y="+stockFacingY+",riverPieceH="+riverPieceH);//~v@@@I~//~9313R~
         if (Dump.Y) Dump.println("MJTable.updateGeometry stockFacing X="+stockFacingX+",Y="+stockFacingY+",riverPieceH="+riverPieceH);//~vaegI~
@@ -392,6 +401,124 @@ public class MJTable                                               //~v@@@R~
        }                                                           //~vaegR~
       }                                                            //~9317I~
     }                                                              //~v@@@I~
+	//***************************************************************//~var8I~
+	//*set rect for pfofile icon                                   //~var8I~
+	//***************************************************************//~var8I~
+	private void setProfileRect()                                  //~var8I~
+    {                                                              //~var8I~
+        Rect rs;                                                   //~var8I~
+        int margin=PROFILE_MARGIN_LANDSCAPE,xx1,xx2,yy1,yy2,hh,ww;      //~var8R~
+    //********************************************                 //~var8I~
+        if (Dump.Y) Dump.println("MJTable.setProfileRect entry swPortrait="+swPortrait+",swLongDevice="+AG.swLongDevice);//~var8I~
+//        if (AG.swLongDevice)                                     //~var8R~
+//        {                                                        //~var8R~
+//            setProfileRectLongDevice();                          //~var8R~
+//        }                                                        //~var8R~
+//        else                                                     //~var8R~
+//        {                                                        //~var8R~
+			if (swPortrait)                                        //~var8I~
+            {                                                      //~var8R~
+            	;	//setup rect at NamePlate                      //~var8I~
+        	}                                                      //~var8I~
+            else	//landscape                                    //~var8I~
+            {                                                      //~var8R~
+            	hh=stockPieceH*2;                                  //~var8I~
+                ww=(int)(hh*PROFILE_HWRATE);	//*0.75;       //~var8I~
+            //*right                                               //~var8I~
+                xx2=stockRightX-margin;                             //~var8I~
+                xx1=xx2-hh;                                        //~var8I~
+                yy1=stockRightY;                                   //~var8R~
+                yy2=yy1+ww;                                        //~var8R~
+                rectProfile[PLAYER_RIGHT]=new Rect(xx1,yy1,xx2,yy2);//~var8I~
+            //*facing                                              //~var8I~
+                xx1=stockFacingX;                                  //~var8R~
+                xx2=xx1+ww;                                        //~var8R~
+                yy1=stockFacingY+stockPieceH+margin;               //~var8I~
+                yy2=yy1+hh;                                        //~var8I~
+                rectProfile[PLAYER_FACING]=new Rect(xx1,yy1,xx2,yy2);//~var8I~
+            //*left                                                //~var8I~
+                xx1=stockLeftX+stockPieceH+margin;                 //~var8I~
+                xx2=xx1+hh;                                        //~var8I~
+                yy2=stockLeftY+stockPieceW;                        //~var8R~
+                yy1=yy2-ww;                                        //~var8R~
+                rectProfile[PLAYER_LEFT]=new Rect(xx1,yy1,xx2,yy2);//~var8R~
+            //*you                                                 //~var8I~
+                xx2=stockX+stockPieceW;                            //~var8R~
+                xx1=xx2-ww;                                        //~var8R~
+                yy2=stockY-margin;                                 //~var8I~
+                yy1=yy2-hh;                                        //~var8I~
+                rectProfile[PLAYER_YOU]=new Rect(xx1,yy1,xx2,yy2); //~var8I~
+        	}                                                      //~var8I~
+//        }                                                        //~var8R~
+        if (Dump.Y) Dump.println("MJTable.setProfileRect exit rect="+Utils.toString(rectProfile));//~var8I~
+    }                                                              //~var8I~
+	//***************************************************************//~vas3I~
+	//*from ProfileIcon for portrait icon height limit before move //~vas3I~
+	//*distance from stock edge to score region top                //~vas3I~
+	//***************************************************************//~vas3I~
+	public int getProfilePortraitLimit()                           //~vas3R~
+    {                                                              //~vas3I~
+        Rect r;                                                    //~vas3I~
+        int margin=PROFILE_MARGIN_LANDSCAPE;                       //~vas3I~
+        if (Dump.Y) Dump.println("MJTable.getProfilePortraitLimit rectScore="+Utils.toString(AG.aNamePlate.rectScore));//~vas3R~
+        //*leftStock end                                           //~vas3I~
+        int leftB=AG.aStock.rectsBG[PLAYER_LEFT].bottom;            //+vas3R~
+        r=AG.aNamePlate.rectScore[PLAYER_YOU];                     //~vas3I~
+        int max1=r.top-leftB; //above score plate                  //~vas3R~
+        //*rightStock start                                        //~vas3I~
+        int rightT=AG.aStock.rectsBG[PLAYER_RIGHT].top;             //+vas3I~
+        r=AG.aNamePlate.rectScore[PLAYER_FACING];                  //~vas3I~
+        int max2=rightT-r.bottom; //under score plate             //~vas3R~
+        int rc=Math.min(max1,max2)-riverPieceW;  //from score plate to stop edge-riverWidth//~vas3R~
+        if (Dump.Y) Dump.println("MJTable.getProfilePortraitLimit rectNamePlate="+Utils.toString(rectNamePlate));//~vas3R~
+        if (Dump.Y) Dump.println("MJTable.getProfilePortraitLimit leftB="+leftB+",rightT="+rightT+",riverPieceW="+riverPieceW);//~vas3I~
+        if (Dump.Y) Dump.println("MJTable.getProfilePortraitLimit rc="+rc+",max1="+max1+",max2="+max2);//~vas3I~
+        return rc;                                                 //~vas3R~
+    }                                                              //~vas3I~
+	//***************************************************************//~vardI~
+	//*from Profile; chk override on landscape                     //~vardI~
+    //*Adjust not to override other stock or name plate            //~vardI~
+	//***************************************************************//~vardI~
+	public int/*adjust value for hh*/ chkProfileRect(int Phh)      //~vardI~
+    {                                                              //~vardI~
+        int margin=PROFILE_MARGIN_LANDSCAPE,xx1,xx2,yy1,yy2,hh;    //~vardI~
+        if (Dump.Y) Dump.println("MJTable.chkProfileRect entry swPortrait="+swPortrait+",Phh="+Phh+",rect="+Utils.toString(rectProfile));//~vardI~
+        Rect[] rectNP=AG.aNamePlate.rectPlate; //adjusted for landscape except for longdevice//~vardI~
+        if (Dump.Y) Dump.println("MJTable.chkProfileRect nameplate="+Utils.toString(rectNamePlate)+",rectNP="+Utils.toString(rectNP));//~vardR~
+		if (swPortrait)                                            //~vardI~
+        	return 0;                                              //~vardI~
+        int hhDecrease=0;                                          //~vardI~
+        hh=Phh;                                                //~vardI~
+    //*right                                                       //~vardI~
+        xx2=stockRightX-margin;                                    //~vardI~
+        xx1=xx2-hh;                                                //~vardI~
+        int stockEndYou=stockX+stockLength+margin;                 //~vardI~
+        if (stockEndYou>xx1)     //right override stock of you     //~vardI~
+            hhDecrease=Math.max(hhDecrease,stockEndYou-xx1);       //~vardI~
+        if (Dump.Y) Dump.println("MJTable.setProfileRect adjust right xx1="+xx1+",stockEndYou="+stockEndYou+",hhDecrease="+hhDecrease);//~vardI~
+    //*left                                                        //~vardI~
+        xx1=stockLeftX+stockPieceH+margin;                         //~vardI~
+        xx2=xx1+hh;                                                //~vardI~
+        int stockStartFacing=stockFacingX-stockLength+stockPieceW-margin;//~vardI~
+        if (stockStartFacing<xx2) //left override stock of facing  //~vardI~
+            hhDecrease=Math.max(hhDecrease,xx2-stockStartFacing);  //~vardI~
+        if (Dump.Y) Dump.println("MJTable.setProfileRect adjust left xx2="+xx2+",stockStartFacing="+stockStartFacing+",hhDecrease="+hhDecrease);//~vardI~
+    //*you                                                         //~vardI~
+        yy2=stockY-margin;                                         //~vardI~
+        yy1=yy2-hh;                                                //~vardI~
+        int nameplateEndLeft=rectNP[PLAYER_LEFT].bottom+margin;    //~vardR~
+        if (nameplateEndLeft>yy1) //you override nameplete of left //~vardI~
+            hhDecrease=Math.max(hhDecrease,nameplateEndLeft-yy1);  //~vardI~
+        if (Dump.Y) Dump.println("MJTable.setProfileRect adjust you yy1="+yy1+",nameplateEndLeft="+nameplateEndLeft+",hhDecrease="+hhDecrease);//~vardI~
+    //*facing                                                      //~vardI~
+        yy1=stockFacingY+stockPieceH+margin;                       //~vardI~
+        yy2=yy1+hh;                                                //~vardI~
+        int nameplateEndRight=rectNP[PLAYER_RIGHT].top-margin;     //~vardR~
+        if (nameplateEndRight<yy2) //facing override nameplete of right//~vardI~
+            hhDecrease=Math.max(hhDecrease,yy2-nameplateEndRight); //~vardI~
+        if (Dump.Y) Dump.println("MJTable.setProfileRect adjust facing yy2="+yy2+",nameplateEndRight="+nameplateEndRight+",hhDecrease="+hhDecrease);//~vardI~
+        return hhDecrease;                                         //~vardI~
+    }                                                              //~vardI~
 	//***************************************************************//~vaegR~
 	private void setNamePlateRectLongDevice()                      //~vaegR~
     {                                                              //~vaegR~
@@ -448,6 +575,60 @@ public class MJTable                                               //~v@@@R~
             rectNamePlate[PLAYER_YOU]=r;                           //~vaegR~
             if (Dump.Y) Dump.println("MJTable.setNamePlateRectLongDevice you="+r.toString());//~vaegR~
     }                                                              //~vaegR~
+	//***************************************************************//~var8I~
+	private void setProfileRectLongDevice()                        //~var8I~
+    {                                                              //~var8I~
+        Rect r;                                                    //~var8I~
+        int xx1,yy1,xx2,yy2,len,margin;                            //~var8I~
+        //**********************                                   //~var8I~
+        if (AG.portrait)                                           //~var8I~
+        	len=stockX;	//from left edge to left egde of stock You //~var8I~
+        else                                                       //~var8I~
+        	len=stockLeftY;	//from left edge to left egde of stock You//~var8I~
+    	margin=P_MARGIN_LEFT_DIP;	//                             //~var8I~
+    	len-=margin;                                               //~var8I~
+        if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice portrait="+AG.portrait+",len="+len);//~var8I~
+        int limitRight=handX+Hands.getLengthHands(HANDCTR_TAKEN,handPieceW);//~var8I~
+        if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice limitRight="+limitRight+",handX="+handX);//~var8I~
+        //*right                                                   //~var8I~
+            xx2=stockRightX+stockH;	//including shift_back         //~var8I~
+            xx1=xx2-stockPieceH;                                   //~var8I~
+            int hhName=stockPieceH;                                //~var8I~
+        	if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice xx1="+xx1+",xx2="+xx2+",stockPieceH="+stockPieceH);//~var8I~
+            if ((xx1-hhName)<=limitRight+1)                        //~var8I~
+            	hhName=Math.max(stockH/2,(xx2-(limitRight+1))/2);  //~var8I~
+        	if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice xx1="+xx1+",hhName="+hhName);//~var8I~
+            xx1=xx2-hhName;                                        //~var8I~
+	        yy1=stockRightY+stockPieceW;                           //~var8I~
+            yy2=yy1+len;                                           //~var8I~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~var8I~
+            if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice right="+r.toString());//~var8I~
+            rectProfile[PLAYER_RIGHT]=r;                           //~var8I~
+        //*facing                                                  //~var8I~
+            xx1=stockX+stockLength;                                //~var8I~
+            xx2=xx1+len;                                           //~var8I~
+            yy1=stockFacingY-shift_back;                           //~var8I~
+            yy2=yy1+hhName;                                        //~var8I~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~var8I~
+            if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice facing="+r.toString());//~var8I~
+            rectProfile[PLAYER_FACING]=r;                          //~var8I~
+        //*left                                                    //~var8I~
+            xx1=stockLeftX-shift_back;                             //~var8I~
+            xx2=xx1+hhName;                                        //~var8I~
+            yy2=stockLeftY-SHIFT_SIDE;                             //~var8I~
+            yy1=yy2-len;                                           //~var8I~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~var8I~
+            if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice left="+r.toString());//~var8I~
+            rectProfile[PLAYER_LEFT]=r;                            //~var8I~
+        //*you                                                     //~var8I~
+            xx2=stockX;                                            //~var8I~
+            xx1=xx2-len;                                           //~var8I~
+            yy2=stockY+stockH;                                     //~var8I~
+            yy1=yy2-hhName;                                        //~var8I~
+            r=new Rect(xx1,yy1,xx2,yy2);                           //~var8I~
+            rectProfile[PLAYER_YOU]=r;                             //~var8I~
+            if (Dump.Y) Dump.println("MJTable.setProfileRectLongDevice you="+r.toString());//~var8I~
+    }                                                              //~var8I~
 	//***************************************************************//~v@@@I~
 	private void setStarterPos()                                   //~v@@@I~
     {                                                              //~v@@@I~
@@ -540,7 +721,7 @@ public class MJTable                                               //~v@@@R~
         int hh=(int)((double)PpieceH/PpieceW*ww);                  //~v@@@I~
         handPieceW=ww;                                             //~v@@@R~
         handPieceH=hh;                                             //~v@@@R~
-        if (Dump.Y) Dump.println("MJTables.getEarthPieceSize handLendth="+handLength+",ww="+ww+",hh="+hh);//~v@@@R~
+        if (Dump.Y) Dump.println("MJTables.getEarthPieceWidth handLendth="+handLength+",ww="+ww+",hh="+hh);//~v@@@R~//~var8R~
         updateGeometry();                                          //~v@@@I~
         return ww;  //1 piece width                                //~v@@@R~
     }                                                              //~v@@@I~

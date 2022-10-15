@@ -137,6 +137,14 @@
                 android:layout_weight="1"
             />
             <Button
+                android:id="@+id/Print"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/Print"
+                android:layout_weight="1"
+            />
+            <Button
                 android:id="@+id/Close"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

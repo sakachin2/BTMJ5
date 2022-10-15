@@ -14,6 +14,14 @@
     </LinearLayout> <!--InitialScore-->
     <LinearLayout
          android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <include layout="@layout/setting_rule_opt_final_theme"
+        />
+    </LinearLayout> <!--InitialScore-->
+    <LinearLayout
+         android:layout_width="fill_parent"
          android:layout_height="2px"
                 android:background="@color/separater"
     />

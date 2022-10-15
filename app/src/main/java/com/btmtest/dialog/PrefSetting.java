@@ -1,5 +1,6 @@
-//*CID://+van1R~:                             update#=  554;       //~van1R~
+//*CID://+var8R~:                             update#=  591;       //~var8R~
 //*****************************************************************//~v101I~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2021/12/21 vai0 (Bug)Id of NoBGM was shown by Japanese on english env.//~vai0I~
@@ -16,18 +17,20 @@
 //2020/04/27 va06:BGM                                              //~va06I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Button;                                      //~vae9I~
 
 import com.btmtest.R;
-import com.btmtest.game.GC;
 import com.btmtest.game.Status;
+import com.btmtest.game.gv.ProfileIcon;
 import com.btmtest.gui.UButton;
 import com.btmtest.gui.URadioGroup;
 import com.btmtest.gui.USpinBtn;
@@ -102,10 +105,20 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     public static final int 	DEFAULT_VOLUME_INC=1;              //~v@@@I~
     public static final int 	DEFAULT_VOLUME=5;                  //~v@@@I~
                                                                    //~v@@@I~
+    public static final int 	DEFAULT_PROFILE_SHOW=1;            //~var8I~
+    public static final int 	DEFAULT_PROFILE_USE_MYOWN=1;       //~var8I~
+    public static final int    ID_PROFILE_WIDTH=R.dimen.pref_profile_width;//~var8R~
+    public static final int    ID_PROFILE_HEIGHT=R.dimen.pref_profile_height;//~var8R~
+                                                                   //~var8I~
     private UCheckBox cbDelRiverTileTaken;                         //~v@@@I~
     private UCheckBox cbNoRelatedRule;                             //~v@@@I~
     private UCheckBox cbNoTakeButton,cbNoDiscardButton;            //~v@@@I~
     private UCheckBox cbNoAnywayButton;                            //~va18I~
+    private UCheckBox cbDisplayProfile,cbUseProfile;               //~var8I~
+    private Button  btnSelectProfile;                              //~var8I~
+    private Button  btnDeleteProfile;                              //~var8I~
+    private ImageView ivMyProfile;                                 //~var8I~
+    private TextView  tvProfileName;                               //~var8I~
     private UCheckBox cbNoSound,cbBeepOnly;                        //~v@@@R~
     private UCheckBox cbLeftyPortrait,cbLeftyLandscape;            //~vad1I~
 //  private UCheckBox cbPortraitReverse;                           //~va9fR~
@@ -116,6 +129,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private int changedSound;                                      //~v@@@I~
     private int changedBGM;                                        //~va06I~
     private int changedBtn;                                        //~v@@@I~
+    private int changedProfile;                                    //~var8I~
     private UCheckBox cbUserBGMNoRound;                            //~vae9I~
     private UCheckBox cbUseUPicker;                                //~vae9I~
     private EditText etUserBGMSelection;                           //~vae9I~
@@ -129,6 +143,11 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private boolean swError;                                       //~vae9I~
     private UCheckBox cbAllowRobotAllButton;                       //~vamuI~
     private UCheckBox cbPlayAloneNotify;                           //~vamuI~
+    private Bitmap bmpMe;                                          //~var8I~
+    private String profileUriMe,profileDispNameMe,profileTimeStampMe="0";//+var8R~
+    private String /*profilePathMe,*/profileSizeMe="0";            //+var8R~
+    private String profileIDMe="0";                                //+var8R~
+    private int wwProfile,hhProfile;                               //~var8I~
     //******************************************                   //~v@@@I~
     //******************************************                   //~v@@@M~
 	public PrefSetting()                                           //~v@@@R~
@@ -162,6 +181,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("PrefSetup.onDismissDialog");     //~v@@@I~
     	AG.aPrefSetting=null;                                      //~v@@@I~
+        UView.recycle(bmpMe);	//null OK                          //~var8I~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@M~
     @Override
@@ -169,6 +189,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     {                                                              //~v@@@M~
         NOTITLE=Utils.getStr(R.string.NoUserBGM);                  //~vai0I~
         if (Dump.Y) Dump.println("PrefSetting.initLayout NOTITLE="+NOTITLE);        //~v@@@R~//~vai0R~
+        wwProfile=(int)(AG.resource.getDimension(ID_PROFILE_WIDTH));//~var8I~
+        hhProfile=(int)(AG.resource.getDimension(ID_PROFILE_HEIGHT));//~var8I~
 //      swFixed=swFixedParm;                                       //~v@@@R~
         super.initLayoutUFDlg(PView);                              //~v@@@R~
         setupLayout(PView);                                        //~v@@@I~
@@ -192,6 +214,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbNoAnywayButton=new UCheckBox(PView,R.id.cbNoAnywayButton);//~va18I~
         cbLeftyPortrait=new UCheckBox(PView,R.id.cbLeftyPortrait);  //~vad1I~
         cbLeftyLandscape=new UCheckBox(PView,R.id.cbLeftyLandscape);//~vad1I~
+        cbDisplayProfile=new UCheckBox(PView,R.id.cbDisplayProfile);//~var8I~
+	    btnSelectProfile=UButton.bind(PView,R.id.btnSelectProfile,this);//~var8I~
+	    btnDeleteProfile=UButton.bind(PView,R.id.btnDeleteProfile,this);//~var8I~
+        ivMyProfile=(ImageView)UView.findViewById(PView,R.id.ivMyProfile);//~var8I~
+        tvProfileName=(TextView)UView.findViewById(PView,R.id.tvProfileDisplayName);//~var8I~
+        cbUseProfile=new UCheckBox(PView,R.id.cbUseProfile);       //~var8I~
         cbNoSound=new UCheckBox(PView,R.id.cbNoSound);             //~v@@@I~
         cbBeepOnly=new UCheckBox(PView,R.id.cbBeepOnly);           //~v@@@I~
     	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBSoundVolume);//~v@@@I~
@@ -283,6 +311,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
             userBGMButtonNumber=getBGMButtonNumber();              //~vae9I~
 	    	deleteBGM();                                           //~vae9I~
             break;                                                 //~vae9I~
+        case R.id.btnSelectProfile:                                //~var8I~
+            selectProfile();                                       //~var8I~
+            break;                                                 //~var8I~
+        case R.id.btnDeleteProfile:                                //~var8I~
+            deleteProfile();                                       //~var8I~
+            break;                                                 //~var8I~
         }                                                          //~vae9I~
     }                                                              //~v@@@I~
     //**************************************                       //~vae9I~
@@ -302,6 +336,40 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSetting.getButtonNumber llid="+Integer.toHexString(llid)+",btnNumber="+num);//~vae9I~
         return num;                                                //~vae9I~
     }                                                              //~vae9I~
+    //**************************************                       //~var8I~
+    private void deleteProfile()                                   //~var8I~
+    {                                                              //~var8I~
+    	if (Dump.Y) Dump.println("RuleSetting.deleteProfile reset to default value");//~var8I~
+        profileUriMe=null;                                         //~var8I~
+        profileIDMe="0";                                           //~var8R~
+        profileDispNameMe="";                                      //~var8I~
+        profileTimeStampMe="0";                                    //~var8R~
+        profileSizeMe="0";                                         //~var8R~
+	    showMyProfile(profileUriMe,profileIDMe,profileDispNameMe); //~var8I~
+    }                                                              //~var8I~
+    //**************************************                       //~var8I~
+    private void selectProfile()                                   //~var8I~
+    {                                                              //~var8I~
+    	if (Dump.Y) Dump.println("RuleSetting.selectProfile");     //~var8I~
+		UMediaStore.selectImage(this);	//callback ImageSelected   //~var8I~
+    }                                                              //~var8I~
+    //**************************************                       //~var8I~
+    @Override //UMediastoreI                                       //~var8I~
+    public void ImageSelected(Uri Puri,String Pid,String PdisplayName,String PtimestampAdded,String Psize)//~var8R~
+    {                                                              //~var8I~
+    	if (Dump.Y) Dump.println("PrefSetting.ImageSelected uri="+Puri+",id="+Pid+",displayName="+PdisplayName+",timeStampAdded="+PtimestampAdded+",size="+Psize);//~var8R~
+	    String strUri=Puri.toString();                             //~var8R~
+        boolean swOK=showMyProfile(strUri,Pid,PdisplayName);       //~var8R~
+        if (swOK)                                                  //~var8I~
+        {                                                          //~var8I~
+	    	profileUriMe=strUri;                                   //~var8I~
+//      	profilePathMe=Ppath;                                   //~var8R~
+        	profileIDMe=Pid;                                       //~var8I~
+	    	profileDispNameMe=PdisplayName;                        //~var8I~
+	    	profileTimeStampMe=PtimestampAdded;                    //~var8I~
+	    	profileSizeMe=Psize;                                   //~var8I~
+        }                                                          //~var8I~
+    }                                                              //~var8I~
     //**************************************                       //~vae9I~
     @Override //UMediastoreI                                       //~vae9I~
     public void BGMSelected(Uri Puri, UMediaStore.AudioFile PaudioFile)         //~vae9I~
@@ -355,6 +423,16 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbNoAnywayButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOANYWAY_BUTTON),1/*default*/),false);//~va18R~
         cbLeftyPortrait.setStateInt(Pprop.getParameter(getKeyPS(PSID_LEFTY_PORTRAIT),0/*default*/),swFixed);//~vad1R~
         cbLeftyLandscape.setStateInt(Pprop.getParameter(getKeyPS(PSID_LEFTY_LANDSCAPE),0/*default*/),swFixed);//~vad1R~
+        cbDisplayProfile.setStateInt(Pprop.getParameter(getKeyPS(PSID_PROFILE_SHOW),DEFAULT_PROFILE_SHOW),swFixed);//~var8I~
+        cbUseProfile.setStateInt(Pprop.getParameter(getKeyPS(PSID_PROFILE_USE_MYOWN),DEFAULT_PROFILE_USE_MYOWN),swFixed);//~var8I~
+        profileUriMe=Pprop.getParameter(getKeyPS(PSID_PROFILE_ME_STRURI),null);//~var8R~
+//      profilePathMe=Pprop.getParameter(getKeyPS(PSID_PROFILE_ME_PATH),null);//~var8R~
+        profileIDMe=Pprop.getParameter(getKeyPS(PSID_PROFILE_ME_ID),"0");//~var8R~
+        profileDispNameMe=Pprop.getParameter(getKeyPS(PSID_PROFILE_ME_DISPNAME),"");//~var8I~
+        profileTimeStampMe=Pprop.getParameter(getKeyPS(PSID_PROFILE_ME_TIMESTAMP),"0");//~var8R~
+        profileSizeMe=Pprop.getParameter(getKeyPS(PSID_PROFILE_ME_SIZE),"0");//~var8R~
+        tvProfileName.setText(profileDispNameMe);                  //~var8I~
+        cbUseProfile.setStateInt(Pprop.getParameter(getKeyPS(PSID_PROFILE_USE_MYOWN),DEFAULT_PROFILE_USE_MYOWN),swFixed);//~var8I~
 //      cbNoSound.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOSOUND),0/*defaultIdx*/),swFixed);//~v@@@R~
         cbNoSound.setStateInt(Pprop.getParameter(getKeyPS(PSID_NOSOUND),0/*defaultIdx*/),false);//~v@@@I~
         cbBeepOnly.setStateInt(Pprop.getParameter(getKeyPS(PSID_BEEPONLY),0/*defaultIdx*/),swFixed);//~v@@@I~
@@ -375,6 +453,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         }                                                          //~vae9I~
         cbAllowRobotAllButton.setStateInt(Pprop.getParameter(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),0/*default:false*/),swFixed);//~vamuI~
         cbPlayAloneNotify.setStateInt(Pprop.getParameter(getKeyPS(PSID_PLAY_ALONE_NOTIFY),DEFAULT_PLAY_ALONE_NOTIFY/*default:true*/),swFixed);//~vamuI~
+        showMyProfile(profileUriMe,profileIDMe,profileDispNameMe); //~var8R~
     }                                                              //~v@@@I~
     //*******************************************************      //~v@@@I~
     @Override //SettingDlg                                         //~v@@@I~
@@ -393,6 +472,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	    changedSound=0;                                            //~v@@@I~
 	    changedBGM=0;                                              //~va06I~
 	    changedBtn=0;                                              //~v@@@I~
+	    changedProfile=0;                                          //~var8I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties"); //~v@@@R~
         changed+=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~v@@@I~
 //      changed+=updateProp(getKeyPS(PSID_ORIENTATION_PORT_REV),cbPortraitReverse.getStateInt());//~va9fR~
@@ -409,6 +489,15 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         changed+=updateProp(getKeyPS(PSID_ALLOW_ROBOT_ALL_BTN),cbAllowRobotAllButton.getStateInt());//~vamuI~
         changed+=updateProp(getKeyPS(PSID_PLAY_ALONE_NOTIFY),cbPlayAloneNotify.getStateInt());//~vamuI~
                                                                    //~v@@@I~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_SHOW),cbDisplayProfile.getStateInt());//~var8R~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_USE_MYOWN),cbUseProfile.getStateInt());//~var8R~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_ME_STRURI),profileUriMe);//~var8R~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_ME_DISPNAME),profileDispNameMe);//~var8R~
+//      changedProfile+=updateProp(getKeyPS(PSID_PROFILE_ME_PATH),profilePathMe);//~var8R~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_ME_ID),profileIDMe);//~var8I~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_ME_TIMESTAMP),profileTimeStampMe);//~var8I~
+        changedProfile+=updateProp(getKeyPS(PSID_PROFILE_ME_SIZE),profileSizeMe);//~var8I~
+                                                                   //~var8I~
         changedSound+=updateProp(getKeyPS(PSID_NOSOUND),cbNoSound.getStateInt());//~v@@@M~
         changedSound+=updateProp(getKeyPS(PSID_VOLUME),sbVolume.getVal());//~v@@@R~
         changedBGM+=updateProp(getKeyPS(PSID_VOLUME_BGM),sbVolumeBGM.getVal());//~va06I~
@@ -429,6 +518,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         changed+=changedSound;                                     //~va06I~
         changed+=changedBGM;                                     //~v@@@I~//~va06I~
         changed+=changedBtn;                                       //~v@@@I~
+        changed+=changedProfile;                                   //~var8I~
                                                                    //~v@@@I~
         if (changed!=0)                                            //~v@@@I~
         {                                                          //~v@@@I~
@@ -437,7 +527,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         AG.swChangedPreference|=swChanged;                         //~vae8I~
 //      swError|=chkPlaySeq(playSeq,strsUserBGMTitle);             //~vae9I~//~vai0R~
         swError|=chkPlaySeq(playSeq,strsUserBGMTitle,strsUserBGMUri);//~vai0I~
-        if (Dump.Y) Dump.println("PrefSetting.dialog2Properties changed="+changed+",changedSound="+changedSound+",changedBGM="+changedBGM);//~v@@@I~//~va06R~
+        if (Dump.Y) Dump.println("PrefSetting.dialog2Properties changed="+changed+",changedSound="+changedSound+",changedBGM="+changedBGM+",changedProfile="+changedProfile);//~v@@@I~//~va06R~//~var8R~
         return changed!=0;                                         //~v@@@I~
     }                                                              //~v@@@I~
     //*******************************************************      //~vae9I~
@@ -536,6 +626,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
             int soundID=getSoundID();                              //~vae9I~
 			Sound.playBGM(soundID);  //play UserBGM                //~vae9I~
         }                                                          //~va06I~
+        if (changedProfile!=0)                                     //~var8I~
+        	AG.aProfileIcon.propUpdated();                         //~var8I~
 	    if (Dump.Y) Dump.println("PrefSetting.onClickOK dismiss"); //~1ak2I~
         dismiss();                                                 //~v@@@I~
     }                                                              //~v@@@I~
@@ -935,9 +1027,101 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     {                                                              //~van1I~
 	    Prop cp=AG.prefProp;                                       //~van1I~
         updateProp(cp,getKeyPS(PSID_CURRENT_LANG_HELP),PidxLang);  //~van1R~
-        String propCmt=PROP_NAME;                                         //+van1I~
-    	SettingDlg.saveProperties(cp,propCmt);	//save to File dir //+van1I~
+        String propCmt=PROP_NAME;                                         //~van1I~
+    	SettingDlg.saveProperties(cp,propCmt);	//save to File dir //~van1I~
         AG.swChangedPreference=true;	//for saveProp at APP exit //~van1I~
         if (Dump.Y) Dump.println("PrefSetting.setCurrentLangHelp PidxLang="+PidxLang);//~van1I~
     }                                                              //~van1I~
+    //**************************************                       //~var8I~
+	public static boolean isShowProfile()                             //~var8I~
+    {                                                              //~var8I~
+    	int def=DEFAULT_PROFILE_SHOW;	//true;                    //~var8R~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_SHOW),def)!=0;//~var8I~
+        if (Dump.Y) Dump.println("PrefSetting.isShowProfile rc="+rc);//~var8I~
+        return rc;                                        //~var8I~
+    }                                                              //~var8I~
+    //**************************************                       //~var8I~
+    public static boolean isUseMyOwnProfile()                       //~var8I~
+    {                                                              //~var8I~
+    	int def=DEFAULT_PROFILE_USE_MYOWN;	//true;                //~var8I~
+        boolean rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_USE_MYOWN),def)!=0;//~var8I~
+        if (Dump.Y) Dump.println("PrefSetting.isUseMyOwnProfile rc="+rc);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    //**************************************                       //~var8I~
+    //*get DisplayName                                             //~var8I~
+    //**************************************                       //~var8I~
+    public static String getProfileMeDispName()                    //~var8R~
+    {                                                              //~var8I~
+        String rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_ME_DISPNAME),null);//~var8R~
+        if (Dump.Y) Dump.println("PrefSetting.getProfileMeDispName rc="+rc);//~var8R~
+        return rc;
+    }                                                              //~var8I~
+    public static String getProfileMePath()                        //~var8I~
+    {                                                              //~var8I~
+        String rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_ME_PATH),null);//~var8R~
+        if (Dump.Y) Dump.println("PrefSetting.getProfileMePath rc="+rc);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    public static String getProfileMeStrUri()                      //~var8I~
+    {                                                              //~var8I~
+        String rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_ME_STRURI),null);//~var8I~
+        if (Dump.Y) Dump.println("PrefSetting.getProfileMeStrUri rc="+rc);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    public static String getProfileMeTimestamp()                   //~var8I~
+    {                                                              //~var8I~
+        String rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_ME_TIMESTAMP),null);//~var8I~
+        if (Dump.Y) Dump.println("PrefSetting.getProfileMeTimestamp rc="+rc);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    public static String getProfileMeSize()                        //~var8I~
+    {                                                              //~var8I~
+        String rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_ME_SIZE),null);//~var8I~
+        if (Dump.Y) Dump.println("PrefSetting.getProfileMeSize rc="+rc);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    public static String getProfileMeID()                          //~var8I~
+    {                                                              //~var8I~
+        String rc=AG.prefProp.getParameter(getKeyPS(PSID_PROFILE_ME_ID),"0");//~var8I~
+        if (Dump.Y) Dump.println("PrefSetting.getProfileMeID rc="+rc);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    //**************************************                       //~var8I~
+    //*get DisplayName                                             //~var8I~
+    //**************************************                       //~var8I~
+    private boolean showMyProfile(String Puri,String Pid,String PdispName)//~var8R~
+    {                                                              //~var8I~
+//  	Uri uri=null;                                              //~var8R~
+//      if (profileUriMe!=null)                                    //~var8R~
+//      	uri=Uri.parse(profileUriMe);                           //~var8R~
+        if (Dump.Y) Dump.println("PrefSetting.showMyProfile profileUriMe="+Puri+",id="+Pid+",displayName="+PdispName);//~var8R~
+//      String fnm=Ppath;                                          //~var8R~
+        if (Puri==null || Puri.equals(""))                         //~var8R~
+        {                                                          //~var8I~
+        	tvProfileName.setText("(Not set)");                    //~var8R~
+	        ivMyProfile.setImageBitmap(null);                      //~var8I~
+        	return false;                                          //~var8I~
+        }                                                          //~var8I~
+        Bitmap bm=ProfileIcon.getBMP_StrUri(Puri,Pid);             //~var8R~
+//      Bitmap bm=ProfileIcon.getBMP(fnm);                         //~var8R~
+        if (bm==null)                                               //~var8I~
+        {                                                          //~var8I~
+	        if (Dump.Y) Dump.println("PrefSetting.showMyProfile loadFailed uri="+Puri+",id="+Pid);//~var8R~
+        	tvProfileName.setText("Load failed("+PdispName+")"); //~var8I~
+        	UView.showToast("Load Failed:"+PdispName);             //~var8I~
+        	return false;                                          //~var8I~
+        }                                                          //~var8I~
+        int ww=wwProfile;                                          //~var8R~
+        int hh=hhProfile;                                          //~var8R~
+        if (Dump.Y) Dump.println("PrefSetting.showMyProfile ivMyProfile ww="+ww+",hh="+hh);//~var8R~
+        Bitmap bmScaled=Bitmap.createScaledBitmap(bm,ww,hh,true/*amtialias*/);//~var8R~
+        ivMyProfile.setImageBitmap(bmScaled);                      //~var8R~
+        UView.recycle(bm);  //null ok                              //~var8R~
+        bm=bmScaled;                                               //~var8R~
+        UView.recycle(bmpMe);	//null ok                          //~var8I~
+        bmpMe=bm;                                                  //~var8I~
+        tvProfileName.setText(PdispName);                          //~var8R~
+        return true;                                               //~var8I~
+    }                                                              //~var8I~
 }//class                                                           //~v@@@R~

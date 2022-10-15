@@ -16,6 +16,7 @@
     <color name="btn_other">#ffa500</color>
     <color name="editabledisabled">#e5e5e5</color>  <!-- gray-->
     <color name="separater">#00bfff</color>  <!--deepSkyBlue-->
+    <color name="sep_rulesumm">#ffd700</color>
     <color name="smalldevice_title_color">#00bfff</color>  <!--deepSkyBlue-->
     <color name="separater2">#005900</color>  <!--scroll start-->
     <color name="title_divider">#00bfff</color>  <!--deepSkyBlue-->

@@ -1,4 +1,4 @@
-//*CID://+vam0R~: update#= 611;                                    //~vam0R~
+//*CID://+vam0R~: update#= 612;                                    //~vam0R~
 //**********************************************************************//~v101I~
 //2022/03/24 vam0 show Wareme sign                                 //~vam0I~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
@@ -106,8 +106,8 @@ public class DiceBox extends Thread                                //~v@@@R~
 	private static final int DISTANCE_WAITING_CIRCLE=2;              //~v@11I~
     private static final int COLOR_SPRITPOS_BG=AG.getColor(R.color.spritposid);//~vam0R~
     private static final int COLOR_SPRITPOS_FG=0xffffffff;         //~vam0R~
-//  private static final int COLOR_SPRITPOS_FRAME=0xff8080ff;      //+vam0R~
-    private static final int COLOR_SPRITPOS_FRAME=COLOR_SPRITPOS_BG;//+vam0I~
+//  private static final int COLOR_SPRITPOS_FRAME=0xff8080ff;      //~vam0R~
+    private static final int COLOR_SPRITPOS_FRAME=COLOR_SPRITPOS_BG;//~vam0I~
 //  private static final int COLOR_SPRITPOS_FG=AG.getColor(R.color.spritposid);//~vam0I~
 //  private static final int COLOR_SPRITPOS_BG=0xffffff00;         //~vam0I~
 //  private static final int COLOR_SPRITPOS_FRAME=COLOR_SPRITPOS_FG;//~vam0R~
@@ -911,7 +911,8 @@ public class DiceBox extends Thread                                //~v@@@R~
         }                                                          //~v@@@R~
     }//class Casting                                               //~v@@@I~
     //***********************************                          //~v@@@I~
-    public void doEnable(boolean Penable)                          //~v@@@R~
+//  public void doEnable(boolean Penable)                          //~v@@@R~//+vam0R~
+    private void doEnable(boolean Penable)                         //+vam0I~
     {                                                              //~v@@@I~
     	swEnable=Penable;                                          //~v@@@I~
         if (Dump.Y) Dump.println("DiceBox.doEnable enable="+Penable);//~v@11I~

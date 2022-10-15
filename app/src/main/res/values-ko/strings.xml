@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="Sample_DoubleQuote">“仮東”</string>
     <string name="Alert_CompleteDlg_NGCompReqDlg">Received \"NG\" for \"Win Claim\",\
 Ask to the winner to \"Send\" \"Win Claim\" again.\
 Or \"Send\" with setting of \"Invalid\" or \"Error\".\
@@ -194,4 +195,23 @@ Server/Client 역할을 변경하려면 모든 연결을 끊고 대화 상자를
 ( 레코드: %1$s, 최소 요구 사항: %2$s )\n
 이 파일에서 강제로 재개하시겠습니까?\n
 											</string>
+    <string name="Msg_DiceForTempStarter">\"仮東\"을 결정합니다. 램프 위치의 사람이 주사위를 흔들어주십시오.</string>
+    <!--string name="Msg_DiceForTempStarter">“仮東”을 결정합니다. 램프 위치의 사람이 주사위를 흔들어주십시오.</string-->
+    <string name="Msg_DiceForPositioning">자리 결정을 합니다. \"仮東\"이 주사위를 흔들어 주세요.</string>
+    <string name="Msg_DiceForPositionAccepting">좌석 결정. 순서대로 램프를 만져 \"風\"의 패를 잡아주세요.</string>
+    <string name="Msg_PositionAcceptedAll">자리를 이동합니다. \"仮東\"은 램프를 터치하십시오.</string>
+    <string name="Msg_DiceForStart1stGame">\"東1局\". \"親\"는 주사위를 흔들어주세요.</string>
+    <string name="Err_GameFromNotServer">서버에서 \"Game\"을 클릭하십시오.</string>
+    <string name="AE_NotYourTurn">당신의 차례가 아닙니다.</string>
+    <string name="AE_DiscardTaken">\"Discard\"하십시오.</string>
+    <string name="Err_ResyncRuleRequired">규칙 설정이 \"%1$S\"와 다릅니다. 다시 - \"Send\" 필요.</string>
+    <string name="Info_WaitDiscardTimeout">램프가 녹색으로 바뀌면 \"Draw\",\"Chii\"가 가능합니다.</string>
+    <string name="Info_WaitDiscardTimeoutPonKan">램프가 빨간색에서 노란색으로 바뀌면 \"Pon\",\"Kan\"이 가능합니다.</string>
+    <string name="Err_RonChk">\"聴牌\"(Tenpai) 하지 않습니다.</string>
+    <string name="Err_ReachNoten">선택한 \"Discard\"패에서는 \"聴牌\"(Tenpai) 가 되지 않습니다.</string>
+    <string name="Err_CouldNotMakePair">\"面子\"를 할 수 없습니다.</string>
+    <string name="Err_AmbiguousMakePair">복수자 후보, \"牌\"을 터치해 면자를 확정해 주세요.</string>
+    <string name="AE_SameMeld">\"Same-Meld\" 위반입니다. 다른 \"牌\"를 \"Discard\"하십시오.</string>
+    <string name="Err_GamingNow">게임중입니다.</string>
+    <string name="Err_NoneCompleted">"和了者\"(winner) 없음</string>
 </resources>

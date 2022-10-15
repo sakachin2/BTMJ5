@@ -1,6 +1,7 @@
-//*CID://+van1R~: update#= 371;                                    //+van1R~
+//*CID://+var8R~: update#= 383;                                    //~var8R~
 //**********************************************************************//~v101I~
-//2022/07/04 van1 hungle suuprt for Help                           //+van1I~
+//2022/09/24 var8 display profile icon                             //~var8I~
+//2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vad1I~
@@ -54,7 +55,8 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     public static final int    PSID_YOURNAME                =51;   //~vad1I~
     public static final int    PSID_ALLOW_ROBOT_ALL_BTN     =60;   //~vamuR~
     public static final int    PSID_PLAY_ALONE_NOTIFY       =61;   //~vamuR~
-    public static final int    PSID_CURRENT_LANG_HELP       =70;   //+van1I~
+    public static final int    PSID_CURRENT_LANG_HELP       =70;   //~van1I~
+    public static final int    PSID_PROFILE_SHOW            =80;   //~var8I~
     public static final int    PSID_USERBGM0                =100;  //~vae9I~
     public static final int    PSID_USERBGM1                =101;  //~vae9I~
     public static final int    PSID_USERBGM2                =102;  //~vae9I~
@@ -89,6 +91,14 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     public static final int    PSID_USERBGM_ROUND           =150;  //~vae9R~
     public static final int    PSID_USERBGM_SELECTION       =151;  //~vae9I~
     public static final int    PSID_USERBGM_UPICKER         =152;  //~vae9I~
+                                                                   //~var8I~
+    public static final int    PSID_PROFILE_ME_STRURI       =160;  //~var8R~
+    public static final int    PSID_PROFILE_USE_MYOWN       =161;  //~var8I~
+    public static final int    PSID_PROFILE_ME_DISPNAME     =162;  //~var8I~
+    public static final int    PSID_PROFILE_ME_PATH         =163;  //~var8I~
+    public static final int    PSID_PROFILE_ME_TIMESTAMP    =164;  //~var8I~
+    public static final int    PSID_PROFILE_ME_SIZE         =165;  //~var8I~
+    public static final int    PSID_PROFILE_ME_ID           =166;  //+var8I~
                                                                    //~vad1I~
     private static final PSEnumPair[] pairs=                       //~9412I~
     			{                                                  //~9412I~
@@ -112,8 +122,10 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     				new PSEnumPair(PSID_ALLOW_ROBOT_ALL_BTN  ,"RobotPlayerAllBtnPref"),//~vamuR~
     				new PSEnumPair(PSID_PLAY_ALONE_NOTIFY    ,"PlayAloneNotifyPref" ),//~vamuR~
                                                                    //~vae9I~
-    				new PSEnumPair(PSID_CURRENT_LANG_HELP    ,"LangHelp"            ),//+van1I~
-                                                                   //+van1I~
+    				new PSEnumPair(PSID_CURRENT_LANG_HELP    ,"LangHelp"            ),//~van1I~
+                                                                   //~van1I~
+    				new PSEnumPair(PSID_PROFILE_SHOW         ,"ProfileShow"         ),//~var8I~
+                                                                   //~var8I~
     				new PSEnumPair(PSID_USERBGM0             ,"UserBGM0"             ),//~vae9I~
     				new PSEnumPair(PSID_USERBGM1             ,"UserBGM1"             ),//~vae9I~
     				new PSEnumPair(PSID_USERBGM2             ,"UserBGM2"             ),//~vae9I~
@@ -147,6 +159,14 @@ public class PrefSettingEnum                                       //~@@@@R~//~9
     				new PSEnumPair(PSID_USERBGM_ROUND        ,"UserBGMRound"       ),//~vae9R~
     				new PSEnumPair(PSID_USERBGM_SELECTION    ,"UserBGMSelection"     ),//~vae9I~
     				new PSEnumPair(PSID_USERBGM_UPICKER      ,"UserBGMUPicker"       ),//~vae9I~
+                                                                   //~var8I~
+    				new PSEnumPair(PSID_PROFILE_ME_STRURI    ,"ProfMe"               ),//~var8R~
+    				new PSEnumPair(PSID_PROFILE_USE_MYOWN    ,"ProfUseMyOwn"         ),//~var8I~
+    				new PSEnumPair(PSID_PROFILE_ME_DISPNAME  ,"ProfDispName"         ),//~var8I~
+    				new PSEnumPair(PSID_PROFILE_ME_PATH      ,"ProfPath"             ),//~var8I~
+    				new PSEnumPair(PSID_PROFILE_ME_TIMESTAMP ,"ProfTS"               ),//~var8I~
+    				new PSEnumPair(PSID_PROFILE_ME_SIZE      ,"ProfSize"             ),//~var8I~
+    				new PSEnumPair(PSID_PROFILE_ME_ID        ,"ProfID"               ),//+var8I~
                 };                                                  //~9412I~
     //***********************************************************  //~@@@@I~//~9404R~
 //  private static final Map<Integer,String> ID2Key=new HashMap<Integer,String>();//~@@@@I~//~9404R~//~9615R~

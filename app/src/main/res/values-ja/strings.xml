@@ -2,8 +2,8 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.23</string>
-    <string name="app_MinVersion">v1.23</string>
+    <string name="app_version">v1.25</string>
+    <string name="app_MinVersion">v1.24</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -17,6 +17,8 @@
     <string name="Exit">終了</string>
     <string name="failedBluetooth">Bluetoothの処理の失敗</string>
     <string name="failedBluetoothPermission">Bluetooth権限をが付与されなかったのでBluetoothは使えません。</string>
+    <string name="failedBluetoothPermissionType">Bluetooth権限(%1$s)を取得できませんでした。Bluetoothは使えません。</string>
+    <string name="failedBluetoothPermissionTypeAdvertize">Bluetooth権限(%1$s)を取得できませんでした。</string>
     <string name="failedBluetoothUnpair">Bluetoothのペア解除処理の失敗</string>
     <string name="BluetoothUnpairRequested">%1$sのペア解除を要求しました</string>
     <string name="nowDiscoverable">現在は\"可視\"状態です(一定時間有効)</string>
@@ -169,7 +171,8 @@
     <string name="Title_HistoryDlg">履歴</string>
     <string name="Title_HistoryBSDlg">貸借対照表</string>
     <string name="Title_HistoryDlgFolder">履歴 &lt;font color=\"#000000\"&gt;(%1$s)</string>
-    <string name="Title_RuleSetting">ルール設定</string>
+    <string name="Title_RuleSetting">ルール設定:詳細</string>
+    <string name="Title_RuleSettingSumm">ルール設定</string>
     <string name="Title_PrefSetting">個人設定</string>
     <string name="Desc_Preference">濃い緑のオプションはゲーム中も変更できます</string>
     <string name="Title_OperationSetting">操作</string>
@@ -217,13 +220,13 @@
 		<item>30000</item>
 	</string-array-->
 	<string-array name="MenuDialog_Setting_Debug"> 
-		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_RuleSettingSumm</item>
 		<item>@string/Title_PrefSetting</item>
 		<item>テストオプション</item>
 		<item>@string/Cancel</item>
 	</string-array>
 	<string-array name="MenuDialog_Setting"> 
-		<item>@string/Title_RuleSetting</item>
+		<item>@string/Title_RuleSettingSumm</item>
 		<item>@string/Title_PrefSetting</item>
 		<item>@string/Cancel</item>
 	</string-array>
@@ -1015,7 +1018,7 @@
     <string name="Info_ResyncRuleAtFirst">ルール設定の同意がされていません、サーバー(%1$s) から設定を送信してください</string>
     <string name="Info_ResyncRuleClientChanged">クライアント（%1$S）がルールを変更しました、再度ルールの同意が必要です</string>
     <string name="Info_ResyncRuleServerChanged">この端末はサーバーです、ルールを変更したので、送信が必要です</string>
-    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています。再-\"送信\"が必要です</string>
+    <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています。サーバーから(再)送信してください</string>
     <string name="Err_RuleIsInitial">ルール設定ができていません。\"設定\"ボタンを押してください</string>
     <string name="Err_RuleIsInitialMsg">ルール設定ができていません。\"設定\"ボタンから\"ルール設定\"を開き、\"OK\"を押してください</string>
     <string name="Info_ResyncRuleChkOK">ルール設定を確認しました、対局を開始します</string>
@@ -1176,6 +1179,7 @@
 	
     <string name="Label_YakuList">役</string>
     <string name="Label_Operation">操作</string>
+    <string name="Label_RuleSettingDetail">詳細</string>
     <string name="Label_8Continue">八連荘</string>
     <string name="Label_8ContDealer">親で連続和了の８回目</string>
     <string name="Label_9ContDealer">親で連続和了の９回目</string>
@@ -1699,4 +1703,15 @@ Android-11以降、初回インストール時には、ゲームデータの保�
 											このファイルからは再開は問題があるかもしれませんが、OKで再開できます。\
 											</string>
     <string name="Info_GameEndCanceled">\"終局精算確認\"がキャンセルされました。メニューから終局清算確認ダイアログを開いてください。</string>
+
+    <string name="Label_Profile">プロフィール</string>
+    <string name="Label_DisplayProfile">画像を表示する</string>
+    <string name="Label_UseProfile">自分の画像を設定する</string>
+    <string name="btnSelectProfile">設定</string>
+    <string name="Info_ImageExchanging">プロフィール アイコンを交換しています。</string>
+    <string name="Err_AppVersionConnect">%1$sのアプリのバージョンが古いです。%2$s と接続してください。</string>
+
+    <string name="Err_PrintSupportApi19">印刷サポートはアンドロイド4(KiKat)からです。</string>
+    <string name="Print">印刷</string>
+
 </resources>

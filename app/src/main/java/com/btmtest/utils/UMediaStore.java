@@ -1,5 +1,6 @@
-//*CID://+vae9R~:                             update#=  132;       //~vae9R~
+//*CID://+var8R~:                             update#=  183;       //~var8R~
 //************************************************************************
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/13 vae2 BGM for BTMJ5                                    //~vae2I~
 //1ak2 2021/09/04 access external audio file
@@ -14,8 +15,10 @@ import com.btmtest.R;                                              //~1aK2I~
 import com.btmtest.dialog.UPicker;
 import com.btmtest.dialog.PrefSetting;                             //~1aK2I~
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,22 +30,30 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import static android.app.Activity.*;
 
+import androidx.annotation.RequiresApi;
+
 //~1110I~
-@TargetApi(30)
+//@TargetApi(30)                                                   //~var8R~
 public class UMediaStore
         implements UPicker.UPickerI
 {
     private static final Uri uriAudioMedia=MediaStore.Audio.Media.EXTERNAL_CONTENT_URI; //sdcard/Music or /SDcard/Download from API-1
 //  private static final Uri uriDownloadMedia=MediaStore.Downloads.EXTERNAL_CONTENT_URI;//from api29
+    private static final Uri uriImageMedia=MediaStore.Images.Media.EXTERNAL_CONTENT_URI;//~var8R~
+//  private static final Uri uriImageMedia=MediaStore.Downloads.EXTERNAL_CONTENT_URI; //from api29 TODO test//~var8I~
     private   Uri uriDownloadMedia;
 	private static final String CN="UMediaStore.";
     private static final int COL_ID=0;
@@ -87,10 +98,12 @@ public class UMediaStore
     private String[] strsUserBGMUri=new String[MAX_USERBGM];       //~vae9R~//~vae2R~
     private String[] strsUserBGMTitle=new String[MAX_USERBGM];     //~vae9R~//~vae2R~
     private Uri[]    urisUserBGM=new Uri[MAX_USERBGM];             //~vae2R~
+    private Uri uriImageBase;                                      //~var8I~
 //**********************************                               //~v@@@I~//~1ak3I~//~vae2I~
     public interface UMediaStoreI                                   //~v@@@R~//~1ak3I~//~vae2R~
     {                                                              //~v@@@I~//~1ak3I~//~vae2I~
 		void BGMSelected(Uri PitemUri,AudioFile PaudioFile);  //~v@@@R~                //~1ak3R~//~vae2R~
+		void ImageSelected(Uri Puri,String Pid,String PdisplayName,String Ptimestamp,String Pszie);//~var8R~
     }                                                              //~v@@@I~//~1ak3I~//~vae2I~
 //********************************************************
     public class AudioFile
@@ -146,16 +159,29 @@ public class UMediaStore
     {
         if (Dump.Y) Dump.println(CN+"init");
         if (AG.osVersion>= 29) //Android10
-			uriDownloadMedia=MediaStore.Downloads.EXTERNAL_CONTENT_URI;//from api29
+//  		uriDownloadMedia=MediaStore.Downloads.EXTERNAL_CONTENT_URI;//from api29//~var8R~
+    		uriDownloadMedia=getUriDownloadMedia29();               //~var8I~
 	    CR=AG.context.getContentResolver();
         colsAudio=COLUMNS_AUDIO;
 //      String strUri= Prop.getPreference(AG.PKEY_BGM_STRURI,"");  //~1aK2R~
 //      String strUri= Utils.getPreference(PREFKEY_BGM_STRURI,""); //~1aK2I~//~vae2R~
 //      if (strUri.compareTo("")!=0)                               //~vae2R~
 //      	uriPicked=Uri.parse(strUri);                           //~vae2R~
+     	uriImageBase=uriImageMedia;                                //~var8I~
+        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~var8I~
+        {                                                          //~var8I~
+		    if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8I~
+        	uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8I~
+        }                                                          //~var8I~
     	setupUserBGM();                                            //~vae2I~
     }
 //********************************************************         //~vae2I~
+	@TargetApi(29)                                                 //~var8I~
+	private Uri getUriDownloadMedia29()                         //~var8I~
+    {                                                              //~var8I~
+		return MediaStore.Downloads.EXTERNAL_CONTENT_URI;//from api29//~var8I~
+    }                                                              //~var8I~
+//********************************************************         //~var8I~
     private void setupUserBGM()                                    //~vae2I~
     {                                                              //~vae2I~
         if (Dump.Y) Dump.println(CN+"setUpUserBGM");               //~vae2I~
@@ -368,7 +394,7 @@ public class UMediaStore
 	    if (Dump.Y) Dump.println(CN+"playBGMTop");                 //~vae9I~
         int soundid=PrefSetting.getSoundIDUser(0);                 //~vae9I~
         if (soundid>=0)                                            //~vae9I~
-			playSound(soundid);                                    //+vae9R~
+			playSound(soundid);                                    //~vae9R~
     }                                                              //~vae9I~
 //********************************************************         //~vae2I~
 //*soundid=MusicNo=idx of urisUserBGM                              //~vae9I~
@@ -449,15 +475,15 @@ public class UMediaStore
         }
         catch(IllegalArgumentException e)
         {
-        	Dump.println(e,CN+"play IlleagalArgumentException:"+Puri);
+        	Dump.printlnNoMsg(e,CN+"play IlleagalArgumentException:"+Puri);//~var8R~
         }
         catch(IllegalStateException e)
         {
-        	Dump.println(e,CN+"play IlleagalStateException:"+Puri);
+        	Dump.printlnNoMsg(e,CN+"play IlleagalStateException:"+Puri);//~var8R~
         }
         catch(IOException e)
         {
-        	Dump.println(e,CN+"play IOException:"+Puri);
+        	Dump.printlnNoMsg(e,CN+"play IOException:"+Puri);      //~var8R~
         }
 //      mp.start();
 	    if (Dump.Y) Dump.println(CN+"play exit");
@@ -480,11 +506,11 @@ public class UMediaStore
         }
         catch(IllegalArgumentException e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"play IlleagalArgumentException:"+Utils.toString(uri));
+        	Dump.printlnNoMsg(e,CN+"play IlleagalArgumentException:"+Utils.toString(uri));//~var8R~
         }
         catch(IllegalStateException e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"play IlleagalStateException:"+Utils.toString(uri));
+        	Dump.printlnNoMsg(e,CN+"play IlleagalStateException:"+Utils.toString(uri));//~var8R~
         }
         try
         {
@@ -493,11 +519,11 @@ public class UMediaStore
         }
         catch(IllegalArgumentException e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"play IlleagalArgumentException:"+Utils.toString(uri));
+        	Dump.printlnNoMsg(e,CN+"play IlleagalArgumentException:"+Utils.toString(uri));//~var8R~
         }
         catch(IllegalStateException e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"play IlleagalStateException:"+Utils.toString(uri));
+        	Dump.printlnNoMsg(e,CN+"play IlleagalStateException:"+Utils.toString(uri));//~var8R~
         }
         try
         {
@@ -506,11 +532,11 @@ public class UMediaStore
         }
         catch(IllegalArgumentException e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"play IlleagalArgumentException:"+Utils.toString(uri));
+        	Dump.printlnNoMsg(e,CN+"play IlleagalArgumentException:"+Utils.toString(uri));//~var8R~
         }
         catch(IllegalStateException e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"play IlleagalStateException:"+Utils.toString(uri));
+        	Dump.printlnNoMsg(e,CN+"play IlleagalStateException:"+Utils.toString(uri));//~var8R~
         }
         MP=null;
     }
@@ -584,6 +610,39 @@ public class UMediaStore
       }
 	    if (Dump.Y) Dump.println(CN+"requestPickup exit");
     }
+//********************************************************         //~var8I~
+	private void requestPickupImage()                              //~var8I~
+    {                                                              //~var8I~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImage osVersion="+AG.osVersion+",uri="+uriImageMedia);//~var8R~
+     	String action=Intent.ACTION_PICK;                          //~var8I~
+     	uriImageBase=uriImageMedia;                                //~var8R~
+        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~var8I~
+        {                                                          //~var8I~
+		    if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8I~
+        	uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~var8R~
+        }                                                          //~var8I~
+     	Intent intent=new Intent(action,uriImageBase);             //~var8R~
+        intent.setType("image/*");  //avoid video              //~@@@1R~//~var8I~
+        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~var8I~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit action="+action+",uriImageBase="+uriImageBase);//~var8R~
+    }                                                              //~var8I~
+////********************************************************       //~var8R~
+//    private void requestPickupImage_Test()                       //~var8R~
+//    {                                                            //~var8R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage osVersion="+AG.osVersion+",uri="+uriImageMedia);//~var8R~
+////      Intent intent=new Intent(Intent.ACTION_PICK,uriImageMedia);//~var8R~
+////      Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT,uriImageMedia); //TODO test//~var8R~
+////      String action=Intent.ACTION_GET_CONTENT;  //TODO test    //~var8R~
+//        String action=Intent.ACTION_OPEN_DOCUMENT;               //~var8R~
+//        Uri uri=uriImageMedia;                                   //~var8R~
+//        Intent intent=new Intent(action,null);   //TODO test     //~var8R~
+//        intent.setType("image/*");  //avoid video                //~var8R~
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);            //~var8R~
+//        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);//~var8R~
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);  //~var8R~
+//        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~var8R~
+//        if (Dump.Y) Dump.println(CN+"requestPickupImage exit action="+action+",uri="+uri);//~var8R~
+//    }                                                            //~var8R~
 //********************************************************
 //*from AMain
 //********************************************************
@@ -622,6 +681,328 @@ public class UMediaStore
 //      ums.MFO=null;                                              //~vae2R~
 	    if (Dump.Y) Dump.println(CN+"onActivityResult exit");
     }
+//********************************************************         //~var8I~
+//*from AMain                                                      //~var8I~
+//********************************************************         //~var8I~
+	public static void onActivityResultImage(int Presult,Intent Pintent)//~var8I~
+    {                                                              //~var8I~
+	    if (Dump.Y) Dump.println(CN+"onActivityResultImage result="+Presult);//~var8I~
+        if (Presult==RESULT_OK)                                    //~var8I~
+        {                                                          //~var8I~
+	        UMediaStore ums=getInstance();                         //~var8I~
+        	Uri uri=Pintent.getData();                             //~var8I~
+            String path=uri.getPath();                         //~@@@1I~//~var8I~
+		    if (Dump.Y) Dump.println(CN+"onActivityResultResultImage uri="+uri+",path="+path);//~var8I~
+			if (ums.callback!=null)                                //~var8I~
+            {                                                      //~var8I~
+				ums.getSetectedImage(uri);                                  //~2923I~//~var8R~
+            }                                                      //~var8I~
+        }                                                          //~var8I~
+	    if (Dump.Y) Dump.println(CN+"onActivityResultImage exit"); //~var8I~
+    }                                                              //~var8I~
+//********************************************************         //~var8I~
+//*from onActivityResult                                           //~var8I~
+//********************************************************         //~var8I~
+    private void getSetectedImage(Uri Puri)                             //~2923I~//~var8R~
+    {                                                              //~2923I~//~var8I~
+//* DATA is deprecated at Api29                                    //~var8I~
+        if (Dump.Y) Dump.println(CN+"getSelectedImage uri="+Puri+",path="+Puri.getPath()+",encoded="+Puri.getEncodedPath());//~var8I~
+		String[] columns={MediaStore.Images.Media._ID,             //~var8R~
+							MediaStore.Images.Media.DISPLAY_NAME,  //~var8I~
+							MediaStore.Images.Media.SIZE,          //~var8I~
+							MediaStore.Images.Media.DATE_ADDED,    //~var8I~
+							MediaStore.Images.Media.DATE_MODIFIED, //~var8R~
+							MediaStore.Images.Media.DATE_TAKEN,    //~var8I~
+							};                                     //~var8I~
+        Cursor cursor=CR.query(Puri,columns,null,null,null,null);//~2923I~//~var8R~
+        cursor.moveToFirst();                              //~2923I~//~var8I~
+        int colIdx=cursor.getColumnIndex(columns[0]);      //~2923I~//~var8I~
+        String id=cursor.getString(colIdx);              //~2923I~ //~var8R~
+        int colIdx1=cursor.getColumnIndex(columns[1]);     //~@@@1I~//~var8R~
+        String name=cursor.getString(colIdx1);             //~@@@1I~//~var8R~
+        int colIdx2=cursor.getColumnIndex(columns[2]);     //~@@@1I~//~var8R~
+        String size=cursor.getString(colIdx2);             //~@@@1I~//~var8R~
+        int colIdx3=cursor.getColumnIndex(columns[3]);             //~var8R~
+        String timeAdd=cursor.getString(colIdx3);                  //~var8R~
+        int colIdx4=cursor.getColumnIndex(columns[4]);             //~var8I~
+        String timeMod=cursor.getString(colIdx4);                  //~var8I~
+        int colIdx5=cursor.getColumnIndex(columns[5]);             //~var8R~
+        String timeTaken=cursor.getString(colIdx5);                //~var8I~
+        cursor.close();
+        String ts=timeAdd==null ? timeMod : timeAdd;               //~var8M~
+        if (ts==null)                                              //~var8I~
+        	ts=timeTaken;                                          //~var8I~
+        if (ts==null)                                              //~var8M~
+            ts="0";                                                //~var8M~
+        if (size==null)                                            //~var8I~
+            size="0";                                              //~var8I~
+        if (Dump.Y) Dump.println(CN+"getSelected ts="+ts+",tsAdd="+timeAdd+",tsMod="+timeMod+",tsTaken="+timeTaken);//~var8I~
+        if (Dump.Y) Dump.println(CN+"getSelected column="+Utils.toString(columns));//~var8I~
+        if (Dump.Y) Dump.println(CN+"getSelected uri="+Puri+",id="+id+",displayName="+name+",size="+size+",time="+ts);//~var8R~
+        callback.ImageSelected(Puri,id,name,ts,size);              //~var8R~
+    }                                                              //~2923I~//~var8I~
+//********************************************************         //~var8I~
+    private Bitmap loadBMP29(Uri Puri,String Pid)                  //~var8R~
+    {                                                              //~var8I~
+//* DATA is deprecated at Api29                                    //~var8I~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 by ID id="+Pid+",uri="+Puri+",path="+Puri.getPath());//~var8R~
+     	Uri uri=uriImageBase;
+        long lid=Long.parseLong(Pid);                              //~var8R~
+        Uri uriID=ContentUris.withAppendedId(uri,lid);              //~var8M~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 uri="+uri+",path="+uri.getPath());//~var8I~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 uriID="+uriID+",path="+uriID.getPath());//~var8I~
+		String[] columns={MediaStore.Images.Media._ID,             //~var8I~
+							MediaStore.Images.Media.DISPLAY_NAME,  //~var8I~
+							MediaStore.Images.Media.SIZE,          //~var8I~
+							MediaStore.Images.Media.DATE_ADDED,    //~var8I~
+							MediaStore.Images.Media.DATE_MODIFIED, //~var8I~
+							};                                     //~var8I~
+        Cursor cursor=CR.query(uriID,columns,null,null,null,null); //~var8R~
+        cursor.moveToFirst();                                      //~var8I~
+        int colIdx=cursor.getColumnIndex(columns[0]);              //~var8I~
+        long id=cursor.getLong(colIdx);                            //~var8I~
+        int colIdx1=cursor.getColumnIndex(columns[1]);             //~var8I~
+        String name=cursor.getString(colIdx1);                     //~var8I~
+        int colIdx2=cursor.getColumnIndex(columns[2]);             //~var8I~
+        String size=cursor.getString(colIdx2);                     //~var8I~
+        int colIdx3=cursor.getColumnIndex(columns[3]);             //~var8I~
+        String timeAdd=cursor.getString(colIdx3);                  //~var8I~
+        int colIdx4=cursor.getColumnIndex(columns[4]);             //~var8I~
+        String timeMod=cursor.getString(colIdx4);                  //~var8I~
+        cursor.close();                                            //~var8I~
+        String ts=timeAdd==null ? timeMod : timeAdd;               //~var8I~
+        if (ts==null)                                              //~var8I~
+            ts="0";                                                //~var8I~
+        if (size==null)                                            //~var8I~
+            size="0";                                              //~var8I~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 ts="+ts+",tsAdd="+timeAdd+",tsMod="+timeMod);//~var8R~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 column="+Utils.toString(columns));//~var8R~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 id="+id+",displayName="+name+",size="+size+",time="+ts);//~var8R~
+        Bitmap bm=loadBMP29(uriID);
+        return bm;//~var8I~
+    }                                                              //~var8I~
+////********************************************************       //~var8I~
+//    private void getSetectedImage(Uri Puri)                      //~var8I~
+//    {                                                            //~var8I~
+//        String[] columns={MediaStore.Images.Media.DATA/*absolute filesystem path*/,//~var8I~
+//                            MediaStore.Images.Media.DISPLAY_NAME,//~var8I~
+//                            MediaStore.Images.Media.SIZE,        //~var8I~
+//                            MediaStore.Images.Media.DATE_ADDED,  //~var8I~
+//                            MediaStore.Images.Media.DATE_MODIFIED,//~var8I~
+//                            MediaStore.Images.Media.RELATIVE_PATH,//~var8I~
+//                            MediaStore.Images.Media._ID,         //~var8I~
+//                            MediaStore.Images.Media.DATE_TAKEN,  //~var8I~
+//                            };                                   //~var8I~
+//        Cursor cursor=CR.query(Puri,columns,null,null,null,null);//~var8I~
+//        cursor.moveToFirst();                                    //~var8I~
+//        int colIdx=cursor.getColumnIndex(columns[0]);            //~var8I~
+//        String path=cursor.getString(colIdx);                    //~var8I~
+//        int colIdx1=cursor.getColumnIndex(columns[1]);           //~var8I~
+//        String name=cursor.getString(colIdx1);                   //~var8I~
+//        int colIdx2=cursor.getColumnIndex(columns[2]);           //~var8I~
+//        String size=cursor.getString(colIdx2);                   //~var8I~
+//        int colIdx3=cursor.getColumnIndex(columns[3]);           //~var8I~
+//        String timeAdd=cursor.getString(colIdx3);                //~var8I~
+//        int colIdx4=cursor.getColumnIndex(columns[4]);           //~var8I~
+//        String timeMod=cursor.getString(colIdx4);                //~var8I~
+//        int colIdx5=cursor.getColumnIndex(columns[5]);           //~var8I~
+//        String rp=cursor.getString(colIdx5);                     //~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected rp="+rp);       //~var8I~
+//        int colIdx6=cursor.getColumnIndex(columns[6]);           //~var8I~
+//        long   id=cursor.getLong(colIdx6);                       //~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected id="+id);       //~var8I~
+//        int colIdx7=cursor.getColumnIndex(columns[7]);           //~var8I~
+//        String timeTaken=cursor.getString(colIdx7);              //~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected timeTaken="+timeTaken);//~var8I~
+//        Uri uriid=ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,id);//~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected id uri ="+uriid+",path="+uriid.getPath()+",Puri.path="+Puri.getPath());//~var8I~
+////      path=uriid.getPath();   //TODO test                      //~var8I~
+//        cursor.close();                                          //~var8I~
+//        Bitmap bm;                                               //~var8I~
+//        try {                                                    //~var8I~
+//            bm = MediaStore.Images.Media.getBitmap(CR, Puri);    //~var8I~
+//        }catch(Exception e){Dump.println(CN+"getBMP");bm=null;}  //~var8I~
+//            if (bm!=null) if (Dump.Y) Dump.println(CN+"getSelected getBitmap w="+bm.getWidth()+",h="+bm.getHeight());//~var8I~
+//        String ts=timeAdd==null ? timeMod : timeAdd;             //~var8I~
+//        if (ts==null)                                            //~var8I~
+//            ts=getFileTimestamp(path);                           //~var8I~
+//        if (ts==null)                                            //~var8I~
+//            ts="0";                                              //~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected tsAdd="+timeAdd+",tsMod="+timeMod+",ts="+ts);//~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected column="+Utils.toString(columns));//~var8I~
+//        if (Dump.Y) Dump.println(CN+"getSelected path="+path+",displayName="+name+",size="+size+",time="+ts);//~var8I~
+//        callback.ImageSelected(Puri,path,name,ts,size);          //~var8I~
+//    }                                                            //~var8I~
+//********************************************************         //~var8M~
+	public static Bitmap loadBMP(String Ppath)                     //~var8I~
+    {                                                              //~var8M~
+	    if (Dump.Y) Dump.println(CN+"loadBMP path="+Ppath);        //~var8M~
+        Bitmap bm=BitmapFactory.decodeFile(Ppath);                 //~var8M~
+        return bm;                                                 //~var8M~
+    }                                                              //~var8M~
+//********************************************************         //~var8M~
+	public Bitmap loadBMP_Stream(Uri Puri)                         //~var8R~
+    {                                                              //~var8M~
+	    if (Dump.Y) Dump.println(CN+"loadBMP_Stream uri="+Puri);   //~var8R~
+        Bitmap bm=null;                                            //~var8M~
+        Uri uri=Puri;                                              //~var8M~
+        try                                                        //~var8M~
+        {                                                          //~var8M~
+        	InputStream is=CR.openInputStream(uri);                //~var8M~
+            if (is!=null)                                          //~var8M~
+            {                                                      //~var8M~
+        		BufferedInputStream bis=new BufferedInputStream(is);//~var8M~
+            	bm= BitmapFactory.decodeStream(bis);               //~var8M~
+	            bis.close();                                       //~var8M~
+            }                                                      //~var8M~
+        }                                                          //~var8M~
+        catch(FileNotFoundException e)                             //~var8M~
+        {                                                          //~var8M~
+        	Dump.printlnNoMsg(e,CN+"loadBMP_Stream FileNotFound:"+uri);//~var8R~
+        }                                                          //~var8M~
+        catch(IOException e)                                       //~var8M~
+        {                                                          //~var8M~
+        	Dump.printlnNoMsg(e,CN+"loadBMP_Stream IOException:"+uri);//~var8R~
+        }                                                          //~var8M~
+	    if (Dump.Y) Dump.println(CN+"loadBMP_Stream exit bm="+bm); //~var8R~
+        return bm;                                                 //~var8M~
+    }                                                              //~var8M~
+//********************************************************         //~var8I~
+	public Bitmap loadBMP_Descriptor(Uri Puri)                     //~var8I~
+    {                                                              //~var8I~
+	    if (Dump.Y) Dump.println(CN+"loadBMP_Descriptor uri="+Puri);//~var8I~
+        Bitmap bm=null;                                            //~var8I~
+        FileDescriptor fd=null;                                                 //~var8I~
+        try                                                        //~var8I~
+        {                                                          //~var8I~
+			ParcelFileDescriptor pfd=CR.openFileDescriptor(Puri,"r");//~var8I~
+            fd=pfd.getFileDescriptor();                         //~var8I~
+            bm=BitmapFactory.decodeFileDescriptor(fd);             //~var8I~
+        }                                                          //~var8I~
+        catch(IOException e)                                       //~var8I~
+        {                                                          //~var8I~
+        	Dump.printlnNoMsg(e,CN+"loadBMP_Descriptor IOException:"+Puri);//~var8R~
+        }                                                          //~var8I~
+		if (Dump.Y) Dump.println(CN+"loadBMP_Descriptor fd="+fd+",bm="+bm);//~var8I~
+        if (bm!=null) if (Dump.Y) Dump.println(CN+"loadBMP_Descriptor ww="+bm.getWidth()+",hh="+bm.getHeight());//~var8I~
+        return bm;                                                 //~var8I~
+    }                                                              //~var8I~
+//********************************************************         //~var8I~
+    public Bitmap loadBMP(Uri Puri,String Pid)                     //~var8R~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println(CN+"loadBMP uri="+Puri+",osVersion="+AG.osVersion);//~var8R~
+        Bitmap bm=null;                                            //~var8R~
+        try                                                        //~var8I~
+        {                                                          //~var8I~
+            if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~var8R~
+                bm=loadBMP29(Puri,Pid);                            //~var8R~
+            else                                                   //~var8R~
+                bm=loadBMP28(Puri);                                //~var8R~
+		}                                                          //~var8I~
+        catch(Exception e)                                         //~var8I~
+        {                                                          //~var8I~
+        	Dump.printlnNoMsg(e,CN+"loadBMP Exception uri="+Puri+",id="+Pid);//~var8R~
+        }                                                          //~var8I~
+        if (Dump.Y) Dump.println(CN+"getBitmap bm="+bm);           //~var8R~
+        if (bm!=null) if (Dump.Y) Dump.println(CN+"loadBMP w="+bm.getWidth()+",h="+bm.getHeight());//~var8I~
+        return bm;                                                 //~var8R~
+    }                                                              //~var8I~
+//********************************************************         //~var8I~
+//*api>=29=Q=Android10                                             //~var8R~
+//********************************************************         //~var8I~
+	@TargetApi(29)                                                 //~var8R~
+    public Bitmap loadBMP29(Uri Puri)                              //~var8R~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println(CN+"getBitmap29 uri="+Puri);      //~var8R~
+        Bitmap bm=null;                                            //~var8I~
+//        if (false)//TODO test                                    //~var8R~
+//        {                                                        //~var8R~
+//            bm=loadBMP_Stream(Puri);                             //~var8R~
+//        }                                                        //~var8R~
+//        else                                                     //~var8R~
+//        if (true) //todo                                         //~var8R~
+//        {                                                        //~var8R~
+//            bm=loadBMP_Descriptor(Puri);                         //~var8R~
+//        }                                                        //~var8R~
+//        else                                                     //~var8R~
+        try                                                        //~var8I~
+		{                                                          //~var8I~
+	        if (Dump.Y) Dump.println(CN+"getBitmap29 by ImageDecoder");//~var8I~
+        	ImageDecoder.Source src=ImageDecoder.createSource(CR, Puri);//~var8I~
+            if (Dump.Y) Dump.println(CN+"loadBMP29 createSource src="+src);//~var8R~
+            bm=ImageDecoder.decodeBitmap(src);                     //~var8I~
+	        if (AG.osVersion>= 26) //=Oreo:Android8                //~var8R~
+	            bm=convertHardwareBitmap(bm);                       //~var8R~
+        }                                                          //~var8I~
+        catch(IOException e)                                       //~var8I~
+        {                                                          //~var8I~
+            Dump.printlnNoMsg(e,CN+"loadBMP29 IOE uri="+Puri); //~var8R~
+        }                                                          //~var8I~
+        catch(Exception e)                                         //~var8I~
+        {                                                          //~var8I~
+            Dump.printlnNoMsg(e,CN+"loadBMP29 Exception uri="+Puri);//~var8R~
+        }                                                          //~var8I~
+        if (Dump.Y) Dump.println(CN+"loadBMP29 bm="+bm);           //~var8R~
+        if (bm!=null) if (Dump.Y) Dump.println(CN+"loadBMP29 w="+bm.getWidth()+",h="+bm.getHeight());//~var8R~
+        return bm;                                                 //~var8I~
+    }                                                              //~var8I~
+	@TargetApi(26)                                                 //~var8I~
+    //*************************************************            //~var8I~
+    public Bitmap convertHardwareBitmap(Bitmap Pbmp)               //~var8I~
+    {                                                              //~var8I~
+        if (Pbmp==null)                                            //~var8I~
+        	return Pbmp;                                           //~var8I~
+        if (Dump.Y) Dump.println(CN+"convertHardwareBitmap Pbmp.config="+Pbmp.getConfig()+",const="+Bitmap.Config.HARDWARE);//~var8R~
+        if (Pbmp.getConfig()!=Bitmap.Config.HARDWARE)              //~var8I~
+        	return Pbmp;                                           //~var8I~
+        Bitmap bm=Pbmp.copy(Bitmap.Config.ARGB_8888,false/*isMutable*/);//+var8R~
+        Pbmp.recycle();                                            //+var8I~
+        if (Dump.Y) Dump.println(CN+"convertHardwareBitmap exit bmp.config="+bm.getConfig());//~var8R~
+        return bm;                                                 //~var8I~
+    }                                                              //~var8I~
+//********************************************************         //~var8I~
+//*api<=28                                                         //~var8R~
+//********************************************************         //~var8I~
+    @SuppressWarnings("deprecation")                               //~va42I~//~var8R~
+    public Bitmap loadBMP28(Uri Puri)                              //~var8R~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println(CN+"getBitmap28 by MediaStore.Images.Media.getBitmap uri="+Puri);//~var8R~
+        Bitmap bm=null;                                            //~var8I~
+        try                                                        //~var8I~
+		{                                                          //~var8I~
+        	bm = MediaStore.Images.Media.getBitmap(CR, Puri);   //deprecated api29=A10=Q//~var8R~
+        }                                                          //~var8I~
+        catch(IOException e)                                       //~var8I~
+        {                                                          //~var8I~
+            Dump.printlnNoMsg(e,CN+"loadBMP28 IOE uri="+Puri); //~var8R~
+        }                                                          //~var8I~
+        catch(Exception e)                                         //~var8I~
+        {                                                          //~var8I~
+            Dump.printlnNoMsg(e,CN+"loadBMP28 Exception uri="+Puri);//~var8R~
+        }                                                          //~var8I~
+        if (Dump.Y) Dump.println(CN+"getBitmap bm="+bm);           //~var8I~
+        if (bm!=null) if (Dump.Y) Dump.println(CN+"loadBMP28 w="+bm.getWidth()+",h="+bm.getHeight());//~var8R~
+        return bm;                                                 //~var8I~
+    }                                                              //~var8I~
+//********************************************************         //~var8I~
+    private static String getFileTimestamp(String Ppath)           //~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println(CN+"getFileTimestamp path="+Ppath);//~var8I~
+    	long ts=0L;                                                //~var8I~
+    	try                                                        //~var8I~
+        {                                                          //~var8I~
+        	File f=new File(Ppath);                                //~var8I~
+            if (f.exists())                                        //~var8I~
+            	ts=f.lastModified();                               //~var8I~
+        }                                                          //~var8I~
+        catch (Exception e)                                        //~var8I~
+        {                                                          //~var8I~
+        	Dump.printlnNoMsg(e,CN+"getFileTimestamp path="+Ppath);//~var8R~
+        }                                                          //~var8I~
+        String rc=ts==0L ? null : Long.toString(ts);               //~var8I~
+        if (Dump.Y) Dump.println(CN+"getFileTimestamp rc="+rc+",path="+Ppath);//~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
 //********************************************************
 	@Override //UPickerI
 	public void itemSelected(Uri PitemUri)
@@ -736,7 +1117,7 @@ public class UMediaStore
         }
         catch(Exception e)
         {
-        	if (Dump.Y) Dump.println(e,CN+"pause");
+        	Dump.printlnNoMsg(e,CN+"pause");                       //~var8R~
         }
     }
 //********************************************************
@@ -773,6 +1154,19 @@ public class UMediaStore
         ums.callback=Pcallback;                                    //~vae2I~
         ums.requestPickup(PswUPicker);                             //~vae9R~
     }
+//********************************************************         //~var8I~
+    public static void selectImage(UMediaStoreI Pcallback)         //~var8I~
+    {                                                              //~var8I~
+        UMediaStore ums=getInstance();                             //~var8I~
+	    if (Dump.Y) Dump.println(CN+"selectImage AG.swGrantedExternalStorageRead="+AG.swGrantedExternalStorageRead);//~var8I~
+        if (!AG.swGrantedExternalStorageRead)                      //~var8I~
+        {                                                          //~var8I~
+	        UView.showToast(R.string.ErrNoExternalStoragePermission);//~var8I~
+        	return;                                                //~var8I~
+        }                                                          //~var8I~
+        ums.callback=Pcallback;                                    //~var8I~
+        ums.requestPickupImage();                                  //~var8I~
+    }                                                              //~var8I~
 ////********************************************************       //~vae9R~
 //    public static String getCurrentTitle()                       //~vae9R~
 //    {                                                            //~vae9R~

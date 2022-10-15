@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <include layout="@layout/setting_rule_opt_gameset"
+        />
+    </LinearLayout> <!--InitialScore-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <include layout="@layout/setting_rule_opt_initialscore"
+        />
+    </LinearLayout> <!--InitialScore-->
+<!--
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:visibility="gone"
+             android:id="@+id/llInitialScoreTest"
+    >
+        <EditText
+             android:layout_height="wrap_content"
+             android:layout_width="fill_parent"
+             android:layout_weight="1"
+            android:gravity="center_vertical"
+             android:id="@+id/etInitialScoreTestE"
+			  android:inputType="number"
+        />                                 
+        <EditText
+             android:layout_height="wrap_content"
+             android:layout_width="fill_parent"
+             android:layout_weight="1"
+            android:gravity="center_vertical"
+             android:id="@+id/etInitialScoreTestS"
+			  android:inputType="number"
+        />                                 
+        <EditText
+             android:layout_height="wrap_content"
+             android:layout_width="fill_parent"
+             android:layout_weight="1"
+            android:gravity="center_vertical"
+             android:id="@+id/etInitialScoreTestW"
+			  android:inputType="number"
+        />                                 
+        <EditText
+             android:layout_height="wrap_content"
+             android:layout_width="fill_parent"
+             android:layout_weight="1"
+            android:gravity="center_vertical"
+             android:id="@+id/etInitialScoreTestN"
+			  android:inputType="number"
+        />                                 
+    </LinearLayout>
+-->
+    <!-- **orderPrize -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <LinearLayout
+	         android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+        >
+	        <include layout="@layout/setting_rule_opt_orderprize" />
+        </LinearLayout>
+    </LinearLayout> <!--orderPrize-->
+    <!-- **ScoreToPoint -->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_scoretopoint"
+        />
+    </LinearLayout> <!--ScoreToPoint-->
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    > 
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_dora"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    > 
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_spritpos"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--minusPrize-->
+        <include layout="@layout/setting_rule_opt_minusstop"
+        />
+    </LinearLayout> <!--MinusPrize-->
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--bird-->
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_bird"
+        />
+    </LinearLayout> <!--Bird-->
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    > 
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_eat"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    > 
+<!--
+        <include layout="@layout/setting_rule_opt_pending_cont"
+        />
+-->
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--drawnHW-->
+<!--
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_drawnhw"
+        />
+-->
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--multi-ron-->
+        <include layout="@layout/setting_rule_opt_multiron"
+        />
+    </LinearLayout>	<!--multi-ron-->
+
+    <!--LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+    >
+        <CheckBox
+            android:id="@+id/cbMultiRonStickAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Label_MultiRonStickAll"
+        />
+    </LinearLayout-->	<!--multi-ron2-->
+
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--Err-->
+<!--
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_err"
+        />
+-->
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >  <!--Robot-->
+<!--
+        <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="2px"
+                    android:background="@color/separater"
+        />
+        <include layout="@layout/setting_rule_opt_robot"
+        />
+-->
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+                    android:background="@color/sep_rulesumm"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/textview_small"
+                    android:text="@string/Label_YakuList"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <include layout="@layout/setting_rulesumm_yaku_options"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="2px"
+                android:background="@color/separater"
+    />
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+                    android:background="@color/sep_rulesumm"
+    >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/textview_small"
+                    android:text="@string/Label_Operation"
+        />
+    </LinearLayout>
+    <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+    >
+        <include layout="@layout/setting_rulesumm_operation"
+        />
+    </LinearLayout>
+
+</LinearLayout>

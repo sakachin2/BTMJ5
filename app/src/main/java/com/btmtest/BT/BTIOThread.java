@@ -1,7 +1,11 @@
-//*CID://+DATER~:                                   update#=  346; //~@002R~//~9404R~//~@@@@R~//~9808R~
+//*CID://+vas7R~:                                   update#=  405; //~vas7R~
 //*************************************************************************//~@002R~
 //*Blutooth msg IO thread                                          //~@002I~
 //*************************************************************************//~@002I~
+//2022/10/13 vas7 btio read loop when diconnected                  //~vas7I~
+//2022/10/06 vara chk appversion unmatch other than rule version unmatch//~varaI~
+//2022/09/24 var8 display profile icon(read text and byte)         //~var8R~
+//2022/09/03 var0 summary rule setting dialog                      //~var0I~
 //@002:20181103 use enum                                           //~@002I~
 //****************************************************************************//~@@@1I~
 package com.btmtest.BT;                                            //~1AecR~
@@ -10,31 +14,29 @@ import com.btmtest.R;
 import com.btmtest.dialog.BTCDialog;
 import com.btmtest.dialog.HistoryDlg;
 import com.btmtest.dialog.ResumeDlg;
+import com.btmtest.dialog.RuleSettingSumm;
 import com.btmtest.game.ACAction;
 import com.btmtest.EventMsg;
-import com.btmtest.dialog.RuleSetting;                             //~9412R~
 import com.btmtest.game.Status;
 import com.btmtest.game.gv.GMsg;
 import com.btmtest.utils.Dump;                                     //~1AecR~
-import com.btmtest.utils.EventCB;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
 import com.btmtest.wifi.IPIOThread;
 import com.btmtest.game.UA.UARestart;                                   //~9A28I~
 
-import static com.btmtest.BT.BTMulti.*;
-import static com.btmtest.BT.enums.ConnectionStatus.*;
 import static com.btmtest.BT.enums.MsgIDConst.*;
 import static com.btmtest.dialog.RuleSettingEnum.*;
 import static com.btmtest.game.GCMsgID.*;//~@002R~
 import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@002I~
-import static com.btmtest.game.GConst.*;
-import static com.btmtest.StaticVars.connectionStatus;             //~9A22I~
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import android.bluetooth.BluetoothSocket;
@@ -44,12 +46,17 @@ import android.bluetooth.BluetoothSocket;
 public class BTIOThread extends Thread                             //~1AecR~
 {                                                                  //~1AecR~
     protected static final int MSGBUFFSZ=1024;                     //~@@@@R~
+    protected static final int SENDBYTESZ=990;   //for bluetooth,wiWD:1024 OK//~var8R~
     protected static final String EOF_PROP="#EOF";                   //~9404I~//~@@@@R~
     private BluetoothSocket ioSocket;                              //~1AecR~
 //  private InputStream In;                                        //~1AecR~
-    protected BufferedReader In;                                     //~1AecI~//~@@@@R~
+//  protected BufferedReader In;                                     //~1AecI~//~@@@@R~//~var8R~
+    protected InputStream In;                                      //~var8I~
 //  private OutputStream Out;                                      //~1AecR~
-    protected PrintWriter Out;                                      //~1AecI~//~@@@@R~
+//  protected PrintWriter Out;                                      //~1AecI~//~@@@@R~//~var8R~
+    protected OutputStream Out;                                    //~var8R~
+//  protected InputStream InputStream;                             //~var8I~
+//  protected OutputStream OutputStream;                           //~var8I~
     public  String remoteDeviceName;                               //~@002R~
     public  String localDeviceName;                                //~1AecI~//~@002R~
     protected boolean swServer;                                    //~@@@@R~
@@ -83,9 +90,13 @@ public class BTIOThread extends Thread                             //~1AecR~
     {                                                              //~1AecR~
     	ioSocket=Psocket; swServer=Pserver; remoteDeviceName=Premotename; localDeviceName=Plocalname;//~1AecR~
 //		In=BTService.getBTInputStream(ioSocket);                   //~1AecI~
-		In=new BufferedReader(new InputStreamReader(BTService.getBTInputStream(ioSocket)));//~1AecR~
+//  	In=new BufferedReader(new InputStreamReader(BTService.getBTInputStream(ioSocket)));//~1AecR~//~var8R~
+  		In=BTService.getBTInputStream(ioSocket);                   //~var8I~
 //		Out=BTService.getBTOutputStream(ioSocket);                 //~1AecR~
-		Out=new PrintWriter(BTService.getBTOutputStream(ioSocket),true/*auto flush*/);//~1AecI~
+//  	Out=new PrintWriter(BTService.getBTOutputStream(ioSocket),true/*auto flush*/);//~1AecI~//~var8R~
+  		Out=BTService.getBTOutputStream(ioSocket);                 //~var8I~
+//      InputStream=BTService.getBTInputStream(ioSocket);          //~var8R~
+//      OutputStream=BTService.getBTOutputStream(ioSocket);        //~var8R~
     }                                                              //~1AecR~
     public void run ()                                             //~1AecR~
     {                                                              //~1A8gI~//~1AecR~
@@ -98,6 +109,7 @@ public class BTIOThread extends Thread                             //~1AecR~
 //            	out(MSGQ_NAME);	//request yourname                 //~1AecR~//~9619R~
 //            	outName();	//request yourname                     //~9619I~//~0107R~
               	outName(BTCDialog.isReconnectingAny());	//request yourname//~0107R~
+//            	outQueryProfile();  do at SYNCOK                   //~var8R~
             }                                                      //~0107I~
         while (true)                                           //~@@@9I~//~1AecR~//~@002R~
         {                                                      //~3207R~//~1AecR~//~@002R~
@@ -108,7 +120,8 @@ public class BTIOThread extends Thread                             //~1AecR~
 //                String[] lines=msg.split("\n",0);                //~1AecR~
 //                for (String s:lines)                             //~1AecR~
 //                {                                                //~1AecR~
-					String s=In.readLine();                            //~3207I~//~@@@9R~//~1AecI~
+//  				String s=In.readLine();                            //~3207I~//~@@@9R~//~1AecI~//~var8R~
+    				String s=readLine(buffer,MSGBUFFSZ);           //~var8R~
 		            if (Dump.Y) Dump.println("BTIOThread.run readLine:"+Utils.toString(s));//~1AecI~//~@@@@R~
 		            if (Dump.Y) Dump.println("BTIOThread.run swReadProp="+swReadProp+",swReadHistory="+swReadHistory+",swReadHistoryResume="+swReadHistoryResume);//~0212I~
 					if (s==null)                                   //~9B04R~
@@ -126,7 +139,7 @@ public class BTIOThread extends Thread                             //~1AecR~
                         }                                          //~9404I~
                         else                                       //~9404I~
                         	readProp.append(s+"\n");               //~9404R~
-			            if (Dump.Y) Dump.println("BTIOThread.run readProp="+readProp.toString());//~0212I~
+//  		            if (Dump.Y) Dump.println("BTIOThread.run readProp="+readProp.toString());//~0212I~//~varaR~
                         continue;                                  //~9404I~
                     }                                              //~9404I~
                     else                                           //~9825I~
@@ -173,6 +186,8 @@ public class BTIOThread extends Thread                             //~1AecR~
                     	if (Dump.Y) Dump.println("BTIOThread.run swClose="+swClose);//~0112I~
                         close(In);                                 //~1AecI~
                         In=null;                                   //~1AecI~
+//                      close(InputStream);                        //~var8R~
+//                      InputStream=null;                          //~var8R~
                         showClosed();                              //~9622I~
                         break;                                     //~1AecI~
                     }                                              //~1AecI~
@@ -183,6 +198,8 @@ public class BTIOThread extends Thread                             //~1AecR~
                     	if (Dump.Y) Dump.println("BTIOThread.run swClose="+swClose);//~0112I~
                         close(In);                                 //~1AecR~
                         In=null;                                   //~1AecR~
+//                      close(InputStream);                        //~var8R~
+//                      InputStream=null;                          //~var8R~
                         break;                                     //~1AecR~
                     }                                              //~1AecR~
                     else                                           //~1AecR~
@@ -234,6 +251,18 @@ public class BTIOThread extends Thread                             //~1AecR~
                     {                                              //~9B05I~
                     	if (Dump.Y) Dump.println("BTIOThread.run received KeepAlive response");//~9B05I~
                     }                                              //~9B05I~
+//                    else                                         //~var8R~
+//                    if (s.startsWith(MSGQ_PROFILE))              //~var8R~
+//                    {                                            //~var8R~
+//                        if (Dump.Y) Dump.println("BTIOThread.run received Profile request");//~var8R~
+//                        receivedProfileReq(s.substring(MSGQ_PROFILE.length())); //not delayed resp //TODO change to no delayed response//~var8R~
+//                    }                                            //~var8R~
+//                    else                                         //~var8R~
+//                    if (s.startsWith(MSGR_PROFILE))              //~var8R~
+//                    {                                            //~var8R~
+//                        if (Dump.Y) Dump.println("BTIOThread.run received Profile reqponse");//~var8R~
+//                        receivedProfileResp(s.substring(MSGR_PROFILE.length()));    //not delayed resp //TODO change to no delayed response//~var8R~
+//                    }                                            //~var8R~
 //                } //multi line                                   //~1AecR~
 //                if (In==null)   //closed                         //~1AecR~
 //                    break;                                       //~1AecR~
@@ -264,6 +293,7 @@ public class BTIOThread extends Thread                             //~1AecR~
             catch (Exception e)                                    //~@002I~
             {                                                      //~@002I~
                 Dump.println(e,"BTIOThread.run");                  //~@002I~
+                break;                                             //~vas7I~
             }                                                      //~@002I~
         } //while                                              //~1AecR~//~@002R~
         endThread();                                               //~@@@@I~
@@ -272,9 +302,13 @@ public class BTIOThread extends Thread                             //~1AecR~
     protected void endThread()                                     //~@@@@I~
     {                                                              //~@@@@I~
         if (Dump.Y) Dump.println("BTIOThread.endThread===== Run Terminated swclose="+swClose);  //~3120I~//~@@@9R~//~1AecR~//~@@@@R~
-        new CloseConnection(ioSocket,null/*inputstream*/,Out).start();//~1AecR~
+//      new CloseConnection(ioSocket,null/*inputstream*/,Out).start();//~1AecR~//~var8R~
+//      new CloseConnection(ioSocket,null/*inputstream*/,Out,InputStream,OutputStream).start();//~var8R~
+        new CloseConnection(ioSocket,null/*inputstream*/,Out).start();//~var8I~
         In=null;                                                   //~1AecM~
         Out=null;                                                   //~1AecR~
+//      InputStream=null;                                          //~var8R~
+//      OutputStream=null;                                         //~var8R~
 //      AG.aBTMulti.connectionLost(remoteDeviceName);              //~1AecR~//~@@@@R~
 //      connectionStatus=CS_DISCONNECTED;                      //~v@@@I~//~9A22I~//~0123R~
 	    EventMsg.postReadMsg(MSGID_IOERR,remoteDeviceName); //to MainActivity.ACTION_GETCTLMSG-->BTMulti.msgRead//~@@@@R~
@@ -301,6 +335,36 @@ public class BTIOThread extends Thread                             //~1AecR~
 //        if (Dump.Y) Dump.println("BTIOThread byte2Str="+s);      //~1506R~//~@@@9R~//~1AecR~
 //        return s;                                                //~1AecR~
 //    }                                                            //~1AecR~
+//***************************************************************  //~var8I~
+    private String readLine(byte[] Pbuff,int Pbuffsz) throws IOException//~var8R~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread readLine buffsz="+Pbuffsz);//~var8I~
+        String s;                                                  //~var8I~
+        int ctrRead=0;                                             //~var8I~
+        for (;;)                                                   //~var8I~
+        {                                                          //~var8I~
+			int b=In.read();      //-1 or 0-255                 //~var8I~
+            if (b==-1)                                             //~vas7I~
+            {                                                      //~vas7I~
+	    		if (Dump.Y) Dump.println("BTIOThread.readLine read get -1(EOF) throw ioException ctrRead="+ctrRead);//+vas7R~
+				throw new IOException();                           //+vas7I~
+            }                                                      //~vas7I~
+            if (b=='\n')                                        //~var8I~
+            	break;                                             //~var8I~
+            Pbuff[ctrRead++]=(byte)b;                                     //~var8I~
+    	}                                                          //~var8I~
+        try                                                        //~var8I~
+        {                                                          //~var8I~
+            s=new String(Pbuff,0,ctrRead,"UTF-8");                 //~var8I~
+        }                                                          //~var8I~
+        catch(UnsupportedEncodingException e)                      //~1AecI~+//~var8I~
+        {                                                          //~var8I~
+            Dump.println(e,"BTIOThread.readLine");                 //~var8I~
+            s="UTF8 is UnSupportedEncodingException";              //~var8I~
+        }                                                          //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread ctrRead="+ctrRead+",text="+s);//~var8R~
+        return s;                                                  //~var8I~
+    }                                                              //~var8I~
 //***************************************************************  //~1AecI~
 	public static String[] parse(String Pmsg)                     //~1AecI~
     {                                                              //~1AecI~
@@ -337,6 +401,8 @@ public class BTIOThread extends Thread                             //~1AecR~
             {                                                      //~1AecI~
 	            close(In);                                         //~1AecI~
             	In=null;                                           //~1AecI~
+//              close(InputStream);                                //~var8R~
+//              InputStream=null;                                  //~var8R~
             }                                                      //~1AecI~
             else                                                   //~1AecI~
             	swClose=true;                                      //~1AecR~
@@ -345,9 +411,10 @@ public class BTIOThread extends Thread                             //~1AecR~
     }                                                              //~1AecI~
 //***************************************************************  //~1AecI~
 //  public void close(InputStream Pis)                             //~1AecR~
-    public void close(BufferedReader Pis)                          //~1AecI~
+//  public void close(BufferedReader Pis)                          //~1AecI~//~var8R~
+    public void close(InputStream Pis)                             //~var8I~
     {                                                              //~1AecI~
-	    if (Dump.Y) Dump.println("BTIOThread.close InputStream") ;  //~1AecI~
+	    if (Dump.Y) Dump.println("BTIOThread.close InputStream") ;  //~1AecI~//~var8R~
         if (Pis!=null)                                             //~1AecI~
         {                                                          //~1AecI~
         	try                                                    //~1AecI~
@@ -357,11 +424,28 @@ public class BTIOThread extends Thread                             //~1AecR~
             }                                                      //~1AecI~
         	catch (IOException e)                                  //~1AecI~
         	{                                                      //~1AecI~
-            	Dump.println(e,"BTIOThread close inputstream");    //~1AecI~
+            	Dump.println(e,"BTIOThread close InputStream");    //~1AecI~//~var8R~
 	        }                                                      //~1AecI~
-		    if (Dump.Y) Dump.println("BTIOThread.close InputStream closed") ;//~1AecI~
+		    if (Dump.Y) Dump.println("BTIOThread.close InputStream closed") ;//~1AecI~//~var8R~
         }                                                          //~1AecI~
     }                                                              //~1AecI~
+////***************************************************************//~var8R~
+//    public void close(InputStream Pis)                           //~var8R~
+//    {                                                            //~var8R~
+//        if (Dump.Y) Dump.println("BTIOThread.close InputStream") ;//~var8R~
+//        if (Pis!=null)                                           //~var8R~
+//        {                                                        //~var8R~
+//            try                                                  //~var8R~
+//            {                                                    //~var8R~
+//                Pis.close();                                     //~var8R~
+//            }                                                    //~var8R~
+//            catch (IOException e)                                //~var8R~
+//            {                                                    //~var8R~
+//                Dump.println(e,"BTIOThread close Inputstream");  //~var8R~
+//            }                                                    //~var8R~
+//            if (Dump.Y) Dump.println("BTIOThread.close InputStream closed") ;//~var8R~
+//        }                                                        //~var8R~
+//    }                                                            //~var8R~
 //***************************************************************  //~9B04I~
     public void close(BluetoothSocket Psocket)                     //~9B04I~
     {                                                              //~9B04I~
@@ -392,7 +476,9 @@ public class BTIOThread extends Thread                             //~1AecR~
     {                                                              //~0107I~
 		if (Dump.Y) Dump.println("BTIOThread.outName swReconnecting="+PswReconnecting);//~0107I~
 		String syncDate=getMySyncDate(false/*PswSave*/);           //~0107I~
-		return out(MSGQ_NAME,localDeviceName,syncDate,(PswReconnecting ? "1" : "0"));//~0107I~
+//  	return out(MSGQ_NAME,localDeviceName,syncDate,(PswReconnecting ? "1" : "0"));//~0107I~//~varaR~
+    	String data=(PswReconnecting ? "1" : "0")+MSG_SEP+AG.appVersion;//~varaR~
+    	return out(MSGQ_NAME,localDeviceName,syncDate,data);       //~varaI~
 	}                                                              //~0107I~
 //***************************************************************  //~@@@@I~
 //*write name response for Bluetooth,IPIOThread will override      //~@@@@I~
@@ -402,7 +488,9 @@ public class BTIOThread extends Thread                             //~1AecR~
 		if (Dump.Y) Dump.println("BTIOThread.outNameR");           //~@@@@I~
 //  	out(MSGR_NAME,PlocalDeviceName,Pyourname,PsyncDate);       //~@@@@R~//~0107R~
         boolean swReconnecting=BTCDialog.isReconnecting();	//request yourname//~0107I~
-    	out(MSGR_NAME,PlocalDeviceName,Pyourname,PsyncDate,(swReconnecting ? "1" : "0"));//~0107R~
+//  	out(MSGR_NAME,PlocalDeviceName,Pyourname,PsyncDate,(swReconnecting ? "1" : "0"));//~0107R~//~varaR~
+    	String data=(swReconnecting ? "1" : "0")+MSG_SEP+AG.appVersion;//~varaR~
+    	out(MSGR_NAME,PlocalDeviceName,Pyourname,PsyncDate,data); //~varaI~
 	}                                                              //~@@@@I~
 	protected void receivedNameR(String Ptxt)                     //~@@@@I~
     {                                                              //~@@@@I~
@@ -420,6 +508,26 @@ public class BTIOThread extends Thread                             //~1AecR~
 		EventMsg.postReadMsg(MSGID_MEMBER_DELETE,Ptxt);            //~9B07I~
 	}                                                              //~9B07I~
 //***************************************************************  //~9619I~
+//    private boolean outQueryProfile()                            //~var8R~
+//    {                                                            //~var8R~
+//        String opt=AG.aProfileIcon.makeMsgProfile(0/*query*/);   //~var8R~
+//        return out(MSGQ_PROFILE,localDeviceName,opt);            //~var8R~
+//    }                                                            //~var8R~
+//    private void receivedProfileReq(String Ptxt)                 //~var8R~
+//    {                                                            //~var8R~
+////        String[] words=parse(Ptxt);     // by ";"              //~var8R~
+////        if (Dump.Y) Dump.println("BTIOThread.receivedProfileReq txt="+Ptxt+",words="+Utils.toString(words));//~var8R~
+////        AG.aBTMulti.updateProfile(words[0],Utils.parseInt(words[1],0));//~var8R~
+////        String opt=AG.aProfileIcon.makeMsgProfile(1/*resp*/);  //~var8R~
+////        out(MSGR_PROFILE,localDeviceName,opt);                 //~var8R~
+//    }                                                            //~var8R~
+//    private void receivedProfileResp(String Ptxt)                //~var8R~
+//    {                                                            //~var8R~
+////        String[] words=parse(Ptxt);     // by ";"              //~var8R~
+////        if (Dump.Y) Dump.println("BTIOThread.receivedProfileResp txt="+Ptxt+",words="+Utils.toString(words));//~var8R~
+////        AG.aBTMulti.updateProfile(words[0],Utils.parseInt(words[1],0));//~var8R~
+//    }                                                            //~var8R~
+//***************************************************************  //~var8I~
 	private String getMySyncDate(boolean PswSave)                  //~9619I~
     {                                                              //~9619I~
 		String syncDate=AG.ruleProp.getParameter(getKeyRS(RSID_SYNCDATE),"");//~9619I~
@@ -484,7 +592,8 @@ public class BTIOThread extends Thread                             //~1AecR~
 	        if (!AG.isMainThread())     //on subthred, out to stream direct//~v@11R~//~0219I~
             {                                                      //~0219I~
 		        if (Dump.Y) Dump.println("BTIOThread.flush WifiDirect subthread");//~0219I~
-				Out.flush();	//printwriret flushoption=true but //~0219I~
+//  			Out.flush();	//printwriret flushoption=true but //~0219I~//~var8R~
+    			flush(Out);	//printwriret flushoption=true but     //~var8I~
             }                                                      //~0219I~
             else                                                   //~0219I~
             {                                                      //~0219I~
@@ -495,10 +604,27 @@ public class BTIOThread extends Thread                             //~1AecR~
         else                                                       //~0219I~
         {                                                          //~0219I~
 	        if (Dump.Y) Dump.println("BTIOThread.flush Blusetooth");//~0219I~
-			Out.flush();	//printwriret flushoption=true but     //~0219R~
+//  		Out.flush();	//printwriret flushoption=true but     //~0219R~//~var8R~
+    		flush(Out); 	//printwriret flushoption=true but     //~var8I~
         }                                                          //~0219I~
         return rc;                                                 //~0219I~
     }                                                              //~0219I~
+//***************************************************************  //~var8I~
+	public boolean flush(OutputStream POut)                        //~var8I~
+	{                                                              //~var8I~
+    	boolean rc=true;                                           //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.flush outputStream="+POut);//~var8I~
+        try                                                        //~var8I~
+        {                                                          //~var8I~
+			POut.flush();	//printwriret flushoption=true but     //~var8I~
+        }                                                          //~var8I~
+		catch (IOException e)                                      //~var8I~
+		{                                                          //~var8I~
+        	rc=false;                                              //~var8I~
+        	Dump.println(e,"BTIOThread flush out="+POut);          //~var8I~
+        }                                                          //~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
 //***************************************************************
 	public boolean out(String Pmsg)                                //~1AecR~
 	{                                                              //~@@@2R~//~1AecI~
@@ -529,9 +655,27 @@ public class BTIOThread extends Thread                             //~1AecR~
 		if (this instanceof IPIOThread)                            //~9A02I~
         	AG.aIPSubThread.outOnSubThread(GCM_IPOUT,(IPIOThread)this,Pmsg);//~9A02R~
         else                                                       //~9A02I~
-		Out.println(Pmsg);	//flush by plintln with linefeed       //~1AecI~//~9404R~
+//  	Out.println(Pmsg);	//flush by plintln with linefeed       //~1AecI~//~9404R~//~var8R~
+			writeLine(Pmsg);                                       //~var8I~
         return rc;                                                 //~1AecI~
 	}                                                              //~1AecI~
+//***************************************************************  //~var8I~
+	private void writeLine(String Pmsg)                            //~var8I~
+    {                                                              //~var8I~
+        try                                                        //~var8I~
+        {                                                          //~var8I~
+            if (Dump.Y) Dump.println("BTIOThread writeLine=" + Pmsg);//~var8I~
+            byte[] send = (Pmsg + "\n").getBytes();                  //~var8I~
+            synchronized (Out)                                      //~var8I~
+            {                                                      //~var8I~
+                Out.write(send);                                   //~var8I~
+            }                                                      //~var8I~
+        }                                                          //~var8I~
+        catch (Exception e)                                         //~var8I~
+        {                                                          //~@@@2I~//~1AecI~-//~var8I~
+            Dump.println(e, "BTIOThread writeLine msg=" + Pmsg);      //~var8I~
+        }
+    }//~var8I~
 //***************************************************************  //~9B05I~
 	public boolean sendKeepAlive()                                 //~9B05I~
     {                                                              //~9B05I~
@@ -549,13 +693,16 @@ public class BTIOThread extends Thread                             //~1AecR~
         return rc;                                                 //~9B05I~
     }                                                              //~9B05I~
 //***************************************************************  //~9A02I~
+//*from IPSubthred.outOnSubThread if out is on !Mainthread         //~var8I~
+//***************************************************************  //~var8I~
 	public boolean outOnSubThread(String Pmsg)                     //~9A02I~
 	{                                                              //~9A02I~
     	if (Out==null)                                             //~9A02I~
         	return false;                                          //~9A02I~
     	boolean rc=true;                                           //~9A02I~
         if (Dump.Y) Dump.println("BTIOThread.outOnSubThreasd to="+remoteDeviceName+",writeLine:"+Pmsg);//~9A02I~
-		Out.println(Pmsg);	//flush by plintln with linefeed       //~9A02I~
+//		Out.println(Pmsg);	//flush by plintln with linefeed       //~9A02I~//~var8R~
+  		writeLine(Pmsg);	//flush by plintln with linefeed       //~var8I~
         return rc;                                                 //~9A02I~
 	}                                                              //~9A02I~
 //***************************************************************  //~9404I~
@@ -571,19 +718,91 @@ public class BTIOThread extends Thread                             //~1AecR~
     	out(Pmsg+"\n"+Pprops+"\n"+EOF_PROP);	//avoid mix        //~0213I~
         return rc;                                                 //~9404I~
 	}                                                              //~9404I~
+//***************************************************************  //~var8I~
+	public boolean sendByte(byte[] Pbyte)                          //~var8I~
+	{                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.writeLine: sendByte Pbyte+"+Pbyte+",len="+Pbyte.length);//~var8R~
+//  	if (OutputStream==null)                                    //~var8R~
+    	if (Out==null)                                             //~var8I~
+        	return false;                                          //~var8I~
+        boolean rc=true;                                           //~var8I~
+        try                                                        //~var8I~
+        {                                                          //~var8I~
+        	int offs=0;                                            //~var8I~
+	        int reslen=Pbyte.length;                               //~var8I~
+            int ctrWrite=0;                                        //~var8I~
+        	for (;reslen>0;)                                        //~var8I~
+            {                                                      //~var8I~
+            	ctrWrite++;                                        //~var8I~
+            	int reqlen=Math.min(reslen, SENDBYTESZ);//~var8I~
+		        if (Dump.Y) Dump.println("BTIOThread writeLine: sendByte ctrWrite="+ctrWrite+",reqlen="+reqlen+",offs="+offs+",reslen="+reslen);//~var8I~
+//  			OutputStream.write(Pbyte,offs,reqlen);             //~var8R~
+    			Out.write(Pbyte,offs,reqlen);                      //~var8I~
+                reslen-=reqlen;                                    //~var8R~
+                offs+=reqlen;                                      //~var8I~
+//              OutputStream.flush();                              //~var8R~
+//              Out.flush();                                       //~var8R~
+                flush(Out);                                        //~var8I~
+            }                                                      //~var8I~
+        }                                                          //~var8I~
+        catch(Exception e)                                         //~var8I~
+        {                                                          //~@@@2I~//~1AecI~-//~var8I~
+            Dump.println(e,"BTIOThread sendByte()");               //~var8I~
+            rc=false;                                              //~var8I~
+        }                                                          //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread writeLine: after flush() rc="+rc);//~var8R~
+        return rc;                                                 //~var8R~
+	}                                                              //~var8I~
+//***************************************************************  //~var8I~
+	public byte[] receiveByte(int Plen)                            //~var8I~
+	{                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread readline: receiveByte len="+Plen);//~var8I~
+    	AG.aProfileIcon.msgImageExchanging(!swServer);             //~var8I~
+    	byte[] buff=new byte[Plen];                            //~@@@2I~//~var8I~
+        int lenTotal=0;                                            //~@@@2I~//~var8I~
+        int readctr=0;                                             //~var8I~
+    	try                                                            //~@@@2I~//~var8I~
+        {                                                              //~@@@2I~//~var8I~
+            for(;;)                                                    //~@@@2I~//~var8I~
+            {                                                          //~@@@2I~//~var8I~
+                int reqlen=Plen-lenTotal;                             //~@@@2I~//~var8I~
+                reqlen=Math.min(reqlen,SENDBYTESZ);                //~var8I~
+//              int len=InputStream.read(buff,lenTotal/*offs*/,reqlen);                   //~@@@2I~//~var8R~
+                int len=In.read(buff,lenTotal/*offs*/,reqlen);     //~var8I~
+                readctr++;                                             //~@@@2M~//~var8I~
+		        if (Dump.Y) Dump.println("BTIOThread readline: receiveByte readctr="+readctr+",reqlen="+reqlen+",offs="+lenTotal+",readLen="+len);//~var8I~
+                lenTotal+=len;                                  //~@@@2I~//~var8I~
+                if (lenTotal>=Plen)                                //~var8I~
+                	break;                                         //~var8I~
+            }                                                          //~@@@2I~//~var8I~
+        }                                                          //~var8I~
+		catch (IOException e)                                      //~var8I~
+		{                                                          //~var8I~
+        	Dump.println(e,"BTIOThread receiveByte");              //~var8I~
+        }                                                              //~@@@2I~//~var8I~
+        if (Dump.Y) Dump.println("BTIOThread readline: receiveByte readctr="+readctr+",len="+Plen+",buff="+buff);//~var8I~
+        return buff;                                            //~@@@2I~//~var8I~
+    }                                                              //~@@@2I~//~var8I~
 //***************************************************************  //~1AecI~
 	class CloseConnection extends Thread                           //~1AecI~
 	{                                                              //~1AecI~
 		BluetoothSocket S;                                                  //~1AecI~
 //  	InputStream is;                                            //~1AecR~
 //  	OutputStream os;                                           //~1AecR~
-    	BufferedReader is;                                         //~1AecI~
-    	PrintWriter  os;                                           //~1AecI~
+//  	InputStream inps;                                          //~var8R~
+//  	OutputStream outs;                                         //~var8R~
+//  	BufferedReader is;                                         //~1AecI~//~var8R~
+    	InputStream is;                                            //~var8I~
+//  	PrintWriter  os;                                           //~1AecI~//~var8R~
+    	OutputStream os;                                           //~var8I~
 //  	public CloseConnection (BluetoothSocket Psocket,InputStream Pin,OutputStream Pout)//~1AecR~
-    	public CloseConnection (BluetoothSocket Psocket,BufferedReader Pin,PrintWriter Pout)//~1AecI~
+//  	public CloseConnection (BluetoothSocket Psocket,BufferedReader Pin,PrintWriter Pout)//~1AecI~//~var8R~
+//  	public CloseConnection(BluetoothSocket Psocket,BufferedReader Pin,PrintWriter Pout,InputStream PinpS,OutputStream PoutS)//~var8R~
+    	public CloseConnection (BluetoothSocket Psocket,InputStream Pin,OutputStream Pout)//~var8I~
 		{                                                          //~1AecI~
 			S=Psocket; is=Pin; os=Pout;                            //~1AecI~
-            if (Dump.Y) Dump.println("BTIOThread.closeConnection constructor");    //~@@@@I~
+//  		inps=PinpS; outs=PoutS;                                //~var8R~
+            if (Dump.Y) Dump.println("BTIOThread.closeConnection constructor socket="+S+",bufferedReader in="+Pin+",PrintWriter Pout="+Pout);    //~@@@@I~//~var8R~
 		}                                                          //~1AecI~
 		public void run ()                                         //~1AecI~
 		{	try                                                    //~1AecI~
@@ -596,15 +815,31 @@ public class BTIOThread extends Thread                             //~1AecR~
                     {                                              //~1AecI~
 						os.close();                                //~1AecR~
                     }                                              //~1AecI~
-				    if (Dump.Y) Dump.println("BTIOThread.CloseConnection outputstream closed");//~1AecI~
+				    if (Dump.Y) Dump.println("BTIOThread.CloseConnection PrintWriter closed");//~1AecI~//~var8R~
                 }                                                  //~1AecI~
+//  			if (outs!=null)                                    //~var8R~
+//              {                                                  //~var8R~
+//              	synchronized(outs)                             //~var8R~
+//                  {                                              //~var8R~
+//  					outs.close();                              //~var8R~
+//                  }                                              //~var8R~
+//  			    if (Dump.Y) Dump.println("BTIOThread.CloseConnection OutputStream closed");//~var8R~
+//              }                                                  //~var8R~
 				if (S!=null)                                       //~1AecR~
                 {                                                  //~1AecI~
 					S.close();                                     //~1AecI~
 				    if (Dump.Y) Dump.println("BTIOThread.CloseConnection SOCKET closed");//~1AecI~
                 }                                                  //~1AecI~
     			if (is!=null)                                      //~@@@@I~
+                {                                                  //~var8I~
     				is.close();                                    //~@@@@I~
+				    if (Dump.Y) Dump.println("BTIOThread.CloseConnection BufferedReader closed");//~var8I~
+                }                                                  //~var8I~
+//  			if (inps!=null)                                    //~var8R~
+//              {                                                  //~var8R~
+//  				inps.close();                                  //~var8R~
+//  			    if (Dump.Y) Dump.println("BTIOThread.CloseConnection InputStream closed");//~var8R~
+//              }                                                  //~var8R~
 			}                                                      //~1AecI~
 			catch (Exception e)                                    //~1AecI~
 			{                                                      //~1AecI~
@@ -671,6 +906,26 @@ public class BTIOThread extends Thread                             //~1AecR~
         thread.out(msg);                                           //~1AecR~//~9A27R~
         return true;                                               //~0110I~
     }                                                              //~1AecI~
+    //***************************************************************//~var8I~
+    public static boolean sendByte(int PidxMember,byte[] Pbuff)    //~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.sendByte idxMember="+PidxMember+",buff="+Pbuff+",len="+Pbuff.length);//~var8I~
+        BTIOThread thread=getThread(PidxMember);                   //~var8I~
+        boolean rc=thread.sendByte(Pbuff);                         //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.sendByte rc="+rc);    //~var8I~
+        return rc;                                                 //~var8I~
+    }                                                              //~var8I~
+    //***************************************************************//~var8I~
+    public boolean sendMsgProfile(int Pmsgid,String Ptext)  //~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.sendMsg idxMember="+idxMember+",msgid="+Pmsgid+",text="+Ptext);//~var8I~
+    	String msg;                                                //~var8I~
+        long msgSeqNo=AG.getMsgSeqNo(idxMember);                   //~var8I~
+        msg=makeMsgAppMsgSeqNo((int)(msgSeqNo&0xffffffff),localDeviceName,Pmsgid,Ptext);//~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.sendMsgProfile local="+localDeviceName+",remote="+remoteDeviceName+",msg="+msg);//~var8I~
+        out(msg);                                                  //~var8I~
+        return true;                                               //~var8I~
+    }                                                              //~var8I~
     //***************************************************************//~0221I~
     private static int getThreadIdx(int PidxMember)                //~0221I~
     {                                                              //~0221I~
@@ -863,6 +1118,7 @@ public class BTIOThread extends Thread                             //~1AecR~
 //      EventMsg.postReceivedMsg(BTMulti.idx2tid(threadIdx),msgid,msg);//~1AecR~//~@002R~
 		boolean swDoAccount=true;                                  //~@002I~
         if (Dump.Y) Dump.println("BTIOThread.receivedAppMsg msgid="+msgid+",data1="+msg1+",data2="+msg2+",data3="+msg3);//~@002R~
+        byte[] byteReceived=null;                                  //~var8I~
         switch(msgid)                                              //~@002I~
         {                                                          //~@002I~
             case GCM_SETUPEND:                                     //~@002R~
@@ -975,6 +1231,43 @@ public class BTIOThread extends Thread                             //~1AecR~
 				swDoAccount=false;                                 //~9621I~
 	            rc=false;	//no response required                 //~9621I~
                 break;                                             //~9621I~
+            case GCM_PROFILE_STARTSYNC:     //On Server,client to server at syncOK//~var8I~
+                swDoAccount=true;    //pass to ACAction            //~var8I~
+                rc=false;   //no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_GETIMAGE_C2S:     //on Client,Server to client at received STARTSYNC all//~var8I~
+                receivedGetImageC2S(threadIdx,words);              //~var8I~
+				swDoAccount=false;                   //GVH is not yet initialized//~var8I~
+	            rc=false;	//no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_GETIMAGE_C2SR:     //on Server received BMP//~var8I~
+                byteReceived=receivedGetImageC2SR(threadIdx,words);//~var8R~
+				swDoAccount=true;                   //GVH is not yet initialized//~var8R~
+	            rc=false;	//no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_NOTIFY_ALL:        //sever to client  //~var8I~
+                receivedProfileNotifyAll(threadIdx,words);         //~var8I~
+                swDoAccount=false;    //pass to ACAction           //~var8I~
+                rc=false;   //no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_NOTIFY_ALL_RESP:     //client to server at syncOK//~var8I~
+                swDoAccount=true;    //pass to ACAction            //~var8I~
+                rc=false;   //no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_SENDIMAGE_S2C:      //on Client,received other image//~var8I~
+                receivedSendImageS2C(words);                       //~var8I~
+                swDoAccount=false;    //NOT pass to ACAction       //~var8I~
+                rc=false;   //no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_SENDIMAGE_S2CR:      //on Server      //~var8I~
+                swDoAccount=true;    //pass to ACAction            //~var8I~
+                rc=false;   //no response required                 //~var8I~
+                break;                                             //~var8I~
+            case GCM_PROFILE_SYNC_COMP:      //on Server           //~var8I~
+                receivedProfileSyncComp();                         //~var8I~
+                swDoAccount=false;    //pass to ACAction           //~var8I~
+                rc=false;   //no response required                 //~var8I~
+                break;                                             //~var8I~
             case GCM_RESUMEDLG:                                    //~9831I~
                 receivedResumeDlg(threadIdx,words);                //~9831I~
 				swDoAccount=false;                                 //~9831I~
@@ -983,9 +1276,12 @@ public class BTIOThread extends Thread                             //~1AecR~
         }                                                          //~@002I~
         if (swDoAccount)                                           //~@002I~
         {                                                          //~@002I~
+          if (byteReceived!=null)                                  //~var8I~
+	        AG.aACAction.receivedAppMsg(threadIdx,msgid,msg1,msg2,byteReceived);//~var8I~
+          else                                                     //~var8I~
 	        AG.aACAction.receivedAppMsg(threadIdx,msgid,msg1,msg2,msg3);//~@002R~
         }                                                          //~@002I~
-        if (Dump.Y) Dump.println("BTIOThread.receivedAppMsg rc="+rc);//~@002I~
+        if (Dump.Y) Dump.println("BTIOThread.receivedAppMsg rc="+rc+",swDoAccount="+swDoAccount);//~@002I~//~var8R~
         return rc;                                                 //~@002I~
     }                                                              //~1AecI~
     //***************************************************************//~0220I~
@@ -1046,22 +1342,25 @@ public class BTIOThread extends Thread                             //~1AecR~
         else                                                       //~9826I~
         {                                                          //~9827I~
 	    	String props=readProp.toString();                          //~9404I~//~9827I~
-        	RuleSetting.received(propSenderYourName,props);                               //~9404I~//~9405R~//~9827R~
+//      	RuleSetting.received(propSenderYourName,props);                               //~9404I~//~9405R~//~9827R~//~var0R~
+        	RuleSettingSumm.received(propSenderYourName,props);    //~var0I~
         }                                                          //~9827I~
     }                                                              //~9404I~
     //***************************************************************//~9406I~
-    //*on Server                                                   //+0323I~
-    //***************************************************************//+0323I~
+    //*on Server                                                   //~0323I~
+    //***************************************************************//~0323I~
     private void receivedPropReply(int PthreadIdx,String[] Pwords) //~9406I~
     {                                                              //~9406I~
         if (Dump.Y) Dump.println("BTIOThread.receivedPropReply threadIdx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~9406I~//~0323R~
-        RuleSetting.receivedReply(PthreadIdx,Pwords[2].equals("1")/*OK-NG*/,Pwords[3]/*syncDate*/);//~9406I~
+//      RuleSetting.receivedReply(PthreadIdx,Pwords[2].equals("1")/*OK-NG*/,Pwords[3]/*syncDate*/);//~9406I~//~var0R~
+        RuleSettingSumm.receivedReply(PthreadIdx,Pwords[2].equals("1")/*OK-NG*/,Pwords[3]/*syncDate*/);//~var0I~
     }                                                              //~9406I~
     //***************************************************************//~9406I~
     private void receivedPropSync(int PthreadIdx,String[] Pwords)  //~9406I~
     {                                                              //~9406I~
         if (Dump.Y) Dump.println("BTIOThread.receivedPropSync threadIdx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~9406I~
-        RuleSetting.receivedSyncAll(PthreadIdx,Pwords[2].equals("1")/*OK-NG*/,Pwords[3]/*syncDate*/);//~9406I~
+//      RuleSetting.receivedSyncAll(PthreadIdx,Pwords[2].equals("1")/*OK-NG*/,Pwords[3]/*syncDate*/);//~9406I~//~var0R~
+        RuleSettingSumm.receivedSyncAll(PthreadIdx,Pwords[2].equals("1")/*OK-NG*/,Pwords[3]/*syncDate*/);//~var0I~
     }                                                              //~9406I~
     //***************************************************************//~9621I~
     //*on client                                                   //~9621I~
@@ -1101,8 +1400,79 @@ public class BTIOThread extends Thread                             //~1AecR~
     private void receivedSyncOK(int PthreadIdx,String[] Pwords)    //~9621I~
     {                                                              //~9621I~
         if (Dump.Y) Dump.println("BTIOThread.receivedSyncOK idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~9621I~
-        new EventCB(ECB_ACTION_STARTGAME).postEvent();               //~v@@@I~//~9621I~
+//      new EventCB(ECB_ACTION_STARTGAME).postEvent();//moved to ProfileIcon  //~v@@@I~//~9621I~//~var8R~
+        AG.aProfileIcon.startSyncProfile(this,Pwords);                  //~var8R~
     }                                                              //~9621I~
+    //***************************************************************//~var8I~
+    //*on Server, received 75 client image                         //~var8R~
+    //***************************************************************//~var8I~
+    private void receivedGetImageC2S(int PthreadIdx,String[] Pwords)//~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.receivedGetImageC2S idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~var8R~
+        AG.aProfileIcon.receivedRequestImageC2S(PthreadIdx,Pwords);//~var8I~
+    }                                                              //~var8I~
+    //***************************************************************//~var8I~
+    //*on client, received NOTIFY_ALL                              //~var8I~
+    //***************************************************************//~var8I~
+    private void receivedProfileNotifyAll(int PthreadIdx,String[] Pwords)//~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.receivedProfileNotifyAll idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~var8I~
+        AG.aProfileIcon.receivedProfileNotifyAll(PthreadIdx,Pwords);//~var8I~
+    }                                                              //~var8I~
+    //***************************************************************//~var8I~
+    //*on Server, received GETIMAGE_C2SR                           //~var8I~
+    //***************************************************************//~var8I~
+    private byte[] receivedGetImageC2SR(int PthreadIdx,String[] Pwords)//~var8R~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.receivedGetImageC2SR idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~var8I~
+        int sz=Integer.parseInt(Pwords[2]);                        //~var8I~
+	    byte[] buff=null;                                          //~var8I~
+        if (sz!=0)                                                 //~var8I~
+	        buff=receiveByte(sz);                                   //~var8I~
+//      AG.aProfileIcon.receivedRequestImageC2SR(PthreadIdx,Pwords,buff);//~var8R~
+        return buff;
+    }                                                              //~var8I~
+    //***************************************************************//~var8I~
+    //*on client, received other Image   79                        //~var8R~
+    //***************************************************************//~var8I~
+    private void receivedSendImageS2C(String[] Pwords/*sender,msgid,len,pidata*/)//~var8R~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.receivedGetImageS2C words="+Arrays.toString(Pwords));//~var8R~
+        int sz=Integer.parseInt(Pwords[2]);                        //~var8I~
+	    byte[] buff=null;                                          //~var8I~
+        if (sz!=0)                                                 //~var8I~
+	        buff=receiveByte(sz);                                  //~var8I~
+        AG.aProfileIcon.receivedSendImageS2C(Pwords[3],buff);      //~var8R~
+    }                                                              //~var8I~
+    //***************************************************************//~var8I~
+    //*on client, received profile sync com                        //~var8I~
+    //***************************************************************//~var8I~
+    private void receivedProfileSyncComp()                         //~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("BTIOThread.receivedProfileSyncComp");//~var8I~
+        AG.aProfileIcon.receivedProfileSyncComp();                 //~var8I~
+    }                                                              //~var8I~
+//    private void receivedProfileStartSync(int PthreadIdx,String[] Pwords)//~var8R~
+//    {                                                            //~var8R~
+//        if (Dump.Y) Dump.println("BTIOThread.receivedProfileStartSync idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~var8R~
+//        AG.aProfileIcon.startSyncProfileReceived(this,Pwords);   //~var8R~
+//    }                                                            //~var8R~
+//    //***************************************************************//~var8R~
+//    //*on client                                                 //~var8R~
+//    //***************************************************************//~var8R~
+//    private void receivedProfileNotifyAll(int PthreadIdx,String[] Pwords)//~var8R~
+//    {                                                            //~var8R~
+//        if (Dump.Y) Dump.println("BTIOThread.receivedProfileNotifyll idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~var8R~
+//        AG.aProfileIcon.receivedProfileNotifyAll(this,Pwords);   //~var8R~
+//    }                                                            //~var8R~
+//    //***************************************************************//~var8R~
+//    //*on server                                                 //~var8R~
+//    //***************************************************************//~var8R~
+//    private void receivedProfileNotifyAllResp(int PthreadIdx,String[] Pwords)//~var8R~
+//    {                                                            //~var8R~
+//        if (Dump.Y) Dump.println("BTIOThread.receivedProfileNotifyllResp idx="+PthreadIdx+",words="+Arrays.toString(Pwords));//~var8R~
+//        AG.aProfileIcon.receivedProfileNotifyAllResp(this,Pwords);//~var8R~
+//    }                                                            //~var8R~
     //***************************************************************//~9831I~
     //*on client, received RESUMEDLG on resume                     //~9831I~
     //***************************************************************//~9831I~

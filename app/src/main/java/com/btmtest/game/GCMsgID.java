@@ -1,6 +1,7 @@
-//*CID://+va70R~: update#= 392;                                    //+va70R~
+//*CID://+var8R~: update#= 400;                                    //~va70R~//~var8R~
 //**********************************************************************//~v101I~
-//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//+va70I~
+//2022/09/24 var8 display profile icon                             //~var8I~
+//2021/03/27 va70 Notify mode onTraining mode(notify pon/kam/chii/ron to speed up)//~va70I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //**********************************************************************//~va27I~
 package com.btmtest.game;                                          //~@@@@R~
@@ -64,7 +65,7 @@ public enum GCMsgID                                                //~@@@@R~
     public static final int    GCM_REACH        =15;               //~@@@@I~
     public static final int    GCM_RON          =16;               //~@@@@I~
     public static final int    GCM_DISCARD      =17;               //~@@@@I~
-    public static final int    GCM_KAN_OR_PON   =18;  //used wjen playaloneNotify mode to highlight btn both Kan and Pon//+va70I~
+    public static final int    GCM_KAN_OR_PON   =18;  //used wjen playaloneNotify mode to highlight btn both Kan and Pon//~va70I~
     public static final int    GCM_REACH_OPEN   =20;               //~9301I~
     public static final int    GCM_OPEN         =21;               //~@@@@I~//~9301I~
     public static final int    GCM_RON_ANYWAY   =24;               //~0205I~
@@ -87,7 +88,16 @@ public enum GCMsgID                                                //~@@@@R~
     public static final int    GCM_SETTING_SYNC_RESP      = 71;    //~9621I~
     public static final int    GCM_SETTING_CHANGED        = 72;    //~9621I~
     public static final int    GCM_SETTING_NOTIFY_SYNCOK  = 73;    //~9621I~
-    public static final int    GCM_SETTING_HISTORY        = 80;    //~9826I~
+    public static final int    GCM_PROFILE_STARTSYNC      = 74;    //~var8I~
+    public static final int    GCM_PROFILE_GETIMAGE_C2S   = 75;    //~var8R~
+    public static final int    GCM_PROFILE_GETIMAGE_C2SR  = 76;    //~var8I~
+    public static final int    GCM_PROFILE_NOTIFY_ALL     = 77;    //~var8R~
+    public static final int    GCM_PROFILE_NOTIFY_ALL_RESP= 78;    //~var8I~
+    public static final int    GCM_PROFILE_SENDIMAGE_S2C  = 79;    //~var8I~
+    public static final int    GCM_PROFILE_SENDIMAGE_S2CR = 80;    //+var8I~
+    public static final int    GCM_PROFILE_SYNC_COMP      = 81;    //+var8I~
+//  public static final int    GCM_SETTING_HISTORY        = 80;    //~9826I~//+var8R~
+    public static final int    GCM_SETTING_HISTORY        = 90;    //+var8I~
                                                                    //~9404I~
     public static final int    GCM_SHOOT_FOR_TEMPSTARTER  =102;  //request shoot dice to determin tempstarter//~@@@@R~//~9404M~
 //    public static final int    GCM_TEMPSTARTER          =103;  //request shoot dice to determin player to determin tempstarter//~@@@@I~//~9404I~

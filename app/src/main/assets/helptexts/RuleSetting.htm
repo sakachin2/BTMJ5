@@ -3,6 +3,7 @@ Button <BIG><B>Yaku</B></BIG> : Opens child dialog relating Yaku(winning pattern
 Button <BIG><B>Oper</B></BIG> : Opens child dialog relating Operation such as "DelayTime", "Check winning hand".
 <BR>
 <BR>
+<!--
 <BIG><B>ID</B></BIG> : Identify the rule file. Fill it such as Kansai, Tokyo etc
 to use rule file differently depending players group.
 <BR>
@@ -23,6 +24,7 @@ On the right of <B>ID</B>, timestamp of <BIG><B>Update</B></BIG> is displayed.
 <BIG><B>Cancel</B></BIG> :  Updates are discarded.
 <BR>
 <BR>
+-->
 <BIG><B>Rounds</B></BIG> : 
 <BR>
 東風戦:4 rounds, East(東) wind only game.
@@ -126,7 +128,7 @@ This penalty is payed after player placing determined.
 <BR>
 <BR>
 <BIG><B>Call the same Meld</B></BIG>：
-Limitation to discarding after calling Pon/Chii.
+Limitation to discarding just after calling Pon/Chii.
 <BR>
 <B>No if the same tile</B>：e.g) Calling Chii for number-1 to make meld 1-2-3 and discarding number-1 is not allowed,
 but discarding number-4 is allowed.
@@ -135,6 +137,28 @@ Likewise, calling Pon a tile and discarding the same tile is not allowed.
 <B>No</B>：Neither is allowed.
 <BR>
 <B>OK fully</B>：Both are allowed.
+<BR>
+e.g.)
+Your hand is 
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s>
+<img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s>
+<img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s>
+<img src=@drawable/s_man5l><img src=@drawable/s_man4s><img src=@drawable/s_man6s>
+which is Tenpai status but missing any Yaku.
+When privious player discarded <img src=@drawable/s_man1s> you can or can't call Chii to make meld 
+<img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s> to fix Yaku:Straight
+and discard <img src=@drawable/s_man4s> which is not same as discarded tile but another side of the Meld.
+<BR>
+Another case, your hand is
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man4s>
+<img src=@drawable/s_man7s><img src=@drawable/s_man8s><img src=@drawable/s_man9s>
+<img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<img src=@drawable/s_man5s><img src=@drawable/s_man5s><img src=@drawable/s_man5l>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws>
+which is Tenpai status with Yaku:Half Flush.
+When privious player called Riichi discarding <img src=@drawable/s_man2s> you will want to avoid possibility of Riichi One-shot.
+You can or can't call Chii making meld <img src=@drawable/s_man2l><img src=@drawable/s_man3s><img src=@drawable/s_man4s>
+and discard the same tile <img src=@drawable/s_man2s> in you hand.
 <BR>
 <BR>
 <BIG><B>Abortive Draw</B></BIG>：
@@ -199,4 +223,4 @@ When the game includes Robot(s) except playing alone mode, robot's debts are res
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;finally  +30600, -400, -30000, 0(Robot)
 <BR>
 <BR>
-<SMALL>RuleSetting 2022/07/09</SMALL>
+<SMALL>RuleSetting 2022/09/10</SMALL>

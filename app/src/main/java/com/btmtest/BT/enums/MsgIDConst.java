@@ -1,5 +1,6 @@
-//*CID://+@002R~:                             update#=  198;
+//*CID://+var8R~:                             update#=  200;       //~var8R~
 //****************************************************************************
+//2022/09/24 var8 display profile icon                             //~var8I~
 //@002:20181103 use enum
 //****************************************************************************
 package com.btmtest.BT.enums;                                      //~@002R~
@@ -17,6 +18,7 @@ public class MsgIDConst
     public static final int MSGID_QNAME          =6;    //received MSGQ_NAME with synchDate//~@002I~
     public static final int MSGID_IOERR          =7;    //IOThread exception//~@002I~
     public static final int MSGID_KEEPALIVE      =8;               //~@002I~
+    public static final int MSGID_PROFILE        =9;               //~var8I~
     public static final int MSGID_APP            =100;
 
     public static final String MSG_SEP         =";";               //~@002R~
@@ -35,7 +37,7 @@ public class MsgIDConst
     public static final String REQ        ="@@";
     public static final String RESP       ="#@";
     public static final String APP        ="!!";
-    public static final String APPSEQNO   ="!@";                   //+@002I~
+    public static final String APPSEQNO   ="!@";                   //~@002I~
 
     public static final String MSG_CLOSE      ="close";
     public static final String MSGQ_CLOSE     =REQ +MSG_CLOSE;
@@ -55,9 +57,12 @@ public class MsgIDConst
     public static final String MSG_KEEPALIVE     ="keepalive";      //~@002I~
     public static final String MSGQ_KEEPALIVE    =REQ +MSG_KEEPALIVE;//~@002I~
     public static final String MSGR_KEEPALIVE    =RESP+MSG_KEEPALIVE;//~@002I~
+//  public static final String MSG_PROFILE       ="Profile";       //+var8R~
+//  public static final String MSGQ_PROFILE      =REQ +MSG_PROFILE;//+var8R~
+//  public static final String MSGR_PROFILE      =RESP+MSG_PROFILE;//+var8R~
     public static final String MSG_APP        =APP;
     public static final String MSGQ_APP       =REQ +MSG_APP;
     public static final String MSGR_APP       =RESP+MSG_APP;
-    public static final String MSGQ_APPSEQNO  =REQ +APPSEQNO;      //+@002I~
-    public static final String MSGR_APPSEQNO  =RESP+APPSEQNO;      //+@002I~
+    public static final String MSGQ_APPSEQNO  =REQ +APPSEQNO;      //~@002I~
+    public static final String MSGR_APPSEQNO  =RESP+APPSEQNO;      //~@002I~
 }

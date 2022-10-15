@@ -1,5 +1,8 @@
-//*CID://+vaqfR~:                             update#= 430;        //~vaqfR~
+//*CID://+vas0R~:                             update#= 440;        //~vas0R~
 //**********************************************************************//~@@@@I~
+//2022/10/09 vas0 print history                                    //~vas0I~
+//2022/10/07 varc BluetoothDevice.getName() need dynamic permission at Api31(Android12:S); try back to api30 because having no device of android12//~varcI~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2022/08/21 vaqf resumed game has to be deleted after game advanced to gameover of newly suspended.//~vaqfI~
 //2022/07/04 van1 hungle suuprt for Help and Msg                   //~van1I~
 //2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
@@ -74,6 +77,8 @@ import com.btmtest.dialog.PrefSetting;
 import com.btmtest.dialog.RuleSetting;                             //~9412R~
 import com.btmtest.game.gv.Anim;
 import com.btmtest.game.gv.Pieces;
+import com.btmtest.game.gv.ProfileIcon;
+import com.btmtest.prt.PrtDoc;
 import com.btmtest.utils.AlertDlg;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Alert;                                    //~8B07I~
@@ -278,7 +283,10 @@ public class MainActivity extends AppCompatActivity
                if (swEndGame)	//endgame from landscape           //~vamcR~
                {                                                   //~vamcI~
             	if (Dump.Y) Dump.println("MainActivity.setFullScreen30 show navigationBar by swEndGame");//~vamcR~
-		        ic.setSystemBarsBehavior(BEHAVIOR_DEFAULT);         //~vamcI~
+//  	        ic.setSystemBarsBehavior(BEHAVIOR_DEFAULT);         //~vamcI~//~varcR~
+//              int b=BEHAVIOR_SHOW_BARS_BY_SWIPE;//added at api30,deprecated at api31//~varcR~
+                int b=BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE;  //added at api30//~varcI~
+    	        ic.setSystemBarsBehavior(b);                       //~varcI~
 	        	ic.show(WindowInsets.Type.navigationBars());       //~vamcI~
                }                                                   //~vamcI~
                else                                                //~vamcR~
@@ -286,7 +294,8 @@ public class MainActivity extends AppCompatActivity
 //          	if (Dump.Y) Dump.println("MainActivity.setFullScreen30 hide navigationBar");//~vamcR~
 //              ic.hide(WindowInsets.Type.navigationBars());       //~vam5I~//~vamcR~
 //              ic.hide(WindowInsets.Type.systemBars());           //~vam5I~//~vamcR~
-                int b=BEHAVIOR_SHOW_BARS_BY_SWIPE;                 //~1ak4R~
+//              int b=BEHAVIOR_SHOW_BARS_BY_SWIPE;//added at api30,deprecated at api31//~varcI~
+                int b=BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE;  //added at api30//~varcI~
                 ic.setSystemBarsBehavior(b);                       //~1ak4R~
 //              int a=APPEARANCE_LIGHT_STATUS_BARS;                //~1ak4I~//~vambR~
 //              ic.setSystemBarsAppearance(a,a);                   //~1ak4I~//~vambR~
@@ -380,6 +389,8 @@ public class MainActivity extends AppCompatActivity
         new IPMulti(MAXCLIENT);                                    //~9723I~
 //      new History();                                             //~9614I~//~9B09R~
         initHistory(true/*swInitApp*/);                            //~9B09I~
+        new ProfileIcon();                                         //~var8I~
+        new PrtDoc();                                              //~vas0R~
     }                                                              //~9106I~
 	//*************************                                    //~8B05I~
 	//*now foreground                                              //~9A22I~
@@ -673,7 +684,7 @@ public class MainActivity extends AppCompatActivity
     	    initHistory(false/*PswinitApp*/);	//may not have writable permission,init history by internal storage//~vae0R~
     	    Status.resetEndgameSomeone();                          //~9B20I~
     		AG.resumeHD=null;                                      //~9901I~
-        	AG.resumeHD_Resumed=null;                              //+vaqfR~
+        	AG.resumeHD_Resumed=null;                              //~vaqfR~
 	    	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))        //~0124I~
             {                                                      //~0124I~
             	MainView.drawMsg(R.string.Err_RuleIsInitial);      //~0124I~
@@ -989,7 +1000,7 @@ public class MainActivity extends AppCompatActivity
 //          	return;   //rule not synched                       //~9621I~
 //          if (!chkMember())                                      //~9621I~
 //          	return;                                            //~9621I~
-            Accounts.createInstance();                             //~9621I~
+//          Accounts.createInstance();   //move to ProfileIcon, it need aACAction//~var8R~
         	changeOrientation(PrefSetting.getOrientation());       //~9621I~
         	if (chngOrientation!=0)                                //~9621I~
             	return;                                            //~9621I~
@@ -1611,7 +1622,7 @@ public class MainActivity extends AppCompatActivity
         	if (Dump.Y) Dump.println("MainActivity.resumeGame canceled by prop get failed");//~vae5I~
             return;                                                //~vae5I~
         }                                                          //~vae5I~
-        AG.resumeHD_Resumed=AG.resumeHD;                           //+vaqfR~
+        AG.resumeHD_Resumed=AG.resumeHD;                           //~vaqfR~
         if (Dump.Y) Dump.println("MainActivity.resumeGame AG.ruleProp="+AG.ruleProp);//~van1I~
     	AG.savePropForResume=AG.ruleProp;                          //~vae5R~
     	AG.ruleProp=p;                                             //~vae5I~
@@ -1663,8 +1674,9 @@ public class MainActivity extends AppCompatActivity
 	        recoverProp();                                         //~vae8I~
         	break;                                                 //~vae0I~
         case PERMISSION_BLUETOOTH:  //API31                        //~vam8I~
-        	granted=UView.isPermissionGranted(Presults[0]) && UView.isPermissionGranted(Presults[1]);//~vam8I~
-            BTI.grantedPermission(granted);                        //~vam8I~
+//      	granted=UView.isPermissionGranted(Presults[0]) && UView.isPermissionGranted(Presults[1]);//~vam8I~//+vas0R~
+//          BTI.grantedPermission(granted);                        //~vam8I~//+vas0R~
+            BTI.grantedPermission(Ptypes,Presults);                //+vas0I~
         	break;                                                 //~vam8I~
         }                                                          //~9930I~
     }                                                              //~9930I~
@@ -1679,6 +1691,12 @@ public class MainActivity extends AppCompatActivity
         UMediaStore.onActivityResult(requestCode,resultCode,data); //~1Ak2I~//~1ak2I~
       }                                                            //~1Ak2I~//~1ak2I~
       else                                                         //~1Ak2I~//~1ak2I~
+      if (requestCode==AG.ACTIVITY_REQUEST_PICKUP_IMAGE)           //~var8I~
+      {                                                            //~var8I~
+        if(Dump.Y) Dump.println("MainActivity.onActivityResult Image");//~var8I~
+        UMediaStore.onActivityResultImage(resultCode,data);//~var8I~
+      }                                                            //~var8I~
+      else                                                         //~var8I~
       if (requestCode>AG.ACTIVITY_REQUEST_SCOPED && requestCode<AG.ACTIVITY_REQUEST_SCOPED_LAST)//~1Ak1I~//~1ak1I~
       {                                                            //~1Ak1I~//~1ak1I~
         AG.aUScoped.onActivityResult(requestCode,resultCode,data); //~1Ak1R~//~1ak1I~

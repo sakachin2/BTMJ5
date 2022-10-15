@@ -89,6 +89,8 @@
                     >
                         <include layout="@layout/setting_rule_opt_gameset_theme"
                         />
+                        <include layout="@layout/setting_rule_opt_final_theme"
+                        />
                     </LinearLayout>
                     <include layout="@layout/setting_rule_opt_pending_cont_theme"
                     />

@@ -1,0 +1,121 @@
+Pickup options that may differ by regions or groups.
+Click the <B>Details</B> button for detailed explanations and options not listed here.
+<BR>
+----------------------------------
+<BR>
+<BIG><B>ID</B></BIG> : Identify the rule file. Fill it such as Kansai, NewYork etc
+to use rule file differently depending players group.
+<BR>
+Use <BIG><B>Save</B></BIG>/<BIG><B>Load</B></BIG> button when updated. 
+<BR>
+On the right of <B>ID</B>, timestamp of <BIG><B>Update</B></BIG> is displayed.
+ This is the key of rule synchronization. Unmatch of this among players prevents start of game even if its contents are the same.
+ When rules updated, server has to <BIG><B>Send</B></BIG> to all clients.
+ When clients received, this dialog opens. You can identify items different with current setting by background color.
+ Game can be started when received <BIG><B>Agree</B></BIG> from all clients.
+ If you want to use rule file on a client, the client "Load" the file then "Send" to server.
+ Dialog will open on the server, which has to be sent again to the other clients to synchronize.
+<BR>
+<BIG><B>OK</B></BIG> : Update is saved as "Current" and stay activated.
+<BR>
+ Update is also saved by "Send" button.
+ "Current" is kept in the internal folder and removed by re-installation.
+<BR>
+<BIG><B>Cancel</B></BIG> :  Updates are discarded.
+<BR>
+<span style="background-color:#ffd700;"> 
+----------------------------------
+</span>
+<BR>
+<BIG><B>RedDora</B></BIG>： 
+Half of number-5 tiles of each suit is colored red are regarded as Dora.(total 6 additional Dora in 136 tiles all) 
+<BR>
+<BIG><B>Wareme</B></BIG>：(Split position) 
+<BR>
+Wareme player is decided by the role of Dice the dealer casted at start of each round.
+<BR>
+Wareme player gains or pays doubled score.
+<BR>
+At start of each round, Wareme player is determined by dealer's dice spot.
+e.g. If dice spot is 2,6 or 10 the next player of the dealer is Wareme player.
+He gains 4000 points by winning hand which value is 2000 points.
+He pays 4000 points if he is a looser for the winning hand which value is 2000 points.
+For other player's win of 2000 points by self-pick he pays 2000 points if dealer, 1000 points if not dealer.
+<BR>
+<BIG><B>Tobi</B></BIG>:(Bankrupt)
+<BR>
+Option of gameover when some player's score reached to minus.
+<BR>
+Here, set the payment method for the minus score.
+<BR>
+<BIG><B>Yakitori</B></BIG>:(Grilled Chicken)
+<BR>
+If "yes", Yakitori mark will be distributed to all at the start of the game,
+and at end of each round, the mark of the winner will be withdrawn.
+At End-Of-Game the player holding the mark pays penalty.
+This penalty is payed after player placing determined. 
+<BR>
+<BIG><B>Call the same Meld</B></BIG>：
+Limitation to discarding just after calling Pon/Chii.
+<BR>
+e.g) Afterg Chii for number-1 of Pin to make meld 1-2-3, and discarding number-1/4 of Pin is allowed or not?
+<BR>
+<BIG><B>Double-Ron</B></BIG>：
+<BR>
+This is the rule when multiple players declare a win on the discarded tiles at the same time.
+<BR>
+HeadBump:Only the player closest to the looser in counterclockwise sequence is granted the win.
+<BR>
+<span style="background-color:#ffd700;"> 
+--- Yaku -------------------------
+</span>
+<BR>
+<BIG><B>Show Win-A</B></BIG>:
+<BR>
+This button is used to call win for irregular winning pattern by local rule.
+<BR>
+In the case of non-standard winning pattern, even if you press the "Win" button, an error will occur in principle.
+<BR>
+If there is a winning pattern that is agreed by local rules, you may display the "Win-A" button and call Win by this button.
+However, the dialog shows "score = 0", it is necessary to correct the score each time on the dialog based on the agreement of the value of the local Yaku.
+<BR>
+<BIG><B>Psuedo-Tenpai</BIG></B>:
+<BR>
+Please check from "Details" as it is also related to "Fix Yaku", "Check 1-han constraint", and "Furiten Riichi".
+<BR>
+<BIG><B>Fix Yaku</BIG></B>:
+<BR>
+"First only" and "Middle OK" is the rule whether the sequence of Pon/Chii is valid for the Yaku constructed finally.
+It is required to confirm the pattern allowed as there are some variation for this rule.
+<BR>
+"Fianlly" accepts any winning pattern if Yaku is constructed finally, so there is litte confusion.
+<BR>
+<span style="background-color:#ffd700;"> 
+--- Operation --------------------
+</span>
+<BR>
+<B>Win call is cancelable</B>:  
+<BR>
+If off, the "score" button lights up and the Win call cannot be undone.
+If on, the "Win" button lights up, blocking other players' Pon, Kan, and Chii until you cancel the Win.
+You can decide not to win regarding on the score situation, but other player will detect your status of Tenpai.
+<BR>
+<BIG><B>1-han Constraint</B></BIG>：
+<BR>
+If off, you won't be notified an error even if your hand is missing any Yaku when you press the "Win" button.
+Like real Mahjong, there is a possibility that it will be checked by other player and you pay penalty of Chombo.
+Even in that case, if "Win call is cancelable" is on, you will have time to confirm.
+<BR>
+<BIG><B>Furiten</B></BIG>：
+<BR>
+If off, you won't be notified an error even if your winning pattern is Furiten when you press the "Win" button.
+Like real Mahjong, there is a possibility that it will be checked by other player and you pay penalty of Chombo.
+Even in that case, if "Win call is cancelable" is on, you will have time to confirm.
+<BR>
+<BIG><B>Confirm Tenpai</B></BIG>:
+<BR>
+If off, your Riichi will be accepted even if you are not in Tenpai status.
+Like real Mahjong, there is a possibility that it will be checked by other player at the end of the round and you pay penalty of Chombo.
+<BR>
+<BR>
+<SMALL>RuleSettingSumm 2022/09/10</SMALL>

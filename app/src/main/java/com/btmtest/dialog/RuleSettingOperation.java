@@ -1,6 +1,7 @@
-//*CID://+vapbR~:                             update#=  517;       //+vapbR~
+//*CID://+var2R~:                             update#=  519;       //~var2R~
 //*****************************************************************//~v101I~
-//2022/07/27 vapb change default of checkFuriten                   //+vapbI~
+//2022/09/09 var2 summary rule setting dialog;add from operation   //~var2I~
+//2022/07/27 vapb change default of checkFuriten                   //~vapbI~
 //2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2022/03/19 vakR On client, dismiss child dialog of RuleSetting when receved from server//~vakRI~
@@ -40,11 +41,15 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	private static final int    LAYOUTID_SMALLFONT=R.layout.setting_rule_operation_theme;//~vaaFI~
 	private static final int    HELP_TITLEID=TITLEID;              //~v@@@I~
 	private static final String HELPFILE="RuleSettingOperation";//~v@@@R~//~9C13R~
-	private static final int DEFAULT_RONVALUE=1;
-	private static final int DEFAULT_CHK_REACH=1;                  //~va27I~
-//  private static final int DEFAULT_CHK_MULTIWAIT=0;              //+vapbR~
-	private static final int DEFAULT_CHK_MULTIWAIT=1; //for isCheckFuriten//+vapbI~
-	private static final int DEFAULT_FIX1=1;
+//  private static final int DEFAULT_RONVALUE=1;                   //+var2R~
+    public  static final int DEFAULT_RONVALUE=1;                   //+var2I~
+//  private static final int DEFAULT_CHK_REACH=1;                  //~va27I~//+var2R~
+    public  static final int DEFAULT_CHK_REACH=1;                  //+var2I~
+//  private static final int DEFAULT_CHK_MULTIWAIT=0;              //~vapbR~
+//  private static final int DEFAULT_CHK_MULTIWAIT=1; //for isCheckFuriten//~vapbI~//+var2R~
+    public  static final int DEFAULT_CHK_MULTIWAIT=1; //for isCheckFuriten//+var2I~
+//  private static final int DEFAULT_FIX1=1;                       //+var2R~
+    public  static final int DEFAULT_FIX1=1;                       //+var2I~
     //**********************************************************   //~v@@@I~
     private static final int UNIT_SEC=10;                          //~9622I~//~v@@@M~
     //**********************************************************   //~v@@@R~
@@ -281,6 +286,45 @@ public class RuleSettingOperation extends UFDlg                    //~v@@@R~
 	    if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnly rc="+rc);//~vakQI~
         return rc;                                                 //~vakQI~
     }                                                              //~vakQI~
+	//***********************************************************  //~var2I~
+    public  static boolean chkUpdateCheckOnly_ExceptSumm(RuleSetting Prsd)//~var2I~
+    {                                                              //~var2I~
+		if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnly_ExceptSumm curProp="+Prsd.curProp.toString());//~var2I~
+	    if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnly_ExceptSumm AG.ruleProp="+AG.ruleProp.toString());//~var2I~
+        boolean rc=false;                                          //~var2I~
+        for (;;)                                                   //~var2I~
+        {                                                          //~var2I~
+    //*delay                                                       //~var2I~
+            if (Prsd.isChanged(RSID_DELAY_PONKAN))            {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_DELAY_TAKE))              {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_DELAY_LAST))              {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_DELAY_DISCARD))           {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_DELAY_2TOUCH))            {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_TIMEOUT_TAKE))            {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_TIMEOUT_TAKEROBOT))       {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_ALLOW_ROBOT_ALL_BTN))     {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_PLAY_ALONE_NOTIFY))       {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_PLAY_MATCH_NOTIFY))       {rc=true; break;}//~var2I~
+    //*2Touch                                                      //~var2I~
+//          if (Prsd.isChanged(RSID_2TOUCH_CANCELABLE_RON))   {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_2TOUCH_TIMEOUT))          {rc=true; break;}//~var2I~
+    //*YakuFix1                                                    //~var2I~
+//          if (Prsd.isChanged(RSID_YAKUFIX1))                {rc=true; break;}//~var2I~
+//          if (Prsd.isChanged(RSID_CHK_MULTIWAIT))           {rc=true; break;}//~var2I~
+//          if (Prsd.isChanged(RSID_CHECK_RONVALUE))          {rc=true; break;}//~var2I~
+//          if (Prsd.isChanged(RSID_CHECK_REACH))             {rc=true; break;}//~var2I~
+    //*positioning                                                 //~var2I~
+            if (Prsd.isChanged(RSID_POSITIONING))             {rc=true; break;}//~var2I~
+    //*suspend                                                     //~var2I~
+            if (Prsd.isChanged(RSID_SUSPEND_PENALTY))         {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_SUSPEND_PENALTYIOERR))    {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_SUSPEND))                 {rc=true; break;}//~var2I~
+            if (Prsd.isChanged(RSID_DELAY_UNIT))              {rc=true; break;}//~var2I~
+            break;                                                 //~var2I~
+        }                                                          //~var2I~
+	    if (Dump.Y) Dump.println("RuleSettingOperation.chkUpdateCheckOnlyExceptSumm rc="+rc);//~var2I~
+        return rc;                                                 //~var2I~
+    }                                                              //~var2I~
 	//***********************************************************  //~vakQI~
     private void chkUpdate()                                       //~vakQI~
     {                                                              //~vakQI~

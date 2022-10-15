@@ -1,4 +1,4 @@
-//*CID://+vaq6R~: update#= 566;                                    //~vaq6R~
+//*CID://+vaq6R~: update#= 567;                                    //~vaq6R~
 //**********************************************************************//~v101I~
 //2022/08/15 vaq6 for DrawnMangan clear 8contRon even defained as Ron not to make yakuman by drawnMangan//~vaq6I~
 //2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3R~
@@ -686,7 +686,7 @@ public class Status //extends Handler                              //~v@@@R~
     {                                                              //~va02I~
     	int status=aStatus.gameStatus;                             //~va02I~
     	boolean rc=status>=GS_START_GAME && status<GS_BEFORE_DEAL; //20<= && <40//~va02I~
-        if (Dump.Y) Dump.println("Status.isGamingForMenuInGame rc="+rc+",status="+status);//~va02I~
+        if (Dump.Y) Dump.println("Status.isGamingForMenuInGameAndInterRound rc="+rc+",status="+status);//~va02I~//+vaq6R~
         return rc;                                                 //~va02I~
     }                                                              //~va02I~
 	//*************************************************************************//~v@@@I~
@@ -761,8 +761,8 @@ public class Status //extends Handler                              //~v@@@R~
     	boolean swContinue=PnextgameType==NGTP_CONTINUE;           //~9519I~
     	boolean swNextRound=PnextgameType==NGTP_NEXTROUND;                       //~9526I~
         boolean swDrawn=PendgameType!=EGDR_NORMAL;	//DrawnMangan as Drawn at setCtrContinuedGain//~9819I~
-//      AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue);//before gamectr up//~9519I~//+vaq6R~
-        AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue,PendgameType==EGDR_MANGAN_RON);//before gamectr up//+vaq6I~
+//      AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue);//before gamectr up//~9519I~//~vaq6R~
+        AG.aAccounts.setCtrContinuedGain(swGameOver,swDrawn,swContinue,PendgameType==EGDR_MANGAN_RON);//before gamectr up//~vaq6I~
         if (swGameOver)                          //~v@@@I~         //~9519R~
     		aStatus.gameOver();                                            //~v@@@I~
         else                                                       //~v@@@I~

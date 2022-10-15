@@ -1,7 +1,8 @@
-//*CID://+DATER~:                                   update#=  254; //~@002R~//~9404R~
+//*CID://+var8R~:                                   update#=  259; //~var8R~
 //*************************************************************************//~@002R~
 //*Blutooth msg IO thread                                          //~@002I~
 //*************************************************************************//~@002I~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //@002:20181103 use enum                                           //~@002I~
 //****************************************************************************//~@@@1I~
 package com.btmtest.wifi;                                          //~1AecR~//~9723R~
@@ -26,7 +27,7 @@ import java.util.Arrays;
 public class IPIOThread extends BTIOThread                             //~1AecR~//~9723R~
 {                                                                  //~1AecR~
     public Socket ioSocket;                              //~1AecR~//~9723R~//~9B03R~
-//  public int idxMember;	//set by IPIOServer/IPIOClient         //~9A02I~//+0220R~
+//  public int idxMember;	//set by IPIOServer/IPIOClient         //~9A02I~//~0220R~
     public int idxServer=-1;	//set by IPIOClient                //~9A09R~
 //********************************************************************************//~9723I~
     public static IPIOThread newIPIOThread(Socket Psocket,String Plocalname,String Premotename,boolean Pserver)//~1AecI~//~9723R~
@@ -44,8 +45,12 @@ public class IPIOThread extends BTIOThread                             //~1AecR~
         {                                                          //~9723I~
             if (Dump.Y) Dump.println("IPIOThread tcpNoDelay="+ioSocket.getTcpNoDelay());//~9B04I~
             ioSocket.setTcpNoDelay(true);   //Nagle algorithm Off  //~9B04I~
-			In=new BufferedReader(new InputStreamReader(new DataInputStream(ioSocket.getInputStream())));//~1AecR~//~9723R~
-			Out=new PrintWriter(ioSocket.getOutputStream(),true/*auto flush*/);//~1AecI~//~9723R~
+//  		In=new BufferedReader(new InputStreamReader(new DataInputStream(ioSocket.getInputStream())));//~1AecR~//~9723R~//+var8R~
+    		In=ioSocket.getInputStream();                       //+var8I~
+//  		Out=new PrintWriter(ioSocket.getOutputStream(),true/*auto flush*/);//~1AecI~//~9723R~//+var8R~
+    		Out=ioSocket.getOutputStream();                        //+var8I~
+//  	    InputStream=ioSocket.getInputStream();                 //~var8R~
+//      	OutputStream=ioSocket.getOutputStream();               //~var8R~
         }                                                          //~9723I~
 		catch (Exception e)                                        //~9723I~
 		{                                                          //~v101R~//~9723I~
@@ -60,9 +65,14 @@ public class IPIOThread extends BTIOThread                             //~1AecR~
 //      new CloseConnection(ioSocket,In,Out).start();              //~9723R~//~9725R~
 //      new CloseConnection(ioSocket,In,Out).doClose();            //~9725I~//~9B03R~
 //      new CloseConnection(ioSocket,In,Out).start();              //~9B03I~//~9B04R~
-        new CloseConnection(ioSocket,null/*In*/,Out).start();      //~9B04I~
+//      new CloseConnection(ioSocket,null/*In*/,Out).start();      //~9B04I~//~var8R~
+//      new CloseConnection(ioSocket,null/*In*/,Out,InputStream,OutputStream).start();//~var8R~
+//      new CloseConnection(ioSocket,null/*In*/,Out,InputStream,OutputStream).start();//~var8R~
+        new CloseConnection(ioSocket,In,Out).start();              //~var8I~
         In=null;                                                   //~9723I~
         Out=null;                                                  //~9723I~
+//      InputStream=null;                                          //~var8R~
+//      OutputStream=null;                                         //~var8R~
         AG.aIPMulti.connectionLost(swServer,localDeviceName,remoteDeviceName);              //~9723I~//~9729R~
     }                                                              //~9723I~
 //***************************************************************  //~9726I~

@@ -1,5 +1,6 @@
-//*CID://+va60R~: update#= 425;                                    //~v@21R~//~va27R~//~va60R~
+//*CID://+var8R~: update#= 427;                                    //~var8R~
 //**********************************************************************//~v101I~
+//2022/09/24 var8 display profile icon                             //~var8I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/03 va27 Tenpai chk at Reach                              //~va27I~
 //v@11 2019/02/02 TakeOne by touch                                 //~v@11I~
@@ -39,6 +40,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
 	public static final String GVPARM_INT3="IntParm3";             //~v@@@I~
 	public static final String GVPARM_INT4="IntParm4";             //~v@11I~
 	public static final String GVPARM_INT5="IntParm5";             //~v@11I~
+	public static final String GVPARM_BYTEARRAY1="ByteArray1";     //~var8I~
                                                                    //~v@@@I~
 //    private SurfaceHolder holder;                                  //~v@@@I~//~v@21R~
     private Canvas canvas;                                         //~v@@@I~
@@ -290,7 +292,7 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
     //***********************************************************  //~v@21I~
     public static void sendMsg(int Pmsgid,int Pappmsgid,int Psender,String Pparm1,String Pparm2,String Pparm3)//~v@21I~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("GameViewHandler.sendMsg msgid="+Pmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pparm3="+Pparm3);//~v@21I~
+        if (Dump.Y) Dump.println("GameViewHandler.sendMsg msgid="+Pmsgid+",appmsgid="+Pappmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pparm3="+Pparm3);//~v@21I~//~var8R~
         if (AG.aGameViewHandler==null)                             //~v@11I~
         	return;                                                //~v@11I~
 //        Message msg=obtainMsg(Pmsgid);                             //~v@21I~//~v@11R~
@@ -303,10 +305,21 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
 	    Message msg=obtainMsg(Pmsgid,Pappmsgid,Psender,Pparm1,Pparm2,Pparm3);//~v@11I~
         AG.aGameViewHandler.sendMessage(msg);                       //~v@21I~
     }                                                              //~v@21I~
+    //***********************************************************  //~var8I~
+    //*for Bitmap send                                             //~var8I~
+    //***********************************************************  //~var8I~
+    public static void sendMsg(int Pmsgid,int Pappmsgid,int Psender,String Pparm1,String Pparm2,byte[] Pbuff)//~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("GameViewHandler.sendMsg msgid="+Pmsgid+",appMsgID="+Pappmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pbuff="+Pbuff);//~var8I~
+        if (AG.aGameViewHandler==null)                             //~var8I~
+        	return;                                                //~var8I~
+	    Message msg=obtainMsg(Pmsgid,Pappmsgid,Psender,Pparm1,Pparm2,Pbuff);//~var8I~
+        AG.aGameViewHandler.sendMessage(msg);                      //~var8I~
+    }                                                              //~var8I~
     //***********************************************************  //~v@11I~
     public static Message obtainMsg(int Pmsgid,int Pappmsgid,int Psender,String Pparm1,String Pparm2,String Pparm3)//~v@11I~
     {                                                              //~v@11I~
-        if (Dump.Y) Dump.println("GameViewHandler.obtainMsg msgid="+Pmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pparm3="+Pparm3);//~v@11I~//+va60R~
+        if (Dump.Y) Dump.println("GameViewHandler.obtainMsg msgid="+Pmsgid+",appMsgID="+Pappmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pparm3="+Pparm3);//~v@11I~//~va60R~//~var8R~
     	Message msg=obtainMsg(Pmsgid);                             //~v@11I~
         Bundle bundle=msg.getData();                               //~v@11I~
         bundle.putInt(GVPARM_INT1,Pappmsgid);                      //~v@11I~
@@ -319,6 +332,22 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
     	    bundle.putString(GVPARM3,Pparm3);
         return msg;//~v@11I~
     }                                                              //~v@11I~
+    //***********************************************************  //~var8I~
+    public static Message obtainMsg(int Pmsgid,int Pappmsgid,int Psender,String Pparm1,String Pparm2,byte[] Pbuff)//~var8I~
+    {                                                              //~var8I~
+        if (Dump.Y) Dump.println("GameViewHandler.obtainMsg msgid="+Pmsgid+",appMsgID="+Pappmsgid+",parm1="+Pparm1+",parm2="+Pparm2+",Pbuff="+Pbuff);//~var8I~
+    	Message msg=obtainMsg(Pmsgid);                             //~var8I~
+        Bundle bundle=msg.getData();                               //~var8I~
+        bundle.putInt(GVPARM_INT1,Pappmsgid);                      //~var8I~
+        bundle.putInt(GVPARM_INT2,Psender);                        //~var8I~
+        if (Pparm1!=null)                                          //~var8I~
+	        bundle.putString(GVPARM1,Pparm1);                      //~var8I~
+        if (Pparm2!=null)                                          //~var8I~
+	        bundle.putString(GVPARM2,Pparm2);                      //~var8I~
+        if (Pbuff!=null)                                           //~var8I~
+    	    bundle.putByteArray(GVPARM_BYTEARRAY1,Pbuff);    //~var8I~
+        return msg;                                                //~var8I~
+    }                                                              //~var8I~
     //***********************************************************  //~v@11I~
     public static void sendMsgDelayed(Message Pmsg,int Pmilisec)   //~v@11I~
     {                                                              //~v@11I~
@@ -335,6 +364,14 @@ public class GameViewHandler extends UHandler                      //~v@@@R~
         if (Dump.Y) Dump.println("GameViewHandler.getMsgData msgid="+Pmsg.what+",data="+data);//~v@@@I~//~va60R~
         return data;                                               //~v@@@I~
     }                                                              //~v@@@I~
+    //***********************************************************  //+var8I~
+    public static byte[] getMsgDataByteArray(Message Pmsg)         //+var8I~
+    {                                                              //+var8I~
+        Bundle bundle=Pmsg.getData();                              //+var8I~
+        byte[] buff=bundle.getByteArray(GVPARM_BYTEARRAY1);     //+var8I~
+        if (Dump.Y) Dump.println("GameViewHandler.getMsgDataByteArray msgid="+Pmsg.what+",buff="+buff);//+var8I~
+        return buff;                                               //+var8I~
+    }                                                              //+var8I~
     //***********************************************************  //~v@21I~
     public static String[] getMsgStrData(Message Pmsg)             //~v@21I~
     {                                                              //~v@21I~

@@ -1,5 +1,6 @@
-//*CID://+vaqcR~:                             update#=  623;       //~vaqcR~
+//*CID://+vas0R~:                             update#=  646;       //~vas0R~
 //*****************************************************************//~v101I~
+//2022/10/09 vas0 print history                                    //~vas0I~
 //2022/08/20 vaqc resume playalone game; if changed yourName errmsg is no connection, it have to change to not your game.//~vaqcI~
 //2021/12/24 vaib History list;change background of playalone game //~vaibI~
 //2021/09/15 vae4 (Bug)No connection err if AG.Yourname="" at reload interrupted play alone game//~vae4I~
@@ -13,6 +14,7 @@
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.btmtest.game.HistoryData;
 import com.btmtest.game.Status;
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.gui.UListView;
+import com.btmtest.prt.PrtDoc;
 import com.btmtest.utils.Alert;
 import com.btmtest.utils.Alert2;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
@@ -49,6 +52,7 @@ import static com.btmtest.gui.UListView.*;
 
 public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R~//~9614R~
             implements UCheckBox.UCheckBoxI                        //~0114I~
+                      ,PrtDoc.PrtDocI                              //~vas0I~
 //    implements Alert2.AlertI                                     //~0112R~
 {                                                                  //~2C29R~
     private static final int TITLEID=R.string.Title_HistoryDlg;    //~v@@@R~//~9613M~
@@ -64,10 +68,27 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     private static final int COLOR_BG_HUMAN=AG.getColor(R.color.greenyellow);     //same as layout textrowlist_historydlg//~vaibR~
     private static final int COLOR_BG_ROBOT=AG.getColor(R.color.history_robotname_bg);//~vaibR~
     private static final int COLOR_BG_PLAYALONE=Color.argb(0xff,0xe0,0xe0,0xf0);//~vaibR~
+                                                                   //~vas0I~
                                                                    //~9613I~
     private static final int UNIT_SHIFT=-100;                      //~0113I~
     private static final int UCBP_MULTISELECT=1;                   //~0114I~
                                                                    //~0113I~
+    public static final int DOCTYPE_HISTORY=1;                     //~vas0R~
+    public static final int DOCTYPE_HISTORYBS=2;                   //~vas0R~
+    public static final int DOCTYPE_HISTORYBS_DETAIL=3;            //~vas0R~
+    private static final int PAGE_MAXLINE=40;
+    private static final int PAGE_MAXCOLUMN=80;//~vas0I~
+    private static final float LINEW_FNM     =0.4F;                 //~vas0I~
+    private static final float LINEW_GAMESET =0.6F*0.2F;             //~vas0I~
+    private static final float LINEW_ENDGAME =0.6F*0.8F*0.25F;        //~vas0I~
+    private static final float LINEW_RULE    =0.6F*0.8F*0.75F;        //~vas0I~
+    private static final float LINEW_NAME    =0.25F*0.6F;            //~vas0I~
+    private static final float LINEW_SCORE   =0.25F*0.4F;
+    private static final float HLINE_POSY=0.2F;                    //~vas0R~
+    private static final int MARGIN_LEFT_NAME=2;	//2 char width margin left for Name//~vas0M~
+    private static final float RATE_TEXTSIZE=0.6f;    //setTextSize by rate for LineH//~vas0I~
+    private static final int   PRT_TITLE_HEIGHT=2;    //by line count//~vas0I~
+                                                                   //~vas0I~
 //  private	String fpathHistory;                                   //~9614I~//~9615R~
 //  TextView tvFolderName;                                         //~9615I~//~0114R~
     private boolean swServer;                                      //~9825I~
@@ -76,6 +97,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     private UCheckBox cbMultiSelect;                               //~0114R~
     private boolean swMultiSelect;//~0114I~
     private TextView tvCtrFileList;                                //~vad2I~
+    private boolean swDraw;                                        //~vas0I~
     //******************************************                   //~v@@@R~
     public HistoryDlg()                                            //~v@@@R~//~9613R~
     {                                                              //~v@@@R~
@@ -121,6 +143,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         UButton.bind(Playoutview,R.id.Reload,this);                //~9824I~
         UButton.bind(Playoutview,R.id.Delete,this);                //~9824I~
         UButton.bind(Playoutview,R.id.btnHistoryBS,this);          //~va7aI~
+        UButton.bind(Playoutview,R.id.Print,this);                 //~vas0R~
         containerFilename=UView.findViewById(Playoutview,R.id.FileNameContainer);//~v@@@I~//~9614I~
 //      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_MULTIPLE);//~v@@@R~//~9614I~//~0114R~
 //      lvFilename=new UListView(Playoutview,R.id.FileList,LISTVIEW_ROW_LAYOUTID,this,UListView.CHOICEMODE_SINGLE);//~0114I~//~vac5R~
@@ -215,6 +238,9 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
             case R.id.Delete:                                          //~v@@@I~//~9614I~
                 onClickDelete();                                       //~1403I~//~v@@@R~//~9614I~
                 break;                                                 //~v@@@I~//~9614I~
+            case R.id.Print:                                       //~vas0I~
+                onClickPrint();                                    //~vas0I~
+                break;                                             //~vas0I~
         }//~v@@@I~                                                 //~9614I~
     }                                                              //~1403R~//~9614I~
 //    //**********************************************************************//~1403I~//~v@@@M~//~9614I~//~9615R~//~9824R~
@@ -560,7 +586,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
     {                                                              //~vaibI~
     	int color=isRobotName(Pname) ? COLOR_BG_ROBOT : COLOR_BG_HUMAN;//~vaibI~
         boolean rc=color==COLOR_BG_ROBOT;                          //~vaibI~
-        if (Dump.Y) Dump.println("HistoryDlg.setHD setRobotBG rc="+rc+",name="+Pname+",color="+Integer.toHexString(color));//~vaibR~
+        if (Dump.Y) Dump.println("HistoryDlg.setRobotBG setRobotBG rc="+rc+",name="+Pname+",color="+Integer.toHexString(color));//~vaibR~//~vas0R~
         Pview.setBackgroundColor(color);                           //~vaibR~
         return rc;                                                 //~vaibI~
     }                                                              //~vaibI~
@@ -655,7 +681,7 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
         if (ctrFound==0 && ctrRobot==PLAYERS-1)	//trainingMode and human name unmatch//~vaqcI~
 		{                                                          //~vaqcI~
 			String msg=Utils.getStr(R.string.Err_HistoryIsTrainingMode_NotYou,playerHumanName,yn);//~vaqcI~
-			UView.showToastLong(msg);                              //+vaqcR~
+			UView.showToastLong(msg);                              //~vaqcR~
             rc=-1;     //err                                       //~vaqcI~
         }                                                          //~vaqcI~
         else         //not training mode                           //~va66I~
@@ -1067,4 +1093,82 @@ public class HistoryDlg extends FileDialog                //~v@@@R~     //~9613R
 //	    HistoryBSDlg.newInstance().show();                         //~va7aR~//~va87R~
   	    HistoryBSDlg.newInstance(multipleSelected).show();         //~va87I~
     }                                                              //~va7aI~
+    //****************************************************************************//~vas0I~
+    private void onClickPrint()                                    //~vas0I~
+    {                                                              //~vas0I~
+        if (Dump.Y) Dump.println("HistoryDlg.onClickPrint");       //~vas0I~
+        AG.aPrtDoc.setMaxLineColumn(PAGE_MAXLINE,PAGE_MAXCOLUMN);  //~vas0I~
+        String title=Utils.getStr(R.string.Title_HistoryDlg);      //~vas0M~
+        AG.aPrtDoc.setTitle(title,PRT_TITLE_HEIGHT);               //~vas0I~
+		AG.aPrtDoc.print(this,title,DOCTYPE_HISTORY);                    //~vas0I~
+        if (Dump.Y) Dump.println("HistoryDlg.onClickPrint exit");  //~vas0I~
+    }                                                              //~vas0I~
+    //****************************************************************************//~vas0I~
+    //*from PrtDoc                                                 //~vas0I~
+    //****************************************************************************//~vas0I~
+    @Override                                                      //~vas0I~
+    public void cbGetCtrPage(PrtDoc PprtDoc)                       //~vas0I~
+    {                                                              //~vas0I~
+        if (Dump.Y) Dump.println("HistoryDlg.cbGetCtrPage");       //~vas0R~
+        swDraw=false;                                              //~vas0I~
+        PprtDoc.drawLineNL(2.0F /*advance posY by lineHeight*2.0*/);//keep even line number//~vas0R~
+        PprtDoc.setTextSize(RATE_TEXTSIZE);                        //~vas0I~
+		int ctr=namelist.length;                                   //~vas0M~
+        for (int ii=0;ii<ctr;ii++)                                 //~vas0I~
+        {                                                          //~vas0I~
+	        PprtDoc.drawLineNL(1.0F);                              //~vas0M~
+        	PprtDoc.drawLineNL(1.0F);                              //~vas0M~
+        }                                                          //~vas0I~
+    }                                                              //~vas0I~
+    //****************************************************************************//~vas0I~
+    @Override                                                      //~vas0I~
+    public void cbDrawPage(PrtDoc PprtDoc)                         //~vas0I~
+    {                                                              //~vas0I~
+        if (Dump.Y) Dump.println("HistoryDlg.cbDrawPage");         //~vas0R~
+        swDraw=true;                                               //~vas0I~
+		int ctr=namelist.length;                                   //~vas0I~
+        PprtDoc.drawLineNL(2.0F);      //2:keep even linenumber    //~vas0R~
+        String hdr1=Utils.getStr(R.string.Info_HistoryCtrDetail,ctr);//~vas0I~
+        PprtDoc.drawLine(hdr1,0.0F/*width advance*/);  //line height=1/MAXLINE//~vas0I~
+        PprtDoc.drawLine(HLINE_POSY);     //horizontal bar         //~vas0I~
+        for (int ii=0;ii<ctr;ii++)                                 //~vas0I~
+        {                                                          //~vas0I~
+        	UListView.UListViewData ld=lvFilename.arrayData.get(ii);//~vas0I~
+        	String[][] hds=getHistoryData(ld.itemtext);            //~vas0I~
+            String fnm=namelist[ii];                               //+vas0M~
+            fnm=fnm.replace(EXT_HISTORY,"");                       //+vas0I~
+            drawLineHD(PprtDoc,fnm,hds);                           //~vas0I~
+        }                                                          //~vas0I~
+    }                                                              //~vas0I~
+    //****************************************************************************//~vas0I~
+    //*also from HistoryBSDlg                                      //~vas0I~
+    //****************************************************************************//~vas0I~
+    public void drawLineHD(PrtDoc PprtDoc,String Pfnm,String[][] Phds)//~vas0R~
+    {                                                              //~vas0I~
+        if (Dump.Y) Dump.println("HistoryDlg:drawLineHD fnm="+Pfnm);//~vas0I~
+        PprtDoc.drawLineNL(1.0F);                                  //~vas0I~
+                                                                   //~vas0I~
+        String[] hdr=Phds[HDPOS_HDR];                              //~vas0R~
+        String[] name=Phds[HDPOS_MEMBER];                          //~vas0R~
+        String[] score=Phds[HDPOS_SCORE];                          //~vas0R~
+        PprtDoc.drawLine(Pfnm,LINEW_FNM/*width*/);                 //~vas0R~
+        PprtDoc.drawLine(hdr[POS_GAMESET],LINEW_GAMESET);          //~vas0R~
+        int integtp=Utils.parseInt(hdr[POS_ENDGAMETYPE],-1);       //~vas0R~
+        String endGame=getStrEndgameType(integtp,Phds);            //~vas0R~
+        PprtDoc.drawLine(endGame,LINEW_GAMESET);                   //~vas0R~
+        PprtDoc.drawLine(hdr[POS_RULEID],LINEW_RULE);              //~vas0R~
+                                                                   //~vas0I~
+        PprtDoc.drawLineNL(1.0F);                                  //~vas0I~
+                                                                   //~vas0I~
+        PprtDoc.drawLine(name[0],LINEW_NAME,MARGIN_LEFT_NAME);     //~vas0R~
+        PprtDoc.drawLine(score[0],LINEW_SCORE, Paint.Align.RIGHT); //~vas0R~
+        PprtDoc.drawLine(name[1],LINEW_NAME,MARGIN_LEFT_NAME);     //~vas0R~
+        PprtDoc.drawLine(score[1],LINEW_SCORE,Paint.Align.RIGHT);  //~vas0R~
+        PprtDoc.drawLine(name[2],LINEW_NAME,MARGIN_LEFT_NAME);     //~vas0R~
+        PprtDoc.drawLine(score[2],LINEW_SCORE,Paint.Align.RIGHT);  //~vas0R~
+        PprtDoc.drawLine(name[3],LINEW_NAME,MARGIN_LEFT_NAME);     //~vas0R~
+        PprtDoc.drawLine(score[3],LINEW_SCORE,Paint.Align.RIGHT);  //~vas0R~
+                                                                   //~vas0I~
+        PprtDoc.drawLine(HLINE_POSY);     //horizontal bar         //~vas0I~
+    }                                                              //~vas0I~
 }//class                                                           //~v@@@R~
