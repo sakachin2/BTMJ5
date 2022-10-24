@@ -1,5 +1,6 @@
-//*CID://+vas6R~:                             update#=  188;       //~vas6R~
+//*CID://+vatdR~:                             update#=  195;       //~vatdR~
 //**********************************************************************//~v107I~
+//2022/10/18 vatd Api31 recommend not ACCESS_FINE_LOCATION but ACCESS_COARSE_LOCATION. but api29/30 denied by no permission of FINE_LOCATION//+vatdI~
 //2022/10/12 vas6 bluetooth scan failes. Api31(Android12) bluetooth permission?//~vas6I~
 //2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
@@ -7,6 +8,7 @@
 package com.btmtest.BT;                                               //~1AedI~
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.bluetooth.BluetoothSocket;                          //~v107I~
@@ -439,8 +441,11 @@ public class BTI                                               //~1122R~//~v107R
         	requestList.add(Manifest.permission.BLUETOOTH_SCAN);   //~vas6I~
         if (!UView.isPermissionGranted(Manifest.permission.BLUETOOTH_ADVERTISE))//~vas6I~
         	requestList.add(Manifest.permission.BLUETOOTH_ADVERTISE);//~vas6I~
-        if (!UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))//~vas6I~
-        	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vas6I~
+//      if (!UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))//~vatdR~
+//      	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vatdR~
+        UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);    //chk only//~vatdI~
+        if (!UView.isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION))//~vatdR~
+        	requestList.add(Manifest.permission.ACCESS_COARSE_LOCATION);//~vatdR~
 //      if (Dump.Y) Dump.println("BTI.chkGrnatedPermission_from31 isGranted FINE_LOCATION="+UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION));//~vas6R~
 //      boolean rc=swGrantedConnect && swGrantedScan;              //~vam8I~//~vas6R~
 //      if (!rc)                                                   //~vam8I~//~vas6R~
@@ -468,10 +473,14 @@ public class BTI                                               //~1122R~//~v107R
         UView.isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN);      //for debug//~vas6R~
         UView.isPermissionGranted(Manifest.permission.BLUETOOTH_ADVERTISE);	//for debug//~vas6R~
         if (!UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))//~vas6R~
-        {                                                          //~vas6I~
-        	if (AG.osVersion>=29) 	//android10,11                 //~vas6R~
-	        	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vas6R~
+        {                                                          //~vas6I~//~vatdR~
+        	if (AG.osVersion>=29) 	//android10,11                 //~vas6R~//+vatdR~
+            	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vas6R~
         }                                                          //~vas6I~
+        if (!UView.isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION))//~vatdI~
+        {                                                          //~vatdI~
+            requestList.add(Manifest.permission.ACCESS_COARSE_LOCATION);//~vatdR~
+        }                                                          //~vatdI~
         boolean rc=true;                                           //~vas6I~
         if (!requestList.isEmpty())                                //~vas6I~
         {                                                          //~vas6I~
@@ -509,8 +518,8 @@ public class BTI                                               //~1122R~//~v107R
                 if (Pname[ii].equals(Manifest.permission.BLUETOOTH_ADVERTISE))//~vas6I~
                 {                                                  //~vas6I~
                     AG.swFailedGrantBluetoothAdvertize=true;       //~vas6R~
-//	            	without this permission, pairing available     //+vas6I~
-//	            	UView.showToastLong(Utils.getStr(R.string.failedBluetoothPermissionTypeAdvertize,Pname[ii]));//+vas6R~
+//	            	without this permission, pairing available     //~vas6I~
+//	            	UView.showToastLong(Utils.getStr(R.string.failedBluetoothPermissionTypeAdvertize,Pname[ii]));//~vas6R~
                 }                                                  //~vas6I~
                 else                                               //~vas6I~
                 {                                                  //~vas6I~

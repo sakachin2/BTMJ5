@@ -1,5 +1,7 @@
-//*CID://+vam3R~:                             update#=   92;       //+vam3R~
+//*CID://+vat2R~:                             update#=  101;       //~vat3R~//+vat2R~
 //*************************************************************************//~v101I~
+//2022/10/16 vat3 deprecated api31; BluetoothDevice/BluetoothAdapter.getName()/getBondState() requires request permission BLUETOOTH_CONNECT//~vat3I~
+//2022/10/16 vat2 deprecated api33; getParcelableExtra;            //~vat2I~
 //2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~v@@@I~
 //*************************************************************************//~v101I~
 
@@ -86,8 +88,8 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
 	{                                                              //~@@@@I~
         if (Dump.Y) Dump.println("BTDiscover constructor");//~1AbGI~//~v@@@R~
         // Get the local Bluetooth adapter
-//      mBtAdapter = BluetoothAdapter.getDefaultAdapter();         //+vam3R~
-        mBtAdapter = BTControl.getDefaultAdapter();                //+vam3I~
+//      mBtAdapter = BluetoothAdapter.getDefaultAdapter();         //~vam3R~
+        mBtAdapter = BTControl.getDefaultAdapter();                //~vam3I~
         instBTD=this;                                              //~v@@@R~
     }
 //***************************************************************************//~v@@@I~
@@ -123,10 +125,13 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
                 if (!swDiscover)                                   //~1AbGI~
               		return;                                        //~1AbGI~
                 // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//              BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~vat2R~
+                BluetoothDevice device = getParcelableExtra(intent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
                 // If it's already paired, skip it, because it's been listed already
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    String name=device.getName();                  //~@@@@I~
+//              if (device.getBondState() != BluetoothDevice.BOND_BONDED) {//~vat3R~
+                if (BTControl.getBondState(device) != BluetoothDevice.BOND_BONDED) {//~vat3I~
+//                  String name=device.getName();                  //~@@@@I~//~vat3R~
+                    String name=BTControl.getName(device);         //~vat3I~
                     String addr=device.getAddress();               //~@@@@I~
    		   	      	if (Dump.Y) Dump.println("Broarcast receiver device="+name+",addr="+addr);//~@@@@I~
                     if (name==null)                                //~v@@@I~
@@ -215,9 +220,10 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
             if (BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED.equals(action)) //local device connection status to a remote device//~v@@@I~
             {                                                      //~v@@@I~
             	actionid=ACTION_CONNECTION_STATE_CHANGED;          //~v@@@I~
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~v@@@I~
+//              BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~v@@@I~//~vat2R~
+                BluetoothDevice device = getParcelableExtra(intent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
 	            int state=intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE,BluetoothAdapter.ERROR);//~v@@@I~
-	            if (Dump.Y) Dump.println("Broard receiver ACTION_CONNECION_STATE_CHANGED remote=" +device.getName()+ ",state+="+state);//~v@@@R~
+	            if (Dump.Y) Dump.println("Broard receiver ACTION_CONNECION_STATE_CHANGED remote=" +BTControl.getName(device)+ ",state+="+state);//~v@@@R~//~vat3R~
                 String sstate="";
                 switch(state)                                      //~v@@@I~
                 {                                                  //~v@@@I~
@@ -245,12 +251,14 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action))//~1AbGI~
             {                                                      //~1AbGI~
             	actionid=ACTION_BOND_STATE_CHANGED;                //~v@@@I~
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AbGI~
+//              BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AbGI~//~vat2R~
+                BluetoothDevice device = getParcelableExtra(intent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
                 String name="";                                    //~1AbGI~
                 String addr="";                                    //~1AbGI~
                 if (device!=null)                                  //~1AbGI~
                 {                                                  //~1AbGI~
-                	name=device.getName();                         //~1AbGI~
+//              	name=device.getName();                         //~1AbGI~//~vat3R~
+                	name=BTControl.getName(device);                //~vat3I~
                 	addr=device.getAddress();                      //~1AbGI~
                 }                                                  //~1AbGI~
 	            int state=intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,BluetoothAdapter.ERROR);//~1AbGI~
@@ -272,15 +280,17 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
             if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action))//~v@@@R~
             {                                                      //~v@@@R~
                 actionid=ACTION_ACL_CONNECTED;                     //~v@@@R~
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~v@@@R~
-                if (Dump.Y) Dump.println("Broard receiver ACTION_ACL_CONNECTED remote=" +device.getName());//~v@@@R~
+//              BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~v@@@R~//~vat2R~
+                BluetoothDevice device = getParcelableExtra(intent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
+                if (Dump.Y) Dump.println("Broard receiver ACTION_ACL_CONNECTED remote=" +BTControl.getName(device));//~v@@@R~//~vat3R~
             }                                                      //~v@@@R~
             else                                                   //~v@@@R~
             if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action))//~v@@@R~
             {                                                      //~v@@@R~
                 actionid=ACTION_ACL_DISCONNECTED;                  //~v@@@R~
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~v@@@R~
-                if (Dump.Y) Dump.println("Broard receiver ACTION_ACL_DISCONNECTED remote=" +device.getName());//~v@@@R~
+//              BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~v@@@R~//~vat2R~
+                BluetoothDevice device = getParcelableExtra(intent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
+                if (Dump.Y) Dump.println("Broard receiver ACTION_ACL_DISCONNECTED remote=" +BTControl.getName(device));//~v@@@R~//~vat3R~
                 onDisconnectedIP();                                //~v@@@I~
             }                                                      //~v@@@R~
             AG.aBTMulti.onReceive(actionid,intent);    //->BTMulti    //~1Af1I~//~v@@@R~
@@ -386,16 +396,19 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
 	@TargetApi(15)                                                 //~1AbGI~
 	private void process_ActionUuid15(Intent intent)               //~1AbGI~
     {                                                              //~1AbGI~
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AbGI~
+//      BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AbGI~//~vat2R~
+        BluetoothDevice device = getParcelableExtra(intent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
         String name="";                                            //~1AbGI~
         String addr="";                                            //~1AbGI~
         if (device!=null)                                          //~1AbGI~
         {                                                          //~1AbGI~
-            name=device.getName();                                 //~1AbGI~
+//          name=device.getName();                                 //~1AbGI~//~vat3R~
+            name=BTControl.getName(device);                        //~vat3I~
             addr=device.getAddress();                              //~1AbGI~
         }                                                          //~1AbGI~
         if (Dump.Y) Dump.println("Broard receiver ACTION_UUID name="+name+"="+addr);//~1AbGI~//~v@@@R~
-        Parcelable puuid[] = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);//~1AbGI~
+//      Parcelable puuid[] = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);//~1AbGI~//~vat2R~
+        Parcelable puuid[] = getParcelableArrayExtra(intent,BluetoothDevice.EXTRA_UUID);//~vat2I~
         if (puuid!=null)                                           //~1AbGI~
         {                                                          //~1AbGI~
             for (int ii=0;ii<puuid.length;ii++)                    //~1AbGI~
@@ -411,10 +424,11 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
         String addr=SbondingDeviceAddr;                            //~1AbLR~
     	if (addr!=null && !addr.equals(""))                                      //~1AbLR~
         {                                                          //~1AbLR~
-//          BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~1AbLR~//+vam3R~
-            BluetoothAdapter adapter=BTControl.getDefaultAdapter();//+vam3I~
+//          BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~1AbLR~//~vam3R~
+            BluetoothAdapter adapter=BTControl.getDefaultAdapter();//~vam3I~
 			BluetoothDevice device=adapter.getRemoteDevice(addr);  //~1AbLR~
-            int state=device.getBondState();                       //~1AbLR~
+//          int state=device.getBondState();                       //~1AbLR~//~vat3R~
+            int state=BTControl.getBondState(device);              //~vat3I~
 		    if (Dump.Y) Dump.println("BTDiscover resetBonding status="+state);//~1AbLR~
 			if (state==BluetoothDevice.BOND_BONDING)               //~1AbLR~
             {                                                      //~1AbGI~
@@ -524,4 +538,56 @@ public class BTDiscover extends BroadcastReceiver                 //~@@@@R~
         		if (AG.aBTI.mBTC.mChatService!=null)               //~v@@@I~
         			AG.aBTI.mBTC.mChatService.onDisconnectedIP();  //~v@@@I~
     }                                                              //~v@@@I~
+    //*********************************************************    //~vat2I~
+	@SuppressWarnings("deprecation")                               //~vat2I~
+    public static BluetoothDevice getParcelableExtra(Intent Pintent,String PitemName)//~vat2I~
+    {                                                              //~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtra itemName="+PitemName+",intent="+Pintent);//~vat2I~
+    	BluetoothDevice dev;                                       //~vat2I~
+        if (AG.osVersion>=33)  //android4                          //~vat2I~
+        {                                                          //~vat2I~
+    		dev=getParcelableExtra33(Pintent,PitemName);           //~vat2I~
+        }                                                          //~vat2I~
+        else                                                       //~vat2I~
+        {                                                          //~vat2I~
+    		dev=Pintent.getParcelableExtra(PitemName);             //~vat2I~
+    	}                                                          //~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtra dev="+dev);//~vat2I~
+        return dev;                                                //~vat2I~
+    }                                                              //~vat2I~
+    //*********************************************************    //~vat2I~
+    @TargetApi(33)                                                 //~vat2I~
+    private static BluetoothDevice getParcelableExtra33(Intent Pintent,String PitemName)//~vat2I~
+    {                                                              //~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtra33 itemName="+PitemName+",intent="+Pintent);//~vat2I~
+    	BluetoothDevice dev=Pintent.getParcelableExtra(PitemName,BluetoothDevice.class);//~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtra33 dev="+dev);//~vat2I~
+        return dev;                                                //~vat2I~
+    }                                                              //~vat2I~
+    //*********************************************************    //~vat2I~
+	@SuppressWarnings("deprecation")                               //~vat2I~
+    public static Parcelable[] getParcelableArrayExtra(Intent Pintent,String PitemName)//~vat2R~
+    {                                                              //~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableArrayExtra itemName="+PitemName+",intent="+Pintent);//~vat2I~
+	    Parcelable puuid[];                                        //~vat2I~
+        if (AG.osVersion>=33)  //android4                          //~vat2I~
+        {                                                          //~vat2I~
+    		puuid=getParcelableArrayExtra33(Pintent,PitemName);    //~vat2I~
+        }                                                          //~vat2I~
+        else                                                       //~vat2I~
+        {                                                          //~vat2I~
+	        puuid=Pintent.getParcelableArrayExtra(PitemName);//+vat2R~
+    	}                                                          //~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableArrayExtra uuid="+Utils.toString(puuid));//~vat2I~
+        return puuid;                                              //~vat2I~
+    }                                                              //~vat2I~
+    //*********************************************************    //~vat2I~
+    @TargetApi(33)                                                 //~vat2I~
+    private static Parcelable[] getParcelableArrayExtra33(Intent Pintent,String PitemName)//~vat2R~
+    {                                                              //~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableArrayExtra33 itemName="+PitemName+",intent="+Pintent);//~vat2I~
+	    Parcelable puuid[]=Pintent.getParcelableArrayExtra(PitemName,Parcelable.class);//~vat2I~
+        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtra33 dev="+Utils.toString(puuid));//~vat2I~
+        return puuid;                                                //~vat2I~
+    }                                                              //~vat2I~
 }

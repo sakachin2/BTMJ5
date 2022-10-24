@@ -1,5 +1,6 @@
-//*CID://+va40R~:                             update#=   38;       //~va40R~
+//*CID://+vat2R~:                             update#=   39;       //+vat2R~
 //*************************************************************************//~1A65I~
+//2022/10/16 vat2 deprecated api33; getPercelableExtra;            //+vat2I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
 //1A6s 2015/02/17 move NFC starter from WifiDirect dialog to MainFrame//~1A65I~
@@ -115,20 +116,21 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             }
             if (Dump.Y) Dump.println("WiFiDirectBroadCastReceiver:onReceive:P2P connection changed");//~1A65I~
           boolean swPaired;
-//          if (true)                                              //+va40R~
-//          {                                                      //+va40R~
-          	WifiP2pInfo p2pinfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO);//~va40I~
+//          if (true)                                              //~va40R~
+//          {                                                      //~va40R~
+//        	WifiP2pInfo p2pinfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO);//~va40I~//+vat2R~
+          	WifiP2pInfo p2pinfo = WDIReceiver.getParcelableExtraWD(intent,WifiP2pManager.EXTRA_WIFI_P2P_INFO);//+vat2I~
             swPaired = p2pinfo.groupFormed;                        //~va40I~
             if (Dump.Y) Dump.println("WiFiDirectBroadcastReceiver.onReceive swPaired=" + swPaired + ",WifiP2pInfo=" + Utils.toString(p2pinfo));//~va40I~
-//          }                                                      //+va40R~
-//          else                                                   //+va40R~
-//          {                                                      //+va40R~
-////          NetworkInfo networkInfo = (NetworkInfo) intent       //+va40R~
-//            android.net.NetworkInfo networkInfo=(android.net.NetworkInfo)intent//+va40R~
-//                    .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);//+va40R~
-//            swPaired=networkInfo.isConnected();                  //+va40R~
-//            if (Dump.Y) Dump.println("WiFiDirectBroadcastReceiver.onReceive swPaired=" + swPaired + ",networkInfo=" + Utils.toString(networkInfo));//+va40R~
-//          }                                                      //+va40R~
+//          }                                                      //~va40R~
+//          else                                                   //~va40R~
+//          {                                                      //~va40R~
+////          NetworkInfo networkInfo = (NetworkInfo) intent       //~va40R~
+//            android.net.NetworkInfo networkInfo=(android.net.NetworkInfo)intent//~va40R~
+//                    .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);//~va40R~
+//            swPaired=networkInfo.isConnected();                  //~va40R~
+//            if (Dump.Y) Dump.println("WiFiDirectBroadcastReceiver.onReceive swPaired=" + swPaired + ",networkInfo=" + Utils.toString(networkInfo));//~va40R~
+//          }                                                      //~va40R~
 //          if (networkInfo.isConnected()) {                       //~va40R~
             if (swPaired)                                          //~va40I~
             {                                                      //~va40I~
@@ -159,7 +161,8 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 //          DeviceListFragment fragment = (DeviceListFragment) activity.getFragmentManager()//~1A65R~
 //                  .findFragmentById(R.id.frag_list);             //~1A65R~
             DeviceListFragment fragment = WDA.getDeviceListFragment();//~1A65R~
-            fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
+//          fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(//+vat2R~
+            fragment.updateThisDevice((WifiP2pDevice) WDIReceiver.getParcelableExtraDeviceWD(intent,//+vat2I~
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));
 
         }

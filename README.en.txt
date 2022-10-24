@@ -18,6 +18,29 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.26 : 2022/10/24
+		.Api33 (Android13:T) compatible.
+
+		.Api33(Android13:T) 대응
+
+*********************************************************************************************
+V1.26 : 2022/10/24
+        .Prevent changes to personal settings while connected (profile icon).
+		.Support deprecation in Java9.
+		.Api33 (Android13:T) compatible.
+		.Api31(Android12:S) compatible remained.
+		.The rule button in the in-game dialog was not call to RuleSetting Summary dialog.
+		.Loosen judgment of smartphone device by aspect ratio (2x-->1.8x).
+		.implicitly initialize rules file after first install.
+
+		.연결이 있을 때 개인 설정 변경은 방지한다(프로파일 아이콘)
+		.Java9에서의 비추천에 대응
+		.Api33(Android13:T) 대응
+		.Api31(Android12:S) 대응 누락
+		.게임 중 대화 상자의 규칙 버튼이 RuleSettingSummary 호출이 아니 었습니다
+		.종횡비에 의한 스마트폰 디바이스의 판정을 느슨하게 한다(2배-->1.8배)
+		. 최초 설치 후 규칙 파일의 초기를 암시적으로
+
 V1.25 : 2022/10/14
         .Android 12 compatible with Bluetooth permissions.
         .Add History print function.
@@ -28,7 +51,6 @@ V1.25 : 2022/10/14
         .히스토리 인쇄 기능 추가
         .Bugs(4 명 플레이 게임의 이력 집계, 접속이 끊어졌을 때의 대응)
 
-*********************************************************************************************
 V1.25 : 2022/10/14
         .Android 12 compatible with Bluetooth permissions
         .Add history print function

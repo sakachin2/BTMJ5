@@ -1,5 +1,6 @@
-//*CID://+vaidR~:                             update#=   77;       //~vaicR~//~vaidR~
+//*CID://+vat1R~:                             update#=   79;       //~vat1R~
 //**********************************************************************//~@@@@I~
+//2022/10/16 vat1 deprecated; Java9 new Integer,Boolean,Double-->valueOf//~vat1I~
 //2021/12/24 vaid Toast if Scoped file already exists.             //~vaicI~
 //2021/12/24 vaic Dump at send History rule from sdcard device to scoped file device//~vaicI~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
@@ -242,7 +243,7 @@ public class Prop                                                  //~@@@@R~
 	{                                                              //~@@@@I~
     	boolean rc=false;                                          //~@@@@I~
         String fnm=propFilename;                                   //~@@@@I~
-    	if (Dump.Y) Dump.println("Prop.savePropDataFile fnm="+fnm+",cmt="+Pcomment);//+vaidR~
+    	if (Dump.Y) Dump.println("Prop.savePropDataFile fnm="+fnm+",cmt="+Pcomment);//~vaidR~
 		try                                                        //~@@@@I~
 		{                                                          //~@@@@I~
         	FileOutputStream fos=UFile.openOutputData(fnm);//private//~@@@@R~
@@ -425,7 +426,8 @@ public class Prop                                                  //~@@@@R~
 //      	if (Dump.Y) Dump.println(e,"Prop.getParameter");       //~@@@@I~//~9514R~
 			try                                                    //~@@@@I~
 			{                                                      //~@@@@R~
-				double x=new Double(getParameter(key,"")).doubleValue();//~@@@@I~
+//  			double x=new Double(getParameter(key,"")).doubleValue();//~@@@@I~//~vat1R~
+    			double x=Double.valueOf(getParameter(key,"")).doubleValue();//~vat1I~
 				return (int)x;
 			}
 			catch (Exception ex)                                   //~@@@@R~
@@ -444,7 +446,8 @@ public class Prop                                                  //~@@@@R~
 	public  synchronized double getParameter(String key, double def)//~@@@@R~
 	{	try
 		{                                                          //~@@@@R~
-			return new Double(getParameter(key,"")).doubleValue(); //~@@@@I~
+//  		return new Double(getParameter(key,"")).doubleValue(); //~@@@@I~//~vat1R~
+    		return Double.parseDouble(getParameter(key,"0.0"));//+vat1R~
 		}
 		catch (Exception e)
 		{                                                          //~@@@@R~

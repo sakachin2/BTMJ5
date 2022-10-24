@@ -1,5 +1,6 @@
-//*CID://+vas6R~:                             update#=  516;       //~vas6R~
+//*CID://+vas6R~:                             update#=  517;       //~vas6R~
 //******************************************************************************************************************//~v101R~
+//2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //+vas6I~
 //2022/10/12 vas6 bluetooth scan failes. Api31(Android12) bluetooth permission?//~vas6I~
 //2022/10/09 vas0 print history                                    //~vas0I~
 //2022/10/06 vara chk appversion unmatch other than rule version unmatch//~varaI~
@@ -478,7 +479,8 @@ public class AG                                                    //~1107R~
     public int ctrSaveAlert;                                       //~@@01R~
     private int msgSeqNo;                                          //~@@01I~
     private int[] msgSeqNoEach=new int[PLAYERS];                   //~@@01I~
-    private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~
+//  private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~//+vas6R~
+    private Integer msgSeqNoLock=Integer.valueOf(0);    //lockword //+vas6I~
     public boolean swTrainingMode;                                 //~va66R~
     public boolean swPlayAloneNotify;                              //~va70I~
     public boolean swPlayMatchNotify;                              //~vaa2I~
@@ -487,7 +489,7 @@ public class AG                                                    //~1107R~
 	public boolean swScopedGranted;                                //~vae0I~
 	public boolean swGrantedBluetooth;                             //~vam8I~
 	public boolean swGrantBluetoothFailed;                         //~vas6I~
-    public boolean swFailedGrantBluetoothAdvertize;                //+vas6I~
+    public boolean swFailedGrantBluetoothAdvertize;                //~vas6I~
 	public UMediaStore aUMediaStore;                       //~1Ak2I~//~1ak2I~
 	public boolean swGrantedExternalStorageRead,swGrantedExternalStorageWrite;//~1Ak2R~//~1ak2I~
 	public boolean swChangedPreference,swChangedRule;              //~vae8R~

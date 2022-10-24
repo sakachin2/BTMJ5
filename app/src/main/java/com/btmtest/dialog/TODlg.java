@@ -1,5 +1,6 @@
-//*CID://+van1R~:                             update#=  585;       //~van1R~
+//*CID://+vatfR~:                             update#=  587;       //~vatfR~
 //*****************************************************************//~v101I~
+//2022/10/18 vatf default dump to sdcard change to ON              //~vatfI~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/08/25 vad5 move Dump.txt to cache to avoid /sdcard          //~vad5I~
@@ -65,8 +66,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DORA_KANUPNUMBER2="Dora5Num";      //~0A12R~
     private static final String DORA_KANDOWNTYPE2="Dora6Type";     //~0A12I~
     private static final String DORA_KANDOWNNUMBER2="Dora6Num";    //~0A12I~
-    private static final String CONTINUE_STICK="ContinueStick";    //+van1I~
-    private static final String CONTINUE_WIN="ContinueWin";        //+van1I~
+    private static final String CONTINUE_STICK="ContinueStick";    //~van1I~
+    private static final String CONTINUE_WIN="ContinueWin";        //~van1I~
     private static final String CHII_TEST="Chii_Test";             //~v@@@I~
     private static final String KAN_TEST="Kan_Test";               //~v@@@I~
 //  private static final String POSITIONING="Positioning";         //~v@@@R~
@@ -193,7 +194,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private EditText etDoraDownType,etDoraDownNumber;              //~0A12I~
     private EditText etDoraUpType,etDoraUpNumber;                  //~0A12I~
     private EditText etKanDownType,etKanDownNumber;                //~0A12I~
-    private EditText etCtrContinueStick,etCtrContinueWin;          //+van1I~
+    private EditText etCtrContinueStick,etCtrContinueWin;          //~van1I~
     private EditText etKanUpType,etKanUpNumber;                    //~0A12I~
     private EditText etKanUpType2,etKanUpNumber2;                  //~0A12I~
     private EditText etKanDownType2,etKanDownNumber2;              //~0A12I~
@@ -283,8 +284,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	etDoraUpNumber=(EditText) UView.findViewById(PView,R.id.etDoraUpNumber);//~0A12I~
     	etKanDownType=(EditText) UView.findViewById(PView,R.id.etKanDownType);//~0A12I~
     	etKanDownNumber=(EditText) UView.findViewById(PView,R.id.etKanDownNumber);//~0A12I~
-    	etCtrContinueStick=(EditText) UView.findViewById(PView,R.id.etCtrContinueStick);//+van1I~
-    	etCtrContinueWin=(EditText) UView.findViewById(PView,R.id.etCtrContinueWin);//+van1I~
+    	etCtrContinueStick=(EditText) UView.findViewById(PView,R.id.etCtrContinueStick);//~van1I~
+    	etCtrContinueWin=(EditText) UView.findViewById(PView,R.id.etCtrContinueWin);//~van1I~
     	etKanUpType=(EditText) UView.findViewById(PView,R.id.etKanUpType);//~0A12I~
     	etKanUpNumber=(EditText) UView.findViewById(PView,R.id.etKanUpNumber);//~0A12I~
     	etKanDownType2=(EditText) UView.findViewById(PView,R.id.etKanDownType2);//~0A12I~
@@ -433,7 +434,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         if (Dump.Y) Dump.println("TODlg.setupDialog");             //~v@@@I~
     	cbPon_Test.setStateInt(Pprop.getParameter(PON_TEST,0));    //~v@@@I~
     	cbRon_Test.setStateInt(Pprop.getParameter(RON_TEST,0));    //~v@@@I~
-    	cbDumpSDCard.setStateInt(Pprop.getParameter(DUMP_SDCARD,0));//~0A08I~
+    	cbDumpSDCard.setStateInt(Pprop.getParameter(DUMP_SDCARD,1));//~0A08I~//~vatfR~
     	cbDumpNo.setStateInt(Pprop.getParameter(DUMP_NO,0));       //~vaihI~
     	cbLangKO.setStateInt(Pprop.getParameter(LANG_KO,0));       //~van1I~
     	cbRonValue_Test.setStateInt(Pprop.getParameter(RONVALUE_TEST,0));//~0A02I~
@@ -450,8 +451,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	etDoraUpNumber.setText(Integer.toString(Pprop.getParameter(DORA_UPNUMBER,0)));//~0A12I~
     	etKanDownType.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNTYPE,0)));//~0A12I~
     	etKanDownNumber.setText(Integer.toString(Pprop.getParameter(DORA_KANDOWNNUMBER,0)));//~0A12I~
-    	etCtrContinueStick.setText(Integer.toString(Pprop.getParameter(CONTINUE_STICK,0)));//+van1I~
-    	etCtrContinueWin.setText(Integer.toString(Pprop.getParameter(CONTINUE_WIN,0)));//+van1I~
+    	etCtrContinueStick.setText(Integer.toString(Pprop.getParameter(CONTINUE_STICK,0)));//~van1I~
+    	etCtrContinueWin.setText(Integer.toString(Pprop.getParameter(CONTINUE_WIN,0)));//~van1I~
     	etKanUpType.setText(Integer.toString(Pprop.getParameter(DORA_KANUPTYPE,0)));//~0A12I~
     	etKanUpNumber.setText(Integer.toString(Pprop.getParameter(DORA_KANUPNUMBER,0)));//~0A12I~
     	etKanUpType2.setText(Integer.toString(Pprop.getParameter(DORA_KANUPTYPE2,0)));//~0A12I~
@@ -631,7 +632,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_RON_TEST;                      //~v@@@I~
         else                                                       //~v@@@I~
 			TestOption.option2&=~TO2_RON_TEST;                      //~v@@@I~//~va65R~
-        if (Pprop.getParameter(DUMP_SDCARD,0)!=0)                  //~0A08I~
+//      if (Pprop.getParameter(DUMP_SDCARD,0)!=0)                  //~0A08I~//+vatfR~
+        if (Pprop.getParameter(DUMP_SDCARD,1)!=0)                  //+vatfI~
         {                                                          //~0A08I~
 			TestOption.option2|=TO2_DUMP_SDCARD;                   //~0A08I~
 //          Dump.open("Dump.txt",true/*sdcard*/);                  //~0A08I~//~vad5R~
@@ -689,8 +691,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
 		TestOption.testDoraUpNumber=Pprop.getParameter(DORA_UPNUMBER,0);//~0A12I~
 		TestOption.testKanDownType=Pprop.getParameter(DORA_KANDOWNTYPE,0);//~0A12I~
 		TestOption.testKanDownNumber=Pprop.getParameter(DORA_KANDOWNNUMBER,0);//~0A12I~
-		TestOption.testContinueStick=Pprop.getParameter(CONTINUE_STICK,0);//+van1I~
-		TestOption.testContinueWin=Pprop.getParameter(CONTINUE_WIN,0);//+van1I~
+		TestOption.testContinueStick=Pprop.getParameter(CONTINUE_STICK,0);//~van1I~
+		TestOption.testContinueWin=Pprop.getParameter(CONTINUE_WIN,0);//~van1I~
 		TestOption.testKanUpType=Pprop.getParameter(DORA_KANUPTYPE,0);//~0A12I~
 		TestOption.testKanUpNumber=Pprop.getParameter(DORA_KANUPNUMBER,0);//~0A12I~
 		TestOption.testKanUpType2=Pprop.getParameter(DORA_KANUPTYPE2,0);//~0A12I~
@@ -1181,8 +1183,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DORA_UPNUMBER,Integer.valueOf(etDoraUpNumber.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANDOWNTYPE,Integer.valueOf(etKanDownType.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANDOWNNUMBER,Integer.valueOf(etKanDownNumber.getText().toString()));//~0A12I~
-        changed+=updateProp(CONTINUE_STICK,Integer.valueOf(etCtrContinueStick.getText().toString()));//+van1I~
-        changed+=updateProp(CONTINUE_WIN,Integer.valueOf(etCtrContinueWin.getText().toString()));//+van1I~
+        changed+=updateProp(CONTINUE_STICK,Integer.valueOf(etCtrContinueStick.getText().toString()));//~van1I~
+        changed+=updateProp(CONTINUE_WIN,Integer.valueOf(etCtrContinueWin.getText().toString()));//~van1I~
         changed+=updateProp(DORA_KANUPTYPE,Integer.valueOf(etKanUpType.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANUPNUMBER,Integer.valueOf(etKanUpNumber.getText().toString()));//~0A12I~
         changed+=updateProp(DORA_KANDOWNTYPE2,Integer.valueOf(etKanDownType2.getText().toString()));//~0A12I~

@@ -1,4 +1,4 @@
-//*CID://+var8R~: update#= 885;                                    //~var8R~
+//*CID://+var8R~: update#= 888;                                    //+var8R~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
@@ -65,6 +65,7 @@ import com.btmtest.dialog.MenuInGameDlg;
 import com.btmtest.dialog.PrefSetting;                             //~9630I~
 import com.btmtest.dialog.RuleSettingEnum;
 import com.btmtest.dialog.RuleSettingOperation;
+import com.btmtest.dialog.RuleSettingSumm;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.dialog.ScoreDlg;
 import com.btmtest.dialog.TestLayout;
@@ -433,7 +434,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~
 //*************************                                        //~v@@@I~
-	private void addGCView()                                        //~v@@@I~//+var8R~
+	private void addGCView()                                        //~v@@@I~//~var8R~
     {                                                              //~v@@@I~
         if(Dump.Y) Dump.println("GC.addGCView");                   //~v@@@I~
 		init3();                                                   //~v@@@I~

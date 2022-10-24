@@ -1,5 +1,7 @@
-//*CID://+var8R~:                             update#=  591;       //~var8R~
+//*CID://+vatbR~:                             update#=  597;       //+vatbR~
 //*****************************************************************//~v101I~
+//2022/10/18 vatb show dummy if profile is not set                 //+vatbI~
+//2022/10/16 vat0 protect change of profile during connection exist.//~vat0I~
 //2022/09/24 var8 display profile icon                             //~var8I~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2022/04/22 vamu move playalone option to preference from operation settings//~vamuI~
@@ -22,6 +24,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,6 +58,7 @@ import static com.btmtest.game.Status.*;
 //~v@@@I~
 public class PrefSetting extends SettingDlg                        //~v@@@R~
     	implements UMediaStore.UMediaStoreI                        //~vae9R~
+            ,UCheckBox.UCheckBoxI                                  //~vat0I~
 {                                                                  //~2C29R~
 	public  static final String PROP_NAME="PreferenceSetting";     //~v@@@I~
 	private static final int    TITLEID=R.string.Title_PrefSetting;//~v@@@R~
@@ -110,6 +114,9 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     public static final int    ID_PROFILE_WIDTH=R.dimen.pref_profile_width;//~var8R~
     public static final int    ID_PROFILE_HEIGHT=R.dimen.pref_profile_height;//~var8R~
                                                                    //~var8I~
+   private static final int UCBP_PROFILE_SHOW=1;                   //~vat0R~
+   private static final int UCBP_PROFILE_SHOWME=2;                 //~vat0I~
+                                                                   //~vat0I~
     private UCheckBox cbDelRiverTileTaken;                         //~v@@@I~
     private UCheckBox cbNoRelatedRule;                             //~v@@@I~
     private UCheckBox cbNoTakeButton,cbNoDiscardButton;            //~v@@@I~
@@ -144,10 +151,11 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private UCheckBox cbAllowRobotAllButton;                       //~vamuI~
     private UCheckBox cbPlayAloneNotify;                           //~vamuI~
     private Bitmap bmpMe;                                          //~var8I~
-    private String profileUriMe,profileDispNameMe,profileTimeStampMe="0";//+var8R~
-    private String /*profilePathMe,*/profileSizeMe="0";            //+var8R~
-    private String profileIDMe="0";                                //+var8R~
+    private String profileUriMe,profileDispNameMe,profileTimeStampMe="0";//~var8R~
+    private String /*profilePathMe,*/profileSizeMe="0";            //~var8R~
+    private String profileIDMe="0";                                //~var8R~
     private int wwProfile,hhProfile;                               //~var8I~
+    private boolean swInitialSet;                              //~vat0I~
     //******************************************                   //~v@@@I~
     //******************************************                   //~v@@@M~
 	public PrefSetting()                                           //~v@@@R~
@@ -187,6 +195,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     @Override
     protected void initLayout(View PView)                            //~v@@@I~
     {                                                              //~v@@@M~
+    	swInitialSet=true;                                         //~vat0I~
         NOTITLE=Utils.getStr(R.string.NoUserBGM);                  //~vai0I~
         if (Dump.Y) Dump.println("PrefSetting.initLayout NOTITLE="+NOTITLE);        //~v@@@R~//~vai0R~
         wwProfile=(int)(AG.resource.getDimension(ID_PROFILE_WIDTH));//~var8I~
@@ -195,6 +204,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         super.initLayoutUFDlg(PView);                              //~v@@@R~
         setupLayout(PView);                                        //~v@@@I~
         setInitialValue();                                         //~v@@@I~
+    	swInitialSet=false;                                        //~vat0I~
     }                                                              //~v@@@M~
     //******************************************                   //~v@@@I~
     protected void setupLayout(View PView)                         //~v@@@I~
@@ -215,11 +225,13 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbLeftyPortrait=new UCheckBox(PView,R.id.cbLeftyPortrait);  //~vad1I~
         cbLeftyLandscape=new UCheckBox(PView,R.id.cbLeftyLandscape);//~vad1I~
         cbDisplayProfile=new UCheckBox(PView,R.id.cbDisplayProfile);//~var8I~
+        cbDisplayProfile.setListener(this,UCBP_PROFILE_SHOW);      //~vat0R~
 	    btnSelectProfile=UButton.bind(PView,R.id.btnSelectProfile,this);//~var8I~
 	    btnDeleteProfile=UButton.bind(PView,R.id.btnDeleteProfile,this);//~var8I~
         ivMyProfile=(ImageView)UView.findViewById(PView,R.id.ivMyProfile);//~var8I~
         tvProfileName=(TextView)UView.findViewById(PView,R.id.tvProfileDisplayName);//~var8I~
         cbUseProfile=new UCheckBox(PView,R.id.cbUseProfile);       //~var8I~
+        cbUseProfile.setListener(this,UCBP_PROFILE_SHOWME);       //~vat0R~
         cbNoSound=new UCheckBox(PView,R.id.cbNoSound);             //~v@@@I~
         cbBeepOnly=new UCheckBox(PView,R.id.cbBeepOnly);           //~v@@@I~
     	llSpinBtn=(LinearLayout)       UView.findViewById(PView,R.id.llSBSoundVolume);//~v@@@I~
@@ -312,9 +324,13 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	    	deleteBGM();                                           //~vae9I~
             break;                                                 //~vae9I~
         case R.id.btnSelectProfile:                                //~var8I~
+            if (chkConnected())                                    //~vat0I~
+                break;                                             //~vat0I~
             selectProfile();                                       //~var8I~
             break;                                                 //~var8I~
         case R.id.btnDeleteProfile:                                //~var8I~
+            if (chkConnected())                                    //~vat0I~
+                break;                                             //~vat0I~
             deleteProfile();                                       //~var8I~
             break;                                                 //~var8I~
         }                                                          //~vae9I~
@@ -1100,7 +1116,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         if (Puri==null || Puri.equals(""))                         //~var8R~
         {                                                          //~var8I~
         	tvProfileName.setText("(Not set)");                    //~var8R~
-	        ivMyProfile.setImageBitmap(null);                      //~var8I~
+//          ivMyProfile.setImageBitmap(null);                      //~var8I~//+vatbR~
+            ivMyProfile.setImageBitmap(AG.aProfileIcon.bmpDummy0); //+vatbI~
         	return false;                                          //~var8I~
         }                                                          //~var8I~
         Bitmap bm=ProfileIcon.getBMP_StrUri(Puri,Pid);             //~var8R~
@@ -1124,4 +1141,41 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         tvProfileName.setText(PdispName);                          //~var8R~
         return true;                                               //~var8I~
     }                                                              //~var8I~
+    //**************************************                       //~vat0I~
+    private boolean chkConnected()                                 //~vat0I~
+    {                                                              //~vat0I~
+        if (Dump.Y) Dump.println("PrefSetting.chkConnected");      //~vat0I~
+        boolean rc=false;                                          //~vat0I~
+		if (AG.aBTMulti.BTGroup.getMemberCtr()!=0)                 //~vat0I~
+        {                                                          //~vat0I~
+        	UView.showToast(R.string.Err_ConnectionExist);         //~vat0R~
+        	rc=true;                                               //~vat0I~
+        }                                                          //~vat0I~
+        if (Dump.Y) Dump.println("PrefSetting.chkConnected rc="+rc);//~vat0I~
+        return rc;                                                 //~vat0I~
+    }                                                              //~vat0I~
+    //*******************************************************      //~vat0I~
+    //*UCheckBoxI                                                  //~vat0I~
+    //*******************************************************      //~vat0I~
+    @Override                                                      //~vat0I~
+    public void onChangedUCB(CompoundButton Pbtn, boolean PisChecked, int Pparm)//~vat0I~
+    {                                                              //~vat0I~
+        if (Dump.Y) Dump.println("PrefSetting.onChangedUCB swInitialSet="+swInitialSet+",parm="+Pparm+",isChecked="+PisChecked+",btn="+Pbtn);//~vat0R~
+        switch(Pparm)                                              //~vat0I~
+        {                                                          //~vat0I~
+        case UCBP_PROFILE_SHOW:                                    //~vat0R~
+        case UCBP_PROFILE_SHOWME:                                  //~vat0I~
+	    	if (swInitialSet)                                      //~vat0I~
+            	break;                                             //~vat0I~
+		    if (chkConnected())                                    //~vat0I~
+            {                                                      //~vat0I~
+            	boolean old=!PisChecked;                           //~vat0I~
+            	if (Pparm==UCBP_PROFILE_SHOW)                      //~vat0I~
+			        cbDisplayProfile.setState(old);                //~vat0I~
+                else                                               //~vat0I~
+			        cbUseProfile.setState(old);                   //~vat0I~
+            }                                                      //~vat0I~
+            break;                                                 //~vat0I~
+        }                                                          //~vat0I~
+    }                                                              //~vat0I~
 }//class                                                           //~v@@@R~

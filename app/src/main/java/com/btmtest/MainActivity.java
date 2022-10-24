@@ -1,5 +1,6 @@
-//*CID://+vas0R~:                             update#= 440;        //~vas0R~
+//*CID://+vatgR~:                             update#= 442;        //~vatgR~
 //**********************************************************************//~@@@@I~
+//2022/10/20 vatg after first install, reset SYNCDAYE_INIT automatically//~vatgI~
 //2022/10/09 vas0 print history                                    //~vas0I~
 //2022/10/07 varc BluetoothDevice.getName() need dynamic permission at Api31(Android12:S); try back to api30 because having no device of android12//~varcI~
 //2022/09/24 var8 display profile icon                             //~var8I~
@@ -68,6 +69,7 @@ import com.btmtest.dialog.HelpDialog;
 import com.btmtest.dialog.MenuDialog;
 import com.btmtest.dialog.MenuDlgConnect;
 import com.btmtest.dialog.OrientationMenuDlg;
+import com.btmtest.dialog.RuleSettingSumm;
 import com.btmtest.dialog.TestLayout;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.GConst;
@@ -688,7 +690,8 @@ public class MainActivity extends AppCompatActivity
 	    	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))        //~0124I~
             {                                                      //~0124I~
             	MainView.drawMsg(R.string.Err_RuleIsInitial);      //~0124I~
-            	UView.showToastLong(R.string.Err_RuleIsInitialMsg);//~van1I~
+//          	UView.showToastLong(R.string.Err_RuleIsInitialMsg);//~van1I~//+vatgR~
+                RuleSettingSumm.newInstanceForInitial();           //~vatgI~
                 break;                                             //~0124I~
             }                                                      //~0124I~
 //            if (!BTMulti.isServerDevice())                       //~va17R~
@@ -1674,9 +1677,9 @@ public class MainActivity extends AppCompatActivity
 	        recoverProp();                                         //~vae8I~
         	break;                                                 //~vae0I~
         case PERMISSION_BLUETOOTH:  //API31                        //~vam8I~
-//      	granted=UView.isPermissionGranted(Presults[0]) && UView.isPermissionGranted(Presults[1]);//~vam8I~//+vas0R~
-//          BTI.grantedPermission(granted);                        //~vam8I~//+vas0R~
-            BTI.grantedPermission(Ptypes,Presults);                //+vas0I~
+//      	granted=UView.isPermissionGranted(Presults[0]) && UView.isPermissionGranted(Presults[1]);//~vam8I~//~vas0R~
+//          BTI.grantedPermission(granted);                        //~vam8I~//~vas0R~
+            BTI.grantedPermission(Ptypes,Presults);                //~vas0I~
         	break;                                                 //~vam8I~
         }                                                          //~9930I~
     }                                                              //~9930I~

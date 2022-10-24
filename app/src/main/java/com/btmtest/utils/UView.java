@@ -1,5 +1,8 @@
-//*CID://+vam6R~: update#= 386;                                    //~vam6R~
+//*CID://+vateR~: update#= 401;                                    //+vateR~
 //**********************************************************************//~v101I~
+//2022/10/18 vate emulater pixel5(APi31) landscape; nor right bttons shown. it is same as api33//+vateI~
+//2022/10/17 vata emulater(APi33) landscape; nor right bttons shown//~vataI~
+//2022/10/16 vat9 logdevice determination change 2.0-->1.8 (tested emulator pixel5)//~vat9I~
 //2022/03/28 vam6 android12(api31) Display.getRealSize, getRealMetrics//~vam6I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
@@ -68,7 +71,8 @@ public class UView                                                 //~v@@@I~
 //  private static final int DPI_USE_SMALL_FONT=360;               //~vac5R~
     private static final int DPI_USE_SMALL_FONT=430;       //top 10 max is 424 at 2019//~vac5I~
     private static final int SMALL_DIP=320;                        //~vae0I~
-    private static final int RATE_LONGDEVICE=2;                    //~vaegI~
+//  private static final int RATE_LONGDEVICE=2;                    //~vaegI~//~vat9R~
+    private static final float RATE_LONGDEVICE=1.8F;                //~vat9I~
 //    private static Stack<View> stackSnackbarLayout=new Stack<View>();//~v@@@R~
     private static boolean swRequestedExternalWrite,swRequestedExternalRead;//~1ak2I~
 //*************************                                        //~v@@@I~
@@ -111,6 +115,7 @@ public class UView                                                 //~v@@@I~
 //*************************                                        //~1122M~
 	public static void getScreenSize()                                    //~1122M~//~v@@@R~
     {                                                              //~1122M~
+        if (Dump.Y) Dump.println("UView: getScreenSize osVersion="+Build.VERSION.SDK_INT);//~vataI~
 //  	Display display=((WindowManager)(AG.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();//~1122M~//~1aj0R~
     	Display display=getDefaultDisplay();                       //~1aj0I~
         Point p=new Point();                                       //~1A6pI~
@@ -138,13 +143,15 @@ public class UView                                                 //~v@@@I~
             {                                                      //~vaefI~
                 AG.scrNavigationbarRightWidth=AG.scrWidthReal-AG.scrWidth;    //navigationBar on the right//~9807I~
             }                                                      //~vaefI~
-        	AG.swLongDevice=AG.scrWidth>AG.scrHeight*RATE_LONGDEVICE;//~vaegI~
+//      	AG.swLongDevice=AG.scrWidth>AG.scrHeight*RATE_LONGDEVICE;//~vaegI~//~vat9R~
+        	AG.swLongDevice=AG.scrWidth>(int)(AG.scrHeight*RATE_LONGDEVICE);//~vat9I~
         }                                                          //~vaeeI~
         else                                                       //~vaeeI~
         {                                                          //~vaeeI~
             if (AG.scrHeightReal>AG.scrHeight)    //navigationBar on the right//~vaeeI~
                 AG.scrNavigationbarBottomHeight=AG.scrHeightReal-AG.scrHeight;    //navigationBar on the bottom//~vaeeI~
-        	AG.swLongDevice=AG.scrHeight>AG.scrWidth*RATE_LONGDEVICE;//~vaegI~
+//      	AG.swLongDevice=AG.scrHeight>AG.scrWidth*RATE_LONGDEVICE;//~vaegI~//~vat9R~
+        	AG.swLongDevice=AG.scrHeight>(int)(AG.scrWidth*RATE_LONGDEVICE);//~vat9I~
         }                                                          //~vaeeI~
         if (Dump.Y) Dump.println("UView:getScreenSize portrait="+AG.portrait+",swLongDevice="+AG.swLongDevice+",scrNavigationbarRightWidth="+AG.scrNavigationbarRightWidth+",scrNavigationBarBottomHeight="+AG.scrNavigationbarBottomHeight);//~1ak2I~//~1aj0R~//~vaeeR~//~vaefR~//~vaegR~
     }                                                              //~1122M~
@@ -208,8 +215,8 @@ public class UView                                                 //~v@@@I~
         {                                                          //~vaegI~
 //      	marginLR=ww0-ptDecor.x;                                //~vaegR~
         	marginLR=ww0-(rectDecor.right-rectDecor.left);         //~vaegI~
-		    if (Dump.Y) Dump.println("UView:getDisplaySize30 3 button mode marginLR="+marginLR);//~vaegI~
-        }                                                          //~vaegI~
+			if (Dump.Y) Dump.println("UView:getDisplaySize30 3 button mode marginLR="+marginLR);//~vaegI~//~vataR~
+        }                                                          //~vaegI~//~vataR~
         AG.scrNavigationbarRightWidthA11=marginLR;              //~vaefR~//~vaegI~
 //        if (ww0>hh0)    //landscape                              //~vaegR~
 //            if (!AG.swNavigationbarGestureMode)                  //~vaegR~
@@ -237,8 +244,11 @@ public class UView                                                 //~v@@@I~
         WindowInsets windowInsets=metrics.getWindowInsets();       //~vam6M~
         Insets inset=windowInsets.getInsetsIgnoringVisibility      //~vam6M~
 						(WindowInsets.Type.navigationBars()|WindowInsets.Type.displayCutout());//~vam6M~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 inset="+inset);//~vataI~
         int insetWW=inset.right+inset.left;                        //~vam6M~
         int insetHH=inset.top+inset.bottom;                        //~vam6M~
+        Rect rectDecor=getDecorViewRect();                         //~vam6M~//~vataM~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize31 rectRecor="+rectDecor.toString());//~vataI~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize31 insetWW="+insetWW+",insetHH="+insetHH+",insets="+inset);//~vam6M~
                                                                    //~vam6M~
         int ww=ww0-insetWW;                                        //~vam6I~
@@ -252,7 +262,6 @@ public class UView                                                 //~v@@@I~
 	        ww=ww0;                                                //~vam6I~
         AG.scrNavigationbarBottomHeightA11=inset.bottom;           //~vam6M~
         int marginLR;                                              //~vam6M~
-        Rect rectDecor=getDecorViewRect();                         //~vam6M~
 //      if (AG.swNavigationbarGestureMode)                         //~vam6R~
 //      {                                                          //~vam6R~
 //          int left=rectDecor.left;	//landscape effect delayed to Decorview//~vam6R~
@@ -265,7 +274,11 @@ public class UView                                                 //~v@@@I~
 //      	marginLR=ww0-(rectDecor.right-rectDecor.left);	//landscape effect delayed to Decorview//~vam6R~
 //  	    if (Dump.Y) Dump.println("UView:getDisplaySize31 3 button mode marginLR="+marginLR);//~vam6R~
 //      }                                                          //~vam6R~
-        marginLR=0; //hide navigationBar on landscape, no navigationbar on portrait//~vam6I~
+//      marginLR=0; //hide navigationBar on landscape, no navigationbar on portrait//~vam6I~//+vateR~
+        int left=inset.left;                                       //+vateI~
+        int right=inset.right;                                     //+vateI~
+        marginLR=Math.max(left,right);                             //+vateI~
+		if (Dump.Y) Dump.println("UView:getDisplaySize33 swPortrait="+AG.portrait+",marginLR="+marginLR+",left="+left+",right="+right);//+vateI~
         AG.scrNavigationbarRightWidthA11=marginLR;                 //~vam6M~
         AG.scrStatusBarHeight=inset.top;                           //~vam6M~
                                                                    //~vam6M~
@@ -275,6 +288,63 @@ public class UView                                                 //~v@@@I~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize31 point="+Ppoint.toString()+",statusBarHeight="+AG.scrStatusBarHeight);//~vam6M~
 	    if (Dump.Y) Dump.println("UView:getDisplaySize31 point="+Ppoint.toString()+",bounds="+bounds+",insets="+inset);//~vam6M~
     }                                                              //~vam6M~
+    //*******************************************************      //~vataI~
+    @TargetApi(33)   //>=33 Android13           //~vataI~
+	public static void getDisplaySize33(Display Pdisplay,Point Ppoint)              //~vataI~
+    {                                                              //~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33");        //~vataI~
+        WindowMetrics wm=AG.activity.getWindowManager().getCurrentWindowMetrics();//~vataI~
+	    int ww0=wm.getBounds().width();                            //~vataI~
+	    int hh0=wm.getBounds().height();                           //~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 windowMetrics ww="+ww0+",hh="+hh0);//~vataI~
+        Rect rectDecor=getDecorViewRect();                         //~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 rectDecor="+rectDecor.toString());//~vataI~
+        Insets insetnavi=wm.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars());//TODO test//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 insetnavi="+insetnavi.toString());//~vataI~
+        Insets insetstatus=wm.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.statusBars());//TODO test//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 insetstatus="+insetstatus.toString());//~vataI~
+        Insets insetnaviv=wm.getWindowInsets().getInsets(WindowInsets.Type.navigationBars());//TODO test//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 insetnaviv="+Utils.toString(insetnaviv));//~vataI~
+        Insets insetstatusv=wm.getWindowInsets().getInsets(WindowInsets.Type.statusBars());//TODO test//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 insetstatus visible="+Utils.toString(insetstatusv));//~vataI~
+        Insets insetsys=wm.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());//TODO test//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 insetsys="+insetsys.toString());//~vataI~
+                                                                   //~vataI~
+        Insets inset=wm.getWindowInsets().getInsets(WindowInsets.Type.systemGestures());//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 inset systemGesture="+Utils.toString(inset));//~vataI~
+                                                                   //~vataI~
+        int ww,hh;                                                 //~vataI~
+        AG.swNavigationbarGestureMode=inset.left!=0 && inset.right !=0 && inset.top!=0 && inset.bottom!=0;//~vataI~
+        ww=ww0-inset.left-inset.right;                             //~vataI~
+        hh=hh0-inset.bottom;  //fullscreen(no title) mode,bottom is 3button/gesture navigationbar//~vataI~
+        if (ww0>hh0)	//landscape                                //~vataI~
+        {                                                          //~vataI~
+            hh=hh0; //hide navigationbar at MainActivity           //~vataR~
+            ww=ww0; //fill hidden navigationbar, but right buttons has to be shift to left//~vataR~
+        }                                                          //~vataI~
+        else                                                       //~vataI~
+	        ww=ww0;                                                //~vataI~
+        AG.scrNavigationbarBottomHeightA11=inset.bottom;           //~vataI~
+        int marginLR;                                              //~vataI~
+//        if (AG.swNavigationbarGestureMode)                       //~vataR~
+//        {                                                        //~vataR~
+            int left=inset.left;                                   //~vataR~
+            int right=inset.right;                                 //~vataR~
+//      	marginLR=right;                                        //~vataI~
+        	marginLR=Math.max(left,right);                         //~vataR~
+		    if (Dump.Y) Dump.println("UView:getDisplaySize33 swPortrait="+AG.portrait+",marginLR="+marginLR+",left="+left+",right="+right);//~vataR~
+//        }                                                        //~vataR~
+//        else  //3button mode                                     //~vataR~
+//        {                                                        //~vataR~
+//            marginLR=ww0-(inset.right+inset.left);               //~vataR~
+//            if (Dump.Y) Dump.println("UView:getDisplaySize33 3 button mode marginLR="+marginLR);//~vataR~
+//        }                                                        //~vataR~
+        AG.scrNavigationbarRightWidthA11=marginLR;                 //~vataI~
+        Ppoint.x=ww; Ppoint.y=hh;                                  //~vataI~
+        AG.scrStatusBarHeight=inset.top;                           //~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 navigationbar bottomHA11="+AG.scrNavigationbarBottomHeightA11+",leftWA11="+AG.scrNavigationbarLeftWidthA11+",rightWA11="+AG.scrNavigationbarRightWidthA11+",swgesturemode="+AG.swNavigationbarGestureMode);//~vataI~
+	    if (Dump.Y) Dump.println("UView:getDisplaySize33 point="+Ppoint.toString()+",statusBarHeight="+AG.scrStatusBarHeight);//~vataI~
+    }                                                              //~vataI~
     //*******************************************************      //~1aj0I~
 	public static Display getDefaultDisplay()                      //~1aj0I~
     {                                                              //~1aj0I~
@@ -459,8 +529,11 @@ public class UView                                                 //~v@@@I~
 //  public static void getDisplaySize(Display Pdisplay,Point Ppoint)//~1A6pI~//~vam6R~
     private static void getDisplaySize(Display Pdisplay,Point Ppoint)//~vam6I~
     {                                                              //~1A6pI~
+        if (Dump.Y) Dump.println("UView: getDisplaySize osVersion="+Build.VERSION.SDK_INT);//~vataI~
 //      Pdisplay.getSize(Ppoint);                                    //~1A6pI~//~v@@@M~//~1aj0R~
-	    if (Dump.Y) Dump.println("UView:getDisplaySize");          //~1aj0I~
+		if (Build.VERSION.SDK_INT>=33)   //android-13(T)           //~vataI~
+			getDisplaySize33(Pdisplay,Ppoint);                     //~vataI~
+        else                                                       //~vataI~
 		if (Build.VERSION.SDK_INT>=31)                             //~vam6I~
 			getDisplaySize31(Pdisplay,Ppoint);                     //~vam6I~
         else                                                       //~vam6I~

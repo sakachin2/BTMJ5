@@ -1,5 +1,6 @@
-//*CID://+vas4R~: update#= 862;                                    //~vas3R~//~vas4R~
+//*CID://+vatbR~: update#= 863;                                    //+vatbR~
 //**********************************************************************
+//2022/10/18 vatb show dummy if profile is not set                 //+vatbI~
 //2022/10/12 vas4 enlarge profile icon for long device             //~vas4I~
 //2022/10/11 vas3 tecLast(Android12) portrait icon before move overrup on stock//~vas3I~
 //                (move down by the height of score of nameplate)  //~vas3I~
@@ -74,7 +75,8 @@ public class ProfileIcon
     private boolean swShowProfile;
     private boolean swShowMe;
     private Bitmap bmpMe,bmpMe0;
-    private Bitmap bmpDummy,bmpDummy0;
+//  private Bitmap bmpDummy,bmpDummy0;                             //+vatbR~
+    public  Bitmap          bmpDummy0;                             //+vatbI~
     private Bitmap[] bmpRobot0=new Bitmap[CTR_ROBOT];
     private Bitmap[] bmpRobot=new Bitmap[CTR_ROBOT];
     private Bitmap[] bmpCurrent=new Bitmap[PLAYERS];
@@ -86,7 +88,7 @@ public class ProfileIcon
     private boolean swServer;                                      //~2A02I~
     private boolean swIsSetCurrent,swAfterMove;                    //~2A03R~
     private boolean swMsgExchanging;                               //~2A04I~
-    private int maxHeightByStock; //distance from score top to stock edge                                 //~vas3R~//+vas4R~
+    private int maxHeightByStock; //distance from score top to stock edge                                 //~vas3R~//~vas4R~
     private float heightRatePerNamePlate,expandRateBeforeMove;     //~vas4I~
 //*************************************************************
 //* from Main Activity after Prop and UScoped init
@@ -281,12 +283,12 @@ public class ProfileIcon
 //      		adjustByScore=(rs.bottom-rs.top)/2;                //~vas3I~//~vas4R~
         		adjustByScore=(int)((rs.bottom-rs.top)/heightRatePerNamePlate);//~vas4I~
                                                                    //~vas3I~
-            int hhAdjustByScore=rs.bottom-rs.top+hh-adjustByScore; //+vas4R~
+            int hhAdjustByScore=rs.bottom-rs.top+hh-adjustByScore; //~vas4R~
             if (maxHeightByStock!=0 && hhAdjustByScore>=maxHeightByStock)//~vas3R~//~vas4R~
             	hh=maxHeightByStock-adjustByScore;                 //~vas3R~
                                                                    //~vas3I~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved new hh="+hh+",hhAdjustByScore="+hhAdjustByScore+",maxHeightByStock="+maxHeightByStock+",adjustByScore="+adjustByScore);//~vas3R~//+vas4R~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved adjustByScore="+adjustByScore+",additional hh="+hh+",hhYOUProfile="+(rs.bottom-rs.top));//~vardI~//~vas3R~//+vas4R~
+    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved new hh="+hh+",hhAdjustByScore="+hhAdjustByScore+",maxHeightByStock="+maxHeightByStock+",adjustByScore="+adjustByScore);//~vas3R~//~vas4R~
+    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved adjustByScore="+adjustByScore+",additional hh="+hh+",hhYOUProfile="+(rs.bottom-rs.top));//~vardI~//~vas3R~//~vas4R~
         	if (!AG.swLongDevice)                                  //~vardR~
             {                                                      //~vardI~
 				int hhDecrease=AG.aMJTable.chkProfileRect(hh+rs.bottom-rs.top);//landscape chk //~vardR~
@@ -652,7 +654,8 @@ public class ProfileIcon
     {
         String[] nameRobots= GConst.robotYourNameDefaultConst;
     	if (Dump.Y) Dump.println("ProfileIcon.getBmpRobot name="+Pname+",robots="+Utils.toString(nameRobots));
-        Bitmap bm=bmpDummy;
+//      Bitmap bm=bmpDummy;                                        //+vatbR~
+        Bitmap bm=bmpDummy0;                                       //+vatbI~
         for (int ii=1;ii<nameRobots.length;ii++)	//ii=0:Me
         {
             if (Pname.equals(nameRobots[ii]))
@@ -664,14 +667,14 @@ public class ProfileIcon
 	    if (Dump.Y) Dump.println("ProfileIcon.getBmpRobot bitmap "+toString(bm));//~var8R~//~2A03R~
         return bm;
     }
-    //***************************************
-	public Bitmap getBmpOther(String Pname)
-    {
-    	if (Dump.Y) Dump.println("ProfileIcon.getBmpOther");
-        Bitmap bm=bmpDummy;
-	    if (Dump.Y) Dump.println("ProfileIcon.getBmpOther bitmap "+toString(bm));//~var8R~//~2A03R~
-        return bm;
-    }
+//    //***************************************                    //+vatbR~
+//    public Bitmap getBmpOther(String Pname)                      //+vatbR~
+//    {                                                            //+vatbR~
+//        if (Dump.Y) Dump.println("ProfileIcon.getBmpOther");     //+vatbR~
+//        Bitmap bm=bmpDummy;                                      //+vatbR~
+//        if (Dump.Y) Dump.println("ProfileIcon.getBmpOther bitmap "+toString(bm));//~var8R~//~2A03R~//+vatbR~
+//        return bm;                                               //+vatbR~
+//    }                                                            //+vatbR~
 //    //***************************************                    //~var8R~
 //    public String makeMsgProfile(int Pcase)                      //~var8R~
 //    {                                                            //~var8R~

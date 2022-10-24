@@ -1,6 +1,7 @@
-//*CID://+vas0R~: update#= 318;                                    //+vas0R~
+//*CID://+vat2R~: update#= 324;                                    //~vat2R~
 //**********************************************************************//~1107I~
-//2022/10/09 vas0 print history                                    //+vas0I~
+//2022/10/16 vat2 deprecated api33; PackageManager.getAplicationInfo//~vat2I~
+//2022/10/09 vas0 print history                                    //~vas0I~
 //2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/17 vae7 Scoped for BTMJ5, SDcard data transfer           //~vae7I~
@@ -171,10 +172,10 @@ public class Utils                                            //~1309R~//~@@@@R~
 	public static final int TS_DATE_TIME=1;                        //~1425I~
 	public static final int TS_MILI_TIME=2;                        //~1425I~
 	public static final int TS_DATE_TIME2=3;                       //~@@01I~
-	public static final int TS_DATE_TIME3=4;                       //+vas0I~
+	public static final int TS_DATE_TIME3=4;                       //~vas0I~
 	private static final SimpleDateFormat fmtdt=new SimpleDateFormat("yyyyMMdd-HHmmss");//~1425I~
 	private static final SimpleDateFormat fmtdt2=new SimpleDateFormat("yyyyMMdd:HHmmss");//~@@01R~
-	private static final SimpleDateFormat fmtdt3=new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");//+vas0I~
+	private static final SimpleDateFormat fmtdt3=new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");//~vas0I~
 	private static final SimpleDateFormat fmtms=new SimpleDateFormat("HHmmss.SSS");//~1425I~
 	public static String getTimeStamp(int Popt,Date Pdate)                    //~1425I~//~v@@@R~
     {                                                              //~1425I~
@@ -188,9 +189,9 @@ public class Utils                                            //~1309R~//~@@@@R~
         case TS_DATE_TIME2:                                        //~@@01I~
         	f=fmtdt2;                                              //~@@01I~
             break;                                                 //~@@01I~
-        case TS_DATE_TIME3:                                        //+vas0I~
-        	f=fmtdt3;                                              //+vas0I~
-            break;                                                 //+vas0I~
+        case TS_DATE_TIME3:                                        //~vas0I~
+        	f=fmtdt3;                                              //~vas0I~
+            break;                                                 //~vas0I~
         case TS_MILI_TIME:                                         //~1425I~
         	f=fmtms;                                               //~1425I~
             break;                                                 //~1425I~
@@ -386,12 +387,17 @@ public class Utils                                            //~1309R~//~@@@@R~
         return ipa;                                                //~1A86I~
     }                                                              //~1A86I~
 //***********************************************************************//~v107R~
+	@SuppressWarnings("deprecation")                               //~vat2I~
     public static boolean isDebuggable(Context ctx)                //~v107R~
     {                                                              //~v107R~
+    	if (Dump.Y) Dump.println("Utils.isDebuggable");            //~vat2I~
         PackageManager manager = ctx.getPackageManager();          //~v107R~
         ApplicationInfo appInfo = null;                            //~v107R~
         try                                                        //~v107R~
         {                                                          //~v107R~
+		  if (AG.osVersion>=33)                                    //~vat2I~
+            appInfo = getApplicationInfo33(manager,ctx);               //~vat2I~
+          else                                                     //~vat2I~
             appInfo = manager.getApplicationInfo(ctx.getPackageName(), 0);//~v107R~
         }                                                          //~v107R~
         catch (NameNotFoundException e)                            //~v107R~
@@ -399,9 +405,25 @@ public class Utils                                            //~1309R~//~@@@@R~
             return false;                                          //~v107R~
         }                                                          //~v107R~
         if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == ApplicationInfo.FLAG_DEBUGGABLE)//~v107R~
+        {                                                          //~vat2I~
+	    	if (Dump.Y) Dump.println("Utils.isDebuggable true");   //~vat2I~
             return true;                                           //~v107R~
+        }                                                          //~vat2I~
+	    if (Dump.Y) Dump.println("Utils.isDebuggable false");      //~vat2I~
         return false;                                              //~v107R~
     }                                                              //~v107R~
+//***********************************************************************//~vat2I~
+	@TargetApi(33)                                                 //~vat2I~
+    public static ApplicationInfo getApplicationInfo33(PackageManager Pmgr,Context Pcontext)//~vat2I~
+    	throws NameNotFoundException                               //~vat2I~
+    {                                                              //~vat2I~
+    	if (Dump.Y) Dump.println("Utils.getApplicationInfo33");    //~vat2I~
+    	int flagMgr=0;	//TODO  ?                                  //+vat2R~
+    	PackageManager.ApplicationInfoFlags flags=PackageManager.ApplicationInfoFlags.of(flagMgr);//~vat2I~
+    	ApplicationInfo appInfo = Pmgr.getApplicationInfo(Pcontext.getPackageName(),flags);//~vat2I~
+    	if (Dump.Y) Dump.println("Utils.getApplicationInfo33 appinfo="+appInfo);//~vat2I~
+        return appInfo;                                            //~vat2I~
+    }                                                              //~vat2I~
 //***********************************************************************//~1A67I~//~1A6aR~
     public static String getMacString(byte[] Pbytemacaddr)                //~1A67R~//~1A6aR~
     {                                                              //~1A67R~//~1A6aR~

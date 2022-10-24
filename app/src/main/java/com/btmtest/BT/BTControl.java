@@ -1,6 +1,9 @@
-//*CID://+vam9R~:                             update#=  185;       //+vam9R~
+//*CID://+vat8R~:                             update#=  193;       //+vat8R~
 //****************************************************************************//~v101I~
-//2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//+vam9I~
+//2022/10/16 vat8 Bluetooth on Emulator; avoid abend               //+vat8I~
+//2022/10/16 vat3 deprecated api31; BluetoothDevice/BluetoothAdapter.getName() requires request permission BLUETOOTH_CONNECT//~vat3I~
+//2022/10/16 vat2 deprecated api33; Bluetooth                      //~vat0I~
+//2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//~vam9I~
 //2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~vam3I~
 //1aj1 2021/08/14 androd11(api30) deprecated at api30;Handler default constructor(requires parameter)//~1aj1I~
 //@004:20181103 remains constant "AjagoBT"                         //~@004I~
@@ -101,7 +104,8 @@ public class BTControl {                                           //~@@@@I~
 	        UView.showToastLong(R.string.noBTadapter);             //~@@@@R~//~1A6aR~
             return false;                                          //~@@@@I~
         }                                                          //~@@@@I~
-        mLocalDeviceName=mBluetoothAdapter.getName();              //~@@@@I~
+//      mLocalDeviceName=mBluetoothAdapter.getName();              //~@@@@I~//~vat3R~
+        mLocalDeviceName=getName(mBluetoothAdapter);               //~vat3I~
         return true;                                               //~@@@@I~
     }                                                              //~@@@@I~
 
@@ -127,7 +131,7 @@ public class BTControl {                                           //~@@@@I~
     {                                                              //~v101I~
     	boolean rc=true;                                           //~v101I~
         if(Dump.Y) Dump.println("BTControl.BTEnable");                //~v101I~//~1A6aR~
-		if (Dump.Y) Dump.println("BTControl.BTEnable bta="+mBluetoothAdapter+",address="+mBluetoothAdapter.getAddress()+",name="+mBluetoothAdapter.getName()+",status="+mBluetoothAdapter.getState());//~vam3I~
+		if (Dump.Y) Dump.println("BTControl.BTEnable bta="+mBluetoothAdapter+",address="+mBluetoothAdapter.getAddress()+",name="+getName(mBluetoothAdapter)+",status="+mBluetoothAdapter.getState());//~vam3I~//~vat3R~
         if (!mBluetoothAdapter.isEnabled())                        //~v101I~
         {                                                          //~v101I~
             startBTActivity(BTA_ENABLE);                           //~v101I~
@@ -259,7 +263,7 @@ public class BTControl {                                           //~@@@@I~
 //*from BTI.activityResult<--MainActivity.onActivityResult         //~vam3R~
 //*************************************************************************//~@@@@I~
     public void BTActivityResult(int requestCode, int resultCode, Intent data) {//~@@@@R~
-        if(Dump.Y) Dump.println("BTControl.onActivityResult reqcode=" +requestCode+ ",resultcode="+ resultCode); //~@@@@R~//~1A60R~//+vam9R~
+        if(Dump.Y) Dump.println("BTControl.onActivityResult reqcode=" +requestCode+ ",resultcode="+ resultCode); //~@@@@R~//~1A60R~//~vam9R~
         switch (requestCode) {
 //      case AG.ACTIVITY_REQUEST_ENABLE_BT:                        //~1A6aI~//~@003R~
         case REQUEST_ENABLE_BT:                                    //~@003I~
@@ -271,21 +275,21 @@ public class BTControl {                                           //~@@@@I~
                 // User did not enable Bluetooth or an error occured
                 if (Dump.Y) Dump.println("BT not enabled");        //~@@@@R~
 	            UView.showToastLong(R.string.bt_not_enabled_leaving);  //~v107I~//~@@@@R~//~1A6aR~
-                dismissDialog();                                   //+vam9I~
+                dismissDialog();                                   //~vam9I~
             }
             break;                                                 //~9A26I~
         }
     }
-//*************************************************************************//+vam9I~
-	private void dismissDialog()                                   //+vam9R~
-	{                                                              //+vam9I~
-        if(Dump.Y) Dump.println("BTControl.dismissDialog");        //+vam9I~
-        BTCDialog.closeDialog();                                   //+vam9I~
-	}                                                              //+vam9I~
+//*************************************************************************//~vam9I~
+	private void dismissDialog()                                   //~vam9R~
+	{                                                              //~vam9I~
+        if(Dump.Y) Dump.println("BTControl.dismissDialog");        //~vam9I~
+        BTCDialog.closeDialog();                                   //~vam9I~
+	}                                                              //~vam9I~
 //*************************************************************************//~@@@@I~
     public boolean startBTActivity(int Pfuncid)                    //~@@@@I~
     {                                                              //~@@@@I~
-        if(Dump.Y) Dump.println("BTControl.startBTActivity funcid="+Pfuncid);//+vam9I~
+        if(Dump.Y) Dump.println("BTControl.startBTActivity funcid="+Pfuncid);//~vam9I~
         Intent intent=null;                                        //~@@@@R~
         switch (Pfuncid) {                                         //~@@@@I~
         case BTA_ENABLE:                                           //~@@@@I~
@@ -294,7 +298,7 @@ public class BTControl {                                           //~@@@@I~
             activity.startActivityForResult(intent,REQUEST_ENABLE_BT);//~@003I~
             return true;                                           //~@@@@I~
         case BTA_DISABLE:	//for Test                             //~9A26I~
-		    mBluetoothAdapter.disable();                           //~9A26I~
+//  	    mBluetoothAdapter.disable();     //disble deprecated, this is testoption//~vat2R~
             return true;                                           //~9A26I~
         case BTA_DISCOVERABLE:                                     //~@@@@R~
             intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);//~@@@@I~
@@ -555,10 +559,57 @@ public class BTControl {                                           //~@@@@I~
     private static BluetoothAdapter getDefaultAdapter_from31()     //~vam3I~
     {                                                              //~vam3I~
     	BTControl BTC=AG.aBTI.mBTC;                                          //~vam3I~
+        if (BTC==null)                                             //+vat8I~
+        {                                                          //+vat8I~
+			if (Dump.Y) Dump.println("BTControl:getDefaultAdapter_from31 return null by mBTC==null");//+vat8I~
+            return null;                                           //+vat8I~
+        }                                                          //+vat8I~
     	if (BTC.aBluetoothManager==null)                           //~vam3R~
 	        BTC.aBluetoothManager=(BluetoothManager)AG.context.getSystemService(Context.BLUETOOTH_SERVICE);//~vam3R~
     	BluetoothAdapter bta= BTC.aBluetoothManager.getAdapter();      //~vam3R~
-		if (Dump.Y) Dump.println("BTControl:getDefaultAdapter_from31 bta="+bta+",address="+bta.getAddress()+",name="+bta.getName()+",status="+bta.getState());//~vam3R~
+		if (Dump.Y) Dump.println("BTControl:getDefaultAdapter_from31 bta="+bta+",address="+bta.getAddress()+",name="+getName(bta)+",status="+bta.getState());//~vam3R~//~vat3R~
         return bta;                                                //~vam3I~
     }                                                              //~vam3I~
+    public static String getName(BluetoothDevice Pdevice)          //~vat3I~
+    {                                                              //~vat3I~
+        String rc="UnknownDevicename";                             //~vat3I~
+        try                                                        //~vat3I~
+        {                                                          //~vat3I~
+        	rc=Pdevice.getName();                                  //~vat3I~
+        }                                                          //~vat3I~
+        catch(SecurityException e)                                 //~vat3I~
+        {                                                          //~vat3I~
+        	Dump.println(e,"BTControl:getName(BluetoothDevice)");  //~vat3I~
+        }                                                          //~vat3I~
+		if (Dump.Y) Dump.println("BTControl:getName rc="+rc+",device="+Pdevice);//~vat3I~
+        return rc;                                                 //~vat3I~
+    }                                                              //~vat3I~
+    public static int getBondState(BluetoothDevice Pdevice)               //~vat3I~
+    {                                                              //~vat3I~
+        int rc=0;                                                  //~vat3I~
+        try                                                        //~vat3I~
+        {                                                          //~vat3I~
+        	rc=Pdevice.getBondState();                             //~vat3I~
+        }                                                          //~vat3I~
+        catch(SecurityException e)                                 //~vat3I~
+        {                                                          //~vat3I~
+        	Dump.println(e,"BTControl:getBondState(BluetoothDevice)");//~vat3I~
+        }                                                          //~vat3I~
+		if (Dump.Y) Dump.println("BTControl:getBonsState rc="+rc+",device="+Pdevice);//~vat3I~
+        return rc;                                                 //~vat3I~
+    }                                                              //~vat3I~
+    public static String getName(BluetoothAdapter Padapter)        //~vat3I~
+    {                                                              //~vat3I~
+        String rc="UnknownBlutoothAdapter";                        //~vat3I~
+        try                                                        //~vat3I~
+        {                                                          //~vat3I~
+        	rc=Padapter.getName();                                 //~vat3I~
+        }                                                          //~vat3I~
+        catch(SecurityException e)                                 //~vat3I~
+        {                                                          //~vat3I~
+        	Dump.println(e,"BTControl:getName(BluetoothAdapter)"); //~vat3I~
+        }                                                          //~vat3I~
+		if (Dump.Y) Dump.println("BTControl:getName rc="+rc+",adapter="+Padapter);//~vat3I~
+        return rc;                                                 //~vat3I~
+    }                                                              //~vat3I~
 }

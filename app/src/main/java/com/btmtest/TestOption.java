@@ -1,5 +1,7 @@
-//*CID://+van1R~: update#= 582;                                    //~van1R~
+//*CID://+vathR~: update#= 592;                                    //~vathR~
 //**********************************************************************//~v@@@I~
+//2022/10/20 vath confirm nullify testoption                       //~vathI~
+//2022/10/18 vatf default dump to sdcard change to ON              //~vatfI~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vagvI~
@@ -30,6 +32,7 @@ import static com.btmtest.AG.*;//~v@@@R~
 
 import com.btmtest.game.Status;
 import com.btmtest.utils.Dump;                                                                   //~v@@@I~
+import com.btmtest.utils.UView;
 import com.btmtest.wifi.WDA;
 
 //~v@@@I~
@@ -238,8 +241,9 @@ public class TestOption //extends Handler                          //~v@@@I~
                                                                    //~v@@@I~
     	option2|=TO2_UNIT_MILISEC;                                 //~v@@@I~
     	option2|=TO2_ROBOT_TOAST;                                  //~va66I~
+        option2|=TO2_DUMP_SDCARD;                                  //~vatfR~
 //  	option2|=TO2_ROBOT_SKIP_REACH;	//TODO test                //~va66R~
-//  	option5|=TO5_RONCANCEL_TEST  ;                             //+van1R~
+//  	option5|=TO5_RONCANCEL_TEST  ;                             //~van1R~
         Dump.println("TestOption.static sst="+sst);                      //~v@@@I~
         sst2="sst2";                                               //~v@@@I~
     }                                                              //~v@@@I~
@@ -247,7 +251,10 @@ public class TestOption //extends Handler                          //~v@@@I~
     {                                                              //~v@@@I~
         if (!AG.isDebuggable)                                      //~v@@@I~
         {                                                          //~v@@@I~
+//test      UView.showToastLong("testOption before="+Integer.toHexString(option)+","+Integer.toHexString(option2)+","+option3+","+option4+","+option5);//+vathR~
         	option=0; option2=0;                                   //~v@@@I~
+        	option3=0; option4=0; option5=0;                       //~vathI~
+//test      UView.showToastLong("testOption after="+option+","+option2+","+option3+","+option4+","+option5);//+vathR~
         	return;                                                //~v@@@I~
         }                                                          //~v@@@I~
 //    	AG a=AG;                                                   //~v@@@I~

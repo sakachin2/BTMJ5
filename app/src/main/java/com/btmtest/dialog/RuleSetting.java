@@ -1,5 +1,7 @@
-//*CID://+varbR~:                             update#=  797;       //~varbR~
+//*CID://+vat7R~:                             update#=  799;       //+vat7R~
 //*****************************************************************//~v101I~
+//2022/10/16 vat7 (Bug)rule btn show not Summary but rulesetting   //+vat7I~
+//2022/10/16 vat6 change initialscoreTest 2500-->25000             //~vat6I~
 //2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//~varbI~
 //2022/09/03 var0 summary rule setting dialog                      //~var0I~
 //2022/08/22 vaqh allow optio to resume ignoring app version       //~vaqhI~
@@ -230,15 +232,16 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     public static void showRuleInGame(Prop Pprop)                  //~9830I~
     {                                                              //~9830I~
         if (Dump.Y) Dump.println("RuleSetting.showRuleInGame");    //~9408I~
-        if (Utils.isShowingDialogFragment(AG.aRuleSetting))        //~9408I~
-        {                                                          //~9408I~
-            UView.showToast(R.string.Err_AlreadyShowing);          //~9408I~
-            return;                                                //~9408I~
-        }                                                          //~9408I~
-        RuleSetting dlg=newInstance();                             //~9408I~
-        dlg.swShowInGame=true;	//not updatable                    //~9408I~
-        dlg.parmProp=Pprop;                                        //~9830I~
-        dlg.show();                                                //~9408I~
+//        if (Utils.isShowingDialogFragment(AG.aRuleSetting))        //~9408I~//+vat7R~
+//        {                                                          //~9408I~//+vat7R~
+//            UView.showToast(R.string.Err_AlreadyShowing);          //~9408I~//+vat7R~
+//            return;                                                //~9408I~//+vat7R~
+//        }                                                          //~9408I~//+vat7R~
+//        RuleSetting dlg=newInstance();                             //~9408I~//+vat7R~
+//        dlg.swShowInGame=true;  //not updatable                    //~9408I~//+vat7R~
+//        dlg.parmProp=Pprop;                                        //~9830I~//+vat7R~
+//        dlg.show();                                                //~9408I~//+vat7R~
+    	RuleSettingSumm.showRuleInGame();                          //+vat7I~
     }                                                              //~9408I~
     //******************************************                   //~9404I~
     //*from BTIO at client received prop from server               //~9404I~
@@ -1425,10 +1428,10 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     //**************************************                       //~9425I~
 	public static int[] getInitialScoreTest()                      //~9425I~
     {                                                              //~9425I~
-		int scoreE=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTE),2500);//~9425I~
-		int scoreS=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTS),2500);//~9425I~
-		int scoreW=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTW),2500);//~9425I~
-		int scoreN=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTN),2500);//~9425I~
+		int scoreE=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTE),25000);//~9425I~//~vat6R~
+		int scoreS=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTS),25000);//~9425I~//~vat6R~
+		int scoreW=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTW),25000);//~9425I~//~vat6R~
+		int scoreN=AG.ruleProp.getParameter(getKeyRS(RSID_INITSCORE_TESTN),25000);//~9425I~//~vat6R~
         int[] rc=new int[]{scoreE,scoreS,scoreW,scoreN};           //~9425I~
         if (Dump.Y) Dump.println("RuleSetting.getInitialScoreTest rc="+Arrays.toString(rc));//~9425I~
         return rc;                                                 //~9425I~
@@ -2035,7 +2038,7 @@ public class RuleSetting extends SettingDlg                        //~v@@@R~
     }                                                              //~9501I~
     public static int getGameSetType()                             //~9501I~
     {                                                              //~9501I~
-        if (Dump.Y) Dump.println("RuleSetting.getGameSetType");//~vaqaI~//+varbR~
+        if (Dump.Y) Dump.println("RuleSetting.getGameSetType");//~vaqaI~//~varbR~
 		int idx=AG.ruleProp.getParameter(getKeyRS(RSID_GAMESET_TYPE),0);//~9501I~
         int rc=intsGameSetType[idx];                               //~9501I~
         if (Dump.Y) Dump.println("RuleSetting.getGameSetType rc="+rc);//~9501I~

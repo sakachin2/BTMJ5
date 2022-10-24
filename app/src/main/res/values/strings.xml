@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.25</string>
+    <string name="app_version">v1.26</string>
     <string name="app_versionMinConnect">v1.24</string>
     <string name="app_MinVersion">v1.24</string>
     <string name="Settings">Settings</string>
@@ -18,8 +18,8 @@
     <string name="Exit">Exit</string>
     <string name="failedBluetooth">Exception on Bluetooth processing.</string>
     <string name="failedBluetoothPermission">Bluetooth is not available by the reason of permission not granted.</string>
-    <string name="failedBluetoothPermissionType">Bluetooth permission(%1%s) is not granted. Bluetooth is not available.</string>
-    <string name="failedBluetoothPermissionTypeAdvertize">Bluetooth permission(%1%s) is not granted.</string>
+    <string name="failedBluetoothPermissionType">Bluetooth permission(%1$s) is not granted. Bluetooth is not available.</string>
+    <string name="failedBluetoothPermissionTypeAdvertize">Bluetooth permission(%1$s) is not granted.</string>
     <string name="failedBluetoothUnpair">Failed to unpair process of Bluetooth.</string>
     <string name="BluetoothUnpairRequested">requested unpair %1$s.</string>
     <string name="nowDiscoverable">Now \"Visible\" status(in a certain minutes).</string>
@@ -51,7 +51,7 @@
     <string name="BTGame">Game</string>
     <string name="BTGameRestart">Restart</string>
     <string name="Info_GameRestarted">Game will restart by successful reconnection.</string>
-    <string name="Info_IOErrRecovered">Connection remains, ask disconnection to the server</string>
+    <string name="Info_IOErrRecovered">Connection remains, request suspend process to the server. Or disconnect then retry \"Connection Failure\"</string>
     <string name="Err_InGameRestarting">Processing disconnection</string>
     <string name="Info_Reconnected">Reconnected to %1$s.</string>
     <string name="Err_ReconnectingEnv">Connected to \"%1$s\", but game can not be restarted because one side is APP restarted state.
@@ -583,7 +583,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="InfoRestoredFile">Restored from SD:%1$s</string>
     <string name="InfoLoaded">Loaded:%1$s</string>
     <string name="ErrFileViewerNoText">File is empty.</string>
-    <string name="ErrFileViewerTooLarge">Too large file, available max is %1%d.</string>
+    <string name="ErrFileViewerTooLarge">Too large file, available max is %1$d.</string>
     <string name="ErrFileViewerRead">Read failed.</string>
     <string name="ErrOpenFailed">Failed to open %1$s</string>
     <string name="ErrSpecifyYourname">Set \"ID\" on top-right corner.</string>
@@ -1033,8 +1033,11 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Info_ResyncRuleClientChanged">Client (%1$S) changed rule. Getting Agreement required anew.</string>
     <string name="Info_ResyncRuleServerChanged">This device is server, send the rule because it is updated.</string>
     <string name="Err_ResyncRuleRequired">Rule setting is unmatch with \"%1$S\". (Re)Send from Server.</string>
-    <string name="Err_RuleIsInitial">Rule is not established yet. Press \"Settings\".</string>
-    <string name="Err_RuleIsInitialMsg">Rule is not established yet. Press \"Settings\", \"RuleSettings\", then close the dialog by \"OK\".</string>
+    <!--string name="Err_RuleIsInitial">Rule is not established yet. Press \"Settings\".</string-->
+    <string name="Err_RuleIsInitial">Rule file will be initialized by default value.</string>
+    <!--string name="Err_RuleIsInitialMsg">Rule is not established yet. Press \"Settings\", \"RuleSettings\", then close the dialog by \"OK\".</string-->
+    <string name="Info_RuleIsInitialized">Rule file was initialized by default value.</string>
+    <string name="Info_RuleIsInitializedMsg">Rule file was initialized by default value. Confirm it by \"Settings\", then try \"Game\".</string>
     <string name="Info_ResyncRuleChkOK">Rule was synchronized, game will start.</string>
     <string name="Info_RuleSynchedAlready">Rule is synchronized with %1$d players, no send required.</string>
     <string name="Info_BlockTimeout">Timeout of \"Wait!\"</string>
@@ -1716,4 +1719,5 @@ Reinstall this APP to try to set again.
 
     <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4 or above.</string>
     <string name="Print">Print</string>
+    <string name="Err_ConnectionExist">You can not chage it during connection exists.</string>
 </resources>

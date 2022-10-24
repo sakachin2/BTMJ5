@@ -2,8 +2,6 @@
     <!--string name="app_name">ｅ雀 β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.25</string>
-    <string name="app_MinVersion">v1.24</string>
     <string name="Settings">設定</string>
     <string name="SettingsRelated">関連設定</string>
     <string name="Connect">接続</string>
@@ -50,7 +48,7 @@
     <string name="BTGame">対戦</string>
     <string name="BTGameRestart">ゲーム再開</string>
     <string name="Info_GameRestarted">再接続によりゲームを再開します</string>
-    <string name="Info_IOErrRecovered">接続があります、サーバーからの中断処理要求を受けてください</string>
+    <string name="Info_IOErrRecovered">接続があります、サーバーから中断処理要求をしてください。あるいは切断して障害処理をリトライして下さい</string>
     <string name="Err_InGameRestarting">切断処理中です</string>
     <string name="Info_Reconnected">%1$s に再接続しました</string>
     <string name="Err_ReconnectingEnv">\"%1$s\"に接続しましたが、片方のアプリは再起動です、ゲーム再開はできません。
@@ -570,7 +568,7 @@
     <string name="InfoRestoredFile">SDから復元しました：%1$s</string>
     <string name="InfoLoaded">読み込ました：%1$s</string>
     <string name="ErrFileViewerNoText">ファイルは空です</string>
-    <string name="ErrFileViewerTooLarge">ファイルが大きすぎます、このダイアログの最大は %1%d</string>
+    <string name="ErrFileViewerTooLarge">ファイルが大きすぎます、このダイアログの最大は %1$d</string>
     <string name="ErrFileViewerRead">読み込み失敗</string>
     <string name="ErrOpenFailed">%1$s オープン失敗</string>
     <string name="ErrSpecifyYourname">右上の "ID名" を設定してください</string>
@@ -1019,8 +1017,11 @@
     <string name="Info_ResyncRuleClientChanged">クライアント（%1$S）がルールを変更しました、再度ルールの同意が必要です</string>
     <string name="Info_ResyncRuleServerChanged">この端末はサーバーです、ルールを変更したので、送信が必要です</string>
     <string name="Err_ResyncRuleRequired">ルール設定が \"%1$S\" と異なっています。サーバーから(再)送信してください</string>
-    <string name="Err_RuleIsInitial">ルール設定ができていません。\"設定\"ボタンを押してください</string>
-    <string name="Err_RuleIsInitialMsg">ルール設定ができていません。\"設定\"ボタンから\"ルール設定\"を開き、\"OK\"を押してください</string>
+    <!--string name="Err_RuleIsInitial">ルール設定ができていません。\"設定\"ボタンを押してください</string-->
+    <string name="Err_RuleIsInitial">ルール設定を規定値で初期化をします</string>
+    <!--string name="Err_RuleIsInitialMsg">ルール設定ができていません。\"設定\"ボタンから\"ルール設定\"を開き、\"OK\"を押してください</string-->
+    <string name="Info_RuleIsInitialized">ルール設定を規定値で初期化しました。</string>
+    <string name="Info_RuleIsInitializedMsg">ルール設定の規定値で初期化しました。\"設定\"で確認したら対局してください。</string>
     <string name="Info_ResyncRuleChkOK">ルール設定を確認しました、対局を開始します</string>
     <string name="Info_RuleSynchedAlready">%1$d 人とルールは同期しています、送信は行われません</string>
     <string name="Info_BlockTimeout">\"ちょっと待った\"の時間切れ</string>
@@ -1713,5 +1714,6 @@ Android-11以降、初回インストール時には、ゲームデータの保�
 
     <string name="Err_PrintSupportApi19">印刷サポートはアンドロイド4(KiKat)からです。</string>
     <string name="Print">印刷</string>
+    <string name="Err_ConnectionExist">接続中は変更できません</string>
 
 </resources>

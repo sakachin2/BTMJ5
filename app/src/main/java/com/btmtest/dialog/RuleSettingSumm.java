@@ -1,6 +1,7 @@
-//*CID://+varbR~:                             update#=  833;       //+varbR~
+//*CID://+vatgR~:                             update#=  836;       //~vatgR~
 //*****************************************************************//~v101I~
-//2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//+varbI~
+//2022/10/20 vatg after first install, reset SYNCDAYE_INIT automatically//~vatgI~
+//2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//~varbI~
 //2022/09/09 var2 summary rule setting dialog;add from operation   //~var2I~
 //2022/09/09 var1 summary rule setting dialog;drop yakuman         //~var1I~
 //2022/09/03 var0 summary rule setting dialog                      //~var0I~
@@ -33,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.btmtest.BT.BTMulti;
+import com.btmtest.MainView;
 import com.btmtest.R;
 import com.btmtest.TestOption;
 import com.btmtest.gui.CommonListener;
@@ -174,6 +176,7 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
     public boolean swChangedOperation;                             //~9624I~
     public boolean swChildInitializing;                            //~9B10I~
 //  private boolean swAnyUpdate;                                   //~vakWI~//~var0R~
+    private boolean swResetInitial;                                //~vatgI~
     //******************************************                   //~v@@@M~
 	public RuleSettingSumm()                                       //~var0R~
     {
@@ -200,6 +203,14 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
                     HELP_TITLEID,HELPFILE);                   //~v@@@I~//~9C13R~
         return dlg;                                                //~v@@@I~
     }                                                              //~v@@@I~
+    //******************************************                   //~vatgI~
+    public static void newInstanceForInitial()           //~vatgI~
+    {                                                              //~vatgI~
+        if (Dump.Y) Dump.println("RuleSettingSumm.newInstanceForInitial");//~vatgI~
+        RuleSettingSumm dlg=newInstance();                         //~vatgI~
+        dlg.swResetInitial=true;                                   //~vatgI~
+        dlg.show();                                                //~vatgI~
+    }                                                              //~vatgI~
     //******************************************                   //~9405I~
     public static RuleSettingSumm newInstance(boolean PswReceived,String PsenderYourName,String PreceivedProp)//~9616I~//~var0R~
     {                                                              //~9405I~
@@ -307,7 +318,15 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
                 @Override                                          //~9902I~
                 public void onShow(DialogInterface Pdlg)           //~9902I~
                 {                                                  //~9902I~
-                    if (Dump.Y) Dump.println("RuleSettingSumm.onShow swReceived="+swReceived+",inGame="+swShowInGame);//~9902I~//~var0R~
+                    if (Dump.Y) Dump.println("RuleSettingSumm.onShow swReceived="+swReceived+",inGame="+swShowInGame+",swResetInitial="+swResetInitial);//~9902I~//~var0R~//~vatgR~
+                    if (swResetInitial)                             //~vatgI~
+                    {                                              //~vatgI~
+	                    if (Dump.Y) Dump.println("RuleSettingSumm.onShow issue OnClieck()");//~vatgI~
+                    	onClickOK();	//SettinDLG, disloag2Properties, dismiss//~vatgI~
+            			MainView.drawMsg(R.string.Info_RuleIsInitialized);//+vatgI~
+						UView.showToastLong(R.string.Info_RuleIsInitializedMsg);//+vatgI~
+                        return;                                    //~vatgI~
+                    }                                              //~vatgI~
                     if (!swReceived && !swShowInGame)              //~9902I~
                         CommonListener.setListener((CommonListener.CommonListenerI)(AG.aRuleSettingSumm));//~9902R~//~var0R~
             	}                                                  //~9902I~
@@ -320,6 +339,7 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
         if (Dump.Y) Dump.println("RuleSettingSumm.initLayout");          //~v@@@I~//~9403R~//~9616R~//~var0R~
         btnDetail=UButton.bind(PView,R.id.btnDetail,this);         //~var0M~
         super.initLayout(PView);                                   //~9403R~//~var0R~
+        setOnShowListener();                                       //~vatgI~
     }                                                              //~v@@@M~
     //******************************************                   //~9406I~
     private boolean setFixed()                                     //~9406I~
@@ -723,8 +743,8 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
     //*RankMUp                                                     //~var0I~
     	setBGUpdated(cbRankMUp,isChanged(RSID_RANKMUP));           //~var0I~
     //*scoreToPoint                                                //~var0I~
-//      setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT);          //~var0I~//+varbR~
-        setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT,0/*default*/);//+varbI~
+//      setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT);          //~var0I~//~varbR~
+        setBGUpdated(bgScoreToPoint,RSID_SCORE_TO_POINT,0/*default*/);//~varbI~
     //*Dora                                                        //~var0I~
         setBGUpdated(rgDora,isChanged(RSID_DORA));                 //~var0I~
         setBGUpdated(rgDoraHidden,isChanged(RSID_DORA_HIDDEN));    //~var0I~

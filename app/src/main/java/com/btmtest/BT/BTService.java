@@ -1,7 +1,9 @@
-//*CID://+vam3R~:                             update#=  128;       //+vam3R~
+//*CID://+vat5R~:                             update#=  138;       //~vat3R~//~vat5R~
 //********************************************************************************//~v101I~
-//2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//+vam3I~
-//********************************************************************************//+vam3I~
+//2022/10/16 vat5 deprecated api31;requires request permission BLUETOOTH_CONNECT//~vat5I~
+//2022/10/16 vat3 deprecated api31; BluetoothDevice/BluetoothAdapter.getName()/getBondState() requires request permission BLUETOOTH_CONNECT//~vat3I~
+//2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~vam3I~
+//********************************************************************************//~vam3I~
 
 package com.btmtest.BT;                                               //~1AedI~//~1AebI~
 
@@ -65,8 +67,8 @@ public class BTService {                                           //~@@@@I~
      * @param handler  A Handler to send messages back to the UI Activity
      */
     public BTService(Context context, Handler handler) {           //~@@@@I~
-//      mAdapter = BluetoothAdapter.getDefaultAdapter();           //+vam3R~
-        mAdapter = BTControl.getDefaultAdapter();                  //+vam3I~
+//      mAdapter = BluetoothAdapter.getDefaultAdapter();           //~vam3R~
+        mAdapter = BTControl.getDefaultAdapter();                  //~vam3I~
         mState = STATE_NONE;
         mHandler = handler;
     }
@@ -212,7 +214,8 @@ public class BTService {                                           //~@@@@I~
         mConnectedSocket=socket;  //before sendMessage             //~@@@@I~
         Message msg = mHandler.obtainMessage(BTControl.MESSAGE_DEVICE_NAME);//~@@@@R~
         Bundle bundle = new Bundle();
-        bundle.putString(BTControl.DEVICE_NAME, device.getName()); //~@@@@R~
+//      bundle.putString(BTControl.DEVICE_NAME, device.getName()); //~@@@@R~//~vat3R~
+        bundle.putString(BTControl.DEVICE_NAME,BTControl.getName(device));//~vat3I~
         msg.setData(bundle);
         if (Dump.Y) Dump.println("BTService:before sendmsg");      //~@@@2I~
         mHandler.sendMessage(msg);
@@ -302,6 +305,10 @@ public class BTService {                                           //~@@@@I~
                 // Send a failure message back to the Activity     //~@@@@I~
 			    notifyFailureAccept(mSocketType);                  //~v101R~
             }
+            catch(SecurityException e)                             //~vat5I~
+            {                                                      //~vat5I~
+              	Dump.println(e,"BTService.AcceptThread");          //~vat5I~
+            }                                                      //~vat5I~
             mmServerSocket = tmp;
         }
 
@@ -364,23 +371,27 @@ public class BTService {                                           //~@@@@I~
                             // Situation normal. Start the connected thread.
             				if (Dump.Y)  Dump.println("acceptThread run connected socket="+socket.toString());//~@@@2I~
                             if (acceptSecure)                      //~1A60I~
-						        UView.showToastLong(Utils.getStr(R.string.AcceptedBTSecureConnection,socket.getRemoteDevice().getName()));//~1A60R~//~1AebR~
+//  					        UView.showToastLong(Utils.getStr(R.string.AcceptedBTSecureConnection,socket.getRemoteDevice().getName()));//~1A60R~//~1AebR~//~vat3R~
+    					        UView.showToastLong(Utils.getStr(R.string.AcceptedBTSecureConnection,BTControl.getName(socket.getRemoteDevice())));//~vat3I~
                             else                                   //~1A60I~
-						        UView.showToastLong(Utils.getStr(R.string.AcceptedBTInSecureConnection,socket.getRemoteDevice().getName()));//~1A60R~//~1AebR~
+//  					        UView.showToastLong(Utils.getStr(R.string.AcceptedBTInSecureConnection,socket.getRemoteDevice().getName()));//~1A60R~//~1AebR~//~vat3R~
+    					        UView.showToastLong(Utils.getStr(R.string.AcceptedBTInSecureConnection,BTControl.getName(socket.getRemoteDevice())));//~vat3I~
                             connected(socket, socket.getRemoteDevice());
                             break;
                         case STATE_NONE:
                         case STATE_CONNECTED:
                             // Either not ready or already connected. Terminate new socket.
-                            try                                    //~1AebR~
-							{                                      //~1AebI~
-            				    if (Dump.Y)  Dump.println("acceptThread run connected,but close() by mstate="+mState+",socket="+socket.toString());//~@@@2R~
-                                socket.close();
-                            }                                      //~1AebR~
-							catch (IOException e)                  //~1AebI~
-							{                                      //~1AebI~
-                                Dump.println(e,"AcceptThread:run Could not close unwanted socket");//~@@@@I~
-                            }
+//                          try                                    //~1AebR~//~vat5R~
+//  						{                                      //~1AebI~//~vat5R~
+//          				    if (Dump.Y)  Dump.println("acceptThread run connected,but close() by mstate="+mState+",socket="+socket.toString());//~@@@2R~//~vat5R~
+//                              socket.close();                    //~vat5R~
+//                          }                                      //~1AebR~//~vat5R~
+//  						catch (IOException e)                  //~1AebI~//~vat5R~
+//  						{                                      //~1AebI~//~vat5R~
+//                              Dump.println(e,"AcceptThread:run Could not close unwanted socket");//~@@@@I~//~vat5R~
+//                          }                                      //~vat5R~
+          				    if (Dump.Y)  Dump.println("acceptThread run connected,but close() by mstate="+mState+",socket="+socket.toString());//~vat5I~
+    						closeSocket(socket);                   //~vat5I~
                             break;
                         }
                     }
@@ -400,15 +411,16 @@ public class BTService {                                           //~@@@@I~
             	return;                                            //~v101I~
             }                                                      //~v101I~
             if (Dump.Y) Dump.println("AcceptThread cancel() close() serversocket="+mmServerSocket.toString());//~@@@2R~
-            try                                                    //~1AebR~
-			{                                                      //~1AebI~
+//          try                                                    //~1AebR~//~vat5R~
+//  		{                                                      //~1AebI~//~vat5R~
                 swCancel=true;                                     //~@@@@I~
-                mmServerSocket.close();
-            }                                                      //~1AebR~
-			catch (IOException e)                                  //~1AebI~
-			{                                                      //~1AebI~
-                  Dump.println(e,"AcceptThread:cancel:close");     //~@@@@I~
-            }
+//              mmServerSocket.close();                            //~vat5R~
+//          }                                                      //~1AebR~//~vat5R~
+//  		catch (IOException e)                                  //~1AebI~//~vat5R~
+//  		{                                                      //~1AebI~//~vat5R~
+//                Dump.println(e,"AcceptThread:cancel:close");     //~@@@@I~//~vat5R~
+//          }                                                      //~vat5R~
+    		closeServerSocket(mmServerSocket);                     //~vat5R~
         }
     }
 
@@ -416,7 +428,16 @@ public class BTService {                                           //~@@@@I~
     @TargetApi(15)                                                 //~1AbNI~
     private void displayMyUuid(BluetoothDevice Pdevice)            //~1AbNI~
     {                                                              //~1AbNI~
-    	ParcelUuid[] uuids=Pdevice.getUuids();                     //~1AbNI~//~1AbZR~
+//  	ParcelUuid[] uuids=Pdevice.getUuids();                     //~1AbNI~//~1AbZR~//~vat5I~
+    	ParcelUuid[] uuids=new ParcelUuid[0];                      //~vat5I~
+      try                                                          //~vat5I~
+      {                                                            //~vat5I~
+    	uuids=Pdevice.getUuids();                                  //~vat5I~
+      }                                                            //~vat5I~
+      catch(SecurityException e)                                   //~vat5I~
+      {                                                            //~vat5I~
+        Dump.println(e,"BTService.displayMyUuid");                 //~vat5I~
+      }                                                            //~vat5I~
     	for (int ii=0;ii<uuids.length;ii++)                        //~1AbNI~
         	if (Dump.Y) Dump.println("BTService connectThread my uuid"+ii+"="+uuids[ii].getUuid());//~1AbNI~
     }                                                              //~1AbNI~
@@ -449,6 +470,10 @@ public class BTService {                                           //~@@@@I~
             } catch (IOException e) {
                 Dump.println(e,"ConnectThread:createRfcommSocketToServiceRecord");//~@@@@I~
             }
+            catch(SecurityException e)                             //~vat5I~
+            {                                                      //~vat5I~
+            	Dump.println(e,"BTService.connectThread");         //~vat5I~
+            }                                                      //~vat5I~
             mmSocket = tmp;
             if (Dump.Y) Dump.println("BTService connectThread secure="+mSocketType+",connected mmSocket="+mmSocket.toString());//~@@@2I~//~1AebR~
         }
@@ -458,10 +483,12 @@ public class BTService {                                           //~@@@@I~
             setName("ConnectThread" + mSocketType);                //~v101I~
 
             // Always cancel discovery because it will slow down a connection
-	          if (Dump.Y) Dump.println("ConnectThread:connect() cancel discovery before connect discovering="+mAdapter.isDiscovering());//~1AbNI~
-			if (mAdapter.isDiscovering())                          //~1AbNI~
-			{                                                      //~1AbNI~
-              mAdapter.cancelDiscovery();                          //~@@@2R~
+	  //    if (Dump.Y) Dump.println("ConnectThread:connect() cancel discovery before connect discovering="+mAdapter.isDiscovering());//~1AbNI~
+//  		if (mAdapter.isDiscovering())                          //~1AbNI~//~vat5R~
+//  		{                                                      //~1AbNI~//~vat5R~
+//            mAdapter.cancelDiscovery();                          //~@@@2R~//~vat5R~
+    		if (cancelDiscoveryIfDiscovering(mAdapter)) //issued cancel//~vat5I~
+            {                                                      //~vat5I~
               try                                                  //~1A64I~
               {                                                    //~1A64I~
               	Thread.sleep(300); //300ms                         //~1A64I~
@@ -479,7 +506,22 @@ public class BTService {                                           //~@@@@I~
 	            if (Dump.Y) Dump.println("ConnectThread:connect() mmSocket="+mmSocket.toString());//~@@@2I~//~v101R~
                 mmSocket.connect();
 	            if (Dump.Y) Dump.println("ConnectThread:connect() returned");//~v101I~
-            } catch (Exception e) {                                //~@@@2I~
+//          } catch (Exception e) {                                //~@@@2I~//~vat5R~
+            }                                                      //~vat5I~
+            catch(SecurityException e)                             //~vat5I~
+            {                                                      //~vat5I~
+                Dump.printlnNoMsg(e,"BTService:ConnectThread:run:connect");//~vat5I~
+		        String exceptionMsg=e.getMessage();                //~vat5I~
+    			if (exceptionMsg.equals(CONFIRM_ACCEPT))	//"Service discovery failed"//~vat5I~
+					UView.showToastLong(R.string.ErrConnectConfirmAccept);//~vat5I~
+                connectionFailed();                                //~vat5I~
+	            if (Dump.Y) Dump.println("BTService:ConnectThread:mmSocket close()="+mmSocket.toString());//~vat5I~
+	    		closeSocket(mmSocket);                             //~vat5I~
+	            if (Dump.Y) Dump.println("BTService:ConnectThread:mmSocket closeed");//~vat5I~
+                return;                                            //~vat5I~
+            }                                                      //~vat5I~
+			catch (Exception e)                                    //~vat5I~
+			{                                                      //~vat5I~
 //              if (!swCancel)                                     //~@@@2I~//~1AebR~
 //                  Dump.println(false/*messagedialog*/,e,"BTService:ConnectThread:run:connect");//~@@@@I~//~@@@2R~//~1AebR~
                     Dump.printlnNoMsg(e,"BTService:ConnectThread:run:connect");//~1AebR~
@@ -489,11 +531,12 @@ public class BTService {                                           //~@@@@I~
                 connectionFailed();                                //~@@@2R~//~1AebM~
                 // Close the socket
 	            if (Dump.Y) Dump.println("BTService:ConnectThread:mmSocket close()="+mmSocket.toString());//~@@@2I~
-                try {
-                    mmSocket.close();
-                } catch (IOException e2) {
-                	Dump.println(e,"BTService:ConnectThread:run:close");//~@@@@I~
-                }
+//              try {                                              //~vat5R~
+//                  mmSocket.close();                              //~vat5R~
+//              } catch (IOException e2) {                         //~vat5R~
+//              	Dump.println(e,"BTService:ConnectThread:run:close");//~@@@@I~//~vat5R~
+//              }                                                  //~vat5R~
+	    		closeSocket(mmSocket);                             //~vat5I~
                 // Start the service over to restart listening mode
 	            if (Dump.Y) Dump.println("BTService:ConnectThread:mmSocket closeed");//~v101I~
                 return;
@@ -511,20 +554,23 @@ public class BTService {                                           //~@@@@I~
             // Start the connected thread
             if (Dump.Y)  Dump.println("connectThread run connected socket="+mmSocket.toString());//~@@@2I~
             if (swSecure)                                          //~1A60I~
-				UView.showToastLong(Utils.getStr(R.string.ConnectedBTSecureConnection,mmDevice.getName()));//~1A60R~//~1AebR~
+//  			UView.showToastLong(Utils.getStr(R.string.ConnectedBTSecureConnection,mmDevice.getName()));//~1A60R~//~1AebR~//~vat3R~
+    			UView.showToastLong(Utils.getStr(R.string.ConnectedBTSecureConnection,BTControl.getName(mmDevice)));//~vat3I~
             else                                                   //~1A60I~
-				UView.showToastLong(Utils.getStr(R.string.ConnectedBTInSecureConnection,mmDevice.getName()));//~1A60R~//~1AebR~
+//  			UView.showToastLong(Utils.getStr(R.string.ConnectedBTInSecureConnection,mmDevice.getName()));//~1A60R~//~1AebR~//~vat3R~
+    			UView.showToastLong(Utils.getStr(R.string.ConnectedBTInSecureConnection,BTControl.getName(mmDevice)));//~vat3I~
             connected(mmSocket, mmDevice);
         }
 
         public void cancel() {
-            try {
+//          try {                                                  //~vat5R~
             	if (Dump.Y) Dump.println("ConnectThread cancel() close socket="+mmSocket.toString());//~@@@2I~
                 swCancel=true;                                     //~@@@2I~
-                mmSocket.close();
-            } catch (IOException e) {
-                Dump.println(e,"ConnectThread:cancel close()");    //~@@@@I~
-            }
+//              mmSocket.close();                                  //~vat5R~
+//          } catch (IOException e) {                              //~vat5R~
+//              Dump.println(e,"ConnectThread:cancel close()");    //~@@@@I~//~vat5R~
+//          }                                                      //~vat5R~
+    		closeSocket(mmSocket);                                 //~vat5I~
             if (Dump.Y) Dump.println("ConnectThread cancel() closed");//~v101I~
         }
     }
@@ -652,18 +698,26 @@ public class BTService {                                           //~@@@@I~
     {                                                              //~v101I~
         if (Dump.Y) Dump.println("requestDiscover start Pdiscover="+Pdiscover);      //~v101I~//~1AbtI~
 			if (Dump.Y) Dump.println("BTService requestDiscovery adapter="+Padapter);//~v101I~
-			if (Padapter.isDiscovering())                          //~v101I~
-			{                                                      //~v101I~
-				if (Dump.Y) Dump.println("BTService:requestDiscovery cancelDiscover issue cancel");//~v101I~
-				Padapter.cancelDiscovery();                        //~v101I~
-			    if (Dump.Y) Dump.println("BTService requestDiscovery cancelDiscover end");//~v101I~//~1AbtI~
-			}                                                      //~v101I~
+//  		if (Padapter.isDiscovering())                          //~v101I~//~vat5R~
+//  		{                                                      //~v101I~//~vat5R~
+//  			if (Dump.Y) Dump.println("BTService:requestDiscovery cancelDiscover issue cancel");//~v101I~//~vat5R~
+//  			Padapter.cancelDiscovery();                        //~v101I~//~vat5R~
+//  		    if (Dump.Y) Dump.println("BTService requestDiscovery cancelDiscover end");//~v101I~//~1AbtI~//~vat5R~
+//  		}                                                      //~v101I~//~vat5R~
+    		cancelDiscoveryIfDiscovering(Padapter);                //~vat5I~
             if (Pdiscover==1)    //start                           //~v101I~
             {                                                      //~v101I~
                 if (Dump.Y) Dump.println("BTService requestDiscovery:startDiscovery");//~v101I~//~1AbtI~
+             try                                                   //~vat5I~
+             {                                                     //~vat5I~
               boolean rc=                                          //~1AbKI~
                 Padapter.startDiscovery();                         //~v101I~
                 if (Dump.Y) Dump.println("BTService requestDiscovery:startDiscovery end rc="+rc);//~v101I~//~1AbKI~
+             }                                                     //~vat5I~
+             catch(SecurityException e)                            //~vat5I~
+             {                                                     //~vat5I~
+             	Dump.println(e,"BTService:requestDiscover");       //~vat5I~
+             }                                                     //~vat5I~
             }                                                      //~v101I~
         if (Dump.Y) Dump.println("requestDiscovery sub end");      //~v101I~
     }                                                              //~v101I~
@@ -679,9 +733,10 @@ public class BTService {                                           //~@@@@I~
 	        if (Dump.Y) Dump.println("BTService getPairDevice SYNC start");//~v101I~
 	        synchronized(Pservice)                                 //~v101R~
       		{                                                      //~v101R~
-	        	if (Dump.Y) Dump.println("BTService getPairDevice cancelDiscovery,isDiscovering="+Pservice.mAdapter.isDiscovering());//~1AbNI~
-			  if (Pservice.mAdapter.isDiscovering())               //~1AbNI~
-				Pservice.mAdapter.cancelDiscovery();               //~v101I~
+//          	if (Dump.Y) Dump.println("BTService getPairDevice cancelDiscovery,isDiscovering="+Pservice.mAdapter.isDiscovering());//~1AbNI~//~vat5R~
+//  		  if (Pservice.mAdapter.isDiscovering())               //~1AbNI~//~vat5R~
+//  			Pservice.mAdapter.cancelDiscovery();               //~v101I~//~vat5R~
+    		  cancelDiscoveryIfDiscovering(Pservice.mAdapter);     //~vat5I~
 	        	if (Dump.Y) Dump.println("BTService getPairDevice cancelDiscovery end");//~v101I~
 				sa=getDeviceList(Pservice.mAdapter);                        //~v101I~
             }                                                      //~v101I~
@@ -689,8 +744,8 @@ public class BTService {                                           //~@@@@I~
         }                                                          //~v101I~
         else                                                       //~v101I~
         {                                                          //~v101I~
-//      	BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~v101I~//+vam3R~
-        	BluetoothAdapter adapter=BTControl.getDefaultAdapter();//+vam3I~
+//      	BluetoothAdapter adapter=BluetoothAdapter.getDefaultAdapter();//~v101I~//~vam3R~
+        	BluetoothAdapter adapter=BTControl.getDefaultAdapter();//~vam3I~
 			sa=getDeviceList(adapter);                             //~v101I~
         }                                                          //~v101I~
         if (Dump.Y) Dump.println("BTService getPairDevice end");   //~v101R~
@@ -705,7 +760,17 @@ public class BTService {                                           //~@@@@I~
         if (bta==null)                                             //~v101I~
         	return null;                                           //~v101I~
         if (Dump.Y) Dump.println("BTService getDeviceList start"); //~v101I~
-        Set<BluetoothDevice> pairedDevices = bta.getBondedDevices();//~v101I~
+//      Set<BluetoothDevice> pairedDevices = bta.getBondedDevices();//~v101I~//~vat5R~
+        Set<BluetoothDevice> pairedDevices=null;                   //~vat5I~
+      try                                                          //~vat5I~
+      {                                                            //~vat5I~
+        pairedDevices = bta.getBondedDevices();                    //~vat5I~
+      }                                                            //~vat5I~
+      catch(SecurityException e)                                   //~vat5I~
+      {                                                            //~vat5I~
+       	Dump.println(e,"BTService:getDeviceList");                 //~vat5I~
+        return null;                                               //~vat5I~
+      }                                                            //~vat5I~
                                                                    //~v101I~
         int sz=pairedDevices.size();                               //~v101I~
         if (sz==0)                                                 //~v101I~
@@ -714,7 +779,8 @@ public class BTService {                                           //~@@@@I~
         int ii=0;                                                  //~v101I~
         for (BluetoothDevice device : pairedDevices)               //~v101I~
         {                                                          //~v101I~
-            sa[ii*2]=device.getName();                             //~v101I~
+//          sa[ii*2]=device.getName();                             //~v101I~//~vat3R~
+            sa[ii*2]=BTControl.getName(device);                    //~vat3I~
             sa[ii*2+1]=device.getAddress();                        //~v101I~
             if (Dump.Y) Dump.println("getPairDeviceList="+sa[ii*2]+"="+sa[ii*2+1]);//~v101I~
             ii++;                                                  //~v101I~
@@ -761,4 +827,57 @@ public class BTService {                                           //~@@@@I~
         }                                                          //~1AebI~
         return false;                                              //~1AebI~
     }                                                              //~1AebI~
+//*******************************************                      //~vat5I~
+//*rc:true:discovering, issued cancelDiscover                      //~vat5I~
+//*******************************************                      //~vat5I~
+    public static boolean cancelDiscoveryIfDiscovering(BluetoothAdapter Padapter)//~vat5I~
+    {                                                              //~vat5I~
+    	boolean rc=false;                                          //~vat5I~
+        if (Dump.Y) Dump.println("BTService:cancelDiscoveryIfDiscovering adapter="+Padapter);//~vat5I~
+//No effect    if (UView.isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT))//~vat5M~
+//Effective    if (ContextCompat.checkSelfPermission(AG.activity,Manifest.permission.BLUETOOTH_CONNECT)== PackageManager.PERMISSION_GRANTED;//~vat5M~
+        try                                                        //~vat5I~
+        {                                                          //~vat5I~
+			if (Padapter.isDiscovering())                          //~vat5I~
+            {                                                      //~vat5I~
+            	rc=true;                                           //~vat5I~
+  				if (Dump.Y) Dump.println("BTService:cancelDiscoveryIfDiscaovering isDiscovering=True,issue cancel");//~vat5R~
+              	Padapter.cancelDiscovery();                        //~vat5I~
+            }                                                      //~vat5I~
+        }                                                          //~vat5I~
+        catch(SecurityException e)                                 //~vat5I~
+        {                                                          //~vat5I~
+               Dump.println(e,"BTService:getPairedDeviceList");    //~vat5I~
+        }                                                          //~vat5I~
+        if (Dump.Y) Dump.println("BTService:cancelDiscoveryIfDiscovering edit rc="+rc);//~vat5I~
+        return rc;                                                 //~vat5I~
+    }                                                              //~vat5I~
+//*******************************************                      //~vat5I~
+    public static void closeSocket(BluetoothSocket Psocket)        //~vat5I~
+    {                                                              //~vat5I~
+        if (Dump.Y) Dump.println("BTService:closeSocket socket="+Psocket);//~vat5I~
+        try                                                        //~vat5I~
+        {                                                          //~vat5I~
+			Psocket.close();                                       //~vat5I~
+        }                                                          //~vat5I~
+        catch (IOException e)                                      //~vat5I~
+		{                                                          //~vat5I~
+        	Dump.println(e,"BTService:closeSocket");               //~vat5I~
+        }                                                          //~vat5I~
+        if (Dump.Y) Dump.println("BTService:closeSocket exit");    //~vat5I~
+    }                                                              //~vat5I~
+//*******************************************                      //~vat5I~
+    public static void closeServerSocket(BluetoothServerSocket Psocket)//~vat5I~
+    {                                                              //~vat5I~
+        if (Dump.Y) Dump.println("BTService:closeServerSocket socket="+Psocket);//~vat5I~
+        try                                                        //~vat5I~
+        {                                                          //~vat5I~
+			Psocket.close();                                       //~vat5I~
+        }                                                          //~vat5I~
+        catch (IOException e)                                      //~vat5I~
+		{                                                          //~vat5I~
+        	Dump.println(e,"BTService:closeServerSocket");         //~vat5I~
+        }                                                          //~vat5I~
+        if (Dump.Y) Dump.println("BTService:closeServerSocket exit");//~vat5I~
+    }                                                              //~vat5I~
 }

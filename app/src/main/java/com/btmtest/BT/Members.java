@@ -6,6 +6,7 @@
 //2020/11/20 va46 (Bug)reconnected member could not be disconnect  //~va46I~
 //**********************************************************************//~va46I~
 package com.btmtest.BT;                                            //~v@@@R~
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothSocket;                         //~v@@@I~
 
 import static com.btmtest.BT.BTMulti.*;

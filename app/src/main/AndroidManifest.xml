@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.btmtest"
-      android:versionCode="125"
-      android:versionName="1.25">
+      android:versionCode="126"
+      android:versionName="1.26">
  <!--   xmlns:tools="http://schemas.android.com/tools" --> <!-- Warning:never used -->
 
     <!--uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /-->
@@ -22,13 +22,20 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />    <!--del vas6-->
+
+    <!--uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /-->     <!--vatd but required for api29 vatd-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android.maxSdkVersion="30"/>     <!--vatd but required for api29 vatd-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />  <!--add vatd-->
+
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IAMGES" />
     <!--uses-permission android:name="android.permission.GET_TASKS" /--> <!--getRunningTasks(deprecated at Android5:L:21) requires GET_TASKS -->
+
+	<!-- Required only if your app targets Android 13 or higher. IF NOT USING ADID, NO NEED TO SET PARMISSION-->
+    <!--uses-permission android:name="com.google.android.gms.permission.AD_ID"/-->
 
     <uses-feature    android:name="android.hardware.bluetooth" android:required="false" /> <!--v106-->
     <uses-feature    android:name="android.hardware.wifi.direct" android:required="false" />
@@ -66,7 +73,12 @@
     <!--    			android:screenOrientation="reversePortrait"-->
     <!--          android:configChanges="orientation|screenSize" -->
     <!--          android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|layoutDirection" -->
+ <!--
+    <meta-data    android:name="firebase_analytics_adid_collection_deactivated" android:value="true"/>
+    <meta-data    android:name="google_analytics_adid_collection_enabled" android:value="false"/>
+ -->
     </application>
+
 
     <!--			android:screenOrientation="portrait"-->
 </manifest>

@@ -1,6 +1,7 @@
-//*CID://+vae8R~:                             update#=  111;       //+vae8R~
+//*CID://+vat1R~:                             update#=  112;       //~vae8R~//+vat1R~
 //*************************************************************************//~v106I~
-//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//+vae8I~
+//2022/10/16 vat1 deprecated; Java9 new Integer,Boolean,Double-->valueOf//+vat1I~
+//2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*************************************************************************//~va40I~
@@ -98,7 +99,8 @@ public class SPList                                                //~9C03R~
         	int rawid=Ssoundtbl[ii].getId();                       //~9C03M~
 //      	Integer poolid=new Integer(pool.load(AG.activity,rawid,1));//~9C03R~
 //          Ssoundtbl[ii].setObject(poolid);                       //~9C03I~
-        	int poolid=new Integer(pool.load(AG.activity,rawid,1));//~9C03I~
+//      	int poolid=new Integer(pool.load(AG.activity,rawid,1));//~9C03I~//+vat1R~
+        	int poolid=Integer.valueOf(pool.load(AG.activity,rawid,1));//+vat1I~
             Ssoundtbl[ii].setNumValue(poolid);                     //~9C03I~
 	        if (Dump.Y) Dump.println("SPList.load rowid="+Integer.toHexString(rawid)+",poolid="+Integer.toHexString(poolid));//~va06I~
         }                                                          //~0427R~
@@ -120,12 +122,12 @@ public class SPList                                                //~9C03R~
         volume=PrefSetting.getSoundVolume();                       //~9C03I~
     	if (Dump.Y) Dump.println("Sound.resetOption swNoSound="+swNoSound+",volume="+volume);//~9C03I~
     }                                                              //~9C03I~
-    //******************************************************************//+vae8I~
-    public void recoverOption()                                    //+vae8I~
-    {                                                              //+vae8I~
-    	if (Dump.Y) Dump.println("Sound.recoverOption OLD swNoSound="+swNoSound+",volume="+volume);//+vae8I~
-        resetOption();                                             //+vae8I~
-    }                                                              //+vae8I~
+    //******************************************************************//~vae8I~
+    public void recoverOption()                                    //~vae8I~
+    {                                                              //~vae8I~
+    	if (Dump.Y) Dump.println("Sound.recoverOption OLD swNoSound="+swNoSound+",volume="+volume);//~vae8I~
+        resetOption();                                             //~vae8I~
+    }                                                              //~vae8I~
     //******************************************************************//~9C03I~
 	public void setVolume(float Pvolume)                           //~9C03I~
     {                                                              //~9C03I~

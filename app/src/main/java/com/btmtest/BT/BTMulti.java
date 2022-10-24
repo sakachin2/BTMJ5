@@ -1,5 +1,7 @@
-//*CID://+varaR~:                             update#=  508;       //~varaR~
+//*CID://+vat3R~:                             update#=  510;       //+vat3R~
 //********************************************************************************//~v101I~
+//2022/10/16 vat3 deprecated api31; BluetoothDevice/BluetoothAdapter.getName()/getBondState() requires request permission BLUETOOTH_CONNECT//+vat3I~
+//2022/10/16 vat2 deprecated api33; getPercelableExtra;            //~vat2I~
 //2022/10/06 vara chk appversion unmatch other than rule version unmatch//~varaI~
 //2022/09/24 var8 display profile icon                             //~var8I~
 //2022/03/28 vam3 android12(api31) deprecated Bluetooth.getDefaultAdapter//~vam3I~
@@ -542,37 +544,45 @@ public class BTMulti                                               //~1AebR~
         case BTDiscover.ACTION_STATE_CHANGED:                      //~1AebR~
             break;                                                 //~1AebI~
         case BTDiscover.ACTION_CONNECTION_STATE_CHANGED:           //~1AebI~
-            device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);	//remote device//~1AebI~
+//          device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);	//remote device//~1AebI~//~vat2R~
+            device = BTDiscover.getParcelableExtra(Pintent,BluetoothDevice.EXTRA_DEVICE);	//remote device//~vat2I~
             state=Pintent.getIntExtra(BluetoothAdapter.EXTRA_STATE,BluetoothAdapter.ERROR);//~1AebI~
-            name=device.getName();                                 //~1AebI~
+//          name=device.getName();                                 //~1AebI~//+vat3R~
+            name=BTControl.getName(device);                        //+vat3I~
             addr=device.getAddress();                              //~1AebI~
             if (Dump.Y) Dump.println("BTMulti onReceive ACTION_CONNECTION_STATE_CHANGED to "+state+"="+state);//~1AebI~
             BTCDialog.onReceive(Paction,name,addr,state);          //~1AebR~
             break;                                                 //~1AebI~
         case BTDiscover.ACTION_BOND_STATE_CHANGED:                 //~1AebR~
-            device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AebR~
+//          device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AebR~//~vat2R~
+            device = BTDiscover.getParcelableExtra(Pintent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
 	        state=Pintent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,BluetoothAdapter.ERROR);//~1AebR~
             if (device!=null)                                      //~1AebI~
             {                                                      //~1AebI~
-                name=device.getName();                             //~1AebI~
+//              name=device.getName();                             //~1AebI~//+vat3R~
+                name=BTControl.getName(device);                    //+vat3I~
                 addr=device.getAddress();                          //~1AebI~
                 BTCDialog.onReceive(Paction,name,addr,state);      //~1AebR~
             }                                                      //~1AebI~
             break;                                                 //~1AebI~
         case BTDiscover.ACTION_ACL_CONNECTED:                      //~1AebI~
-            device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AebI~
+//          device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AebI~//~vat2R~
+            device = BTDiscover.getParcelableExtra(Pintent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
             if (device!=null)                                      //~1AebI~
             {                                                      //~1AebI~
-                name=device.getName();                             //~1AebI~
+//              name=device.getName();                             //~1AebI~//+vat3R~
+                name=BTControl.getName(device);                    //+vat3I~
                 addr=device.getAddress();                          //~1AebI~
                 BTCDialog.onReceive(Paction,name,addr,state);      //~1AebR~
             }                                                      //~1AebI~
             break;                                                 //~1AebI~
         case BTDiscover.ACTION_ACL_DISCONNECTED:                    //~1AebI~
-            device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AebI~
+//          device = Pintent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);//~1AebI~//~vat2R~
+            device = BTDiscover.getParcelableExtra(Pintent,BluetoothDevice.EXTRA_DEVICE);//~vat2I~
             if (device!=null)                                      //~1AebI~
             {                                                      //~1AebI~
-                name=device.getName();                             //~1AebI~
+//              name=device.getName();                             //~1AebI~//+vat3R~
+                name=BTControl.getName(device);                    //+vat3I~
 //                addr=device.getAddress();                          //~1AebI~//~9731R~
 //                if (Dump.Y) Dump.println("BTMulti:onReceive DISCONNECTED name="+name+",add="+addr);//~@002I~//~9731R~
 //                if (removeMember(name)) //connected                //~1AebR~//~9731R~
@@ -1612,7 +1622,7 @@ public class BTMulti                                               //~1AebR~
         }                                                          //~varaI~
         if (Dump.Y) Dump.println("BTMulti:chkAppVersion rc="+rc);  //~varaI~
         if (!rc)                                                   //~varaI~
-		    Alert.showMessage(null,Utils.getStr(R.string.Err_AppVersionConnect,Pparm[0]/*devname*/,AG.appVersionMinConnect));//+varaR~
+		    Alert.showMessage(null,Utils.getStr(R.string.Err_AppVersionConnect,Pparm[0]/*devname*/,AG.appVersionMinConnect));//~varaR~
         return rc;                                                 //~varaI~
     }                                                              //~varaI~
 }
