@@ -1,4 +1,4 @@
-//*CID://+va40R~:                             update#=  123;       //~va40R~
+//*CID://+va40R~:                             update#=  127;       //~va40R~
 //*************************************************************************//~1A65I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*************************************************************************//~va40I~
@@ -44,24 +44,24 @@ public class CSI                                                   //~9719R~//~9
         CM=(ConnectivityManager)AG.context.getSystemService(Context.CONNECTIVITY_SERVICE);//~9B05R~
         receiverShutDown0=new ReceiverShutDown();                   //~9B06I~
     }                                                              //~9722I~
-    //***********************************************************************//~9B05I~//+va40R~
-    //*Network was deprecated at API29 and isonline is not used    //+va40I~
-    //***********************************************************************//+va40I~
-//    //Wifi/Bluetooth/Phone online                                  //~9B05I~//+va40R~
-//    //***********************************************************************//~9B05I~//+va40R~
-//    public static boolean isOnline()                                      //~9B05I~//+va40R~
-//    {                                                              //~9B05I~//+va40R~
-//        if (Dump.Y) Dump.println("CSI:isOnline");                  //~9B05I~//+va40R~
-//        boolean rc=false;                                          //~9B05I~//+va40R~
-////        NetworkInfo ni=AG.aCSI.CM.getActiveNetworkInfo();                  //~9B05I~//+va40R~
-//        android.net.NetworkInfo ni=AG.aCSI.CM.getActiveNetworkInfo();//+va40R~
-//        if (Dump.Y) Dump.println("CSI:isOnline getActiveNetworkInfo="+ Utils.toString(ni));//~9B05I~//+va40R~
-//        if (ni!=null)                                              //~9B05I~//+va40R~
-//            if (ni.isConnected())                                  //~9B05I~//+va40R~
-//                rc=true;                                           //~9B05I~//+va40R~
-//        if (Dump.Y) Dump.println("CSI:isOnline rc="+rc);           //~9B05I~//+va40R~
-//        return rc;                                                 //~9B05I~//+va40R~
-//    }                                                              //~9B05I~//+va40R~
+    //***********************************************************************//~9B05I~//~va40R~
+    //*Network was deprecated at API29 and isonline is not used    //~va40I~
+    //***********************************************************************//~va40I~
+//    //Wifi/Bluetooth/Phone online                                  //~9B05I~//~va40R~
+//    //***********************************************************************//~9B05I~//~va40R~
+//    public static boolean isOnline()                                      //~9B05I~//~va40R~
+//    {                                                              //~9B05I~//~va40R~
+//        if (Dump.Y) Dump.println("CSI:isOnline");                  //~9B05I~//~va40R~
+//        boolean rc=false;                                          //~9B05I~//~va40R~
+////        NetworkInfo ni=AG.aCSI.CM.getActiveNetworkInfo();                  //~9B05I~//~va40R~
+//        android.net.NetworkInfo ni=AG.aCSI.CM.getActiveNetworkInfo();//~va40R~
+//        if (Dump.Y) Dump.println("CSI:isOnline getActiveNetworkInfo="+ Utils.toString(ni));//~9B05I~//~va40R~
+//        if (ni!=null)                                              //~9B05I~//~va40R~
+//            if (ni.isConnected())                                  //~9B05I~//~va40R~
+//                rc=true;                                           //~9B05I~//~va40R~
+//        if (Dump.Y) Dump.println("CSI:isOnline rc="+rc);           //~9B05I~//~va40R~
+//        return rc;                                                 //~9B05I~//~va40R~
+//    }                                                              //~9B05I~//~va40R~
     //***********************************************************************//~9722I~
 	@SuppressWarnings("deprecation")                               //~va40I~
     public static boolean isOnlineWifi()                           //~9B05R~
@@ -320,4 +320,16 @@ public class CSI                                                   //~9719R~//~9
             }                                                      //~9B06I~
         }                                                          //~9B06I~
     }                                                              //~9B06I~
+////*****************************************************************************//+va40R~
+//    @TargetApi(23)                                               //+va40R~
+//    public void chkNetwork()                                     //+va40R~
+//    {                                                            //+va40R~
+//        if (Dump.Y) Dump.println("CSI:chkNetwork");              //+va40R~
+//        Network[] nws=CM.getAllNetworks();                       //+va40R~
+//        if (Dump.Y) Dump.println("CSI.chkNetwork ctr="+nws.length+",active="+CM.getActiveNetwork()+"="+CM.getActiveNetworkInfo());//+va40R~
+//        for (Network nw:nws)                                     //+va40R~
+//        {                                                        //+va40R~
+//            if (Dump.Y) Dump.println("CSI.chkNetwork network="+nw.toString());//+va40R~
+//        }                                                        //+va40R~
+//    }                                                              //~va40I~
 }

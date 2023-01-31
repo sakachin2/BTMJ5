@@ -1,5 +1,8 @@
-//*CID://+vac5R~:                             update#=  239;       //~vac5R~
+//*CID://+vaviR~:                             update#=  252;       //~vaviR~
 //*************************************************************************//~1A65I~
+//2023/01/25 vavi close channel expecting to erase groupOwner persistency//~vaviI~
+//2023/01/25 vavh avoid duplicated getView call for groupList      //~vavhI~
+//2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -27,7 +30,10 @@ import android.net.wifi.p2p.WifiP2pDevice;                       //~1A65R~
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.btmtest.BT.GroupList;
 import com.btmtest.BT.Members;
@@ -53,6 +59,7 @@ import static com.btmtest.game.GConst.*;
 //public class WDA extends AxeDialog                                 //~1A65R~//~9720R~
 public class WDA extends AxeDlg                                    //~9720I~
     implements  UEditText.UEditTextI          //~9722R~
+    , DialogInterface.OnShowListener                               //~vavhI~
 {                                                                  //~1A65I~
 //  private static final int LAYOUTID=R.layout.device_wd;          //~1A65I~//~9720R~
     private static final int LAYOUTID= R.layout.wifidialog;         //~9720I~
@@ -91,11 +98,13 @@ public class WDA extends AxeDlg                                    //~9720I~
     private String statusMsg;                                      //~9729I~
     public UCheckBox cbWantGroupOwner;                             //~9A03I~
     private boolean swChangedYourName;                                     //~0116I~
+    private ListView viewGL;                                       //~vavhI~
 	//***********************************************************************************//~9720I~
 	public WDA()                                                   //~9720I~
     {                                                              //~9720I~
         if (Dump.Y) Dump.println("WDA:default constructor");       //~9720I~
         AG.aWDA=this;                                              //~9722I~
+        AG.aAccName.loadProp();                                    //~vav9R~
         WDI.shownWDA();                                             //~0113R~
     }                                                              //~9720I~
     //******************************************                   //~9B03I~
@@ -131,8 +140,8 @@ public class WDA extends AxeDlg                                    //~9720I~
         if (Dump.Y) Dump.println("WDA:newInstance");               //~9720R~
         WDA dlg=new WDA();                                         //~9720R~
         dlg.IPC=Pipc;                                              //~9720I~
-//      AxeDlg.newInstance(dlg,TITLEID,LAYOUTID,HELPFILE);         //~9720I~//+vac5R~
-        AxeDlg.newInstance(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),HELPFILE);//+vac5I~
+//      AxeDlg.newInstance(dlg,TITLEID,LAYOUTID,HELPFILE);         //~9720I~//~vac5R~
+        AxeDlg.newInstance(dlg,TITLEID,(AG.swSmallFont ? LAYOUTID_SMALLFONT : LAYOUTID),HELPFILE);//~vac5I~
         return dlg;                                                //~9720I~
     }                                                              //~9720I~
     //***********************************************************************//~9724I~
@@ -315,6 +324,7 @@ public class WDA extends AxeDlg                                    //~9720I~
 	    updateButtonView(false/*owner*/);                          //~1A84R~//~1A90I~
 //      aWDActivity.registerReceiver();                            //~9720I~//~9724R~
 		chkIPConnection();                                         //~0117I~
+        setOnShowListener(PlayoutView);                            //~vavhR~
     }                                                              //~1A65I~
     //******************************************                   //~0117I~
     private void chkIPConnection()                                 //~0117I~
@@ -564,6 +574,7 @@ public class WDA extends AxeDlg                                    //~9720I~
     {                                                              //~1A65I~
     	if (Dump.Y) Dump.println("WDA:onDismis");                  //~9725I~
     	super.onDismiss(Pdialog);	//callback onDismissDialog from UFDlg//~9725R~
+	    saveUserName();	//update propUserName                      //~vav9I~
     }                                                              //~1A65I~
 
     /** register the BroadcastReceiver with the intent values to be matched */
@@ -1050,6 +1061,7 @@ public class WDA extends AxeDlg                                    //~9720I~
 //      boolean enable=(swOwner)&&(AG.aBTMulti.BTGroup.getConnectedCtr()!=0);//~9724I~//~va66R~
 //      AG.aMainView.enableStartGame(enable);                      //~9724I~//~va66R~
         AG.aWDA=null;                                              //~9724M~
+        closeChannel();                                            //~vaviI~
         WDI.dismissedWDA();                                         //~0113R~
 	}                                                              //~9724I~
     //********************************************************************//~9729I~
@@ -1129,4 +1141,36 @@ public class WDA extends AxeDlg                                    //~9720I~
         if (Utils.isShowingDialogFragment(AG.aWDA))                //~0108I~
         	AG.aWDA.updateButtonView(true/*owner*/);               //~0108I~
     }                                                              //~0108I~
+    //************************************************************ //~vav9I~
+    public void saveUserName()                               //~vav9I~
+    {                                                              //~vav9I~
+        if (Dump.Y) Dump.println("WDA.saveUserName");//~vav9I~     //~vavhR~
+    	AG.aAccName.saveProp();	//if updated                       //~vav9R~
+    }                                                              //~vav9I~
+    //************************************************************ //~vavhI~
+    private void setOnShowListener(View PlayoutView)                     //~vavhR~
+    {                                                              //~vavhI~
+        if (Dump.Y) Dump.println("WDA.setOnShowListener");         //~vavhI~
+        viewGL=(ListView)UView.findViewById(PlayoutView,R.id.GroupList);     //~vavhI~
+        if (Dump.Y) Dump.println("WDA.setOnShowListener vieGL height="+viewGL.getHeight());//~vavhI~
+        androidDlg/*AxeDlg*/.setOnShowListener(this);                            //~vavhI~
+    }                                                              //~vavhI~
+    //************************************************************ //~vavhI~
+    @Override                                                      //~vavhI~
+    public void onShow(DialogInterface Pdlg)                       //~vavhI~
+    {                                                              //~vavhI~
+        int hh=viewGL.getHeight();    //by pixel                   //~vavhI~
+        if (Dump.Y) Dump.println("WDA.onShow vieGL height="+hh);   //~vavhR~
+        int ww= LinearLayout.LayoutParams.MATCH_PARENT;                         //~vavhI~
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ww,hh);                   //~vavhI~
+        viewGL.setLayoutParams(lp);                                //~vavhI~
+        if (Dump.Y) Dump.println("WDA.onShow setLayoutparams lp="+lp);//~vavhI~
+    }                                                              //~vavhI~
+    //************************************************************ //~vaviI~
+    private void closeChannel()                                    //~vaviI~
+    {                                                              //~vaviI~
+        if (Dump.Y) Dump.println("WDA.closeChannel channel");      //+vaviR~
+        if (aWDActivity!=null)                                     //+vaviR~
+	        aWDActivity.closeChannel();                            //+vaviR~
+    }                                                              //~vaviI~
 }

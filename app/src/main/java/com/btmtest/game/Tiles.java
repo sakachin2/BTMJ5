@@ -1,6 +1,7 @@
-//*CID://+vap0R~: update#= 578;                                    //~vap0R~
+//*CID://+vav0R~: update#= 580;                                    //~vav0R~
 //**********************************************************************//~v101I~
-//2022/07/17 vap0 shuffle by Randomizing, try 34*4 for base        //+vap0R~
+//2023/01/09 vav0 try xoshift as randomizer                        //~vav0I~
+//2022/07/17 vap0 shuffle by Randomizing, try 34*4 for base        //~vap0R~
 //2021/07/08 vaau split test deal to TilesTest.java                //~vaauI~
 //2021/05/01 va8x (Test)specify robot discard tile                 //~va8xI~
 //v@@5 20190126 player means position on the device                //~v@@5I~
@@ -13,6 +14,7 @@ import com.btmtest.R;
 import com.btmtest.TestOption;
 import com.btmtest.dialog.RuleSettingYaku;
 import com.btmtest.utils.Dump;
+import com.btmtest.utils.URand;
 import com.btmtest.utils.Utils;                                    //~v@@@I~
 import com.btmtest.dialog.RuleSetting;                             //~9412I~
                                                                    //~9412I~
@@ -58,6 +60,7 @@ public class Tiles                                 //~v@@@R~
     private boolean swPendingOpen;                                 //~v@@5I~
     private TilesTest aTilesTest;                                  //~vaauI~
     private boolean swShuffle136=true;                             //~vap0I~
+    private boolean swURand64=true;                                //~vav0I~
     //*********************************************************************//~v@@@I~
     public Tiles()                                                 //~v@@@R~
     {                                                              //~0914I~
@@ -223,6 +226,9 @@ public class Tiles                                 //~v@@@R~
       	if (aTilesTest!=null)                                      //~vaauI~
 			if (aTilesTest.shuffleTest())	//set shuffledTileData by TestOption//~vaauR~
             	return;                                            //~vaauI~
+    	URand aURand64=null;                                       //+vav0I~
+        if (swURand64)                                             //+vav0M~
+            aURand64=URand.initRandom64(0L/*seed:use timestamp*/,PIECE_TYPECTR/*34*/);//+vav0M~
         synchronized (baseTileData)                                 //~v@@@I~
         {                                                          //~v@@@I~
             ArrayList<TileData> al = deepCopyToArrayList();	//copy of baseTileData(34 entry)           //~v@@@R~//~9C01R~
@@ -234,6 +240,11 @@ public class Tiles                                 //~v@@@R~
             {                                                      //~v@@@R~
 //              int jj = Utils.getRandom(typectr);   //max 34-1        //~v@@@R~//~v@@5R~//~vap0R~
                 int jj;                                            //~vap0I~
+              if (swURand64)                                       //~vav0I~
+              {                                                    //~vav0I~
+                jj = aURand64.getRandom(typectr);   //max 34-1     //~vav0I~
+              }                                                    //~vav0I~
+              else                                                 //~vav0I~
               if (swShuffle136)                                    //~vap0I~
               {                                                    //~vap0I~
                 jj=Utils.getRandom(typectr*PIECE_DUPCTR);   //max 34-1//~vap0I~

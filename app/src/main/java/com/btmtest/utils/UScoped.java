@@ -1,5 +1,8 @@
-//*CID://+vaieR~:                             update#=  275;       //~vaieR~
+//*CID://+vavAR~:                             update#=  286;       //~vavAR~
 //************************************************************************
+//2023/01/30 vavA ACTION_OPEN_DOCUMENT permission request but while Alert open, execute ContentResolver.query. it cause Dump//~vavAI~
+//2023/01/24 vave reject Download in selection at Install. (Download is not allowd for scopred storage for ACTION_OPEN_DOCUMENT_TREE from android11(API30)(Scoped is from android10))//~vaveI~
+//2023/01/23 vava (Bug)Download is not allowd for scopred storage for ACTION_OPEN_DOCUMENT_TREEa from android11(API30)(Scoped is from android10)//~vavaI~
 //2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
 //2021/12/24 vaid Toast if Scoped file already exists.             //~vaidI~
 //2021/08/25 vae0 Scped for BTMJ5                                  //~vae0I~
@@ -122,20 +125,26 @@ public class UScoped
     }
 //********************************************************
 //*by saved strUri at APP restart
+//*return true if alert issued                                     //~vavAI~
 //********************************************************
-	private void initComp(String PstrUri)
+//  private void initComp(String PstrUri)                          //~vavAR~
+    private boolean initComp(String PstrUri)                       //~vavAI~
     {
         if (Dump.Y) Dump.println(CN+"initComp strUri="+PstrUri);
         uriSaveDir=Uri.parse(PstrUri);
 		boolean rc=confirmPermission(uriSaveDir,false/*swAction*/);
         if (!rc)
         {
+          boolean swAlert=                                         //~vavAI~
 			requestDocumentTree(false/*swInstall*/);
-        	return;
+//        	return;                                                //~vavAR~
+  			return swAlert;                                        //~vavAI~
         }
 		docDir=DocumentFile.fromTreeUri(AG.context,uriSaveDir);
 //      AG.swScoped=true;                                          //~vae0R~
 		initComp();                                                //~vae0I~
+        if (Dump.Y) Dump.println(CN+"initComp exit rc=false uri="+PstrUri);//~vavAI~
+        return false;                                              //~vavAM~
 	}                                                              //~vae0I~
 //********************************************************         //~vae0I~
 	private void initComp()                                        //~vae0I~
@@ -221,7 +230,7 @@ public class UScoped
         else                                                       //~vae0I~
         if (AG.swScoped)                                           //~vae0I~
             rc=0;                                                  //~vae0I~
-        if (Dump.Y) Dump.println(CN+"chkScoped rc="+rc+",osVersion="+AG.osVersion);//~vae0R~
+        if (Dump.Y) Dump.println(CN+"chkScoped rc="+rc+",osVersion="+AG.osVersion+",AG.swScoped="+AG.swScoped+",AG.swScopedGranted="+AG.swScopedGranted);//~vae0R~//~vaieR~
         return rc;
     }
   	public static boolean isScoped()                               //~vae0I~
@@ -244,19 +253,26 @@ public class UScoped
         }
     }
 //********************************************************
-	private void requestDocumentTree(boolean PswInstall)
+//*return true is alert issued                                     //~vavAI~
+//********************************************************         //~vavAI~
+//  private void requestDocumentTree(boolean PswInstall)           //~vavAR~
+    private boolean requestDocumentTree(boolean PswInstall)        //~vavAI~
     {
-	    if (Dump.Y) Dump.println(CN+"requestDocumentTree swUseInternal="+swUseInternal);//~vae0R~
+	    if (Dump.Y) Dump.println(CN+"requestDocumentTree swUseInternal="+swUseInternal+",swInstall="+PswInstall);//~vae0R~//~vavAR~
         if (swUseInternal)                                        //~vae0I~
         {                                                          //~vae0I~
         	chkReadPermission();                                   //~vae0I~
-        	return;                                                //~vae0I~
+//        	return;                                                //~vae0I~//~vavAR~
+		    if (Dump.Y) Dump.println(CN+"return false by swUSeInternal");//~vavAI~
+          	return false;                                          //~vavAI~
         }                                                          //~vae0I~
     	int flag= Alert.BUTTON_POSITIVE|Alert.BUTTON_NEGATIVE|Alert.BUTTON_CLOSE;//~vae0R~
         int msgid;
         msgid=R.string.RequestPickupDocumentSaveDir;
 //      Alert.simpleAlertDialog(this/*callback AlertI*/,null/*title*/,Utils.getStr(msgid,saveDirTop),flag);//~1ak0R~
         Alert.showAlert(-1/*title*/,Utils.getStr(msgid,saveDirTop),flag,this/*callback*/,ALERT_BTN_LABEL_IDS);//~vae0R~
+		if (Dump.Y) Dump.println(CN+"return true by AlertIssued"); //~vavAI~
+        return true;                                               //~vavAI~
     }
     @Override	//AlertI
     public int alertButtonAction(int Pbuttonid,int PitemPos)
@@ -305,7 +321,7 @@ public class UScoped
 //********************************************************
 	private void activityResult(int Prequest, int Presult, Intent Pdata)
     {
-	    if (Dump.Y) Dump.println(CN+"openTree result="+Presult+",request="+Prequest+",intent="+Pdata);//~vae0R~
+	    if (Dump.Y) Dump.println(CN+"activityResult result="+Presult+",request="+Prequest+",intent="+Pdata);//~vae0R~//~vaieR~
 //      Pmain.onActivityResult(Presult,Prequest,Pdata);
         switch(Prequest)
         {
@@ -320,9 +336,17 @@ public class UScoped
             Uri uri=Pdata.getData();                               //~1ak0I~
         	if (Presult== Activity.RESULT_OK) //-1
             {
+		      if (isValidScopedFolder(uri))                        //~vaveI~
+              {                                                    //~vaveI~
 				initComp(uri);
 				treeOpened(uri);
                 UFile.transferSDToScoped();                        //~vae0I~
+              }                                                    //~vaveI~
+              else                                                 //~vaveI~
+              {                                                    //~vaveI~
+	          	UView.showToastLong(R.string.InvalidScopedFolder); //~vaveI~
+            	startPicker();                                     //~vaveR~
+              }                                                    //~vaveI~
             }
             else
             {
@@ -784,28 +808,58 @@ public class UScoped
 //********************************************************
 //** rc :true yet confirmed, false:requested confirm
 //********************************************************
-	public boolean chkDocumentSaveDir()
+//	public boolean chkDocumentSaveDir()                            //~vaveR~
+  	private boolean chkDocumentSaveDir()                           //~vaveI~
     {
     	boolean rc=false;
 	    if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir");
 //      String strUri= Prop.getPreference(PREFKEY_SAVE_DIR,"");    //~1ak0R~
         String strUri= Utils.getPreference(PREFKEY_SAVE_DIR,"");   //~1ak0I~
 		if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir getPreference strUri="+strUri);
+        if (!isValidScopedFolder(strUri))                          //~vavaR~
+        {                                                          //~vavaI~
+          	UView.showToastLong(R.string.InvalidScopedFolder);     //~vavaI~
+	        strUri="";                                             //~vavaI~
+        }                                                          //~vavaI~
         if (strUri.compareTo("")==0)	//1st time
         {
 			requestDocumentTree(true/*swInstall*/);
         }
         else
         {
+          boolean swAlert=                                         //~vavAI~
         	initComp(strUri);
-		    if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir uriSaveDir="+uriSaveDir);
-            getTreeMember(uriSaveDir,FILTER_HISTORY);	//using query
+		    if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir uriSaveDir="+uriSaveDir+",swAlert="+swAlert);//~vavAR~
+          if (swAlert)                                             //~vavAI~
+          {                                                        //~vavAI~
+		    if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir rc=false by swAlert");//~vavAI~
+            rc=false;                                              //~vavAI~
+          }                                                        //~vavAI~
+          else                                                     //~vavAI~
+          {                                                        //~vavAI~
+//          getTreeMember(uriSaveDir,FILTER_HISTORY);	//using query, drop because no use result//+vavAR~
 			treeOpened(uriSaveDir);
             rc=true;
+          }                                                        //~vavAI~
         }
 	    if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir rc="+rc);
         return rc;
     }
+//********************************************************         //~vavaI~
+    private boolean isValidScopedFolder(String PstrUri)            //~vavaI~
+    {                                                              //~vavaI~
+        boolean rc=!(PstrUri.contains("Download") && PstrUri.contains("tree"));//~vavaI~
+	    if (Dump.Y) Dump.println(CN+"isValidScopedFolder rc="+rc+",strUri="+PstrUri);//~vavaI~
+        return rc;                                                 //~vavaI~
+    }                                                              //~vavaI~
+//********************************************************         //~vaveI~
+    private boolean isValidScopedFolder(Uri Puri)                  //~vaveI~
+    {                                                              //~vaveI~
+	    if (Dump.Y) Dump.println(CN+"isValidScopedFolder Puri="+Puri);//~vaveI~
+        String strUri=Puri.toString();                             //~vaveI~
+        boolean rc=isValidScopedFolder(strUri);                    //~vaveI~
+        return rc;                                                 //~vaveI~
+    }                                                              //~vaveI~
 //********************************************************
 	private String getMemberPath(String Pmember)
     {
@@ -970,9 +1024,9 @@ public class UScoped
 	    if (Dump.Y) Dump.println(CN+"readDocument exit lineno="+lineno);
     }
 //********************************************************         //~vaieI~
-//* from UFile.fileToStringBuffer                                  //+vaieI~
-//********************************************************         //+vaieI~
-	public StringBuffer fileToStringBuffer(String Pmember)         //+vaieR~
+//* from UFile.fileToStringBuffer                                  //~vaieI~
+//********************************************************         //~vaieI~
+	public StringBuffer fileToStringBuffer(String Pmember)         //~vaieR~
     {                                                              //~vaieI~
 	    if (Dump.Y) Dump.println(CN+"fileToStringBuffer Member="+Pmember);//~vaieI~
         InputStream is=openInputDocument(Pmember);                 //~vaieI~

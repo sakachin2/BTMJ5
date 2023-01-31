@@ -1,5 +1,6 @@
-//*CID://+vajgR~:                             update#=  236;       //~vajgR~
+//*CID://+vavnR~:                             update#=  238;       //~vavnR~
 //*****************************************************************//~v101I~
+//2023/01/27 vavn try to use Parcelable for Bundle(for test Parcelable)//~vavnI~
 //2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//~vajgI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -25,6 +26,8 @@ import android.widget.Toast;
 
 import com.btmtest.R;
 import com.btmtest.gui.UButton;
+import com.btmtest.parcel.ParcelUMenuDlg;
+import com.btmtest.parcel.UParcel;
 import com.btmtest.utils.Dump;                                     //~v@@@R~
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
@@ -37,6 +40,7 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
 	private static final String PARM_TITLE="title";                //~v@@@R~
 	private static final String PARM_ITEMSID="items";              //~v@@@I~
 	private static final String PARM_MULTICHOICE="multichoice";    //~v@@1R~
+	private static final String PARM_PARCEL="parcelUMenuDlg";      //~vavnI~
                                                                    //~v@@1I~
 	public static final int MENUID_CONNECT=1;                     //~v@@@I~//~v@@1I~
 	public static final int MENUID_SETTING=2;                      //~v@@@I~//~v@@1I~
@@ -75,9 +79,13 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
     	if (Dump.Y) Dump.println("UMenuDlg.newInstance multichice="+Pmultichoice+",title="+Ptitle+",itemsid="+Integer.toHexString(Pitemsid));//~v@@1I~//~9B20R~
     	UMenuDlg dlg=new UMenuDlg();                               //~v@@1I~
     	Bundle b=new Bundle();                                     //~v@@1I~
-        b.putString(PARM_TITLE,Ptitle);                            //~v@@1I~
-        b.putInt(PARM_ITEMSID,Pitemsid);                           //~v@@1I~
-        b.putBoolean(PARM_MULTICHOICE,Pmultichoice);                 //~v@@1I~
+//      b.putString(PARM_TITLE,Ptitle);                            //~v@@1I~//~vavnR~
+//      b.putInt(PARM_ITEMSID,Pitemsid);                           //~v@@1I~//~vavnR~
+//      b.putBoolean(PARM_MULTICHOICE,Pmultichoice);                 //~v@@1I~//~vavnR~
+        ParcelUMenuDlg parcel=new ParcelUMenuDlg(Ptitle,Pitemsid,Pmultichoice);//~vavnI~
+        if (Dump.Y) Dump.println("UMenuDlg.newInstance get parcel");//~vavnI~
+        b.putParcelable(PARM_PARCEL,parcel);                       //~vavnI~
+        if (Dump.Y) Dump.println("UMenuDlg.newInstance put parcel");//~vavnI~
         dlg.setArguments(b);                                       //~v@@1I~
         return dlg;                                                //~v@@1I~
     }                                                              //~v@@1I~
@@ -113,7 +121,7 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
 	public static UMenuDlg show(UMenuDlgI Plistener,int Pmenuid,int Ptitleid,int Pitemsid,boolean Pswmultichoice,boolean PswCustomTheme,boolean PswNoAutoDismiss)//~vajgI~
     {                                                              //~vajgI~
         if (Dump.Y) Dump.println("UMenuDlg.show");                 //~vajgI~
-        UMenuDlg dlg=newInstance(Utils.getStr(Ptitleid),Pitemsid,Pswmultichoice);//+vajgR~
+        UMenuDlg dlg=newInstance(Utils.getStr(Ptitleid),Pitemsid,Pswmultichoice);//~vajgR~
     	dlg.listener=Plistener;                                    //~vajgI~
     	dlg.menuid=Pmenuid;                                        //~vajgI~
     	dlg.swTheme=PswCustomTheme;                                //~vajgI~
@@ -164,9 +172,15 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
     {                                                              //~v@@@I~
         if (Dump.Y) Dump.println("UMenuDlg.onCreateDialog entry swTheme="+swTheme+",swNoAutoDismiss="+swNoAutoDismiss); //~v@@1R~//~vac5R~
         Bundle b=getArguments();                                   //~v@@@I~
-        String title=b.getString(PARM_TITLE,null);                 //~v@@@I~
-        int  itemsid=b.getInt(PARM_ITEMSID,0);                //~v@@@I~
-        boolean swMultiChoice=b.getBoolean(PARM_MULTICHOICE,false); //~v@@1I~
+//      String title=b.getString(PARM_TITLE,null);                 //~v@@@I~//~vavnR~
+//      int  itemsid=b.getInt(PARM_ITEMSID,0);                //~v@@@I~//~vavnR~
+//      boolean swMultiChoice=b.getBoolean(PARM_MULTICHOICE,false); //~v@@1I~//~vavnR~
+        if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog getParcelable");//~vavnI~
+        ParcelUMenuDlg parcel= (ParcelUMenuDlg)UParcel.getParcelable(b,PARM_PARCEL,ParcelUMenuDlg.class);          //~vavnI~
+        String title=parcel.title;                                 //+vavnR~
+        int  itemsid=parcel.itemsID;                               //+vavnR~
+        boolean swMultiChoice=parcel.choiceMode;                   //+vavnR~
+        if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog title="+title+",itemsid="+itemsid+",chicemode="+swMultiChoice);//~vavnI~
      	AlertDialog.Builder builder;                               //~v@@1I~
         if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog swTheme="+swTheme);//~@003I~//~v@@1R~
         if (swTheme)                                               //~@003I~//~v@@1I~

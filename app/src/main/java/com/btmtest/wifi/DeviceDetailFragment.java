@@ -1,5 +1,6 @@
-//*CID://+va44R~:                             update#=  193;       //~va44R~
+//*CID://+vavjR~:                             update#=  208;       //~vavjR~
 //*************************************************************************//~1A65I~
+//2023/01/25 vavj try groupownerintent:0 for client for groupOwner persistency.//~vavjI~
 //2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired/owner flag not set//~va44I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //1AbB 2015/06/22 mask mac addr for security                       //~1AbBI~
@@ -37,6 +38,7 @@ import android.annotation.TargetApi;                               //~1A65R~
 import android.content.res.Resources;                              //~1A65R~
 //import android.net.Uri;
 //import android.net.wifi.WpsInfo;                                 //~va40R~
+import android.net.MacAddress;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pGroup;
@@ -241,14 +243,15 @@ public class DeviceDetailFragment implements ConnectionInfoListener
         }                                                          //~@@@@I~
                                                                    //~@@@@I~
         		boolean swServer=AG.aWDA.cbWantGroupOwner.getState();//~@@@@I~
-                WifiP2pConfig config = new WifiP2pConfig();        //~1A65I~
-                if (Dump.Y) Dump.println("DeviceDetailFragment.connect wifip2pconfig="+config.toString());//~9A03I~
-                config.deviceAddress = device.deviceAddress;       //~1A65I~
-                if (Dump.Y) Dump.println("DeviceDetailFragment.connect:"+config.deviceAddress);//~1A67I~//~9A03R~
+//              WifiP2pConfig config = new WifiP2pConfig();        //~1A65I~//~vavjR~
+//              config.deviceAddress = device.deviceAddress;       //~1A65I~//~vavjR~
+//              if (Dump.Y) Dump.println("DeviceDetailFragment.connect:"+config.deviceAddress);//~1A67I~//~9A03R~//~vavjR~
 //              config.wps.setup = WpsInfo.PBC; //default and deprecated at api28~1A65I~//~9A03R~//~9A04R~
 //  		    config.groupOwnerIntent = swServer ? 15: 1; // I want this device to become the owner(15)/Client(0),-1:selected by system//~@@@@I~//~9A03R~//~9B06R~
-    		    config.groupOwnerIntent = swServer ? 15: -1; // I want this device to become the owner(15)/Client(0),-1:selected by system//~9B06I~
-        		if (Dump.Y) Dump.println("DeviceDetailFragment:connect swServer="+swServer+",groupOwnerIntent="+config.groupOwnerIntent);//~@@@@I~
+//    		    config.groupOwnerIntent = swServer ? 15: -1; // I want this device to become the owner(15)/Client(0),-1:selected by system//~9B06I~//~vavjR~
+//   		    config.groupOwnerIntent = swServer ? 15:  0; // I want this device to become the owner(15)/Client(0),-1:selected by system//~vavjR~
+//      		if (Dump.Y) Dump.println("DeviceDetailFragment:connect swServer="+swServer+",groupOwnerIntent="+config.groupOwnerIntent);//~@@@@I~//~vavjR~
+                WifiP2pConfig config = getConnectConfig(swServer,device.deviceAddress);//~vavjR~
 //                if (progressDialog != null && progressDialog.isShowing()) {//~1A65I~//~1A67R~
 //                    progressDialog.dismiss();                      //~1A65I~//~1A67R~
 //                }                                                  //~1A65I~//~1A67R~
@@ -271,6 +274,7 @@ public class DeviceDetailFragment implements ConnectionInfoListener
 //                                                true, true);       //~1A67I~//~@@@@R~
                 String progressMsg=WDA.getResourceString(R.string.ProgressDialogMsgConnecting)+WDI.maskMacAddr(peerDevice);//~@@@@I~
                 WDA.getWDActivity().setConnectProgressMsg(progressMsg);//~@@@@R~
+                if (Dump.Y) Dump.println("DeviceDetailFragment.connect wifip2pconfig="+config.toString());//~9A03I~//~va44M~
 //              ((DeviceActionListener) getActivity()).connect(config);//~1A65R~
 //              if (swServer)                                      //~9A03I~//~9A04R~
 //              	AG.aWDA.aWDActivity.connectAsOwner(config);    //accesspoint,require find service//~9A04R~
@@ -427,6 +431,7 @@ public class DeviceDetailFragment implements ConnectionInfoListener
 	//***********************************************************************************//~1A65I~
     @Override
     public void onConnectionInfoAvailable(final WifiP2pInfo info) {
+		if (Dump.Y) Dump.println("onConnectionInfoAvailable");     //~va44I~
       try                                                          //~1A65I~
       {                                                            //~1A65I~
 //      if (progressDialog != null && progressDialog.isShowing()) {//~1A67R~
@@ -744,8 +749,8 @@ public class DeviceDetailFragment implements ConnectionInfoListener
       		if (Dump.Y) Dump.println("DeviceDetailFragment:onDeviceupInfoAvailable swGroupInfoOwner="+swGroupInfoOwner+",device="+Utils.toString(Pdevice));//~va44R~
             if (Pdevice==null)                                     //~va44I~
             	return;                                            //~va44I~
-            WDA.getDeviceListFragment().updateThisDevice(Pdevice); //+va44R~
-//          WDA.getDeviceListFragment().updateThisDevice(getDeviceName(Pdevice),swGroupInfoOwner);//+va44R~
+            WDA.getDeviceListFragment().updateThisDevice(Pdevice); //~va44R~
+//          WDA.getDeviceListFragment().updateThisDevice(getDeviceName(Pdevice),swGroupInfoOwner);//~va44R~
       	}                                                          //~va44I~
       	catch(Exception e)                                         //~va44I~
       	{                                                          //~va44I~
@@ -851,4 +856,41 @@ public class DeviceDetailFragment implements ConnectionInfoListener
     	if (Dump.Y) Dump.println("DeviceDetailFragment.alertUnpairOnGO rc="+rc);      //~1A89I~//~@@@@I~//~0116R~
         return rc;                                                 //~1A89I~//~@@@@I~
     }                                                              //~1A87I~//~1A89I~//~@@@@I~
+	//*******************************************************************************************************//~vavjI~
+	private WifiP2pConfig getConnectConfig(boolean PswServer,String PdeviceAddress)//~vavjR~
+    {                                                              //~vavjI~
+		WifiP2pConfig config;                                      //~vavjI~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig dev="+PdeviceAddress+",swServer="+PswServer);//~vavjR~
+//      AG.aCSI.chkNetwork();                                      //+vavjR~
+		int intent=PswServer ? 15:  0; // I want this device to become the owner(15)/Client(0),-1:selected by system//~vavjR~
+//      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) //api29 android10//~vavjR~
+//  		config=getConnectConfig_From29(PdeviceAddress,intent); //~vavjR~
+//      else                                                       //~vavjR~
+//      {                                                          //~vavjR~
+			config = new WifiP2pConfig();                          //~vavjI~
+			config.deviceAddress=PdeviceAddress;                   //~vavjI~
+			config.groupOwnerIntent=intent;                        //~vavjI~
+//      }                                                          //~vavjR~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig config="+config);//~vavjI~
+        return config;                                             //~vavjI~
+    }                                                              //~vavjI~
+	//*******************************************************************************************************//~vavjI~
+	//*!!! Not Available because NetworkName and passPhrase is required. this may be for AccessPoint//~vavjR~
+	//*******************************************************************************************************//~vavjI~
+    @TargetApi(Build.VERSION_CODES.Q)         //api29 android10    //~vavjI~
+	private WifiP2pConfig getConnectConfig_From29(String PdeviceAddress,int Pintent)//~vavjI~
+    {                                                              //~vavjI~
+		WifiP2pConfig config;                                      //~vavjI~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig_From29 dev="+PdeviceAddress+",intent="+Pintent);//~vavjI~
+		WifiP2pConfig.Builder builder=new WifiP2pConfig.Builder(); //~vavjI~
+		builder.setNetworkName("DIRECT-xy");                       //~vavjR~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig_From29 after build() config="+builder.build());//~vavjI~
+		builder.setDeviceAddress(MacAddress.fromString(PdeviceAddress));//~vavjI~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig_From29 after setAddr config="+builder.build());//~vavjI~
+		builder.enablePersistentMode(false);                       //~vavjI~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig_From29 after setPersistentMode config="+builder.build());//~vavjI~
+		config=builder.build();                                    //~vavjI~
+    	if (Dump.Y) Dump.println("DeviceDetailFragment.getConnectConfig_From29 exit config="+config);//~vavjI~
+        return config;                                             //~vavjI~
+    }                                                              //~vavjI~
 }

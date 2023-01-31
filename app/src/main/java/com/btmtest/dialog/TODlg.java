@@ -1,5 +1,6 @@
-//*CID://+vatfR~:                             update#=  587;       //~vatfR~
+//*CID://+vav3R~:                             update#=  588;       //+vav3R~
 //*****************************************************************//~v101I~
+//2023/01/10 vav3 optionally toast intent                          //+vav3I~
 //2022/10/18 vatf default dump to sdcard change to ON              //~vatfI~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
@@ -176,6 +177,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String LANG_KO                ="LangKO"              ;//~van1I~
     private static final String DEAL_NAGASHIMANGAN     ="DealNagashiMangan"   ;//~van1I~
     private static final String DEAL_OPENREACHRON      ="DealOpenReachRon"   ;//~van1I~
+    private static final String ROBOT_TOAST            ="RobotToast"   ;//+vav3I~
                                                                    //~v@@@I~
     private static final int[] rbIDFirstDealer=new int[]{R.id.rbFirstDealer0,R.id.rbFirstDealer1,R.id.rbFirstDealer2,R.id.rbFirstDealer3,R.id.rbFirstDealer4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrSet=new int[]{R.id.rbFinalSet1,R.id.rbFinalSet2,R.id.rbFinalSet3,R.id.rbFinalSet4};//~v@@@I~
@@ -238,6 +240,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbDealAvoidFuriten;                          //~vaihI~
     private UCheckBox cbNagashiMangan;                             //~van1I~
     private UCheckBox cbOpenReachRon;                              //~van1I~
+    private UCheckBox cbToastRobotIntent;                          //+vav3I~
     private Prop prop;                                             //~v@@@I~
     private boolean swChanged;                                     //~v@@@I~
     private URadioGroup rgFirstDealer;                             //~v@@@I~
@@ -359,6 +362,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealAvoidFuriten=new UCheckBox(PView,R.id.cbAvoidFuriten);//~vaihI~
     	cbNagashiMangan=new UCheckBox(PView,R.id.cbNagashiMangan); //~van1I~
     	cbOpenReachRon=new UCheckBox(PView,R.id.cbOpenReachRon);   //~van1I~
+    	cbToastRobotIntent=new UCheckBox(PView,R.id.cbToastRobotIntent);//+vav3I~
     	cbDealChanta =new UCheckBox(PView,R.id.cbDealChantaChii);      //~vad5I~
     	cbDealStraightChii =new UCheckBox(PView,R.id.cbDealStraightChii);//~vad5I~
     	cbDealAtodukeTakeYakuhai    =new UCheckBox(PView,R.id.cbDealAtodukeTakeYakuhai  );//~va66I~
@@ -532,6 +536,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealAvoidFuriten.setStateInt(Pprop.getParameter(DEAL_AVOID_FURITEN,0));//~vaihI~
     	cbNagashiMangan.setStateInt(Pprop.getParameter(DEAL_NAGASHIMANGAN,0));//~van1R~
     	cbOpenReachRon.setStateInt(Pprop.getParameter(DEAL_OPENREACHRON,0));//~van1I~
+    	cbToastRobotIntent.setStateInt(Pprop.getParameter(ROBOT_TOAST,0));//+vav3I~
     	cbDealChanta.setStateInt(Pprop.getParameter(DEAL_CHANTA,0));//~vad5I~
     	cbDealStraightChii.setStateInt(Pprop.getParameter(DEAL_STRAIGHT_CHII,0));//~vad5I~
     	cbDealAtodukeTakeYakuhai.setStateInt(Pprop.getParameter(DEALATODUKETAKEYAKUHAI,0));//~va66I~
@@ -632,8 +637,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_RON_TEST;                      //~v@@@I~
         else                                                       //~v@@@I~
 			TestOption.option2&=~TO2_RON_TEST;                      //~v@@@I~//~va65R~
-//      if (Pprop.getParameter(DUMP_SDCARD,0)!=0)                  //~0A08I~//+vatfR~
-        if (Pprop.getParameter(DUMP_SDCARD,1)!=0)                  //+vatfI~
+//      if (Pprop.getParameter(DUMP_SDCARD,0)!=0)                  //~0A08I~//~vatfR~
+        if (Pprop.getParameter(DUMP_SDCARD,1)!=0)                  //~vatfI~
         {                                                          //~0A08I~
 			TestOption.option2|=TO2_DUMP_SDCARD;                   //~0A08I~
 //          Dump.open("Dump.txt",true/*sdcard*/);                  //~0A08I~//~vad5R~
@@ -1075,6 +1080,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option5|=TO5_OPENREACHRON;                  //~van1I~
         else                                                       //~van1I~
 			TestOption.option5&=~TO5_OPENREACHRON;                 //~van1I~
+        if (Pprop.getParameter(ROBOT_TOAST,0)!=0)                  //+vav3I~
+			TestOption.option2|=TO2_ROBOT_TOAST;                   //+vav3I~
+        else                                                       //+vav3I~
+			TestOption.option2&=~TO2_ROBOT_TOAST;                  //+vav3I~
         if (Pprop.getParameter(DEAL_CHANTA,0)!=0)                  //~vad5I~
 			TestOption.option5|=TO5_DEAL_CHANTA;                   //~vad5I~
         else                                                       //~vad5I~
@@ -1259,6 +1268,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DEAL_AVOID_FURITEN,cbDealAvoidFuriten.getStateInt());//~vaihI~
         changed+=updateProp(DEAL_NAGASHIMANGAN,cbNagashiMangan.getStateInt());//~van1R~
         changed+=updateProp(DEAL_OPENREACHRON,cbOpenReachRon.getStateInt());//~van1R~
+        changed+=updateProp(ROBOT_TOAST,cbToastRobotIntent.getStateInt());//+vav3I~
         changed+=updateProp(DEAL_CHANTA,cbDealChanta.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_STRAIGHT_CHII,cbDealStraightChii.getStateInt());//~vad5I~
         changed+=updateProp(DEALATODUKETAKEYAKUHAI,cbDealAtodukeTakeYakuhai.getStateInt());//~va66I~

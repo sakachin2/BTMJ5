@@ -1,6 +1,11 @@
-//*CID://+vateR~: update#= 401;                                    //+vateR~
+//*CID://+vav8R~: update#= 406;                                    //+vav8R~
 //**********************************************************************//~v101I~
-//2022/10/18 vate emulater pixel5(APi31) landscape; nor right bttons shown. it is same as api33//+vateI~
+//2023/01/11 vav8 vav7 is no good back to 430                      //+vav8I~
+//2023/01/11 vav7 change smallFont decision from 430 to >320(320<xhdpi<=480)//~vav7I~
+//2023/01/11 vav6 change smallDevice decision from 800 to 720(HD)  //~vav6I~
+//2023/01/10 vav1 aspect change for long device to >=16:9          //~vav1I~
+//2022/11/01 vau2 Ahsv-1ams 2022/11/01 control request permission to avoid 1amh:"null permission result".(W Activity: Can request only one set of permissions at a time)//~vau2I~
+//2022/10/18 vate emulater pixel5(APi31) landscape; nor right bttons shown. it is same as api33//~vateI~
 //2022/10/17 vata emulater(APi33) landscape; nor right bttons shown//~vataI~
 //2022/10/16 vat9 logdevice determination change 2.0-->1.8 (tested emulator pixel5)//~vat9I~
 //2022/03/28 vam6 android12(api31) Display.getRealSize, getRealMetrics//~vam6I~
@@ -66,13 +71,18 @@ public class UView                                                 //~v@@@I~
     private static final int HIGHT_DPI_MED=25;                     //~v@@@I~
     private static final int HIGHT_DPI_LOW=19;                     //~v@@@I~
     private static final int BASE_NEXUS7=800;                      //~9808I~
+    private static final int BASE_HD    =720;                      //~vav6I~
     private static final int MULTIWINDOW_SHIFT=50;                 //~0113I~
                                                                    //~vac5I~
 //  private static final int DPI_USE_SMALL_FONT=360;               //~vac5R~
-    private static final int DPI_USE_SMALL_FONT=430;       //top 10 max is 424 at 2019//~vac5I~
+//  private static final int DPI_USE_SMALL_FONT=430;       //top 10 max is 424 at 2019//~vac5I~//~vav7R~
+    private static final int DPI_XHDPI_MAX =320;                   //~vav7I~
+//  private static final int DPI_USE_SMALL_FONT=DPI_XHDPI_MAX;  //over xhdpi//~vav7I~//+vav8R~
+    private static final int DPI_USE_SMALL_FONT=430;               //+vav8I~
     private static final int SMALL_DIP=320;                        //~vae0I~
 //  private static final int RATE_LONGDEVICE=2;                    //~vaegI~//~vat9R~
-    private static final float RATE_LONGDEVICE=1.8F;                //~vat9I~
+//  private static final float RATE_LONGDEVICE=1.8F;                //~vat9I~//~vav1R~
+    private static final float RATE_LONGDEVICE=(float)(16.0/9.0-0.001);      //1.776777//~vav1I~
 //    private static Stack<View> stackSnackbarLayout=new Stack<View>();//~v@@@R~
     private static boolean swRequestedExternalWrite,swRequestedExternalRead;//~1ak2I~
 //*************************                                        //~v@@@I~
@@ -274,11 +284,11 @@ public class UView                                                 //~v@@@I~
 //      	marginLR=ww0-(rectDecor.right-rectDecor.left);	//landscape effect delayed to Decorview//~vam6R~
 //  	    if (Dump.Y) Dump.println("UView:getDisplaySize31 3 button mode marginLR="+marginLR);//~vam6R~
 //      }                                                          //~vam6R~
-//      marginLR=0; //hide navigationBar on landscape, no navigationbar on portrait//~vam6I~//+vateR~
-        int left=inset.left;                                       //+vateI~
-        int right=inset.right;                                     //+vateI~
-        marginLR=Math.max(left,right);                             //+vateI~
-		if (Dump.Y) Dump.println("UView:getDisplaySize33 swPortrait="+AG.portrait+",marginLR="+marginLR+",left="+left+",right="+right);//+vateI~
+//      marginLR=0; //hide navigationBar on landscape, no navigationbar on portrait//~vam6I~//~vateR~
+        int left=inset.left;                                       //~vateI~
+        int right=inset.right;                                     //~vateI~
+        marginLR=Math.max(left,right);                             //~vateI~
+		if (Dump.Y) Dump.println("UView:getDisplaySize33 swPortrait="+AG.portrait+",marginLR="+marginLR+",left="+left+",right="+right);//~vateI~
         AG.scrNavigationbarRightWidthA11=marginLR;                 //~vam6M~
         AG.scrStatusBarHeight=inset.top;                           //~vam6M~
                                                                    //~vam6M~
@@ -404,8 +414,10 @@ public class UView                                                 //~v@@@I~
 	        if (Dump.Y) Dump.println("UView:getScreenRealSize Displaymetrics w="+AG.scrWidthReal+",h="+AG.scrHeightReal);//~v@@@I~
         }                                                          //~v@@@I~
         int ww=Math.min(AG.scrWidthReal,AG.scrHeightReal);         //~9809R~
-        AG.swSmallDevice=ww<BASE_NEXUS7;                           //~9809I~
-        AG.scaleSmallDevice=(double)ww/BASE_NEXUS7;               //~9809I~
+//      AG.swSmallDevice=ww<BASE_NEXUS7;                           //~9809I~//~vav6R~
+        AG.swSmallDevice=ww<BASE_HD;                               //~vav6I~
+//      AG.scaleSmallDevice=(double)ww/BASE_NEXUS7;               //~9809I~//~vav6R~
+        AG.scaleSmallDevice=(double)ww/BASE_HD;                    //~vav6I~
         if (AG.dip2pix!=0)                                         //~vac5I~
         {                                                          //~vaedR~
         	AG.scrPortraitWidthDPI=(int)(ww/AG.dip2pix);                  //~vac5I~
@@ -968,13 +980,15 @@ public class UView                                                 //~v@@@I~
     {                                                              //~9930I~
         if (Dump.Y) Dump.println("Uview.requestPermission type="+Ptype+",requestID="+PrequestID);//~9930I~
         String[] types=new String[]{Ptype};                        //~9930I~
-        ActivityCompat.requestPermissions(AG.activity,types,PrequestID);//~9930I~
+//      ActivityCompat.requestPermissions(AG.activity,types,PrequestID);//~9930I~//~vau2R~
+        UPermission.requestPermissions(types,PrequestID);          //~vau2I~
     }                                                              //~9930I~
     //******************************************************************************//~1ak2I~
     public static void requestPermission(String[] Ptypes,int PrequestID)//~1ak2I~
     {                                                              //~1ak2I~
         if (Dump.Y) Dump.println("Uview.requestPermission types="+Utils.toString(Ptypes)+",requestID="+PrequestID);//~1ak2I~
-        ActivityCompat.requestPermissions(AG.activity,Ptypes,PrequestID);//~1ak2I~
+//      ActivityCompat.requestPermissions(AG.activity,Ptypes,PrequestID);//~1ak2I~//~vau2R~
+        UPermission.requestPermissions(Ptypes,PrequestID);         //~vau2I~
     }                                                              //~1ak2I~
 //    //******************************************************************************//~9B25R~
 //    public static void getBackgroundColor(Button Pbtn)           //~9B25R~

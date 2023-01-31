@@ -1,6 +1,8 @@
-//*CID://+vaf0R~:                             update#=  123;       //+vaf0R~
+//*CID://+vaf0R~:                             update#=  124;       //~vaf0R~
 //*************************************************************************//~1A65I~
-//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//+vaf0I~
+//2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
+//*************************************************************************//~vaf0I~
+//*like as BTI, interfase to WifiDirect                            //+vaf0I~
 //*************************************************************************//+vaf0I~
 package com.btmtest.wifi;                                               //~v@@@I~//~9719I~
 
@@ -111,9 +113,9 @@ public class WDI                                                   //~9719R~
     //******************************************                   //~0113I~
     public static void shownBTCD()                                 //~0113I~
     {                                                              //~0113I~
-        if (Dump.Y) Dump.println("WDI.shownBTCD AG="+Utils.toString(AG));                 //~0113I~//+vaf0R~
-        if (AG==null)                                              //+vaf0I~
-        	return;                                                //+vaf0I~
+        if (Dump.Y) Dump.println("WDI.shownBTCD AG="+Utils.toString(AG));                 //~0113I~//~vaf0R~
+        if (AG==null)                                              //~vaf0I~
+        	return;                                                //~vaf0I~
     	if (AG.aWDI!=null && AG.aWDI.WDIR!=null)                   //~0113I~
     		AG.aWDI.WDIR.shownBTCD();                              //~0113I~
     }                                                              //~0113I~

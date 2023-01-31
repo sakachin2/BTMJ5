@@ -1,6 +1,6 @@
-//*CID://+vac5R~:                             update#=  443;       //+vac5R~
+//*CID://+vac5R~:                             update#=  446;       //~vac5R~
 //*****************************************************************//~v101I~
-//2021/08/15 vac5 phone device(small DPI) support; use small size font//+vac5I~
+//2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //*****************************************************************//~v101I~
 //*****************************************************************//~v@@@I~
 package com.btmtest.BT;                                        //~v@@@R~//~9722R~
@@ -76,8 +76,8 @@ public class GroupList                                             //~9722R~
         if (Dump.Y) Dump.println("GroupList displayGroup connectedctr="+connectedCtr+",memberctr="+memberCtr);//~v@@@R~//~9722R~
   		if (GL==null)                                              //~v@@@R~
         {                                                          //~v@@@I~
-//          GL=new ListGL(layoutView,RID_GROUPLIST,R.layout.textrowlist_bt_group); //display member 2column/row//~v@@@R~//+vac5R~
-            GL=new ListGL(layoutView,RID_GROUPLIST,(AG.swSmallFont ? R.layout.textrowlist_bt_group_theme : R.layout.textrowlist_bt_group)); //display member 2column/row//+vac5I~
+//          GL=new ListGL(layoutView,RID_GROUPLIST,R.layout.textrowlist_bt_group); //display member 2column/row//~v@@@R~//~vac5R~
+            GL=new ListGL(layoutView,RID_GROUPLIST,(AG.swSmallFont ? R.layout.textrowlist_bt_group_theme : R.layout.textrowlist_bt_group)); //display member 2column/row//~vac5I~
 		    GL.setBackground(COLOR_BG_GROUP_LIST);                 //~v@@@I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@R~
@@ -94,6 +94,7 @@ public class GroupList                                             //~9722R~
 	           GL.add(YNDN(swNotConnectedToServer,gl,ii),YNDN(swNotConnectedToServer,gl,ii+1),0);                //~v@@@R~//~9B07R~
             }                                                      //~v@@@I~
         }                                                          //~v@@@I~
+        if (Dump.Y) Dump.println("GroupList displayGroup issue notifyChanged");//~vac5I~
         GL.notifyChanged();                                           //~v@@@I~
 	    showYourName();                                            //~v@@@I~
      }                                                              //~v@@@I~
@@ -175,6 +176,7 @@ public class GroupList                                             //~9722R~
             v1.setBackgroundColor(bgColor);                        //~v@@@I~
             v2.setBackgroundColor(bgColor);                        //~v@@@I~
             if (Dump.Y) Dump.println("GroupList:getViewCustom Ppos="+Ppos+",v1="+ld.itemtext+",v2="+ld.itemtext2);//~9722I~
+            if (Dump.Y) Dump.println("GroupList:getViewCustom listview Height="+listview.getHeight());//+vac5R~
             return v;                                              //~v@@@I~
         }                                                          //~v@@@I~
 		//**********************************************************************//~v@@@I~

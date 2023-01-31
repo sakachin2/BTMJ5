@@ -1,5 +1,9 @@
-//*CID://+vac5R~:                             update#=  176;       //~vac5R~
+//*CID://+vavgR~:                             update#=  195;       //~vavgR~
 //*************************************************************************//~1A65I~
+//2023/01/25 vavg avoid duplicated drawListView request            //~vavgI~
+//2023/01/24 vavd pairing connect by macaddr is not avail. It required scan befre. so delete vavc//~vavdI~
+//2023/01/23 vavc display historical entry on WD devicelist        //~vavcI~
+//2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired flag yet off//~va40I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
@@ -51,6 +55,7 @@ import android.widget.TextView;
 import com.btmtest.BT.Members;
 import com.btmtest.R;
 import com.btmtest.dialog.BTCDialog;
+import com.btmtest.game.AccName;
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.Utils;
 
@@ -68,6 +73,7 @@ import static com.btmtest.StaticVars.AG;                           //~9721I~//~@
 //public class DeviceListFragment extends ListFragment implements PeerListListener {//~1A65R~
 public class DeviceListFragment implements PeerListListener {      //~1A65R~
 
+	private static final int WD_STATUS_HISTORY=-1;                 //~vavcR~
 	private static final int LAYOUTID_LIST_ROW=R.layout.textrowdevice_wd;//~1A65I~
 	private static final int LAYOUTID_LIST_ROW_SMALLFONT=R.layout.textrowdevice_wd_theme;//~vac5I~
 //	private static final int LAYOUTID_LIST_ROW_MDPI=R.layout.textrowdevice_wd_mdpi;//~1A6pI~//~1A8pI~
@@ -99,6 +105,8 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
     private int resid_textrow;                                     //~1A6pI~//~1A8pI~
     public int statusConnected;                                    //~@@@@R~
     public int ctrConnected,ctrInvited;                            //~0116R~
+//  public boolean swShowHistory=true;                             //~vavcI~//~vavdR~
+    public boolean swShowHistory=false;                            //~vavdI~
     //******************************************                   //~1A65I~
     public DeviceListFragment()                                    //~1A65I~
     {                                                              //~1A65I~
@@ -122,7 +130,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
     {                                                              //~1A65I~
 //      resid_textrow=AG.layoutMdpi ? LAYOUTID_LIST_ROW_MDPI : LAYOUTID_LIST_ROW;//~1A6pI~//~1A8pI~//~1Aa5R~
 //      resid_textrow=LAYOUTID_LIST_ROW;                           //~1Aa5I~//~vac5R~
-        resid_textrow=AG.swSmallFont ? LAYOUTID_LIST_ROW_SMALLFONT : LAYOUTID_LIST_ROW;//+vac5R~
+        resid_textrow=AG.swSmallFont ? LAYOUTID_LIST_ROW_SMALLFONT : LAYOUTID_LIST_ROW;//~vac5R~
     	layoutView=Playoutview;                                    //~1A65I~
 		tvMyName=(TextView)layoutView.findViewById(R.id.my_name);  //~1A65I~
 //        tvMyStatus=(TextView)layoutView.findViewById(R.id.my_status);//~1A65I~//~1Aa5R~
@@ -142,6 +150,9 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
         AG.aWDA.setButtonListener(btnP2PEnable);                   //~1Aa5I~
 //  	btnNFC=(Button)layoutView.findViewById(BTNID_NFC);         //~1A6aI~//~1Aa5R~
 //      WDA.SWDA.setButtonListener(btnNFC);                        //~1A6aI~//~1Aa5R~
+        if (swShowHistory)                                         //~vavcM~
+        	createHistoryList();                                   //~vavcM~
+//      if (Dump.Y) Dump.println("DeviceListFragment.initFragment getMacAddress="+Utils.getMacAddress());//~vavdR~
     }                                                              //~1Aa5I~
     //******************************************                   //~1A65I~
 
@@ -178,6 +189,9 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 //              return "Unavailable";                              //~1A65R~
                 s=WDA.getResourceString(R.string.DeviceUnavailable);//~1A65I~//~1Aa5R~
                 break;                                             //~1Aa5I~
+            case WD_STATUS_HISTORY:                                //~vavcI~
+                s=WDA.getResourceString(R.string.DeviceHistory);   //~vavcI~
+                break;                                             //~vavcI~
             default:
 //              return "Unknown";                                  //~1A65R~
                 s=WDA.getResourceString(R.string.DeviceUnknown);//~1A65I~//~1Aa5R~
@@ -277,6 +291,16 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 //      ((WiFiPeerListAdapter)getListAdapter()).notifyDataSetChanged(); //call getView()//~1Aa5R~
     	drawListView();                                            //~1Aa5I~
     }                                                              //~1Aa5I~
+    //******************************************************************************//~vavgI~
+    //*drawListView will be issued later                           //~vavgI~
+    //******************************************************************************//~vavgI~
+    public void onListItemClicked2(int Pposition)                  //~vavgI~
+	{                                                              //~vavgI~
+        if (Dump.Y) Dump.println("DeviceListFragment onListItemClicked2 positoion="+Pposition);//~vavgI~
+        WifiP2pDevice device = (WifiP2pDevice) getListAdapter().getItem(Pposition);//~vavgI~
+        ((DeviceActionListener) WDA.getWDActivity()).showDetails(device);//~vavgI~
+        selectedPos=Pposition;                                     //~vavgI~
+    }                                                              //~vavgI~
     //******************************************************************************//~1Aa5I~
     public void drawListView()                                     //~1Aa5I~
     {                                                              //~1Aa5R~
@@ -320,6 +344,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
             if (device != null) {
                 TextView top = (TextView) v.findViewById(R.id.device_name);
                 TextView bottom = (TextView) v.findViewById(R.id.device_details);
+                boolean swYN=false;                                //~vav9I~
                 if (top != null) {
 //                  top.setText(device.deviceName);                //~1A67R~
                     top.setText(DeviceDetailFragment.getDeviceName(device));//~1A67I~
@@ -354,10 +379,15 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 //                  	bottom.setText(Utils.getStr(R.string.IPInSession));//~1Aa5I~//~@@@@R~
 //                      String yourName=getYourName(ipa);          //~@@@@R~
                     	bottom.setText(yourName);                  //~@@@@I~
+                        swYN=true;                                 //~vav9I~
                     }                                              //~@@@@I~
                     else                                           //~1A6tI~//~1A8nI~
 	                    bottom.setText(getDeviceStatus(device.status));//~1Aa5R~
                 	bottom.setBackgroundColor(COLOR_BG_DEVICE_LIST);    //~1Aa5I~
+                    if (swYN)                                      //~vav9I~
+		                updateUserName(top,yourName);              //~vav9I~
+                    else                                           //~vav9I~
+		                setUserName(top);                          //~vav9I~
                 }
                 TextView owner=(TextView) v.findViewById(R.id.device_owner);//~1A65R~//~1Aa5R~//~@@@@R~
                 if (owner != null) {                             //~1A65R~//~1Aa5R~//~@@@@R~
@@ -398,6 +428,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
         thisStatus=device.status;                                  //~1A65I~
         if (Dump.Y) Dump.println("DeviceListFragment:updateThis status="+thisStatus);//~1A65I~
         if (Dump.Y) Dump.println("DeviceListFragment updateThis:name="+device.deviceName+",addr="+device.deviceAddress);//~1A6aI~
+//      if (Dump.Y) Dump.println("DeviceListFragment updateThis:getMacAddress="+Utils.getMacAddress());//~vavdR~
 //      TextView view = (TextView) mContentView.findViewById(R.id.my_name);//~1A65R~
         TextView view =tvMyName;                                   //~1A65I~
 //      view.setText(device.deviceName);                           //~1A67R~
@@ -451,11 +482,15 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 //  	dismissProgressDialog();    //move to WifiDirectBroadCastReceiver.onReceive CONNECTION_CHANGED_ACTION//~@@@@R~//~0113R~
         selectedPos=-1;                                            //~1A65I~
         if (Dump.Y) Dump.println("DeviceListFragment:onPeersAvailable slectedpos="+selectedPos);//~1A67I~//~1Aa5R~
+        boolean swDraw=isListUpdate(peers,devices);                //~vavgI~
         peers.clear();
 //      peers.addAll(peerList.getDeviceList());                    //~1A65R~
         peers.addAll(devices);                                     //~1A65I~
+        if (swShowHistory)                                         //~vavcI~
+        	mergeHistory(peers);                                   //~vavcI~
         if (peers.size()!=0)                                       //~va44R~
         {                                                          //~va44I~
+      		if (Dump.Y) Dump.println("DeviceListFragment.onPeersAvailable peers.size!=0 thisStatus="+thisStatus);//~vavdI~
 	        if (thisStatus!=WifiP2pDevice.CONNECTED)	//THIS_DEVICE_CHANGED was not received//~va44R~
             	AG.aWDA.aWDActivity.requestThisInfo();             //~va44I~
         }                                                          //~va44I~
@@ -494,10 +529,10 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
             }                                                      //~1Aa5I~
         }                                                          //~1Aa5R~
 //      ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();//~1Aa5R~
-    	drawListView();                                            //~1Aa5I~
+//  	drawListView();                                            //~1Aa5I~//~vavgR~
 //      WDA.SWDA.peerUpdated();	//issue connect                    //~1A6aI~//~1A6tR~
 //      WDA.SWDA.peerUpdated(peers.size());	//issue connect        //~1A6tI~//~1Aa5R~
-        AG.aWDA.peerUpdated(peers.size());	//issue connect        //~1Aa5I~
+        AG.aWDA.peerUpdated(peers.size());	//updateButtonView
         if (peers.size() == 0) {
 //          Log.d(WiFiDirectActivity.TAG, "No devices found");     //~1A65R~
             if (Dump.Y) Dump.println("DeviceListFragment.onPeersAvailable No devices found");          //~1A65I~//~1Aa5R~
@@ -511,16 +546,20 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 ////              WDA.getWDActivity().removeGroup();  //TODO test//~9A05I~//~@@@@R~
 //                ((DeviceListFragment.DeviceActionListener)WDA.getWDActivity()).disconnect();//~@@@@R~
 //            }                                                    //~@@@@R~
-            return;
+//          return;                                                //+vavgR~
         }
         else                                                       //~1A65I~
         {                                                          //~1A65I~
 	        if (peers.size() == 1)                                 //~1Aa5I~
             {                                                      //~1Aa5I~
-    			onListItemClicked(0);                              //~1Aa5I~
+//  			onListItemClicked(0);                              //~1Aa5I~//~vavgR~
+    			onListItemClicked2(0);                             //~vavgI~
+                swDraw=true;                                       //~vavgI~
             }                                                      //~1Aa5I~
 	    	setEmptyMsg();                                         //~1A65I~
         }                                                          //~1A65I~
+	    if (swDraw)                                                //~vavgI~
+    		drawListView();                                        //~vavgI~
       }                                                            //~1A65I~
       catch(Exception e)                                           //~1A65I~
       {                                                            //~1A65I~
@@ -534,20 +573,26 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 		if (Dump.Y) Dump.println("DeviceListFragment clearPeers peers ctr="+ peers.size());//~@@@@I~
 		int ctr=peers.size();                                      //~@@@@I~
         peers.clear();
-        resetAllConnection();                                      //~0112I~
+        if (swShowHistory)                                         //~vavcI~
+        {                                                          //~vavcI~
+    		createHistoryList();                                   //~vavcI~
+        	mergeHistory(peers);                                   //~vavcI~
+        }                                                          //~vavcI~
+//      resetAllConnection();                                      //~0112I~//~vavgR~
 //      ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();//~1Aa5R~
+      if (ctr!=0)                                                  //~vavgI~
     	drawListView();                                            //~1Aa5I~
-	    resetAllConnection();                                      //~0112I~
+//	    resetAllConnection();                                      //~0112I~//~vavgR~
         return ctr;                                                //~@@@@I~
     }
     //*****************************************************************//~0112I~
-    private void resetAllConnection()                              //~0112R~
-    {                                                              //~0112I~
-		if (Dump.Y) Dump.println("DeviceListFragment.resetAllConnection");//~0112I~
-//        AG.aIPMulti.resetAllConnection();                        //~0112R~
-//        AG.aWDA.updateDialog();                                //~@@@@I~//~0112R~
-//      AG.aIPMulti.closeAllConnection();  //no path because unregister-receiver when WDA is dismised,and unpair request closeConnection before//~0112R~
-    }                                                              //~0112I~
+//    private void resetAllConnection()   //not Used                           //~0112R~//~vavgR~
+//    {                                                              //~0112I~//~vavgR~
+//        if (Dump.Y) Dump.println("DeviceListFragment.resetAllConnection");//~0112I~//~vavgR~
+////        AG.aIPMulti.resetAllConnection();                        //~0112R~//~vavgR~
+////        AG.aWDA.updateDialog();                                //~@@@@I~//~0112R~//~vavgR~
+////      AG.aIPMulti.closeAllConnection();  //no path because unregister-receiver when WDA is dismised,and unpair request closeConnection before//~0112R~//~vavgR~
+//    }                                                              //~0112I~//~vavgR~
     //*****************************************************************//~@@@@I~
     //*moved to WifiDirectActivity                                 //~@@@@I~
     //*****************************************************************//~@@@@I~
@@ -771,4 +816,101 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 //        if (Dump.Y) Dump.println("DeviceListFragment:setDisconnected statusDisconnected="+statusDisconnected);//~@@@@R~
 //        statusDisconnected=0;      //avoid dup removeGroup       //~@@@@R~
 //    }                                                            //~@@@@R~
+    //************************************************************ //~vav9I~
+    private void setUserName(TextView PtvDeviceName)                         //~vav9I~
+    {                                                              //~vav9I~
+    	String dev=PtvDeviceName.getText().toString();             //~vav9I~
+        if (Dump.Y) Dump.println("DeviceListFragment.setUserName dev="+dev);//~vav9I~
+    	String userName=AG.aAccName.searchWD(dev);                 //~vav9R~
+        if (userName!=null)                                        //~vav9I~
+        	PtvDeviceName.setText(dev+ AccName.DEV_AND_USER+userName);                      //~vav9I~//~vavcR~
+        if (Dump.Y) Dump.println("DeviceListFragment.setUserName setText="+PtvDeviceName.getText());//~vav9I~
+    }                                                              //~vav9I~
+    //************************************************************ //~vav9I~
+    private void updateUserName(TextView PtvDeviceName,String PuserName)//~vav9I~
+    {                                                              //~vav9I~
+    	String dev=PtvDeviceName.getText().toString();             //~vav9I~
+        if (Dump.Y) Dump.println("DeviceListFragment.updateUserName devname="+dev+",userName="+PuserName);//~vav9I~
+    	AG.aAccName.updateWD(dev,PuserName);                       //~vav9R~
+    }                                                              //~vav9I~
+    //************************************************************ //~vavcI~
+    private void createHistoryList()                               //~vavcI~
+    {                                                              //~vavcI~
+        if (Dump.Y) Dump.println("DeviceListFragment.createHistoryList");//~vavcI~
+    	AG.aAccName.createHistoryListWD();                         //~vavcI~
+    }                                                              //~vavcI~
+    //************************************************************ //~vavcI~
+    private void mergeHistory(List<WifiP2pDevice> Ppeers)     //~vavcI~
+    {                                                              //~vavcI~
+        if (Dump.Y) Dump.println("DeviceListFragment.mergeHistory old size="+Ppeers.size());//~vavcI~
+        for (WifiP2pDevice dev:Ppeers)                             //~vavcI~
+        {                                                          //~vavcI~
+            AG.aAccName.pairedWD(dev.deviceName,dev.deviceAddress);   //~vavcR~
+        }                                                          //~vavcI~
+        String[] history=AG.aAccName.getEntrySetHistoryWD();       //~vavcI~
+        if (history!=null)                                        //~vavcI~
+        {                                                          //~vavcI~
+        	for (int ii=0;ii<history.length;ii++)                  //~vavcI~
+            {                                                      //~vavcI~
+            	String dev=history[ii++];                          //~vavcI~
+            	String user=history[ii++];                         //~vavcR~
+            	String addr=history[ii];                           //~vavcI~
+                if (addr==null)                                    //~vavcI~
+                    continue;                                      //~vavcI~
+    			WifiP2pDevice peer=new WifiP2pDevice();            //~vavcI~
+                if (user!=null)                                    //~vavcI~
+                	peer.deviceName=dev+AccName.DEV_AND_USER+user; //~vavcR~
+                else                                               //~vavcI~
+                	peer.deviceName=dev;                           //~vavcI~
+                peer.deviceAddress=addr;                              //~vavcI~
+                peer.status=WD_STATUS_HISTORY;    //-1             //~vavcR~
+                Ppeers.add(peer);                                  //~vavcI~
+        		if (Dump.Y) Dump.println("DeviceListFragment.mergeHistory add peer devname="+peer.deviceName+",addr="+peer.deviceAddress);//~vavcR~
+            }                                                      //~vavcI~
+        }                                                          //~vavcI~
+        if (Dump.Y) Dump.println("DeviceListFragment.mergeHistory new size="+Ppeers.size());//~vavcI~
+    }                                                              //~vavcI~
+    //************************************************************ //~vavgI~
+    private boolean isListUpdate(List<WifiP2pDevice> Ppeers,Collection<WifiP2pDevice> PnewList)//~vavgI~
+    {                                                              //~vavgI~
+        int ctrOld=Ppeers.size();                                  //~vavgI~
+        int ctrNew=PnewList.size();                                //~vavgI~
+        if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate ctrOld="+ctrOld+",ctrNew="+ctrNew);//~vavgI~
+        if (ctrOld!=ctrNew)                                        //~vavgI~
+        {                                                          //~vavgI~
+	        if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate return true ctr changed");//~vavgI~
+        	return true;                                           //~vavgI~
+        }                                                          //~vavgI~
+        if (ctrOld==0)	//and ctrNew=0                             //~vavgI~
+        {                                                          //~vavgI~
+	        if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate return false ctr=0");//~vavgI~
+        	return false;                                          //~vavgI~
+        }                                                          //~vavgI~
+        Object[] arrayDev=PnewList.toArray();                      //~vavgR~
+        for (WifiP2pDevice devOld:Ppeers)                          //~vavgI~
+        {                                                          //~vavgI~
+        	boolean swFound=false;                                 //~vavgI~
+        	for (Object obj:arrayDev)                              //~vavgR~
+            {                                                      //~vavgI~
+        		WifiP2pDevice devNew=(WifiP2pDevice)obj;           //~vavgI~
+		        if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate old="+devOld+",new="+devNew);//~vavgI~
+                if (devOld.deviceName.equals(devNew.deviceName))   //~vavgI~
+                {                                                  //~vavgI~
+                	swFound=true;                                  //~vavgI~
+	                if (devOld.status!=devNew.status)              //~vavgI~
+                    {                                              //~vavgI~
+				        if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate return true by status changed");//~vavgI~
+        				return true;                               //~vavgI~
+                    }                                              //~vavgI~
+                }                                                  //~vavgI~
+            }                                                      //~vavgI~
+            if (!swFound)                                          //~vavgI~
+            {                                                      //~vavgI~
+                if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate return true by deviceName unmatch");//~vavgI~
+                return true;                                       //~vavgI~
+            }                                                      //~vavgI~
+        }                                                          //~vavgI~
+		if (Dump.Y) Dump.println("DeviceListFragment.isListUpdate return false devname and status is all same");//~vavgI~
+        return false;                                              //~vavgI~
+    }                                                              //~vavgI~
 }

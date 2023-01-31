@@ -1,8 +1,10 @@
-//*CID://+vat2R~:                             update#=   77;       //~vat2R~
+//*CID://+vat2R~:                             update#=   81;       //~vat2R~
 //*************************************************************************//~1A65I~
 //2022/10/16 vat2 deprecated api33; getPercelableExtra;            //~vat2I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //*************************************************************************//~va40I~
+//* BroadcastReceiver active when WDA is not opened                //+vat2I~
+//*************************************************************************//+vat2I~
 package com.btmtest.wifi;                                               //~v@@@I~//~9719I~//~1Ac4I~
 
 import android.annotation.SuppressLint;
@@ -206,6 +208,7 @@ public class WDIReceiver extends BroadcastReceiver                 //~0113R~
 //                    WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));      //~0113R~
                         thisDeviceChanged();                                   //~0113I~
                     }
+        if (Dump.Y) Dump.println("WDIReceiver.onReceive exit action=" + action);//~vat2I~
     }
 
     //**********************************************************************//~0113I~
@@ -225,6 +228,7 @@ public class WDIReceiver extends BroadcastReceiver                 //~0113R~
 //          	resetData();                                       //~0113I~
                 retryChannel = true;                               //~0113I~
                 channel = manager.initialize(getContext(), getMainLooper(), this);//~0113R~
+		        if (Dump.Y) Dump.println("WDIReceiver.onChannelDisconnected channel="+channel);//~vat2I~
             }                                                      //~0113I~
             else                                                   //~0113I~
             {                                                      //~0113I~
@@ -583,6 +587,7 @@ public class WDIReceiver extends BroadcastReceiver                 //~0113R~
             receiver = this;                                         //~0113I~
             getContext().registerReceiver(receiver, intentFilter);  //~0113R~
             channel = manager.initialize(getContext(), getMainLooper(), this/*ChannelListener*/);    //callback onChannelDisconnected()//~0113I~
+        	if (Dump.Y) Dump.println("WDIReceiver.registerReceiver channel="+channel);//~vat2I~
             requestPeers(false/*swChanged*/);                      //~0113R~
         }                                                          //~0113I~
     }                                                              //~0113I~
@@ -764,7 +769,7 @@ public class WDIReceiver extends BroadcastReceiver                 //~0113R~
 	@SuppressWarnings("deprecation")                               //~vat2M~
     public static WifiP2pInfo getParcelableExtraWD(Intent Pintent,String PitemName)//~vat2M~
     {                                                              //~vat2M~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraWD itemName="+PitemName+",intent="+Pintent);//~vat2M~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraWD itemName="+PitemName+",intent="+Pintent);//~vat2R~
         WifiP2pInfo p2pinfo;                                       //~vat2M~
         if (AG.osVersion>=33)  //android4                          //~vat2M~
         {                                                          //~vat2M~
@@ -774,42 +779,42 @@ public class WDIReceiver extends BroadcastReceiver                 //~0113R~
         {                                                          //~vat2M~
 			p2pinfo = Pintent.getParcelableExtra(PitemName);        //~vat2M~
     	}                                                          //~vat2M~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraWD pwpInfo="+p2pinfo);//~vat2M~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraWD pwpInfo="+p2pinfo);//~vat2R~
         return p2pinfo;                                             //~vat2M~
     }                                                              //~vat2M~
     //*********************************************************    //~vat2M~
     @TargetApi(33)                                                 //~vat2M~
     private static WifiP2pInfo getParcelableExtraWD33(Intent Pintent,String PitemName)//~vat2M~
     {                                                              //~vat2M~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraWD33 itemName="+PitemName+",intent="+Pintent);//~vat2M~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraWD33 itemName="+PitemName+",intent="+Pintent);//~vat2R~
 		WifiP2pInfo p2pinfo=Pintent.getParcelableExtra(PitemName,WifiP2pInfo.class);//~vat2M~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtra33 pwpInfo="+p2pinfo);//~vat2M~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtra33 pwpInfo="+p2pinfo);//~vat2R~
         return p2pinfo;                                                //~vat2M~
     }                                                              //~vat2M~
-    //*********************************************************    //+vat2I~
-	@SuppressWarnings("deprecation")                               //+vat2I~
-    public static WifiP2pDevice getParcelableExtraDeviceWD(Intent Pintent,String PitemName)//+vat2I~
-    {                                                              //+vat2I~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraDeviceWD itemName="+PitemName+",intent="+Pintent);//+vat2I~
-        WifiP2pDevice dev;                                         //+vat2I~
-        if (AG.osVersion>=33)  //android4                          //+vat2I~
-        {                                                          //+vat2I~
-    		dev=getParcelableExtraDeviceWD33(Pintent,PitemName);   //+vat2I~
-        }                                                          //+vat2I~
-        else                                                       //+vat2I~
-        {                                                          //+vat2I~
-			dev=Pintent.getParcelableExtra(PitemName);             //+vat2I~
-    	}                                                          //+vat2I~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraWD dev="+dev);//+vat2I~
-        return dev;                                            //+vat2I~
-    }                                                              //+vat2I~
-    //*********************************************************    //+vat2I~
-    @TargetApi(33)                                                 //+vat2I~
-    private static WifiP2pDevice getParcelableExtraDeviceWD33(Intent Pintent,String PitemName)//+vat2I~
-    {                                                              //+vat2I~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraDeviceWD33 itemName="+PitemName+",intent="+Pintent);//+vat2I~
-		WifiP2pDevice dev=Pintent.getParcelableExtra(PitemName,WifiP2pDevice.class);//+vat2I~
-        if (Dump.Y) Dump.println("BTDiscover.getPercelableExtraDevice33 dev="+dev);//+vat2I~
-        return dev;                                                //+vat2I~
-    }                                                              //+vat2I~
+    //*********************************************************    //~vat2I~
+	@SuppressWarnings("deprecation")                               //~vat2I~
+    public static WifiP2pDevice getParcelableExtraDeviceWD(Intent Pintent,String PitemName)//~vat2I~
+    {                                                              //~vat2I~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraDeviceWD itemName="+PitemName+",intent="+Pintent);//~vat2R~
+        WifiP2pDevice dev;                                         //~vat2I~
+        if (AG.osVersion>=33)  //android4                          //~vat2I~
+        {                                                          //~vat2I~
+    		dev=getParcelableExtraDeviceWD33(Pintent,PitemName);   //~vat2I~
+        }                                                          //~vat2I~
+        else                                                       //~vat2I~
+        {                                                          //~vat2I~
+			dev=Pintent.getParcelableExtra(PitemName);             //~vat2I~
+    	}                                                          //~vat2I~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraWD dev="+dev);//~vat2R~
+        return dev;                                            //~vat2I~
+    }                                                              //~vat2I~
+    //*********************************************************    //~vat2I~
+    @TargetApi(33)                                                 //~vat2I~
+    private static WifiP2pDevice getParcelableExtraDeviceWD33(Intent Pintent,String PitemName)//~vat2I~
+    {                                                              //~vat2I~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraDeviceWD33 itemName="+PitemName+",intent="+Pintent);//~vat2R~
+		WifiP2pDevice dev=Pintent.getParcelableExtra(PitemName,WifiP2pDevice.class);//~vat2I~
+        if (Dump.Y) Dump.println("WDIReceiver.getPercelableExtraDevice33 dev="+dev);//~vat2R~
+        return dev;                                                //~vat2I~
+    }                                                              //~vat2I~
 }

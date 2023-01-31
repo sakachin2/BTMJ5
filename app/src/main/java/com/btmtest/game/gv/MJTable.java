@@ -1,5 +1,6 @@
-//*CID://+vas3R~: update#= 533;                                    //~vas3R~
+//*CID://+vavoR~: update#= 538;                                    //~vas3R~//~vavoR~
 //**********************************************************************//~v101I~
+//2023/01/28 vavo (BUG)size of piece on earth. duplicately considered size of Kan on Earth//~vavoI~
 //2022/10/11 vas3 tecLast(Android12) portrait icon before move overrup on stock//~vas3I~
 //2022/10/08 vard Adjust iconsize of before move not to override stock or nameplete for landscape mode//~vardI~
 //2022/09/24 var8 display profile icon                             //~var8I~
@@ -462,11 +463,11 @@ public class MJTable                                               //~v@@@R~
         int margin=PROFILE_MARGIN_LANDSCAPE;                       //~vas3I~
         if (Dump.Y) Dump.println("MJTable.getProfilePortraitLimit rectScore="+Utils.toString(AG.aNamePlate.rectScore));//~vas3R~
         //*leftStock end                                           //~vas3I~
-        int leftB=AG.aStock.rectsBG[PLAYER_LEFT].bottom;            //+vas3R~
+        int leftB=AG.aStock.rectsBG[PLAYER_LEFT].bottom;            //~vas3R~
         r=AG.aNamePlate.rectScore[PLAYER_YOU];                     //~vas3I~
         int max1=r.top-leftB; //above score plate                  //~vas3R~
         //*rightStock start                                        //~vas3I~
-        int rightT=AG.aStock.rectsBG[PLAYER_RIGHT].top;             //+vas3I~
+        int rightT=AG.aStock.rectsBG[PLAYER_RIGHT].top;             //~vas3I~
         r=AG.aNamePlate.rectScore[PLAYER_FACING];                  //~vas3I~
         int max2=rightT-r.bottom; //under score plate             //~vas3R~
         int rc=Math.min(max1,max2)-riverPieceW;  //from score plate to stop edge-riverWidth//~vas3R~
@@ -745,6 +746,7 @@ public class MJTable                                               //~v@@@R~
         hh-=TBL_RIVER_SPACING_Y*(riverCtrY-1);                      //~v@@@R~
         hh/=riverCtrY;                                             //~v@@@R~
     	int ww=(int)((double)PpieceW/PpieceH*hh);                  //~v@@@R~
+        if (Dump.Y) Dump.println("MJTables.getRiverPieceWidth PpieceW="+PpieceW+",PpieceH="+PpieceH+",ww="+ww+",riverCtrY="+riverCtrY);//~vas3I~
         int ww2=Earth.chkEarthSpace(swPortrait,PpieceW,(double)PpieceH/PpieceW);//~v@@@R~
         if (ww2<ww)                                                //~v@@@I~
         {                                                          //~v@@@I~
@@ -752,16 +754,19 @@ public class MJTable                                               //~v@@@R~
             hh=(int)((double)hh*ww2/ww);                           //~v@@@I~
         	ww=ww2;                                                //~0327I~
         }                                                          //~v@@@I~
+      if (false)                                                   //~vavoI~
+      {                                                            //~vavoI~
         int ww3=chkRiverKan(PpieceW,ww,hh);                        //~0327I~
         if (ww3<ww)                                                //~0327I~
         {                                                          //~0327I~
             hh=(int)((double)hh*ww3/ww);                           //~0327I~
         	ww=ww3;                                                //~0327M~
         }                                                          //~0327I~
+      }                                                            //~vavoI~
         riverPieceW=ww;                                            //~v@@@I~
         riverPieceH=hh;                                            //~v@@@I~
         riverLength=(riverPieceW+TBL_RIVER_SPACING_X)*riverCtrX;   //~v@@@R~
-        if (Dump.Y) Dump.println("MJTables.getRiverPieceWidth ww="+ww+",hh="+hh+",len="+riverLength+",riverH="+riverH+",riverY="+riverY);//~v@@@R~
+        if (Dump.Y) Dump.println("MJTables.getRiverPieceWidth ww2="+ww2+",ww="+ww+",hh="+hh+",len="+riverLength+",riverH="+riverH+",riverY="+riverY);//~v@@@R~//~vas3R~//~vavoR~
         updateGeometry();                                          //~v@@@I~
         return new Point(ww,hh);                                    //~v@@@R~
     }                                                              //~v@@@I~
@@ -901,7 +906,7 @@ public class MJTable                                               //~v@@@R~
         default:                    //0                            //~v@@@I~
     		p=new Point(riverX,riverY);                            //~v@@@I~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("MJTable.getRiverPos memer="+Pmember+",x="+p.x+",y="+p.y+",riverH="+riverH+",riverY="+riverY);//~v@@@R~
+        if (Dump.Y) Dump.println("MJTable.getRiverPos member="+Pmember+",x="+p.x+",y="+p.y+",riverH="+riverH+",riverY="+riverY);//~v@@@R~//+vavoR~
         return p;                                                  //~v@@@I~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~

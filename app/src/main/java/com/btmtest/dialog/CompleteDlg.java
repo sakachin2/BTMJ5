@@ -1,5 +1,6 @@
-//*CID://+vaq9R~:                             update#= 1130;       //~vaq9R~
+//*CID://+vav4R~:                             update#= 1133;       //~vav4R~
 //*****************************************************************//~v101I~
+//2023/01/10 vav4 set menu button orange when                      //~vav4I~
 //2022/08/19 vaq9 change bgcolor of result of completedlg for headbump identify//~vaq9I~
 //2022/08/03 vaps CompleteDlg; display warning CheckTenpai:off(it may be noten reach)//~vapsI~
 //2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap4I~
@@ -114,7 +115,7 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     private static final int COLOR_RESPNG=COLOR_RESULT_NG;          //~9227I~
     private static final int COLOR_RESPERR=Color.argb(0xff,0xff,0x00,0x00);//orange//~9227I~
                                                                    //~9214I~
-	private static final int COLOR_EDITABLE          =AG.getColor(R.color.editable);//~v@@@I~//~9B07R~//+vaq9R~
+	private static final int COLOR_EDITABLE          =AG.getColor(R.color.editable);//~v@@@I~//~9B07R~//~vaq9R~
                                                                    //~vaq9I~
     private static final int UBRGP_PAOESWN=3;                    //~9220I~//~9227R~
     private static final int UBRGP_TYPE_NEXTGAME=4;                //~9B10I~
@@ -2303,10 +2304,25 @@ public class CompleteDlg extends OKNGDlg //UFDlg                             //~
     @Override                                                      //~9314I~
     public void onClickCancel()                                        //~9227I~//~9314R~
     {                                                              //~9227I~
-        if (Dump.Y) Dump.println("CompleteDlg.onClickNG");         //~9227I~
+        if (Dump.Y) Dump.println("CompleteDlg.onClickCancel");         //~9227I~//~vav4R~
+      if (AG.swTrainingMode)                                       //~vav4I~
+      {                                                            //~vav4I~
+        UView.showToastLong(R.string.Info_CompleteDlgClosed);      //+vav4R~
+        AG.aGC.highlightMenuButton(true/*swOn*/);                  //~vav4I~
+      }                                                            //~vav4I~
+      else                                                         //~vav4I~
         sendReply(false);                                          //~9227I~
         dismissDlg();                                                 //~9227I~//~9314R~//~9315R~//~9316R~
     }                                                              //~9227I~
+    //******************************************                   //~vav4I~
+    @Override                                                      //~vav4I~
+    public void onClickClose()                                     //~vav4I~
+    {                                                              //~vav4I~
+        if (Dump.Y) Dump.println("CompleteDlg.onClickClose");      //~vav4I~
+        UView.showToastLong(R.string.Info_CompleteDlgClosed);      //+vav4R~
+        AG.aGC.highlightMenuButton(true/*swOn*/);                     //~vav4I~
+        dismissDlg();                                              //~vav4I~
+    }                                                              //~vav4I~
     //******************************************                   //~9316I~
     public void onClickTotal()                                     //~9316I~
     {                                                              //~9316I~

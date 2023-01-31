@@ -1,8 +1,10 @@
-//*CID://+vam9R~:                             update#=  512;       //+vam9R~
+//*CID://+vavhR~:                             update#=  522;       //~vavhR~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
-//2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//+vam9I~
+//2023/01/25 vavh avoid duplicated getView call for groupList      //~vavhI~
+//2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
+//2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//~vam9I~
 //2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/12 va69 (BUG)BTCDialog;disconnect button is disable at connection failed even another connection is active//~va69I~
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map; //~v@@@I~
 
+import android.content.DialogInterface;
 import android.content.Intent;                                     //~v@@@I~
 import android.bluetooth.BluetoothDevice;
 import android.provider.Settings;
@@ -71,6 +74,7 @@ import static com.btmtest.TestOption.*;                            //~9305I~
 
 public class BTCDialog extends UFDlg                               //~v@@@R~
         implements ProgDlg.ProgDlgI, UEditText.UEditTextI          //~v@@@R~
+    , DialogInterface.OnShowListener                               //~vavhI~
 {                                                                  //~2C29R~
 	protected static final String HELPFILE="BTCDialog";            //~9C13R~
     private static final String PKEY_BTSECURE="BTSecureOptionNonNFC";//~1AbuI~
@@ -151,11 +155,13 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     protected int memberCtr;       //number of yourname!=null        //~v@@@I~//~9A23R~
     private boolean swChangedYourName;                             //~0116I~
                                                                    //~1A6fI~
+    private ListView viewGL;                                       //~vavhI~
     //******************************************                   //~v@@@M~
 	public BTCDialog()                                             //~v@@@M~
 	{                                                              //~3105R~//~v@@@M~
         if (Dump.Y) Dump.println("BTCDialog.constructor connectionStatus="+connectionStatus+",connectionType="+connectionType);//~@002I~
         WDI.shownBTCD();	//unregister WDIReceiver               //~0113I~
+        AG.aAccName.loadProp();                                    //~vav9I~
 	}                                                              //~v@@@M~
     //******************************************                   //~v@@@I~
     public static BTCDialog newInstance(int PmemberRole)           //~v@@@R~
@@ -213,6 +219,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
 	{                                                              //~v@@@I~
     	super.initLayout(Playoutview);                             //~v@@@I~
         getComponent(Playoutview) ;                                //~v@@@I~
+        setOnShowListener(Playoutview);                            //~vavhI~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@I~
     protected void getComponent(View PView)                          //~v@@@R~//~9A23R~
@@ -508,6 +515,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     public void onDismissDialog()                                 //~v@@@R~
     {                                                              //~v@@@I~
 		if (Dump.Y) Dump.println("BTCDialog:onDismissDialog");     //~v@@@I~
+	    saveUserName();	//update propUserName                      //~vav9I~
     	cancelDiscover();                                          //~v@@@R~
 		stopAll();                                                 //~v@@@I~
         afterDismiss(waitingDialog);                               //~v@@@R~
@@ -1026,15 +1034,22 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
             v2.setText(status);                                    //~1A6fI~//~v@@@M~
             v2.setBackgroundColor(bgColor);               //~1A6fI~//~v@@@M~
             if (status.equals(statusPaired))                       //~1A6fI~//~v@@@M~
+            {                                                      //~vav9I~
                 v2.setTextColor(COLOR_STATUS_PAIRED);              //~1A6fI~//~v@@@M~
+                setUserName(1/*paired*/,ld.itemtext,v1);           //~vav9I~
+            }                                                      //~vav9I~
             else                                                   //~1A6fI~//~v@@@M~
             if (status.startsWith(statusConnected))                    //~1A6kI~//~v@@@R~
             {                                                      //~v@@@I~
 	            v2.setText(status.substring(statusConnected.length()));//~v@@@I~
                 v2.setTextColor(COLOR_STATUS_CONNECTED);  //~1A6kI~//~v@@@M~
+                updateUserName(ld.itemtext,v2.getText().toString());          //~vav9I~
             }                                                      //~v@@@I~
             else                                                   //~1A6kI~//~v@@@M~
+            {                                                      //~vav9I~
                 v2.setTextColor(COLOR_STATUS_DISCOVERED);          //~1A6fI~//~v@@@M~
+                setUserName(2/*usable*/,ld.itemtext,v1);           //~vav9I~
+            }                                                      //~vav9I~
             return v;                                              //~1A6fI~//~v@@@M~
         }                                                          //~1A6fI~//~v@@@M~
 	}//class                                                       //~1A6fI~//~v@@@I~
@@ -1110,8 +1125,8 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     public static void closeDialog()                               //~1AbvI~//~1AbuI~
     {                                                              //~1AbvI~//~1AbuI~
     	if (Dump.Y) Dump.println("BTCDialog:closeDialog");//~1AbvI~//~1AbuI~//~v@@@R~
-//      if (!isShowing())                                          //~v@@@I~//+vam9R~
-        if (isShowing())                                           //+vam9I~
+//      if (!isShowing())                                          //~v@@@I~//~vam9R~
+        if (isShowing())                                           //~vam9I~
         {                                                          //~1AbvI~//~1AbuI~
 	    	if (Dump.Y) Dump.println("BTCDialog:closeDialog dismiss");//~1AbvI~//~1AbuI~//~v@@@R~
 		    AG.aBTCDialog.waitingDialog=0;               //~1AbvI~//~1AbuI~//~v@@@R~
@@ -1793,4 +1808,46 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
     {                                                              //~va13I~
 		Utils.putPreference(Pkey,PdeviceName);          //~va13I~
     }                                                              //~va13I~
+    //************************************************************ //~vav9I~
+    //*Pstatus:1:Paired(not Connected),2:Discovered(usable)        //~vav9I~
+    //************************************************************ //~vav9I~
+    private void setUserName(int Pstatus,String PdevName,TextView Ptv)//~vav9I~
+    {                                                              //~vav9I~
+        if (Dump.Y) Dump.println("BTCDialog.setUserName status="+Pstatus+",devname="+PdevName);//~vav9I~
+    	String userName=AG.aAccName.search(PdevName);              //~vav9I~
+        if (userName!=null)                                        //~vav9I~
+        	Ptv.setText(PdevName+ " ? "+userName);                 //~vav9R~
+        if (Dump.Y) Dump.println("BTCDialog.setUserName getText="+Ptv.getText());//~vav9I~
+    }                                                              //~vav9I~
+    //************************************************************ //~vav9I~
+    private void updateUserName(String PdevName,String PuserName)  //~vav9I~
+    {                                                              //~vav9I~
+        if (Dump.Y) Dump.println("BTCDialog.updateUserName devname="+PdevName+",userName="+PuserName);//~vav9I~
+    	AG.aAccName.update(PdevName,PuserName);                    //~vav9I~
+    }                                                              //~vav9I~
+    //************************************************************ //~vav9I~
+    private void saveUserName()                                    //~vav9I~
+    {                                                              //~vav9I~
+        if (Dump.Y) Dump.println("BTCDialog.saveUserName");        //~vav9I~
+    	AG.aAccName.saveProp();                                    //~vav9I~
+    }                                                              //~vav9I~
+    //************************************************************ //~vavhI~
+    private void setOnShowListener(View PlayoutView)               //~vavhI~
+    {                                                              //~vavhI~
+        if (Dump.Y) Dump.println("BTCDialog.setOnShowListener");   //~vavhI~
+        viewGL=(ListView)UView.findViewById(PlayoutView,RID_GROUPLIST);//~vavhI~
+        if (Dump.Y) Dump.println("BTCDialog.setOnShowListener vieGL height="+viewGL.getHeight());//~vavhI~
+        androidDlg/*UFdlg*/.setOnShowListener(this);               //~vavhI~
+    }                                                              //~vavhI~
+    //************************************************************ //~vavhI~
+    @Override                                                      //~vavhI~
+    public void onShow(DialogInterface Pdlg)                       //~vavhI~
+    {                                                              //~vavhI~
+        int hh=viewGL.getHeight();    //by pixel                   //~vavhI~
+        if (Dump.Y) Dump.println("BTCDialog.onShow vieGL height="+hh);//~vavhI~
+        int ww= LinearLayout.LayoutParams.MATCH_PARENT;            //~vavhI~
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ww,hh);//~vavhI~
+        viewGL.setLayoutParams(lp); //TODO test                    //+vavhR~
+        if (Dump.Y) Dump.println("BTCDialog.onShow setLayoutparams lp="+lp);//~vavhI~
+    }                                                              //~vavhI~
 }//class                                                           //~v@@@R~

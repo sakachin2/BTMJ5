@@ -1364,7 +1364,7 @@
     <string name="WifiDirectGranted">WifiDirectの使用が許可されました</string>
     <!--string name="WifiDirectNotGranted">WifiDirectの使用が許可されませんでした</string-->
     <string name="WifiDirectRequiresGranted">WifiDirectの使用には\"位置情報へのアクセスの許可\"が必要です</string>
-    <!--string name="ExternalStorageForSDRequiresGranted">\"SDカードへ書き込み\"が不許可なので内部ファイル（再導入で削除）に出力されます</string-->
+    <!--string name="ExternalStorageForSDRequiresGranted">\"SDカードへ書き込み\"が不許可なので内部ファイル（再導入で削除の可能性があります）に出力されます</string-->
     <string name="ExternalStorageForSDRequiresGranted">外部ストレージ書き込みが不許可。再表示なしの場合、許可するには再導入が必要です</string>
     <string name="ExternalStorageForSDGranted">SDカードへの書き込み権限が許可されました</string>
     <string name="RemoteIP">WiFi</string>
@@ -1388,6 +1388,7 @@
     <string name="DeviceConnected">ペア設定済み</string>
     <string name="DeviceFailed">失敗</string>
     <string name="DeviceUnavailable">利用不可</string>
+    <string name="DeviceHistory">接続歴あり</string>
     <string name="DeviceUnknown">不明</string>
     <string name="DeviceType_Dummy">ボット</string>
     <string name="DeviceType_LocalServer">この端末(サーバー)</string>
@@ -1598,28 +1599,32 @@
     <string name="Label_HideDetail">非表示</string>
     <string name="Info_HistoryCtrDetail">計 %1$d ゲーム</string>
 
-    <!--string name="RequestPickupDocumentSaveDir">Android-11で外部ストレージの仕様が変更になりました。\n
-(再)インストールにより、ゲームデータの保存先を設定する必要があります。\n
-次に表示されるダイアログで \"%1$s\" を選択してください。\n
-初めての場合は、そこで\"新規フォルダーを作成\"を押してフォルダーを追加してください。\n
-最初のAndroid-11版の再インストールの時のみ既存の履歴、ルールファイルが移行できます。
-	</string-->
-    <string name="RequestPickupDocumentSaveDir">
+    <!--string name="RequestPickupDocumentSaveDir">
 Android-11以降、初回インストール時には、ゲームデータの保存先を設定してください。\n
 次に表示されるダイアログで \"%1$s\" を選択してください。\n
 初めての場合は、そのダイアログで \"新規フォルダーを作成\" してください。\n
 （最初のAndroid-11版の再インストールの時のみ既存の履歴、ルールファイルが移行されます）\n
-\"内部域使用\"では内部ストレージを使用することになりますが、その場合再インストールでデータはクリアーされます。
+\"内部域使用\"では内部ストレージを使用することになりますが、その場合再インストールでデータはクリアーされる可能性があります。
+	</string-->
+    <string name="RequestPickupDocumentSaveDir">
+初回インストールです。ゲームデータの保存先を設定してください。\n
+\"OK\"で表示されるダイアログで \"%1$s\" を選択します。\n
+初めての場合は、 \"新規フォルダーを作成\" してください。\n
+作成済みの場合は、\"このフォルダーを使用\"を押します。\n
+androidのバージョンによっては、一旦親フォルダーに戻って操作する必要があります。\n
+\"内部域使用\"では内部ストレージを使用しますが、バックアップのタイムラグの可能性があります。
 	</string>
-    <string name="RequestPickupDocumentSaveDirCanceled">"ゲームデータの保存先の設定がキャンセルされました。\n
+    <string name="RequestPickupDocumentSaveDirCanceled">"ゲームデータの保存先の設定がキャンセルされました。
 再設定する場合は、アプリを再起動してください。
 	</string>
-    <string name="RequestPickupDocumentSaveDirCanceledNoTryAgain">"保存先が内部ファイルに決定されました。\n
+    <string name="RequestPickupDocumentSaveDirCanceledNoTryAgain">"保存先が内部ファイルに決定されました。
 再設定する場合は、アプリを再インストールしてください。
 	</string>
+    <string name="InvalidScopedFolder">Android11から\"Download\"は使用できません。他のフォルダーを指定し直してください</string>
     <string name="RequestPickupDocumentSaveDirInvalidSelection">"\"%1$s\" が選択されました、ゲームデータの保存先は \"%2$s\" を選択してください。
 	</string>
     <string name="ErrNoExternalStoragePermission">外部ストレージへのアクセス権限が有りません</string>
+    <string name="ErrNoExternalStorageReadPermission">外部ストレージへの読み込み権限が有りません</string>
     <string name="ErrInvalidAudioSelection">%1$s はオーディオファイルでは有りません</string>
     <string name="Title_Picker">オーディオファイル選択</string>
     <string name="LabelUriDir">メディアフォルダー : </string>
@@ -1704,6 +1709,7 @@ Android-11以降、初回インストール時には、ゲームデータの保�
 											このファイルからは再開は問題があるかもしれませんが、OKで再開できます。\
 											</string>
     <string name="Info_GameEndCanceled">\"終局精算確認\"がキャンセルされました。メニューから終局清算確認ダイアログを開いてください。</string>
+    <string name="Info_CompleteDlgClosed">再表示はメニューの \"局の終了確認の表示\"から</string>
 
     <string name="Label_Profile">プロフィール</string>
     <string name="Label_DisplayProfile">画像を表示する</string>
@@ -1715,5 +1721,7 @@ Android-11以降、初回インストール時には、ゲームデータの保�
     <string name="Err_PrintSupportApi19">印刷サポートはアンドロイド4(KiKat)からです。</string>
     <string name="Print">印刷</string>
     <string name="Err_ConnectionExist">接続中は変更できません</string>
+    <string name="Msg_selectImagePicker">イメージを選択するアプリを選んでください</string>
+    <string name="btnSelectPicker">選択アプリ</string>
 
 </resources>

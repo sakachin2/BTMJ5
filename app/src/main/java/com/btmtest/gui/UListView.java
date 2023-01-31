@@ -1,7 +1,7 @@
-//*CID://+1ak3R~: update#= 245;                                    //+1ak3R~
+//*CID://+1ak3R~: update#= 246;                                    //~1ak3R~
 //**********************************************************************//~v105I~
-//1ak3 2021/09/10 picker(ACTION_PICK) for API30                    //+1ak3I~
-//**********************************************************************//+1ak3I~
+//1ak3 2021/09/10 picker(ACTION_PICK) for API30                    //~1ak3I~
+//**********************************************************************//~1ak3I~
 //*My ListView Adapter                                                     //~1107I~//~1109R~
 //**********************************************************************//~1107I~
 package com.btmtest.gui;                                   //~1107R~  //~1108R~//~1109R~//~1114R~//~v107R~//~1AbSR~//~v@@@R~
@@ -295,12 +295,12 @@ public class UListView                                                  //~1114 
 //*****************                                                //~v@@@I~
     public void notifyChanged()                                    //~v@@@R~
     {                                                              //~v@@@I~
-		if (Dump.Y) Dump.println("UListView notifyChaged");        //~v@@@I~
+		if (Dump.Y) Dump.println("UListView notifyChanged");        //~v@@@I~//+1ak3R~
         if (adapter!=null)                                         //~v@@@I~
         {                                                          //~v@@@I~
     		if (AG.isMainThread())                                 //~v@@@I~
             {                                                      //~v@@@I~
-		        if (Dump.Y) Dump.println("UListView notifyChaged adapter="+adapter.toString());//~v@@@R~
+		        if (Dump.Y) Dump.println("UListView notifyChanged adapter="+adapter.toString());//~v@@@R~//+1ak3R~
 				adapter.notifyDataSetChanged(); //delete "deleted entry" from list shown//~v@@@I~
             }                                                      //~v@@@I~
         }                                                          //~v@@@I~
@@ -333,6 +333,7 @@ public class UListView                                                  //~1114 
     {                                                              //~1221I~//~@@@@R~//~v@@@I~
         if (Dump.Y) Dump.println("showList pos="+Ppos); //~1506R~//~@@@@R~//~v@@@I~
         ListAdapter adapter=listview.getAdapter();                 //~1221I~//~@@@@R~//~v@@@I~
+        if (Dump.Y) Dump.println("showList issue notifyDataSetChanged");//+1ak3I~
         ((BaseAdapter)adapter).notifyDataSetChanged();             //~@@@@R~//~v@@@I~
         int pos=Ppos;                                                  //~1221I~//~@@@@R~//~v@@@I~
         if (pos<0) //keep currenttop                               //~@@@@R~//~v@@@I~
@@ -408,13 +409,14 @@ public class UListView                                                  //~1114 
             if (Dump.Y) Dump.println("Listview OnItemClick listview isFocusableInTouchMode="+Plistview.isFocusableInTouchMode());//~1506R~
             if (Dump.Y) Dump.println("Listview OnItemClick textview isInTouchMode="+Ptextview.isInTouchMode());//~1506R~
             Plistview.requestFocusFromTouch();                     //~1118R~
+            if (Dump.Y) Dump.println("List OnItemClick issue notifyDataSetChanged");//+1ak3I~
 			((BaseAdapter)Plistview.getAdapter()).notifyDataSetChanged(); //invalidate is not effective to call getView()//~v107I~
             if (Dump.Y) Dump.println("Listview OnItemClick listview isFocusable="+Plistview.isFocusable());//~1506R~
             if (Dump.Y) Dump.println("Listview OnItemClick listview isFocusableInTouchMode="+Plistview.isFocusableInTouchMode());//~1506R~
             if (Dump.Y) Dump.println("Listview OnItemClick textview isInTouchMode="+Ptextview.isInTouchMode());//~1506R~
             if (listener!=null)                                    //~v@@@I~
 	            listener.onListItemClicked(Ppos,selectedpos);      //~v@@@I~
-    		onItemClicked(Ppos,selectedpos);                       //+1ak3I~
+    		onItemClicked(Ppos,selectedpos);                       //~1ak3I~
           }                                                        //~v107I~
           catch(Exception e)                                       //~v107I~
           {                                                        //~v107I~
@@ -424,13 +426,13 @@ public class UListView                                                  //~1114 
         }                                                          //~1115I~
 
     }//inner class                                                 //~1115I~
-//**********************************************************************//+1ak3I~
-//*for extender to override without thru interface                 //+1ak3I~
-//**********************************************************************//+1ak3I~
-    public void onItemClicked(int Ppos,int PoldSelected)           //+1ak3I~
-    {                                                              //+1ak3I~
-    	if (Dump.Y) Dump.println("UListView.onItemClicked pos="+Ppos+",posSelected="+PoldSelected);//+1ak3I~
-    }                                                              //+1ak3I~
+//**********************************************************************//~1ak3I~
+//*for extender to override without thru interface                 //~1ak3I~
+//**********************************************************************//~1ak3I~
+    public void onItemClicked(int Ppos,int PoldSelected)           //~1ak3I~
+    {                                                              //~1ak3I~
+    	if (Dump.Y) Dump.println("UListView.onItemClicked pos="+Ppos+",posSelected="+PoldSelected);//~1ak3I~
+    }                                                              //~1ak3I~
 //**********************************************************************//~1307I~
 //*itemclicklistener  LONG                                         //~1307R~
 //**********************************************************************//~1307I~
@@ -445,6 +447,7 @@ public class UListView                                                  //~1114 
             Plistview.requestFocusFromTouch();                     //~1307I~
             if (Dump.Y) Dump.println("Listview OnItemLongClick listview requestfocusfromtouch="+Plistview.requestFocusFromTouch());//~1506R~
             selectedpos=Ppos;   //setSelction() cause scroll       //~1307I~
+            if (Dump.Y) Dump.println("Listview OnItemLongClick issue notifydataSetChanged");//+1ak3I~
 			((BaseAdapter) Plistview.getAdapter()).notifyDataSetChanged(); //invalidate is not effective to call getView()//~1307I~
             return false;	//continue to ContextMenu processing   //~1307I~
         }                                                          //~1307I~

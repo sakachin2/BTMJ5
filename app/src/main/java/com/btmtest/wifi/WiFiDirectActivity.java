@@ -1,5 +1,8 @@
-//*CID://+va50R~:                             update#=  131;       //~va44R~//~va50R~
+//*CID://+vavkR~:                             update#=  139;       //~vavkR~
 //*************************************************************************//~1A65I~
+//2023/01/26 vavk Toast->UView.showToast                           //~vavkI~
+//2023/01/25 vavi close channel expecting to erase groupOwner persistency//~vaviI~
+//2023/01/24 vavf (BUG) duplicated call discover                   //~vavfI~
 //2020/11/29 va50 lint err about permission(no need because checked at otther place,but avoid lint err)//~va50I~
 //2020/11/19 va44 Android10:WD;no THIS_DEVICE_CHANGED broadcast msg.paired/owner flag not set//~va44I~
 //1Ac4 2015/07/06 WD:try disable wifi direct at unpair             //~1Ac4I~
@@ -108,6 +111,7 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
     public static final int PROGRESS_DISCOVER = 2;                  //~9A04I~//~9A05R~
     private WiFiDirectActivity aWifiDirectActivity;                //~9A04I~
     private boolean swProgDlg;                                     //~0124I~
+    private boolean swCloseChannel;                                //~vaviI~
 
     //*******************************************************************//~1A65I~
     public WiFiDirectActivity()                                    //~1A65I~
@@ -144,8 +148,7 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
 //      channel = manager.initialize(this, getMainLooper(), null); //~1A65R~
         channel = manager.initialize(getContext(), getMainLooper(), this);//~1A65R~//~@@@@R~
-        if (Dump.Y)
-            Dump.println("WiFiDirectActivity.onCreate initialize return channel=" + (channel == null ? "null" : channel.toString()));
+        if (Dump.Y) Dump.println("WiFiDirectActivity.onCreate initialize channel="+channel);//~vavfR~
     }
 
     //*******************************************************************//~1A65I~
@@ -262,8 +265,9 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
                 isWifiP2pEnabled = true;  //TODO test                //~1Ac4I~
                 if (!isWifiP2pEnabled) {
 //                  Toast.makeText(WiFiDirectActivity.this, R.string.p2p_off_warning,//~1A65R~
-                    Toast.makeText(getContext(), R.string.p2p_off_warning,//~1A65I~
-                            Toast.LENGTH_SHORT).show();
+//                  Toast.makeText(getContext(), R.string.p2p_off_warning,//~1A65I~//~vavkR~
+//                          Toast.LENGTH_SHORT).show();            //~vavkR~
+             	    UView.showToast(R.string.p2p_off_warning);     //~vavkI~
                     if (Stestdevicelist_mdpi)//emulator missing wifi func//~1Aa5R~
                     {                                              //~1Aa5R~
                         final DeviceListFragment fragment = WDA.getDeviceListFragment();//~1A6sI~
@@ -347,17 +351,16 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
         {                                                          //~0124I~
             @Override                                              //~0124I~
             public void onSuccess() {                              //~0124I~
+                if (Dump.Y) Dump.println("WiFiDirectActivity discover onSuccess");//~0124I~//~va50M~
                 if (swProgDlg)                                     //~0124I~
                     onInitiateDiscovery();                         //~0124R~
-                if (Dump.Y) Dump.println("WiFiDirectActivity discover onSuccess");//~0124I~
             }                                                      //~0124I~
 
             //~0124I~
             @Override                                              //~0124I~
             public void onFailure(int reasonCode) {                //~0124I~
+                if (Dump.Y) Dump.println("WiFiDirectActivity discover onFailure reason=" + reasonCode);//~va50I~
                 showReason(R.string.DiscoveryFailedReason, reasonCode);//~0124I~
-                if (Dump.Y)
-                    Dump.println("WiFiDirectActivity discover onFailure reason=" + reasonCode);
             }                                                      //~0124I~
         });                                                        //~0124I~
     }                                                              //~0124I~
@@ -374,10 +377,9 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
     public void connect(WifiP2pConfig config) {                    //~@@@@R~
         try                                                          //~1A65I~
         {                                                            //~1A65I~
-            if (Dump.Y)
-                Dump.println("WiFiDirectActivity:connect device=" + config.deviceAddress);    //~1A65I~//~1A6aR~
+            if (Dump.Y) Dump.println("WiFiDirectActivity:connect device=" + config.deviceAddress);//~va50R~
 //      cancelDiscovery();	//TODO test                            //~0124R~
-            initiateDiscovery(false/*PswProgDlg*/); //TODO test        //~0124R~
+//          initiateDiscovery(false/*PswProgDlg*/); //TODO test        //~0124R~//~vavfR~
             if (ActivityCompat.checkSelfPermission(AG.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)//~va50R~
             {                                                      //~va50I~
                 // inserted by SDK                                     //~va50I~
@@ -390,10 +392,12 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+            if (Dump.Y) Dump.println("WiFiDirectActivity:connect issue connect config="+config+",channel="+channel);//~va50I~//~vaviR~
             manager.connect(channel, config, new ActionListener() {
 
                 @Override
                 public void onSuccess() {
+		            if (Dump.Y) Dump.println("WiFiDirectActivity:connect.ActionListener.onSuccess");//~va50I~
                     DeviceDetailFragment fragment = WDA.getDeviceDetailFragment();//~@@@@I~
                     if (connectProgressMsg != null)                      //~@@@@I~
                     {                                                  //~@@@@I~
@@ -537,22 +541,27 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
     public void onChannelDisconnected() {
         try                                                          //~1A65I~
         {                                                            //~1A65I~
-            if (Dump.Y) Dump.println("WiFiActivity:onChannelDisconnected");//~1A67I~
+            if (Dump.Y) Dump.println("WiFiActivity:onChannelDisconnected swCloseChannel="+swCloseChannel);//~1A67I~//~vaviR~
+          if (!swCloseChannel)                                     //~vaviI~
+          {                                                        //~vaviI~
             // we will try once more
             if (manager != null && !retryChannel) {
 //          Toast.makeText(this, "Channel lost. Trying again", Toast.LENGTH_LONG).show();//~1A65R~
-                Toast.makeText(getContext(), WDA.getResourceString(R.string.ChannelLostRetry), Toast.LENGTH_LONG).show();//~1A65R~
+//              Toast.makeText(getContext(), WDA.getResourceString(R.string.ChannelLostRetry), Toast.LENGTH_LONG).show();//~1A65R~//~vavkR~
+             	UView.showToastLong(WDA.getResourceString(R.string.ChannelLostRetry));//~vavkI~
                 resetData();
                 retryChannel = true;
 //          manager.initialize(this, getMainLooper(), this);       //~1A65R~
                 manager.initialize(getContext(), getMainLooper(), this);//~1A65I~
             } else {
 //          Toast.makeText(this,                                   //~1A65R~
-                Toast.makeText(getContext(),                           //~1A65I~
+//              Toast.makeText(getContext(),                           //~1A65I~//~vavkR~
 //                  "Severe! Channel is probably lost premanently. Try Disable/Re-Enable P2P.",//~1A65R~
-                        WDA.getResourceString(R.string.ChannelLostEnableP2P),//~1A65I~
-                        Toast.LENGTH_LONG).show();
+//                      WDA.getResourceString(R.string.ChannelLostEnableP2P),//~1A65I~//~vavkR~
+//                      Toast.LENGTH_LONG).show();                 //~vavkR~
+             	UView.showToastLong(WDA.getResourceString(R.string.ChannelLostEnableP2P));//~vavkI~
             }
+          }                                                        //~vaviI~
         }                                                            //~1A65I~
         catch (Exception e)                                           //~1A65I~
         {                                                            //~1A65I~
@@ -658,8 +667,7 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
                         public void onSuccess()                        //~9A04I~
                         {                                              //~9A04I~
 //                      UView.showToast(R.string.InfoDiscoverCanceled);//~9A04I~//~0124R~
-                            if (Dump.Y)
-                                Dump.println("WiFiDirectActivity.cancelDiscovery onSuccess");//~0124I~
+                            if (Dump.Y) Dump.println("WiFiDirectActivity.cancelDiscovery onSuccess");//~vavkR~
                         }                                              //~9A04I~
 
                         @Override                                      //~9A04I~
@@ -720,8 +728,7 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
     {                                                              //~1A6aI~
         try                                                          //~1Ac0I~
         {                                                            //~1Ac0I~
-            if (Dump.Y)
-                Dump.println("WiFiDirectActivity notifyConnected rc=" + Presult + ",msg=" + Pmsg);//~1A6aI~//~1Ac0I~//~9A05R~
+            if (Dump.Y) Dump.println("WiFiDirectActivity notifyConnected rc=" + Presult + ",msg=" + Pmsg);//~va50R~
             DeviceDetailFragment fragmentDetails = WDA.getDeviceDetailFragment();//~1A6aI~
             if (Pmsg != null)                                            //~1A6aI~
             {                                                          //~@@@@I~
@@ -888,8 +895,8 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
         {                                                          //~va44I~
             requestDeviceInfo();                                   //~va44I~
             manager.requestConnectionInfo(channel, DDF);   //set swOwner//~va44I~
-            if (ActivityCompat.checkSelfPermission(AG.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)//+va50R~
-			{                                                      //+va50I~
+            if (ActivityCompat.checkSelfPermission(AG.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)//~va50R~
+			{                                                      //~va50I~
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -899,6 +906,7 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+        	if (Dump.Y) Dump.println("WifiDirectActivity:requestThisInfo issue requestGroupInfo");//+vavkI~
             manager.requestGroupInfo(channel, DDF/*GroupInfoListener*/);//set this deviceName//~va44R~
 //          manager.requestConnectionInfo(channel,DDF);   //set swOwner//~va44R~
 //          requestDeviceInfo();                                   //~va44R~
@@ -936,8 +944,8 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
                         }                                              //~va44I~
                     }                                                  //~va44I~
                 };                                                      //~va44I~
-        if (ActivityCompat.checkSelfPermission(AG.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)//+va50R~
-		{                                                          //+va50I~
+        if (ActivityCompat.checkSelfPermission(AG.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)//~va50R~
+		{                                                          //~va50I~
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -956,4 +964,14 @@ public class WiFiDirectActivity implements ProgDlg.ProgDlgI, ChannelListener, De
         if (DDF!=null)                                             //~va44I~
         	DDF.onDeviceInfoAvailable(Pdevice);                    //~va44I~
     }                                                              //~va44I~
+    //************************************************************ //~vaviI~
+    //*from WDA at dismiss                                         //~vaviI~
+    //************************************************************ //~vaviI~
+    public void closeChannel()                                     //~vaviI~
+    {                                                              //~vaviI~
+        if (Dump.Y) Dump.println("WifiDirectActivity:closeChannel channel="+channel);//~vaviI~
+        swCloseChannel=true;                                       //~vaviI~
+        if (channel!=null)                                         //~vaviI~
+        	channel.close();                                       //~vaviI~
+    }                                                              //~vaviI~
  }

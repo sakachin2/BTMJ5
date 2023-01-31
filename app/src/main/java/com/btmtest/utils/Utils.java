@@ -1,4 +1,4 @@
-//*CID://+vat2R~: update#= 324;                                    //~vat2R~
+//*CID://+vat2R~: update#= 328;                                    //~vat2R~
 //**********************************************************************//~1107I~
 //2022/10/16 vat2 deprecated api33; PackageManager.getAplicationInfo//~vat2I~
 //2022/10/09 vas0 print history                                    //~vas0I~
@@ -21,7 +21,9 @@ import java.net.Inet6Address;
 import java.net.InetAddress;                                       //~v106R~
 import java.net.NetworkInterface;                                  //~v106R~
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;                                      //~v106I~
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -418,7 +420,7 @@ public class Utils                                            //~1309R~//~@@@@R~
     	throws NameNotFoundException                               //~vat2I~
     {                                                              //~vat2I~
     	if (Dump.Y) Dump.println("Utils.getApplicationInfo33");    //~vat2I~
-    	int flagMgr=0;	//TODO  ?                                  //+vat2R~
+    	int flagMgr=0;	//TODO  ?                                  //~vat2R~
     	PackageManager.ApplicationInfoFlags flags=PackageManager.ApplicationInfoFlags.of(flagMgr);//~vat2I~
     	ApplicationInfo appInfo = Pmgr.getApplicationInfo(Pcontext.getPackageName(),flags);//~vat2I~
     	if (Dump.Y) Dump.println("Utils.getApplicationInfo33 appinfo="+appInfo);//~vat2I~
@@ -1434,4 +1436,36 @@ public class Utils                                            //~1309R~//~@@@@R~
 //      }                                                          //~vaafR~
         Pbtn.getBackground().setColorFilter(new PorterDuffColorFilter(Pcolor, PorterDuff.Mode.SRC_ATOP));//~vaafR~
     }                                                              //~vaafR~
+//*************************************************************    //~vat2I~
+//*returns invalid addr                                            //+vat2I~
+//*************************************************************    //+vat2I~
+public static String getMacAddress(){                              //~vat2R~
+      	if (Dump.Y) Dump.println("Utils.getMacAddress");           //~vat2I~
+        try{                                                       //~vat2I~
+            List<NetworkInterface> networkInterfaceList = Collections.list(NetworkInterface.getNetworkInterfaces());//~vat2I~
+            String stringMac = "";                                 //~vat2I~
+            for(NetworkInterface networkInterface : networkInterfaceList)//~vat2I~
+            {                                                      //~vat2I~
+                if(networkInterface.getName().equalsIgnoreCase("wlon0"));//~vat2I~
+                {                                                  //~vat2I~
+                    for(int i = 0 ;i <networkInterface.getHardwareAddress().length; i++){//~vat2I~
+                        String stringMacByte = Integer.toHexString(networkInterface.getHardwareAddress()[i]& 0xFF);//~vat2I~
+                        if(stringMacByte.length() == 1)            //~vat2I~
+                        {                                          //~vat2I~
+                            stringMacByte = "0" +stringMacByte;    //~vat2I~
+                        }                                          //~vat2I~
+                        stringMac = stringMac + stringMacByte.toUpperCase() + ":";//~vat2I~
+                    }                                              //~vat2I~
+                    break;                                         //~vat2I~
+                }                                                  //~vat2I~
+            }                                                      //~vat2I~
+    	  	if (Dump.Y) Dump.println("Utils.getMacAddress exit addr="+stringMac);//~vat2I~
+            return stringMac;                                      //~vat2I~
+        }catch (SocketException e)                                 //~vat2I~
+        {                                                          //~vat2I~
+    	  	if (Dump.Y) Dump.println(e,"Utils.getMacAddress");     //~vat2I~
+        }                                                          //~vat2I~
+    	if (Dump.Y) Dump.println("Utils.getMacAddress exit return null");//~vat2I~
+        return  null;                                              //~vat2R~
+    }                                                              //~vat2I~
 }//class Utils                                                //~1309R~//~v@@@R~

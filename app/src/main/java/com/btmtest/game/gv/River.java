@@ -1,5 +1,6 @@
-//*CID://+vapdR~: update#= 627;                                    //~vapdR~
+//*CID://+vavqR~: update#= 630;                                    //~vavqR~
 //**********************************************************************//~v101I~
+//2023/01/28 vavq overwrap chk for Left/Right river and Face/You profile when landscape//~vavqI~
 //2022/07/28 vapd change color of openreach tile                   //~vapdI~
 //2022/04/12 vamp Animation. for Riichi                            //~vampR~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
@@ -126,6 +127,7 @@ public class River                                                 //~v@@@R~
         points[PLAYER_FACING]=table.getRiverPos(PLAYER_FACING);    //~v@@@I~
         points[PLAYER_LEFT]=table.getRiverPos(PLAYER_LEFT);        //~v@@@I~
     	pointsRiver=points;                                        //~v@@@I~
+        if (Dump.Y) Dump.println("River.getPointsRiver pointsRiver="+Utils.toString(points));//+vavqI~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
     //*for test, fromGCanvas                                       //~v@@@I~
@@ -314,6 +316,70 @@ public class River                                                 //~v@@@R~
     	Rect rect=new Rect(xx1,yy1,xx2,yy2);                       //~v@@@R~
         return rect;                                               //~v@@@R~
     }                                                              //~v@@@M~
+	//*********************************************************    //~vavqI~
+	//*from ProfileIcon                                            //~vavqI~
+	//*********************************************************    //~vavqI~
+	public Rect getRiverRect(int Pplayer)                          //~vavqI~
+    {                                                              //~vavqI~
+        int xx1,xx2,yy1,yy2,xx0,yy0;                               //~vavqI~
+        int ww,hh,diff;                                            //~vavqI~
+//      int xxx1=0,xxx2=0,yyy1=0,yyy2=0;	//last row endpos      //~vavqI~
+    //************************                                     //~vavqI~
+        if (Dump.Y) Dump.println("River.getRiverRect player="+Pplayer);//~vavqR~
+    	int col=colRiver;                                          //~vavqI~
+    	int row=rowRiver;                                          //~vavqI~
+        ww=pieceW; hh=pieceH;                                      //~vavqI~
+        diff=hh-ww;                                                //~vavqI~
+        Point p=pointsRiver[Pplayer];                              //~vavqI~
+        xx0=p.x;                                                   //~vavqI~
+        yy0=p.y;                                                   //~vavqI~
+//      int lastCols=lastRowCols[Pplayer]+1;                       //~vavqI~
+//      if (Dump.Y) Dump.println("River.getPieceRectField lastCols="+lastCols);//~vavqI~
+//      int lastEnd;                                               //~vavqI~
+        switch(Pplayer)                                            //~vavqI~
+        {                                                          //~vavqI~
+        case PLAYER_YOU:                                           //~vavqI~
+            xx1=xx0;                                               //~vavqI~
+            yy1=yy0;                                               //~vavqI~
+            xx2=xx1+(pieceW+sepW)*col+diff;                        //~vavqI~
+            yy2=yy1+(pieceH+sepH)*row;                             //~vavqI~
+//  		lastEnd=xx1+(pieceW+sepW)*lastCols+diff;               //~vavqI~
+//          xxx1=xx2; xxx2=lastEnd; yyy1=yy2-pieceH-sepH; yyy2=yy2;//~vavqI~
+            break;                                                 //~vavqI~
+        case PLAYER_RIGHT:                                         //~vavqI~
+        	xx1=xx0;                                               //~vavqI~
+            yy2=yy0+ww;                                            //~vavqI~
+            xx2=xx1+(pieceH+sepH)*row;                             //~vavqI~
+            yy1=yy2-(pieceW+sepW)*col-diff;   //yy0 is top left of 1st tile//~vavqI~
+//  		lastEnd=yy2-(pieceW+sepW)*lastCols-diff;               //~vavqI~
+//          xxx1=xx2-pieceH-sepH; xxx2=xx2; yyy1=lastEnd; yyy2=yy1;//~vavqI~
+            break;                                                 //~vavqI~
+        case PLAYER_FACING:                                        //~vavqI~
+            xx2=xx0+ww;                                            //~vavqI~
+            yy2=yy0+hh;                                            //~vavqI~
+            xx1=xx2-(pieceW+sepW)*col-diff;  //xx0 is top left of 1st tile//~vavqI~
+            yy1=yy2-(pieceH+sepH)*row;                             //~vavqI~
+//  		lastEnd=xx2-(pieceW+sepW)*lastCols-diff;               //~vavqI~
+//          xxx1=lastEnd; xxx2=xx1; yyy1=yy1; yyy2=yy1+pieceH+sepH;//~vavqI~
+            break;                                                 //~vavqI~
+        default:         //Left                                    //~vavqI~
+            xx2=xx0+hh;                                            //~vavqI~
+            yy1=yy0;                                               //~vavqI~
+            xx1=xx2-(pieceH+sepH)*row;                             //~vavqI~
+            yy2=yy1+(pieceW+sepW)*col+diff;                        //~vavqI~
+//  		lastEnd=yy1+(pieceW+sepW)*lastCols+diff;               //~vavqI~
+//          xxx1=xx1; xxx2=xx1+pieceH+sepH; yyy1=yy2; yyy2=lastEnd;//~vavqI~
+        }                                                          //~vavqI~
+        if (Dump.Y) Dump.println("River.getPieceRect diff="+diff+",ww="+ww+",hh="+hh+",x0="+xx0+",y0="+yy0);//~vavqI~
+    	Rect rect=new Rect(xx1,yy1,xx2,yy2);                       //~vavqI~
+//      if (lastCols>colRiver)                                     //~vavqI~
+//          lastRowRect=new Rect(xxx1,yyy1,xxx2,yyy2);             //~vavqI~
+//      else                                                       //~vavqI~
+//          lastRowRect=null;                                      //~vavqI~
+//      if (Dump.Y) Dump.println("River.getPieceRectField lastRowRect="+Utils.toString(lastRowRect));//~vavqI~
+        if (Dump.Y) Dump.println("River.getRiverRect rc="+rect.toString());//~vavqI~
+        return rect;                                               //~vavqI~
+    }                                                              //~vavqI~
 	//*********************************************************    //~v@@@I~
 	//*discarded pos to erase for new game                     //~v@@@I~//~0323R~
 	//*********************************************************    //~v@@@I~
@@ -466,7 +532,7 @@ public class River                                                 //~v@@@R~
             	if ((td.flag & TDF_TAKEN_RIVER)!=0)                //~v@@@R~
                 {                                                  //~v@@@I~
     	        	Graphics.drawRect(rect,COLOR_FG_DISABLE);      //~v@@@I~
-				    drawOpenReach(rectDiscarded);                    //+vapdI~
+				    drawOpenReach(rectDiscarded);                    //~vapdI~
 					rectDiscarded=null ;                               //~v@@@I~
                 }                                                  //~v@@@I~
                 if (swComplete)                                    //~v@@@I~

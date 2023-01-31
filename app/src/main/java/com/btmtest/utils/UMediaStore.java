@@ -1,5 +1,9 @@
-//*CID://+var8R~:                             update#=  183;       //~var8R~
+//*CID://+vavwR~:                             update#=  203;       //+vavwR~
 //************************************************************************
+//2023/01/30 vavx (BUG)chk intent=null when image picker canceled  //~vavxI~
+//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
+//2023/01/23 vavb (Bug)Exception at Umediastore if qury count is 0 //~vavbI~
+//2022/10/31 vau0 Ahsv-1amj 2022/10/31 explicitly say READ_PERMISSION when missing for change BGM//~vau0R~
 //2022/09/24 var8 display profile icon                             //~var8I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/13 vae2 BGM for BTMJ5                                    //~vae2I~
@@ -26,6 +30,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -624,8 +629,50 @@ public class UMediaStore
      	Intent intent=new Intent(action,uriImageBase);             //~var8R~
         intent.setType("image/*");  //avoid video              //~@@@1R~//~var8I~
         AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~var8I~
-	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit action="+action+",uriImageBase="+uriImageBase);//~var8R~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit action="+action+",uriImageBase="+uriImageBase+",intent="+intent+",data="+intent.getData()+",component="+intent.getComponent());//~vavwR~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit strUri="+intent.getDataString());//~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit type="+intent.getType());//~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImage exit package="+intent.getPackage());//~vavwI~
     }                                                              //~var8I~
+//********************************************************         //~vavwI~
+	private void requestPickupImageBySelectedPicker(Intent Pintent)//~vavwI~
+    {                                                              //~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker sVersion="+AG.osVersion+",uri="+uriImageMedia);//~vavwI~
+     	uriImageBase=uriImageMedia;                                //~vavwI~
+        if (AG.osVersion>= Build.VERSION_CODES.Q) //>=Android-10(Q)=api29//~vavwI~
+        {                                                          //~vavwI~
+		    if (Dump.Y) Dump.println(CN+"requestPickupImage API29 volume_EXTERNAL_PRIMARY="+MediaStore.VOLUME_EXTERNAL_PRIMARY);//~vavwI~
+        	uriImageBase=MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);//~vavwI~
+        }                                                          //~vavwI~
+      if (true)                                                    //~vavwI~
+      {                                                            //~vavwI~
+     	Intent intent=new Intent(Intent.ACTION_PICK);              //~vavwI~
+        intent.setType("image/*");  //avoid video                  //~vavwI~
+        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~
+        Pintent=intent;                                            //~vavwI~
+      }                                                            //~vavwI~
+      else                                                         //~vavwI~
+      if (true)                                                    //~vavwI~
+      {                                                            //~vavwI~
+     	Intent intent=new Intent(Intent.ACTION_PICK,uriImageBase);             //~vavwI~
+        intent.setType("image/*");  //avoid video                  //~vavwI~
+        ComponentName cmp=Pintent.getComponent();                  //~vavwI~
+        intent.setComponent(cmp);                                  //~vavwI~
+     	intent.setData(uriImageBase);                              //~vavwI~
+        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~
+        Pintent=intent;                                            //~vavwI~
+      }                                                            //~vavwI~
+      else                                                         //~vavwI~
+      {                                                            //~vavwI~
+     	Pintent.setData(uriImageBase);                             //~vavwI~
+        Pintent.setType("image/*");  //avoid video                 //~vavwI~
+        AG.activity.startActivityForResult(Pintent,AG.ACTIVITY_REQUEST_PICKUP_IMAGE);//~vavwI~
+      }                                                            //~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit uriImageBase="+uriImageBase+",intent="+Pintent+",data="+Pintent.getData()+",component-"+Pintent.getComponent());//~vavwR~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit strUri="+Pintent.getDataString());//~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit type="+Pintent.getType());//~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestPickupImageBySelectedPicker exit package="+Pintent.getPackage());//~vavwI~
+    }                                                              //~vavwI~
 ////********************************************************       //~var8R~
 //    private void requestPickupImage_Test()                       //~var8R~
 //    {                                                            //~var8R~
@@ -686,7 +733,12 @@ public class UMediaStore
 //********************************************************         //~var8I~
 	public static void onActivityResultImage(int Presult,Intent Pintent)//~var8I~
     {                                                              //~var8I~
-	    if (Dump.Y) Dump.println(CN+"onActivityResultImage result="+Presult);//~var8I~
+	    if (Dump.Y) Dump.println(CN+"onActivityResultImage result="+Presult+",intent="+Pintent);//~vavxR~
+        if (Pintent==null)                                         //~vavxI~
+        {                                                          //~vavxI~
+			if (Dump.Y) Dump.println(CN+"onActivityResultImage null Intent");//~vavxI~
+        	return;                                                //~vavxI~
+        }                                                          //~vavxI~
         if (Presult==RESULT_OK)                                    //~var8I~
         {                                                          //~var8I~
 	        UMediaStore ums=getInstance();                         //~var8I~
@@ -758,9 +810,15 @@ public class UMediaStore
 							MediaStore.Images.Media.DATE_MODIFIED, //~var8I~
 							};                                     //~var8I~
         Cursor cursor=CR.query(uriID,columns,null,null,null,null); //~var8R~
+        if (cursor.getCount()==0)                                     //~vavbI~
+        {                                                          //~vavbI~
+        	if (Dump.Y) Dump.println(CN+"loadBMP29 getCount==0, return null");//~vavbI~
+            return null;                                           //~vavbI~
+        }                                                          //~vavbI~
         cursor.moveToFirst();                                      //~var8I~
         int colIdx=cursor.getColumnIndex(columns[0]);              //~var8I~
         long id=cursor.getLong(colIdx);                            //~var8I~
+//2023/01/23 vavb (Bug)Exception at Umediastore if qury count is 0 //~vavbI~
         int colIdx1=cursor.getColumnIndex(columns[1]);             //~var8I~
         String name=cursor.getString(colIdx1);                     //~var8I~
         int colIdx2=cursor.getColumnIndex(columns[2]);             //~var8I~
@@ -911,7 +969,8 @@ public class UMediaStore
 //*api>=29=Q=Android10                                             //~var8R~
 //********************************************************         //~var8I~
 	@TargetApi(29)                                                 //~var8R~
-    public Bitmap loadBMP29(Uri Puri)                              //~var8R~
+//  public Bitmap loadBMP29(Uri Puri)                              //~var8R~//~vavbR~
+    private Bitmap loadBMP29(Uri Puri)                             //~vavbI~
     {                                                              //~var8I~
         if (Dump.Y) Dump.println(CN+"getBitmap29 uri="+Puri);      //~var8R~
         Bitmap bm=null;                                            //~var8I~
@@ -955,8 +1014,8 @@ public class UMediaStore
         if (Dump.Y) Dump.println(CN+"convertHardwareBitmap Pbmp.config="+Pbmp.getConfig()+",const="+Bitmap.Config.HARDWARE);//~var8R~
         if (Pbmp.getConfig()!=Bitmap.Config.HARDWARE)              //~var8I~
         	return Pbmp;                                           //~var8I~
-        Bitmap bm=Pbmp.copy(Bitmap.Config.ARGB_8888,false/*isMutable*/);//+var8R~
-        Pbmp.recycle();                                            //+var8I~
+        Bitmap bm=Pbmp.copy(Bitmap.Config.ARGB_8888,false/*isMutable*/);//~var8R~
+        Pbmp.recycle();                                            //~var8I~
         if (Dump.Y) Dump.println(CN+"convertHardwareBitmap exit bmp.config="+bm.getConfig());//~var8R~
         return bm;                                                 //~var8I~
     }                                                              //~var8I~
@@ -964,7 +1023,8 @@ public class UMediaStore
 //*api<=28                                                         //~var8R~
 //********************************************************         //~var8I~
     @SuppressWarnings("deprecation")                               //~va42I~//~var8R~
-    public Bitmap loadBMP28(Uri Puri)                              //~var8R~
+//  public Bitmap loadBMP28(Uri Puri)                              //~var8R~//~vavbR~
+    private Bitmap loadBMP28(Uri Puri)                             //~vavbI~
     {                                                              //~var8I~
         if (Dump.Y) Dump.println(CN+"getBitmap28 by MediaStore.Images.Media.getBitmap uri="+Puri);//~var8R~
         Bitmap bm=null;                                            //~var8I~
@@ -1146,7 +1206,8 @@ public class UMediaStore
 	    if (Dump.Y) Dump.println(CN+"changeBGM AG.swGrantedExternalStorageRead="+AG.swGrantedExternalStorageRead+",MP="+Utils.toString(ums.MP));//~vae9R~
         if (!AG.swGrantedExternalStorageRead)
         {
-	        UView.showToast(R.string.ErrNoExternalStoragePermission);
+//          UView.showToast(R.string.ErrNoExternalStoragePermission);//~vau0R~
+            UView.showToast(R.string.ErrNoExternalStorageReadPermission);//~1amjI~//~vau0R~
         	return;
         }
         stopBGM(false/*swPause*/);
@@ -1217,4 +1278,41 @@ public class UMediaStore
     {
 		UView.showToast(Utils.getStr(R.string.ErrInvalidAudioSelection," "+Puri));
     }
+//********************************************************         //~vavwI~
+    public static void selectImagePicker(UMediaStoreI Pcallback)   //~vavwI~
+    {                                                              //~vavwI~
+        UMediaStore ums=getInstance();                             //~vavwI~
+	    if (Dump.Y) Dump.println(CN+"selectImagePicker");          //~vavwI~
+        if (!AG.swGrantedExternalStorageRead)                      //~vavwI~
+        {                                                          //~vavwI~
+	        UView.showToast(R.string.ErrNoExternalStoragePermission);//~vavwI~
+        	return;                                                //~vavwI~
+        }                                                          //~vavwI~
+        ums.callback=Pcallback;                                    //~vavwI~
+        ums.requestSelectImagePicker();                            //~vavwI~
+    }                                                              //~vavwI~
+//********************************************************         //~vavwI~
+	private void requestSelectImagePicker()                        //~vavwR~
+    {                                                              //~vavwI~
+	    if (Dump.Y) Dump.println(CN+"requestSelectImagePicker osversion="+AG.osVersion);//~vavwR~
+     	String action=Intent.ACTION_PICK_ACTIVITY;                 //~vavwI~
+     	Intent intent=new Intent(action);                          //~vavwI~
+        intent.putExtra(Intent.EXTRA_INTENT,new Intent(Intent.ACTION_PICK));//~vavwI~
+        intent.putExtra(Intent.EXTRA_TITLE,Utils.getStr(R.string.Msg_selectImagePicker));//~vavwR~
+        AG.activity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_PICKUP_ACTION);//~vavwR~
+	    if (Dump.Y) Dump.println(CN+"requestSelectImagePickup exit");//~vavwR~
+    }                                                              //~vavwI~
+//********************************************************         //~vavwI~
+//*from AMain                                                      //~vavwI~
+//********************************************************         //~vavwI~
+	public static void onActivityResultSelectImagePicker(int Presult,Intent Pintent)//~vavwI~
+    {                                                              //~vavwI~
+	    if (Dump.Y) Dump.println(CN+"onActivityResultSelectImagePicker result="+Presult+",intent="+Pintent+",data="+Pintent.getData()+",component="+Pintent.getComponent());//~vavwR~
+        if (Presult==RESULT_OK)   //-1                             //~vavwR~
+        {                                                          //~vavwI~
+		    if (Dump.Y) Dump.println(CN+"onActivityResultSelectImagePicker RESULT_OK");//~vavwI~
+	        UMediaStore ums=getInstance();                         //~vavwI~
+			ums.requestPickupImageBySelectedPicker(Pintent);       //~vavwR~
+        }                                                          //~vavwI~
+    }                                                              //~vavwI~
 }//class

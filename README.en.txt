@@ -18,12 +18,58 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.27 : 2023/01/31
+		.Slightly increased the size of discarded tiles.
+        .(Bugs)
+		 -From Android 12, Bluetooth device discovery may fail.
+		 -Uninstall + install sometimes issues "Exception occured"
+
+V1.27 : 2023/01/31
+		.버려진 타일의 크기를 약간 늘렸습니다.
+        .(Bugs)
+		 -Android 12부터 Bluetooth 기기 검색이 실패할 수 있습니다.
+		 -Uninstall + install에서 때때로 "Exception occured" 문제 발생
+*********************************************************************************************
+V1.27 : 2023/01/31
+		.Changed the random number generation of dealing tiles to xorshift.
+		.Changed the aspect ratio of narrow screens from 1.8 to 16:9=1.77 (mainstream for smartphones). Tablets are often 16:10=1.6, 4:3=1.33.
+		.Changed the judgment of small screen size to 800-->720 pixels.
+		.The "Score" button will back to orange when the "Win claim" dialog is closed.
+		.Turn the "..."(Menu) button orange when the "End-of-Hand Claim" dialog was closed.
+		. Show profile icon on "End-of-Hand" dialog.
+		.Display user-name from connection history in Connection(BT/Wifi) dialog.
+		.Reduce the number of unnecessary redraws of the device list.
+		.Slightly increased the size of discarded tiles.
+        .(Bugs)
+		 -multiple requestPermission cannot be issued at the same time, so control by Queing.
+		 -BLUETOOTH_ADVERTIZE is invalid and BLUETOOTH_ADVERTISE is correct (required for Android 12 or later Scan).
+		 -"Dounload" folder cannot be used as a "document" folder, so you need to set it again.
+		 -Failure when number of columns = 0 in UMediastore query.
+		 -"Cancel" button is not reversed on Android 21 or lower.
+		 -Uninstall + install sometimes issues "Exception occured"
+
+		.딜링 타일의 난수 생성을 xorshift로 변경했습니다.
+		.좁은 화면의 화면비를 1.8에서 16:9=1.77로 변경(스마트폰 주류). 태블릿은 종종 16:10=1.6, 4:3=1.33입니다.
+		.작은 화면 크기 판단을 800-->720픽셀로 변경.
+		."Win claim" 대화 상자가 닫히면 "Score" 버튼이 주황색으로 돌아갑니다.
+		."End-of-Hand Claim" 대화 상자가 닫히면 "..."(Menu) 버튼을 주황색으로 바꿉니다.
+		."End-of-Hand" 대화 상자에 프로필 아이콘을 표시합니다.
+		."Connection"(BT/Wifi) 대화 상자의 연결 기록에서 사용자 이름을 표시합니다.
+		.장치 목록의 불필요한 다시 그리기 횟수를 줄입니다.(Connection Dialog)
+		.버려진 타일의 크기를 약간 늘렸습니다.
+        .(Bugs)
+		 -여러 requestPermission을 동시에 발행할 수 없으므로 Queing으로 제어합니다.
+		 -BLUETOOTH_ADVERTIZE는 유효하지 않고 BLUETOOTH_ADVERTISE는 정확합니다(Android 12 이상 스캔에 필요).
+		 -"Dounload" 폴더는 "document" 폴더로 사용할 수 없으므로 다시 설정해야 합니다.
+		 -UMediastore_query에서 _columns의 수가 0일 때 실패.
+		 -Android 21 이하에서는 "Cancel" 버튼이 반전되지 않습니다.
+		 -Uninstall + install에서 때때로 "Exception occured" 문제 발생.
+
 V1.26 : 2022/10/24
 		.Api33 (Android13:T) compatible.
 
 		.Api33(Android13:T) 대응
 
-*********************************************************************************************
 V1.26 : 2022/10/24
         .Prevent changes to personal settings while connected (profile icon).
 		.Support deprecation in Java9.

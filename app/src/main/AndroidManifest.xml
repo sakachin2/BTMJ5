@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.btmtest"
-      android:versionCode="126"
-      android:versionName="1.26">
+      android:versionCode="127"
+      android:versionName="1.27">
  <!--   xmlns:tools="http://schemas.android.com/tools" --> <!-- Warning:never used -->
 
     <!--uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /-->
@@ -13,7 +13,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
 						android:usesPermissionFlags="neverForLocation"/>       <!--vam4 vas6-->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTIZE"/>       <!--vam4-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"/>       <!--vam4-->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>       <!--added in api31:android12=S vam4-->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"

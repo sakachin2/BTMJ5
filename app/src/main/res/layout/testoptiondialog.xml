@@ -48,13 +48,19 @@
                     android:id="@+id/cbOpenHand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Open Robot Hand(for onlytraining mode=server)"
+                    android:text="ロボットの手牌を表示(サーバーのみ)"
+                />
+                <CheckBox
+                    android:id="@+id/cbToastRobotIntent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ロボットのインテントをトースト"
                 />
                 <CheckBox
                     android:id="@+id/cbRobotDiscardButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot discards by Servers Discard Button"
+                    android:text="ロボットはサーバーの打牌ボタンで打牌"
                 />
                 <CheckBox
                     android:id="@+id/cbCloseOnConnect"
@@ -66,13 +72,13 @@
                     android:id="@+id/cbNoThinkRobot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot No Think Robot"
+                    android:text="ロボットは自摸切り"
                 />
                 <CheckBox
                     android:id="@+id/cbCall1st"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot call at 1st if callable"
+                    android:text="ロボットは鳴けるときは鳴く"
                 />
                 <CheckBox
                     android:id="@+id/cbRobotDiscardTile"
@@ -84,19 +90,19 @@
                     android:id="@+id/cbTestEarly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot early take HV for test"
+                    android:text="ロボットの鳴きは早鳴き判断を無視する"
                 />
                 <CheckBox
                     android:id="@+id/cbNoReach"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot skip call Reach"
+                    android:text="ロボットは立直しない"
                 />
                 <CheckBox
                     android:id="@+id/cbDoReach"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot DO call Reach"
+                    android:text="ロボットは聴牌即立直"
                 />
                 <CheckBox
                     android:id="@+id/cbRon_Test"
@@ -448,25 +454,25 @@
                         />
                         <RadioButton
                             android:id="@+id/rbFirstDealer1"
-                            android:text="N1:E"
+                            android:text="東"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                         />
                         <RadioButton
                             android:id="@+id/rbFirstDealer2"
-                            android:text="N2:E"
+                            android:text="南"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                         />
                         <RadioButton
                             android:id="@+id/rbFirstDealer3"
-                            android:text="N1:N"
+                            android:text="西"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                         />
                         <RadioButton                       
                             android:id="@+id/rbFirstDealer4"
-                            android:text="N2:N"
+                            android:text="北"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                         />

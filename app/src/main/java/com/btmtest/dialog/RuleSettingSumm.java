@@ -1,5 +1,6 @@
-//*CID://+vatgR~:                             update#=  836;       //~vatgR~
+//*CID://+vavrR~:                             update#=  837;       //+vavrR~
 //*****************************************************************//~v101I~
+//2023/01/28 vavr (BUG) dymp by cancel on RuleSetting sum          //+vavrI~
 //2022/10/20 vatg after first install, reset SYNCDAYE_INIT automatically//~vatgI~
 //2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//~varbI~
 //2022/09/09 var2 summary rule setting dialog;add from operation   //~var2I~
@@ -286,11 +287,14 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
         if (Dump.Y) Dump.println("RuleSettingSumm.onDismissDialog swOpenAfterDismiss="+swOpenAfterDismiss);     //~9404I~//~9616R~//~vakRR~//~var0R~
         CommonListener.resetListener();                            //~9902I~
     	RuleSettingSumm parent=AG.aRuleSettingSumm;                                      //~9404I~//~vakRR~//~var0R~
+      if (parent!=null)                                            //+vavrI~
+      {                                                            //+vavrI~
         if (Utils.isShowingDialogFragment(parent.aRuleSettingDetail))//~var0I~
         {                                                          //~var0I~
         	if (Dump.Y) Dump.println("RuleSettingSumm.onDismissDialog by Detail Button");//~var0I~
         	parent.aRuleSettingDetail.dismiss();                   //~var0I~
         }                                                          //~var0I~
+      }                                                            //+vavrI~
     	AG.aRuleSettingSumm=null;                                      //~vakRI~//~var0R~
 	    if (swOpenAfterDismiss)                                    //~9405I~
         {                                                          //~9405I~
@@ -323,8 +327,8 @@ public class RuleSettingSumm extends RuleSetting                        //~v@@@R
                     {                                              //~vatgI~
 	                    if (Dump.Y) Dump.println("RuleSettingSumm.onShow issue OnClieck()");//~vatgI~
                     	onClickOK();	//SettinDLG, disloag2Properties, dismiss//~vatgI~
-            			MainView.drawMsg(R.string.Info_RuleIsInitialized);//+vatgI~
-						UView.showToastLong(R.string.Info_RuleIsInitializedMsg);//+vatgI~
+            			MainView.drawMsg(R.string.Info_RuleIsInitialized);//~vatgI~
+						UView.showToastLong(R.string.Info_RuleIsInitializedMsg);//~vatgI~
                         return;                                    //~vatgI~
                     }                                              //~vatgI~
                     if (!swReceived && !swShowInGame)              //~9902I~

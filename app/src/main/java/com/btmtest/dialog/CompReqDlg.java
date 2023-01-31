@@ -1,5 +1,7 @@
-//*CID://+vaq5R~:                             update#=  896;       //~vaq5R~
+//*CID://+vav5R~:                             update#=  905;       //~vav5R~
 //*****************************************************************//~v101I~
+//2023/01/10 vav5 show profile icon on CompReqDlg                  //~vav5I~
+//2023/01/10 vav2 keep Score button orange when claim dialog closed//~vav2I~//~vav5R~
 //2022/08/15 vaq5 if chkFix1 is OFF, confirm no fix err before apply 8cont yakuman//~vaq5I~
 //2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3I~
 //2022/03/23 vakU Shift required for received ReqDlg               //~vakUI~
@@ -17,7 +19,10 @@
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
+import static android.util.TypedValue.*;
+
 import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.text.Spanned;
@@ -25,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -179,6 +185,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
     private Rank longRank;                                         //~va11I~
     private boolean swRonChkErr;                                           //~va16I~
     private boolean swCheckFix1;                                   //~vaq5I~
+    private String ynComplete;                                     //~vav5I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public CompReqDlg()                                           //~v@@@R~//~9220R~//~9221R~
     {                                                              //~v@@@R~
@@ -383,6 +390,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //      }                                                          //~9529I~//~9708R~
 //      getRuleSetting();                                                           //~v@@@I~//~9212R~//~va11R~
         setTitle();                                                //~v@@@I~//~9220R~
+        setProfile(PView);                                         //~vav5M~
 //      setCompType();                                             //~9218I~//~va11R~
         setNormalPoint();                                          //~9212I~
         setReplyText();                                            //~9221I~
@@ -504,7 +512,9 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //      String s=Utils.getStr(TITLEID)+":"+GConst.nameESWN[gameField]+GConst.gameSeq[gameSeq];    //~v@@@I~//~9212R~//~9220R~//~9306R~
 //      Spanned s=Status.getSpannedGameTitle(Utils.getStr(TITLEID));//~9306I~//~0218R~
 		String yn=AG.aAccounts.currentEswnToAccountName(completeEswn);//~0218I~
-        Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),yn);//~0218I~
+        ynComplete=yn;                                             //~vav5I~
+//      Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),yn);//~0218I~//+vav5R~
+        Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),"");//+vav5I~
 //      title=s;                                                   //~9219I~//~9220R~
         androidDlg.setTitle(s);                                 //~v@@@R~//~9220R~//~9927R~//~0322R~
     }                                                              //~v@@@I~//~9220R~
@@ -1104,6 +1114,14 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             default:                                               //~9221I~
         }                                                          //~9221I~
     }                                                              //~9221I~
+    //******************************************                   //~vav2I~
+    @Override                                                      //~vav2I~
+    public void onClickClose()                                     //~vav2I~
+    {                                                              //~vav2I~
+        if (Dump.Y) Dump.println("CompReqDlg.onClickClose");       //~vav2I~
+        AG.aGC.highlightCompReq(true/*swOn*/);                     //~vav2I~
+        dismiss();                                                 //~vav2I~
+    }                                                              //~vav2I~
     //******************************************                   //~9221M~
     @Override                                                      //~v@@@I~//~9221M~
     public void onClickOK()                                       //~v@@@R~//~9221M~
@@ -1388,6 +1406,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         int rc=0;                                                  //~9903I~
         boolean swYou=false;                                       //~0106I~
         boolean swRobot=false;                                     //~va60I~
+        int idxReceived=-1;                                        //~vav2I~
         for (int ii=0;ii<ctr;ii++)                                 //~9403I~
         {                                                          //~9403I~
     	    if (Dump.Y) Dump.println("CompReqDlg.showComplete Complete.Status["+ii+"]="+ss[ii]);//~vakUI~
@@ -1399,11 +1418,12 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                 CompReqDlg.newInstance(ss[ii]).show(ii);          //~9403R~//~9408R~
                 rc++;                                              //~9903I~
             }                                                      //~9903I~
-            else                                                   //~9403I~
-            if (ss[ii].completeEswn==curEswn)                      //~9B11I~
-                UView.showToast(R.string.Err_CompReqRequestResend);  //~9403I~//~9603R~
+//          else                                                   //~9403I~//~vav2R~
+//          if (ss[ii].completeEswn==curEswn)                      //~9B11I~//~vav2R~
+//              UView.showToast(R.string.Err_CompReqRequestResend);  //~9403I~//~9603R~//~vav2R~
             else                                                   //~va60I~
             if (ss[ii].isShowableRobot(curEswn))                   //~va60I~
+            //*iswable & compEswn!=curESWN                         //~vav2I~
             {                                                      //~va60I~
 				if (Dump.Y) Dump.println("CompReqDlg.shwComplete robot completion for comp idx="+ii);//~va60I~
               if (ss[ii].supporterEswn==curEswn)                   //~vakTI~
@@ -1412,17 +1432,26 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
                 swRobot=true;                                      //~va60I~
                 rc++;                                              //~va60I~
               }                                                    //~vakTI~
+          	  else                                                 //~vav2I~
+              if (ss[ii].completeEswn!=curEswn)                    //~vav2I~
+              {                                                    //~vav2I~
+                idxReceived=ii;                                    //~vav2M~
+				UView.showToast(R.string.Err_CompReqRequestResend);//~vav2M~
+              }                                                    //~vav2I~
             }                                                      //~va60I~
 //            else    //for multiron                                 //~9B11I~//~0106R~
 //            if (!(ss[ii].swInvalid || ss[ii].swErr))               //~9B11I~//~0106R~
 //                UView.showToast(R.string.Err_CompReqMultipleRon);     //~9B11I~//~0106R~
         }                                                          //~9403I~
-    	if (Dump.Y) Dump.println("CompReqDlg.showComplete swRobot="+swRobot+",swYou="+swYou);//~vakUI~
+    	if (Dump.Y) Dump.println("CompReqDlg.showComplete swRobot="+swRobot+",swYou="+swYou+",idxReceived="+idxReceived);//~vakUI~//~vav2R~
       if (!swRobot)                                                //~0106I~//~va60I~
         if (!swYou)                                                //~va60I~
         {                                                          //~0106I~
+          if (idxReceived==-1)                                     //~vav2I~
+          {                                                        //~vav2I~
         	UView.showToast(R.string.Err_YouAreNotCompleted);      //~0106I~
             return 0;                                              //~0106I~
+          }                                                        //~vav2I~
         }                                                          //~0106I~
         for (int ii=0;ii<ctr;ii++)                                 //~0106I~
         {                                                          //~0106I~
@@ -1439,6 +1468,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             	continue;                                          //~0106I~
             if (ss[ii].supporterEswn==curEswn)                     //~va60R~
             	continue;                                          //~va60R~
+            if (ii==idxReceived)                                   //~vav2I~
+            	continue;                                          //~vav2I~
             if (!(ss[ii].swInvalid || ss[ii].swErr))               //~0106I~
                 UView.showToast(R.string.Err_CompReqMultipleRon);  //~0106I~
                                                                    //~0106I~
@@ -1481,8 +1512,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
           else	//sw8Cont under !swCheckFix1                       //~vaq5I~
           {                                                        //~vaq5I~
           	ronResult=UARV.getValueCompReqDlg(completePlayer,false);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~vaq5I~
-            if (chkApply8Cont(ronResult))                          //+vaq5I~
-	          	ronResult=UARV.getValueCompReqDlg(completePlayer,true);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//+vaq5I~
+            if (chkApply8Cont(ronResult))                          //~vaq5I~
+	          	ronResult=UARV.getValueCompReqDlg(completePlayer,true);	//robot may not be PLAYER_YOU;left:amt,top:yaku,right:rank,bottom:point//~vaq5I~
 	        if (Dump.Y) Dump.println("CompReqDlg.evaluatePointRank by sw8Cont=False onece ronResult="+ronResult);//~vaq5I~
           }                                                        //~vaq5I~
         	longRank=ronResult.longRank;                           //~va11I~
@@ -1765,12 +1796,25 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //        if ((completeType & COMPLETE_KAN_ADD)!=0)   //chankan      //~va11I~//~va16R~
 //            UARV.addOtherYaku(RYAKU_KAN_ADD,RANK_KAN_ADD);         //~va11R~//~va16R~
 //    }                                                              //~va11I~//~va16R~
-    //*************************************************************************//+vaq5I~
-    private boolean chkApply8Cont(RonResult PronResult)            //+vaq5I~
-    {                                                              //+vaq5I~
-        if (Dump.Y) Dump.println("CompReqDlg.chkApply8Cont ronResult="+PronResult);//+vaq5I~
-		boolean rc=AG.aRARon.isRonable(PronResult);                //+vaq5I~
-        if (Dump.Y) Dump.println("CompReqDlg.chkApply8Cont rc="+rc);//+vaq5I~
+    //*************************************************************************//~vaq5I~
+    private boolean chkApply8Cont(RonResult PronResult)            //~vaq5I~
+    {                                                              //~vaq5I~
+        if (Dump.Y) Dump.println("CompReqDlg.chkApply8Cont ronResult="+PronResult);//~vaq5I~
+		boolean rc=AG.aRARon.isRonable(PronResult);                //~vaq5I~
+        if (Dump.Y) Dump.println("CompReqDlg.chkApply8Cont rc="+rc);//~vaq5I~
         return rc;
-    }                                                              //+vaq5I~
+    }                                                              //~vaq5I~
+    //*************************************************************************//~vav5I~
+    private void setProfile(View PView)                            //~vav5I~
+    {                                                              //~vav5I~
+        if (Dump.Y) Dump.println("CompReqDlg.setProfile ynComplete="+ynComplete);//~vav5R~
+    	ImageView iv=(ImageView)UView.findViewById(PView,R.id.ivProfile);//~vav5I~
+        Bitmap bmpProfile=AG.aProfileIcon.getPlayerProfile(completePlayer);//~vav5I~
+        iv.setImageBitmap(bmpProfile);                             //~vav5I~
+    	TextView tv=(TextView)UView.findViewById(PView,R.id.tvProfileName);//~vav5I~
+        int hh=bmpProfile.getHeight();                             //~vav5I~
+        float hhFloat=hh*0.7F;                                     //+vav5R~
+        tv.setTextSize(COMPLEX_UNIT_PX,hhFloat);                   //~vav5I~
+        tv.setText(ynComplete);                                    //~vav5I~
+    }                                                              //~vav5I~
 }//class                                                           //~v@@@R~

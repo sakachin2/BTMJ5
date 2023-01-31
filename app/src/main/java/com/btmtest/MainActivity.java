@@ -1,5 +1,10 @@
-//*CID://+vatgR~:                             update#= 442;        //~vatgR~
+//*CID://+vavzR~:                             update#= 452;        //+vavzR~
 //**********************************************************************//~@@@@I~
+//2023/01/30 vavz initApp failed at re-install by parmission       //+vavzI~
+//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
+//2023/01/23 vava at onPause aCSI is null if Scoped folder selectionfailed by permission err of ACTION_OPEN_DOCUMENT for Download folder.//~vavaI~
+//2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
+//2022/11/01 vau2 Ahsv-1ams 2022/11/01 control request permission to avoid 1amh:"null permission result".(W Activity: Can request only one set of permissions at a time)//~vau2I~
 //2022/10/20 vatg after first install, reset SYNCDAYE_INIT automatically//~vatgI~
 //2022/10/09 vas0 print history                                    //~vas0I~
 //2022/10/07 varc BluetoothDevice.getName() need dynamic permission at Api31(Android12:S); try back to api30 because having no device of android12//~varcI~
@@ -71,6 +76,7 @@ import com.btmtest.dialog.MenuDlgConnect;
 import com.btmtest.dialog.OrientationMenuDlg;
 import com.btmtest.dialog.RuleSettingSumm;
 import com.btmtest.dialog.TestLayout;
+import com.btmtest.game.AccName;
 import com.btmtest.game.Accounts;
 import com.btmtest.game.GConst;
 import com.btmtest.game.History;
@@ -91,6 +97,7 @@ import com.btmtest.utils.EventToast;
 import com.btmtest.utils.Prop;
 import com.btmtest.utils.UFile;
 import com.btmtest.utils.UMediaStore;
+import com.btmtest.utils.UPermission;
 import com.btmtest.utils.URunnable;
 import com.btmtest.utils.UScoped;
 import com.btmtest.utils.UView;
@@ -153,6 +160,7 @@ public class MainActivity extends AppCompatActivity
 //    private OrientationEventListener listenerOrientationChanged; //TODO test//~va9fR~
 //  private int orientationBeforeGame;	//0/1:land/port, 8/9:reverse, 6/7:sensor//~va9fR~
     private boolean swServerStartGame=true;                        //~vajhI~
+    private boolean swCreated;                                     //+vavzI~
     //***********************************************************  //~8B05I~
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -214,6 +222,7 @@ public class MainActivity extends AppCompatActivity
 //        };                                                       //~va9fR~
     	initApp();                                                 //~9106I~
         new Anim(mainView,frameLayout);                            //~vamdR~
+        swCreated=true;                                            //+vavzI~
       }                                                            //~vae0I~
       catch(Exception e)                                           //~vae0I~
       {                                                            //~vae0I~
@@ -382,6 +391,7 @@ public class MainActivity extends AppCompatActivity
         new UScoped();                                             //~1ak1R~
         new UMediaStore();                                         //~1ak2R~
     	new Sound();     //after USCoped,UmediaStore init                      //~@@01M~//~vae9I~
+    	new AccName();   //after USCoped,UmediaStore init          //~vav9I~
         UFile.chkWritableSD();  //grant SDcard permission      //~1ak0I~//~1Ak0I~//~1ak0I~
 //      msgReceiver=new MsgIOReceiver();                                 //~9106I~//~@@@@R~//~9A23R~
 //      AG.aMsgIO=new MsgIO(msgReceiver);                          //~@@@@I~//~9A23R~
@@ -419,9 +429,11 @@ public class MainActivity extends AppCompatActivity
 	//*************************                                    //~8B05I~
     @Override                                                      //~8B05I~
     protected void onResume() {                                    //~8B05I~
-        if(Dump.Y) Dump.println("MainActivity.onResume");          //~8B05I~//~vaf0R~
+        if(Dump.Y) Dump.println("MainActivity.onResume swCreated="+swCreated);          //~8B05I~//~vaf0R~//+vavzR~
         super.onResume();                                          //~8B05I~
         swPaused=false;                                            //~9A22I~
+        if (!swCreated)                                            //+vavzI~
+        	return;                                                //+vavzI~
       try                                                          //~9719I~
       {                                                            //~9719I~
 //    	listenerOrientationChanged.enable(); //TODO test           //~va9fR~
@@ -460,7 +472,9 @@ public class MainActivity extends AppCompatActivity
     	try                                                        //~9719I~//~0113M~
         {                                                          //~9719I~//~0113M~
 //      AG.aCSI.onResume();	//set BTHandler activity               //~9B05I~//~va41R~
+      if (AG.aCSI!=null)                                           //~vavaI~
         AG.aCSI.onPause();                                         //~va41I~
+      if (AG.aBTI!=null)                                           //~vavaI~
         AG.aBTI.onPause();                                         //~@@@@I~
         UMediaStore.onPause();                                     //~1ak2R~
         Sound.onPause();                                           //~vaeaI~
@@ -534,7 +548,10 @@ public class MainActivity extends AppCompatActivity
         Dump.println(e,"onWindowFocusChanged");                    //~vakvI~
       }                                                            //~vakvI~
     }                                                              //~8B26I~
-//*************************                                        //~8C03I~
+//*****************************************************************/~8C03I~//~vau2R~
+//*deprecated but androidx.activity.ComponentActivity supports this.//~vau2I~
+//*OnBackPressedDispatcher is called before onBackPressed.         //~vau2I~
+//*****************************************************************/~8C03I~//~vau2I~
     @Override                                                      //~8C03I~
     public void onBackPressed()                                    //~8C03I~
 	{                                                              //~8C03I~
@@ -690,7 +707,7 @@ public class MainActivity extends AppCompatActivity
 	    	if (AG.ruleSyncDate.equals(PROP_INIT_SYNCDATE))        //~0124I~
             {                                                      //~0124I~
             	MainView.drawMsg(R.string.Err_RuleIsInitial);      //~0124I~
-//          	UView.showToastLong(R.string.Err_RuleIsInitialMsg);//~van1I~//+vatgR~
+//          	UView.showToastLong(R.string.Err_RuleIsInitialMsg);//~van1I~//~vatgR~
                 RuleSettingSumm.newInstanceForInitial();           //~vatgI~
                 break;                                             //~0124I~
             }                                                      //~0124I~
@@ -1652,6 +1669,7 @@ public class MainActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int PrequestID,String[] Ptypes,int[] Presults)//~9930I~
     {                                                              //~9930I~
         if (Dump.Y) Dump.println("MainActivity.onRequestPermissionResult reqid="+PrequestID+",type="+ Arrays.toString(Ptypes)+",result="+Arrays.toString(Presults));//~9930I~
+        UPermission.onRequestPermissionResult(PrequestID,Ptypes,Presults);         //~1amsI~//~vau2R~
         if (Presults.length==0)  //once crashed //TODO              //~1ak4R~
         {                                                          //~1ak4I~
         	if (Dump.Y) Dump.println("MainActivity.onRequestPermissionResult@@@@ no data Length=0");//~1ak4I~
@@ -1687,7 +1705,9 @@ public class MainActivity extends AppCompatActivity
 	@Override                                                      //~v107I~//~1ak5I~
     public void onActivityResult(int requestCode, int resultCode, Intent data)//~1ak2R~
 	{                                                              //~1ak2I~
-        if(Dump.Y) Dump.println("MainActivity.onActivityResult req="+requestCode+",result="+ resultCode);//~v107I~//~1A6aR~//~1ak5I~//~vaf0R~
+        if(Dump.Y) Dump.println("MainActivity.onActivityResult req="+requestCode+",result="+ resultCode+",intent="+data);//~v107I~//~1A6aR~//~1ak5I~//~vaf0R~//~vavwR~
+     try                                                           //~vavwI~
+     {                                                             //~vavwI~
       if (requestCode==AG.ACTIVITY_REQUEST_PICKUP_AUDIO)           //~1Ak2I~//~1ak2I~
       {                                                            //~1Ak2I~//~1ak2I~
         if(Dump.Y) Dump.println("MainActivity.onActivityResult AUDIO");//~1ak2I~//~vaf0R~
@@ -1699,6 +1719,12 @@ public class MainActivity extends AppCompatActivity
         if(Dump.Y) Dump.println("MainActivity.onActivityResult Image");//~var8I~
         UMediaStore.onActivityResultImage(resultCode,data);//~var8I~
       }                                                            //~var8I~
+      else                                                         //~vavwR~
+      if (requestCode==AG.ACTIVITY_REQUEST_PICKUP_ACTION)          //~vavwR~
+      {                                                            //~vavwR~
+        if(Dump.Y) Dump.println("MainActivity.onActivityResult Pickup_Action");//~vavwR~
+        UMediaStore.onActivityResultSelectImagePicker(resultCode,data);//~vavwR~
+      }                                                            //~vavaI~
       else                                                         //~var8I~
       if (requestCode>AG.ACTIVITY_REQUEST_SCOPED && requestCode<AG.ACTIVITY_REQUEST_SCOPED_LAST)//~1Ak1I~//~1ak1I~
       {                                                            //~1Ak1I~//~1ak1I~
@@ -1711,6 +1737,11 @@ public class MainActivity extends AppCompatActivity
 			AG.aBTI.activityResult(requestCode,resultCode,data); //~v107R~//~@@@@R~//~1ak5I~
       }                                                            //~1ak1R~
 	   super.onActivityResult(requestCode,resultCode,data);	//if not called,compile err//~1ak2I~
+     }                                                             //~vavwI~
+     catch(Exception e)                                            //~vavwI~
+     {                                                             //~vavwI~
+        Dump.println(e,"MainActivity.OnActivityResult reqCode="+requestCode+",resultCode="+resultCode+",intent="+data);//~vavwI~
+     }                                                             //~vavwI~
     }                                                              //~v107I~//~1ak5I~
 //***************************************************************************//~vae8I~
     private void recoverProp()                                          //~vae8I~

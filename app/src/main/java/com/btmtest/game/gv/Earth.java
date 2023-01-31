@@ -1,5 +1,6 @@
-//*CID://+vamhR~: update#= 714;                                    //~vamhR~
+//*CID://+vavpR~: update#= 716;                                    //~vavpR~
 //**********************************************************************//~v101I~
+//2023/01/28 vavp size of piece on earth for landscape. It can be enlarge more.//~vavpI~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2021/11/08 vag9 Ankan on Earth;display Red5 if option active(it may be disappear by facedown tile)//~vag9I~
 //2021/02/01 va65 testoption of open hand for discardSmart test    //~va65I~
@@ -37,6 +38,7 @@ public class Earth                                                 //~v@@@R~
     private static final int COMPLETE_COLOR_KAN_ADD=Color.argb(0xff,0xff,0x00,0x00);//~v@@@I~
     private static final int COMPLETE_COLOR_KAN_TAKEN=Color.argb(0xff,0xff,0x00,0x00);//~v@@@I~
 //  private static final int COMPLETE_STROKE_WIDTH_ADD_KAN=4;      //~v@@@R~
+    private static final double MAX_EARCH_RATE=0.75;    // 3/4     //+vavpI~
 	private GCanvas gcanvas;                                       //~v@@@I~
     private MJTable table;                                         //~v@@@I~
     private Pieces pieces;//~v@@@I~
@@ -873,8 +875,19 @@ public class Earth                                                 //~v@@@R~
         int req1=MARGIN_PAIR_START+PAIR_SPACING*3 /*4pair*/ + (PIECE_SPACING*3 /*4tiles*/)*4 /*4pair*/;//~v@@@I~
         int req3=PpieceW*2+PIECE_SPACING_TAKEN*2;                   //~v@@@I~
         double req2=(3 /*tilesStand*/ + PrateHeightWidth /*1tiles lying*/) *4 /*4pair*/;//~v@@@I~
+      	if (!PswPortRait)                                          //~vavpI~
+      	{                                                          //~vavpI~
+        	space=rs[0].left-rs[0].right;                          //~vavpI~
+        	req3=PIECE_SPACING_TAKEN*2;                            //~vavpI~
+        	req2+=2;                                               //~vavpI~
+        	if (Dump.Y) Dump.println("Earth.chkEarthSpace portrait space="+space+",req3="+req3+",req2="+req2);//~vavpI~
+      	}                                                          //~vavpI~
         ww=(int)((space-req1-req3)/req2);                          //~v@@@R~
-        if (Dump.Y) Dump.println("Earth.chkEarthSpace handW="+PpieceW+",space="+space+",req1="+req1+",req2="+req2+",req3="+req3+",ww="+ww);//~v@@@R~
+        int wwMax=(int)(PpieceW*MAX_EARCH_RATE);                     //+vavpI~
+        if (Dump.Y) Dump.println("Earth.chkEarthSpace handW="+PpieceW+",space="+space+",req1="+req1+",req2="+req2+",req3="+req3+",ww="+ww+",wwMax="+wwMax);//+vavpI~
+        if (ww>wwMax)                                              //+vavpI~
+        	ww=wwMax;                                              //+vavpI~
+        if (Dump.Y) Dump.println("Earth.chkEarthSpace ww="+ww+",wwMax="+wwMax);//+vavpR~
         return ww;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
@@ -931,7 +944,7 @@ public class Earth                                                 //~v@@@R~
         return rc;                                                 //~vamhI~
     }                                                              //~vamhI~
 	//*********************************************************    //~vamhI~
-	//*for Animation to Earth tile for also from DrawEarthAddKan   //+vamhR~
+	//*for Animation to Earth tile for also from DrawEarthAddKan   //~vamhR~
 	//*********************************************************    //~vamhI~
     private void saveRectTileCalled(int Pplayer,Rect Prect,TileData Ptd,Bitmap Pbitmap)//~vamhR~
     {                                                              //~vamhI~

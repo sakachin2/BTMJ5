@@ -49,6 +49,15 @@
 	         android:layout_marginLeft="10dp"
         />
         <Button
+            android:id="@+id/btnSelectPicker"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/btnSelectPicker"
+            android:layout_gravity="center_vertical"
+	         android:layout_marginLeft="10dp"
+				android:visibility="gone"
+        />
+        <Button
             android:id="@+id/btnDeleteProfile"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"

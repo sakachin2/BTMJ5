@@ -1,6 +1,7 @@
-//*CID://+vatbR~:                             update#=  597;       //+vatbR~
+//*CID://+vavwR~:                             update#=  598;       //+vavwR~
 //*****************************************************************//~v101I~
-//2022/10/18 vatb show dummy if profile is not set                 //+vatbI~
+//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//+vavwI~
+//2022/10/18 vatb show dummy if profile is not set                 //~vatbI~
 //2022/10/16 vat0 protect change of profile during connection exist.//~vat0I~
 //2022/09/24 var8 display profile icon                             //~var8I~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
@@ -123,6 +124,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private UCheckBox cbNoAnywayButton;                            //~va18I~
     private UCheckBox cbDisplayProfile,cbUseProfile;               //~var8I~
     private Button  btnSelectProfile;                              //~var8I~
+    private Button  btnSelectPicker;                               //+vavwI~
     private Button  btnDeleteProfile;                              //~var8I~
     private ImageView ivMyProfile;                                 //~var8I~
     private TextView  tvProfileName;                               //~var8I~
@@ -227,6 +229,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbDisplayProfile=new UCheckBox(PView,R.id.cbDisplayProfile);//~var8I~
         cbDisplayProfile.setListener(this,UCBP_PROFILE_SHOW);      //~vat0R~
 	    btnSelectProfile=UButton.bind(PView,R.id.btnSelectProfile,this);//~var8I~
+	    btnSelectPicker=UButton.bind(PView,R.id.btnSelectPicker,this);//+vavwI~
 	    btnDeleteProfile=UButton.bind(PView,R.id.btnDeleteProfile,this);//~var8I~
         ivMyProfile=(ImageView)UView.findViewById(PView,R.id.ivMyProfile);//~var8I~
         tvProfileName=(TextView)UView.findViewById(PView,R.id.tvProfileDisplayName);//~var8I~
@@ -328,6 +331,11 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
                 break;                                             //~vat0I~
             selectProfile();                                       //~var8I~
             break;                                                 //~var8I~
+        case R.id.btnSelectPicker:                                 //+vavwI~
+            if (chkConnected())                                    //+vavwI~
+                break;                                             //+vavwI~
+            selectPicker();                                        //+vavwI~
+            break;                                                 //+vavwI~
         case R.id.btnDeleteProfile:                                //~var8I~
             if (chkConnected())                                    //~vat0I~
                 break;                                             //~vat0I~
@@ -369,6 +377,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSetting.selectProfile");     //~var8I~
 		UMediaStore.selectImage(this);	//callback ImageSelected   //~var8I~
     }                                                              //~var8I~
+    //**************************************                       //+vavwI~
+    private void selectPicker()                                    //+vavwI~
+    {                                                              //+vavwI~
+    	if (Dump.Y) Dump.println("RuleSetting.selectPicker");      //+vavwI~
+		UMediaStore.selectImagePicker(this);	//callback ImageSelected//+vavwI~
+    }                                                              //+vavwI~
     //**************************************                       //~var8I~
     @Override //UMediastoreI                                       //~var8I~
     public void ImageSelected(Uri Puri,String Pid,String PdisplayName,String PtimestampAdded,String Psize)//~var8R~
@@ -1116,8 +1130,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         if (Puri==null || Puri.equals(""))                         //~var8R~
         {                                                          //~var8I~
         	tvProfileName.setText("(Not set)");                    //~var8R~
-//          ivMyProfile.setImageBitmap(null);                      //~var8I~//+vatbR~
-            ivMyProfile.setImageBitmap(AG.aProfileIcon.bmpDummy0); //+vatbI~
+//          ivMyProfile.setImageBitmap(null);                      //~var8I~//~vatbR~
+            ivMyProfile.setImageBitmap(AG.aProfileIcon.bmpDummy0); //~vatbI~
         	return false;                                          //~var8I~
         }                                                          //~var8I~
         Bitmap bm=ProfileIcon.getBMP_StrUri(Puri,Pid);             //~var8R~

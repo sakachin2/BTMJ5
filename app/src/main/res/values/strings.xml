@@ -2,7 +2,7 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.26</string>
+    <string name="app_version">v1.27</string>
     <string name="app_versionMinConnect">v1.24</string>
     <string name="app_MinVersion">v1.24</string>
     <string name="Settings">Settings</string>
@@ -1383,6 +1383,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="DeviceConnected">Paired</string>
     <string name="DeviceFailed">Failed</string>
     <string name="DeviceUnavailable">Unavailable</string>
+    <string name="DeviceHistory">Paired once</string>
     <string name="DeviceUnknown">Unknown</string>
     <string name="DeviceType_Dummy">Robot</string>
     <string name="DeviceType_LocalServer">This Device(Server)</string>
@@ -1604,28 +1605,32 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Label_HideDetail">Hide</string>
     <string name="Info_HistoryCtrDetail">Total %1$d games.</string>
 
-    <!--string name="RequestPickupDocumentSaveDir">External storage usage was changed at Android-11.\n
-At (re-)installation, it is required to specify a folder to save game data.\n
-Select \"%1$s\" on the dialog shown next.\n
-Make the folder on the dialog if not exists.\n
-At 1st re-instalation of eMahjong only, old version data(history data and rule file) will be migrated to the folder.
-	</string-->
-    <string name="RequestPickupDocumentSaveDir">
+    <!--string name="RequestPickupDocumentSaveDir">
 At 1st instlation from Android-11, it is required to specify a folder to save game data.\n
 Select \"%1$s\" on the dialog shown next.\n
 If not exists, make the folder on the dialog using \"CREATE NEW FOLDER\".\n
 At 1st re-instalation only, data(history data and rule file) will be migrated to the folder.\n
-\"Use Int\" means to use internal storage as saving folder which is cleared at re-installation.
+\"Use Int\" means to use internal storage as saving folder which may be cleared at re-installation.
+	</string-->
+    <string name="RequestPickupDocumentSaveDir">
+At 1st instlation, it is required to specify a folder to save game data.\n
+Select \"%1$s\" on the dialog shown next by \"OK".\n
+If not exists, make the folder using \"CREATE NEW FOLDER\".\n
+If already exists, push \"CREATE NEW FOLDER\".\n
+Depending android version, you may need to back to the parent folder then select it.\n
+\"Use Int\" means to use internal storage which may have time lag for backup.
 	</string>
-    <string name="RequestPickupDocumentSaveDirCanceled">"It was canceled to set the folder to save game data.\n
+    <string name="RequestPickupDocumentSaveDirCanceled">"It was canceled to set the folder to save game data.
 Restart this APP to try to set again.
 	</string>
-    <string name="RequestPickupDocumentSaveDirCanceledNoTryAgain">"Determined to use Internal Storage,\n
+    <string name="RequestPickupDocumentSaveDirCanceledNoTryAgain">"Determined to use Internal Storage,
 Reinstall this APP to try to set again.
 	</string>
+    <string name="InvalidScopedFolder">\"Download\" is not available from Android11, re-select other folder</string>
     <string name="RequestPickupDocumentSaveDirInvalidSelection">"\"%1$s\" was selected, Specify \"%2$s\" as save folder.
 	</string>
     <string name="ErrNoExternalStoragePermission">Not granted for External-Storage to access.</string>
+    <string name="ErrNoExternalStorageReadPermission">Not granted for External-Storage to READ.</string>
     <string name="ErrInvalidAudioSelection">%1$s is not Audio file</string>
     <string name="Title_Picker">Picker : Audio File</string>
     <string name="LabelUriDir">Media folder : </string>
@@ -1709,6 +1714,7 @@ Reinstall this APP to try to set again.
 											Do you want to force to resume from this file?\
 											</string>
     <string name="Info_GameEndCanceled">\"Final score\" was canceled, reopen from menu.</string>
+    <string name="Info_CompleteDlgClosed">Select menu item:\"End of a hand\" to reopen the dialog.</string>
 
     <string name="Label_Profile">Profile</string>
     <string name="Label_DisplayProfile">Display Image</string>
@@ -1720,4 +1726,6 @@ Reinstall this APP to try to set again.
     <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4 or above.</string>
     <string name="Print">Print</string>
     <string name="Err_ConnectionExist">You can not chage it during connection exists.</string>
+    <string name="Msg_selectImagePicker">Select APP to pickup Image</string>
+    <string name="btnSelectPicker">Select APP</string>
 </resources>

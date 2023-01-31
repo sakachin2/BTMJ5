@@ -1,6 +1,6 @@
-//*CID://+vaqdR~: update#= 856;                                    //+vaqdR~
+//*CID://+vaqdR~: update#= 857;                                    //~vaqdR~
 //**********************************************************************//~v101I~
-//2022/08/20 vaqd (Bug)savePropForResume is duplicatedly set. so normar startGame use HistoryProp//+vaqdI~
+//2022/08/20 vaqd (Bug)savePropForResume is duplicatedly set. so normar startGame use HistoryProp//~vaqdI~
 //2022/08/15 vaq6 for DrawnMangan clear 8contRon even defained as Ron not to make yakuman by drawnMangan//~vaq6I~
 //2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3R~
 //2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//~vamsI~
@@ -300,7 +300,7 @@ public class Accounts                                              //~v@@@R~
 		return player;                                             //~9306I~
     }                                                              //~9306I~
     //**************************************************           //~9306I~
-    //*if dealer is robot,next humean in counterclockwise          //~vae5I~
+    //*if dealer is robot,next humean in counterclockwise by position//+vaqdI~
     //**************************************************           //~vae5I~
     public int getCurrentDealerReal()                              //~9306I~
     {                                                              //~9306I~
@@ -975,7 +975,7 @@ public class Accounts                                              //~v@@@R~
     }                                                              //~v@@@I~
     //**************************************************************           //~va60I~
     //*get real player of dealer if player is robot,else return -1 //~va60I~
-    //*if dealer is robot,next humean in counterclockwise          //~vae5I~
+    //*if dealer is robot,next human in counterclockwise          //~vae5I~//+vaqdR~
     //**************************************************************           //~va60I~
     public int/*player*/ getRealDealerForRobot(int Pplayer)        //~va60I~
     {                                                              //~va60I~
@@ -988,6 +988,8 @@ public class Accounts                                              //~v@@@R~
 		return player;                                             //~va60I~
     }                                                              //~va60I~
     //**************************************************************//~va60I~
+    //*return -1 for human, else next human of current dealer by position//+vaqdI~
+    //**************************************************************//+vaqdI~
     public int/*eswn*/ getRealDealerEswnForRobot(int Pplayer)      //~va60I~
     {                                                              //~va60I~
     	int eswn=-1;                                               //~va60I~
@@ -1000,7 +1002,7 @@ public class Accounts                                              //~v@@@R~
 		return eswn;                                               //~va60I~
     }                                                              //~va60I~
     //**************************************************************//~va60I~
-    //*get real dealer eswn for robot eswn,-1 if not robot         //~va60I~
+    //*get real dealer eswn for robot eswn(next player of the dealer by position),-1 if not robot         //~va60I~//+vaqdR~
     //**************************************************************//~va60I~
     public int/*eswn*/ getRealDealerEswnForRobotEswn(int Peswn)    //~va60I~
     {                                                              //~va60I~
@@ -2045,9 +2047,9 @@ public class Accounts                                              //~v@@@R~
         	if (Dump.Y) Dump.println("Accounts.loadResumeProperties canceled by prop get failed");//~vae5R~
             return;                                                //~vae5R~
         }                                                          //~vae5R~
-		if (Dump.Y) Dump.println("Accounts.loadResumeProperties AG.savePropForResume="+AG.savePropForResume);//+vaqdR~
-		if (Dump.Y) Dump.println("Accounts.loadResumeProperties AG.ruleProp="+AG.ruleProp);//+vaqdR~
-      if (AG.savePropForResume==null)	//MainActivity already set it//+vaqdR~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties AG.savePropForResume="+AG.savePropForResume);//~vaqdR~
+		if (Dump.Y) Dump.println("Accounts.loadResumeProperties AG.ruleProp="+AG.ruleProp);//~vaqdR~
+      if (AG.savePropForResume==null)	//MainActivity already set it//~vaqdR~
     	AG.savePropForResume=AG.ruleProp;                          //~vae5R~
     	AG.ruleProp=p;                                             //~vae5R~
 		if (Dump.Y) Dump.println("Accounts.loadResumeProperties new AG.ruleProp="+AG.ruleProp);//~vaq6I~

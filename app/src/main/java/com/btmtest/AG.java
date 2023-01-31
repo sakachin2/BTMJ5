@@ -1,6 +1,9 @@
-//*CID://+vas6R~:                             update#=  517;       //~vas6R~
+//*CID://+vavwR~:                             update#=  521;       //+vavwR~
 //******************************************************************************************************************//~v101R~
-//2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //+vas6I~
+//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//+vavwI~
+//2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
+//2022/11/01 vau2 Ahsv-1ams 2022/11/01 control request permission to avoid 1amh:"null permission result".(W Activity: Can request only one set of permissions at a time)//~vau2I~
+//2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //~vas6I~
 //2022/10/12 vas6 bluetooth scan failes. Api31(Android12) bluetooth permission?//~vas6I~
 //2022/10/09 vas0 print history                                    //~vas0I~
 //2022/10/06 vara chk appversion unmatch other than rule version unmatch//~varaI~
@@ -89,6 +92,7 @@ import com.btmtest.game.Complete;                                  //~@@01I~
 import com.btmtest.game.gv.PointStick;                                  //~@@01R~
 import com.btmtest.game.gv.Pieces;                                 //~@@01I~
 import com.btmtest.game.Accounts;                                  //~@@01I~
+import com.btmtest.game.AccName;                                   //~vav9I~
 import com.btmtest.game.gv.Starter;                                   //~@@01I~
 import com.btmtest.game.gv.GMsg;                                   //~@@01R~
 import com.btmtest.game.gv.NamePlate;                              //~@@01I~
@@ -134,6 +138,7 @@ import com.btmtest.wifi.PartnerFrame;                              //~@@01R~
 import com.btmtest.wifi.IPSubThread;                               //~@@01I~
 import com.btmtest.wifi.CSI;                                       //~@@01I~
 import com.btmtest.utils.sound.Sound;                                    //~@@01I~
+import com.btmtest.utils.UPermission;                              //~vau2I~
 import com.btmtest.game.RA.Shanten;                                //~va60I~
 import com.btmtest.game.RA.RoundStat;                              //~va60I~
 import com.btmtest.game.RA.RADiscard;                              //~va60I~
@@ -163,6 +168,7 @@ public class AG                                                    //~1107R~
 //    public static final int ACTIVITY_REQUEST_NFCBEAM   = 3;       //~1A6aI~//~1Ad7R~
     public static final int ACTIVITY_REQUEST_PICKUP_AUDIO   = 10;  //~1Ak2I~//~1ak2I~
     public static final int ACTIVITY_REQUEST_PICKUP_IMAGE   = 11;  //~var8I~
+    public static final int ACTIVITY_REQUEST_PICKUP_ACTION  = 12;  //+vavwI~
     public static final int ACTIVITY_REQUEST_SCOPED    = 100;      //~1Ak0I~//~1ak0I~
     public static final int ACTIVITY_REQUEST_SCOPED_OPEN_TREE = (ACTIVITY_REQUEST_SCOPED+1);//~1Ak0I~//~1ak0I~
     public static final int ACTIVITY_REQUEST_SCOPED_LAST=110;      //~1Ak0I~//~1ak0I~
@@ -383,6 +389,7 @@ public class AG                                                    //~1107R~
     public  Players aPlayers;                                      //~@@01I~
     public  PointStick aPointStick;                                //~@@01I~
     public  Accounts aAccounts;                                    //~@@01I~
+    public  AccName  aAccName;                                     //~vav9I~
     public  Complete aComplete;                                    //~@@01I~
     public  Starter aStarter;                                      //~@@01I~
     public  GMsg aGMsg;                                            //~@@01I~
@@ -479,8 +486,8 @@ public class AG                                                    //~1107R~
     public int ctrSaveAlert;                                       //~@@01R~
     private int msgSeqNo;                                          //~@@01I~
     private int[] msgSeqNoEach=new int[PLAYERS];                   //~@@01I~
-//  private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~//+vas6R~
-    private Integer msgSeqNoLock=Integer.valueOf(0);    //lockword //+vas6I~
+//  private Integer msgSeqNoLock=new Integer(0);    //lockword     //~@@01I~//~vas6R~
+    private Integer msgSeqNoLock=Integer.valueOf(0);    //lockword //~vas6I~
     public boolean swTrainingMode;                                 //~va66R~
     public boolean swPlayAloneNotify;                              //~va70I~
     public boolean swPlayMatchNotify;                              //~vaa2I~
@@ -498,6 +505,7 @@ public class AG                                                    //~1107R~
     public Anim aAnim;                                             //~vamdI~
     public ProfileIcon aProfileIcon;                               //~var8I~
     public PrtDoc aPrtDoc;                                         //~vas0I~
+    public UPermission aUPermission;                               //~vau2I~
 //    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //~vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~

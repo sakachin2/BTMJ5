@@ -1,6 +1,6 @@
-//*CID://+vat1R~: update#= 613;                                    //+vat1R~
+//*CID://+vat1R~: update#= 615;
 //**********************************************************************//~v101I~
-//2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //+vat1I~
+//2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //~vat1I~
 //2022/03/24 vam0 show Wareme sign                                 //~vam0I~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //2021/01/07 va60 CalcShanten (smart Robot)                        //~va60I~
@@ -93,7 +93,7 @@ public class DiceBox extends Thread                                //~v@@@R~
 	private static final int DBACTION_CASTING=0;                   //~v@@@I~
 	private static final int DBACTION_ENABLE=1;                    //~v@@@I~
 	private static final int EDGE_WIDTH=2;                         //~v@@@I~
-	private static final int LIGHT_RADIUS=20;                      //~v@@@R~
+    private static final int LIGHT_RADIUS=20;                      //~v@@@R~
 //  private static final int LIGHT_EDGE=4;                         //~v@@@R~//~vaedR~
     private static final int LIGHT_EDGE_STD=4;                     //~vaedR~
     private static final int LIGHT_EDGE_SMALLDIP=2;                //~vaedR~
@@ -120,8 +120,8 @@ public class DiceBox extends Thread                                //~v@@@R~
 //  public static DiceBox diceBox;                                         //~v@@@I~//~v@21R~
 //  private static boolean isAlive;                                //~v@@@I~//~v@21R~
 //  private boolean isAlive;                                       //~v@21I~//~v@11R~
-//  private Boolean isAlive=new Boolean(false);	//object as lockword//~v@11R~//+vat1R~
-    private Boolean isAlive=Boolean.valueOf(false);	//object as lockword//+vat1I~
+//  private Boolean isAlive=new Boolean(false);	//object as lockword//~v@11R~//~vat1R~
+    private Boolean isAlive=Boolean.valueOf(false);	//object as lockword//~vat1I~
                                                                    //~v@@@I~
     private  GCanvas gcanvas;                                      //~v@@@I~
     private Pieces pieces;//~v@@@I~

@@ -1,7 +1,9 @@
-//*CID://+var8R~: update#= 888;                                    //+var8R~
+//*CID://+vavvR~: update#= 893;                                    //~vavvR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2023/01/29 vavv xml:android:backgroundTint is not work on N71(api19:android 4.4)//~vavvI~
+//2023/01/10 vav4 set menu button orange when completeDlg was closed//~vavvI~
 //2022/09/24 var8 display profile icon                             //~var8I~
 //2022/08/19 vaq8 (Bug)doubleRon by Win-Anyway;2nd ron ignored Win-Anyway requested and issie compose err//~vaq8I~
 //2022/04/23 vamv change server color for Connect Button and GameType on gameboard//~vamvR~
@@ -209,6 +211,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //    private UButton btnReach,btnReachOpen,btnRon;                //~9301I~
 	private Button btnPon,btnKan,btnChii,btnRon;                   //~9B25I~
     private Button btnReach,btnReachOpen,btnReachReset,btnReachOpenReset;//~9A30I~
+    private Button btnMenu;                                        //~vav4I~
     private Button btnForceReach;                                  //~va27I~
     private Button btnTake,btnDiscard;                             //~9701I~
     private Button btnAnyway;                                      //~va06I~
@@ -648,6 +651,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         UButton.bind(btns1,BTNID_DRAWNGAME,this);                  //~9302I~
         UButton.bind(btns1,BTNID_MINUSSTOP,this);                  //~9322I~
         UButton.bind(btns1,BTNID_ENDSCORE,this);                   //~9402I~
+    btnMenu=                                                       //~vav4I~
         UButton.bind(btns1,BTNID_MENUINGAME,this);                 //~9406I~
         UButton.bind(btns1,BTNID_SHOWRULE,this);                   //~9408I~
     btnReach=                                                      //~9A30I~
@@ -915,6 +919,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         case BTNID_MENUINGAME:                                     //~9406I~
 //  		if (isRestarting())                                    //~9A29R~
 //          	break;                                             //~9A29R~
+    		highlightButton(btnMenu,false);                        //~vav4I~
         	showMenuInGame();                                      //~9406I~
             break;                                                 //~9406I~
         case BTNID_SHOWRULE:                                       //~9408I~
@@ -1755,6 +1760,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         {                                                          //~9B25I~
         case BTN_STATUS_ENABLE_CANCEL:                             //~9B25I~
         	btnActionCancel.setVisibility(View.VISIBLE);            //~9B25I~
+            activateButton(btnActionCancel);                       //~vavvI~
 			swShownBtnCancel=true;                                 //~vaahI~
             if (AG.swTrainingMode)                                 //~va74I~
 				statusPlayAlone=PactionID;                         //~va74I~
@@ -2146,6 +2152,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     	highlightButton(btnCompReq,PswOn);                          //~va49I~
 		swCompReqButtonStatus=PswOn;                               //~va97I~
     }                                                              //~va49I~
+    //*******************************************************************//~vav4I~
+    public void highlightMenuButton(boolean PswOn)                 //~vav4I~
+    {                                                              //~vav4I~
+        if (Dump.Y) Dump.println("GC.highlightCompReq sw="+PswOn+",old="+swCompReqButtonStatus);//~vav4I~
+    	highlightButton(btnMenu,PswOn);                            //~vav4I~
+    }                                                              //~vav4I~
     //*******************************************************************//~va49I~
     private void highlightButton(Button Pbtn,boolean PswOn)        //~va49R~
     {                                                              //~va49I~
@@ -2462,4 +2474,14 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 		if (Dump.Y) Dump.println("GC.showGameType intGst="+intGST+",strGst="+strGST);//~vacfI~
         Pbtn.setText(strGST);                                      //~vaahI~
     }                                                              //~vaahI~
+    //*******************************************************************//~vavvI~
+    private void activateButton(Button Pbtn)                       //~vavvI~
+    {                                                              //~vavvI~
+		if (Dump.Y) Dump.println("GC.activateButton button="+Pbtn+",osVersion="+Build.VERSION.SDK_INT);//~vavvI~
+        if (Build.VERSION.SDK_INT<=21)   //Kitkat:19=4.4, from web confirm 21, 22=5.1=Lollipop5.1 fixed it//+vavvR~
+        {                                                          //~vavvI~
+    		int color=AG.getColor(R.color.action_cancel);          //~vavvI~
+       		Utils.setBtnBG(Pbtn,color);                            //~vavvI~
+        }                                                          //~vavvI~
+    }                                                              //~vavvI~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

@@ -1,6 +1,8 @@
-//*CID://+vatdR~:                             update#=  195;       //~vatdR~
+//*CID://+vau1R~:                             update#=  196;       //+vau1R~
 //**********************************************************************//~v107I~
-//2022/10/18 vatd Api31 recommend not ACCESS_FINE_LOCATION but ACCESS_COARSE_LOCATION. but api29/30 denied by no permission of FINE_LOCATION//+vatdI~
+//2022/10/31 vau1 Ahsv-1amr 2022/10/31 unkown permission on ndroid6(api23); BLUETOOTH_CONNECT/BLUETOOTH_SCAN/BLUETOOTH_ADVERTIZE is from API31//+vau1I~
+//                BTI                                              //+vau1I~
+//2022/10/18 vatd Api31 recommend not ACCESS_FINE_LOCATION but ACCESS_COARSE_LOCATION. but api29/30 denied by no permission of FINE_LOCATION//~vatdI~
 //2022/10/12 vas6 bluetooth scan failes. Api31(Android12) bluetooth permission?//~vas6I~
 //2022/03/29 vam8 android12(api31) Bluetooth permission is runtime permission//~vam8I~
 //@003:20181103 dismiss aler dialog when interrupted by other app  //~@003I~
@@ -469,12 +471,12 @@ public class BTI                                               //~1122R~//~v107R
     {                                                              //~vas6I~
         if (Dump.Y) Dump.println("BTI.chkGrantedPermission_upto30");//~vas6I~
         ArrayList<String> requestList=new ArrayList<>();           //~vas6I~
-        UView.isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT);   //for debug//~vas6R~
-        UView.isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN);      //for debug//~vas6R~
-        UView.isPermissionGranted(Manifest.permission.BLUETOOTH_ADVERTISE);	//for debug//~vas6R~
+//      UView.isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT);   //for debug//~vas6R~//+vau1R~
+//      UView.isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN);      //for debug//~vas6R~//+vau1R~
+//      UView.isPermissionGranted(Manifest.permission.BLUETOOTH_ADVERTISE);	//for debug//~vas6R~//+vau1R~
         if (!UView.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION))//~vas6R~
         {                                                          //~vas6I~//~vatdR~
-        	if (AG.osVersion>=29) 	//android10,11                 //~vas6R~//+vatdR~
+        	if (AG.osVersion>=29) 	//android10,11                 //~vas6R~//~vatdR~
             	requestList.add(Manifest.permission.ACCESS_FINE_LOCATION);//~vas6R~
         }                                                          //~vas6I~
         if (!UView.isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION))//~vatdI~

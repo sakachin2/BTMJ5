@@ -1,4 +1,4 @@
-//*CID://+van1R~:                             update#=  123;       //~van1R~
+//*CID://+van1R~:                             update#=  125;       //~van1R~
 //************************************************************************//~v102I~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
@@ -320,7 +320,7 @@ public class UFile                                                 //~v@@@R~
         {                                                          //~v@@@I~
         	UView.showToastLong(R.string.ErrAssetFileRead,Pfnm);   //~v@@@R~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("loadAssetFile filename="+Pfnm+",txt="+txt);//+van1I~
+        if (Dump.Y) Dump.println("loadAssetFile filename="+Pfnm+",txt="+txt);//~van1I~
 		return txt;                                                //~v@@@I~
 	}                                                              //~v@@@I~
     private static String loadText(InputStream Pis,String Pencoding) throws IOException//~v@@@I~
@@ -716,9 +716,9 @@ public class UFile                                                 //~v@@@R~
 //        }//catch                                                   //~1309I~//~v@@@R~
 //        return in;                                                 //~1309I~//~v@@@R~
 //    }                                                              //~1309I~//~v@@@R~
-////*********************************************                                                       //~1309I~//~1329R~//~v@@@R~
-////*output to SD if avale else private *********                    //~1329I~//~v@@@R~
-////*********************************************                    //~1329I~//~v@@@R~
+//*********************************************                                                       //~1309I~//~1329R~//~v@@@R~//~van1R~
+//*output to SD if available else private *****                    //~1329I~//~v@@@R~//~van1R~
+//*********************************************                    //~1329I~//~v@@@R~//~van1R~
     public static FileOutputStream openOutputSD(String Pdir,String Pfname)//~1313I~//~v@@@R~
     {                                                              //~1313I~//~v@@@R~
         String fnm,path;                                           //~1313I~//~v@@@R~
@@ -1271,7 +1271,7 @@ public class UFile                                                 //~v@@@R~
 //**********************************************************************//~vae0I~
     public static boolean chkExternalStoragePermissionOnScoped()      //~vae0I~//~vae7R~
     {                                                              //~vae0I~
-        if (Dump.Y) Dump.println("UFile.chkExternalPermissionOnScoped swScoped="+AG.swScoped);//~vae0I~
+        if (Dump.Y) Dump.println("UFile.chkExternalStoragePermissionOnScoped swScoped="+AG.swScoped);//~vae0I~//+van1R~
         boolean rc=UView.isPermissionGrantedExternalStorageRead(); //~vae0I~
         AG.swGrantedExternalStorageRead=rc;                        //~vae0I~
         if (!rc)                                                   //~vae0I~
