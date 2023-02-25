@@ -1,6 +1,6 @@
-//*CID://+vaq5R~: update#= 301;                                    //+vaq5R~
+//*CID://+vaq5R~: update#= 302;                                    //~vaq5R~
 //**********************************************************************//~v101I~
-//2022/08/15 vaq5 if chkFix1 is OFF, confirm no fix err before apply 8cont yakuman//+vaq5I~
+//2022/08/15 vaq5 if chkFix1 is OFF, confirm no fix err before apply 8cont yakuman//~vaq5I~
 //2022/08/15 vaq4 if chkFix1 os OFF, issue fix multiple err msg for Constraint err//~vaq4I~
 //2022/08/06 vapx add Psuedo-Tennpai:No option                     //~vapxI~
 //2022/08/04 vapu PsuedoTenpai;simplify 0han ok or not(allow kataagari,fix last)//~vapuI~
@@ -434,11 +434,11 @@ public class RARon                                               //~v@@@R~//~va6
     }                                                              //~1120I~
     //*********************************************************    //~1117I~
     //*constraint chk                                              //~vaa4R~
-    //*from CompReqDlg.chkApply8Cont                               //+vaq5I~
+    //*from CompReqDlg.chkApply8Cont                               //~vaq5I~
     //*********************************************************    //~1213I~
 //  public boolean isRonable(RonResult PronResult)                 //~1117I~//~va91R~
-//  private boolean isRonable(RonResult PronResult)                //~va91I~//+vaq5R~
-    public  boolean isRonable(RonResult PronResult)                //+vaq5I~
+//  private boolean isRonable(RonResult PronResult)                //~va91I~//~vaq5R~
+    public  boolean isRonable(RonResult PronResult)                //~vaq5I~
     {                                                              //~1117I~
     	boolean rc=true;                                           //~1117I~
         if (!PronResult.isYakuman())                               //~1117I~
@@ -1129,6 +1129,7 @@ public class RARon                                               //~v@@@R~//~va6
     //*********************************************************************//~va8uI~
     //*chk Fixed First at take not all in hand                     //~va8uI~
     //*rc:true:sakiduke OK                                         //~va8uI~
+    //*!! not Used                                                 //+vaq5I~
     //*********************************************************************//~va8uI~
     private boolean chkYakuFixedFirst(RonResult Presult,int Pplayer,int Peswn,int[] PitsH,int ctrH,TileData PtdTaken)//~va8uR~
     {                                                              //~va8uI~

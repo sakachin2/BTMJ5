@@ -1,4 +1,4 @@
-//*CID://+vakqR~: update#= 399;                                    //~vakqR~
+//*CID://+vakqR~: update#= 401;                                    //~vakqR~
 //**********************************************************************//~v101I~
 //2022/03/05 vakq (Bug)PAN mode; DrawnHW by 4kan fail by GCM_TAKE by Take button overtake postDelayedAutoTakeKan//~vaaqI~
 //2021/07/14 vaaK red5 dora chk error; At getvalue from TryNext chkRedTile count tile of try discard//~vaaKI~
@@ -72,7 +72,7 @@ public class TileData                                              //~v@@@R~
         ctrRemain=PIECE_DUPCTR;                                    //~v@@@I~
         if (Pdora)                                                 //~v@@@I~
 	        flag=TDF_RED5;                                         //~v@@@I~
-        if (Dump.Y) Dump.println("TileData constructor swDora td="+this);//+vakqI~
+        if (Dump.Y) Dump.println("TileData constructor swDora td="+this);//~vakqI~
     }                                                              //~v@@@I~
     //*****************************************************        //~v@@@I~
     //*for UnitTest                                                //~v@@@I~
@@ -628,7 +628,7 @@ public class TileData                                              //~v@@@R~
     //*********************************************************************//~v@@6I~
 	public static String toSendText(TileData Ptd)                  //~v@@6I~
     {                                                              //~v@@6I~
-        String str=Ptd.type+MSG_SEPAPP+Ptd.number+MSG_SEPAPP+Ptd.flag+MSG_SEPAPP+Ptd.ctrRemain+MSG_SEPAPP+Ptd.eswn;//~v@@6I~
+        String str=Ptd.type+MSG_SEPAPP+Ptd.number+MSG_SEPAPP+Ptd.flag+MSG_SEPAPP+Ptd.ctrRemain+MSG_SEPAPP+Ptd.eswn;//~v@@6I~//+vakqR~
 		if (Dump.Y) Dump.println("TileData.strTD str="+str);       //~v@@6R~
         return str;                                                //~v@@6I~
     }                                                              //~v@@6I~

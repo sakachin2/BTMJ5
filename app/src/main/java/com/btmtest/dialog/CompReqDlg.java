@@ -1,5 +1,6 @@
-//*CID://+vav5R~:                             update#=  905;       //~vav5R~
+//*CID://+vawiR~:                             update#=  906;       //+vawiR~
 //*****************************************************************//~v101I~
+//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//+vawiI~
 //2023/01/10 vav5 show profile icon on CompReqDlg                  //~vav5I~
 //2023/01/10 vav2 keep Score button orange when claim dialog closed//~vav2I~//~vav5R~
 //2022/08/15 vaq5 if chkFix1 is OFF, confirm no fix err before apply 8cont yakuman//~vaq5I~
@@ -442,7 +443,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             int net=calcOut[CALC_AMT_NET];                         //~va11I~
 //      	int point=intsPoint[idxPoint];                         //~va11I~//~va1cR~
         	int point=calcOut[CALC_AMT_NETPOINT];                  //~va1cI~
-            longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW]);//~va11I~
+//          longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW]);//~va11I~//+vawiR~
+            longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW],calcOut[CALC_AMT_RANK2]);//+vawiI~
             ronResult=new RonResult(net,han,point,longRank);       //~va11I~
 	    	if (Dump.Y) Dump.println("CompReqDlg.setupValue Received ronResult="+ronResult.toString());//~va11R~
         }                                                          //~9221I~
@@ -513,8 +515,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
 //      Spanned s=Status.getSpannedGameTitle(Utils.getStr(TITLEID));//~9306I~//~0218R~
 		String yn=AG.aAccounts.currentEswnToAccountName(completeEswn);//~0218I~
         ynComplete=yn;                                             //~vav5I~
-//      Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),yn);//~0218I~//+vav5R~
-        Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),"");//+vav5I~
+//      Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),yn);//~0218I~//~vav5R~
+        Spanned s=Status.getSpannedGameTitleWithName(Utils.getStr(TITLEID),"");//~vav5I~
 //      title=s;                                                   //~9219I~//~9220R~
         androidDlg.setTitle(s);                                 //~v@@@R~//~9220R~//~9927R~//~0322R~
     }                                                              //~v@@@I~//~9220R~
@@ -1618,6 +1620,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             int[] intS=longRank.rankToIntS();                  //~va11I~
         	calcOut[CALC_AMT_RANKHIGH]=intS[0];                   //~va11I~
         	calcOut[CALC_AMT_RANKLOW]=intS[1];                     //~va11I~
+        	calcOut[CALC_AMT_RANK2]=intS[2];                       //+vawiI~
         }                                                          //~va11I~
         else                                                       //~va16I~
             setYaku();	//show no setting of option to getValue    //~va16I~
@@ -1813,7 +1816,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         iv.setImageBitmap(bmpProfile);                             //~vav5I~
     	TextView tv=(TextView)UView.findViewById(PView,R.id.tvProfileName);//~vav5I~
         int hh=bmpProfile.getHeight();                             //~vav5I~
-        float hhFloat=hh*0.7F;                                     //+vav5R~
+        float hhFloat=hh*0.7F;                                     //~vav5R~
         tv.setTextSize(COMPLEX_UNIT_PX,hhFloat);                   //~vav5I~
         tv.setText(ynComplete);                                    //~vav5I~
     }                                                              //~vav5I~

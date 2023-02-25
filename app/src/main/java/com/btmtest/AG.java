@@ -1,6 +1,6 @@
-//*CID://+vavwR~:                             update#=  521;       //+vavwR~
+//*CID://+vawwR~:                             update#=  524;       //+vawwR~
 //******************************************************************************************************************//~v101R~
-//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//+vavwI~
+//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
 //2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
 //2022/11/01 vau2 Ahsv-1ams 2022/11/01 control request permission to avoid 1amh:"null permission result".(W Activity: Can request only one set of permissions at a time)//~vau2I~
 //2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //~vas6I~
@@ -168,7 +168,7 @@ public class AG                                                    //~1107R~
 //    public static final int ACTIVITY_REQUEST_NFCBEAM   = 3;       //~1A6aI~//~1Ad7R~
     public static final int ACTIVITY_REQUEST_PICKUP_AUDIO   = 10;  //~1Ak2I~//~1ak2I~
     public static final int ACTIVITY_REQUEST_PICKUP_IMAGE   = 11;  //~var8I~
-    public static final int ACTIVITY_REQUEST_PICKUP_ACTION  = 12;  //+vavwI~
+    public static final int ACTIVITY_REQUEST_PICKUP_ACTION  = 12;  //~vavwI~
     public static final int ACTIVITY_REQUEST_SCOPED    = 100;      //~1Ak0I~//~1ak0I~
     public static final int ACTIVITY_REQUEST_SCOPED_OPEN_TREE = (ACTIVITY_REQUEST_SCOPED+1);//~1Ak0I~//~1ak0I~
     public static final int ACTIVITY_REQUEST_SCOPED_LAST=110;      //~1Ak0I~//~1ak0I~

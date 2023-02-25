@@ -1,11 +1,25 @@
-//*CID://+vap3R~:                             update#=  801;       //+vap3R~
+//*CID://+vax1R~:                             update#=  825;       //~vax1R~
 //*****************************************************************//~v101I~
-//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //+vap3I~
+//2023/02/22 vax1 add local 3DupSeq(Pure Triple Chow)              //~vax1I~
+//2023/02/22 vax0 add local 3Wind:2han                             //~vax0I~
+//2023/02/22 vawz 3WindNoHonor; optionally 3/2 han allow RYAKU_ROUND//~vavzI~
+//2023/02/21 vawx show Yakumen to YakuList                         //~vavxI~
+//2023/02/21 vawv add local yaku. 3SeqNum                          //~vavwI~
+//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//~vawiI~
+//2023/02/10 vawg add local yaku. 3ColorStraight                   //~vawgI~
+//2023/02/10 vaw9 add local yaku. 3Wind-NoHonor                    //~vaw9I~
+//2023/02/10 vaw8 add local yaku. SINGLE                           //~vaw8I~
+//2023/02/10 vaw7 drop vaw6 because getShanten is hard to merge.   //~vaw7I~
+//2023/02/10 vaw6 add local yaku. 7STAR                            //~vaw6I~
+//2023/02/10 vaw5 add local yaku. 4SEQNNUM                         //~vaw5I~
+//2023/02/02 vaw4 add local yaku. 7PAIR28_MAN/7PAIR28_SOU          //~vaw4I~
+//2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/26 va8q (Bug)shows "app checkValue option is off" even if option is on;//~va8qI~
 //2020/09/25 va11:optionally evaluate point                        //~va11I~
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                        //~v@@@R~
+import android.graphics.Point;
 import android.view.View;
 import android.widget.TextView;
 
@@ -89,8 +103,22 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
 	,R.id.cb4SAME2    //4anko                                      //~va11I~
 	,R.id.cb13ALL2      //kokushi                                  //~va11I~
 	,R.id.cb9GATE2      //9gate                                    //~va11I~
-	,R.id.cbOPENREACH   //openReach discard                        //+vap3I~
+	,R.id.cbOPENREACH   //openReach discard                        //~vap3I~
     						};                                     //~va11I~
+    private static final int[] yakuCBIDSLocal=new int[]{ //same seq as SlistLocalYaku on Pair//~vaw4I~
+		R.id.cb3SeqNum,    //RYAKU_3SEQNUM,                                       //~vaw4I~//~vavwR~
+		R.id.cb3WindNoHonor,//RYAKU_STRAIGHT3,                                     //~vaw4I~//~vaw9M~
+		R.id.cb3ColorStraight, //RYAKU_STRAIGHT3,                  //~vawgR~
+		R.id.cbSingle,     //RYAKU_SINGLE,                                        //~vaw4I~//~vaw8R~
+		R.id.cb3Wind,      //RYAKU_3WIND,                          //~vax0I~
+		R.id.cb3DupSeq,    //RYAKU_3DUPSEQ,                        //~vax1I~
+                                                                   //~vaw4I~
+		R.id.cb7PAIR28Man, //RYAKU_7PAIR28_MAN,                    //~vaw4I~
+		R.id.cb7PAIR28Sou, //RYAKU_7PAIR28_SOU,                    //~vaw4I~
+		R.id.cb4SeqNum,    //RYAKU_4SEQNUM,                        //~vaw4I~//~vaw5R~
+//		R.id.cb7Star,      //RYAKU_7STAR,                          //~vaw6R~//~vaw7R~
+  		0,                 //RYAKU_7STAR,                          //~vaw7I~
+    };                                                             //~vaw4I~
     //*************************************************************************                       //~1A4zI~//~v@@@I~
     public ShowYakuDlg()                                           //~v@@@R~//~9220R~//~9221R~//~va11R~
     {                                                              //~v@@@R~
@@ -125,6 +153,7 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
         UButton.bind(Pview,R.id.ShowRule,this);                    //~va11R~
         setSummary(Pview);                                         //~va11R~
     	setUpYaku(Pview);                                          //~va11I~
+    	setUpYakuLocal(Pview);                                     //~vaw4I~
     }                                                              //~va11I~
     //*********************************************************************//~va11I~
     private void setSummary(View Pview)                            //~va11R~
@@ -192,6 +221,8 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
 			       		 		han=CompReqDlg.intsRankIdx[idxRank];        //4(mangan),6(haneman),8(dowble),12(triple)//~va11I~
             				if (idxRank!=RANKIDX_YAKUMAN)    //8   //~va11I~
 					        	strHan=":"+han;                    //~va11R~
+                            else                                   //~vavxI~
+					        	strHan=":"+Utils.getStr(R.string.Label_Yakuman);//~vavxI~
                         }                                          //~va11I~
                         else                                       //~va11I~
                         if (ii==RYAKU_REACH_JUST)                  //~va11I~
@@ -219,6 +250,8 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
 			    		cb.setEnabled(false);                      //~va11I~
                 }                                                  //~va11I~
             	cb.setText(txt);                                   //~va11I~
+//              	if (Rank.isContainsYakuLocal(longRank) && Rank.getIdxLocal(ii+RYAKU_LOCAL)!=-1)	//local yaku                     //~vaw4R~//~vaw5R~//~vawiR~
+//                	continue;                                      //~vaw5I~//~vawiR~
             	boolean sw=Rank.isContains(longRank,ii);           //~va11R~
 		    	cb.setState(sw,true/*fix*/);                       //~va11R~
                 if (ii==RYAKU_4SAME2 && !RuleSettingYaku.is4SameDouble())//~va11I~
@@ -232,6 +265,85 @@ public class ShowYakuDlg extends UFDlg                             //~v@@@R~//~9
             }                                                      //~va11I~
         }                                                          //~va11I~
     }                                                              //~va11I~
+    //*********************************************************************//~vaw4I~
+    private void setUpYakuLocal(View Pview)                        //~vaw4I~
+    {                                                              //~vaw4I~
+    	if (Dump.Y) Dump.println("ShowYakuDlg.setupYakuLocal");    //~vaw4I~
+    	int sz=yakuCBIDSLocal.length;                              //~vaw4I~
+    	for (int ii=0;ii<sz;ii++)                                  //~vaw4I~
+        {                                                          //~vaw4I~
+        	int cbID=yakuCBIDSLocal[ii];                           //~vaw4I~
+            if (cbID==0)                                             //~vaw4I~
+            	continue;                                          //~vaw4I~
+        	UCheckBox cb=new UCheckBox(Pview,cbID);                //~vaw4I~
+            if (cb==null)                                          //~vaw4R~
+            	continue;                                          //~vaw4I~
+            String txt=Rank.SyakuNameSLocal[ii];                   //~vaw4I~
+            int yakuID=Rank.SlistLocalYaku[ii];                    //~vaw4I~
+//          int yakuID2=yakuID-RYAKU_LOCAL;                        //~vaw4R~//~vawiR~
+//          if (yakuID2<RYAKU_YAKUMAN)                             //~vaw4R~//~vawiR~
+//          if (yakuID>=RYAKU_LOCAL_YAKUMAN)                       //~vawiI~//~vavwR~
+            if (yakuID<RYAKU_LOCAL_YAKUMAN)                        //~vavwI~
+            {                                                      //~vaw4I~
+                int intHan=Rank.ShanSLocal[ii];                    //~vavwI~
+                String strHan="";                                //~vaw4I~//~vavwR~
+                switch(Rank.SconditionSLocal[ii])                     //~vaw4I~//~vavwR~
+                {                                                //~vaw4I~//~vavwR~
+                case YCOND_NODOWN:  //  =0;     //"n"            //~vaw4I~//~vavwR~
+                    strHan=":"+intHan;                           //~vaw4I~//~vavwR~
+                    break;                                       //~vaw4I~//~vavwR~
+                case YCOND_DOWN  :  //  =1;     //"n/m"          //~vaw4I~//~vavwR~
+                    strHan=":"+intHan+"/"+(intHan-1);            //~vaw4I~//~vavwR~
+                    break;                                       //~vaw4I~//~vavwR~
+    			case YCOND_SETTING:	// =3;     //x                 //~vavzI~
+                    if (yakuID==RYAKU_3WIND_NOHONOR)               //~vavzR~
+                    {                                              //~vavzI~
+					    strHan=":"+RuleSettingYaku.getLocalYaku3WindNoHonorHan();//~vavzI~
+                    }                                              //~vavzI~
+                    else                                           //~vax1I~
+                    if (yakuID==RYAKU_3DUPSEQ)                     //~vax1I~
+                    {                                              //~vax1I~
+					    Point p=RuleSettingYaku.getLocalYaku3DupSeqHan();//+vax1R~
+					    strHan=":"+p.x+"/"+p.y;                    //+vax1I~
+                    }                                              //~vax1I~
+                    break;                                         //~vavzI~
+                  default:            // YCOND_OUTOF   =4;     //(no info)//~vaw4I~//~vavwR~
+                }                                                //~vaw4I~//~vavwR~
+                txt+=strHan;                                     //~vaw4I~//~vavwR~
+                if (yakuID==RYAKU_SINGLE && !RuleSettingYaku.isLocalYakuSingle())//~vaw8I~
+                    cb.setEnabled(false);                          //~vaw8I~
+                else                                               //~vaw9I~
+                if (yakuID==RYAKU_3WIND_NOHONOR && !RuleSettingYaku.isLocalYaku3WindNoHonor())//~vaw9I~
+                    cb.setEnabled(false);                          //~vaw9I~
+                else                                               //~vawgI~
+                if (yakuID==RYAKU_3WIND && !RuleSettingYaku.isLocalYaku3Wind())//~vax0I~
+                    cb.setEnabled(false);                          //~vax0I~
+                else                                               //~vax0I~
+                if (yakuID==RYAKU_3DUPSEQ && !RuleSettingYaku.isLocalYaku3DupSeq())//~vax1I~
+                    cb.setEnabled(false);                          //~vax1I~
+                else                                               //~vax1I~
+                if (yakuID==RYAKU_STRAIGHT3 && !RuleSettingYaku.isLocalYaku3ColorStraight())//~vawgI~
+                    cb.setEnabled(false);                          //~vawgI~
+                else                                               //~vavwI~
+                if (yakuID==RYAKU_3SEQNUM && !RuleSettingYaku.isLocalYaku3SeqNum())//~vavwI~
+                    cb.setEnabled(false);                          //~vavwI~
+            }                                                      //~vaw4I~
+            else //yakuman                                         //~vaw4I~
+            {                                                      //~vaw4I~
+                if (yakuID==RYAKU_7PAIR28_MAN && !RuleSettingYaku.isYakumanChariotNotPin())//~vaw4I~
+                    cb.setEnabled(false);                          //~vaw4I~
+                else                                               //~vaw4I~
+                if (yakuID==RYAKU_7PAIR28_SOU && !RuleSettingYaku.isYakumanChariotNotPin())//~vaw4I~
+                    cb.setEnabled(false);                          //~vaw4I~
+                else                                               //~vaw5I~
+                if (yakuID==RYAKU_4SEQNUM && !RuleSettingYaku.isYakuman4SeqNum())//~vaw5I~
+                    cb.setEnabled(false);                          //~vaw5I~
+            }                                                      //~vaw4I~
+            cb.setText(txt);                                       //~vaw4I~
+            boolean sw=Rank.isContains(longRank,yakuID);           //~vaw4I~
+            cb.setState(sw,true/*fix*/);                           //~vaw4I~
+        }                                                          //~vaw4I~
+    }                                                              //~vaw4I~
     //******************************************                   //~va11I~
     @Override                                                      //~va11I~
     public void onClickOther(int Pbuttonid)                        //~va11I~

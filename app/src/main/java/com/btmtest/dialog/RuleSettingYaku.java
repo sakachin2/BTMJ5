@@ -1,6 +1,17 @@
-//*CID://+varbR~:                             update#=  556;       //+varbR~
+//*CID://+vax1R~:                             update#=  576;       //~vax1R~
 //*****************************************************************//~v101I~
-//2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//+varbI~
+//2023/02/22 vax1 add local 3DupSeq(Pure Triple Chow)              //~vax1I~
+//2023/02/22 vax0 add local 3Wind:2han                             //~vax0I~
+//2023/02/22 vawz 3WindNoHonor; optionally 3/2 han allow RYAKU_ROUND//~vawzI~
+//2023/02/21 vawv add local yaku. 3SeqNum                          //~vawvI~
+//2023/02/18 vaws set AG.aUARanc for instrumentTest                //~vawsI~
+//2023/02/10 vawg add local yaku. 3ColorStraight                   //~vawgI~
+//2023/02/10 vaw9 add local yaku. 3Wind-NoHonor                    //~vaw9I~
+//2023/02/10 vaw8 add local yaku. SINGLE                           //~vaw8I~
+//2023/02/10 vaw6 add local yaku. 7STAR                            //~vaw6I~
+//2023/02/10 vaw5 add local yaku. 4SEQNNUM                         //~vaw5I~
+//2023/02/02 vaw4 add local yaku. 7PAIR28_MAN/7PAIR28_SOU          //~vaw4I~
+//2022/10/07 varb (Bug)dump when prop is initial at received rule(UButtonRG default is -1)//~varbI~
 //2022/09/09 var1 summary rule setting dialog;drop yakuman         //~var1I~
 //2022/09/03 var0 summary rule setting dialog                      //~var0I~
 //2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3I~
@@ -33,6 +44,7 @@
 //*****************************************************************//~v101I~
 package com.btmtest.dialog;                                          //~v@@@R~
 import android.graphics.Color;
+import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -71,6 +83,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
 //  private UCheckBox cb13NoPair,cb14NoPair;                         //~v@@@I~//~va11R~
 //  private UCheckBox cbYakuFix2Last;                              //~v@@@R~
     private UCheckBox cbAllGreenNoBlue,cb9RenPinSou,cbNoPair13,cbBigRing,cbRank13,cbRenhoMix,cbKokusiAnkanRon;//~v@@@R~
+    private UCheckBox cbBigRingNotPin;                             //~vaw4I~
+    private UCheckBox cb4SeqNum;                                   //~vaw5R~
+    private UCheckBox cbSingle;                                    //~vaw8I~
+    private UCheckBox cb3WindNoHonor;                              //~vaw9I~
+    private UCheckBox cb3Wind;                                     //~vax0I~
+    private UCheckBox cb3DupSeq;                                   //~vax1I~
+    private UCheckBox cb3DupSeqAllowOpen;                          //~vax1I~
+    private UCheckBox cb3WindNoHonorAllowRound;                    //~vawzI~
+    private URadioGroup rg3WNH_Han;                                //~vawzI~
+    private URadioGroup rg3DupSeq_Han;                             //~vax1I~
+    private UCheckBox cb3ColorStraight;                            //~vawgI~
+    private UCheckBox cb3SeqNum;                                   //~vawvI~
+    private UCheckBox cb7Star;                                     //~vaw6I~
     private UCheckBox cbNoPair14;                                  //~va11I~
     private UCheckBox /*cbOpenReachRon,*/cb5thKan,cbPendingRankNo;      //~v@@@R~//~0329R~//~0330R~
     private UCheckBox cbPendingRankEmpty,cbPendingRankFuriten,cbPendingRank0OK;//~0330I~
@@ -196,6 +221,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cbNoPair13=new UCheckBox(PView,R.id.cbYakuman_NoPair13);   //~v@@@I~
     	cbNoPair14=new UCheckBox(PView,R.id.cbYakuman_NoPair14);   //~va11I~
     	cbBigRing=new UCheckBox(PView,R.id.cbYakuman_BigRing);     //~v@@@I~
+    	cbBigRingNotPin=new UCheckBox(PView,R.id.cbYakuman_BigRingNotPin);//~vaw4I~
+    	cb4SeqNum=new UCheckBox(PView,R.id.cbYakuman_4SeqNum);     //~vaw5R~
+    	cbSingle=new UCheckBox(PView,R.id.cbSingle);               //~vaw8I~
+    	cb3WindNoHonor=new UCheckBox(PView,R.id.cb3WindNoHonor);   //~vaw9I~
+    	cb3Wind=new UCheckBox(PView,R.id.cb3Wind);                 //~vax0I~
+    	cb3DupSeq=new UCheckBox(PView,R.id.cb3DupSeq);             //~vax1I~
+    	cb3DupSeqAllowOpen=new UCheckBox(PView,R.id.cb3DupSeqAllowOpen);//~vax1I~
+    	cb3WindNoHonorAllowRound=new UCheckBox(PView,R.id.cb3WindNoHonorAllowRound);//~vawzI~
+        rg3WNH_Han=new URadioGroup(PView,R.id.rg3WNH_Han,0,rbs3WNH_Han);//~vawzI~
+        rg3DupSeq_Han=new URadioGroup(PView,R.id.rg3DupSeq_Han,0,rbs3DupSeq_Han);//~vax1I~
+    	cb3ColorStraight=new UCheckBox(PView,R.id.cb3ColorStraight);//~vawgI~
+    	cb3SeqNum=new UCheckBox(PView,R.id.cb3SeqNum);             //~vawvI~
+    	cb7Star=new UCheckBox(PView,R.id.cbYakuman_7Star);         //~vaw6I~
     	cbRank13=new UCheckBox(PView,R.id.cbYakuman_Rank13);       //~v@@@I~
     	cbRenhoMix=new UCheckBox(PView,R.id.cbYakuman_RenhoMix);   //~v@@@I~
     	cbKokusiAnkanRon=new UCheckBox(PView,R.id.cbYakuman_KokusiAnkanRon);//~v@@@I~
@@ -294,6 +332,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	cbNoPair13.setStateInt(Pprop.getParameter(getKeyRS(RSID_NOPAIR13),1),swFixed);//~v@@@I~
     	cbNoPair14.setStateInt(Pprop.getParameter(getKeyRS(RSID_NOPAIR14),1),swFixed);//~va11I~
     	cbBigRing.setStateInt(Pprop.getParameter(getKeyRS(RSID_BIGRING),1),swFixed);//~v@@@I~
+    	cbBigRingNotPin.setStateInt(Pprop.getParameter(getKeyRS(RSID_BIGRING_NOTPIN),0),swFixed);//~vaw4I~
+    	cb4SeqNum.setStateInt(Pprop.getParameter(getKeyRS(RSID_4SEQNUM),0),swFixed);//~vaw5R~
+    	cbSingle.setStateInt(Pprop.getParameter(getKeyRS(RSID_SINGLE),0),swFixed);//~vaw8I~
+    	cb3WindNoHonor.setStateInt(Pprop.getParameter(getKeyRS(RSID_3WINDNOHONOR),0),swFixed);//~vaw9I~
+    	cb3Wind.setStateInt(Pprop.getParameter(getKeyRS(RSID_3WIND),0),swFixed);//~vax0I~
+    	cb3DupSeq.setStateInt(Pprop.getParameter(getKeyRS(RSID_3DUPSEQ),0),swFixed);//~vax1I~
+    	cb3DupSeqAllowOpen.setStateInt(Pprop.getParameter(getKeyRS(RSID_3DUPSEQ_ALLOWOPEN),0),swFixed);//~vax1I~
+    	cb3WindNoHonorAllowRound.setStateInt(Pprop.getParameter(getKeyRS(RSID_3WINDNOHONOR_ROUNDOK),0),swFixed);//~vawzI~
+        rg3WNH_Han.setCheckedID(Pprop.getParameter(getKeyRS(RSID_3WINDNOHONOR_HAN),0),swFixed);//~vawzI~
+        rg3DupSeq_Han.setCheckedID(Pprop.getParameter(getKeyRS(RSID_3DUPSEQ_HAN),0),swFixed);//~vax1I~
+    	cb3ColorStraight.setStateInt(Pprop.getParameter(getKeyRS(RSID_3COLORSTRAIGHT),0),swFixed);//~vawgI~
+    	cb3SeqNum.setStateInt(Pprop.getParameter(getKeyRS(RSID_3SEQNUM),0),swFixed);//~vawvI~
+    	cb7Star.setStateInt(Pprop.getParameter(getKeyRS(RSID_7STAR),0),swFixed);//~vaw6I~
     	cbRank13.setStateInt(Pprop.getParameter(getKeyRS(RSID_RANK13),1),swFixed);//~v@@@I~
     	cbKokusiAnkanRon.setStateInt(Pprop.getParameter(getKeyRS(RSID_KOKUSI_ANKANRON),1),swFixed);//~v@@@I~
 //  	cbOpenReachRon.setStateInt(Pprop.getParameter(getKeyRS(RSID_OPENREACHRON),1),swFixed);//~v@@@I~//~0329R~
@@ -358,6 +409,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
             if  (Prsd.isChanged(RSID_NOPAIR13))                {rc=true; break;}//~vakQI~
             if  (Prsd.isChanged(RSID_NOPAIR14))                {rc=true; break;}//~vakQI~
             if  (Prsd.isChanged(RSID_BIGRING))                 {rc=true; break;}//~vakQI~
+            if  (Prsd.isChanged(RSID_BIGRING_NOTPIN))          {rc=true; break;}//~vaw4I~
+            if  (Prsd.isChanged(RSID_4SEQNUM))                 {rc=true; break;}//~vaw5R~
+            if  (Prsd.isChanged(RSID_SINGLE))                  {rc=true; break;}//~vaw8I~
+            if  (Prsd.isChanged(RSID_3WINDNOHONOR))            {rc=true; break;}//~vaw9I~
+            if  (Prsd.isChanged(RSID_3WIND))                   {rc=true; break;}//~vax0I~
+            if  (Prsd.isChanged(RSID_3DUPSEQ))                 {rc=true; break;}//~vax1I~
+            if  (Prsd.isChanged(RSID_3DUPSEQ_ALLOWOPEN))       {rc=true; break;}//~vax1I~
+            if  (Prsd.isChanged(RSID_3WINDNOHONOR_ROUNDOK))    {rc=true; break;}//~vawzI~
+            if  (Prsd.isChanged(RSID_3WINDNOHONOR_HAN))        {rc=true; break;}//~vawzI~
+            if  (Prsd.isChanged(RSID_3DUPSEQ_HAN))             {rc=true; break;}//~vax1I~
+            if  (Prsd.isChanged(RSID_3COLORSTRAIGHT))          {rc=true; break;}//~vawgI~
+            if  (Prsd.isChanged(RSID_3SEQNUM))                 {rc=true; break;}//~vawvI~
+            if  (Prsd.isChanged(RSID_7STAR))                   {rc=true; break;}//~vaw6I~
             if  (Prsd.isChanged(RSID_RANK13))                  {rc=true; break;}//~vakQI~
             if  (Prsd.isChanged(RSID_KOKUSI_ANKANRON))         {rc=true; break;}//~vakQI~
             if  (Prsd.isChanged(RSID_5THKAN))                  {rc=true; break;}//~vakQI~
@@ -395,6 +459,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
             if  (Prsd.isChanged(RSID_NOPAIR13))                {rc=true; break;}//~var1I~
             if  (Prsd.isChanged(RSID_NOPAIR14))                {rc=true; break;}//~var1I~
             if  (Prsd.isChanged(RSID_BIGRING))                 {rc=true; break;}//~var1I~
+            if  (Prsd.isChanged(RSID_BIGRING_NOTPIN))          {rc=true; break;}//~vaw4I~
+            if  (Prsd.isChanged(RSID_4SEQNUM))                 {rc=true; break;}//~vaw5R~
+            if  (Prsd.isChanged(RSID_SINGLE))                  {rc=true; break;}//~vaw8I~
+            if  (Prsd.isChanged(RSID_3WINDNOHONOR))            {rc=true; break;}//~vaw9I~
+            if  (Prsd.isChanged(RSID_3WIND))                   {rc=true; break;}//~vax0I~
+            if  (Prsd.isChanged(RSID_3DUPSEQ))                 {rc=true; break;}//~vax1I~
+            if  (Prsd.isChanged(RSID_3DUPSEQ_ALLOWOPEN))       {rc=true; break;}//~vax1I~
+            if  (Prsd.isChanged(RSID_3WINDNOHONOR_ROUNDOK))    {rc=true; break;}//~vawzI~
+            if  (Prsd.isChanged(RSID_3WINDNOHONOR_HAN))        {rc=true; break;}//~vawzI~
+            if  (Prsd.isChanged(RSID_3DUPSEQ_HAN))             {rc=true; break;}//~vax1I~
+            if  (Prsd.isChanged(RSID_3COLORSTRAIGHT))          {rc=true; break;}//~vawgI~
+            if  (Prsd.isChanged(RSID_3SEQNUM))                 {rc=true; break;}//~vawvI~
+            if  (Prsd.isChanged(RSID_7STAR))                   {rc=true; break;}//~vaw6I~
             if  (Prsd.isChanged(RSID_RANK13))                  {rc=true; break;}//~var1I~
             if  (Prsd.isChanged(RSID_KOKUSI_ANKANRON))         {rc=true; break;}//~var1I~
             if  (Prsd.isChanged(RSID_5THKAN))                  {rc=true; break;}//~var1I~
@@ -431,8 +508,8 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         RSD.setBGUpdated(rgDrawnMangan,RSD.isChanged(RSID_DRAWN_MANGAN_TYPE));//~vakQR~
         RSD.setBGUpdated(spnDrawnManganRank,RSD.isChanged(RSID_DRAWN_MANGAN_RANK));//~vakQR~
     //*8Continue                                                   //~vakQI~
-//      RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE);//~vakQR~     //+varbR~
-        RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE,Y8C_DEFAULT);  //+varbI~
+//      RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE);//~vakQR~     //~varbR~
+        RSD.setBGUpdated(bg8Continue,RSID_8CONTINUE,Y8C_DEFAULT);  //~varbI~
 //  	RSD.setBGUpdated(cb8ContNoNeedYaku,RSD.isChanged(RSID_8CONT_NONEEDYAKU));//~vakQR~//~vapuR~
     	RSD.setBGUpdated(cb8ContReset,RSD.isChanged(RSID_8CONT_RESET));//~vakQR~
 //  	RSD.setBGUpdated(cb8ContMulti,RSD.isChanged(RSID_8CONT_MULTI));//~vakQR~//~vapuR~
@@ -456,6 +533,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
     	RSD.setBGUpdated(cbNoPair13,RSD.isChanged(RSID_NOPAIR13)); //~vakQR~
     	RSD.setBGUpdated(cbNoPair14,RSD.isChanged(RSID_NOPAIR14)); //~vakQR~
     	RSD.setBGUpdated(cbBigRing,RSD.isChanged(RSID_BIGRING));   //~vakQR~
+    	RSD.setBGUpdated(cbBigRingNotPin,RSD.isChanged(RSID_BIGRING_NOTPIN));//~vaw4I~
+    	RSD.setBGUpdated(cb4SeqNum,RSD.isChanged(RSID_4SEQNUM));   //~vaw5R~
+    	RSD.setBGUpdated(cbSingle,RSD.isChanged(RSID_SINGLE));     //~vaw8I~
+    	RSD.setBGUpdated(cb3WindNoHonor,RSD.isChanged(RSID_3WINDNOHONOR));//~vaw9I~
+    	RSD.setBGUpdated(cb3Wind,RSD.isChanged(RSID_3WIND));       //~vax0I~
+    	RSD.setBGUpdated(cb3DupSeq,RSD.isChanged(RSID_3DUPSEQ));   //~vax1I~
+    	RSD.setBGUpdated(cb3DupSeqAllowOpen,RSD.isChanged(RSID_3DUPSEQ_ALLOWOPEN));//~vax1I~
+    	RSD.setBGUpdated(cb3WindNoHonorAllowRound,RSD.isChanged(RSID_3WINDNOHONOR_ROUNDOK));//~vawzI~
+        RSD.setBGUpdated(rg3WNH_Han,RSD.isChanged(RSID_3WINDNOHONOR_HAN));//~vawzI~
+        RSD.setBGUpdated(rg3DupSeq_Han,RSD.isChanged(RSID_3DUPSEQ_HAN));//~vax1I~
+    	RSD.setBGUpdated(cb3ColorStraight,RSD.isChanged(RSID_3COLORSTRAIGHT));//~vawgI~
+    	RSD.setBGUpdated(cb3SeqNum,RSD.isChanged(RSID_3SEQNUM));   //~vawvI~
+    	RSD.setBGUpdated(cb7Star,RSD.isChanged(RSID_7STAR));       //~vaw6I~
     	RSD.setBGUpdated(cbRank13,RSD.isChanged(RSID_RANK13));     //~vakQR~
     	RSD.setBGUpdated(cbKokusiAnkanRon,RSD.isChanged(RSID_KOKUSI_ANKANRON));//~vakQR~
     	RSD.setBGUpdated(cb5thKan,RSD.isChanged(RSID_5THKAN));     //~vakQR~
@@ -518,6 +608,19 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         changed+=updateProp(getKeyRS(RSID_NOPAIR13),cbNoPair13.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_NOPAIR14),cbNoPair14.getStateInt());//~va11I~
         changed+=updateProp(getKeyRS(RSID_BIGRING),cbBigRing.getStateInt());//~v@@@I~
+        changed+=updateProp(getKeyRS(RSID_BIGRING_NOTPIN),cbBigRingNotPin.getStateInt());//~vaw4I~
+        changed+=updateProp(getKeyRS(RSID_4SEQNUM),cb4SeqNum.getStateInt());//~vaw5R~
+        changed+=updateProp(getKeyRS(RSID_SINGLE),cbSingle.getStateInt());//~vaw8I~
+        changed+=updateProp(getKeyRS(RSID_3WINDNOHONOR),cb3WindNoHonor.getStateInt());//~vaw9I~
+        changed+=updateProp(getKeyRS(RSID_3WIND),cb3Wind.getStateInt());//~vax0I~
+        changed+=updateProp(getKeyRS(RSID_3DUPSEQ),cb3DupSeq.getStateInt());//~vax1I~
+        changed+=updateProp(getKeyRS(RSID_3DUPSEQ_ALLOWOPEN),cb3DupSeqAllowOpen.getStateInt());//~vax1I~
+        changed+=updateProp(getKeyRS(RSID_3WINDNOHONOR_ROUNDOK),cb3WindNoHonorAllowRound.getStateInt());//~vawzI~
+        changed+=updateProp(getKeyRS(RSID_3WINDNOHONOR_HAN),rg3WNH_Han.getCheckedID());//~vawzI~
+        changed+=updateProp(getKeyRS(RSID_3DUPSEQ_HAN),rg3DupSeq_Han.getCheckedID());//~vax1I~
+        changed+=updateProp(getKeyRS(RSID_3COLORSTRAIGHT),cb3ColorStraight.getStateInt());//~vawgI~
+        changed+=updateProp(getKeyRS(RSID_3SEQNUM),cb3SeqNum.getStateInt());//~vawvI~
+        changed+=updateProp(getKeyRS(RSID_7STAR),cb7Star.getStateInt());//~vaw6I~
         changed+=updateProp(getKeyRS(RSID_RANK13),cbRank13.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyRS(RSID_KOKUSI_ANKANRON),cbKokusiAnkanRon.getStateInt());//~v@@@I~
 //      changed+=updateProp(getKeyRS(RSID_OPENREACHRON),cbOpenReachRon.getStateInt());//~v@@@I~//~0329R~
@@ -838,6 +941,101 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.isYakumanChariot rc="+rc);//~va11I~
         return rc;                                                 //~va11I~
     }                                                              //~va11I~
+    //**************************************                       //~vaw4I~
+	public static boolean isYakumanChariotNotPin()                 //~vaw4I~
+    {                                                              //~vaw4I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_BIGRING_NOTPIN),0)!=0;//~vaw4I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakumanChariotNotPin rc="+rc);//~vaw4I~
+        return rc;                                                 //~vaw4I~
+    }                                                              //~vaw4I~
+    //**************************************                       //~vaw5R~
+	public static boolean isYakuman4SeqNum()                       //~vaw5R~
+    {                                                              //~vaw5R~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_4SEQNUM),0)!=0;//~vaw5R~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuman4SeqNum rc="+rc);//~vaw5R~
+        return rc;                                                 //~vaw5R~
+    }                                                              //~vaw5R~
+    //**************************************                       //~vaw8I~
+	public static boolean isLocalYakuSingle()                      //~vaw8I~
+    {                                                              //~vaw8I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_SINGLE),0)!=0;//~vaw8I~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYakuSingle rc="+rc);//~vaw8I~
+        return rc;                                                 //~vaw8I~
+    }                                                              //~vaw8I~
+    //**************************************                       //~vaw9I~
+	public static boolean isLocalYaku3WindNoHonor()                //~vaw9I~
+    {                                                              //~vaw9I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3WINDNOHONOR),0)!=0;//~vaw9I~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3WindNoHonor rc="+rc);//~vaw9I~
+        return rc;                                                 //~vaw9I~
+    }                                                              //~vaw9I~
+    //**************************************                       //~vax0I~
+	public static boolean isLocalYaku3Wind()                       //~vax0I~
+    {                                                              //~vax0I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3WIND),0)!=0;//~vax0I~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3Wind rc="+rc);//~vax0I~
+        return rc;                                                 //~vax0I~
+    }                                                              //~vax0I~
+    //**************************************                       //~vax1I~
+	public static boolean isLocalYaku3DupSeq()                     //~vax1I~
+    {                                                              //~vax1I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3DUPSEQ),0)!=0;//~vax1R~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3DupSeq rc="+rc);//~vax1I~
+        return rc;                                                 //~vax1I~
+    }                                                              //~vax1I~
+    //**************************************                       //~vax1I~
+	public static boolean isLocalYaku3DupSeqAllowOpen()            //~vax1I~
+    {                                                              //~vax1I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3DUPSEQ_ALLOWOPEN),0)!=0;//~vax1I~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3DupSeqAllowOpen rc="+rc);//~vax1I~
+        return rc;                                                 //~vax1I~
+    }                                                              //~vax1I~
+    //**************************************                       //~vawzI~
+	public static boolean isLocalYaku3WindNoHonorAllowRound()      //~vawzI~
+    {                                                              //~vawzI~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3WINDNOHONOR_ROUNDOK),0)!=0;//~vawzI~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3WindNoHonorAllowRound rc="+rc);//~vawzI~
+        return rc;                                                 //~vawzI~
+    }                                                              //~vawzI~
+    //**************************************                       //~vawzI~
+	public static int getLocalYaku3WindNoHonorHan()                //~vawzI~
+    {                                                              //~vawzI~
+        int rc=AG.ruleProp.getParameter(getKeyRS(RSID_3WINDNOHONOR_HAN),0);//~vawzI~
+        rc=(rc==0 ? 2 : 3);                                        //~vawzI~
+        if (Dump.Y) Dump.println("RuleSetting.getLocalYaku3WindNoHonorHan rc="+rc);//~vawzI~
+        return rc;                                                 //~vawzI~
+    }                                                              //~vawzI~
+    //**************************************                       //~vax1I~
+	public static Point getLocalYaku3DupSeqHan()                   //~vax1I~
+    {                                                              //~vax1I~
+        int type=AG.ruleProp.getParameter(getKeyRS(RSID_3DUPSEQ_HAN),0);//~vax1I~
+        Point p=new Point();                                       //~vax1R~
+        p.x=(type==0 ? 3 : 2);                                     //~vax1R~
+        p.y=isLocalYaku3DupSeqAllowOpen() ? p.x-1 : 0;             //+vax1R~
+        if (Dump.Y) Dump.println("RuleSetting.getLocalYaku3DupSeqHan type="+type+",rc="+p);//~vax1I~
+        return p;                                                  //~vax1I~
+    }                                                              //~vax1I~
+    //**************************************                       //~vawgI~
+	public static boolean isLocalYaku3ColorStraight()              //~vawgI~
+    {                                                              //~vawgI~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3COLORSTRAIGHT),0)!=0;//~vawgI~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3ColorStraight rc="+rc);//~vawgI~
+        return rc;                                                 //~vawgI~
+    }                                                              //~vawgI~
+    //**************************************                       //~vawvI~
+	public static boolean isLocalYaku3SeqNum()                     //~vawvI~
+    {                                                              //~vawvI~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_3SEQNUM),0)!=0;//~vawvI~
+        if (Dump.Y) Dump.println("RuleSetting.isLocalYaku3SeqNum rc="+rc);//~vawvI~
+        return rc;                                                 //~vawvI~
+    }                                                              //~vawvI~
+    //**************************************                       //~vaw6I~
+	public static boolean isYakuman7Star()                         //~vaw6I~
+    {                                                              //~vaw6I~
+        boolean rc=AG.ruleProp.getParameter(getKeyRS(RSID_7STAR),0)!=0;//~vaw6I~
+        if (Dump.Y) Dump.println("RuleSetting.isYakuman7Star rc="+rc);//~vaw6I~
+        return rc;                                                 //~vaw6I~
+    }                                                              //~vaw6I~
     //**************************************                       //~va11I~
 	public static boolean isYakuman13NoPair()                      //~va11I~
     {                                                              //~va11I~
@@ -887,6 +1085,16 @@ public class RuleSettingYaku extends UFDlg                         //~v@@@R~
         if (Dump.Y) Dump.println("RuleSetting.getYakuFix rc="+rc); //~va8cI~
         return rc;                                                 //~va8cI~
     }                                                              //~va8cI~
+    //***********************************************************************//~vawrI~//~vawsI~
+    //*for InstrumentTest,change temporally  typeYakuFix,swYakuFixMultiWaitTakeOK//~vawrI~//~vawsI~
+    //***********************************************************************//~vawrI~//~vawsI~
+    public static void setYakuFixForIT(int PtypeFix,boolean PtakeOK)//~vawsI~
+    {                                                              //~vawsI~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.setYakuFixForIT test-OLD typeYakuFix="+getYakuFix()+",multiWaitTake="+getYakuFixMultiwaitTake());//~vawsI~
+        AG.ruleProp.setParameter(getKeyRS(RSID_YAKUFIX),PtypeFix); //~vawsR~
+        AG.ruleProp.setParameter(getKeyRS(RSID_YAKUFIX_TAKE),PtakeOK?0:1);//~vawsR~
+    	if (Dump.Y) Dump.println("RuleSettingYaku.setYakuFixForIT test-NEW typeYakuFix="+getYakuFix()+",multiWaitTake="+getYakuFixMultiwaitTake());//~vawsI~
+    }                                                              //~vawsI~
     //**************************************                       //~va91I~
     public static int getYakuFixMultiwaitTake()                    //~va91I~
     {                                                              //~va91I~

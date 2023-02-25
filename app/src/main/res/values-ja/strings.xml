@@ -42,8 +42,10 @@
 	<string name="BTSecureOption">セキュア接続</string> <!--1Abu-->
     <!--string name="BTSettingsButton">設定</string--> <!--1AbE-->
     <string name="BTAcceptCommon">接続受付</string> <!--1Abu-->
+    <string name="WDAccept">受付</string> <!--1Abu-->
     <!--string name="BTStop">中断</string--> <!--1Abu-->
     <string name="BTStopAccept">受付停止</string>
+    <string name="WDStopAccept">停止</string>
     <string name="BTConnectCommon">接続</string>  <!--1Abu-->
     <string name="BTGame">対戦</string>
     <string name="BTGameRestart">ゲーム再開</string>
@@ -1274,6 +1276,21 @@
     <string name="Label_9RenPinSou">ワンズ以外の九蓮宝燈</string>
     <string name="Label_AllGreenNoBlue">發なし緑一色</string>
     <string name="Label_BigRing">大車輪（ピンズ２－８）</string>
+    <string name="Label_BigRingNotPin">大竹林（索子２－８）・大数輪(萬子２－８）</string>
+    <string name="Label_4SeqNum">四連刻</string>
+    <string name="Label_Single">裸単騎</string>
+    <string name="Label_3WindNoHonor">客風三刻</string>
+    <string name="Label_3Wind">三風刻</string>
+    <string name="Label_3WindNoHonorAllowRound">場風OK</string>
+    <string name="Label_3WNH_2Han">２翻</string>
+    <string name="Label_3WNH_3Han">３翻</string>
+    <string name="Label_3SeqNum">三連刻</string>
+    <string name="Label_3DupSeq">一色三順</string>
+    <string name="Label_3DupSeq_Menzen3">３翻</string>
+    <string name="Label_3DupSeq_Menzen2">２翻</string>
+    <string name="Label_3DupSeqAllowOpen">喰いあり</string>
+    <string name="Label_3ColorStraight">三色一通</string>
+    <string name="Label_7Star">七星無靠</string>
     <string name="Label_NoPair13">十三不塔</string>
     <string name="Label_NoPair14">十四不塔</string>
     <string name="Label_Rank13">数え役満（無しなら上限３倍萬）</string>
@@ -1332,6 +1349,7 @@
     <string name="Desc_YakuStandard">（七対子は別項参照）</string>
     <string name="Label_YakuStandardList">タンヤオ、ピンフ、一盃口、ハイテイ、嶺上開花、ダブリー、槍槓\n対々和、三色同順、一気通貫、チャンタ、三暗刻、小三元、混老頭、三色同刻、三槓子\n混一色、ジュンチャン、二盃口\n清一色</string>
     <string name="Desc_YakuLocal">ローカル役については、役満、人和、流し満貫の項も参照。それ以外は事前に取り決めをしてください</string>
+    <string name="Label_LocalYaku">ローカル役</string>
     <string name="Label_SpritPos">割れ目</string>
     <string name="Desc_SpritPos0_1">"ダイアログ上で "</string>
     <string name="Desc_SpritPos0_2">割</string>
@@ -1396,7 +1414,7 @@
     <string name="DeviceType_RemoteServer">接続先サーバー</string>
     <string name="DeviceType_RemoteClient">メンバー</string>
     <!--string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。Android8(Oreo)デバイスは設定で（Google または セキュリティとプライバシー）,位置情報,現在地にアクセスをオンにする必要があります</string-->
-    <string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。見つからない場合は"ヘルプ"を参照</string>
+    <string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。"ヘルプ"も参照</string>
     <string name="Wifi_Pair_NotAvailableDevice">\"利用可能\"に対して\"ペア設定\"してください</string>
     <string name="Wifi_Pair_NotConnectedDevice">\"利用可能\"以外を選択してください</string>
     <string name="Wifi_Pair_NotIPConnected">\"接続中\"を選択してください</string>
@@ -1488,7 +1506,7 @@
         <item>河底</item>          <!--=26; //hotei                       -->
         <item>槍槓</item>          <!--=27; //chankan                     -->
         <item>嶺上開花</item>      <!--=28; //rinshan                     -->
-        <item>rsv</item>          <!--=29; //dora                        -->
+        <item>裸単騎</item>           <!--=29; //                            -->
         <item>流し満貫</item>      <!--=30;                               -->
         <item>人和</item>          <!--=31  //renho not yakuman           -->
                                                                                 
@@ -1518,6 +1536,20 @@
         <item>国士１３面待</item> <!--=RYAKU_YAKUMAN+19;   //kokushi 13wait -->
         <item>九蓮宝燈９面待</item><!--=RYAKU_YAKUMAN+20;  //9gate 9wait    -->
         <item>オープン立直振り込み</item><!--=RYAKU_YAKUMAN+21;  //OpenReach Ron-->
+        <item>ローカル役満</item> <!--=RYAKU_YAKUMAN+22;  //Local Yakuman-->
+	</string-array>
+	<string-array name="listYakuAllLocal">
+        <item>三連刻</item>        <!--     //3renko                   -->
+        <item>客風三刻</item>      <!--     //3wind no honor           -->
+        <item>三色一通</item>      <!--     //straight by 3 color      -->
+        <item>裸単騎</item>        <!--     //4 earcth, wait 1 pair    -->
+        <item>三風刻</item>        <!--     //3wind allows honor       -->
+    	<item>一色三順</item>      <!--     //Pure Triple Chow, 3DupSeq-->
+
+        <item>大数隣</item>        <!--     //man 7pair 2-8            -->
+        <item>大竹林</item>        <!--     //sou 7pair 2-8            -->
+        <item>四連刻</item>        <!--     //4 cont seq pair          -->
+        <item>七星無靠</item>      <!--     //all one wind/dragon and 1-4-7,2-5-8,3-6-9 -->
 	</string-array>
 
     <string name="ShowYaku">詳細</string>
@@ -1718,7 +1750,7 @@ androidのバージョンによっては、一旦親フォルダーに戻って�
     <string name="Info_ImageExchanging">プロフィール アイコンを交換しています。</string>
     <string name="Err_AppVersionConnect">%1$sのアプリのバージョンが古いです。%2$s と接続してください。</string>
 
-    <string name="Err_PrintSupportApi19">印刷サポートはアンドロイド4(KiKat)からです。</string>
+    <string name="Err_PrintSupportApi19">印刷サポートはアンドロイド4.4(Kitkat)からです。</string>
     <string name="Print">印刷</string>
     <string name="Err_ConnectionExist">接続中は変更できません</string>
     <string name="Msg_selectImagePicker">イメージを選択するアプリを選んでください</string>

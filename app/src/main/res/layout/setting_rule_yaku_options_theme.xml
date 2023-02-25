@@ -30,6 +30,8 @@
         />
         <include layout="@layout/setting_rule_yaku_standard_theme"
         />
+        <include layout="@layout/setting_rule_yaku_local_theme"
+        />
     </LinearLayout>
     <LinearLayout
          android:layout_width="fill_parent"

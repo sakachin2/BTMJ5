@@ -1,11 +1,11 @@
-//*CID://+vaq2R~:                             update#=  741;       //+vaq2R~
+//*CID://+vaq2R~:                             update#=  742;       //~vaq2R~
 //*****************************************************************//~v101I~
-//2022/08/11 vaq2 (Bug of vap1)currentEswn was not yet set at initLayoutAdditional//+vaq2I~
+//2022/08/11 vaq2 (Bug of vap1)currentEswn was not yet set at initLayoutAdditional//~vaq2I~
 //2022/08/06 vapx add Psuedo-Tennpai:No option                     //~vapxI~
 //2022/08/03 vapp Psuedo tenpai; drop allNo(chk tenpai required for repeat/next round)//~vapmI~
 //2022/08/02 vapm itsHand contension of main Thraed(DrawnReqDlgLast) and msgHandler Thread(Tand and discard by Robot)//~vapmI~
 //2022/07/30 vapk implements keishiki tenpai                       //~vapkI~
-//2022/07/18 vap1 Chk NagasiMangan on drawreqdlgLast               //~vap1I~
+//2022/07/18 vap1 Chk NagasiMangan on drawnreqdlgLast               //~vap1I~//+vaq2R~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/04/17 va8b add YakuFix1/2 to related of drawnReqDlgLast     //~va8bI~
 //2021/02/12 va6b show keishiki tenpan on DrawnReqDlgLast DrawDlgLast//~va6bI~
@@ -143,9 +143,9 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
                                                                    //~9417I~
         btnShowRule     =              UButton.bind(PView,R.id.ShowRule,this);//~9417I~
                                                                    //~9417I~
-        setupValue();                                              //+vaq2I~
+        setupValue();                                              //~vaq2I~
         initLayoutAdditional(PView);                               //~9413I~
-//      setupValue();                                              //~9212I~//~9219M~//~9302R~//~9413R~//+vaq2R~
+//      setupValue();                                              //~9212I~//~9219M~//~9302R~//~9413R~//~vaq2R~
         setButton();                                               //~9221I~//~9302R~
         setRadioGroup(PView);                                      //~9302I~//~9307R~//~9308R~
         setTitle();                                                //~v@@@I~//~9220R~//~9302R~
@@ -175,7 +175,7 @@ public class DrawnReqDlgLast extends UFDlg                             //~v@@@R~
         {                                                          //~9307I~
       	currentEswn=Accounts.getCurrentEswn();                         //~9302I~//~9303R~
         }                                                          //~9307I~
-        if (Dump.Y) Dump.println("DrawnReqDlgLast.currentEswn="+currentEswn);//+vaq2I~
+        if (Dump.Y) Dump.println("DrawnReqDlgLast.currentEswn="+currentEswn);//~vaq2I~
     }                                                              //~9302I~
     //******************************************                   //~9413I~
     protected void initLayoutAdditional(View PView)                //~9413I~

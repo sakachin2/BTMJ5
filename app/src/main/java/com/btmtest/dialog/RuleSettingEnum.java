@@ -1,5 +1,15 @@
-//*CID://+vaqaR~: update#= 539;                                    //~vaqaR~
+//*CID://+vax1R~: update#= 555;                                    //~vax1R~
 //**********************************************************************//~v101I~
+//2023/02/22 vax1 add local 3DupSeq(Pure Triple Chow)              //~vax1I~
+//2023/02/22 vax0 add local 3Wind:2han                             //~vax0I~
+//2023/02/22 vawz 3WindNoHonor; optionally 3/2 han allow RYAKU_ROUND//~vawzI~
+//2023/02/21 vawv add local yaku. 3SeqNum                          //~vawgI~
+//2023/02/10 vawg add local yaku. 3ColorStraight                   //~vawgI~
+//2023/02/10 vaw9 add local yaku. 3Wind-NoHonor                    //~vaw9I~
+//2023/02/10 vaw8 add local yaku. SINGLE                           //~vaw8I~
+//2023/02/10 vaw6 add local yaku. 7STAR                            //~vaw6I~
+//2023/02/10 vaw5 add local yaku. 4SEQNNUM                         //~vaw5I~
+//2023/02/02 vaw4 add local yaku. 7PAIR28_MAN/7PAIR28_SOU          //~vaw4I~
 //2022/08/19 vaqa App version exchange require because rule set effect may changed//~vaqaI~
 //2022/08/04 vapu PsuedoTenpai;simplify 0han ok or not(allow kataagari,fix last)//~vapuI~
 //2022/08/04 vapt PsuedoTenpai;allow kataagari,fix yaku err if furiten OK//~vaptI~
@@ -288,6 +298,8 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     public static final int RENHORANK_DEFAULT=rankRenho.length-1;  //~9517I~
     public static final int[] intsRankRenho={0,RANKIDX_MANGAN,RANKIDX_HANEMAN,RANKIDX_MANGAN2,RANKIDX_MANGAN3,RANKIDX_YAKUMAN};//~va11I~
     public static final int[] rbsFuritenReach=new int[]{R.id.rbFuritenReachNo,R.id.rbFuritenReachYes,R.id.rbFuritenReachReject};//~vah3I~
+    public static final int[] rbs3WNH_Han=new int[]{R.id.rb3WNH_2Han,R.id.rb3WNH_3Han};//~vawzI~
+    public static final int[] rbs3DupSeq_Han=new int[]{R.id.rb3DupSeq_Menzen3,R.id.rb3DupSeq_Menzen2};//+vax1R~
     public static final int FURITEN_REACH_NO=0;                    //~vah3I~
     public static final int FURITEN_REACH_YES=1;                   //~vah3I~
     public static final int FURITEN_REACH_REJECT=2;                //~vah3I~
@@ -442,9 +454,23 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
 //  public static final int    RSID_13NOPAIR              =360;    //~9C11I~//~va11R~
 //  public static final int    RSID_14NOPAIR              =361;    //~9C11I~//~va11R~
     public static final int    RSID_NOPAIR14              =362;    //~va11I~
+    public static final int    RSID_BIGRING_NOTPIN        =363;    //~vaw4I~
+    public static final int    RSID_4SEQNUM               =364;    //~vaw5I~
+    public static final int    RSID_7STAR                 =365;    //~vaw6I~
+    public static final int    RSID_SINGLE                =366;    //~vaw8I~
+    public static final int    RSID_3WINDNOHONOR          =367;    //~vaw9I~
+    public static final int    RSID_3COLORSTRAIGHT        =368;    //~vawgI~
+    public static final int    RSID_3SEQNUM               =369;    //~vawvI~
                                                                    //~9517I~
     public static final int    RSID_SPRITPOS              =370;    //~9528I~
     public static final int    RSID_RANKMUP               =371;    //~9528R~
+                                                                   //~vawzI~
+    public static final int    RSID_3WINDNOHONOR_ROUNDOK  =372;    //~vawzR~
+    public static final int    RSID_3WINDNOHONOR_HAN      =373;    //~vawzI~
+    public static final int    RSID_3WIND                 =374;    //~vax0I~
+    public static final int    RSID_3DUPSEQ               =375;    //~vax1I~
+    public static final int    RSID_3DUPSEQ_HAN           =376;    //~vax1I~
+    public static final int    RSID_3DUPSEQ_ALLOWOPEN     =377;    //+vax1I~
                                                                    //~9528I~
     public static final int    RSID_DORA                  =380;    //~9528I~
     public static final int    RSID_DORA_HIDDEN           =381;    //~9528I~
@@ -463,7 +489,7 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
                                                                    //~9820I~
 //  private static final RSEnumPair[] pairs=                       //~9404I~//~9414R~//~vakQR~
     public static final String RSID_STR_APPVERSION= "AppVersion";    //~vaqaI~
-    public static final String RSID_STR_APPVERSION_MIN= "AppMinVersion";//+vaqaR~
+    public static final String RSID_STR_APPVERSION_MIN= "AppMinVersion";//~vaqaR~
     public static final RSEnumPair[] pairs=                        //~vakQI~
     			{                                                  //~9404I~
     				new RSEnumPair(RSID_SYNCDATE             ,"SyncDate"             ),//~9404R~
@@ -603,6 +629,22 @@ public class RuleSettingEnum                                       //~@@@@R~//~9
     				new RSEnumPair(RSID_NOPAIR13             ,"NoPair13"             ),//~9517I~
     				new RSEnumPair(RSID_NOPAIR14             ,"NoPair14"             ),//~va11I~
     				new RSEnumPair(RSID_BIGRING              ,"BigRing"              ),//~9517I~
+    				new RSEnumPair(RSID_BIGRING_NOTPIN       ,"BigRingNotPin"        ),//~vaw4I~
+    				new RSEnumPair(RSID_4SEQNUM              ,"4SeqNum"              ),//~vaw5I~
+    				new RSEnumPair(RSID_SINGLE               ,"Single"               ),//~vaw8I~
+    				new RSEnumPair(RSID_3WINDNOHONOR         ,"3WindNH"              ),//~vaw9I~
+    				new RSEnumPair(RSID_3WINDNOHONOR         ,"3WindNH"              ),//~vawzI~
+                                                                   //~vawzI~
+    				new RSEnumPair(RSID_3WINDNOHONOR_ROUNDOK ,"3WindNHROK"           ),//~vawzI~
+    				new RSEnumPair(RSID_3WINDNOHONOR_HAN     ,"3WindNHHan"           ),//~vawzI~
+    				new RSEnumPair(RSID_3WIND                ,"3Winds"               ),//~vax0I~
+    				new RSEnumPair(RSID_3DUPSEQ              ,"3DupSeq"              ),//~vax1I~
+    				new RSEnumPair(RSID_3DUPSEQ_HAN          ,"3DupSeqHan"           ),//~vax1I~
+    				new RSEnumPair(RSID_3DUPSEQ_ALLOWOPEN    ,"3DupSeqOpen"          ),//+vax1I~
+                                                                   //~vawzI~
+    				new RSEnumPair(RSID_3COLORSTRAIGHT       ,"3ColStraight"         ),//~vawgI~
+    				new RSEnumPair(RSID_3SEQNUM              ,"3SeqNum"              ),//~vawvI~
+    				new RSEnumPair(RSID_7STAR                ,"7Star"                ),//~vaw6I~
     				new RSEnumPair(RSID_RANK13               ,"Rank13"               ),//~9517I~
     				new RSEnumPair(RSID_RENHORANK            ,"RenhoRank"            ),//~9517I~
     				new RSEnumPair(RSID_RENHOMIX             ,"RenhoMix"             ),//~9517I~

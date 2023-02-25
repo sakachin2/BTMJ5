@@ -1,4 +1,4 @@
-//*CID://+vaviR~:                             update#=  252;       //~vaviR~
+//*CID://+vaviR~:                             update#=  265;       //~vaviR~
 //*************************************************************************//~1A65I~
 //2023/01/25 vavi close channel expecting to erase groupOwner persistency//~vaviI~
 //2023/01/25 vavh avoid duplicated getView call for groupList      //~vavhI~
@@ -475,7 +475,7 @@ public class WDA extends AxeDlg                                    //~9720I~
 		connected=AG.RemoteStatus==AG.RS_IPCONNECTED;	//server and client              //~1A84I~//~1A90I~//~9729R~
 		listening=AG.RemoteStatusAccept==AG.RS_IPLISTENING;        //~1A84I~//~1A90I~
 		paired=deviceListFragment.thisStatus==WifiP2pDevice.CONNECTED;//~1A87I~//~1A90I~
-    	if (Dump.Y) Dump.println("WDA:updateButtonView Powner="+Powner+",paired="+paired+",remotestatus="+AG.RemoteStatus+",remotestatusaccept="+AG.RemoteStatusAccept+",connected="+connected);//~1A84R~//~1A90I~//~9727R~//~9729R~
+    	if (Dump.Y) Dump.println("WDA:updateButtonView Powner="+Powner+",paired="+paired+",remotestatus="+AG.RemoteStatus+",remotestatusaccept="+AG.RemoteStatusAccept+",connected="+connected+",listening="+listening);//~1A84R~//~1A90I~//~9727R~//~9729R~//~vaviR~
 		if (paired)                                                //~9729I~
         {                                                          //~9729I~
             if (Powner)               //paired server              //~9729I~
@@ -513,6 +513,7 @@ public class WDA extends AxeDlg                                    //~9720I~
             btnConnect.setVisibility(View.GONE);                   //~9729I~
             btnDisconnect.setVisibility(View.GONE);                //~9729I~
         }                                                          //~9729I~
+    	if (Dump.Y) Dump.println("WDA:updateButtonView btnAccept="+Integer.toHexString(btnAccept.getId())+"="+btnAccept.getText()+",btnStopAccept="+Integer.toHexString(btnStopAccept.getId())+"="+btnStopAccept.getText());//~vaviR~
     }                                                              //~1A84I~//~1A90I~//~9729R~
 	                                                               //~9729I~
 //    //**********************************                           //~1A65I~//~9721R~
@@ -1169,8 +1170,8 @@ public class WDA extends AxeDlg                                    //~9720I~
     //************************************************************ //~vaviI~
     private void closeChannel()                                    //~vaviI~
     {                                                              //~vaviI~
-        if (Dump.Y) Dump.println("WDA.closeChannel channel");      //+vaviR~
-        if (aWDActivity!=null)                                     //+vaviR~
-	        aWDActivity.closeChannel();                            //+vaviR~
+        if (Dump.Y) Dump.println("WDA.closeChannel channel");      //~vaviR~
+        if (aWDActivity!=null)                                     //~vaviR~
+	        aWDActivity.closeChannel();                            //~vaviR~
     }                                                              //~vaviI~
 }

@@ -1,5 +1,6 @@
-//*CID://+vavqR~: update#= 630;                                    //~vavqR~
+//*CID://+vaw0R~: update#= 633;                                    //+vaw0R~
 //**********************************************************************//~v101I~
+//2023/01/31 vaw0 ProfileIcon overwrap by positioning tile when not long device landscape//+vaw0I~
 //2023/01/28 vavq overwrap chk for Left/Right river and Face/You profile when landscape//~vavqI~
 //2022/07/28 vapd change color of openreach tile                   //~vapdI~
 //2022/04/12 vamp Animation. for Riichi                            //~vampR~
@@ -127,7 +128,7 @@ public class River                                                 //~v@@@R~
         points[PLAYER_FACING]=table.getRiverPos(PLAYER_FACING);    //~v@@@I~
         points[PLAYER_LEFT]=table.getRiverPos(PLAYER_LEFT);        //~v@@@I~
     	pointsRiver=points;                                        //~v@@@I~
-        if (Dump.Y) Dump.println("River.getPointsRiver pointsRiver="+Utils.toString(points));//+vavqI~
+        if (Dump.Y) Dump.println("River.getPointsRiver pointsRiver="+Utils.toString(points));//~vavqI~
     }                                                              //~v@@@I~
     //*******************************************************************//~v@@@I~
     //*for test, fromGCanvas                                       //~v@@@I~
@@ -904,6 +905,7 @@ public class River                                                 //~v@@@R~
         	bm=pieces.getBitmapRiver(Ptd,Pplayer);                 //~v@@@I~
         else                                                       //~v@@@I~
     		bm=pieces.getBitmapHandPairStock(Pplayer);             //~v@@@I~
+        if (Dump.Y) Dump.println("River.getBitmapSetup bm="+bm);   //~vavqI~
         return bm;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~
@@ -1110,7 +1112,8 @@ public class River                                                 //~v@@@R~
         return ctrSelected==PLAYERS;                               //~v@@@R~
     }                                                              //~v@@@I~
     //******************************************************       //~v@@@I~
-    private Rect getRectSetupAccept(int Pplayer)                   //~v@@@I~
+//  private Rect getRectSetupAccept(int Pplayer)                   //~v@@@I~//+vaw0R~
+    public Rect getRectSetupAccept(int Pplayer)                    //+vaw0I~
     {                                                              //~v@@@I~
     	Rect r=AG.aStock.rectsBG[Pplayer];                                   //~v@@@R~
     	Rect ro;                                                   //~v@@@I~
@@ -1129,6 +1132,7 @@ public class River                                                 //~v@@@R~
         default: //left                                            //~v@@@I~
         	ro=new Rect(r.right-hh,r.bottom, r.right,        r.bottom+ww);//~v@@@R~
         }                                                          //~v@@@I~
+        if (Dump.Y) Dump.println("River.getRectSetupAccept player="+Pplayer+",rect="+ro);//~vavqR~
         return ro;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~

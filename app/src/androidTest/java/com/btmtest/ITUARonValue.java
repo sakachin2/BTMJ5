@@ -1,4 +1,4 @@
-//*CID://+vagrR~:                                   update#=  20;  //~vagrR~
+//*CID://+vagrR~:                                   update#= 128;  //~vagrR~
 //******************************************************************//~vafhI~
 //2021/11/14 vagr (Bug of vafh)determins honchan when pillow:tanyao//~vagrI~
 //2021/11/01 vafh (Bug) for HonChanta(TerminalMix),Dump to cache   //~vafhI~
@@ -33,6 +33,7 @@ import com.btmtest.game.Status;
 import com.btmtest.game.UA.UARon;
 import com.btmtest.game.UserAction;
 import com.btmtest.utils.Dump;                                     //~0A31M~
+import com.btmtest.game.RA.RoundStat;                              //~vagrI~
                                                                    //~0A31M~
 import static com.btmtest.TestOption.*;
 
@@ -48,6 +49,7 @@ public class ITUARonValue                                          //~0B02R~
 {                                                                  //~0A31I~
 	private AG AG;                                                 //~0B01I~
     ITUARonValueSub UARVS;                                       //~0B02I~
+    public static int MaxCase=0;                                   //~vagrR~
 	//*************************************************************************//~0B01I~
     private void initEnv()                                         //~0B01I~
     {                                                              //~0B01I~
@@ -59,6 +61,7 @@ public class ITUARonValue                                          //~0B02R~
 //      AG.context=InstrumentationRegistry.getInstrumentation().getContext();     //~0B01I~//~1108I~//~1310R~
         AG.context=InstrumentationRegistry.getInstrumentation().getTargetContext();//~1310I~
         AG.resource=AG.context.getResources();                     //~0B01I~
+        AG.isDebuggable=true;                                      //~vagrI~
         AG.dirSep="/";                                             //~0B01I~
         AG.mainThread=Thread.currentThread();                         //~@@@@I~//~1Ad7R~//~v@@@R~//~1310I~
 //      AG.aMainActivity=(MainActivity)AG.context;
@@ -75,6 +78,7 @@ public class ITUARonValue                                          //~0B02R~
         AG.aAccounts=new Accounts();                               //~0B01I~
         AG.aStatus=new Status();                                   //~0B01I~
         AG.aUARon=new UARon(new UserAction());                     //~0B02R~
+        new RoundStat();                                           //~vagrI~
         if (Dump.Y) Dump.println("ITUARonValue.constructor");      //~0B02R~
     }                                                              //~0B01I~
     //*************************************************************************//~0A31I~
@@ -87,12 +91,14 @@ public class ITUARonValue                                          //~0B02R~
         UARVS.sw4WindDouble=true;                                  //~0B02I~
         UARVS.sw9GateDouble=true;                                  //~0B02I~
         if (Dump.Y) Dump.println("ITUARonValuse.setUp");           //~0B02R~
-//      UARVS.setTestAll(true);                                    //~0B02I~//~1310R~//~vagrR~
-        UARVS.setTestAll(false);                                   //~1310I~//~vagrR~
+        UARVS.setTestAll(true);                                    //~0B02I~//~1310R~//~vagrR~
+//      UARVS.setTestAll(false);                                   //~1310I~//~vagrR~
     }                                                              //~0A31M~
     @Test                                                          //~0B01I~
     public void testChkComplete()                                  //~0B01I~
     {                                                              //~0B01I~
+      try                                                          //~vagrI~
+      {                                                            //~vagrI~
         setUpEnv();                                                //~0B01I~
 //      UARVS.ronTestValue(0/*case#*/); //start                    //~vagrI~
 //      UARVS.ronTestValue(255041/*0*//*case#*/);                  //~0B02R~//~1310R~
@@ -135,28 +141,56 @@ public class ITUARonValue                                          //~0B02R~
 //          UARVS.ronTestValue(231058/*case#*/);                   //~vagrR~
 //          UARVS.ronTestValue(231059/*case#*/);                   //~vagrR~
 //          UARVS.ronTestValue(2310591/*case#*/);                  //~vagrR~
-            UARVS.ronTestValue(23321/*case#*/);                    //+vagrR~
-            UARVS.ronTestValue(233211/*case#*/);                   //+vagrR~
-            UARVS.ronTestValue(23322/*case#*/);                    //+vagrI~
-            UARVS.ronTestValue(23323/*case#*/);                    //+vagrI~
-            UARVS.ronTestValue(23324/*case#*/);                    //+vagrI~
-            UARVS.ronTestValue(23325/*case#*/);                    //+vagrI~
-            UARVS.ronTestValue(23326/*case#*/);                    //+vagrI~
-//              UARVS.ronTestValue(2332601/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332602/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332603/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332604/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332605/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332606/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332607/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332608/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332609/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332610/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332611/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332612/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332613/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332614/*case#*/);              //+vagrR~
-//              UARVS.ronTestValue(2332615/*case#*/);              //+vagrR~
+//            UARVS.ronTestValue(23321/*case#*/);                  //~vagrR~
+//            UARVS.ronTestValue(233211/*case#*/);                 //~vagrR~
+//            UARVS.ronTestValue(23322/*case#*/);                  //~vagrR~
+//            UARVS.ronTestValue(23323/*case#*/);                  //~vagrR~
+//            UARVS.ronTestValue(23324/*case#*/);                  //~vagrR~
+//            UARVS.ronTestValue(23325/*case#*/);                  //~vagrR~
+//            UARVS.ronTestValue(23326/*case#*/);                  //~vagrR~
+//              UARVS.ronTestValue(2332601/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332602/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332603/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332604/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332605/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332606/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332607/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332608/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332609/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332610/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332611/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332612/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332613/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332614/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332615/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332701/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332801/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2332901/*case#*/);              //~vagrR~
+//MaxCase=2333100 ;      UARVS.ronTestValue(2333001/*case#*/);   //help test//~vagrR~
+//              UARVS.ronTestValue(2333013/*case#*/);              //~vagrR~
+//              UARVS.ronTestValue(2333113/*case#*/);  //3tonko    //~vagrR~
+//              UARVS.ronTestValue(2333201/*case#*/);   //3windNoHonor//~vagrR~
+//  MaxCase=22901300;   UARVS.ronTestValue(22901201/*case#*/);   //honor//~vagrR~
+//                UARVS.ronTestValue(22901301/*case#*/); //straight3//~vagrR~
+//axCase=22901500;   UARVS.ronTestValue(22901401/*case#*/); //straight3 chkEarth//~vagrR~
+//MaxCase=22901600;      UARVS.ronTestValue(22901501/*case#*/); //3shiki    chkEarth//~vagrR~
+//xCase=22901700;  UARVS.ronTestValue(22901601/*case#*/); //straight    chkEarth//~vagrR~
+// MaxCase=22901800;            UARVS.ronTestValue(22901701/*case#*/); //straight3   chkEarth//~vagrR~
+//   MaxCase=22901900;  UARVS.ronTestValue(22901801/*case#*/); //honor//~vagrR~
+//MaxCase=22902000 ;      UARVS.ronTestValue(22901901/*case#*/);   //3WindNoHonor earth//~vagrR~
+//MaxCase=22902100 ;      UARVS.ronTestValue(22902001/*case#*/);   //3kan earth//~vagrR~
+//  MaxCase=22902200 ;      UARVS.ronTestValue(22902101/*case#*/);   //little dragon//~vagrR~
+//xCase=22902210 ;      UARVS.ronTestValue(22902201/*case#*/);   //3anko//~vagrR~
+MaxCase=22902400 ;      UARVS.ronTestValue(22902301/*case#*/);   //other multiwaittake//+vagrR~
+//MaxCase=22902500 ;      UARVS.ronTestValue(22902401/*case#*/);   //help test//~vagrR~
+//  MaxCase=22902600 ;      UARVS.ronTestValue(22902501/*case#*/);   //3renpon//~vagrR~
+//MaxCase=22902700 ;      UARVS.ronTestValue(22902601/*case#*/);   //3dupseq//~vagrR~
+//MaxCase=22902700 ;      UARVS.ronTestValue(22902609/*case#*/);   //3dupseq//+vagrR~
+        }                                                          //~vagrI~
+        catch(Exception e)                                         //~vagrI~
+        {                                                          //~vagrI~
+            Dump.printlnNoMsg(e,"ITUARonValue");                   //~vagrR~
+        }                                                          //~vagrI~
     }                                                              //~0B01I~
     private void setUpEnv()                                             //~0B01I~
     {                                                              //~0B01I~

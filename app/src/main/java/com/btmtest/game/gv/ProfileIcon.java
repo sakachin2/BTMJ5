@@ -1,5 +1,6 @@
-//*CID://+vavuR~: update#= 874;                                    //~vavuR~
+//*CID://+vaw0R~: update#= 876;                                    //~vaw0R~
 //**********************************************************************
+//2023/01/31 vaw0 ProfileIcon overwrap by positioning tile when not long device landscape//~vaw0I~
 //2023/01/29 vavu avoid overwrap profile icon and left of river when landscape//~vavuI~
 //2023/01/28 vavq overwrap chk for Left/Right river and Face/You profile when landscape//~vavqI~
 //2023/01/10 vav5 show profile icon on CompReqDlg                  //~vav5I~
@@ -206,7 +207,10 @@ public class ProfileIcon
 //          rectProfileBeforeMove=getRectBeforeMoved(rectProfile); //~vas4R~
             rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate);//~vas4I~
             if (!AG.portrait)                                      //~vavqI~
+            {                                                      //~vaw0I~
+                adjustWithRiverBeforeMoved(rectProfileBeforeMove); //~vaw0I~
                 adjustWithRiver(rectProfile);                      //~vavqI~
+            }                                                      //~vaw0I~
         }
     	if (Dump.Y) Dump.println("ProfileIcon.setRect rectProfile="+Utils.toString(rectProfile));
     	if (Dump.Y) Dump.println("ProfileIcon.setRect rectProfileBeforeMove="+Utils.toString(rectProfileBeforeMove));
@@ -1195,24 +1199,24 @@ public class ProfileIcon
             }                                                      //~vavqI~
         }                                                          //~vavqI~
     	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver after end of river rectProfile="+Utils.toString(PrectProfile));//~vavuI~
-        Point ptY=AG.aMJTable.getRiverPos(PLAYER_YOU);             //+vavuR~
-        Point ptL=AG.aMJTable.getRiverPos(PLAYER_LEFT);            //+vavuI~
-        int wrapWW=PrectProfile[PLAYER_YOU].right+MARGIN_RIVER_LEFT-ptY.x;//+vavuR~
-        int spaceWW=PrectProfile[PLAYER_YOU].left-MARGIN_RIVER_LEFT-ptL.x-AG.aMJTable.riverPieceH;//+vavuI~
-    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver riverPieceH="+AG.aMJTable.riverPieceH+",wrapWW="+wrapWW+",spaceWW="+spaceWW);//+vavuI~
-        if (spaceWW>=wrapWW)                                       //+vavuI~
-        {                                                          //+vavuI~
-            PrectProfile[PLAYER_YOU   ].left   -=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_YOU   ].right  -=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_RIGHT ].top    +=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_RIGHT ].bottom +=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_FACING].left   +=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_FACING].right  +=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_LEFT  ].top    -=wrapWW;           //+vavuI~
-            PrectProfile[PLAYER_LEFT  ].bottom -=wrapWW;           //+vavuI~
-    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver adjust by spaceWW rectProfile="+Utils.toString(PrectProfile));//+vavuI~
-            wrapWW=0;                                              //+vavuI~
-        }                                                          //+vavuI~
+        Point ptY=AG.aMJTable.getRiverPos(PLAYER_YOU);             //~vavuR~
+        Point ptL=AG.aMJTable.getRiverPos(PLAYER_LEFT);            //~vavuI~
+        int wrapWW=PrectProfile[PLAYER_YOU].right+MARGIN_RIVER_LEFT-ptY.x;//~vavuR~
+        int spaceWW=PrectProfile[PLAYER_YOU].left-MARGIN_RIVER_LEFT-ptL.x-AG.aMJTable.riverPieceH;//~vavuI~
+    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver riverPieceH="+AG.aMJTable.riverPieceH+",wrapWW="+wrapWW+",spaceWW="+spaceWW);//~vavuI~
+        if (spaceWW>=wrapWW)                                       //~vavuI~
+        {                                                          //~vavuI~
+            PrectProfile[PLAYER_YOU   ].left   -=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_YOU   ].right  -=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_RIGHT ].top    +=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_RIGHT ].bottom +=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_FACING].left   +=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_FACING].right  +=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_LEFT  ].top    -=wrapWW;           //~vavuI~
+            PrectProfile[PLAYER_LEFT  ].bottom -=wrapWW;           //~vavuI~
+    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver adjust by spaceWW rectProfile="+Utils.toString(PrectProfile));//~vavuI~
+            wrapWW=0;                                              //~vavuI~
+        }                                                          //~vavuI~
         if (wrapWW>0)                                              //~vavuI~
         {                                                          //~vavuI~
             int wrapHH=(int)((double)wrapWW/(rectProfile.right-rectProfile.left)*(rectProfile.bottom-rectProfile.top));//~vavuR~
@@ -1235,4 +1239,38 @@ public class ProfileIcon
     	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver rc="+shrinkH);//~vavqI~//~vavuM~
         return shrinkH;
     }                                                              //~vavqI~
+//***************************************************************  //~vaw0I~
+//*for lanscape not long device                                    //~vaw0I~
+//*chk Your positioning tile and ProfileIcon of the Right          //~vaw0I~
+//***************************************************************  //~vaw0I~
+	private int adjustWithRiverBeforeMoved(Rect[] PrectProfile)    //~vaw0I~
+    {                                                              //~vaw0I~
+    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMoved rectProfile="+Utils.toString(PrectProfile));//~vaw0I~
+	    int shrinkH=0;
+        Rect rectProfileRight=PrectProfile[PLAYER_RIGHT];          //~vaw0I~
+	    Rect rectPositioningTile=AG.aRiver.getRectSetupAccept(PLAYER_YOU);       //~vaw0I~
+        int overwrap=rectPositioningTile.right+6/*gap*/-rectProfileRight.left;//+vaw0R~
+        if (overwrap>0)                                            //~vaw0I~
+        {                                                          //~vaw0I~
+            shrinkH=overwrap;                                  //~vaw0I~
+            int shrinkW=(int)((double)shrinkH*(rectProfileRight.right-rectProfileRight.left)/(rectProfileRight.bottom-rectProfileRight.top));//~vaw0I~
+    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMove overWrap H="+shrinkH+",W="+shrinkW);//~vaw0I~
+            if (rectProfileRight.left+shrinkH>=rectProfileRight.right)//~vaw0I~
+            	shrinkH=0;                                         //~vaw0I~
+            else                                                   //~vaw0I~
+            {                                                      //~vaw0I~
+                PrectProfile[PLAYER_YOU   ].left   +=shrinkW;      //~vaw0I~
+                PrectProfile[PLAYER_YOU   ].top    +=shrinkH;      //~vaw0I~
+                PrectProfile[PLAYER_RIGHT ].left   +=shrinkH;      //~vaw0I~
+                PrectProfile[PLAYER_RIGHT ].bottom -=shrinkW;      //~vaw0I~
+                PrectProfile[PLAYER_FACING].bottom -=shrinkH;      //~vaw0I~
+                PrectProfile[PLAYER_FACING].right  -=shrinkW;      //~vaw0I~
+                PrectProfile[PLAYER_LEFT  ].top    +=shrinkW;      //~vaw0I~
+                PrectProfile[PLAYER_LEFT  ].right  -=shrinkH;      //~vaw0I~
+            }                                                      //~vaw0I~
+        }                                                          //~vaw0I~
+    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMove after end of river rectProfile="+Utils.toString(PrectProfile));//~vaw0I~
+    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver rc="+shrinkH);//~vaw0I~
+        return shrinkH;                                            //~vaw0I~
+    }                                                              //~vaw0I~
 }//class ProfileIcon

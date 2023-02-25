@@ -1,7 +1,8 @@
-//*CID://+vavgR~:                             update#=  195;       //~vavgR~
+//*CID://+vaw1R~:                             update#=  200;       //~vaw1R~
 //*************************************************************************//~1A65I~
+//2023/02/02 vaw1 try vavc by pair devices discovering status      //~vaw1I~
 //2023/01/25 vavg avoid duplicated drawListView request            //~vavgI~
-//2023/01/24 vavd pairing connect by macaddr is not avail. It required scan befre. so delete vavc//~vavdI~
+//2023/01/24 vavd pairing connect by macaddr is not avail. It required scan before. so delete vavc//~vavdI~//~vavgR~
 //2023/01/23 vavc display historical entry on WD devicelist        //~vavcI~
 //2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
@@ -106,7 +107,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
     public int statusConnected;                                    //~@@@@R~
     public int ctrConnected,ctrInvited;                            //~0116R~
 //  public boolean swShowHistory=true;                             //~vavcI~//~vavdR~
-    public boolean swShowHistory=false;                            //~vavdI~
+    public boolean swShowHistory=false;                            //~vavdI~//+vaw1R~
     //******************************************                   //~1A65I~
     public DeviceListFragment()                                    //~1A65I~
     {                                                              //~1A65I~
@@ -546,7 +547,7 @@ public class DeviceListFragment implements PeerListListener {      //~1A65R~
 ////              WDA.getWDActivity().removeGroup();  //TODO test//~9A05I~//~@@@@R~
 //                ((DeviceListFragment.DeviceActionListener)WDA.getWDActivity()).disconnect();//~@@@@R~
 //            }                                                    //~@@@@R~
-//          return;                                                //+vavgR~
+//          return;                                                //~vavgR~
         }
         else                                                       //~1A65I~
         {                                                          //~1A65I~

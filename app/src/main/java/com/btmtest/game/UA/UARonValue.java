@@ -1,6 +1,8 @@
-//*CID://+vaq3R~: update#= 966;                                    //+vaq3R~
+//*CID://+vaw5R~: update#= 978;                                    //+vaw5R~
 //**********************************************************************//~v101I~
-//2022/08/13 vaq3 implements Yakuman 8continued                    //+vaq3I~
+//2023/02/10 vaw5 add local yaku. 4SEQNNUM                         //~vaw4I~
+//2023/02/02 vaw4 add local yaku. 7PAIR28_MAN/7PAIR28_SOU          //~vaw4I~
+//2022/08/13 vaq3 implements Yakuman 8continued                    //~vaq3I~
 //2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2022/01/23 vaja Not Notify Chankan to human                      //~vajaI~
 //2021/11/10 vagf (Bug)Robot could not by chankan                  //~vagfI~
@@ -106,7 +108,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private int flagEmulationCall2nd;                              //~vafzI~
     private boolean swEvaluateRon;                                  //~vagfI~
     private int parmEnvironmentYaku;                               //~vagfI~
-    private boolean swCompReqDlg,sw8Cont;                          //+vaq3I~
+    private boolean swCompReqDlg,sw8Cont;                          //~vaq3I~
     //*************************                                        //~v@@@I~
 	public UARonValue()                                //~0914R~//~dataR~//~1107R~//~1111R~//~@@@@R~//~v@@@R~//~9C11R~//~0925R~//~va11R~
     {                                                              //~0914I~
@@ -212,17 +214,17 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         tdChkRankTaken=null;                                       //~va88I~
         return rc;                                                 //~va88I~
     }                                                              //~va88I~
-    //*************************************************************************//+vaq3I~
-    public RonResult getValueCompReqDlg(int Pplayer,boolean Psw8Cont)//+vaq3I~
-    {                                                              //+vaq3I~
-        if (Dump.Y) Dump.println("UARonValue.getValueCompReqDlg player="+Pplayer+",sw8Cont="+sw8Cont);//+vaq3I~
-        swCompReqDlg=true;                                         //+vaq3I~
-        sw8Cont=Psw8Cont;                                          //+vaq3I~
-    	RonResult r=getValue(Pplayer);                             //+vaq3I~
-        swCompReqDlg=false;                                        //+vaq3I~
-        if (Dump.Y) Dump.println("UARonValue.getValueCompReqDlg player="+Pplayer+",ronResult="+r);//+vaq3I~
-        return r;                                                  //+vaq3I~
-	}                                                              //+vaq3I~
+    //*************************************************************************//~vaq3I~
+    public RonResult getValueCompReqDlg(int Pplayer,boolean Psw8Cont)//~vaq3I~
+    {                                                              //~vaq3I~
+        if (Dump.Y) Dump.println("UARonValue.getValueCompReqDlg player="+Pplayer+",sw8Cont="+sw8Cont);//~vaq3I~
+        swCompReqDlg=true;                                         //~vaq3I~
+        sw8Cont=Psw8Cont;                                          //~vaq3I~
+    	RonResult r=getValue(Pplayer);                             //~vaq3I~
+        swCompReqDlg=false;                                        //~vaq3I~
+        if (Dump.Y) Dump.println("UARonValue.getValueCompReqDlg player="+Pplayer+",ronResult="+r);//~vaq3I~
+        return r;                                                  //~vaq3I~
+	}                                                              //~vaq3I~
     //*************************************************************************//~va11I~
     public RonResult getValue(int Pplayer)                         //~va11R~
 //  public RonResult getValue(CompReqDlg PcompReqDlg,int Pplayer)  //~va11R~
@@ -598,11 +600,11 @@ public class UARonValue extends UARonChk                               //~v@@@R~
 //                swRonChkDone=true;                               //~va11R~
 //            }                                                    //~va11R~
     	chkYakumanStandard();                                      //~va11I~
-        if (swCompReqDlg && sw8Cont)                               //+vaq3I~
-        {                                                          //+vaq3I~
-            if (Dump.Y) Dump.println("UARonValue.chkRonValueSub addYakuman 8cont by swCompReqDlg & sw8Cont");//+vaq3I~
-	    	addYakuman(RYAKU_8CONT,false/*double*/);               //+vaq3I~
-        }                                                          //+vaq3I~
+        if (swCompReqDlg && sw8Cont)                               //~vaq3I~
+        {                                                          //~vaq3I~
+            if (Dump.Y) Dump.println("UARonValue.chkRonValueSub addYakuman 8cont by swCompReqDlg & sw8Cont");//~vaq3I~
+	    	addYakuman(RYAKU_8CONT,false/*double*/);               //~vaq3I~
+        }                                                          //~vaq3I~
         if (swYakuman)                                             //~va11I~
         {                                                          //~va11I~
 //            if (!swRonChkDone)   //ronchk not done               //~va11R~
@@ -887,6 +889,7 @@ public class UARonValue extends UARonChk                               //~v@@@R~
     private boolean chkYakumanStandard()                           //~va11R~
     {                                                              //~va11I~
         if (Dump.Y) Dump.println("UARonValue.chkYakumanStandard"); //~va11R~
+        boolean swExclusive=false;                                //~vaw4I~
         if (chkAllHonor())	//tsuiiso                              //~va11R~
         	;                                                      //~va11R~
         else                                                       //~va11I~
@@ -899,13 +902,32 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         	;                                                      //~va11R~
         else                                                       //~va11I~
         {                                                          //~va11I~
+          swExclusive=                                             //~vaw4I~
         	chk4Wind();     //big/small susiho                     //~va11R~
+          if (!swExclusive)                                        //~vaw4I~
+          {                                                        //~vaw4I~
+           swExclusive=                                            //~vaw4I~
 	        chk9gate();     //churenpaoto                          //~va11R~
+          }                                                        //~vaw4I~
+          if (!swExclusive)                                        //~vaw4I~
+          {                                                        //~vaw4I~
+           swExclusive=                                            //~vaw4I~
         	chk7PairAllPin28();                                    //~va11I~
+          }                                                        //~vaw4I~
+          if (!swExclusive)                                        //~vaw4I~
+          {                                                        //~vaw4I~
+           swExclusive=                                            //~vaw4I~
+        	chk7PairAllPin28NotPin();                              //~vaw4I~
+          }                                                        //~vaw4I~
+          if (!swExclusive)                                        //~vaw5R~
+          {                                                        //~vaw5R~
+           swExclusive=                                            //~vaw5R~
+	        chk4SeqNum();    //4renpon                             //~vaw5R~
+          }                                                        //~vaw5R~
         }                                                          //~va11I~
         chk4Kan();          //sukantsu                             //~va11R~
         chk4Same();         //4anko                                //~va11R~
-        if (Dump.Y) Dump.println("UARonValue.chkYakumanStandard rc="+swYakuman);//~va11R~
+        if (Dump.Y) Dump.println("UARonValue.chkYakumanStandard rc="+swYakuman+",swExclusive="+swExclusive);//~va11R~//~vaw4R~
         return swYakuman;                                          //~va11R~
     }                                                              //~va11I~
 	//*************************************************************************//~va11I~
@@ -1053,6 +1075,65 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         if (Dump.Y) Dump.println("UARonValue.chk4Wind rc="+rc+",sw4WindDouble="+sw4WindDouble+",ctrPillow="+ctrPillow+",ctrNonPillow="+ctrNonPillow);//~va24R~
         return rc!=0;                                                 //~va11I~
     }                                                              //~va11I~
+	//*************************************************************************//~vaw5R~
+    private  boolean chk4SeqNum()                                  //~vaw5R~
+    {                                                              //~vaw5R~
+        if (Dump.Y) Dump.println("UARonValue.chk4SeqNum dupCtrAll="+Utils.toString(dupCtrAll));//~vaw5R~
+    	if (!RuleSettingYaku.isYakuman4SeqNum())                   //+vaw5I~
+        	return false;                                          //+vaw5I~
+    	int ctrPillow=0,ctrNonPillow=0;                            //~vaw5R~
+    	boolean swFound=true;                                      //~vaw5R~
+        for (int jj=0;jj<TT_4ESWN_CTR;jj++)      //ji              //~vaw5R~
+        {                                                          //~vaw5R~
+            int ctr=dupCtrAll[TT_JI][jj];                          //~vaw5R~
+            if (ctr==0)                                            //~vaw5R~
+            	continue;                                          //~vaw5R~
+            if (ctr==2)                                            //~vaw5R~
+            {                                                      //~vaw5R~
+                ctrPillow++;                                       //~vaw5R~
+                if (ctrPillow==1)                                  //~vaw5R~
+	            	continue;                                      //~vaw5R~
+            }                                                      //~vaw5R~
+            swFound=false;                                         //~vaw5R~
+            break;                                                 //~vaw5R~
+        }                                                          //~vaw5R~
+        if (swFound)                                               //~vaw5R~
+        {                                                          //~vaw5R~
+        	swFound=false;                                         //~vaw5I~
+            for (int ii=0;ii<PIECE_NUMBERTYPECTR;ii++)      //0-2  //~vaw5R~
+            {                                                      //~vaw5R~
+                ctrNonPillow=0;                                    //~vaw5R~
+                for (int jj=0;jj<PIECE_NUMBERCTR;jj++)      //0-8  //~vaw5R~
+                {                                                  //~vaw5R~
+                    int ctr=dupCtrAll[ii][jj];                     //~vaw5R~
+                    if (ctr>2)                                     //~vaw5R~
+                        ctrNonPillow++;                            //~vaw5R~
+                    else                                           //~vaw5R~
+                    {                                              //~vaw5R~
+                        if (ctrNonPillow!=0 && ctrNonPillow!=4)    //started 4sequence number//~vaw5R~
+                            break;                                 //~vaw5R~
+			            if (ctr==0)                                //~vaw5R~
+            				continue;                              //~vaw5R~
+                        if (ctr==2)                                //~vaw5R~
+                        {                                          //~vaw5R~
+			                ctrPillow++;                           //~vaw5R~
+			                if (ctrPillow==1)                      //~vaw5R~
+	        			    	continue;                          //~vaw5R~
+                        }                                          //~vaw5R~
+                        break;                                     //~vaw5R~
+                    }                                              //~vaw5R~
+                }                                                  //~vaw5R~
+                if (ctrNonPillow==4)                               //~vaw5R~
+                    swFound=true;                                  //~vaw5R~
+            }                                                      //~vaw5R~
+        }                                                          //~vaw5R~
+        if (ctrPillow!=1)                                          //~vaw5I~
+	    	swFound=false;                                         //~vaw5R~
+        if (swFound)                                               //~vaw5I~
+		    addYakuman(RYAKU_4SEQNUM,false/*swDouble*/);           //~vaw5R~
+        if (Dump.Y) Dump.println("UARonValue.chk4SeqNum swFound="+swFound+",ctrPillow="+ctrPillow+",ctrNonPillow="+ctrNonPillow);//~vaw5R~
+        return swFound;                                            //~vaw5R~
+    }                                                              //~vaw5R~
 	//*************************************************************************//~va11I~
     private boolean chk9gate()                                         //~va11I~
     {                                                              //~va11I~
@@ -1222,6 +1303,41 @@ public class UARonValue extends UARonChk                               //~v@@@R~
         if (Dump.Y) Dump.println("UARonValue.chk7PairPin28 rc="+rc);//~va11I~
         return rc;                                                 //~va11M~
     }                                                              //~va11M~
+	//*************************************************************************//~vaw4I~
+    private boolean chk7PairAllPin28NotPin()                       //~vaw4I~
+    {                                                              //~vaw4I~
+    	if (!RuleSettingYaku.isYakumanChariotNotPin())             //~vaw4I~
+        	return false;                                          //~vaw4I~
+        if (Dump.Y) Dump.println("UARonValue.chk7PairAllPin28NotPin swTanyao="+swTanyao+",dupctr="+Utils.toString(dupCtr));//~vaw4I~
+        if (!swTanyao)                                             //~vaw4I~
+        	return false;                                          //~vaw4I~
+    	if (!swAllInHand)                                          //~vaw4I~
+        	return false;                                          //~vaw4I~
+        int color=TT_MAN;                                          //~vaw4I~
+        boolean rc=true;                                           //~vaw4I~
+        for (int jj=0;jj<2;jj++)                                       //~vaw4I~
+        {                                                          //~vaw4I~
+        	rc=true;                                               //~vaw4M~
+            for (int ii=1;ii<8;ii++)     //num:2--8                //~vaw4I~
+                if (dupCtr[color][ii]!=2)                          //~vaw4I~
+                {                                                  //~vaw4I~
+                    rc=false;                                      //~vaw4R~
+                    break;                                         //~vaw4I~
+                }                                                  //~vaw4I~
+            if (rc)                                                //~vaw4I~
+                break;                                             //~vaw4I~
+            color=TT_SOU;                                          //~vaw4I~
+        }                                                          //~vaw4I~
+        if (rc)                                                    //~vaw4I~
+        {                                                          //~vaw4I~
+            if (color==TT_MAN)                                      //~vaw4I~
+    	    	addYakuman(RYAKU_7PAIR28_MAN,false/*double*/);     //~vaw4I~
+            else                                                   //~vaw4I~
+    	    	addYakuman(RYAKU_7PAIR28_SOU,false/*double*/);     //~vaw4I~
+        }                                                          //~vaw4I~
+        if (Dump.Y) Dump.println("UARonValue.chk7PairPin28NotPin rc="+rc);//~vaw4I~
+        return rc;                                                 //~vaw4I~
+    }                                                              //~vaw4I~
 	//*************************************************************************//~va11I~
 	//*already chked ronnable for also 13/noPair etc illeagal format//~va11I~
 	//*************************************************************************//~va11I~

@@ -18,6 +18,41 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.28 : 2023/02/25
+		.Supports local Yaku.
+           3SeqTriples, Big 3 Winds, 3NonHonorWind, 3ColorStraight, Pure TripleChows, Single, 7 Pairs2-8 by Man, 7 Pairs2-8 by Sou, 4 SeqTriples.
+        .Readjustment of rule of "Fix Yaku".
+        .Bugs
+          -"All Terminals and Honors" is no4 4 han but 2 han.
+          -There were case of miss to evaluate Yaku.
+
+V1.28 : 2023/02/25
+		.로컬 役를 지원합니다.
+           三連刻、三風刻、客風三刻、三色一通、一色三順、裸単騎、大数隣、大竹林、四連刻
+		."Fix Yaku" 규칙 재조정.
+        .Bugs
+		  -"All Terminals and Honors"는 4_翻이 아니라 2_翻입니다.
+          - 페어 타일이 흰색이면 '小三元'을 놓치게 됩니다.
+          -'面子'를 오버래핑하여 "三暗刻" 및 "三同刻"가 누락되었습니다.
+
+*********************************************************************************************
+V1.28 : 2023/02/25
+		.Supports local Yaku.
+           3SeqTriples, Big 3 Winds, 3NonHonorWind, 3ColorStraight, Pure TripleChows, Single, 7 Pairs2-8 by Man, 7 Pairs2-8 by Sou, 4 SeqTriples.
+        .Readjustment of rule of "Fix Yaku".
+          -When "First only", other than first opened is out of question about relation to the Yaku.
+          -First opened is not related to the Yaku with "First only" option, even "Fixed Wait"(Not Kata-Agari) is not slip through the 1/2 han constrint restriction.
+          -Waiting 2 pairs of Honored tiles is also "Fixed Wait" like as Kanchan and Penchan.
+        .Bugs
+          -Miss "3 Color Triples" when unrelated open exists.
+          -Miss to count han when numeric suit is only pair.
+          -"All Terminals and Honors" is not 4 han but 2 han.
+          -Miss little dragon by error of Fix Yaku:"First only".
+          -Error "First only" for Honor which is opened first but followed by non related open.
+          -Miss to count han when Shanpon of Honor and not Honor.
+          -Miss little dragon when the pair tiles is White.
+          -Miss "3 Conceiled Triples" and "3 color triples" when sequencial Meld overwrap it.
+
 V1.27 : 2023/01/31
 		.Slightly increased the size of discarded tiles.
         .(Bugs)
@@ -29,7 +64,7 @@ V1.27 : 2023/01/31
         .(Bugs)
 		 -Android 12부터 Bluetooth 기기 검색이 실패할 수 있습니다.
 		 -Uninstall + install에서 때때로 "Exception occured" 문제 발생
-*********************************************************************************************
+
 V1.27 : 2023/01/31
 		.Changed the random number generation of dealing tiles to xorshift.
 		.Changed the aspect ratio of narrow screens from 1.8 to 16:9=1.77 (mainstream for smartphones). Tablets are often 16:10=1.6, 4:3=1.33.

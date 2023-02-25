@@ -1,4 +1,4 @@
-//*CID://+vakhR~: update#= 822;                                    //~vakhR~
+//*CID://+vakhR~: update#= 826;                                    //~vakhR~
 //**********************************************************************//~v101I~
 //2022/02/20 vakh set kataagari err different from fix err         //~vakhI~
 //2021/11/06 vag0 (Bug)Kan call is not shanten up                  //~vag0I~
@@ -94,7 +94,8 @@ public class UARonData                                             //~va11R~
     	longRankFixErrS=UARDT.aUARank.longRankFixErrS;             //~va91R~
         pointS=getPoint();                                         //~va11R~
         int amtMax=getAmmount(PrankBase);  //by intRankS and pointS//~va11R~
-        if (Dump.Y) Dump.println("UARonData.getAmmount amtMax="+amtMax);//~va11R~
+        if (Dump.Y) Dump.println("UARonData.getAmmount longRankS="+Rank.toStringName(longRankS));//+vakhR~
+        if (Dump.Y) Dump.println("UARonData.getAmmount amtMax="+amtMax);//~vakhI~
         return amtMax;                                             //~va11R~
     }                                                              //~va11I~
     //******************************************                   //~va11I~
@@ -435,7 +436,7 @@ public class UARonData                                             //~va11R~
         intRankFixErrMaxMultiWait=intRankFixErrSMultiWait[Pidx];   //~vakhI~
         longRankMax=longRankS[Pidx];                               //~va11I~
         longRankFixErrMax=longRankFixErrS[Pidx];                   //~va91R~
-        if (Dump.Y) Dump.println("UARonData.setMax idxPatternMax="+Pidx+",pointMax="+pointMax+",intRankMax="+intRankMax+",intRankFixErrMax="+intRankFixErrMax+",intRankFixErrMaxMultiWait="+intRankFixErrMaxMultiWait+",longRankMax="+Rank.toString(longRankMax)+"="+Rank.toStringName(longRankMax)+",longRankFixErr="+Rank.toString(longRankFixErrMax));//~va11R~//~va91R~//+vakhR~
+        if (Dump.Y) Dump.println("UARonData.setMax idxPatternMax="+Pidx+",pointMax="+pointMax+",intRankMax="+intRankMax+",intRankFixErrMax="+intRankFixErrMax+",intRankFixErrMaxMultiWait="+intRankFixErrMaxMultiWait+",longRankMax="+Rank.toString(longRankMax)+"="+Rank.toStringName(longRankMax)+",longRankFixErr="+Rank.toString(longRankFixErrMax));//~va11R~//~va91R~//~vakhR~
     }                                                              //~va11I~
     //******************************************                   //~va11I~
     private int getAmmount(int Prank,int Ppoint)                   //~va11I~
@@ -487,6 +488,7 @@ public class UARonData                                             //~va11R~
                 list[ctr++]=pair;                                  //~va11I~
             }                                                      //~va11I~
         }                                                          //~va11I~
+        if (Dump.Y) Dump.println("UARonData.getPairEarth exit pairEarth="+list);//~vakhI~
         return list;
     }                                                              //~va11I~
     //******************************************                   //~vafiI~

@@ -1,8 +1,8 @@
-//*CID://+vavwR~:                             update#=  203;       //+vavwR~
+//*CID://+vavwR~:                             update#=  204;       //~vavwR~
 //************************************************************************
 //2023/01/30 vavx (BUG)chk intent=null when image picker canceled  //~vavxI~
 //2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
-//2023/01/23 vavb (Bug)Exception at Umediastore if qury count is 0 //~vavbI~
+//2023/01/23 vavb (Bug)Exception at Umediastore if query count is 0 //~vavbI~//+vavwR~
 //2022/10/31 vau0 Ahsv-1amj 2022/10/31 explicitly say READ_PERMISSION when missing for change BGM//~vau0R~
 //2022/09/24 var8 display profile icon                             //~var8I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~

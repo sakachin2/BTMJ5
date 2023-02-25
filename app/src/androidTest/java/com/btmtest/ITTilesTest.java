@@ -1,4 +1,4 @@
-//*CID://+vah0R~: update#= 876;                                    //~vah0R~
+//*CID://+vah0R~: update#= 899;                                    //~vah0R~
 //**********************************************************************//~v101I~
 //2021/11/19 vah1 complete vagv(delete from main/java)             //~vah0I~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vaauI~
@@ -1233,6 +1233,58 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         else                                                       //~vaauI~
         if (Pcase==10011)  //intent allsame to ignore shantenup    //~vaauI~
         {                //pon and chii by 2pin                    //~vaauI~
+          if (false)                                               //~vah0R~
+          {           //4renpon East+4anko tumoz                   //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 9, 9, 9, 10,10,10, 11,11,11, 12,12,27 },//~vah0I~
+            						{23,20,24, 28, 3, 4,  3,15,16, 28,29, 8 },//~vah0I~
+            						{ 2, 3, 4,  4, 6,17,  2, 5,14, 18,27, 8 },//~vah0I~
+            						{ 2,14,25,  2,28, 4,  3, 5,15,  6,26, 8 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{13,13,28,30};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{13,27, 9,26};  //allinhand toitoi//~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{12,17,27,26};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (false)                                               //~vah0R~
+          {           //4renpon East+4anko tanki                   //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 9, 9, 9, 10,10,10, 11,11,11, 12,12,27 },//~vah0I~
+            						{23,20,24, 28, 3, 4,  3,15,16, 28,29, 8 },//~vah0R~
+            						{ 2, 3, 4,  4, 6,17,  2, 5,14, 18,27, 8 },//~vah0I~
+            						{ 2,14,25,  2,28, 4,  3, 5,15,  6,26, 8 },//~vah0R~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{12,13,28,30};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{13,27, 9,26};  //allinhand toitoi//~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{17,12,27,26};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)                                                //~vah0I~
+          {           //4renpon East                               //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 9, 9, 9, 10,10,10, 11,11,11, 12,12,27 },//~vah0I~
+            						{23,20,24,  2, 3, 4,  3,15,16, 28,29, 8 },//~vah0I~
+            						{ 2, 3, 4,  4, 6,17,  2, 5,14, 18,27, 8 },//~vah0I~
+            						{11,14,25,  2,28, 4,  3, 5,15,  6,26, 8 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{ 1,13,28,30};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{ 1,12,27,26};  //allinhand toitoi//+vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{17, 9,27,26};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          {                                                        //~vah0I~
         	itsDeal=new int[][]{                                   //~vaauI~
             						{23,20,24,  2, 3, 4, 11,15,16, 28,29, 8 },//~vaauR~
             						{18,20,12, 19,13,13, 17,23,23, 24,24,29 },//~vaauR~
@@ -1247,6 +1299,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
         	itsDealTake=new int[]{ 9, 9,27,26};                    //~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
+          }                                                        //~vah0I~
         }                                                          //~vaauI~
         else                                                       //~vaauI~
         if (Pcase==10012)  //intent tanyao  to ignore shantenup    //~vaauI~
@@ -1345,6 +1398,19 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         else                                                       //~vaauI~
         if (Pcase==10015)  //straight   kataagari   chii             //~vaauR~//~vah0R~
         {                                                          //~vaauM~
+          if (true)   //sakizuke all chii tanki                    //~vah0I~
+          {	                                                       //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 0, 3, 6,  9,18, 3,  6, 9,18, 27,27,28 },//~vah0I~
+            						{ 1, 2, 4,  5, 7, 8, 10,11,19, 20,27,28 },//~vah0I~
+            						{ 1, 2, 4,  5, 7, 8, 10,11,19, 20,27,28 },//~vah0I~
+            						{ 0, 3, 6,  9,12,15, 18,21,24, 29,30, 5 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{18,23,13,22};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
           if (true)   //kanchan                                    //~vah0R~
           {	//kanchan                                              //~vah0I~
         	itsDeal=new int[][]{                                   //~vah0I~
@@ -1424,24 +1490,60 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         else                                                       //~vaauM~
         if (Pcase==10016)  //intent 3sameseq                       //~vaauI~
         {                                                          //~vaauI~
+          if (true)   //3dupseq 1sshiki3jun                        //~vah0I~
+          {                                                        //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 0, 0, 0,  1, 1, 1,  2, 2, 2, 18,19,27 },//~vah0I~
+            						{ 5, 2, 3, 10,30,12, 19,20,21, 26,26,26 },//~vah0I~
+            						{ 5, 7, 7, 12,14,14,  9,10,24, 24,16,16 },//~vah0I~
+            						{ 4, 6, 8,  9,11,13, 12,21,22,  4, 6, 8 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{27,17, 4, 3};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{28, 0,10,15};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{20, 0,11,16};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)   //straight3                                  //~vah0R~
+          {                                                        //~vah0I~
         	itsDeal=new int[][]{                                   //~vaauI~
-//          						{ 0, 1, 2,  9,10,11, 18,19,20, 24,25,25 },//~vaauR~
-//          						{ 0, 1, 2,  9,10,11, 18,19,20, 25,25,25 },//~vaauR~
-//          						{ 6,30, 8, 15,16,17, 24, 4,26,  3, 3, 3 },//~vaauI~
-            						{ 1, 2, 3, 10,11,12, 19,20,21, 24,24,25 },//~vaauI~
+            						{ 0, 1, 2, 12,13,14, 24,25,26, 18,19,27 },//~vaauI~//~vah0R~
             						{ 5, 2, 3, 10,30,12, 19,20,21, 26,26,26 },//~vaauR~
             						{ 5, 7, 7, 12,14,14,  9,10,24, 24,16,16 },//~vaauR~
             						{ 4, 6, 8,  9,11,13, 12,21,22,  4, 6, 8 },//~vaauR~
             					};                                 //~vaauI~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vaauI~
-        	itsDealTake=new int[]{23,25, 2, 3};                    //~vaauR~
+        	itsDealTake=new int[]{27,17, 2, 3};                    //~vaauR~//~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
-        	itsDealTake=new int[]{30, 9,10,15};                    //~vaauI~
+        	itsDealTake=new int[]{28, 0,10,15};                    //~vaauI~//~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
-        	itsDealTake=new int[]{11, 4, 5, 6};                    //~vaauI~
-    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
-        	itsDealTake=new int[]{18, 4, 5, 6};                    //~vaauI~
-    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
+        	itsDealTake=new int[]{20, 0,11,16};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          {                                                        //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+//          						{ 0, 1, 2,  9,10,11, 18,19,20, 24,25,25 },//~vah0I~
+//          						{ 0, 1, 2,  9,10,11, 18,19,20, 25,25,25 },//~vah0I~
+//          						{ 6,30, 8, 15,16,17, 24, 4,26,  3, 3, 3 },//~vah0I~
+            						{ 1, 2, 3, 10,11,12, 19,20,21, 24,24,25 },//~vah0I~
+            						{ 5, 2, 3, 10,30,12, 19,20,21, 26,26,26 },//~vah0I~
+            						{ 5, 7, 7, 12,14,14,  9,10,24, 24,16,16 },//~vah0I~
+            						{ 4, 6, 8,  9,11,13, 12,21,22,  4, 6, 8 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{23,25, 2, 3};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{30, 9,10,15};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{11, 4, 5, 6};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{18, 4, 5, 6};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
         }                                                          //~vaauI~
         else                                                       //~vaauI~
         if (Pcase==10017)  //intent Tanyao                         //~vaauI~
@@ -1821,11 +1923,11 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
         	itsDealTake=new int[]{18,18,18,18};                    //~vah0I~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
-        	itsDealTake=new int[]{28,29,27,28};                    //+vah0R~
+        	itsDealTake=new int[]{28,29,27,28};                    //~vah0R~
             outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
           }                                                        //~vah0I~
           else                                                     //~vah0I~
-          if (true )                                               //+vah0R~
+          if (true )                                               //~vah0R~
           {        //2ron                                          //~vah0I~
         	itsDeal=new int[][]{                                   //~vah0I~
             						{ 0, 1, 2,  3, 4, 5,  6, 7, 8,  9,10, 11},//~vah0I~
@@ -1836,7 +1938,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
         	itsDealTake=new int[]{30,18,18,18};                    //~vah0I~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
-        	itsDealTake=new int[]{28,29,27,28};                    //+vah0R~
+        	itsDealTake=new int[]{28,29,27,28};                    //~vah0R~
             outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
           }                                                        //~vah0I~
           else                                                     //~vah0I~
@@ -1850,7 +1952,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
         	itsDealTake=new int[]{30,18,18,29};                    //~vah0I~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
-        	itsDealTake=new int[]{28,29,27,28};                    //+vah0R~
+        	itsDealTake=new int[]{28,29,27,28};                    //~vah0R~
             outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
           }                                                        //~vah0I~
         }                                                          //~vah0I~
@@ -2039,6 +2141,33 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         else                                                       //~1419I~
         if (Pcase==4) //multiwait 2 of WGR and doubleEast          //~1420R~
         {                                                          //~1419I~
+          if (true)	//3renpon                                      //~vah0I~
+          {                                                        //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 0, 0, 0,  1, 1, 1,  2, 2, 2, 13,19, 19},//~vah0R~
+            						{28, 3, 6, 12,15,17, 18,21,24, 30,18, 16},//~vah0I~
+            						{28,20,21, 12,15,30, 29,22,22,  3,23,24 },//~vah0I~
+            						{29,29, 3, 12,15,13,  4, 4,11,  5, 5,20 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{14,18,20,21};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)	//3wind NoHonor                                //~vah0I~
+          {                                                        //~vah0I~
+        	itsDeal=new int[][]{
+            						{28,28,28, 29,29,29, 30,30,13, 14,19, 19},//~vah0I~
+            						{ 0, 3, 6, 12,15,17, 18,21,24, 30,18, 19},//~vah0I~
+            						{ 0,20,21, 12,15,30,  2,22,22,  3,23,24 },//~vah0I~
+            						{ 1, 1, 3, 12,15,13,  4, 4,11,  5, 5,20 },//~vah0I~
+            					};
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);
+        	itsDealTake=new int[]{33,18,20,21};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          {                                                        //~vah0I~
         	itsDeal=new int[][]{                                   //~1419I~
             						{31,32,27, 27, 0, 1,  2,10,11, 12,18, 19},//~1419I~//~1420R~//~1427R~
             						{ 0, 3, 6, 11,14,17, 18,21,24, 32,28, 30},//~1419I~//~1420R~
@@ -2052,6 +2181,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1419I~
         	itsDealTake=new int[]{28,27,33,20};                    //~1419I~//~1420R~//~1427R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~1419I~
+          }                                                        //~vah0I~
         }                                                          //~1419I~
         else                                                       //~1427I~
         if (Pcase==411) //samecolor                                //~1427I~
@@ -2311,6 +2441,92 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         else                                                       //~vaauI~
         if (Pcase==102) //7Pair tanyao                             //~vaauI~
         {                                                          //~vaauI~
+          if (false)                                               //~vah0R~
+          {          //7pair2-8 sou ron    East                    //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{19,19,20, 20,21,21, 22,22,23, 23,24,24 },//~vah0I~
+            						{25,10,11, 11,12,12, 13,13,14, 14,15, 15},//~vah0I~
+            						{27, 1, 2,  2, 3, 3,  4, 4, 5,  5, 6,  6},//~vah0I~
+            						{10,13,16,  2, 2, 9,  9,17,17, 18,19, 6 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{25, 7,24,27};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{27,28,12,13};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{16,16, 3, 4};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)                                                //~vah0R~
+          {          //7pair2-8 man ron    East                    //~vah0R~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 1, 1, 2,  2, 3, 3,  4, 4, 5,  5, 6,  6},//~vah0I~
+            						{10,10,11, 11,12,12, 13,13,14, 14,15, 15},//~vah0I~
+            						{ 9,12,15, 20,20,20, 22,22,22, 23,23,23 },//~vah0I~
+            						{10,13,16,  2, 2, 9,  9,17,17, 18,19, 6 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{ 7, 7,24,25};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{18,28,12,13};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{16,16, 3, 4};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)                                                //~vah0R~
+          {          //7pair2-8 man   take                         //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 1, 1, 2,  2, 3, 3,  4, 4, 5,  5, 6,  6},//~vah0I~
+            						{10,10,11, 11,12,12, 13,13,14, 14,15, 15},//~vah0I~
+            						{ 9,12,15, 20,20,20, 22,22,22, 23,23,23 },//~vah0I~
+            						{10,13,16,  2, 2, 9,  9,17,17, 18,19, 6 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{ 7,16,24,25};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{18,28,12,13};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{ 7,16, 3, 4};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)                                                //~vah0I~
+          {          //7pair2-8 yakuman  Furiten  South            //~vah0R~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 0, 3, 6, 11,14,17, 18,21,24, 27,28, 29},//~vah0I~
+            						{10,10,11, 11,12,12, 13,13,14, 14,15, 15},//~vah0I~
+            						{ 9,12,15, 20,20,20, 22,22,22, 23,23,23 },//~vah0I~
+            						{10,13,16,  2, 2, 2,  4, 4, 4,  6, 6, 6 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{ 0,16, 3,25};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{ 0,13,12,13};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{ 0,24,16, 4};                    //~vah0R~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          if (true)                                                //~vah0I~
+          {          //7pair2-8 yakuman                            //~vah0I~
+        	itsDeal=new int[][]{                                   //~vah0I~
+            						{ 0, 3, 6, 11,14,17, 18,21,24, 27,28, 29},//~vah0I~
+            						{10,10,11, 11,12,12, 13,13,14, 14,15, 15},//~vah0I~
+            						{ 9,12,15, 20,20,20, 22,22,22, 23,23,23 },//~vah0I~
+            						{10,13,16,  2, 2, 2,  4, 4, 4,  6, 6, 6 },//~vah0I~
+            					};                                 //~vah0I~
+		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
+        	itsDealTake=new int[]{ 0,16,24,25};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{ 0,28,12,13};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+        	itsDealTake=new int[]{ 0,16, 3, 4};                    //~vah0I~
+    		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
+          }                                                        //~vah0I~
+          else                                                     //~vah0I~
+          {                                                        //~vah0I~
         	itsDeal=new int[][]{                                   //~vaauI~
             						{ 0, 3, 6, 11,14,17, 18,21,24, 27,28, 29},//~vaauI~
             						{ 1, 1, 3,  3, 5, 5, 10,10,12, 12,19, 29},//~vaauR~//~vah0R~
@@ -2325,6 +2541,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
         	itsDealTake=new int[]{ 0,19,12,13};                    //~vaauR~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vaauI~
+          }                                                        //~vah0I~
         }                                                          //~vaauI~
         else                                                       //~vaauI~
         if (Pcase==103) //7Pair chanta                             //~vaauI~

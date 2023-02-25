@@ -2,9 +2,9 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.27</string>
-    <string name="app_versionMinConnect">v1.24</string>
-    <string name="app_MinVersion">v1.24</string>
+    <string name="app_version">v1.28</string>
+    <string name="app_versionMinConnect">v1.28</string>
+    <string name="app_MinVersion">v1.28</string>         <!--rule send/recive and resume from history-->
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -45,8 +45,10 @@
 	<string name="BTSecureOption">SecureConnection</string> <!--1Abu-->
     <!--string name="BTSettingsButton">Settings</string--> <!--1AbE-->
     <string name="BTAcceptCommon">Accept</string> <!--1Abu-->
+    <string name="WDAccept">Accept</string> <!--1Abu-->
     <!--string name="BTStop">Cancel</string--> <!--1Abu-->
     <string name="BTStopAccept">StopAccept</string>
+    <string name="WDStopAccept">StopAccept</string>
     <string name="BTConnectCommon">Connect</string>  <!--1Abu-->
     <string name="BTGame">Game</string>
     <string name="BTGameRestart">Restart</string>
@@ -1195,7 +1197,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <!--string name="Label_YakuFixMultiwaitDrawOK">Multi tile wait Draw OK</string-->
     <string name="Desc_YakuFix">" Finally : Accept winning hand if it has Yaku finally.\n"
     							"Middle : Allow also fixing Yaku not at 1st call but not last.\n"
-    							"First only : Required all calling of tile are related the Yaku of winning hand until fixing it. OR tiles in hand already has a Yaku fixed.\n"
+    							"First only : Required first Meld opened is related the Yaku of winning hand. OR tiles in hand constructs a Yaku completely.\n"
                                  (Sell Help for details.)
                                  </string>
     <string name="Label_YakuFix1">Check 1-han constraint</string>
@@ -1264,6 +1266,21 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="Label_9RenPinSou">Not Mans 9 gates</string>
     <string name="Label_AllGreenNoBlue">All green w/o dragon</string>
     <string name="Label_BigRing">7 pairs by pin2-8</string>
+    <string name="Label_BigRingNotPin">7 pairs by man2-8 / sou2-8</string>
+    <string name="Label_4SeqNum">4SeqTriples</string>
+    <string name="Label_Single">Single</string>
+    <string name="Label_3WindNoHonor">3NonHonorWind</string>
+    <string name="Label_3Wind">Big 3 Winds</string>
+    <string name="Label_3WindNoHonorAllowRound">Allow Round</string>
+    <string name="Label_3WNH_2Han">2 han</string>
+    <string name="Label_3WNH_3Han">3 han</string>
+    <string name="Label_3SeqNum">3SeqTriples</string>
+    <string name="Label_3DupSeq">PureTripleChow</string>
+    <string name="Label_3DupSeq_Menzen3">3 han</string>
+    <string name="Label_3DupSeq_Menzen2">2 han</string>
+    <string name="Label_3DupSeqAllowOpen">Open OK</string>
+    <string name="Label_3ColorStraight">3ColorStraight</string>
+    <string name="Label_7Star">7StarOrphan</string>
     <string name="Label_NoPair13">13 broken</string>
     <string name="Label_NoPair14">14 broken</string>
     <string name="Label_Rank13">13 or more han(Max Mangan*3 if off）</string>
@@ -1326,6 +1343,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
 					(6) Full Flush.\n
 					(Note)---(n) : han(=rank). Usualy 1 rank down if not All-In-Hand with some exception. (+n): always along with other rank.</string>
     <string name="Desc_YakuLocal">See also topic of Yakuman, Hand of man, NagasiMangan. Otherwise, take agree in the group beforehand.</string>
+    <string name="Label_LocalYaku">Yaku by local rule.</string>
     <string name="Label_SpritPos">Wareme</string>
     <!--string name="Desc_SpritPos0">" : SplitPos : You will see \"割\" in End-of-Hand dialog."</string-->
     <string name="Desc_SpritPos0_1">" : SplitPos : You will see "</string>
@@ -1390,7 +1408,6 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
     <string name="DeviceType_LocalClient">This Device(Client)</string>
     <string name="DeviceType_RemoteServer">RemoteServer</string>
     <string name="DeviceType_RemoteClient">RemoteClient</string>
-    <!--string name="empty_message">ペア設定の端末が見つかりません。\"探索\"をしてください。Android8(Oreo)デバイスは設定で（Google または セキュリティとプライバシー）,位置情報,現在地にアクセスをオンにする必要があります</string-->
     <string name="empty_message">No paired device found. do \"Discover\". See also Help.</string>
     <string name="Wifi_Pair_NotAvailableDevice">do \"Pairing\" for "Available\" device.</string>
     <string name="Wifi_Pair_NotConnectedDevice">Select other than \"Available\".</string>
@@ -1461,7 +1478,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
         <item>Double-Run</item>               <!-- =6;    //1peiko                         -->
         <item>3 Color Runs</item>             <!-- =7;    //3shiki                         -->
         <item>3 Color Triples</item>          <!-- =8;    //3tonko                         -->
-        <item>3 concealed Triples</item>      <!--=9;    //3anko                          -->
+        <item>3 Concealed Triples</item>      <!--=9;    //3anko                          -->
         <item>Straight</item>                 <!--=10;   //itsu                           -->
         <item>All Triples</item>              <!--=11;   //toitoi                         -->
         <item>Mixed outside hand</item>       <!--=12;   //honchan                        -->
@@ -1482,7 +1499,7 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
         <item>Last discard</item>             <!--=26; //hotei                       -->
         <item>Add-A-Quad</item>               <!--=27; //chankan                     -->
         <item>King\'s Tile Draw</item>        <!--=28; //rinshan                     -->
-        <item>rsv</item>                      <!--=29; //dora                        -->
+        <item>Single</item>                   <!--=29; //                            -->
         <item>Drawn without Simples</item>    <!--=30; //nagasi mangan               -->
         <item>Hand of man</item>              <!--=31  //renho not yakuman           -->
 
@@ -1512,6 +1529,21 @@ Regardless \"Fix Taku\" or \"Allow Furiten\" setting, Riich+SelfDraw only is not
         <item>13 Orphans 13Win</item>        <!--=RYAKU_YAKUMAN+19;   //kokushi 13wait          -->
         <item>9 Gates for 9</item>                  <!--=RYAKU_YAKUMAN+20;  //13poto           -->
         <item>OpenReach Ron</item>            <!--=RYAKU_YAKUMAN+21;  //discarded ron tile to OpenReach-->
+        <item>LocalYakuman</item>             <!--=RYAKU_YAKUMAN+22;  //Local Yakuman-->
+	</string-array>
+
+	<string-array name="listYakuAllLocal">
+        <item>3SeqNum</item>        <!--   //3renko                   -->
+        <item>3NonHonorWind</item>  <!--   //3wind no honor           -->
+        <item>3ColorStraight</item> <!--   //straight by 3 color      -->
+        <item>Single</item>         <!--   //4 earcth, wait 1 pair    -->
+        <item>Big3Winds</item>      <!--   //4 earcth, wait 1 pair    -->
+    	<item>PureTripleChow</item> <!--   3DupSeq                    -->
+
+        <item>Chariot-Character</item>  <!--   //man 7pair 2-8            -->
+        <item>Chariot-Bamboo</item>     <!--   //sou 7pair 2-8            -->
+        <item>4SeqTriples</item>        <!--   //4 cont seq pair          -->
+        <item>7StarOrphan</item>        <!--   //all one wind/dragon and 1-4-7,2-5-8,3-6-9 -->
 	</string-array>
 
     <string name="ShowYaku">Details</string>
@@ -1723,7 +1755,7 @@ Reinstall this APP to try to set again.
     <string name="Info_ImageExchanging">Exchanging profile Icon.</string>
     <string name="Err_AppVersionConnect">App version of %1$s is old, version %2$s is required.</string>
 
-    <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4 or above.</string>
+    <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4(Kitkat) or above.</string>
     <string name="Print">Print</string>
     <string name="Err_ConnectionExist">You can not chage it during connection exists.</string>
     <string name="Msg_selectImagePicker">Select APP to pickup Image</string>

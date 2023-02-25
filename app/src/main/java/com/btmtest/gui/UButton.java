@@ -1,4 +1,4 @@
-//*CID://+vac5R~:                             update#=   93;       //~vac5R~
+//*CID://+vac5R~:                             update#=   94;       //~vac5R~
 //**********************************************************************//~v105I~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //get View & set Button OnClickListener                            //~v@@@R~
@@ -31,7 +31,7 @@ public class UButton implements View.OnClickListener               //~v@@@R~
     @Override                                                  //~1831I~//~v@@@I~
     public void onClick(View Pv)                               //~1528I~//~v@@@I~
     {                                                          //~1528I~//~v@@@I~
-        if (Dump.Y) Dump.println("UButton:onClick listener="+listener.getClass().getSimpleName()+",id="+Pv.getId());//~v@@@R~
+        if (Dump.Y) Dump.println("UButton:onClick listener="+listener.getClass().getSimpleName()+",id="+Integer.toHexString(Pv.getId()));//~v@@@R~//+vac5R~
         try                                                    //~1831I~//~v@@@I~
         {                                                      //~1831I~//~v@@@I~
             listener.onClickButton((Button)Pv);              //~1831R~     //~v@@@R~
@@ -44,7 +44,7 @@ public class UButton implements View.OnClickListener               //~v@@@R~
 //*******************************************************************                                            //~1528I~//~v@@@I~
 	public static void setButtonListener(Button Pbutton,UButtonI Plistener)                 //~1919R~//~v@@@R~
     {                                                              //~1528I~//~v@@@I~
-        if (Dump.Y) Dump.println("UButton:setButtonListener listener="+Plistener.getClass().getSimpleName()+",id="+Pbutton.getId());//~v@@@R~
+        if (Dump.Y) Dump.println("UButton:setButtonListener listener="+Plistener.getClass().getSimpleName()+",id="+Integer.toHexString(Pbutton.getId()));//~v@@@R~//+vac5R~
         UButton ubtn=new UButton(Plistener);           //~1528I~   //~v@@@R~
         Pbutton.setOnClickListener(ubtn);                            //~1528I~//~v@@@R~
     }                                                              //~1528I~//~v@@@I~
@@ -112,7 +112,7 @@ public class UButton implements View.OnClickListener               //~v@@@R~
             if (v instanceof ViewGroup)                            //~vac5I~
             {                                                      //~vac5I~
 			    if (Dump.Y) Dump.println("UButton:setSeize child is ViewGroup");//~vac5I~
-				setSize(v,Pwidth,Pheight,PswDPI);                  //+vac5R~
+				setSize(v,Pwidth,Pheight,PswDPI);                  //~vac5R~
             }                                                      //~vac5I~
         }                                                          //~vac5I~
     }                                                              //~vac5I~

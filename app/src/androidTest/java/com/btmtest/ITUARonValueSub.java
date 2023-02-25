@@ -1,4 +1,4 @@
-//*CID://+vagrR~: update#= 894;                                    //~vagrR~
+//*CID://+DATER~: update#= 967;                                    //~vagrR~//~3216R~
 //**********************************************************************//~v101I~
 //2021/11/14 vagr (Bug of vafh)determins honchan when pillow:tanyao//~vagrI~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
@@ -26,6 +26,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 	private AG AG=StaticVars.AG;                                   //~va23I~
     Players PL=AG.aPlayers;                                        //~va23I~
     public boolean swTestAll=false;                                //~va23R~
+    private ITUARonValueSub2 sub2;                                 //~vagrI~
 //    private int[][] dupCtr,dupCtrAll;                            //~va23R~
 //    private Pair[] pairEarth;                                    //~va23R~
 	private int testCase=0;                                        //~va23R~
@@ -42,6 +43,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         sw7Pair4Pair=true;                                         //~0B02I~
         sw13NoPair=true;                                           //~0B02I~
         sw14NoPair=true;                                           //~0B02I~
+        sub2=new ITUARonValueSub2();                               //~vagrR~
     }                                                              //~0B02I~
 	//*************************************************************************//~va23I~
 	public void setCase(int Pcase)                                 //~va23I~
@@ -89,6 +91,13 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         int[][] dupCtrAll=Utils.cloneArray2(PdupCtr);              //~va23I~
 	    return ronTestSub(PdupCtr,dupCtrAll,PronType,PronNumber,0,PswAllHand,null);//~va23I~
     }                                                              //~va23I~
+    public RonResult ronTestSub(int[][] PdupCtr,int[][] PdupCtrAll,int PronType,int PronNumber,int PctrAnkan,boolean PswAllHand,Pair[] PpairEarth,boolean PswTaken)//~vagrR~
+    {                                                              //~vagrI~
+    	swTaken=PswTaken;                                            //~vagrI~
+    	RonResult r=ronTestSub(PdupCtr,PdupCtrAll,PronType,PronNumber,PctrAnkan,PswAllHand,PpairEarth);//~vagrI~
+        swTaken=false;                                              //~vagrI~
+    	return r;
+	}                                                              //~vagrI~
     public RonResult ronTestSub(int[][] PdupCtr,int[][] PdupCtrAll,int PronType,int PronNumber,int PctrAnkan,boolean PswAllHand,Pair[] PpairEarth)//~va23I~
     {                                                              //~va23I~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTestSub start");//~va23R~
@@ -100,6 +109,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 //        }                                                        //~va23R~
 //        TestOption.option2 &= ~TestOption.TO2_RONVALUE_TEST;     //~va23I~
 //        TestOption.option2 |= TestOption.TO2_RONVALUE_TESTSUB;   //~va23I~
+//      TestOption.option2 |= TestOption.TO2_RONVALUE_TESTSUB;     //~vagrR~
         int ctrTile=0;                                             //~va23I~
         for (int ii=0;ii<4;ii++)                                   //~va23I~
         	for (int jj=0;jj<9;jj++)                               //~va23I~
@@ -114,6 +124,8 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
         testCtrAnkan=PctrAnkan;                                    //~va23I~
         testRonType=PronType; testRonNumber=PronNumber;            //~va23I~
         testPairEarth=PpairEarth;                                  //~va23R~
+        if (testPairEarth==null)                                   //~vagrI~
+            testPairEarth=new Pair[4];                             //~vagrI~
 //      getValue(PLAYER_YOU);	//left:amt,top:yaku,right:rank,bottom:point//~va23I~
         	dupCtr=testDupCtr;                                     //~va23I~
         	dupCtrAll=testDupCtrAll;                               //~va23I~
@@ -126,7 +138,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
     	    boolean rc=chkRonValueSub();                           //~va23R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTestSub ronResult="+ronResult.toString()+",\nswAllInhand="+swAllInHand+",ronType="+PronType+",ronNumber="+PronNumber+"\n,dupCtr="+Utils.toString(PdupCtr)+"\n,dupCtrAll="+Utils.toString(PdupCtrAll));//~va23R~
 //        TestOption.option2 |= TestOption.TO2_RONVALUE_TEST;      //~va23I~
-//        TestOption.option2 &= ~TestOption.TO2_RONVALUE_TESTSUB;  //~va23I~
+//      TestOption.option2 &= ~TestOption.TO2_RONVALUE_TESTSUB;  //~va23I~//~vagrR~
         return ronResult;                                          //~va23I~
     }                                                              //~va23I~
 	//*************************************************************************//~0B02I~
@@ -136,7 +148,7 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 //      if ((TestOption.option2 & TestOption.TO2_CHKRANK)==0)      //~va23R~
 //          UView.showToastLong("ITUARonValueSub.Start testCase="+testCase);                 //~0A11R~//~va23R~
 	    RonResult rc=null;                                              //~va11R~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTestValue");              //~9C12I~//~0B02R~
+        if (Dump.Y) Dump.println("ITUARonValueSub.ronTestValue swTestAll="+swTestAll);              //~9C12I~//~0B02R~//~vagrR~
 //        if (testCase>=255010 && testCase<255999)                   //~0A11I~//~va23R~
 //        {                                                        //~va23R~
 //            rc=ronTestValue2();                                  //~va23R~
@@ -1624,6 +1636,10 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 	    rc=ronTestSub(dupCtr,dupCtrAll,3/*ronType*/,5/*ronNumber*/,1/*ctrAnkan*/,false/*saAllHand*/,pairEarth);//~0B02R~
         if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-229011 little 3dragon shosangen naki rc="+rc);//~0B02R~
         if (!swTestAll) break;                                     //~va23R~
+//*********                                                        //~vagrI~
+    case 22901101:                                                 //~vagrI~
+		rc=sub2.ronTestValue5(testCase);                                 //~vagrI~
+        if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~0A16I~
     case 22902:                                                    //~0A16I~
                                                                    //~0A16I~
@@ -4682,235 +4698,1970 @@ public class ITUARonValueSub extends UARonValue                    //~0B02R~
 	//*************************************************************************//~0A17I~
 	private RonResult ronTestValue4(int PtestCase)                 //~vagrI~
 	{
-	    RonResult rc=null;
-        testCase=PtestCase;
-	//*************************************************************************
-    switch(testCase)
-    {
-//*********                                                        //+vagrM~
-    case 23321:                                                    //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23321 chinitsu tsumo rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
-//*********                                                        //+vagrM~
-    case 233211:                                                   //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{0,0,0, 2,0,3, 1,1,1},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-233211 chinitsu tsumo rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
-//*********                                                        //+vagrM~
-    case 23322:                        //paring test               //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{0,2,0, 0,1,1, 2,1,1},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23322 paring test    rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
-//*********                                                        //+vagrM~
-    case 23323:                        //paring test               //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //+vagrM~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23323 paring test    rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
-//*********                                                        //+vagrM~
-    case 23324:                        //paring test               //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{1,1,1, 2,2,2, 1,1,3},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrM~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23324 paring test    rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
-//*********                                                        //+vagrM~
-    case 23325:                        //paring test               //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{0,0,0, 3,3,3, 0,0,2},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{1,1,1, 0,0,0, 0,0,0},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrM~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23325 paring test    rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
-//*********                                                        //+vagrM~
-    case 23326:                        //paring test               //+vagrM~
-        dupCtr=new int[][]{                                        //+vagrM~
-        	{1,1,1, 0,0,0, 0,0,0},                                 //+vagrM~
-        	{0,0,0, 3,3,3, 0,0,2},                                 //+vagrM~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //+vagrM~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //+vagrM~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//+vagrM~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-23326 paring test    rc="+rc.toString());//+vagrM~
-        if (!swTestAll) break;                                     //+vagrM~
+		RonResult rc = null;
+		testCase = PtestCase;
+		//*************************************************************************
+		switch (testCase) {
+//*********                                                        //~vagrM~
+			case 23321:                                                    //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-23321 chinitsu tsumo rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
+//*********                                                        //~vagrM~
+			case 233211:                                                   //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 2, 0, 3, 1, 1, 1},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-233211 chinitsu tsumo rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
+//*********                                                        //~vagrM~
+			case 23322:                        //paring test               //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 2, 0, 0, 1, 1, 2, 1, 1},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-23322 paring test    rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
+//*********                                                        //~vagrM~
+			case 23323:                        //paring test               //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-23323 paring test    rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
+//*********                                                        //~vagrM~
+			case 23324:                        //paring test               //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{1, 1, 1, 2, 2, 2, 1, 1, 3},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrM~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-23324 paring test    rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
+//*********                                                        //~vagrM~
+			case 23325:                        //paring test               //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{0, 0, 0, 3, 3, 3, 0, 0, 2},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrM~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-23325 paring test    rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
+//*********                                                        //~vagrM~
+			case 23326:                        //paring test               //~vagrM~
+				dupCtr = new int[][]{                                        //~vagrM~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 3, 3, 3, 0, 0, 2},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrM~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrM~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrM~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-23326 paring test    rc=" + rc.toString());//~vagrM~
+				if (!swTestAll) break;                                     //~vagrM~
 //*********                                                        //~vagrI~
-    case 2332601:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332601 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332601:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332601 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332602:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //~vagrI~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332602 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332602:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332602 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332603:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{1,1,1, 0,1,1, 1,0,0},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,1/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332603 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332603:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332603 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332604:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{4,1,1, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,1/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332604 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332604:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{4, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332604 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332605:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{4,1,1, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332605 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332605:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{4, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332605 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332606:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{0,0,0, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{4,1,1, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,1/*ronType*/,6/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332606 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332606:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{4, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 6/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332606 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332607:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{4,1,1, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,0/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332607 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332607:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{4, 1, 1, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332607 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332608:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{4,1,1, 0,2,0, 4,1,1},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,1/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332608 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332608:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{4, 1, 1, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332608 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332609:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{4,1,1, 0,2,0, 4,1,1},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332609 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332609:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{4, 1, 1, 0, 2, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332609 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332610:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{3,1,1, 1,0,0, 4,1,1},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332610 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332610:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{3, 1, 1, 1, 0, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332610 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332611:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{3,1,1, 1,0,0, 4,1,1},                                 //~vagrI~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332611 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332611:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 1, 1, 1, 0, 0, 4, 1, 1},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332611 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332612:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{3,1,1, 1,0,0, 4,1,1},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332612 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332612:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 1, 1, 1, 0, 0, 4, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332612 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332613:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{3,1,1, 1,0,3, 1,1,1},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332613 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332613:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 1, 1, 1, 0, 3, 1, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332613 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332614:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{3,1,1, 1,0,3, 1,1,1},                                 //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332614 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
+			case 2332614:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{3, 1, 1, 1, 0, 3, 1, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332614 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
 //*********                                                        //~vagrI~
-    case 2332615:                                                  //~vagrI~
-        dupCtr=new int[][]{                                        //~vagrI~
-        	{0,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-        	{3,1,1, 1,0,3, 1,1,1},                                 //~vagrI~
-        	{2,0,0, 0,0,0, 0,0,0},                                 //~vagrI~
-    	    { 0,0,0,0,  0,0,0, 0,0} };                         //7 //~vagrI~
-	    rc=ronTestSub(dupCtr,2/*ronType*/,0/*ronNumber*/,true /*Allhand**/);//~vagrI~
-        if (Dump.Y) Dump.println("ITUARonValueSub.ronTest-2332615 paring text rc="+rc.toString());//~vagrI~
-        if (!swTestAll) break;                                     //~vagrI~
-    default:       //value3
-        if (swTestAll) break;
-        UView.showToastLong("testCaseValue4 ERR="+testCase);       //~vagrI~
-    }
-        return rc;
-    }
+			case 2332615:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 1, 1, 1, 0, 3, 1, 1, 1},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 0/*ronNumber*/, true /*Allhand**/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332615 paring text rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//*********                                                        //~vagrI~
+//*7pair 28 Not Pin test                                             //~vagrI~
+			case 2332701:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 2, 2, 2, 2, 2, 2, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332701 daisharin pin rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332702:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 2, 2, 2, 2, 2, 2, 2, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtr, 0/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/, true/*saAllHand*/, null/*Earth*/, true/*swTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332702 daisharin TAKE man rc=" + rc.toString());//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 233270201:                                                //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 2, 2, 2, 2, 2, 2, 2, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtr, 0/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/, true/*saAllHand*/, null/*Earth*/, false/*swTake*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-233270201 daisharin RON man rc=" + rc.toString());//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332703:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 2, 2, 2, 2, 2, 2, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332703 daisharin sou rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332704:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 2, 2, 2, 2, 2, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 2/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332704 daisharin sou err rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332705:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{2, 2, 2, 2, 2, 2, 2, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332705 daisharin man err rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332706:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 2, 2, 2, 2, 2, 2, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332706 daisharin pin err rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332707:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 2, 0},                                 //~vagrI~
+						{0, 2, 2, 2, 2, 2, 2, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				rc = ronTestSub(dupCtr, 1/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332707 daisharin pin err rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332708:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{3, 3, 3, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 2, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				rc = ronTestSub(dupCtr, 1, 0, true/*swAllInHand*/);             //~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-233278 shabo ron not 4anko  rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//*********                                                        //~vagrI~
+			case 2332709:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{3, 2, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 3, 0, 0, 3, 0, 0, 0, 0}};                         //7 //~vagrI~
+				rc = ronTestSub(dupCtr, 0/*ronType*/, 1/*ronNumber*/, true/*swAllInHand*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332709 4Anko tanki rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//*********                                                        //~vagrI~
+//*4seqnum                                                         //~vagrI~
+			case 2332801:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 0, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 4, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 4/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332801 4renpon naki rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332802:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 4, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 4/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332802 4renpon mix color naki rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332803:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 0, 0, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 0, 3, 3, 4, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 4/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332803 4renpon not cont rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332804:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 3},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 3, 3, 3, 3},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 5/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 6/*number*/, 3/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332804 4renpon right edge rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332805:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{3, 0, 3, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{3, 3, 3, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 3/*number*/, 3/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332805 4renpon left edge rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332806:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{3, 3, 3, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{3, 3, 3, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 0/*ctrAnkan*/, true /*swAllHand*/, null/*pairEarth*/, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332806 4renpon 4anko rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332807:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{3, 3, 3, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{3, 3, 3, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, true /*swAllHand*/, null/*pairEarth*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332807 4renpon 4anko tanki rc=" + rc.toString());//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332808:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 3, 2, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 3, 2, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 4/*ronNumber*/, 0/*ctrAnkan*/, true /*swAllHand*/, null/*pairEarth*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332808 4renpon Not by inter pillow rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332809:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 3, 3, 3, 2, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 3, 3, 3, 2, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 3/*ronNumber*/, 0/*ctrAnkan*/, true /*swAllHand*/, null/*pairEarth*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332809 4renpon pillow is right nabour rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332810:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 3, 3, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 3, 3, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 3/*ronNumber*/, 0/*ctrAnkan*/, true /*swAllHand*/, null/*pairEarth*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332810 4renpon pillow is left nabour rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//*********                                                        //~vagrI~
+//*single                                                          //~vagrI~
+			case 2332901:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 1/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 1/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*saTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332901 Single TAKE sakiduke OK rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 233290101:                                                //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 3, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*saTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-233290101 Single err by ankan rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332902:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 3, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 1/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 1/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth, false/*saTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332902 Single RON sakiduke OK rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332903:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 1, 1, 1, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{0, 1, 1, 1, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 1/*type*/, 1/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 1/*type*/, 4/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 2/*type*/, 1/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*saTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332903 Single RON sakiduke NG rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332904:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 1/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 2/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 1/*type*/, 4/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*saTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332904 Single RON sakiduke 3shiki OK rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2332905:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{1, 1, 1, 0, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 2},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7 //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 1/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 1/*type*/, 4/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+						new Pair(PT_NUMSEQ, 2/*type*/, 0/*number*/, 3/*ctr*/, TDF_CHII),//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 0/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*saTake*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2332905 Single RON sakiduke 3shiki NG rc=" + rc.toString());//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//3tonko,3samenum                                                  //~vagrI~
+			case 2333001:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_TAKEN)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333001 3tonko with ankan rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333002:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333002 3tonko with minkan rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333003:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333003 3tonko fix not last but middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333004:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333004 3tonko fix last RON with middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333005:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333005 3tonko fix last TAKE with middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333006:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333006 3tonko fix last TAKE no middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333007:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333007 3tonko fix last RON no middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333008:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333008 3tonko fix last RON with HONOR anko no middle arth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333009:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 4/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333009 3tonko fix last RON with fix first by HONOR  no middle arth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333010:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 4, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 4/*ctr*/, TDF_PON)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333010 3tonko fix last RON with fix middle by HONOR  no middle arth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333011:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 4/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333011 3tonko not first is Honor pillow ron rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333012:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333012 3tonko not first is Honor shnpon ron rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333013:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333013 3tonko NR + 3 anko FIRST rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333014:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333014 3tonko NR + 2anko LAST RON rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333015:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333015 3tonko NR + 2anko LAST TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333016:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333016 3tonko NR + PON+ 2anko rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333017:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333017 3tonko NR + PON+ 1anko LAST RON rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333018:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333018 3tonko NR + PON+ 1anko LAST TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333019:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333019 3tonko NR + 3PON+ rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333020:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333020 3tonko R+NR+2R+ rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333021:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333021 3tonko R+NR+2anko+ rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333022:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333022 3tonko R+NR+anko+ shabo rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333023:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333023 3tonko R+NR+anko+ TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333024:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333024 3tonko R+1anko+ shabo rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333025:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333025 3tonko R+1anko+ TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333026:                                          //~3221I~
+                                                                   //~3221I~
+				dupCtr = new int[][]{                              //~3221I~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},               //~3221I~
+						{3, 0, 0, 0, 0, 0, 0, 3, 0},               //+3221R~
+						{0, 0, 0, 0, 0, 0, 0, 2, 0},               //+3221R~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~3221I~
+				dupCtrAll = new int[][]{                           //~3221I~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},               //~3221I~
+						{3, 0, 0, 0, 0, 0, 0, 3, 0},               //~3221I~
+						{0, 0, 0, 0, 0, 0, 0, 2, 0},               //~3221I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~3221I~
+				pairEarth = new Pair[]{                            //~3221I~
+						new Pair(PT_NUMSAME, 0/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~3221I~
+				};                                                 //~3221I~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth,false/*swTaken*/);//~3221I~
+				if (Dump.Y)                                        //~3221I~
+					Dump.println("ITUARonValueSub.ronTest-2333026 3tonko R+1anko+ ERR ron tanki rc=" + rc);//~3221R~
+				if (!swTestAll) break;                             //~3221I~
+			case 2333027:                                          //~3221I~
+                                                                   //~3221I~
+				dupCtr = new int[][]{                              //~3221I~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},               //+3221R~
+						{3, 0, 0, 0, 0, 0, 0, 2, 0},               //+3221R~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //+3221R~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~3221I~
+				dupCtrAll = new int[][]{                           //~3221I~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},               //~3221I~
+						{3, 0, 0, 0, 0, 0, 0, 2, 0},               //~3221I~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},               //~3221I~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~3221I~
+				pairEarth = new Pair[]{                            //~3221I~
+						new Pair(PT_NUMSAME, 2/*type*/, 7/*number*/, 3/*ctr*/, TDF_PON),//~3221I~
+				};                                                 //~3221I~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth,false/*swTaken*/);//~3221I~
+				if (Dump.Y)                                        //~3221I~
+					Dump.println("ITUARonValueSub.ronTest-2333027 3tonko R+1anko+ ERR ron tanki rc=" + rc);//~3221R~
+				if (!swTestAll) break;                             //~3221I~
+        if (ITUARonValue.MaxCase<2333101)                          //~3221I~
+        	break;                                                 //~3221I~
+//3WindNoHonor                                                     //~vagrR~
+			case 2333101:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 3, 3, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 3, 3, 4, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 4/*ctr*/, TDF_KAN_TAKEN)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333101 3wind with ankan rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333102:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333102 3wind  with minkan rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333103:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333103 3wind fix not last but middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333104:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 3/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333104 3wind  fix last RON with middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333105:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333105 3wind  fix last TAKE with middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333106:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333106 3wind  fix last TAKE no middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333107:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333107 3wind  fix last RON no middle earth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333108:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{3, 0, 0, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{3, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333108 3wind  fix 4wind RON with HONOR anko no middle arth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333109:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 3, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333109 3wind  fix last RON with fix first by HONOR  no middle arth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333110:                                                  //~vagrR~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 3, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 3, 3, 3, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON)//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333110 3wind  fix last RON with fix middle by HONOR  no middle arth rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333111:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 4, 2, 0, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333111 3wind with ankan Wind pillow ron rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333112:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 2, 0, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 2, 4, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 4/*ctr*/, TDF_KAN_RIVER)//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333112 no 3wind pillow nonhonor rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333113:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333113 3tonko NR + 3 anko FIRST rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333114:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333114 3tonko NR + 2anko LAST RON rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333115:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333115 3tonko NR + 2anko LAST TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333116:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 3, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 3, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333116 3tonko NR + PON+ 2anko rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333117:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 3/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333117 3tonko NR + PON+ 1anko LAST RON rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333118:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 3/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333118 3tonko NR + PON+ 1anko LAST TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333119:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333119 3tonko NR + 3PON+ rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333120:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333120 3tonko R+NR+2R+ rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333121:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333121 3tonko R+NR+2anko+ rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333122:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333122 3tonko R+NR+anko+ shabo rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333123:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333123 3tonko R+NR+anko+ TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333124:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333124 3tonko R+1anko+ shabo rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333125:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333125 3tonko R+1anko+ TAKE rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//num=pillow only                                                  //~vagrI~
+			case 2333201:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 3, 3, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333201 num=pillow menzen 3anko 3wind honro honitsu rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333202:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 3, 3, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333202 num=pillow pon toitoi 3wind honro honitsu rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333203:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 3, 3, 3, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 4/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333203 num=pillow pon toitoi 3anko 3wind honro honitsu rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333204:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 0, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{3, 4, 3, 3, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/, true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333204 num=pillow pon 4anko big4wind rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333205:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 3, 3, 3, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 0, 0, 3, 3, 3, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333205 num=pillow pon bigdragon rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333206:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 3, 3, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{2, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 3, 0, 0, 3, 3, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 5/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333206 num=pillow pon 3anko honro honitsu rc=" + rc);//~vagrR~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333207:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 4, 3, 0, 0, 3, 3, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrR~
+						new Pair(PT_NUMSAME, 3/*type*/, 2/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 5/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 6/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/, false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333207 num=pillow pon honitsu tanki rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333208:                                                  //~vagrI~
+				//~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{1, 1, 1, 0, 0, 1, 1, 1, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{1, 1, 1, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 2, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 1, 1, 1, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = null;                                            //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 1/*ronType*/, 3/*ronNumber*/, 1/*ctrAnkan*/, true /*swAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333208 num=pillow only kaiki test pinf rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333209:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 1/*type*/, 3/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333209 num=pillow only kaiki test 3anko rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333210:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 3, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 1/*type*/, 3/*number*/, 3/*ctr*/, TDF_PON),//~vagrR~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333210 num=pillow only kaiki test toitoi rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333211:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 1, 1, 1},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 6/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 5/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333211 num=pillow only kaiki test chanta rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333212:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{0, 0, 0, 0, 2, 0, 0, 0, 0}};                         //7  //~vagrR~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 0, 0, 4, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 1, 1, 1, 0, 0, 0},                                 //~vagrR~
+						{0, 4, 0, 0, 2, 4, 0, 0, 0}};                         //7  //~vagrR~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 6/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 5/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 3/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333212 num=pillow only kaiki test 3kan   rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333213:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{0, 0, 0, 0, 1, 1, 1, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSEQ, 0/*type*/, 4/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333213 num=pillow only kaiki test flush  rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+			case 2333214:                                                  //~vagrI~
+				dupCtr = new int[][]{                                        //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				dupCtrAll = new int[][]{                                     //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},                                 //~vagrI~
+						{0, 3, 3, 0, 2, 3, 0, 0, 0}};                         //7  //~vagrI~
+				pairEarth = new Pair[]{                                      //~vagrI~
+						new Pair(PT_NUMSAME, 0/*type*/, 0/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+						new Pair(PT_NUMSAME, 3/*type*/, 1/*number*/, 3/*ctr*/, TDF_PON),//~vagrI~
+				};                                                         //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 2/*ronNumber*/, 1/*ctrAnkan*/, false/*swAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)
+					Dump.println("ITUARonValueSub.ronTest-2333214 num=pillow only kaiki test honro  rc=" + rc);//~vagrI~
+				if (!swTestAll) break;                                     //~vagrI~
+//*********                                                        //~vagrI~
+			default:       //value3
+				rc = sub2.ronTestValue5(testCase);                 //~vagrR~
+                                              //~vagrI~
+		}
+		return rc;
+	}                                                             //~vagrI~
 }//class                                                           //~v@@@R~

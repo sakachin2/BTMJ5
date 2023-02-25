@@ -608,7 +608,7 @@
                     android:id="@+id/cbDeal3SameSeq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="三色 10016"
+                    android:text="三色 /三色一通/一色三順 10016"
                 />
                 <CheckBox
                     android:id="@+id/cbDealTanyao"
@@ -728,7 +728,7 @@
                     android:id="@+id/cbDealMultiWaitWGR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="役牌　白＋ダブトン　４"
+                    android:text="役牌　白＋ダブトン/３客風/３風刻/３連刻  ４"
                 />
                 <CheckBox
                     android:id="@+id/cbDealMultiWaitRon"
@@ -758,13 +758,13 @@
                     android:id="@+id/cbPonDealAllSame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="トイトイ ポン and チー 1001"
+                    android:text="対々 ポン and チー 1001"
                 />
                 <CheckBox
                     android:id="@+id/cbDealIntentAllSame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="トイトイ インテント 10011"
+                    android:text="対々/四連刻/４暗刻 10011"
                 />
                 <CheckBox
                     android:id="@+id/cbDealIntentTanyao"
@@ -944,7 +944,7 @@
                     android:id="@+id/cbDeal7PairTanyao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="チートイ　タンヤオ 102"
+                    android:text="チートイ　タンヤオ/大車輪/大竹林/大数リン 102"
                 />
                 <CheckBox
                     android:id="@+id/cbDeal7PairChanta"

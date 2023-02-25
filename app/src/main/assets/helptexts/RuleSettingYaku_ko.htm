@@ -105,6 +105,41 @@ B>2 Double Run</B>(二盃口): 2개의 동일한 Run. Menzen のみ。
 
 <BR>
 <BR>
+<BIG><B>Yaku by local rule.</B></BIG>：
+<BR>
+<B>Single:裸単騎</B>:4개의 Melds를 모두 연 후 싱글 페어로 승리하십시오. "Fix Yaku" 옵션이 "Finally"인 경우에만 1 翻의 값입니다.
+<BR>
+<B>3ColorStraight:三色一通</B>:
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_sou9s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- "Straight" by 3 수트. 2 翻 또는 1 翻을 엽니다.
+<BR>
+<B>3SeqTriples:三連刻</B>:
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 3연속 刻子. 개봉과 관계없이 2 翻.
+<BR>
+<B>PureTripleChow:一色三順</B>:
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 선택적으로 열린 모든 것을 허용합니다.
+<BR>
+<B>Big 3 Winds:三風刻</B>:
+<img src=@drawable/s_ji4es><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 風 3개 혼합. 2 翻 여는 것과 상관없이.
+<BR>
+<B>3NonHonorWind:三客風</B>:
+<img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 役牌 가 아니라, 바람 3종. 2_翻 상관없이 열린. 선택적으로 場風를 허용합니다.
+<BR>
+<BR>
 <BIG><B>Show Win-A</B></BIG>:
 이 버튼은 로컬 규칙의 불규칙한 (표준이 아닌) 승리 패턴의 승리를 호출하는 데 사용됩니다.
 Menu 항목 <B>Win anyway</B>는 동일한 기능을 수행하지만 Menu 작업 중에 다른 플레이어가 뭔가 call 할 수 있습니다.
@@ -157,6 +192,128 @@ Psuedo-Tenpai로 간주합니다.
 <BR>
 <BIG><B>Fix Yaku</BIG></B>
 <BR>
+일본식 "麻雀"에서는 승리한 손에 "役"(적어도 1 han)이 있어야 합니다.
+이 컬럼은 _"役"가 구성되는 시기에 대한 제한사항에 관한 것입니다.
+"First only" 규칙의 변형이 있습니다. "Finally"는 간단하고 문제가 적은 경우입니다. 일반적으로 채택됩니다.
+<BR>
+처음 열린 _面子는 役의 구성원이어야 합니다. 그렇지 않으면 _Yaku의 모든 구성원이 손에 포함되어야 합니다.
+_Kata-Agari는 금지되어 있습니다.
+Kata-Agari는 일본어이고 Kata는 한쪽을 의미하며 Agari는 승리를 의미합니다.
+즉, 여러 승리 타일 중 하나는 役를 구성하고 다른 하나는 그렇지 않습니다.
+<BR>
+이것이 "_First only"의 일반적인 규칙입니다.
+이 _APP에서는 다음 규칙을 따릅니다.
+<BR>
+<B>A.</B> "役"가 당신의 손에서 완성된다면 모든 것이 OK입니다.
+<BR>
+<B>B.</B> 두 쌍의 명예 타일 중 하나를 기다리는 것은 Kata-Agari가 아니라 Kanchan 및 Penchan과 같은 "_Fixed-Wait"입니다.
+	또한 3드래곤 스몰의 경우 화이트/그린/레드 1타일을 기다리는 것은 "Fixed-Wait"이다.
+<BR>
+<B>C.</B> 처음 열린 _面子가 役를 생성하면 "Fixed-Wait"로 승리를 선언해도 됩니다. 이 경우 두 번째 열린 面子의 役와의 관계는 중요하지 않습니다.
+<BR>
+<B>D.</B> If the first opened Meld is not related to the Yaku, it is NG even if it is Fixed-Wait for "First only" option.
+<B>D.</B> 처음 열린 面子가 役와 관련이 없는 경우 "Fixed-Wait"는 "Fisrt only" 옵션에 적용되지 않습니다.
+단, 첫 번째 이후 야쿠 관련 열린 面子가 있다면 <B>Middle OK</B> 옵션으로 OK.
+<BR>
+<B>E.</B> Kata-Agari의 경우 捨牌에 대한 승리 요청은 NG입니다.
+<BR>
+<B>F.</B> 올인핸드 상태(열린 멜드 없음)에서 승리 타일을 뽑았을 때 Kata-Agari는 문제가 되지 않습니다.
+If not All-In-Hand, it is optionally assumed as Fied-Wait(it dose not mean completed Meld in Hand) by Kata-Agari option.
+All-In-Hand가 아닌 경우 Kata-Agari 옵션에 의해 Fied-Wait(Meld in Hand 완료를 의미하지 않음)로 선택적으로 간주됩니다.
+<BR>
+<B>G.</B> <B>마침내</B> 옵션은 Kata-Agari 규칙에 관계없이 승리한 타일에 의해 役가 구성되면 괜찮다는 것을 의미합니다.
+<BR>
+<B>H.</B> NG는 1/2 han 제약 규칙에 영향을 미치지 않음을 의미합니다. 다른 Yaku가 있으면 Yaku의 가치가 Hand의 총 가치에 추가됩니다.
+<BR>
+<B>I.</B> 役満은 이 규칙에서 벗어났습니다.
+<BR>
+example.
+<BR>
+<B>面前(All-in-hand)의 경우</B>
+<BR>
+1-1. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_ji3ws> 또는 <img src=@drawable/s_ji3rs>는 First only 에 대해 _OK입니다.
+<BR>
+1-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_ji3gs>는 "_First only"에 대해 NG이지만 드로잉(自摸)하여 +1 han(翻)합니다.
+<BR>
+1-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ --- <img src=@drawable/s_pin9s>는 "First only"에 대해 NG이지만 무승부로 +2 han합니다.
+<BR>
+1-4. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin9s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ --- <img src=@drawable/s_pin8s>는 "First only"에 대해 _OK입니다.
+<BR>
+1-5. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin6s><img src=@drawable/s_pin6s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s><img src=@drawable/s_sou6s>
+ --- <img src=@drawable/s_pin6s> 또는 <img src=@drawable/s_sou2s>를 그려서 "Three Concealed Triples"의 +2_han이 됩니다.
+<BR>
+<B>당신이 처음 연 面子는 役의 멤버입니다</B>
+<BR>
+2-1. 
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+<img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_man1s> 또는 <img src=@drawable/s_man4s>는 "First only"에 대해 OK입니다.
+<BR>
+2-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ --- <img src=@drawable/s_pin7s>는 "First only"에 대해 OK입니다(위의 규칙 C에 따름).
+<BR>
+2-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ --- <img src=@drawable/s_pin9s>는 "First only"에 대해 NG이지만 그려진 경우 선택적으로 OK입니다
+<BR>
+<B>첫 번째로 연 _Meld는 _Yaku의 구성원이 아닙니다</B>
+<BR>
+3-1. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+ --- <img src=@drawable/s_sou6s> 및 <img src=@drawable/s_sou9s>는 _OK(위 규칙 A.)입니다.
+<BR>
+3-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s>
+ <img src=@drawable/s_ji3rl><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+ --- <img src=@drawable/s_sou9s>는 "First only"에 대해 NG이지만 "Middle OK" 옵션은 <img src=@drawable/s_sou6s>에 대해서도 허용합니다.
+<BR>
+3-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_ji3rs>는 "First only"에 대해 OK입니다(위 규칙 A.).
+<BR>
+3-4. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_man3s>는 "_First only"(위 규칙 D.)에 대해 _NG입니다.
+<BR>
+3-5. 
+<img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_pin3s>는 "Fisrt only"의 경우 NG, "Middle OK"의 경우 OK입니다(위의 규칙 D.).
+<BR>
+3-6. 
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_pin1s>는 "First only"의 경우 NG이고, 그려진 경우 "Middle OK"의 경우 선택적으로 OK입니다.
+<BR>
+3-7. 
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ --- <img src=@drawable/s_ji3rs>는 "First only"의 경우 NG, "_Middle OK"의 경우 OK입니다.
+<BR>
+<!-- *****************
 「일본식 마작」에서는, 마음대로 Yaku(적어도 1 han)가 필요합니다.
 그리고 승리 타일이 여러 개인 경우 Ron을 금지하는 규칙이 있습니다.
 'First only' 규칙에는 몇 가지 변종이 있으며 'Finally'는 간단하고 문제가 적은 경우입니다. 일반적으로 채택됩니다.
@@ -251,6 +408,7 @@ Earth에서 호출 시퀀스가 ​​문제가 아니라는 점을 제외하면
 <BR>
 어쨌든 Win 할 때 Yaku가 있다면 괜찮습니다.
 여러 개의 Win 타일이 있는 경우 다음 'Kata-Agari'를 따릅니다.
+************************ -->
 <BR>
 <BIG> <B>Kata-Agari</B></BIG> : Kata=한쪽,Agari(Win). a 여러 승리 타일 중 Yaku를 구성하지 않는 경우가 있는 경우의 약정입니다.
 <BR>
@@ -409,4 +567,4 @@ Tobi가 발생하는 경우, Tobi상은 NagashiMangan, Noten 벌금의 순서에
 ON이면 다음 8연속이 다음 야쿠만 타이밍입니다.
 <BR>
 <BR>
-<SMALL>RuleSettingYaku 2022/08/16</SMALL>
+<SMALL>RuleSettingYaku 2023/02/24</SMALL>

@@ -98,6 +98,42 @@ e.g. <img src=@drawable/s_man2s><img src=@drawable/s_man2s><img src=@drawable/s_
 
 <BR>
 <BR>
+<BIG><B>Yaku by local rule.</B></BIG>：
+<BR>
+<B>Single</B>:Open all 4 Melds and Win by the single pair. Value of 1 han only when "Fix Yaku" option is "Finally".
+<BR>
+<B>3ColorStraight</B>:
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_sou9s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- Straight by 3 suit. 2 han or 1 han if opened any.
+<BR>
+<B>3SeqTriples</B>:
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 3 continued Triples. 2 han regardless any opened.
+<BR>
+<B>PureTripleChow</B>:
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- Optionally allows any opened.
+<BR>
+<B>Big 3 Winds</B>:
+<img src=@drawable/s_ji4es><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 3 melds of Wind. 2 han regardless any opened.
+<BR>
+<B>3NonHonorWind</B>:
+<img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 3 melds of Wind not honored. 2 han regardless any opened. Optionally allow Round Wind.
+
+<BR>
+<BR>
 <BIG><B>Show Win-A</B></BIG>：
 This button is used to call win for irregular winning pattern of local rule.
 Menu item<B>Win anyway</B> dose the same function but you may loose the opportunity.
@@ -154,6 +190,118 @@ Japanese style Mahjong requires your winning hand to have some Yaku(at least 1 h
 And there are rules of prohibit Ron for the case winning tiles are multiple.
 There are some variation of "First only" rule, "Finally" is simple and fewer trouble case. It is generally adopted.
 <BR>
+The first opened Meld must be associated with the Yaku. Otherwise, you have to "complete the Yaku in your hands".
+Kata-Agari is forbidden.
+<BR>
+The general rule of "First only" is like this, but in this app it is as follows.
+<BR>
+<B>A.</B> Everything is OK if the Yaku is completed in your hands.
+<BR>
+<B>B.</B> Waiting for one of two pairs of honor tiles is not Kata-Agari but Fixed-Wait like as kanchan and penchan.
+    In addition, in case of 3dragon-small, waiting for single tile of White/Green/Redfor is also Fixed-Wait.
+<BR>
+<B>C.</B> If the first opened Meld is related to the Yaku, calling win is OK by Fixed-Wait. In this case, the relationship with the Yaku does not matter from the second opened Meld.
+<BR>
+<B>D.</B> If the first opened Meld is not related to the Yaku, it is NG even if it is Fixed-Wait for "First only" option.
+    However, if there is a opened Meld related to the Yaku after that, it is OK by <B>Middle OK</B> option.
+<BR>
+<B>E.</B> Win call for the discrded is NG if it is the case of Kata-Agari.
+<BR>
+<B>F.</B> When drawn winning tile of Kata-Agari, it is OK if All-In-Hand status(no opened Meld). If not All-In-Hand, it is assumed as Fied-Wait( not Meld completed in Hand) optionally by Kataagari option.
+<BR>
+<B>G.</B> <B>Finally</B> option means that it's OK if any Yaku is constructed by the winning tile regardless Kata-Agari rule.
+<BR>
+<B>H.</B> NG means that it is no effect to for 1/2 han constraint rule. If there are any other Yaku, value of the Yaku is added to total value of the Hand.
+<BR>
+<B>I.</B> Yakuman is out of this rule.
+<BR>
+example.
+<BR>
+<B>Case of All-In-Hand</B>
+<BR>
+1-1. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_ji3ws> or <img src=@drawable/s_ji3rs> are OK for "First only".
+<BR>
+1-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_ji3gs> is NG for "First only", but +1 han by drawing(self-pick) it.
+<BR>
+1-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ --- <img src=@drawable/s_pin9s> is NG for "First only", but +2 han by drawing it.
+<BR>
+1-4. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin9s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ --- <img src=@drawable/s_pin8s> is OK for "First only".
+<BR>
+1-5. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin6s><img src=@drawable/s_pin6s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s><img src=@drawable/s_sou6s>
+ --- <img src=@drawable/s_pin6s> or <img src=@drawable/s_sou2s> +2 han of "Three Concealed Triples" by drawing it.
+<BR>
+<B>Case of Meld opened first is related to a Yaku</B>
+<BR>
+2-1. 
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+<img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_man1s> or <img src=@drawable/s_man4s> are OK for "First only".
+<BR>
+2-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ --- <img src=@drawable/s_pin7s> is OK for "First only" (by rule C. above）
+<BR>
+2-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ --- <img src=@drawable/s_pin9s> is NG for "First only", but optionally OK if drawn it.
+<BR>
+<B>Case of Meld opened first is NOT related to a Yaku</B>
+<BR>
+3-1. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+ --- <img src=@drawable/s_sou6s> and <img src=@drawable/s_sou9s> are OK(rule A. above）.
+<BR>
+3-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s>
+ <img src=@drawable/s_ji3rl><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+ --- <img src=@drawable/s_sou9s> is NG for "First only", but "Middle OK" option allows it and also for <img src=@drawable/s_sou6s>.
+<BR>
+3-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_ji3rs> is OK for "Fisrt only"(rule A. above).
+<BR>
+3-4. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_man3s> is NG for "First only"(rule D. above).
+<BR>
+3-5. 
+<img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_pin3s> is NG for "Fisrt only", OK for "Middle OK"(rule D. above).
+<BR>
+3-6. 
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_pin1s> is NG for "First only", Drawing it is optionally OK for "Middle OK".
+<BR>
+3-7. 
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ --- <img src=@drawable/s_ji3rs> is NG for "First only", OK for "Middle OK".
+<BR>
+<!--- *****************************
 Robot and human in PlayAlone mode follow the rule bellow, 
 Human player in matching mode have to determine yourself to push "Win" button. 
 When another player questions "violation of rule",
@@ -174,6 +322,17 @@ e.g.) 1-han is conceiled in the hand.
 <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
 <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
 You can win by <img src=@drawable/s_sou6s> or <img src=@drawable/s_sou9s>.
+<BR>
+For the case of waiting Honor tiles.
+<BR>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ You can call Ron for both if AllInHand. And also OK when selfPicked one of two.
+<BR>
+<img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_man2s><img src=@drawable/s_man2s>
+ You can call Ron when picked <img src=@drawable/s_ji3ws> if AllInhand status.
+<BR>
+ If not AllInHand, you can call Ron at self picked according by "KataAgari" setting.
+<BR>
 <BR>
 e.g.) "Straight" completed by Ron by Penchan tile is OK unless non-related meld is on Earth.
 <BR>
@@ -245,6 +404,7 @@ Same as "First only" except sequence on Earth is not a matter.
 It is OK if the winning tile constructs a Yaku regardless melds on Earth.
 If there are multiple winning tile,  it is OK according to the following "Kata-Agari"
 <BR>
+************** -->
 <BIG><B>Kata-Agari</B></BIG> : Multiple winning tile one of which dose not construct any Yaku.
 <!--
 <BR>
@@ -409,4 +569,4 @@ This option makes the dealer's win as Yakuman of "8 consecutive win" when the sm
 If this is ON, the next 8 consecutive is the next Yakuman timing.
 <BR>
 <BR>
-<SMALL>RuleSettingYaku 2022/08/16</SMALL>
+<SMALL>RuleSettingYaku 2023/02/24</SMALL>

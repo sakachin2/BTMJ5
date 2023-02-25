@@ -1,6 +1,7 @@
-//*CID://+vap3R~: update#= 496;                                    //~vap3R~
+//*CID://+vawiR~: update#= 497;                                    //+vawiR~
 //**********************************************************************//~v101I~
-//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//+vap3I~
+//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//+vawiI~
+//2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap3I~
 //2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2022/03/23 vakS (Bug)dismiss CompleteDialog for DobleRon by Robot//~vakSI~
 //2021/03/30 va73 (Bug of va60)when multiron of human and robot,reply OK on CompReqDlg is always set, so dismissAll issued at 1st clickOK.//~va73I~
@@ -42,7 +43,9 @@ public class Complete                            //~v@@@R~
     public  static final int CALC_AMT_HAN      =9; //low           //~va11I~
 //  public  static final int CALC_AMT_MAXCTR   =10;                //~va11R~//~va1cR~
     public  static final int CALC_AMT_NETPOINT =10; //low          //~va1cI~
-    public  static final int CALC_AMT_MAXCTR   =11;                //~va1cI~
+//  public  static final int CALC_AMT_MAXCTR   =11;                //~va1cI~//+vawiR~
+    public  static final int CALC_AMT_RANK2    =11;                //+vawiI~
+    public  static final int CALC_AMT_MAXCTR   =12;                //+vawiI~
                                                                    //~v@@@I~
     public  static final int CALC_AMT_POS   =1;      //OK/NG+ammount values//~v@@@I~
                                                                    //~v@@@I~
@@ -451,7 +454,7 @@ public class Complete                            //~v@@@R~
         private int ctrNG,ctrReply,ctrResponsible;                 //~v@@@I~
         public boolean swOK,swReplyAll,swNG,swInvalid,swInvalidByEswn;                 //~v@@@R~//~9319R~//~9409R~
         public boolean swErr;	//chombo                           //~9319I~
-//      public boolean swLooserChombo;	//chombo of Looser(OpenReach discard)//+vap3R~
+//      public boolean swLooserChombo;	//chombo of Looser(OpenReach discard)//~vap3R~
         public  boolean swTake;                                    //~v@@@R~
 	    public CompReqDlg compReqDlg;                              //~v@@@I~
 	    private boolean swSetAmmount;                              //~v@@@R~
@@ -556,13 +559,13 @@ public class Complete                            //~v@@@R~
             if (Dump.Y) Dump.println("Complete.Status.setErr swErr="+PswErr);//~v@@@I~//~9B10R~
             return swErr;                                          //~v@@@I~
         }                                                          //~v@@@I~
-//        //*************************************************************************//+vap3R~
-//        public boolean setErrLooser(boolean PswErr)              //+vap3R~
-//        {                                                        //+vap3R~
-//            swLooserChombo=PswErr;  //chombo of Looser(OpenReach discard)//+vap3R~
-//            if (Dump.Y) Dump.println("Complete.Status.setErrLooser swErr="+PswErr+",completeEswn="+completeEswn+",eswnLooser="+completeEswnLooser);//+vap3R~
-//            return swErr;                                        //+vap3R~
-//        }                                                        //+vap3R~
+//        //*************************************************************************//~vap3R~
+//        public boolean setErrLooser(boolean PswErr)              //~vap3R~
+//        {                                                        //~vap3R~
+//            swLooserChombo=PswErr;  //chombo of Looser(OpenReach discard)//~vap3R~
+//            if (Dump.Y) Dump.println("Complete.Status.setErrLooser swErr="+PswErr+",completeEswn="+completeEswn+",eswnLooser="+completeEswnLooser);//~vap3R~
+//            return swErr;                                        //~vap3R~
+//        }                                                        //~vap3R~
         //*************************************************************************//~v@@@I~
         public boolean setInvalid(boolean PswInvalid)              //~v@@@I~
         {                                                          //~v@@@I~

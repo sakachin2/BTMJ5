@@ -16,6 +16,41 @@
 "無効"/"チョンボ"とした場合はその局を上がり放棄で続けるか終了するか選びます。
 <BR>
 <BR>
+<BIG><B>ローカル役</B></BIG>：
+<BR>
+<B>裸単騎</B>:４面子すべて晒して、単騎待ちで上がるで、"後付けあり"の場合のみ１翻
+<BR>
+<B>三色一通</B>:
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_sou9s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- ３種で一気通貫。２翻、食い下がり１翻
+<BR>
+<B>三連刻</B>:
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- ３連続刻子。２翻、食い下がりなし
+<BR>
+<B>一色三順</B>:
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s><img src=@drawable/s_pin4s>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 食いを認めるオプションあり
+<BR>
+<B>三風刻</B>:
+<img src=@drawable/s_ji4es><img src=@drawable/s_ji4es><img src=@drawable/s_ji4es><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- 風牌３種で２翻、食い下がりなし
+<BR>
+<B>三風刻</B>:
+<img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ss><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ws><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns><img src=@drawable/s_ji4ns>
+<img src=@drawable/stock><img src=@drawable/stock><img src=@drawable/stock>
+<img src=@drawable/stock><img src=@drawable/stock>
+ --- おた風３種で２翻、食い下がりなし。自風は認めないが場風はを認めるオプションあり。
+<BR>
+<BR>
 <BIG><B>とに和ボタンを表示</B></BIG>：
 ローカル役対応として変則形の和了形で上がりを強制するボタンです。
 非表示にしてもメニューの<B>とにかく和了</B>が使用できますが、メニューではタイミングを失する可能性があります。
@@ -58,22 +93,132 @@
 <B>先付</B>にはいろいろバリエーションがあるようで事前に確認を取ってください。
 後付けがトラブルが少なく主流だそうです。
 <BR>
+<!--
 一人遊びに場合と、ロボットはこのルールに従いますが、対戦モードの時のプレーヤーは自分で判断して
  "和了" ボタンを押してください。ルール違反を指摘されたら、話し合って、
 ダイアログで、チョンボ扱いにするとか、"上がり放棄" を選択してゲームを続行するとかしてください。
+-->
 <BR>
-<B>先付</B>：
+第一副露は役と関連しなければならない。そうでない場合は"手の内で役を完成"していなければならない。片上がりは禁止。
 <BR>
- 上がり牌で役が完成する場合、片上がりはNG、カンチャン待ち、役牌のシャンポン待ちなどで役確定している場合は役と無関係の鳴きがなければOK。
- そうでない場合、手牌中に役があるか、鳴きと合わせて役があり既に役が完成しているなら、役と無関係な鳴きは有ってもよいが、関係のある鳴きより後でなければならない。
+先付けの一般的な規則はこのようですがこのアプリでは次のようにしています
 <BR>
-例えば手の打ち確定の場合どんな鳴きがあっても上がれる。
+<B>A.</B> 役が手の内に完成していればすべてＯＫ
 <BR>
+<B>B.</B> 役牌のシャンポン待ちは片上がりではなくカンチャン、ペンチャンと同じく確定待ちとする。
+   また、小三元の白發中いずれかの単騎待ちも確定待ちとする。
+<BR>
+<B>C.</B> 面前か第一副露が役と関係している場合、確定待ちは先付けＯＫ。この場合、第二副露以降は役との関連は問わない
+<BR>
+<B>D.</B> 第一副露が役と関係していない場合、確定待ちでも先付けＮＧ。
+   但し、以降に役と関連した副露があれば、<B>中付け</B>ＯＫ。
+<BR>
+<B>E.</B> 片上がりの出あがりＮＧ
+<BR>
+<B>F.</B> 片上がりの自摸は、面前ならＯＫ、面前でない場合は別途片上がりオプション設定を設定すれば確定待ちとみなす("手の内に役が完成"とみなすわけではない)
+<BR>
+<B>G.</B> <B>後付け</B>オプションなら片上がりもＯＫ、上がった時に役があればよい。
+<BR>
+<B>H.</B> NGの意味は1/2翻縛りに抵触するという意味で、他に上がれる場合は翻数に加算される
+<BR>
+<B>I.</B> 役満は対象外
+<BR>
+例
+<BR>
+<B>面前の場合</B>
+<BR>
+1-1. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_ji3ws>か<img src=@drawable/s_ji3rs>で先付けＯＫ
+<BR>
+1-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man3s><img src=@drawable/s_man4s><img src=@drawable/s_man5s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin9s><img src=@drawable/s_pin9s><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_ji3gs>は先付けNG、但し自摸なら＋１翻
+<BR>
+1-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ --- <img src=@drawable/s_pin9s>は先付けNG、但し自摸なら＋２翻
+<BR>
+1-4. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin9s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ --- <img src=@drawable/s_pin8s>は先付けOK
+<BR>
+1-5. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin3s><img src=@drawable/s_pin6s><img src=@drawable/s_pin6s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou4s><img src=@drawable/s_sou5s><img src=@drawable/s_sou6s>
+ --- <img src=@drawable/s_pin6s>または<img src=@drawable/s_sou2s>の自摸なら三暗刻＋２翻
+<BR>
+<B>第一副露が役と関連している場合</B>
+<BR>
+2-1. 
+<img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_man5s><img src=@drawable/s_man6s><img src=@drawable/s_man7s><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+<img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ --- <img src=@drawable/s_man1s>か<img src=@drawable/s_man4s>で先付けＯＫ
+<BR>
+2-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ --- <img src=@drawable/s_pin7s>は先付けＯＫ（上記 C.）
+<BR>
+2-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin7s><img src=@drawable/s_pin8s>
+ <img src=@drawable/s_sou2l><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
+ <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
+ --- <img src=@drawable/s_pin9s>は先付けＮＧ、自摸ならオプションでＯＫ
+<BR>
+<B>第一副露が役と関連していない場合</B>
+<BR>
+3-1. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+ --- <img src=@drawable/s_sou6s> も <img src=@drawable/s_sou9s>もＯＫ（上記 A.）
+<BR>
+3-2. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s>
+ <img src=@drawable/s_ji3rl><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s>
+ --- <img src=@drawable/s_sou9s> は先付けはＮＧ、中付けなら<img src=@drawable/s_sou6s>もＯＫ
+<BR>
+3-3. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_ji3rs> で先付けＯＫ（上記 A.）
+<BR>
+3-4. 
+<img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_man3s> は先付けＮＧ（上記 D.）
+<BR>
+3-5. 
+<img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_pin3s> で先付けＮＧ、中付けＯＫ（上記 D.）
+<BR>
+3-6. 
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou1s><img src=@drawable/s_sou2s><img src=@drawable/s_sou3s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ <img src=@drawable/s_sou8l><img src=@drawable/s_sou8s><img src=@drawable/s_sou8s>
+ --- <img src=@drawable/s_pin1s> で先付けはＮＧ、中付けはオプションでＯＫ
+<BR>
+3-7. 
+<img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_pin4s><img src=@drawable/s_ji3rs>
+ <img src=@drawable/s_ji3gl><img src=@drawable/s_ji3gs><img src=@drawable/s_ji3gs>
+ <img src=@drawable/s_ji3wl><img src=@drawable/s_ji3ws><img src=@drawable/s_ji3ws>
+ <img src=@drawable/s_man1l><img src=@drawable/s_man2s><img src=@drawable/s_man3s>
+ --- <img src=@drawable/s_ji3rs> で先付けはＮＧ、中付けはＯＫ
+<BR>
+<!--**************
 <img src=@drawable/s_man1s><img src=@drawable/s_man2s><img src=@drawable/s_man3s><img src=@drawable/s_pin1s><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s><img src=@drawable/s_sou7s><img src=@drawable/s_sou8s><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs><img src=@drawable/s_ji3rs>
 <img src=@drawable/s_sou1l><img src=@drawable/s_sou2s><img src=@drawable/s_sou3l>
  は　<img src=@drawable/s_sou6s> か <img src=@drawable/s_sou9s>で上がれる。
 <BR>
- また例えばペンチャンで一通成立は役と無関係な鳴きがなければOK。２つの役牌のシャンポン待ちは面前のみOK。
+ また例えばペンチャンで一通成立は役と無関係な鳴きがなければOK。
+<BR>
+ ２つの役牌のシャンポン待ちは面前か、面前でなくても自摸ならOK。
+<BR>
+ 役牌とそれ以外のシャンポン待ちは役牌を面前自摸ならＯＫ、面前でない場合は自摸なら次の片上がりの設定をすればＯＫ。
 <BR>
 <img src=@drawable/s_man1s><img src=@drawable/s_man1s><img src=@drawable/s_pin4s><img src=@drawable/s_pin5s><img src=@drawable/s_pin6s><img src=@drawable/s_pin8s><img src=@drawable/s_pin9s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s><img src=@drawable/s_sou2s>
 <img src=@drawable/s_pin1l><img src=@drawable/s_pin2s><img src=@drawable/s_pin3s>
@@ -144,6 +289,7 @@
 <B>後付</B> ：
 <BR>
  どんな鳴きがあっても、上がったときに役があればよい。片上がりの場合は片上がりの設定には従い、片上がりNGに自摸/ロンは関係ない。
+************** -->
 <BR>
 <BIG><B>片上がり</B></BIG>：
 <!--
@@ -242,4 +388,4 @@
 ONなら次の８連続目で役満。
 <BR>
 <BR>
-<SMALL>RuleSettingYaku 2022/08/16</SMALL>
+<SMALL>RuleSettingYaku 2023/02/24</SMALL>
