@@ -1,6 +1,8 @@
-//*CID://+vawiR~:                             update#=  906;       //+vawiR~
+//*CID://+vaz3R~:                             update#=  915;       //~vaz3R~
 //*****************************************************************//~v101I~
-//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//+vawiI~
+//2025/03/03 vaz3 (Bug) if not show profile, crash at CompReqDlg   //~vaz3I~
+//2025/03/01 vaz0 adjust profile image size on CompReqDlg          //~vawiI~
+//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//~vawiI~
 //2023/01/10 vav5 show profile icon on CompReqDlg                  //~vav5I~
 //2023/01/10 vav2 keep Score button orange when claim dialog closed//~vav2I~//~vav5R~
 //2022/08/15 vaq5 if chkFix1 is OFF, confirm no fix err before apply 8cont yakuman//~vaq5I~
@@ -48,6 +50,7 @@ import com.btmtest.game.UA.Rank;
 import com.btmtest.game.UA.RonResult;
 import com.btmtest.game.UA.UARonValue;
 import com.btmtest.game.gv.GameViewHandler;
+import com.btmtest.game.gv.Pieces;                                 //~vawiI~
 import com.btmtest.gui.UButton;
 import com.btmtest.gui.UCheckBox;
 import com.btmtest.gui.URadioGroup;
@@ -65,7 +68,6 @@ import static com.btmtest.game.GCMsgID.*;
 import static com.btmtest.game.GConst.*;
 import static com.btmtest.game.UA.Rank.*;
 import static com.btmtest.game.UA.UAReach.*;
-
 public class CompReqDlg extends UFDlg                             //~v@@@R~//~9220R~
             implements USpinner.USpinnerI                          //~9220I~
 {                                                                  //~2C29R~
@@ -443,8 +445,8 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             int net=calcOut[CALC_AMT_NET];                         //~va11I~
 //      	int point=intsPoint[idxPoint];                         //~va11I~//~va1cR~
         	int point=calcOut[CALC_AMT_NETPOINT];                  //~va1cI~
-//          longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW]);//~va11I~//+vawiR~
-            longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW],calcOut[CALC_AMT_RANK2]);//+vawiI~
+//          longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW]);//~va11I~//~vawiR~
+            longRank=Rank.intToRank(calcOut[CALC_AMT_RANKHIGH],calcOut[CALC_AMT_RANKLOW],calcOut[CALC_AMT_RANK2]);//~vawiI~
             ronResult=new RonResult(net,han,point,longRank);       //~va11I~
 	    	if (Dump.Y) Dump.println("CompReqDlg.setupValue Received ronResult="+ronResult.toString());//~va11R~
         }                                                          //~9221I~
@@ -1620,7 +1622,7 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
             int[] intS=longRank.rankToIntS();                  //~va11I~
         	calcOut[CALC_AMT_RANKHIGH]=intS[0];                   //~va11I~
         	calcOut[CALC_AMT_RANKLOW]=intS[1];                     //~va11I~
-        	calcOut[CALC_AMT_RANK2]=intS[2];                       //+vawiI~
+        	calcOut[CALC_AMT_RANK2]=intS[2];                       //~vawiI~
         }                                                          //~va11I~
         else                                                       //~va16I~
             setYaku();	//show no setting of option to getValue    //~va16I~
@@ -1813,11 +1815,19 @@ public class CompReqDlg extends UFDlg                             //~v@@@R~//~92
         if (Dump.Y) Dump.println("CompReqDlg.setProfile ynComplete="+ynComplete);//~vav5R~
     	ImageView iv=(ImageView)UView.findViewById(PView,R.id.ivProfile);//~vav5I~
         Bitmap bmpProfile=AG.aProfileIcon.getPlayerProfile(completePlayer);//~vav5I~
-        iv.setImageBitmap(bmpProfile);                             //~vav5I~
-    	TextView tv=(TextView)UView.findViewById(PView,R.id.tvProfileName);//~vav5I~
-        int hh=bmpProfile.getHeight();                             //~vav5I~
+      	TextView tv=(TextView)UView.findViewById(PView,R.id.tvProfileName);//+vaz3I~
+      if (bmpProfile!=null)                                        //~vaz3I~
+      {                                                            //~vaz3I~
+//      iv.setImageBitmap(bmpProfile);                             //~vav5I~//~vawiR~
+        int hh=AG.aMJTable.handPieceH;                             //~vawiR~
+        int ww=AG.aMJTable.handPieceW;                             //~vawiR~
+        Bitmap bmpScaled=Pieces.scaleImage(bmpProfile,ww,hh);      //~vawiR~
+        iv.setImageBitmap(bmpScaled);                              //~vawiI~
+//    	TextView tv=(TextView)UView.findViewById(PView,R.id.tvProfileName);//~vav5I~//+vaz3R~
+//      int hh=bmpProfile.getHeight();                             //~vav5I~//~vawiR~
         float hhFloat=hh*0.7F;                                     //~vav5R~
         tv.setTextSize(COMPLEX_UNIT_PX,hhFloat);                   //~vav5I~
+      }                                                            //~vaz3I~
         tv.setText(ynComplete);                                    //~vav5I~
     }                                                              //~vav5I~
 }//class                                                           //~v@@@R~

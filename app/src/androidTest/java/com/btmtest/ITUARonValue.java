@@ -1,4 +1,4 @@
-//*CID://+vagrR~:                                   update#= 128;  //~vagrR~
+//*CID://+vagrR~:                                   update#= 129;  //~vagrR~
 //******************************************************************//~vafhI~
 //2021/11/14 vagr (Bug of vafh)determins honchan when pillow:tanyao//~vagrI~
 //2021/11/01 vafh (Bug) for HonChanta(TerminalMix),Dump to cache   //~vafhI~
@@ -185,7 +185,7 @@ MaxCase=22902400 ;      UARVS.ronTestValue(22902301/*case#*/);   //other multiwa
 //MaxCase=22902500 ;      UARVS.ronTestValue(22902401/*case#*/);   //help test//~vagrR~
 //  MaxCase=22902600 ;      UARVS.ronTestValue(22902501/*case#*/);   //3renpon//~vagrR~
 //MaxCase=22902700 ;      UARVS.ronTestValue(22902601/*case#*/);   //3dupseq//~vagrR~
-//MaxCase=22902700 ;      UARVS.ronTestValue(22902609/*case#*/);   //3dupseq//+vagrR~
+//MaxCase=22902700 ;      UARVS.ronTestValue(22902609/*case#*/);   //3dupseq//~vagrR~
         }                                                          //~vagrI~
         catch(Exception e)                                         //~vagrI~
         {                                                          //~vagrI~

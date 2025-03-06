@@ -1,5 +1,12 @@
-//*CID://+vaw0R~: update#= 876;                                    //~vaw0R~
+//*CID://+vaz3R~: update#=1010;                                    //+vaz3R~
 //**********************************************************************
+//2025/03/03 vaz3 (Bug) if not show profile, crash at CompReqDlg   //+vaz3I~
+//2025/03/02 vaz1 nameplate/profile animation at win called        //~vaz1I~
+//2025/02/10 vayg Try nameplate on left of stock for also landscape//~vaygI~
+//2025/02/07 vaye profile icon should not override earth           //~vayeI~
+//2025/02/07 vayd Adjust ProfileIcon for landscape(additional UID) //~vaydI~
+//2025/02/02 vaya Adjust ProfileIcon for longDevice                //~vayaI~
+//2025/01/31 vay8 profile may overwrap                             //~vay8I~
 //2023/01/31 vaw0 ProfileIcon overwrap by positioning tile when not long device landscape//~vaw0I~
 //2023/01/29 vavu avoid overwrap profile icon and left of river when landscape//~vavuI~
 //2023/01/28 vavq overwrap chk for Left/Right river and Face/You profile when landscape//~vavqI~
@@ -60,11 +67,14 @@ import java.io.InputStream;
 
 public class ProfileIcon
 {
+    private static final String CN="ProfileIcon:";                 //~vaw0I~
     private static final int PROFILE_FRAME_COLOR=Color.argb(0xff,0xff,0x59,0xff);
     private static final int PROFILE_FRAME_COLOR_SCORE=Color.argb(0xff,0xff,0x59,0x00);
     private static final int PROFILE_FRAME_WIDTH=2;
     private static final int MARGIN_RIVER_LEFT=4;                  //~vavuI~
-    private static final float  PROFILE_HWRATE=0.75f;	//W:3 vs H:4
+//  private static final float  PROFILE_HWRATE=0.75f;	//W:3 vs H:4//~vay8R~
+//  private static final double PROFILE_HWRATE=0.618;	//2/(1+root-5)//~vay8R~//~vayeR~
+    private static final double PROFILE_HWRATE=(double)89/127;	//0.7 photo-L//~vayeR~
     private static final float  PROFILE_EXPAND_BEFOREMOVE=1.0f;//*2.0
     private static final float  PROFILE_EXPAND_BEFOREMOVE_LONGDEVICE=1.0f;//*3.0//~vas4R~
     private static final float  PROFILE_HEIGHT_RATE_NAMEPLATE=2.0F;//~vas4I~
@@ -75,8 +85,11 @@ public class ProfileIcon
     private static final String[] ASSET_PROFILE_ROBOTS={"profile_dog.jpg","profile_rabit.jpg","profile_oni.jpg","profile_pirot.jpg"};
     private static final int CTR_ROBOT=4;
     private static final int CTR_WORD=5;                           //~var8I~
+    private static final int MIN_ICON_HEIGHT=5;                    //~vay8I~
+    private static double ADJUST_RATE_STARTER=0.5; //TEST          //~vayaR~
 
     private Rect[] rectProfile,rectProfileBeforeMove;
+    private Rect[] rectStarter;                                    //~vayaI~
     private boolean swShowProfile;
     private boolean swShowMe;
     private Bitmap bmpMe,bmpMe0;
@@ -93,8 +106,10 @@ public class ProfileIcon
     private boolean swServer;                                      //~2A02I~
     private boolean swIsSetCurrent,swAfterMove;                    //~2A03R~
     private boolean swMsgExchanging;                               //~2A04I~
-    private int maxHeightByStock; //distance from score top to stock edge                                 //~vas3R~//~vas4R~
+//  private int maxHeightByStock; //distance from score top to stock edge                                 //~vas3R~//~vas4R~//~vayeR~
     private float heightRatePerNamePlate,expandRateBeforeMove;     //~vas4I~
+    private boolean swAdjustedWithStarter=false;                   //~vayaI~
+    private boolean swNPLeft; //namePlate on the left of stock     //~vaygI~
 //*************************************************************
 //* from Main Activity after Prop and UScoped init
 //*************************************************************
@@ -108,6 +123,7 @@ public class ProfileIcon
     	swShowMe=PrefSetting.isUseMyOwnProfile();
         heightRatePerNamePlate=AG.swLongDevice ? PROFILE_HEIGHT_RATE_NAMEPLATE_LONGDEVICE : PROFILE_HEIGHT_RATE_NAMEPLATE;//~vas4I~
         expandRateBeforeMove=AG.swLongDevice ? PROFILE_EXPAND_BEFOREMOVE_LONGDEVICE :PROFILE_EXPAND_BEFOREMOVE;//~vas4I~
+        swNPLeft=AG.swNamePlateLeft || AG.swLongDevice;            //~vaygI~
         init();
     }
     //***************************************
@@ -178,53 +194,123 @@ public class ProfileIcon
         }
         swIsSetCurrent=false;                                      //~2A03R~
         swAfterMove=false;                                         //~2A03I~
+		swAdjustedWithStarter=false;                               //~vayaI~
     }
     //***************************************
     //*from NamePlate init()
     //***************************************
 	public void setRect(Rect[] PrectNamePlate)
     {
-        maxHeightByStock=0;                                          //~vas3I~
-    	if (Dump.Y) Dump.println("ProfileIcon.setRect swShowProfile="+swShowProfile+",swLongDevice="+AG.swLongDevice+",rectNamePlate="+Utils.toString(PrectNamePlate));//~vavqR~
+//      maxHeightByStock=0;                                          //~vas3I~//~vayeR~
+    	if (Dump.Y) Dump.println(CN+"setRect swShowProfile="+swShowProfile+",swNPLeft="+swNPLeft+",swLongDevice="+AG.swLongDevice+",rectNamePlate="+Utils.toString(PrectNamePlate));//~vavqR~//~vay8R~//~vaygR~
         if (!swShowProfile)
         	return;
-        if (AG.swLongDevice)
+//      if (AG.swLongDevice)                                       //~vaygR~
+        if (swNPLeft)   //nameplate on the left of stock           //~vaygI~
         {
+//          maxHeightByStock=AG.aMJTable.getProfilePortraitLimit();//~vayaI~//~vayeR~
         	rectProfile=setRectOnNamePlate(PrectNamePlate);
 //          rectProfileBeforeMove=getRectBeforeMoved(rectProfile); //~vas4R~
-            rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate);//~vas4I~
+//          rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate);//~vas4I~//~vayaR~
+//          rectProfileBeforeMove=getRectBeforeMovedPort(rectProfile,PrectNamePlate);//~vayaR~//~vaydR~
+            rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate);//~vayeR~
 //          rectProfile=rectProfileBeforeMove;                     //~vas3R~
+            rectProfile=setRectOnNamePlatePort(PrectNamePlate);    //~vayaI~
+        	adjustWithRiverNeighbor(rectProfile);                  //~vayaI~
+		    adjustWithStock(rectProfile); //icon is on the stock   //~vayaI~
         }
         else
         {
             if (AG.portrait)
             {                                                      //~vas3I~
-            	maxHeightByStock=AG.aMJTable.getProfilePortraitLimit();//~vas3R~
+//            	maxHeightByStock=AG.aMJTable.getProfilePortraitLimit();//~vas3R~//~vayeR~
                 rectProfile=setRectOnNamePlate(PrectNamePlate);
+		    	if (Dump.Y) Dump.println(CN+"setRect portrait after setRectOnNamePlatePort rectprofile="+Utils.toString(rectProfile));//~vay8R~
             }                                                      //~vas3I~
             else
+            {                                                      //~vay8I~
                 rectProfile=AG.aMJTable.rectProfile;
+		    	if (Dump.Y) Dump.println(CN+"setRect landscape tbl rectprofile="+Utils.toString(rectProfile));//~vay8I~
+            }                                                      //~vay8I~
 //          rectProfileBeforeMove=getRectBeforeMoved(rectProfile); //~vas4R~
-            rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate);//~vas4I~
+//          rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate);//~vas4I~//~vaydR~
+            rectProfileBeforeMove=getRectBeforeMoved(rectProfile,PrectNamePlate); //~vaydI~//~vayeR~
             if (!AG.portrait)                                      //~vavqI~
             {                                                      //~vaw0I~
-                adjustWithRiverBeforeMoved(rectProfileBeforeMove); //~vaw0I~
-                adjustWithRiver(rectProfile);                      //~vavqI~
+//              adjustWithRiverBeforeMoved(rectProfileBeforeMove); //~vaw0I~//~vayeR~
+//              adjustWithRiver(rectProfile);                      //~vavqI~//~vay8R~
+                adjustWithRiverNeighbor(rectProfile);              //~vay8I~
+            	adjustWithStock(rectProfile); //icon is on the stock if landscape//~vay8R~
             }                                                      //~vaw0I~
+            else                                                   //~vay8I~
+            {                                                      //~vay8I~
+              if (false) //TEST already called if port from setRectOnNamePlate//~vayaI~
+                rectProfile=setRectOnNamePlatePort(PrectNamePlate);//~vay8M~
+        		adjustWithRiverNeighbor(rectProfile);              //~vay8I~
+		        adjustWithStock(rectProfile); //icon is on the stock//~vay8I~
+            }                                                      //~vay8I~
         }
-    	if (Dump.Y) Dump.println("ProfileIcon.setRect rectProfile="+Utils.toString(rectProfile));
-    	if (Dump.Y) Dump.println("ProfileIcon.setRect rectProfileBeforeMove="+Utils.toString(rectProfileBeforeMove));
+    	if (Dump.Y) Dump.println(CN+"setRect rectProfile="+Utils.toString(rectProfile));//~vay8R~
+    	if (Dump.Y) Dump.println(CN+"setRect rectProfileBeforeMove="+Utils.toString(rectProfileBeforeMove));//~vay8R~
     }
     //*****************************************************************************//~vas3R~
-    //*set profile rect on NamePlate in Gaming; height=NamePlateHeight*2//~vas3I~
+    //*for Portrait or longDevice                                   //~vay8R~//~vayeR~
+    //*set profile rect on NamePlate in Gaming; height=NamePlateHeight*2//~vay8I~
+    //*parm:rectNamePlate                                          //~vay8I~
     //*****************************************************************************//~vas3I~
 	public Rect[] setRectOnNamePlate(Rect[] Prect)
     {
         Rect rs;
-        int margin=PROFILE_MARGIN,xx1,xx2,yy1,yy2,hh,ww;
+        int margin=PROFILE_MARGIN,xx1,xx2,yy1,yy2,hh,ww;           //~vayeR~
         Rect[] rects=new Rect[PLAYERS];
     //***************************
-    	if (Dump.Y) Dump.println("ProfileIcon.setRectOnNamePlate swLongDevice="+AG.swLongDevice+",rectNamePlate="+Utils.toString(Prect));
+    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlate swLongDevice="+AG.swLongDevice+",rectNamePlate="+Utils.toString(Prect));//~vay8R~
+      if (true)                                                    //~vayaI~
+	  {    //set height by width rate                              //~vayaI~
+        //*on nameplate and justify right                          //~vayaI~
+        //*right                                                   //~vayaI~
+            rs=Prect[PLAYER_RIGHT];                                //~vayaI~
+            ww=rs.bottom-rs.top;                                   //~vayaI~
+            hh=(int)(ww/PROFILE_HWRATE);    //*0.75;               //~vayaI~
+            yy1=rs.top;                                            //~vayaI~
+            yy2=yy1+ww;                                            //~vayaI~
+            xx2=rs.left-margin;                                    //~vayaI~
+            xx1=xx2-hh;                                            //~vayaI~
+            rects[PLAYER_RIGHT]=new Rect(xx1,yy1,xx2,yy2);         //~vayaI~
+	    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlate ww="+ww+",hh="+hh+",rect["+PLAYER_RIGHT+"]="+rects[PLAYER_RIGHT]);//~vayeR~
+        //*facing                                                  //~vayaI~
+            rs=Prect[PLAYER_FACING];                               //~vayaI~
+            ww=rs.right-rs.left;                                   //~vayaI~
+            hh=(int)(ww/PROFILE_HWRATE);    //*0.75;               //~vayaI~
+            xx1=rs.left;                                           //~vayaI~
+            xx2=xx1+ww;                                            //~vayaI~
+            yy1=rs.bottom+margin;                                  //~vayaI~
+            yy2=yy1+hh;                                            //~vayaI~
+            rects[PLAYER_FACING]=new Rect(xx1,yy1,xx2,yy2);        //~vayaI~
+	    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlate ww="+ww+",hh="+hh+",rect["+PLAYER_FACING+"]="+rects[PLAYER_FACING]);//~vayeR~
+        //*left                                                    //~vayaI~
+            rs=Prect[PLAYER_LEFT];                                 //~vayaI~
+            ww=rs.bottom-rs.top;                                   //~vayaI~
+            hh=(int)(ww/PROFILE_HWRATE);    //*0.75;               //~vayaI~
+            yy2=rs.bottom;                                         //~vayaI~
+            yy1=yy2-ww;                                            //~vayaI~
+            xx1=rs.right+margin;                                   //~vayaI~
+            xx2=xx1+hh;                                            //~vayaI~
+            rects[PLAYER_LEFT]=new Rect(xx1,yy1,xx2,yy2);          //~vayaI~
+	    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlate ww="+ww+",hh="+hh+",rect["+PLAYER_LEFT+"]="+rects[PLAYER_LEFT]);//~vayeR~
+        //*you                                                     //~vayaI~
+            rs=Prect[PLAYER_YOU];                                  //~vayaI~
+            ww=rs.right-rs.left;                                   //~vayaI~
+            hh=(int)(ww/PROFILE_HWRATE);    //*0.75;               //~vayaI~
+            xx2=rs.right;                                          //~vayaI~
+            xx1=xx2-ww;                                            //~vayaI~
+            yy2=rs.top-margin;                                     //~vayaI~
+            yy1=yy2-hh;                                            //~vayaI~
+            rects[PLAYER_YOU]=new Rect(xx1,yy1,xx2,yy2);           //~vayaI~
+	    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlate ww="+ww+",hh="+hh+",rect["+PLAYER_YOU+"]="+rects[PLAYER_YOU]);//~vayeR~
+      }//new                                                       //~vayaI~
+      else                                                         //~vayaI~
+      {                                                            //~vayaI~
 //        if (AG.swLongDevice)
 //        {
 //            if (Dump.Y) Dump.println("ProfileIcon.setRectOnNamePlate longDevice");
@@ -237,7 +323,7 @@ public class ProfileIcon
 //          hh=(rs.bottom-rs.top)*2;                               //~vas4R~
             hh=(int)((rs.bottom-rs.top)*heightRatePerNamePlate/*2.0--*/);//~vas4R~
             ww=(int)(hh*PROFILE_HWRATE);    //*0.75;
-            if (Dump.Y) Dump.println("ProfileIcon.setRectOnNamePlate portrate hh="+hh+",ww="+ww);
+            if (Dump.Y) Dump.println("ProfileIcon.setRectOnNamePlate portrait hh="+hh+",ww="+ww);//~vay8R~
         //*right
             rs=Prect[PLAYER_RIGHT];
             yy1=rs.top;
@@ -267,103 +353,561 @@ public class ProfileIcon
             yy1=yy2-hh;
             rects[PLAYER_YOU]=new Rect(xx1,yy1,xx2,yy2);
 //        }
-    	if (Dump.Y) Dump.println("ProfileIcon.setRectOnNamePlate exit rect="+Utils.toString(rects));
+	  }//old                                                       //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlate exit rectProfile="+Utils.toString(rects));//~vay8R~//~vayaR~
         return rects;
     }
-    //*************************************************************************//~vas3R~
-    //*set Rect for before move seat(no score plate shown)         //~vas3I~
-    //*height is double of in gaming                               //~vas3I~
-    //*if on NamePlate(portrat or long device) show overriding score plate place//~vas3I~
-    //*************************************************************************//~vas3I~
-//  public Rect[] getRectBeforeMoved(Rect[] Prect)                 //~vas4R~
-    private Rect[] getRectBeforeMoved(Rect[] Prect,Rect[] PrectNamePlate)//~vas4I~
-    {
-        Rect rs;
-        int margin=PROFILE_MARGIN,xx1,xx2,yy1,yy2,hh,ww;
-        Rect[] rects=new Rect[PLAYERS];
-        int adjustByScore=0;                                       //~vas3I~
-    //***************************
-    	if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved swLongDevice="+AG.swLongDevice+",Prect="+Utils.toString(Prect));//~vardR~
-        //*on nameplate and justify right
-            rs=Prect[PLAYER_YOU];
-//          hh=(int)((rs.bottom-rs.top)*PROFILE_EXPAND_BEFOREMOVE);//~vas4R~
-            hh=(int)((rs.bottom-rs.top)*expandRateBeforeMove); // /(2.0--)*(1.0--)//~vas4R~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hh="+hh);//~vas3I~
-        	if (AG.swLongDevice || AG.portrait) //rectOnNamePlate  //~vas3R~
-//      		adjustByScore=(rs.bottom-rs.top)/2;                //~vas3I~//~vas4R~
-        		adjustByScore=(int)((rs.bottom-rs.top)/heightRatePerNamePlate);//~vas4I~
-                                                                   //~vas3I~
-            int hhAdjustByScore=rs.bottom-rs.top+hh-adjustByScore; //~vas4R~
-            if (maxHeightByStock!=0 && hhAdjustByScore>=maxHeightByStock)//~vas3R~//~vas4R~
-            	hh=maxHeightByStock-adjustByScore;                 //~vas3R~
-                                                                   //~vas3I~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved new hh="+hh+",hhAdjustByScore="+hhAdjustByScore+",maxHeightByStock="+maxHeightByStock+",adjustByScore="+adjustByScore);//~vas3R~//~vas4R~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved adjustByScore="+adjustByScore+",additional hh="+hh+",hhYOUProfile="+(rs.bottom-rs.top));//~vardI~//~vas3R~//~vas4R~
-        	if (!AG.swLongDevice)                                  //~vardR~
-            {                                                      //~vardI~
-				int hhDecrease=AG.aMJTable.chkProfileRect(hh+rs.bottom-rs.top);//landscape chk //~vardR~
-            	if (hhDecrease>0)                                  //~vardI~
-	        		hh-=hhDecrease;                                //~vardI~
-	    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved decrease="+hhDecrease+",hh="+hh);//~vas3I~
-            }                                                      //~vardI~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved nameplate width right-left="+(rs.right-rs.left)+",old hh="+hh);//~vas4M~
-            int wwNamePlate=PrectNamePlate[PLAYER_YOU].right-PrectNamePlate[PLAYER_YOU].left;//~vas4I~
-            int hhTotal=rs.bottom-rs.top+hh;                       //~vas4R~
-            int ww2=(int)(hhTotal*PROFILE_HWRATE);  //width from height of you//~vas4I~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved org nameplate width="+wwNamePlate+",height="+hh+",hhTotal="+hhTotal+",ww2 by hhTotal="+ww2);//~vas4R~
-            if (ww2>wwNamePlate)                                   //~vas4I~
-            {                                                      //~vas4M~
-            	int hhTotal2=(int)(wwNamePlate/PROFILE_HWRATE);    //~vas4R~
-                hh-=hhTotal-hhTotal2;                              //~vas4R~
-    			if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved reduce by nameplate hhTotal new="+hhTotal2+",old="+hhTotal+",new hh="+hh);//~vas4R~
-                hhTotal=hhTotal2;                                  //~vas4I~
-            }                                                      //~vas4M~
-//          ww=(int)(hh*PROFILE_HWRATE);                           //~vas4R~
-            ww=(int)(hhTotal*PROFILE_HWRATE)-(rs.right-rs.left);   //~vas4R~
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved reduce by nameplate ww="+ww+",hhTotal="+hhTotal+",new hh="+hh);//~vas4I~
-        //*right
-            rs=Prect[PLAYER_RIGHT];
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hhRight="+(rs.right-rs.left)+",rect="+rs);//~vardR~
-            xx1=rs.left-hh;      //doubled height
-            yy2=rs.bottom+ww;
-            xx2=rs.right;
-            yy1=rs.top;
-            xx1+=adjustByScore;  //shift down to nameplate                                  //~vas3R~
-            xx2+=adjustByScore;                                    //~vas3R~
-            rects[PLAYER_RIGHT]=new Rect(xx1,yy1,xx2,yy2);
-        //*facing
-            rs=Prect[PLAYER_FACING];
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hhFacing="+(rs.bottom-rs.top));//~vardI~
-            xx2=rs.right+ww;
-            yy2=rs.bottom+hh;
-            xx1=rs.left;
-            yy1=rs.top;
-            yy1-=adjustByScore;                                    //~vas3I~
-            yy2-=adjustByScore;                                    //~vas3I~
-            rects[PLAYER_FACING]=new Rect(xx1,yy1,xx2,yy2);
-        //*left
-            rs=Prect[PLAYER_LEFT];
-    		if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hhLeft="+(rs.right-rs.left));//~vardI~
-            xx2=rs.right+hh;
-            yy1=rs.top-ww;
-            xx1=rs.left;
-            yy2=rs.bottom;
-            xx1-=adjustByScore;                                    //~vas3I~
-            xx2-=adjustByScore;                                    //~vas3I~
-            rects[PLAYER_LEFT]=new Rect(xx1,yy1,xx2,yy2);
-        //*you
-            rs=Prect[PLAYER_YOU];
-            xx1=rs.left-ww;
-            yy1=rs.top-hh;
-            xx2=rs.right;
-            yy2=rs.bottom;
-            yy1+=adjustByScore;                                    //~vas3I~
-            yy2+=adjustByScore;                                    //~vas3I~
-            rects[PLAYER_YOU]=new Rect(xx1,yy1,xx2,yy2);
+    //*****************************************************************************//~vay8I~
+    //*for Prtrait or longDevice                                   //~vay8I~
+    //*set profile rect on NamePlate in Gaming; height=NamePlateHeight*2//~vay8I~
+    //*****************************************************************************//~vay8I~
+	public Rect[] setRectOnNamePlatePort(Rect[] PrectNameplate)    //~vay8R~//~vayaR~
+    {                                                              //~vay8I~
+        Rect rn;                                                   //~vay8I~
+        int ww,hh;                                                 //~vay8I~
+        Rect[] rects=new Rect[PLAYERS];                            //~vay8R~
+        int margin=NamePlate.PLATE_EDGE_WIDTH*2;                   //~vay8R~
+    //***************************                                  //~vay8I~
+    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlatePort swLongDevice="+AG.swLongDevice+",nameplate line width="+margin+",rectNamePlate="+Utils.toString(PrectNameplate));//~vay8R~
+        //*You                                                     //~vay8I~
+        rn=PrectNameplate[PLAYER_YOU];                             //~vay8I~
+        ww=rn.right-rn.left;                                       //~vay8I~
+        hh=(int)(ww/PROFILE_HWRATE);                               //~vay8I~
+        rects[PLAYER_YOU]   =new Rect( rn.left,           rn.top-hh-margin, rn.right,           rn.top-margin);//~vay8R~
+        //*Right                                                   //~vay8I~
+        rn=PrectNameplate[PLAYER_RIGHT];                           //~vay8I~
+        ww=rn.bottom-rn.top;                                       //~vay8I~
+        hh=(int)(ww/PROFILE_HWRATE);                                      //~vay8I~
+        rects[PLAYER_RIGHT] =new Rect( rn.left-hh-margin, rn.top,           rn.left-margin,     rn.bottom);//~vay8R~
+        //*Face                                                    //~vay8I~
+        rn=PrectNameplate[PLAYER_FACING];                          //~vay8I~
+        ww=rn.right-rn.left;                                       //~vay8I~
+        hh=(int)(ww/PROFILE_HWRATE);                                      //~vay8I~
+        rects[PLAYER_FACING]=new Rect( rn.left,           rn.bottom+margin, rn.right,           rn.bottom+hh+margin);//~vay8R~
+        //*Left                                                    //~vay8I~
+        rn=PrectNameplate[PLAYER_LEFT];                            //~vay8I~
+        ww=rn.bottom-rn.top;                                       //~vay8I~
+        hh=(int)(ww/PROFILE_HWRATE);                                      //~vay8I~
+        rects[PLAYER_LEFT] =new Rect( rn.right+margin,    rn.top,           rn.right+hh+margin, rn.bottom);//~vay8R~
+    	if (Dump.Y) Dump.println(CN+"setRectOnNamePlatePort before adjust rectProfile="+Utils.toString(rects));//~vay8R~
+        return rects;                                              //~vay8I~
+    }                                                              //~vay8I~
+//    //*************************************************************************//~vas3R~//~vayeR~
+//    //*set Rect for before move seat(no score plate shown)         //~vas3I~//~vayeR~
+//    //*height is double of in gaming                               //~vas3I~//~vayeR~
+//    //*if on NamePlate(portrat or long device) show overriding score plate place//~vas3I~//~vayeR~
+//    //*************************************************************************//~vas3I~//~vayeR~
+////  public Rect[] getRectBeforeMoved(Rect[] Prect)                 //~vas4R~//~vayeR~
+////  private Rect[] getRectBeforeMoved(Rect[] Prect,Rect[] PrectNamePlate)//~vas4I~//~vayaR~//~vayeR~
+////  private Rect[] getRectBeforeMoved(Rect[] Prect,Rect[] PrectNamePlate)//~vayaR~//~vaydR~//~vayeR~
+//    private Rect[] getRectBeforeMoved_OLD(Rect[] Prect,Rect[] PrectNamePlate)//~vaydI~//~vayeR~
+//    {                                                            //~vayeR~
+//        Rect rs;                                                 //~vayeR~
+//        int margin=PROFILE_MARGIN,xx1,xx2,yy1,yy2,hh,ww;         //~vayeR~
+//        Rect[] rects=new Rect[PLAYERS];                          //~vayeR~
+//        int adjustByScore=0;                                       //~vas3I~//~vayeR~
+//    //***************************                                //~vayeR~
+//        if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved swLongDevice="+AG.swLongDevice+",Prect="+Utils.toString(Prect));//~vardR~//~vayeR~
+//        if (AG.portrait)                                           //~vay8I~//~vayeR~
+//        {                                                          //~vay8I~//~vayeR~
+////          return getRectBeforeMovedPort(Prect,PrectNamePlate);   //~vay8I~//~vaydR~//~vayeR~
+//            return getRectBeforeMoved(Prect);                      //~vaydI~//~vayeR~
+//        }                                                          //~vay8I~//~vayeR~
+//        //*on nameplate and justify right                        //~vayeR~
+//            rs=Prect[PLAYER_YOU];                                //~vayeR~
+////          hh=(int)((rs.bottom-rs.top)*PROFILE_EXPAND_BEFOREMOVE);//~vas4R~//~vayeR~
+//            hh=(int)((rs.bottom-rs.top)*expandRateBeforeMove); // /(2.0--)*(1.0--)//~vas4R~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hh="+hh);//~vas3I~//~vayeR~
+//            if (AG.swLongDevice || AG.portrait) //rectOnNamePlate  //~vas3R~//~vayeR~
+////              adjustByScore=(rs.bottom-rs.top)/2;                //~vas3I~//~vas4R~//~vayeR~
+//                adjustByScore=(int)((rs.bottom-rs.top)/heightRatePerNamePlate);//~vas4I~//~vayeR~
+//                                                                   //~vas3I~//~vayeR~
+//            int hhAdjustByScore=rs.bottom-rs.top+hh-adjustByScore; //~vas4R~//~vayeR~
+//            if (maxHeightByStock!=0 && hhAdjustByScore>=maxHeightByStock)//~vas3R~//~vas4R~//~vayeR~
+//                hh=maxHeightByStock-adjustByScore;                 //~vas3R~//~vayeR~
+//                                                                   //~vas3I~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved new hh="+hh+",hhAdjustByScore="+hhAdjustByScore+",maxHeightByStock="+maxHeightByStock+",adjustByScore="+adjustByScore);//~vas3R~//~vas4R~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved adjustByScore="+adjustByScore+",additional hh="+hh+",hhYOUProfile="+(rs.bottom-rs.top));//~vardI~//~vas3R~//~vas4R~//~vayeR~
+//            if (!AG.swLongDevice)                                  //~vardR~//~vayeR~
+//            {                                                      //~vardI~//~vayeR~
+//                int hhDecrease=AG.aMJTable.chkProfileRect(hh+rs.bottom-rs.top);//landscape chk //~vardR~//~vayeR~
+//                if (hhDecrease>0)                                  //~vardI~//~vayeR~
+//                    hh-=hhDecrease;                                //~vardI~//~vayeR~
+//                if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved decrease="+hhDecrease+",hh="+hh);//~vas3I~//~vayeR~
+//            }                                                      //~vardI~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved nameplate width right-left="+(rs.right-rs.left)+",old hh="+hh);//~vas4M~//~vayeR~
+//            int wwNamePlate=PrectNamePlate[PLAYER_YOU].right-PrectNamePlate[PLAYER_YOU].left;//~vas4I~//~vayeR~
+//            int hhTotal=rs.bottom-rs.top+hh;                       //~vas4R~//~vayeR~
+//            int ww2=(int)(hhTotal*PROFILE_HWRATE);  //width from height of you//~vas4I~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved org nameplate width="+wwNamePlate+",height="+hh+",hhTotal="+hhTotal+",ww2 by hhTotal="+ww2);//~vas4R~//~vayeR~
+//            if (ww2>wwNamePlate)                                   //~vas4I~//~vayeR~
+//            {                                                      //~vas4M~//~vayeR~
+//                int hhTotal2=(int)(wwNamePlate/PROFILE_HWRATE);    //~vas4R~//~vayeR~
+//                hh-=hhTotal-hhTotal2;                              //~vas4R~//~vayeR~
+//                if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved reduce by nameplate hhTotal new="+hhTotal2+",old="+hhTotal+",new hh="+hh);//~vas4R~//~vayeR~
+//                hhTotal=hhTotal2;                                  //~vas4I~//~vayeR~
+//            }                                                      //~vas4M~//~vayeR~
+////          ww=(int)(hh*PROFILE_HWRATE);                           //~vas4R~//~vayeR~
+//            ww=(int)(hhTotal*PROFILE_HWRATE)-(rs.right-rs.left);   //~vas4R~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved reduce by nameplate ww="+ww+",hhTotal="+hhTotal+",new hh="+hh);//~vas4I~//~vayeR~
+//        //*right                                                 //~vayeR~
+//            rs=Prect[PLAYER_RIGHT];                              //~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hhRight="+(rs.right-rs.left)+",rect="+rs);//~vardR~//~vayeR~
+//            xx1=rs.left-hh;      //doubled height                //~vayeR~
+//            yy2=rs.bottom+ww;                                    //~vayeR~
+//            xx2=rs.right;                                        //~vayeR~
+//            yy1=rs.top;                                          //~vayeR~
+//            xx1+=adjustByScore;  //shift down to nameplate                                  //~vas3R~//~vayeR~
+//            xx2+=adjustByScore;                                    //~vas3R~//~vayeR~
+//            rects[PLAYER_RIGHT]=new Rect(xx1,yy1,xx2,yy2);       //~vayeR~
+//        //*facing                                                //~vayeR~
+//            rs=Prect[PLAYER_FACING];                             //~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hhFacing="+(rs.bottom-rs.top));//~vardI~//~vayeR~
+//            xx2=rs.right+ww;                                     //~vayeR~
+//            yy2=rs.bottom+hh;                                    //~vayeR~
+//            xx1=rs.left;                                         //~vayeR~
+//            yy1=rs.top;                                          //~vayeR~
+//            yy1-=adjustByScore;                                    //~vas3I~//~vayeR~
+//            yy2-=adjustByScore;                                    //~vas3I~//~vayeR~
+//            rects[PLAYER_FACING]=new Rect(xx1,yy1,xx2,yy2);      //~vayeR~
+//        //*left                                                  //~vayeR~
+//            rs=Prect[PLAYER_LEFT];                               //~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved hhLeft="+(rs.right-rs.left));//~vardI~//~vayeR~
+//            xx2=rs.right+hh;                                     //~vayeR~
+//            yy1=rs.top-ww;                                       //~vayeR~
+//            xx1=rs.left;                                         //~vayeR~
+//            yy2=rs.bottom;                                       //~vayeR~
+//            xx1-=adjustByScore;                                    //~vas3I~//~vayeR~
+//            xx2-=adjustByScore;                                    //~vas3I~//~vayeR~
+//            rects[PLAYER_LEFT]=new Rect(xx1,yy1,xx2,yy2);        //~vayeR~
+//        //*you                                                   //~vayeR~
+//            rs=Prect[PLAYER_YOU];                                //~vayeR~
+//            xx1=rs.left-ww;                                      //~vayeR~
+//            yy1=rs.top-hh;                                       //~vayeR~
+//            xx2=rs.right;                                        //~vayeR~
+//            yy2=rs.bottom;                                       //~vayeR~
+//            yy1+=adjustByScore;                                    //~vas3I~//~vayeR~
+//            yy2+=adjustByScore;                                    //~vas3I~//~vayeR~
+//            rects[PLAYER_YOU]=new Rect(xx1,yy1,xx2,yy2);         //~vayeR~
 
-    	if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved exit rect="+Utils.toString(rects));
-        return rects;
-    }
+//        if (Dump.Y) Dump.println("ProfileIcon.getRectBeforeMoved exit rect="+Utils.toString(rects));//~vayeR~
+//        return rects;                                            //~vayeR~
+//    }                                                            //~vayeR~
+//    //*************************************************************************//~vay8I~//~vayeR~
+//    //*for Portrait                                                //~vay8I~//~vayeR~
+//    //*set Rect for before move seat(no score plate shown)         //~vay8I~//~vayeR~
+//    //*height is double of in gaming                               //~vay8I~//~vayeR~
+//    //*if on NamePlate(portrat or long device) show overriding score plate place//~vay8I~//~vayeR~
+//    //*************************************************************************//~vay8I~//~vayeR~
+//    private Rect[] getRectBeforeMovedPort_OLD2(Rect[] Prect,Rect[] PrectNamePlate)//~vay8I~//~vayaR~//~vayeR~
+//    {                                                              //~vay8I~//~vayeR~
+//        Rect rs;                                                   //~vay8I~//~vayeR~
+//        int margin=PROFILE_MARGIN; // missing score box when before move//~vay8R~//~vayeR~
+//        int minW,ww,hh;                                             //~vay8I~//~vayeR~
+//        Rect[] rects=new Rect[PLAYERS];                            //~vay8I~//~vayeR~
+//    //***************************                                  //~vay8I~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort swLongDevice="+AG.swLongDevice+",maxHeightByStock="+maxHeightByStock+",Prect="+Utils.toString(PrectNamePlate));//~vay8R~//~vayaR~//~vayeR~
+//        rs=PrectNamePlate[PLAYER_YOU];                             //~vay8R~//~vayeR~
+//        ww=rs.right-rs.left;                                       //~vay8I~//~vayeR~
+//        minW=ww;                                                   //~vay8R~//~vayeR~
+//        rs=PrectNamePlate[PLAYER_RIGHT];                           //~vay8R~//~vayeR~
+//        ww=rs.bottom-rs.top;                                       //~vay8I~//~vayeR~
+//        minW=Math.min(minW,ww);                                    //~vay8I~//~vayeR~
+//        rs=PrectNamePlate[PLAYER_FACING];                          //~vay8R~//~vayeR~
+//        ww=rs.right-rs.left;                                       //~vay8I~//~vayeR~
+//        minW=Math.min(minW,ww);                                    //~vay8I~//~vayeR~
+//        rs=PrectNamePlate[PLAYER_LEFT];                            //~vay8R~//~vayeR~
+//        ww=rs.bottom-rs.top;                                       //~vay8I~//~vayeR~
+//        minW=Math.min(minW,ww);                                    //~vay8I~//~vayeR~
+//        hh=maxHeightByStock-margin;                                //~vay8R~//~vayeR~
+//        ww=(int)(hh*PROFILE_HWRATE);                               //~vay8I~//~vayeR~
+//        if (ww>minW)                                               //~vay8I~//~vayeR~
+//        {                                                          //~vay8I~//~vayeR~
+//            ww=minW;                                               //~vay8I~//~vayeR~
+//            hh=(int)(ww/PROFILE_HWRATE);                           //~vay8I~//~vayeR~
+//        }                                                          //~vay8I~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort minW="+minW+",margin="+margin+",hh="+hh+",ww="+ww+",maxHeightByStock="+maxHeightByStock);//~vay8I~//~vayeR~
+//        //~vay8I~                                                //~vayeR~
+//        //*right                                                   //~vay8I~//~vayeR~
+//            rs=PrectNamePlate[PLAYER_RIGHT];                       //~vay8R~//~vayeR~
+//            rects[PLAYER_RIGHT]=new Rect(rs.left-hh-margin,rs.top,rs.left-margin,rs.top+ww);//~vay8R~//~vayeR~
+//        //*facing                                                  //~vay8I~//~vayeR~
+//            rs=PrectNamePlate[PLAYER_FACING];                      //~vay8R~//~vayeR~
+//            rects[PLAYER_FACING]=new Rect(rs.left,rs.bottom+margin,rs.left+ww,rs.bottom+hh+margin);//~vay8R~//~vayeR~
+//        //*left                                                    //~vay8I~//~vayeR~
+//            rs=PrectNamePlate[PLAYER_LEFT];                        //~vay8R~//~vayeR~
+//            rects[PLAYER_LEFT]=new Rect(rs.right+margin,rs.bottom-ww,rs.right+hh+margin,rs.bottom);//~vay8R~//~vayeR~
+//        //*you                                                     //~vay8I~//~vayeR~
+//            rs=PrectNamePlate[PLAYER_YOU];                         //~vay8R~//~vayeR~
+//            rects[PLAYER_YOU]=new Rect(rs.right-ww,rs.top-hh-margin,rs.right,rs.top-margin);//~vay8R~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort exit rect="+Utils.toString(rects));//~vay8I~//~vayeR~
+//        return rects;                                              //~vay8I~//~vayeR~
+//    }                                                              //~vay8I~//~vayeR~
+    //*************************************************************************//~vayaI~
+    //override chk                                                 //~vayaI~
+    //return available width and height                            //~vayaI~
+    //Pspace: additional space required for the destination        //~vayaI~
+    //Pdest: 0:tgt above src, 1:tgt left of src, 2: tgt under src, 3: tgt rigt of src//~vayaI~
+    //*************************************************************************//~vayaI~
+//  private Point chkOverwrapNeighbor(int Pdest,Rect Ptgt,Rect Psrc,int Pspace,int Pmargin)//~vayaI~//~vayeR~
+    private Point chkOverwrapNeighbor(int Pdest,Rect Ptgt,Rect Psrc,int Pspace,int Pmargin,boolean PchkEarth)//~vayeI~
+    {                                                              //~vayaI~
+    	int distH,distW,distH2,distW2,srcH,srcW;                             //~vayaI~
+        int maxW,ww,hh;                                            //~vayeI~
+        Rect rc;                                                   //~vayaI~
+    //*************************************                        //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor dest="+Pdest+",tgt="+Ptgt+",src="+Psrc+",Pspace="+Pspace+",margin="+Pmargin+",PchkEarth="+PchkEarth);//~vayaI~//~vayeR~
+    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor HWRATE="+PROFILE_HWRATE);//~vaygI~
+    	switch(Pdest)                                              //~vayaI~
+        {                                                          //~vayaI~
+        case 0:  //tgt left, src you                               //~vayaI~
+	    	srcW=Psrc.right-Psrc.left;                             //~vayaI~
+    		srcH=Psrc.bottom-Psrc.top;                             //~vayaI~
+        	distH=(Ptgt.bottom+Pspace+Pmargin)-Psrc.top;   //vertical overwrap if +//~vayaI~
+        	distW=(Ptgt.right+Pmargin)-Psrc.left;          //horizontal overwrap if +//~vayaI~
+            maxW=Psrc.right-(Ptgt.left+Pmargin); 	//from earth   //~vayeI~
+        	break;                                                 //~vayaI~
+        case 1:  //tgt you , src right                             //~vayaI~
+	    	srcW=Psrc.bottom-Psrc.top;                             //~vayaI~
+    		srcH=Psrc.right-Psrc.left;                             //~vayaI~
+        	distH=(Ptgt.right+Pspace+Pmargin)-Psrc.left;   //horizontal overwrap if +//~vayaI~
+        	distW=Psrc.bottom-(Ptgt.top-Pmargin);   //vertical overwrap if +//~vayaI~
+            maxW=(Ptgt.bottom-Pmargin)-Psrc.top; 	//from earth   //~vayeI~
+        	break;                                                 //~vayaI~
+        case 2:  //tgt right , src facing                          //~vayaI~
+	    	srcW=Psrc.right-Psrc.left;                             //~vayaI~
+    		srcH=Psrc.bottom-Psrc.top;                             //~vayaI~
+        	distH=Psrc.bottom-(Ptgt.top-Pspace-Pmargin);   //vertical overwrap if +//~vayaI~
+        	distW=Psrc.right-(Ptgt.left-Pmargin);   //horizontal overwrap if +//~vayaI~
+            maxW=(Ptgt.right-Pmargin)-Psrc.left; 	//from earth   //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor @@@@ distH="+distH+",distW="+distW+",limitH="+(Ptgt.top-Pspace-Pmargin)+",limitW="+(Ptgt.left-Pmargin));//~vayeI~
+        	break;                                                 //~vayaI~
+        default:  //tgt facing , src left                          //~vayaI~
+	    	srcW=Psrc.bottom-Psrc.top;                             //~vayaI~
+    		srcH=Psrc.right-Psrc.left;                             //~vayaI~
+        	distH=Psrc.right-(Ptgt.left-Pspace-Pmargin);   //vertical overwrap if +//~vayaR~
+        	distW=(Ptgt.bottom+Pmargin)-Psrc.top;   //horizontal overwrap if +//~vayaR~
+            maxW=Psrc.bottom-(Ptgt.top+Pmargin); 	//from earth   //~vayeR~
+        }                                                          //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor distH="+distH+",distW="+distW+",maxW="+maxW);//~vayaI~//~vayeR~
+        distH2=0; distW2=0;                                        //~vayaI~
+        if (distH>0 && distW>0) //rect overwrap                    //~vayaI~
+        {                                                  //~vayaI~
+            distW2=(int)(distH*PROFILE_HWRATE);        //ww decrese by hh decrease//~vayaI~
+            if (distW2<=distW)  //    adjusted by hh < overwrap ww  //~vayaI~//~vayeR~
+            {                                                      //~vayaI~
+            	distH2=distH;   //and distW2 above                 //~vayaR~
+		    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor select distH, distW2("+distW2+") <= distW("+distW+")");//~vayaI~//~vayeR~
+            }                                                      //~vayaI~
+            else                //hh is larger when ww adjusted    //~vayaI~
+            {                                                      //~vayaI~
+                hh=(int)(distW/PROFILE_HWRATE);        //ww decrese by hh decrease//~vayaI~
+		    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor select distW, distW2("+distW2+") > distW("+distW+")");//~vayaI~//~vaydM~//~vayeR~
+                distW2=distW;                                      //~vayaI~
+                distH2=hh;                                         //~vayaR~
+            }                                                      //~vayaI~
+		    if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor select distW2="+distW2+",distH2="+distH2);//~vayaI~
+        }                                                          //~vayaI~
+        ww=srcW-distW2;  //adjusted W and H regardless direction//~vayaI~//~vayeR~
+        hh=srcH-distH2;  //adjusted W and H regardless direction  //~vayeI~
+		if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor ww="+ww+",hh="+hh);//~vayeI~
+        if (PchkEarth)                                             //~vayeI~
+            if (ww>maxW)                                           //~vayeR~
+            {                                                      //~vayeR~
+                ww=maxW;                                           //~vayeR~
+                hh=(int)(ww/PROFILE_HWRATE);        //ww decrese by hh decrease//~vayeR~
+                if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor adjust by maxW="+maxW+",ww="+ww+",hh="+hh);//~vayeR~
+            }                                                      //~vayeR~
+        Point p=new Point(ww,hh);  //adjusted W and H regardless direction//~vayeI~
+    	if (Dump.Y) Dump.println(CN+"chkOverwrapNeighbor exit newW/H="+p+",srcW="+srcW+",srcH="+srcH);//~vayaR~
+        return p;                                                  //~vayaI~
+    }                                                              //~vayaI~
+    //*************************************************************************//~vayeI~
+    //*before move no score box, shift icon to name box            //~vayeI~
+    //*ICON is on nameplate                                        //~vayeI~
+    //if sw off, simply adjust width by HWRATE                     //~vayeI~
+    //*************************************************************************//~vayeI~
+    private Rect[] shiftToNameBox(Rect[] PrectProfile,Rect[] PrectNamePlate,boolean PswShift)//~vayeR~
+    {                                                              //~vayeI~
+    	Rect[] out;                                                //~vayeI~
+    	Rect rp,rn;                                                //~vayeR~
+        int scoreH,hh,ww,npW;                                      //~vayeR~
+    //******************                                           //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"shiftToNameBox swShift="+PswShift);//~vayeI~
+        out=new Rect[PLAYERS];                                     //~vayeI~
+    //*you                                                         //~vayeR~
+        rp=new Rect(PrectProfile[PLAYER_YOU]);                     //~vayeR~
+        rn=PrectNamePlate[PLAYER_YOU];                                 //~vayeI~
+        if (PswShift)                                              //~vayeI~
+        {                                                          //~vayeI~
+        	scoreH=rn.bottom-rn.top;                               //~vayeR~
+        	rp.bottom+=scoreH;                                     //~vayeI~
+        }                                                          //~vayeI~
+        hh=rp.bottom-rp.top;                                        //~vayeI~
+        ww=(int)(hh*PROFILE_HWRATE);                               //~vayeI~
+        npW=rn.right-rn.left;                                      //~vayeI~
+	    if (Dump.Y) Dump.println(CN+"shiftToNameBox YOU src="+npW+",ww by hh="+ww);//~vayeI~
+        if (npW<ww) //over nameplate width                         //~vayeI~
+        {                                                          //~vayeI~
+            ww=npW;                                                //~vayeI~
+            hh=(int)(ww/PROFILE_HWRATE);                           //~vayeI~
+            rp.top=rp.bottom-hh;                                   //~vayeI~
+	    	if (Dump.Y) Dump.println(CN+"shiftToNameBox YOU width over nameplate new ww="+ww+",hh="+hh);//~vayeI~
+        }                                                          //~vayeI~
+        rp.left=rp.right-ww;                                       //~vayeI~
+        out[PLAYER_YOU]=rp;                                        //~vayeR~
+    //*right                                                       //~vayeI~
+        rp=new Rect(PrectProfile[PLAYER_RIGHT]);                   //~vayeR~
+        rn=PrectNamePlate[PLAYER_RIGHT];                               //~vayeI~
+        if (PswShift)                                              //~vayeI~
+        {                                                          //~vayeI~
+        	scoreH=rn.right-rn.left;                               //~vayeR~
+        	rp.right+=scoreH;                                      //~vayeR~
+        }                                                          //~vayeI~
+        hh=rp.right-rp.left;                                       //~vayeI~
+        ww=(int)(hh*PROFILE_HWRATE);        //ww decrese by hh decrease//~vayeI~
+        npW=rn.bottom-rn.top;                                      //~vayeI~
+	    if (Dump.Y) Dump.println(CN+"shiftToNameBox RIGHT src="+npW+",ww by hh="+ww);//~vayeI~
+        if (npW<ww) //over nameplate                               //~vayeI~
+        {                                                          //~vayeI~
+            ww=npW;                                                //~vayeI~
+            hh=(int)(ww/PROFILE_HWRATE);                           //~vayeI~
+            rp.left=rp.right-hh;                                   //~vayeI~
+	    	if (Dump.Y) Dump.println(CN+"shiftToNameBox RIGHT width over nameplate new ww="+ww+",hh="+hh);//~vayeI~
+        }                                                          //~vayeI~
+        rp.bottom=rp.top+ww;                                       //~vayeI~
+        out[PLAYER_RIGHT]=rp;                                      //~vayeR~
+    //*face                                                        //~vayeI~
+        rp=new Rect(PrectProfile[PLAYER_FACING]);                  //~vayeR~
+        rn=PrectNamePlate[PLAYER_FACING];                              //~vayeI~
+        if (PswShift)                                              //~vayeI~
+        {                                                          //~vayeI~
+        	scoreH=rn.bottom-rn.top;                               //~vayeR~
+        	rp.top-=scoreH;                                        //~vayeI~
+        }                                                          //~vayeI~
+        hh=rp.bottom-rp.top;                                       //~vayeI~
+        ww=(int)(hh*PROFILE_HWRATE);        //ww decrese by hh decrease//~vayeI~
+        npW=rn.right-rn.left;                                      //~vayeI~
+	    if (Dump.Y) Dump.println(CN+"shiftToNameBox FACE src="+npW+",ww by hh="+ww);//~vayeI~
+        if (npW<ww) //over nameplate                               //~vayeI~
+        {                                                          //~vayeI~
+            ww=npW;                                                //~vayeI~
+            hh=(int)(ww/PROFILE_HWRATE);                           //~vayeI~
+            rp.bottom=rp.top+hh;                                   //~vayeI~
+	    	if (Dump.Y) Dump.println(CN+"shiftToNameBox FACE width over nameplate new ww="+ww+",hh="+hh);//~vayeI~
+        }                                                          //~vayeI~
+        rp.right=rp.left+ww;                                        //~vayeI~
+        out[PLAYER_FACING]=rp;                                     //~vayeR~
+    //*left                                                        //~vayeI~
+        rp=new Rect(PrectProfile[PLAYER_LEFT]);                    //~vayeR~
+        rn=PrectNamePlate[PLAYER_LEFT];                                //~vayeI~
+        if (PswShift)                                              //~vayeI~
+        {                                                          //~vayeI~
+        	scoreH=rn.right-rn.left;                               //~vayeR~
+        	rp.left-=scoreH;                                       //~vayeI~
+        }                                                          //~vayeI~
+        hh=rp.right-rp.left;                                       //~vayeI~
+        ww=(int)(hh*PROFILE_HWRATE);        //ww decrese by hh decrease//~vayeI~
+        npW=rn.bottom-rn.top;                                      //~vayeI~
+        if (npW<ww) //over nameplate                               //~vayeI~
+        {                                                          //~vayeI~
+            ww=npW;                                                //~vayeI~
+            hh=(int)(ww/PROFILE_HWRATE);                           //~vayeI~
+            rp.right=rp.left+hh;                                   //~vayeI~
+	    	if (Dump.Y) Dump.println(CN+"shiftToNameBox LEFT width over nameplate new ww="+ww+",hh="+hh);//~vayeI~
+        }                                                          //~vayeI~
+        rp.top=rp.bottom-ww;                                       //~vayeI~
+        out[PLAYER_LEFT]=rp;                                       //~vayeR~
+                                                                   //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"shiftToNameBox rectProfile="+Utils.toString(PrectProfile));//~vayeR~
+    	if (Dump.Y) Dump.println(CN+"shiftToNameBox rectNamePlate="+Utils.toString(PrectNamePlate));//~vayeI~
+    	if (Dump.Y) Dump.println(CN+"shiftToNameBox out="+Utils.toString(out));//~vayeR~
+        return out;                                                //~vayeI~
+    }                                                              //~vayeI~
+    //*************************************************************************//~vayaI~
+    //*for Port or LongDevice at beforemove                        //~vayaI~
+    //*ICON is on nameplate                                        //~vayaI~
+    //*************************************************************************//~vayaI~
+//  private Rect[] getRectBeforeMovedPortAdjusted(Rect[] Prect,Rect[] PrectNamePlate)//~vayaI~//~vaydR~
+    private Rect[] getRectBeforeMoved(Rect[] PrectS,Rect[] PrectNamePlate)                //~vaydI~//~vayeR~
+    {                                                              //~vayaI~
+        Rect rectSrc,rs;                                              //~vayaR~//~vayeR~
+        Rect[] rectSrcS;                                           //~vayeR~
+        Rect[] stocks;                                             //~vayeI~
+        Rect[] setups;    //setup tile on river at before move place//~vayaM~
+        int margin=PROFILE_MARGIN; // missing score box when before move//~vayaI~//~vaygR~
+        int minW,minH,ww,hh;                                          //~vayaI~
+        Point newWH1,newWH2;                                       //~vayaI~
+        //***************************                                  //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved swNPLeft="+swNPLeft+",swLongDevice="+AG.swLongDevice+",PrectProfile="+Utils.toString(PrectS));//~vayaI~//~vaydR~//~vayeR~//~vaygR~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved rectProfile="+Utils.toString(PrectS));//~vayaI~//~vaydR~
+//      rectSrcS=shiftToNameBox(PrectS,PrectNamePlate,(AG.swLongDevice || AG.portrait));//~vayeR~//~vaygR~
+        rectSrcS=shiftToNameBox(PrectS,PrectNamePlate,swNPLeft);   //~vaygI~
+        stocks=AG.aStock.rectsBG;                                  //~vayaI~
+        setups=AG.aRiver.getRectSetupAll();                        //~vayaI~
+        if (Dump.Y) Dump.println(CN+"getRectBeforeMoved stocks="+Utils.toString(stocks));//~vayaI~//~vaydR~
+        int wwPiece=AG.aMJTable.riverPieceW+margin;   //setup piece width //~vayeR~//~vaygR~
+                                                                   //~vayaI~
+        rectSrc=rectSrcS[PLAYER_YOU];                                 //~vayaI~//~vayeR~
+	    newWH1=chkOverwrapNeighbor(PLAYER_YOU,stocks[PLAYER_LEFT],rectSrc,wwPiece,margin,false/*chkEarth*/);//~vayaR~//~vayeR~
+	    newWH2=chkOverwrapNeighbor(PLAYER_YOU,setups[PLAYER_LEFT],rectSrc,0,margin,false/*chkEarth*/);//~vayaR~//~vayeR~
+        ww=Math.min(newWH1.x,newWH2.x);                            //~vayaR~
+        hh=Math.min(newWH1.y,newWH2.y);                            //~vayaI~
+        minW=ww;                                                   //~vayaI~
+        minH=hh;                                                   //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved YOU minW="+minW+",minH="+minH);//~vaydI~
+                                                                   //~vayaI~
+        rectSrc=rectSrcS[PLAYER_RIGHT];                               //~vayaI~//~vayeR~
+	    newWH1=chkOverwrapNeighbor(PLAYER_RIGHT,stocks[PLAYER_YOU],rectSrc,wwPiece,margin,false/*chkEarth*/);//~vayaI~//~vayeR~
+	    newWH2=chkOverwrapNeighbor(PLAYER_RIGHT,setups[PLAYER_YOU],rectSrc,0,margin,false/*chkEarth*/);//~vayaI~//~vayeR~
+        ww=Math.min(newWH1.x,newWH2.x);                            //~vayaI~
+        hh=Math.min(newWH1.y,newWH2.y);                            //~vayaI~
+        minW=Math.min(minW,ww);                                    //~vayaI~
+        minH=Math.min(minH,hh);                                    //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved RIGHT minW="+minW+",minH="+minH);//~vaydI~
+                                                                   //~vayaI~
+        rectSrc=rectSrcS[PLAYER_FACING];                              //~vayaI~//~vayeR~
+	    newWH1=chkOverwrapNeighbor(PLAYER_FACING,stocks[PLAYER_RIGHT],rectSrc,wwPiece,margin,false/*chkEarth*/);//~vayaR~//~vayeR~
+	    newWH2=chkOverwrapNeighbor(PLAYER_FACING,setups[PLAYER_RIGHT],rectSrc,0,margin,false/*chkEarth*/);//~vayaR~//~vayeR~
+        ww=Math.min(newWH1.x,newWH2.x);                            //~vayaI~
+        hh=Math.min(newWH1.y,newWH2.y);                            //~vayaI~
+        minW=Math.min(minW,ww);                                    //~vayaI~
+        minH=Math.min(minH,hh);                                    //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved FACE minW="+minW+",minH="+minH);//~vaydI~
+                                                                   //~vayaI~
+        rectSrc=rectSrcS[PLAYER_LEFT];                                //~vayaI~//~vayeR~
+	    newWH1=chkOverwrapNeighbor(PLAYER_LEFT,stocks[PLAYER_FACING],rectSrc,wwPiece,margin,false/*chkEarth*/);//~vayaR~//~vayeR~
+	    newWH2=chkOverwrapNeighbor(PLAYER_LEFT,setups[PLAYER_FACING],rectSrc,0,margin,false/*chkEarth*/);//~vayaR~//~vayeR~
+        ww=Math.min(newWH1.x,newWH2.x);                            //~vayaI~
+        hh=Math.min(newWH1.y,newWH2.y);                            //~vayaI~
+        minW=Math.min(minW,ww);                                    //~vayaI~
+        minH=Math.min(minH,hh);                                    //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved LEFT minW="+minW+",minH="+minH);//~vaydI~
+                                                                   //~vaydI~
+        Rect[] rects=new Rect[PLAYERS];                            //~vayaI~
+        //*you                                                     //~vayaI~
+            rs=rectSrcS[PLAYER_YOU];                                  //~vayaI~//~vayeR~
+            rects[PLAYER_YOU]=new Rect(rs.right-minW, rs.bottom-minH, rs.right, rs.bottom);//~vayaI~
+        //*right                                                   //~vayaI~
+            rs=rectSrcS[PLAYER_RIGHT];                                //~vayaI~//~vayeR~
+            rects[PLAYER_RIGHT]=new Rect(rs.right-minH, rs.top, rs.right, rs.top+minW);//~vayaI~
+        //*facing                                                  //~vayaI~
+            rs=rectSrcS[PLAYER_FACING];                               //~vayaI~//~vayeR~
+            rects[PLAYER_FACING]=new Rect(rs.left, rs.top, rs.left+minW,rs.top+minH);//~vayaI~
+        //*left                                                    //~vayaI~
+            rs=rectSrcS[PLAYER_LEFT];                                 //~vayaI~//~vayeR~
+            rects[PLAYER_LEFT]=new Rect(rs.left, rs.bottom-minW, rs.left+minH, rs.bottom);//~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getRectBeforeMoved exit rect="+Utils.toString(rects));//~vayaI~//~vaydR~
+        return rects;                                              //~vayaI~
+    }                                                              //~vayaI~
+//    //*************************************************************************//~vayaI~//~vayeR~
+//    //*for Port or LongDevice at beforemove                        //~vayaR~//~vayeR~
+//    //*ICON is on nameplate                                        //~vayaI~//~vayeR~
+//    //*************************************************************************//~vayaI~//~vayeR~
+//    private Rect[] getRectBeforeMovedPort_OLD(Rect[] Prect,Rect[] PrectNamePlate)//~vayaI~//~vaydR~//~vayeR~
+//    {                                                              //~vayaI~//~vayeR~
+//        Rect rpr,stock,rs,setup;                                   //~vayaR~//~vayeR~
+//        int margin=PROFILE_MARGIN; // missing score box when before move//~vayaI~//~vayeR~
+//        int minW=0,ww,hh;                                            //~vayaI~//~vayeR~
+//        Rect[] stocks;                                           //~vayeR~
+//        Rect[] setups;    //setup tile on river at before move place//~vayaI~//~vayeR~
+//        boolean swOverride=false;//~vayaI~                       //~vayeR~
+//    //***************************                                  //~vayaI~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort swLongDevice="+AG.swLongDevice+",maxHeightByStock="+maxHeightByStock+",PrectNamePlate="+Utils.toString(PrectNamePlate)+",PrectProfile="+Utils.toString(Prect));//~vayaR~//~vayeR~
+////      if (true) //TODO test                                      //~vayaI~//~vaydR~//~vayeR~
+////          return getRectBeforeMovedPortAdjusted(Prect,PrectNamePlate);//~vayaR~//~vaydR~//~vayeR~
+//        stocks=AG.aStock.rectsBG;                                //~vayeR~
+//        setups=AG.aRiver.getRectSetupAll();                        //~vayaI~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort stocks="+Utils.toString(stocks));//~vayaI~//~vayeR~
+//        int wwPiece=AG.aMJTable.handPieceH;                  //~vayaI~//~vayeR~
+//        rpr=Prect[PLAYER_YOU];     //rectProfile on NamePlate      //~vayaR~//~vayeR~
+//        stock=stocks[PLAYER_LEFT];                                 //~vayaI~//~vayeR~
+//        setup=setups[PLAYER_LEFT];                                 //~vayaR~//~vayeR~
+//     //* icon:you stock:left                                       //~vayaI~//~vayeR~
+//        if (rpr.left<stock.right+margin) //overwrap your icon to left stock//~vayaR~//~vayeR~
+//            if (rpr.top-stock.bottom<wwPiece)                      //~vayaR~//~vayeR~
+//                swOverride=true;                                   //~vayaR~//~vayeR~
+//        if (!swOverride)                                           //~vayaI~//~vayeR~
+//        {                                                          //~vayaI~//~vayeR~
+//            minW=rpr.right-rpr.left;    //You                      //~vayaR~//~vayeR~
+//        }                                                          //~vayaI~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort rpr:YOU and stock:LEFT swOverride="+swOverride+",minW="+minW);//~vayaR~//~vayeR~
+//     //* icon:right stock:you                                      //~vayaI~//~vayeR~
+//        rpr=Prect[PLAYER_RIGHT];                                    //~vayaR~//~vayeR~
+//        stock=stocks[PLAYER_YOU];                                  //~vayaI~//~vayeR~
+//        setup=setups[PLAYER_YOU];                                  //~vayaR~//~vayeR~
+//        if (rpr.bottom>stock.top-margin) //overwrap                //~vayaR~//~vayeR~
+//            if (rpr.left-stock.right<wwPiece)                      //~vayaR~//~vayeR~
+//                swOverride=true;                                   //~vayaR~//~vayeR~
+//        if (!swOverride)                                           //~vayaI~//~vayeR~
+//        {                                                          //~vayaI~//~vayeR~
+//            minW=Math.min(minW,rpr.bottom-rpr.top); //right        //~vayaR~//~vayeR~
+//            if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort RIGHT minW="+minW+",rpr=="+rpr+",setup YOU="+setup);//~vayaR~//~vayeR~
+//            if (rpr.bottom>setup.top-margin)    //setup you and icon right//~vayaR~//~vayeR~
+//                if (rpr.left<setup.right-margin)    //overwarp setup:you and icon:right//~vayaR~//~vayeR~
+//                {                                                  //~vayaI~//~vayeR~
+//                    minW=Math.min(minW,(setup.top-margin)-rpr.top); //right//~vayaR~//~vayeR~
+//                    if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort adjust by setup YOU minw="+minW);//~vayaI~//~vayeR~
+//                }                                                  //~vayaI~//~vayeR~
+//        }                                                          //~vayaI~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort rpr:RIGHT and stock:YOU swOverride="+swOverride+",minW="+minW);//~vayaR~//~vayeR~
+//     //* icon:face stock:right                                     //~vayaI~//~vayeR~
+//        rpr=Prect[PLAYER_FACING];                                   //~vayaR~//~vayeR~
+//        stock=stocks[PLAYER_RIGHT];                                //~vayaI~//~vayeR~
+//        setup=setups[PLAYER_RIGHT];                                //~vayaR~//~vayeR~
+//        if (rpr.right>stock.left-margin) //overwrap                //~vayaR~//~vayeR~
+//            if (stock.top-rpr.bottom<wwPiece)                      //~vayaR~//~vayeR~
+//                swOverride=true;                                   //~vayaR~//~vayeR~
+//        if (!swOverride)                                           //~vayaI~//~vayeR~
+//            minW=Math.min(minW,rpr.right-rpr.left); //face         //~vayaR~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort rpr FACING swOverride="+swOverride+",minW="+minW);//~vayaR~//~vayeR~
+//     //* icon:left stock:face                                      //~vayaI~//~vayeR~
+//        rpr=Prect[PLAYER_LEFT];                                     //~vayaR~//~vayeR~
+//        stock=stocks[PLAYER_FACING];                               //~vayaI~//~vayeR~
+//        setup=setups[PLAYER_FACING];                               //~vayaR~//~vayeR~
+//        if (rpr.top<stock.bottom+margin) //overwrap                //~vayaR~//~vayeR~
+//            if (stock.left-rpr.right<wwPiece)                      //~vayaR~//~vayeR~
+//                swOverride=true;                                   //~vayaR~//~vayeR~
+//        if (!swOverride)               //icon left override stock face//~vayaR~//~vayeR~
+//        {                                                          //~vayaI~//~vayeR~
+//            if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort LEFT minw="+minW+",rpr="+rpr+",setup FACING="+setup);//~vayaR~//~vayeR~
+//            minW=Math.min(minW,rpr.bottom-rpr.top); //left         //~vayaR~//~vayeR~
+//            if (rpr.top<setup.bottom+margin)    //setup you and icon right//~vayaR~//~vayeR~
+//                if (rpr.right>setup.left-margin)    //icon:Left override setup:face//~vayaR~//~vayeR~
+//                {                                                  //~vayaI~//~vayeR~
+//                    minW=Math.min(minW,rpr.bottom-(setup.bottom+margin)); //right//~vayaR~//~vayeR~
+//                    if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort adjust by setup:Face minw="+minW);//~vayaI~//~vayeR~
+//                }                                                  //~vayaI~//~vayeR~
+//        }                                                          //~vayaI~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort rpr LEFT swOverride="+swOverride+",minW="+minW);//~vayaR~//~vayeR~
+//                                                                   //~vayaI~//~vayeR~
+//        if (swOverride)                                            //~vayaI~//~vayeR~
+//        {                                                          //~vayaI~//~vayeR~
+//            hh=maxHeightByStock;                                   //~vayaI~//~vayeR~
+//            ww=(int)(hh*PROFILE_HWRATE);                                 //~vayaI~//~vayeR~
+//        }                                                          //~vayaI~//~vayeR~
+//        else                                                       //~vayaI~//~vayeR~
+//        {                                                          //~vayaI~//~vayeR~
+//            ww=minW;                                               //~vayaI~//~vayeR~
+//            hh=(int)(ww/PROFILE_HWRATE);                                 //~vayaI~//~vayeR~
+//        }                                                          //~vayaI~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort minW="+minW+",wwPiece="+wwPiece+",margin="+margin+",hh="+hh+",ww="+ww+",maxHeightByStock="+maxHeightByStock);//~vayaR~//~vayeR~
+//        Rect[] rects=new Rect[PLAYERS];                            //~vayaR~//~vayeR~
+//        //*you                                                     //~vayaI~//~vayeR~
+//            rs=Prect[PLAYER_YOU];                                  //~vayaR~//~vayeR~
+//            rects[PLAYER_YOU]=new Rect(rs.right-ww, rs.bottom-hh, rs.right, rs.bottom);//~vayaR~//~vayeR~
+//        //*right                                                   //~vayaI~//~vayeR~
+//            rs=Prect[PLAYER_RIGHT];                                //~vayaR~//~vayeR~
+//            rects[PLAYER_RIGHT]=new Rect(rs.right-hh, rs.top, rs.right, rs.top+ww);//~vayaR~//~vayeR~
+//        //*facing                                                  //~vayaI~//~vayeR~
+//            rs=Prect[PLAYER_FACING];                               //~vayaR~//~vayeR~
+//            rects[PLAYER_FACING]=new Rect(rs.left, rs.top, rs.left+ww,rs.top+hh);//~vayaR~//~vayeR~
+//        //*left                                                    //~vayaI~//~vayeR~
+//            rs=Prect[PLAYER_LEFT];                                 //~vayaR~//~vayeR~
+//            rects[PLAYER_LEFT]=new Rect(rs.left, rs.bottom-ww, rs.left+hh, rs.bottom);//~vayaR~//~vayeR~
+//        if (Dump.Y) Dump.println(CN+"getRectBeforeMovedPort exit rect="+Utils.toString(rects));//~vayaI~//~vayeR~
+//        return rects;                                              //~vayaI~//~vayeR~
+//    }                                                              //~vayaI~//~vayeR~
     //***************************************
     //*from NamePlate.showPlate
     //***************************************
@@ -374,9 +918,25 @@ public class ProfileIcon
         if (!swShowProfile)
         	return;
         if (swAfterMove)                                           //~2A03I~
+        {                                                          //~vay8I~
+          if (false) //TEST                                        //~vayaI~
+          	if (!swAdjustedWithStarter)                            //~vayaR~
+            {                                                      //~vayaI~
+    			if (Dump.Y) Dump.println(CN+"showOnNamePlate nop by swAdjustedWithStarter OFF");//~vayaI~
+            	return;                                            //~vayaI~
+            }                                                      //~vayaI~
+          if (false) //TEST                                        //~vayaR~
+			adjustWithStarterSeq2();                               //~vayaM~
+          else                                                     //~vayaI~
+			adjustWithStarterSeq3();                               //~vayaI~
         	rects=rectProfile;                                     //~2A03I~
+    		if (Dump.Y) Dump.println(CN+"showOnNamePlate afterMove rectProfile="+Utils.toString(rects));//~vay8I~
+        }                                                          //~vay8I~
         else                                                       //~2A03I~
+        {                                                          //~vay8I~
             rects=rectProfileBeforeMove;                           //~2A03I~
+    		if (Dump.Y) Dump.println(CN+"showOnNamePlate beforeMove rectProfile="+Utils.toString(rects));//~vay8I~
+        }                                                          //~vay8I~
         if (!swIsSetCurrent)                                       //~2A03R~
         {                                                          //~2A03I~
             setCurrentBmp(swAfterMove);                            //~2A03R~
@@ -389,6 +949,15 @@ public class ProfileIcon
             drawProfile(rects[ii],bmpCurrent[ii]);                     //~2A03R~
         }                                                          //~2A03I~
     }
+    //*****************************************************************//~vayaI~
+    private void drawProfileAll(Rect[] PrectProfile)               //~vayaI~
+    {                                                              //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"drawProfileAll rectProfile="+Utils.toString(PrectProfile));//~vayaI~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~vayaI~
+        {                                                          //~vayaI~
+            drawProfile(PrectProfile[ii],bmpCurrent[ii]);          //~vayaI~
+        }                                                          //~vayaI~
+    }                                                              //~vayaI~
 //    //*****************************************************************//~2A03R~
 //    //* not used                                                 //~2A03R~
 //    //*****************************************************************//~2A03R~
@@ -475,7 +1044,13 @@ public class ProfileIcon
     {                                                              //~vav5I~
     	if (Dump.Y) Dump.println("ProfileIcon.getPlayerProfile player="+Pplayer);//~vav5I~
         Bitmap bmp=bmpCurrent[Pplayer];                            //~vav5I~
+        if (bmp==null)                                             //+vaz3I~
+        {                                                          //+vaz3I~
+    		if (Dump.Y) Dump.println(CN+"getPlayerProfile return null");//+vaz3I~
+            return null;                                           //+vaz3I~
+        }                                                          //+vaz3I~
         Bitmap bmRotated=rotateBMP(bmp,-Pplayer);                  //~vav5I~
+    	if (Dump.Y) Dump.println(CN+"getPlayerProfile bmRotated="+bmRotated);//+vaz3I~
         return bmRotated;
     }                                                              //~vav5I~
     //*****************************************************************
@@ -528,6 +1103,15 @@ public class ProfileIcon
         swIsSetCurrent=false;                                      //~2A03I~
         swAfterMove=true;                                          //~2A03I~
     }
+    //*****************************************************************//~vayaI~
+    //*by adjustwithStarterSeq                                     //~vayaI~
+    //****************************************************************//~vayaI~
+	private void clearProfileIcon(Rect[] PrectProfile)             //~vayaR~
+    {                                                              //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"clearProfileIcon");           //~vayaI~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~vayaI~
+		    Graphics.drawRect(PrectProfile[ii],COLOR_BG_TABLE);    //~vayaI~
+    }                                                              //~vayaI~
 //    //***************************************                    //~vardR~
 //    private void drawFrame(Rect[] Prect,boolean PswAfterMoved)   //~vardR~
 //    {                                                            //~vardR~
@@ -1171,21 +1755,29 @@ public class ProfileIcon
     }                                                              //~var8I~//~2A03M~
 //***************************************************************  //~vavqI~
 //*for lanscape                                                    //~vavqI~
+//*Not Used                                                        //~vay8I~
 //***************************************************************  //~vavqI~
 	private int adjustWithRiver(Rect[] PrectProfile)               //~vavqI~
     {                                                              //~vavqI~
     	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver PrectProfile="+Utils.toString(PrectProfile));//~vavqI~
         int shrinkH=0;                                              //~vavqI~
         Rect rectProfile=PrectProfile[PLAYER_FACING];              //~vavqI~
-        Rect rectRiver=AG.aRiver.getRiverRect(PLAYER_RIGHT);       //~vavqI~
+        Rect rectRiver;                                            //~vaw0R~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_RIGHT);       //~vaw0I~
+	  if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver rectProfile[FACING]="+rectProfile+",rectRiver[RIGHT]="+rectRiver);//~vaw0I~
         if (rectRiver.left<rectProfile.right && rectRiver.top<rectProfile.bottom)   //overwrap//~vavqI~
         {                                                          //~vavqI~
+        //*overwrap with neighbor river                            //~vay8R~
             shrinkH=rectProfile.bottom-rectRiver.top;   //overwrap//~vavqI~
-            int shrinkW=(int)((double)shrinkH*(rectProfile.right-rectProfile.left)/(rectProfile.bottom-rectProfile.top));//~vavqR~
-    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver overWrap H="+shrinkH+",W="+shrinkW+",rectProfile="+rectProfile);//~vavqR~
+//          int shrinkW=(int)((double)shrinkH*(rectProfile.right-rectProfile.left)/(rectProfile.bottom-rectProfile.top));//~vavqR~//~vay8R~
+            int shrinkW=(int)((double)shrinkH*PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vay8I~
+    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver overWrap shrinkH="+shrinkH+",shrinkW="+shrinkW+",rectProfile="+rectProfile);//~vavqR~//~vaw0R~
             if (PrectProfile[PLAYER_YOU   ].left+shrinkW+5>=PrectProfile[PLAYER_YOU   ].right//~vavqI~
             ||  PrectProfile[PLAYER_YOU   ].top +shrinkH+5>=PrectProfile[PLAYER_YOU   ].bottom)//~vavqI~
+            {                                                      //~vaw0I~
             	shrinkH=0;                                         //~vavqI~
+	    	    if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver if shrinked icon is smaller tha 5 pix, avoid shrink rectProfile[YOU]="+PrectProfile[PLAYER_YOU   ]);//~vaw0I~
+            }                                                      //~vaw0I~
             else                                                   //~vavqI~
             {                                                      //~vavqI~
                 PrectProfile[PLAYER_YOU   ].left   +=shrinkW;      //~vavqR~
@@ -1204,8 +1796,10 @@ public class ProfileIcon
         int wrapWW=PrectProfile[PLAYER_YOU].right+MARGIN_RIVER_LEFT-ptY.x;//~vavuR~
         int spaceWW=PrectProfile[PLAYER_YOU].left-MARGIN_RIVER_LEFT-ptL.x-AG.aMJTable.riverPieceH;//~vavuI~
     	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver riverPieceH="+AG.aMJTable.riverPieceH+",wrapWW="+wrapWW+",spaceWW="+spaceWW);//~vavuI~
+      if (wrapWW>0)                                                //~vay8R~
         if (spaceWW>=wrapWW)                                       //~vavuI~
         {                                                          //~vavuI~
+        //*horizontally overwrap with my river                     //~vay8R~
             PrectProfile[PLAYER_YOU   ].left   -=wrapWW;           //~vavuI~
             PrectProfile[PLAYER_YOU   ].right  -=wrapWW;           //~vavuI~
             PrectProfile[PLAYER_RIGHT ].top    +=wrapWW;           //~vavuI~
@@ -1214,12 +1808,14 @@ public class ProfileIcon
             PrectProfile[PLAYER_FACING].right  +=wrapWW;           //~vavuI~
             PrectProfile[PLAYER_LEFT  ].top    -=wrapWW;           //~vavuI~
             PrectProfile[PLAYER_LEFT  ].bottom -=wrapWW;           //~vavuI~
-    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver adjust by spaceWW rectProfile="+Utils.toString(PrectProfile));//~vavuI~
+    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver adjust by wrapWW rectProfile="+Utils.toString(PrectProfile));//~vavuI~//~vaw0R~
             wrapWW=0;                                              //~vavuI~
         }                                                          //~vavuI~
         if (wrapWW>0)                                              //~vavuI~
         {                                                          //~vavuI~
-            int wrapHH=(int)((double)wrapWW/(rectProfile.right-rectProfile.left)*(rectProfile.bottom-rectProfile.top));//~vavuR~
+        //*no space to shift to avoid overwrap with my river       //~vay8R~
+//          int wrapHH=(int)((double)wrapWW/(rectProfile.right-rectProfile.left)*(rectProfile.bottom-rectProfile.top));//~vavuR~//~vay8R~
+            int wrapHH=(int)((double)wrapWW/PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vay8I~
     		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver overWrap with riverLeft H="+wrapHH+",W="+wrapWW+",rectProfile="+Utils.toString(PrectProfile));//~vavuR~
             if (PrectProfile[PLAYER_YOU   ].right-wrapWW-5>=PrectProfile[PLAYER_YOU   ].left//~vavuI~
             ||  PrectProfile[PLAYER_YOU   ].top+wrapHH+5>=PrectProfile[PLAYER_YOU   ].bottom)//~vavuI~
@@ -1236,25 +1832,151 @@ public class ProfileIcon
     			if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver overWrap RiverTop rectProfile="+Utils.toString(PrectProfile));//~vavuI~
             }                                                      //~vavuI~
         }                                                          //~vavuI~
-    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver rc="+shrinkH);//~vavqI~//~vavuM~
+    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver rc=shrinkH="+shrinkH);//~vavqI~//~vavuM~//~vaw0R~
         return shrinkH;
     }                                                              //~vavqI~
+//***************************************************************  //~vay8I~
+//*for port/lanscape/longDevice                                                    //~vay8I~//~vayaR~
+//*no need to check with self river because                        //~vayeI~
+//* for port and long device, it is on the left of stock,          //~vayeI~
+//* for landscape it is on te first stock tile.                    //~vayeI~
+//***************************************************************  //~vay8I~
+	private void adjustWithRiverNeighbor(Rect[] PrectProfile)       //~vay8I~//~vayeR~
+    {                                                              //~vay8I~
+    	if (Dump.Y) Dump.println(CN+"adjustWithRiverNeighbor PrectProfile="+Utils.toString(PrectProfile));//~vay8I~//~vayeR~
+//		int overwrap=getMaxOverwrapWithRiverNeighbor(PrectProfile);//~vay8I~//~vayeR~
+//        if (overwrap>0)                                            //~vay8I~//~vayeR~
+//        {                                                          //~vay8I~//~vayeR~
+//            int shrinkH=overwrap;                                  //~vay8I~//~vayeR~
+//            int shrinkW=(int)((double)shrinkH*PROFILE_HWRATE); //=0.618;    //2/(1+root-5)//~vay8I~//~vayeR~
+//            if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver overWrap shrinkH="+shrinkH+",shrinkW="+shrinkW+",rectProfile="+rectProfile);//~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_YOU   ].left   +=shrinkW;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_YOU   ].top    +=shrinkH;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_RIGHT ].left   +=shrinkH;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_RIGHT ].bottom -=shrinkW;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_FACING].bottom -=shrinkH;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_FACING].right  -=shrinkW;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_LEFT  ].top    +=shrinkW;          //~vay8I~//~vayeR~
+//            PrectProfile[PLAYER_LEFT  ].right  -=shrinkH;          //~vay8I~//~vayeR~
+//        }                                                          //~vay8I~//~vayeR~
+  		Point p=getMaxOverwrapWithRiverNeighbor(PrectProfile);     //~vayeI~
+        int ww=p.x; int hh=p.y;                                     //~vayeI~
+		Rect r;	                                                   //~vayeI~
+        r=PrectProfile[PLAYER_YOU];                                //~vayeI~
+        r.left=r.right-ww;  r.top=r.bottom-hh;                     //~vayeI~
+        r=PrectProfile[PLAYER_RIGHT];                              //~vayeI~
+        r.left=r.right-hh;  r.bottom=r.top+ww;                     //~vayeI~
+        r=PrectProfile[PLAYER_FACING];                             //~vayeI~
+        r.right=r.left+ww;  r.bottom=r.top+hh;                     //~vayeI~
+        r=PrectProfile[PLAYER_LEFT];                               //~vayeI~
+        r.right=r.left+hh;  r.top=r.bottom-ww;                     //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithRiverNeighbor exit rectProfile="+Utils.toString(PrectProfile));//~vayaI~//~vayeR~
+//      return overwrap;                                           //~vay8I~//~vayeR~
+    }                                                              //~vay8I~
+//***************************************************************  //~vayaI~
+//*from Starter                                                    //~vayaR~
+//***************************************************************  //~vayaI~
+	public void adjustWithStarterSeq(Rect[] PrectGameSeq)          //~vayaR~
+    {                                                              //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStarterSeq PrectGameSeq="+Utils.toString(PrectGameSeq));//~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStarterSeq rectProfile="+Utils.toString(rectProfile));//~vayaI~
+		int overwrap=getMaxOverwrapWithStarterSeq(rectProfile,PrectGameSeq);//~vayaI~
+        if (overwrap>0)                                            //~vayaI~
+        {                                                          //~vayaI~
+            int shrinkH=overwrap;                                  //~vayaI~
+            int shrinkW=(int)((double)shrinkH*PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vayaI~
+    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver overWrap shrinkH="+shrinkH+",shrinkW="+shrinkW+",rectProfile="+rectProfile);//~vayaI~
+            rectProfile[PLAYER_YOU   ].left   +=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_YOU   ].top    +=shrinkH;           //~vayaR~
+            rectProfile[PLAYER_RIGHT ].left   +=shrinkH;           //~vayaR~
+            rectProfile[PLAYER_RIGHT ].bottom -=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_FACING].bottom -=shrinkH;           //~vayaR~
+            rectProfile[PLAYER_FACING].right  -=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_LEFT  ].top    +=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_LEFT  ].right  -=shrinkH;           //~vayaR~
+        }                                                          //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStartGameSeq rc=overwarp="+overwrap);//~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStartGameseq exit rectProfile="+Utils.toString(rectProfile));//~vayaI~
+        swAdjustedWithStarter=true;                                //~vayaI~
+		showOnNamePlate();                                          //~vayaI~
+    }                                                              //~vayaI~
+//***************************************************************  //~vayaI~
+	public void adjustWithStarterSeq2()                            //~vayaR~
+    {                                                              //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStarterSeq2 PrectProfile="+Utils.toString(rectProfile));//~vayaR~
+        Rect rectStarterSeq[]=AG.aStarter.adjustProfileIconBeforeMove();//~vayaI~
+		int overwrap=getMaxOverwrapWithStarterSeq(rectProfile,rectStarterSeq);//~vayaR~
+        if (overwrap>0)                                            //~vayaI~
+        {                                                          //~vayaI~
+            int shrinkH=overwrap;                                  //~vayaI~
+            int shrinkW=(int)((double)shrinkH*PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vayaI~
+    		if (Dump.Y) Dump.println(CN+"adjustWithStarterSeq2 overWrap shrinkH="+shrinkH+",shrinkW="+shrinkW+",rectProfile="+rectProfile);//~vayaR~
+            rectProfile[PLAYER_YOU   ].left   +=shrinkW;           //~vayaI~
+            rectProfile[PLAYER_YOU   ].top    +=shrinkH;           //~vayaI~
+            rectProfile[PLAYER_RIGHT ].left   +=shrinkH;           //~vayaI~
+            rectProfile[PLAYER_RIGHT ].bottom -=shrinkW;           //~vayaI~
+            rectProfile[PLAYER_FACING].bottom -=shrinkH;           //~vayaI~
+            rectProfile[PLAYER_FACING].right  -=shrinkW;           //~vayaI~
+            rectProfile[PLAYER_LEFT  ].top    +=shrinkW;           //~vayaI~
+            rectProfile[PLAYER_LEFT  ].right  -=shrinkH;           //~vayaI~
+        }                                                          //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStartSeq2 rc=overwarp="+overwrap);//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStartSeq2 exit rectProfile="+Utils.toString(rectProfile));//~vayaR~
+    }                                                              //~vayaI~
+//***************************************************************  //~vayaI~
+	public void adjustWithStarterSeq3()                            //~vayaI~
+    {                                                              //~vayaI~
+		int overwrap;                                              //~vayaI~
+                                                                   //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStarterSeq3 PrectProfile="+Utils.toString(rectProfile));//~vayaI~
+        Rect rectSeq=AG.aStarter.getRectStarterSeq();              //~vayaR~
+        if (AG.portrait)                                           //~vayaI~
+        {                                                          //~vayaI~
+			overwrap=rectSeq.right-rectProfile[PLAYER_RIGHT].left; //~vayaR~
+            if (rectProfile[PLAYER_RIGHT].bottom<rectSeq.top) //icon is above starter//~vayaI~
+            	overwrap=0;                                        //~vayaI~
+        }                                                          //~vayaI~
+        else                                                       //~vayaI~
+        {                                                          //~vayaI~
+			overwrap=rectSeq.bottom-rectProfile[PLAYER_YOU].top;   //~vayaI~
+            if (rectProfile[PLAYER_YOU].left>rectSeq.right) //icon is right of starter//~vayaI~
+            	overwrap=0;                                        //~vayaI~
+        }                                                          //~vayaI~
+        if (overwrap>0)                                            //~vayaR~
+        {                                                          //~vayaR~
+            int shrinkH=overwrap;                                  //~vayaR~
+            int shrinkW=(int)((double)shrinkH*PROFILE_HWRATE); //=0.618;    //2/(1+root-5)//~vayaR~
+            if (Dump.Y) Dump.println(CN+"adjustWithStarterSeq3 overWrap shrinkH="+shrinkH+",shrinkW="+shrinkW+",rectProfile="+Utils.toString(rectProfile));//~vayaR~
+            rectProfile[PLAYER_YOU   ].left   +=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_YOU   ].top    +=shrinkH;           //~vayaR~
+            rectProfile[PLAYER_RIGHT ].left   +=shrinkH;           //~vayaR~
+            rectProfile[PLAYER_RIGHT ].bottom -=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_FACING].bottom -=shrinkH;           //~vayaR~
+            rectProfile[PLAYER_FACING].right  -=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_LEFT  ].top    +=shrinkW;           //~vayaR~
+            rectProfile[PLAYER_LEFT  ].right  -=shrinkH;           //~vayaR~
+        }                                                          //~vayaR~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStartSeq3 rc=overwarp="+overwrap);//~vayaI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStartSeq3 exit rectProfile="+Utils.toString(rectProfile));//~vayaI~
+    }                                                              //~vayaI~
 //***************************************************************  //~vaw0I~
-//*for lanscape not long device                                    //~vaw0I~
+//*for lanscape not long device                                    //~vaw0I~//~vayaR~//~vayeR~
 //*chk Your positioning tile and ProfileIcon of the Right          //~vaw0I~
+//*NOT Used                                                        //~vayeI~
 //***************************************************************  //~vaw0I~
 	private int adjustWithRiverBeforeMoved(Rect[] PrectProfile)    //~vaw0I~
     {                                                              //~vaw0I~
-    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMoved rectProfile="+Utils.toString(PrectProfile));//~vaw0I~
+    	if (Dump.Y) Dump.println(CN+"adjustWithRiverBeforeMoved rectProfile="+Utils.toString(PrectProfile));//~vaw0I~//~vay8R~
 	    int shrinkH=0;
         Rect rectProfileRight=PrectProfile[PLAYER_RIGHT];          //~vaw0I~
 	    Rect rectPositioningTile=AG.aRiver.getRectSetupAccept(PLAYER_YOU);       //~vaw0I~
-        int overwrap=rectPositioningTile.right+6/*gap*/-rectProfileRight.left;//+vaw0R~
+        int overwrap=rectPositioningTile.right+6/*gap*/-rectProfileRight.left;//~vaw0R~
         if (overwrap>0)                                            //~vaw0I~
         {                                                          //~vaw0I~
             shrinkH=overwrap;                                  //~vaw0I~
-            int shrinkW=(int)((double)shrinkH*(rectProfileRight.right-rectProfileRight.left)/(rectProfileRight.bottom-rectProfileRight.top));//~vaw0I~
-    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMove overWrap H="+shrinkH+",W="+shrinkW);//~vaw0I~
+//          int shrinkW=(int)((double)shrinkH*(rectProfileRight.right-rectProfileRight.left)/(rectProfileRight.bottom-rectProfileRight.top));//~vaw0I~//~vay8R~
+            int shrinkW=(int)((double)shrinkH*PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vay8I~
+    		if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMoved overWrap H="+shrinkH+",W="+shrinkW);//~vaw0I~//~vay8R~
             if (rectProfileRight.left+shrinkH>=rectProfileRight.right)//~vaw0I~
             	shrinkH=0;                                         //~vaw0I~
             else                                                   //~vaw0I~
@@ -1269,8 +1991,474 @@ public class ProfileIcon
                 PrectProfile[PLAYER_LEFT  ].right  -=shrinkH;      //~vaw0I~
             }                                                      //~vaw0I~
         }                                                          //~vaw0I~
-    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiverBeforeMove after end of river rectProfile="+Utils.toString(PrectProfile));//~vaw0I~
-    	if (Dump.Y) Dump.println("ProfileIcon.adjustWithRiver rc="+shrinkH);//~vaw0I~
+    	if (Dump.Y) Dump.println(CN+"adjustWithRiverBeforeMoved after end of setup rectProfile="+Utils.toString(PrectProfile));//~vaw0I~//~vay8R~//~vayeR~
+    	if (Dump.Y) Dump.println(CN+"adjustWithRiverBeforeMoved rc=shrinkH="+shrinkH);//~vaw0R~//~vay8R~
         return shrinkH;                                            //~vaw0I~
     }                                                              //~vaw0I~
+//***************************************************************  //~vay8I~
+	private int getMaxOverwrapWithRiverNeighbor_OLD(Rect[] PrectProfile)//~vay8R~//~vayeR~
+    {                                                              //~vay8I~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeibor portrait="+AG.portrait+",rectProfile="+Utils.toString(PrectProfile));//~vay8I~//~vayeR~
+        int margin=MIN_ICON_HEIGHT;  //for riich landd piece       //~vay8R~
+        int overflow=0,ov;                                           //~vay8I~//~vayaR~
+        Rect rectIcon,rectRiver;                                //~vay8R~//~vayaR~
+    //*river:YOU and ICON:RIGHT                                    //~vay8I~
+        rectIcon=PrectProfile[PLAYER_RIGHT];                    //~vay8I~//~vayaR~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_YOU);              //~vay8I~
+        ov=rectRiver.right+margin/*gap*/-rectIcon.left;         //~vay8R~//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiver ov RIGHT="+ov);//~vay8I~
+        if (ov>0)	//head of right icon reach to river of you     //~vay8I~
+        {                                                          //~vay8I~
+        	if (rectIcon.bottom<rectRiver.top || rectIcon.top>rectRiver.bottom)//~vay8I~//~vayaR~
+            {                                                      //~vay8I~
+		    	if (Dump.Y) Dump.println(CN+"ov=0 by right profile above or bellow of YOU river");//~vay8I~
+            	ov=0;	                                           //~vay8I~
+            }                                                      //~vay8I~
+	        overflow=ov;                                               //~vay8M~//~vayaI~
+        }                                                          //~vay8I~
+    //*river:RIGHT and ICON:FACE                                   //~vay8I~
+        rectIcon=PrectProfile[PLAYER_FACING];                   //~vay8I~//~vayaR~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_RIGHT);            //~vay8I~
+        ov=rectIcon.bottom-(rectRiver.top-margin/*gap*/);       //~vay8R~//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiver ov FACE="+ov);//~vay8I~
+        if (ov>0)	//head of face icon reach to river of right    //~vay8I~
+        {                                                          //~vay8I~
+        	if (rectIcon.right<rectRiver.left || rectIcon.left>rectRiver.right)//~vay8I~//~vayaR~
+            {                                                      //~vay8I~
+		    	if (Dump.Y) Dump.println(CN+"ov=0 by face profile left or right of RIGHT river");//~vay8I~
+            	ov=0;                                              //~vay8I~
+            }                                                      //~vay8I~
+	        overflow=Math.max(ov,overflow);                            //~vay8I~//~vayaI~
+        }                                                          //~vay8I~
+    //*river:FACE and ICON:LEFT                                    //~vay8I~
+        rectIcon=PrectProfile[PLAYER_LEFT];                     //~vay8I~//~vayaR~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_FACING);           //~vay8I~
+        ov=rectIcon.right-(rectRiver.left-margin/*gap*/);    //~vay8I~//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiver ov LEFT="+ov);//~vay8I~
+        if (ov>0)	//head of left icon reach to river of face     //~vay8I~
+        {                                                          //~vay8I~
+        	if (rectIcon.top>rectRiver.bottom || rectIcon.bottom<rectRiver.top)//~vay8I~//~vayaR~
+            {                                                      //~vay8I~
+		    	if (Dump.Y) Dump.println(CN+"ov=0 by face profile left or right of RIGHT river");//~vay8I~
+            	ov=0;                                              //~vay8I~
+            }                                                      //~vay8I~
+	        overflow=Math.max(ov,overflow);                            //~vay8I~//~vayaI~
+        }                                                          //~vay8I~
+    //*river:FACE and ICON:LEFT                                    //~vay8I~
+        rectIcon=PrectProfile[PLAYER_YOU];                      //~vay8I~//~vayaR~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_LEFT);             //~vay8I~
+        ov=rectRiver.bottom+margin/*gap*/-rectIcon.top;         //~vay8R~//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeighbor ov YOU="+ov);//~vay8R~
+        if (ov>0)	//head of you icon reach to river of left      //~vay8I~
+        {                                                          //~vay8I~
+        	if (rectIcon.left>rectRiver.right || rectIcon.right<rectRiver.left)//~vay8I~//~vayaR~
+            {                                                      //~vay8I~
+		    	if (Dump.Y) Dump.println(CN+"ov=0 by face profile left or right of RIGHT river");//~vay8I~
+            	ov=0;                                              //~vay8I~
+            }                                                      //~vay8I~
+	        overflow=Math.max(ov,overflow);                            //~vay8I~//~vayaI~
+        }                                                          //~vay8I~
+        int iconH=rectIcon.bottom-rectIcon.top; //icon of YOU//~vay8R~//~vayaR~
+        if (overflow>iconH)                                        //~vay8I~
+        	overflow=iconH-MIN_ICON_HEIGHT;                        //~vay8R~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeighbor return overflow="+overflow+",margin="+margin+",iconH="+iconH);//~vay8R~//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiver exit rectProfile="+Utils.toString(PrectProfile));//~vayaR~
+        return overflow;                                           //~vay8I~
+    }                                                              //~vay8I~
+//***************************************************************  //~vayeI~
+//*profile icon and its left river                                 //~vayeI~
+//***************************************************************  //~vayeI~
+	private Point getMaxOverwrapWithRiverNeighbor(Rect[] PrectProfile)//~vayeI~
+    {                                                              //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeibor portrait="+AG.portrait+",rectProfile="+Utils.toString(PrectProfile));//~vayeI~
+        int margin=2;    //riich piece land is considered in river rect//~vayeI~
+        int ww,hh,minW,minH;
+        Point newWH;//~vayeI~
+        Rect rectIcon,rectRiver;                                   //~vayeI~
+    //*************************                                    //~vayeI~
+    //*ICON:YOU and river:LEFT                                     //~vayeI~
+        rectIcon=PrectProfile[PLAYER_YOU];                         //~vayeI~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_LEFT);             //~vayeI~
+        ww=rectIcon.right-rectIcon.left; hh=rectIcon.bottom-rectIcon.top;//~vayeI~
+        if (!(rectIcon.right<rectRiver.left-margin)) //NOT icon left of river//~vayeI~
+        {                                                          //~vayeI~
+	    	newWH=chkOverwrapNeighbor(PLAYER_YOU,rectRiver/*tgt*/,rectIcon,0,margin,false/*chkEarth*/);//~vayeI~
+	        ww=newWH.x; hh=newWH.y;                                //~vayeR~
+        }                                                          //~vayeI~
+        minW=ww; minH=hh;                                          //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeighbor ICON:YOU ww="+ww+",hh="+hh+",minW="+minW+",minH="+minH);//~vayeI~
+    //*ICON:RIGHT and river:YOU                                    //~vayeI~
+        rectIcon=PrectProfile[PLAYER_RIGHT];                       //~vayeI~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_YOU);              //~vayeI~
+        ww=rectIcon.bottom-rectIcon.top; hh=rectIcon.right-rectIcon.left;//~vayeI~
+        if (!(rectIcon.top>rectRiver.bottom+margin)) //NOT icon bellow river bottom//~vayeI~
+        {                                                          //~vayeI~
+	    	newWH=chkOverwrapNeighbor(PLAYER_RIGHT,rectRiver/*tgt*/,rectIcon,0,margin,false/*chkEarth*/);//~vayeI~
+	        ww=newWH.x; hh=newWH.y;                                //~vayeR~
+        }                                                          //~vayeI~
+        minW=Math.min(minW,ww); minH=Math.min(minH,hh);            //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeighbor ICON:RIGHT ww="+ww+",hh="+hh+",minW="+minW+",minH="+minH);//~vayeI~
+    //*ICON:FACE and river:RIGHT                                   //~vayeI~
+        rectIcon=PrectProfile[PLAYER_FACING];                     //~vayeI~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_RIGHT);            //~vayeR~
+        ww=rectIcon.right-rectIcon.left; hh=rectIcon.bottom-rectIcon.top;//~vayeI~
+        if (!(rectIcon.left>rectRiver.right+margin)) //NOT icon right of river//~vayeI~
+        {                                                          //~vayeI~
+	    	newWH=chkOverwrapNeighbor(PLAYER_FACING,rectRiver/*tgt*/,rectIcon,0,margin,false/*chkEarth*/);//~vayeR~
+	        ww=newWH.x; hh=newWH.y;                                //~vayeR~
+        }                                                          //~vayeI~
+        minW=Math.min(minW,ww); minH=Math.min(minH,hh);            //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeighbor ICON:FACE ww="+ww+",hh="+hh+",minW="+minW+",minH="+minH);//~vayeI~
+    //*ICON:LEFT and river:FACE                                    //~vayeI~
+        rectIcon=PrectProfile[PLAYER_LEFT];                        //~vayeI~
+        rectRiver=AG.aRiver.getRiverRect(PLAYER_FACING);           //~vayeI~
+        ww=rectIcon.bottom-rectIcon.top; hh=rectIcon.right-rectIcon.left;//~vayeI~
+        if (!(rectIcon.bottom<rectRiver.top-margin)) //NOT icon above river top//~vayeR~
+        {                                                          //~vayeI~
+	    	newWH=chkOverwrapNeighbor(PLAYER_LEFT,rectRiver/*tgt*/,rectIcon,0,margin,false/*chkEarth*/);//~vayeR~
+	        ww=newWH.x; hh=newWH.y;                                //~vayeR~
+        }                                                          //~vayeI~
+        minW=Math.min(minW,ww); minH=Math.min(minH,hh);            //~vayeI~
+        Point p=new Point(minW,minH);                              //~vayeI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithRiverNeighbor ICON:LEFT ww="+ww+",hh="+hh+",minW="+minW+",minH="+minH);//~vayeI~
+        return p;                                                  //~vayeI~
+    }                                                              //~vayeI~
+//***************************************************************  //~vayaI~
+	private int getMaxOverwrapWithStarterSeq(Rect[] PrectProfile,Rect[] PrectStarterSeq)//~vayaR~
+    {                                                              //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq rectProfile="+Utils.toString(PrectProfile)+",rectStarterSeq="+Utils.toString(PrectStarterSeq));//~vayaR~
+        int margin=MIN_ICON_HEIGHT;  //for riich landd piece       //~vayaI~
+        int overflow,ov;                                           //~vayaI~
+        Rect rectIcon,rectOver;                                    //~vayaR~
+    //*river:YOU and ICON:RIGHT                                    //~vayaI~
+        rectIcon=PrectProfile[PLAYER_RIGHT];                       //~vayaI~
+        rectOver=PrectStarterSeq[PLAYER_YOU];                      //~vayaR~
+        ov=rectOver.right+margin/*gap*/-rectIcon.left;             //~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov RIGHT="+ov);//~vayaR~
+        if (ov>0)	//head of right icon reach to river of you     //~vayaI~
+        {                                                          //~vayaI~
+        	if (rectIcon.bottom<rectOver.top || rectIcon.top>rectOver.bottom)//~vayaR~
+            {                                                      //~vayaI~
+		    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov=0 by right profile above or bellow of YOU river");//~vayaR~
+            	ov=0;                                              //~vayaI~
+            }                                                      //~vayaI~
+        }                                                          //~vayaI~
+        overflow=ov;                                               //~vayaI~
+    //*river:RIGHT and ICON:FACE                                   //~vayaI~
+        rectIcon=PrectProfile[PLAYER_FACING];                      //~vayaI~
+        rectOver=PrectStarterSeq[PLAYER_RIGHT];                    //~vayaR~
+        ov=rectIcon.bottom-(rectOver.top-margin/*gap*/);           //~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov FACE="+ov);//~vayaR~
+        if (ov>0)	//head of face icon reach to river of right    //~vayaI~
+        {                                                          //~vayaI~
+        	if (rectIcon.right<rectOver.left || rectIcon.left>rectOver.right)//~vayaR~
+            {                                                      //~vayaI~
+		    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov=0 by face profile left or right of RIGHT river");//~vayaR~
+            	ov=0;                                              //~vayaI~
+            }                                                      //~vayaI~
+        }                                                          //~vayaI~
+        overflow=Math.max(ov,overflow);                            //~vayaI~
+    //*river:FACE and ICON:LEFT                                    //~vayaI~
+        rectIcon=PrectProfile[PLAYER_LEFT];                        //~vayaI~
+        rectOver=PrectStarterSeq[PLAYER_FACING];                   //~vayaI~
+        ov=rectIcon.right-(rectOver.left-margin/*gap*/);           //~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov LEFT="+ov);//~vayaR~
+        if (ov>0)	//head of left icon reach to river of face     //~vayaI~
+        {                                                          //~vayaI~
+        	if (rectIcon.top>rectOver.bottom || rectIcon.bottom<rectOver.top)//~vayaR~
+            {                                                      //~vayaI~
+		    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov=0 by face profile left or right of RIGHT river");//~vayaR~
+            	ov=0;                                              //~vayaI~
+            }                                                      //~vayaI~
+        }                                                          //~vayaI~
+        overflow=Math.max(ov,overflow);                            //~vayaI~
+    //*river:FACE and ICON:LEFT                                    //~vayaI~
+        rectIcon=PrectProfile[PLAYER_YOU];                         //~vayaI~
+        rectOver=PrectStarterSeq[PLAYER_LEFT];                     //~vayaI~
+        ov=rectOver.bottom+margin/*gap*/-rectIcon.top;             //~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov YOU="+ov);//~vayaR~
+        if (ov>0)	//head of you icon reach to river of left      //~vayaI~
+        {                                                          //~vayaI~
+        	if (rectIcon.left>rectOver.right || rectIcon.right<rectOver.left)//~vayaR~
+            {                                                      //~vayaI~
+		    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq ov=0 by face profile left or right of RIGHT river");//~vayaR~
+            	ov=0;                                              //~vayaI~
+            }                                                      //~vayaI~
+        }                                                          //~vayaI~
+        overflow=Math.max(ov,overflow);                            //~vayaI~
+        int iconH=rectIcon.bottom-rectIcon.top; //icon of YOU      //~vayaI~
+        if (overflow>iconH)                                        //~vayaI~
+        	overflow=iconH-MIN_ICON_HEIGHT;                        //~vayaI~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq exit overflow="+overflow+",margin="+margin+",iconH="+iconH);//~vayaR~
+    	if (Dump.Y) Dump.println(CN+"getMaxOverwrapWithStarterSeq exit rectProfile="+Utils.toString(PrectProfile));//~vayaR~
+        return overflow;                                           //~vayaI~
+    }                                                              //~vayaI~
+////***************************************************************//~vayaR~
+////*not used                                                      //~vayaR~
+////***************************************************************//~vayaR~
+//    private void adjustWithStarter(Rect[] PrectProfile)          //~vayaR~
+//    {                                                            //~vayaR~
+//        if (Dump.Y) Dump.println(CN+"adjustWithStarter swLongDevice="+AG.swLongDevice+",portrait="+AG.portrait+",in rectProfile="+Utils.toString(PrectProfile));//~vayaR~
+//        if (!(AG.swLongDevice || AG.portrait)) //not case of prifile on nameplate//~vayaR~
+//        {                                                        //~vayaR~
+//            if (Dump.Y) Dump.println(CN+"adjustWithStarter not profile on nameplate");//~vayaR~
+//            return;                                              //~vayaR~
+//        }                                                        //~vayaR~
+//        if (rectStarter!=null)                                   //~vayaR~
+//        {                                                        //~vayaR~
+//            if (Dump.Y) Dump.println(CN+"adjustWithStarter alredy adjusted rectStarter="+Utils.toString(rectStarter));//~vayaR~
+//            return;                                              //~vayaR~
+//        }                                                        //~vayaR~
+////      AG.aStarter.getStarterSeqRect();                         //~vayaR~
+//        double adjustRate=ADJUST_RATE_STARTER;                   //~vayaR~
+//        Rect rect; int hh,ww;                                    //~vayaR~
+//    //*ICON YOU                                                  //~vayaR~
+//        rect=PrectProfile[PLAYER_YOU];                           //~vayaR~
+//        hh=rect.bottom-rect.top;                                 //~vayaR~
+//        hh=(int)(hh*(1-adjustRate));                             //~vayaR~
+//        ww=(int)(hh*PROFILE_HWRATE); //=0.618;  //2/(1+root-5)   //~vayaR~
+//        rect.top+=hh; rect.left+=ww;                             //~vayaR~
+//    //*ICON RIGHT                                                //~vayaR~
+//        rect=PrectProfile[PLAYER_RIGHT];                         //~vayaR~
+//        hh=rect.right-rect.left;                                 //~vayaR~
+//        hh=(int)(hh*(1-adjustRate));                             //~vayaR~
+//        ww=(int)(hh*PROFILE_HWRATE); //=0.618;  //2/(1+root-5)   //~vayaR~
+//        rect.left+=hh; rect.bottom-=ww;                          //~vayaR~
+//    //*ICON FACE                                                 //~vayaR~
+//        rect=PrectProfile[PLAYER_FACING];                        //~vayaR~
+//        hh=rect.bottom-rect.top;                                 //~vayaR~
+//        hh=(int)(hh*(1-adjustRate));                             //~vayaR~
+//        ww=(int)(hh*PROFILE_HWRATE); //=0.618;  //2/(1+root-5)   //~vayaR~
+//        rect.bottom-=hh; rect.right-=ww;                         //~vayaR~
+//    //*ICON LEFT                                                 //~vayaR~
+//        rect=PrectProfile[PLAYER_LEFT];                          //~vayaR~
+//        hh=rect.right-rect.left;                                 //~vayaR~
+//        hh=(int)(hh*(1-adjustRate));                             //~vayaR~
+//        ww=(int)(hh*PROFILE_HWRATE); //=0.618;  //2/(1+root-5)   //~vayaR~
+//        rect.right-=hh; rect.top+=ww;                            //~vayaR~
+//        if (Dump.Y) Dump.println(CN+"adjustWithStarter out rectProfile="+Utils.toString(PrectProfile));//~vayaR~
+//    }                                                            //~vayaR~
+//***************************************************************  //~vay8R~
+//*adjust with neighbor stock                                      //~vay8R~
+//***************************************************************  //~vay8R~
+	private void adjustWithStock_OLD(Rect[] PrectProfile)              //~vay8R~//~vaydR~
+    {                                                              //~vay8R~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock PrectProfile="+Utils.toString(PrectProfile));//~vay8R~
+        int ovW,ovH,ovW2,maxH,maxW,shrinkW,shrinkH;                //~vay8R~
+        Rect rectStock,rectProfile;                                //~vay8R~
+        int ww,hh;                                                 //~vayaI~
+	    int margin=PROFILE_FRAME_WIDTH;	// =2;                     //~vayaI~
+        int profW=PrectProfile[PLAYER_YOU].right-PrectProfile[PLAYER_YOU].left;	//ww of profile YOU//~vay8M~//~vayaI~
+        int profH=PrectProfile[PLAYER_YOU].bottom-PrectProfile[PLAYER_YOU].top;	//hh of profile YOU//~vay8I~//~vayaI~
+    //*stock=YOU,profile=RIGHT                                     //~vay8R~
+        rectStock=AG.aStock.rectsBG[PLAYER_YOU];                   //~vay8R~
+        rectProfile=PrectProfile[PLAYER_RIGHT];                    //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock rectProfile[RIGHT]="+rectProfile+",rectStock[YOU]="+rectStock);//~vay8R~
+        ovW=rectProfile.bottom-rectStock.top;                      //~vay8R~
+        ovW2=rectProfile.bottom-rectStock.bottom;  //to earthh     //~vay8I~
+        ovH=rectStock.right-rectProfile.left;                      //~vay8R~
+        maxH=0; maxW=0;                                            //~vay8I~
+        shrinkH=0; shrinkW=0;                                      //~vay8I~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile RIGHT ovW="+ovW+",OvW2="+ovW2+",ovH="+ovH);//~vay8R~
+        if (ovH>0)                                                 //~vay8I~
+        {                                                          //~vay8I~
+        	if (ovW>0)                                             //~vay8I~
+            {                                                      //~vayaI~
+            	ww=profW-ovW-margin;                               //~vayaI~
+                hh=(int)(ww/PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vayaI~
+	        	shrinkH=Math.min(ovH,profH-hh);                    //~vayaR~
+			    if (Dump.Y) Dump.println(CN+"adjustWithStock ovH="+ovH+",ovW="+ovW+",ww="+ww+",hh="+hh+",shrinkH="+shrinkH);//~vayaI~
+            }                                                      //~vayaI~
+        }                                                          //~vay8I~
+        if (ovW2>0)                                                //~vay8R~
+        	shrinkW=ovW2;                                      //~vay8R~//~vayaR~
+        maxW=Math.max(maxW,shrinkW);                               //~vayaI~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile shrinkW="+shrinkW+",shrinkH="+shrinkH);//~vay8I~
+    //*stock=RIGHT,profile=FACE                                    //~vay8R~
+        shrinkH=0; shrinkW=0;                                      //~vay8I~
+        rectStock=AG.aStock.rectsBG[PLAYER_RIGHT];                 //~vay8R~
+        rectProfile=PrectProfile[PLAYER_FACING];                   //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock rectProfile[FACE]="+rectProfile+",rectStock[RIGHT]="+rectStock);//~vay8R~
+        ovW=rectProfile.right-rectStock.left;                      //~vay8R~
+        ovW2=rectProfile.right-rectStock.right;                    //~vay8I~
+        ovH=rectProfile.bottom-rectStock.top;                      //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile FACE ovW="+ovW+",ovW2="+ovW2+",ovH="+ovH);//~vay8R~
+        if (ovH>0)                                                 //~vay8I~
+        {                                                          //~vay8I~
+        	if (ovW>0)                                             //~vay8I~
+            {                                                      //~vayaI~
+            	ww=profW-ovW-margin;                               //~vayaI~
+                hh=(int)(ww/PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vayaI~
+	        	shrinkH=Math.min(ovH,profH-hh);                    //~vayaR~
+			    if (Dump.Y) Dump.println(CN+"adjustWithStock ovH="+ovH+",ovW="+ovW+",ww="+ww+",hh="+hh+",shrinkH="+shrinkH);//~vayaI~
+	        }                                                      //~vayaR~
+        }                                                          //~vay8I~
+        if (ovW2>0)                                                //~vay8I~
+        	shrinkW=ovW2;                                      //~vay8I~//~vayaR~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile shrinkW="+shrinkW+",shrinkH="+shrinkH);//~vay8I~
+        maxH=Math.max(maxH,shrinkH);                               //~vay8R~
+        maxW=Math.max(maxW,shrinkW);                               //~vay8I~
+    //*stock=FACE,profile=LEFT                                     //~vay8R~
+        shrinkH=0; shrinkW=0;                                      //~vay8I~
+        rectStock=AG.aStock.rectsBG[PLAYER_FACING];                //~vay8R~
+        rectProfile=PrectProfile[PLAYER_LEFT];                     //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock rectProfile[LEFT]="+rectProfile+",rectStock[FACE]="+rectStock);//~vay8R~
+        ovW=rectStock.bottom-rectProfile.top;                      //~vay8R~
+        ovW2=rectStock.top-rectProfile.top;                        //~vay8I~
+        ovH=rectProfile.right-rectStock.left;                      //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile LEFT ovW="+ovW+",ovW2="+ovW2+",ovH="+ovH);//~vay8R~
+        if (ovH>0)                                                 //~vay8I~
+        {                                                          //~vay8I~
+        	if (ovW>0)                                             //~vay8I~
+            {                                                      //~vayaI~
+            	ww=profW-ovW-margin;                               //~vayaI~
+                hh=(int)(ww/PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vayaI~
+	        	shrinkH=Math.min(ovH,profH-hh);                    //~vayaR~
+			    if (Dump.Y) Dump.println(CN+"adjustWithStock ovH="+ovH+",ovW="+ovW+",ww="+ww+",hh="+hh+",shrinkH="+shrinkH);//~vayaI~
+	        }                                                      //~vayaI~
+        }                                                          //~vay8I~
+        if (ovW2>0)                                                //~vay8I~
+        	shrinkW=ovW2;                                      //~vay8I~//~vayaR~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile shrinkW="+shrinkW+",shrinkH="+shrinkH);//~vay8I~
+        maxH=Math.max(maxH,shrinkH);                               //~vay8I~
+        maxW=Math.max(maxW,shrinkW);                               //~vay8I~
+    //*stock=LEFT,profile=YOU                                      //~vay8R~
+        shrinkH=0; shrinkW=0;                                      //~vay8I~
+        rectStock=AG.aStock.rectsBG[PLAYER_LEFT];                  //~vay8R~
+        rectProfile=PrectProfile[PLAYER_YOU];                      //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock rectProfile[YOU]="+rectProfile+",rectStock[LEFT]="+rectStock);//~vay8R~
+        ovW=rectStock.right-rectProfile.left;                      //~vay8R~
+        ovW2=rectStock.left-rectProfile.left;                      //~vay8I~
+        ovH=rectStock.bottom-rectProfile.top;                      //~vay8R~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile YOU ovW="+ovW+",ovW2="+ovW2+",ovH="+ovH);//~vay8R~
+        if (ovH>0)                                                 //~vay8I~
+        {                                                          //~vay8I~
+        	if (ovW>0)                                             //~vay8I~
+            {                                                      //~vayaI~
+            	ww=profW-ovW-margin;                               //~vayaI~
+                hh=(int)(ww/PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vayaI~
+	        	shrinkH=Math.min(ovH,profH-hh);                    //~vayaR~
+			    if (Dump.Y) Dump.println(CN+"adjustWithStock ovH="+ovH+",ovW="+ovW+",ww="+ww+",hh="+hh+",shrinkH="+shrinkH);//~vayaI~
+	        }                                                      //~vayaI~
+        }                                                          //~vay8I~
+        if (ovW2>0)                                                //~vay8I~
+        	shrinkW=ovW2;                                      //~vay8I~//~vayaR~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock Profile shrinkW="+shrinkW+",shrinkH="+shrinkH);//~vay8I~
+        maxH=Math.max(maxH,shrinkH);                               //~vay8I~
+        maxW=Math.max(maxW,shrinkW);                               //~vay8I~
+                                                                   //~vay8I~
+	    if (Dump.Y) Dump.println(CN+"adjustWithStock profH="+profH+",profW="+profW+",maxShrinkH="+maxH+",maxShrinkW="+maxW);//~vay8M~
+        int h1=0,w1=0;                                             //~vay8I~
+        if (maxH>0)   //shrink height                              //~vay8I~
+        {                                                          //~vay8I~
+        	h1=profH-maxH;           //new height                  //~vay8I~
+            w1=(int)(h1*PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vay8I~
+            if (w1>profW-maxW)                                     //~vay8I~
+            {                                                      //~vay8I~
+            	w1=profW-maxW;                                     //~vay8I~
+                h1=(int)(w1/PROFILE_HWRATE); //=0.618;	//2/(1+root-5)//~vay8I~
+            }                                                      //~vay8I~
+        }                                                          //~vay8I~
+        else                                                       //~vay8I~
+        if (maxW>0)                                                //~vay8I~
+        {                                                          //~vay8I~
+            w1=profW-maxW;          //new width                    //~vay8I~
+            h1=(int)(w1/PROFILE_HWRATE); //=0.618;	//2/(1+root-5) //~vay8I~
+        }                                                          //~vay8I~
+        shrinkW=0; shrinkH=0;                                      //~vay8R~
+        if (w1>0)                                                  //~vay8I~
+        	shrinkW=profW-w1;                                      //~vay8I~
+        if (h1>0)                                                  //~vay8I~
+        	shrinkH=profH-h1;                                      //~vay8I~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock shrinkW="+shrinkW+",shrinkH="+shrinkH+",w1="+w1+",h1="+h1);//~vay8R~
+        if (shrinkW>0 || shrinkW >0);                              //~vay8R~
+        {                                                          //~vay8R~
+            PrectProfile[PLAYER_YOU   ].left   +=shrinkW;          //~vay8R~
+            PrectProfile[PLAYER_YOU   ].top    +=shrinkH;          //~vay8R~
+            PrectProfile[PLAYER_RIGHT ].left   +=shrinkH;          //~vay8R~
+            PrectProfile[PLAYER_RIGHT ].bottom -=shrinkW;          //~vay8R~
+            PrectProfile[PLAYER_FACING].bottom -=shrinkH;          //~vay8R~
+            PrectProfile[PLAYER_FACING].right  -=shrinkW;          //~vay8R~
+            PrectProfile[PLAYER_LEFT  ].top    +=shrinkW;          //~vay8R~
+            PrectProfile[PLAYER_LEFT  ].right  -=shrinkH;          //~vay8R~
+        }                                                          //~vay8R~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock rectProfile="+Utils.toString(PrectProfile));//~vay8R~
+    }                                                              //~vay8R~
+//***************************************************************  //~vaydI~
+//*adjust with neighbor stock after Move, port and landscape       //~vaydI~
+//***************************************************************  //~vaydI~
+	private void adjustWithStock(Rect[] Prect/*rectProfile*/)       //~vaydR~
+    {                                                              //~vaydI~
+        Rect rectSrc;                                              //~vaydR~
+        Rect[] stocks;                                             //~vaydI~
+        int margin=PROFILE_MARGIN; // missing score box when before move//~vaydI~
+        int minW,minH;                                             //~vaydR~
+        Point newWH1;                                              //~vaydR~
+        //***************************                              //~vaydI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock swLongDevice="+AG.swLongDevice+",PrectProfile="+Utils.toString(Prect));//~vaydR~//~vayeR~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock rectProfile="+Utils.toString(Prect));//~vaydR~
+        stocks=AG.aStock.rectsBG;                                  //~vaydI~
+        if (Dump.Y) Dump.println(CN+"adjustWithStock2 stocks="+Utils.toString(stocks));//~vaydR~
+     //*profile:you stock:left                                     //~vaydR~
+        rectSrc=Prect[PLAYER_YOU];                                 //~vaydI~
+	    newWH1=chkOverwrapNeighbor(PLAYER_YOU,stocks[PLAYER_LEFT],rectSrc,0/*wwPiece for beforeMove*/,margin,true/*chkEarth*/);//~vaydI~//~vayeR~
+        minW=newWH1.x;                                             //~vaydR~
+        minH=newWH1.y;                                             //~vaydI~
+     //*profile:right stock:you                                    //~vaydI~
+        rectSrc=Prect[PLAYER_RIGHT];                               //~vaydI~
+	    newWH1=chkOverwrapNeighbor(PLAYER_RIGHT,stocks[PLAYER_YOU],rectSrc,0/*wwPiece for beforeMove*/,margin,true/*chkEarth*/);//~vaydR~//~vayeR~
+        minW=Math.min(minW,newWH1.x);                              //~vaydR~
+        minH=Math.min(minH,newWH1.y);                              //~vaydR~
+     //*profile:face stock:right                                   //~vaydI~
+        rectSrc=Prect[PLAYER_FACING];                              //~vaydI~
+	    newWH1=chkOverwrapNeighbor(PLAYER_FACING,stocks[PLAYER_RIGHT],rectSrc,0/*wwPiece for beforeMove*/,margin,true/*chkEarth*/);//~vaydR~//~vayeR~
+        minW=Math.min(minW,newWH1.x);                              //~vaydR~
+        minH=Math.min(minH,newWH1.y);                              //~vaydR~
+     //*profile:left stock:face                                    //~vaydI~
+        rectSrc=Prect[PLAYER_LEFT];                                //~vaydI~
+	    newWH1=chkOverwrapNeighbor(PLAYER_LEFT,stocks[PLAYER_FACING],rectSrc,0/*wwPiece for beforeMove*/,margin,true/*chkEarth*/);//~vaydR~//~vayeR~
+        minW=Math.min(minW,newWH1.x);                              //~vaydR~
+        minH=Math.min(minH,newWH1.y);                              //~vaydR~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock minW="+minW+",minH="+minH);//~vaydR~
+        //*you                                                     //~vaydI~
+            rectSrc=Prect[PLAYER_YOU];                             //~vaydR~
+//          rectSrc=new Rect(rectSrc.right-minW, rectSrc.bottom-minH, rectSrc.right, rectSrc.bottom);//~vaydR~
+            rectSrc.left=rectSrc.right-minW;                       //~vaydI~
+            rectSrc.top=rectSrc.bottom-minH;                       //~vaydI~
+        //*right                                                   //~vaydI~
+            rectSrc=Prect[PLAYER_RIGHT];                           //~vaydR~
+//          rectSrc=new Rect(rectSrc.right-minH, rectSrc.top, rectSrc.right, rectSrc.top+minW);//~vaydR~
+            rectSrc.left=rectSrc.right-minH;                       //~vaydI~
+            rectSrc.bottom=rectSrc.top+minW;                       //~vaydI~
+        //*facing                                                  //~vaydI~
+            rectSrc=Prect[PLAYER_FACING];                          //~vaydR~
+//          rectSrc[PLAYER_FACING]=new Rect(rectSrc.left, rectSrc.top, rectSrc.left+minW,rectSrc.top+minH);//~vaydR~
+            rectSrc.right=rectSrc.left+minW;                       //~vaydI~
+            rectSrc.bottom=rectSrc.top+minH;                       //~vaydI~
+        //*left                                                    //~vaydI~
+            rectSrc=Prect[PLAYER_LEFT];                            //~vaydR~
+//          rectSrc[PLAYER_LEFT]=new Rect(rectSrc.left, rectSrc.bottom-minW, rectSrc.left+minH, rectSrc.bottom);//~vaydR~
+            rectSrc.top=rectSrc.bottom-minW;                       //~vaydI~
+            rectSrc.right=rectSrc.left+minH;                       //~vaydI~
+    	if (Dump.Y) Dump.println(CN+"adjustWithStock exit rect="+Utils.toString(Prect));//~vaydR~
+    }                                                              //~vaydI~
+    //***************************************                      //~vaz1I~
+    public boolean getWinner(int Pplayer,Rect Prect,Bitmap[] Pbitmaps)//~vaz1I~
+    {                                                              //~vaz1I~
+    	if (Dump.Y) Dump.println(CN+"getWinner Pplayer="+Pplayer+",swShowProfile="+swShowProfile);//~vaz1I~
+        if (!swShowProfile)                                        //~vaz1I~
+        	return false;                                                 //~vaz1I~
+    	if (Dump.Y) Dump.println(CN+"getWinner rects="+rectProfile);//~vaz1I~
+        Prect.set(rectProfile[Pplayer]);                           //~vaz1I~
+    	if (Dump.Y) Dump.println(CN+"getWinner bmps="+bmpCurrent); //~vaz1I~
+        Bitmap bmp=bmpCurrent[Pplayer];                                 //~vaz1I~
+        if (bmp==null)                                              //~vaz1I~
+        {                                                          //~vaz1I~
+	    	if (Dump.Y) Dump.println(CN+"getWinner return false by bmp=null");//~vaz1I~
+        	return false;                                          //~vaz1I~
+        }                                                          //~vaz1I~
+        Pbitmaps[0]=bmp;                                           //~vaz1I~
+	    if (Dump.Y) Dump.println(CN+"getWinner return true bmp="+bmp);//~vaz1I~
+        return true;                                               //~vaz1I~
+    }                                                              //~vaz1I~
 }//class ProfileIcon

@@ -1,5 +1,6 @@
-//*CID://+vaviR~:                             update#=  265;       //~vaviR~
+//*CID://+vaz9R~:                             update#=  266;       //+vaz9R~
 //*************************************************************************//~1A65I~
+//2025/03/05 vaz9 at App Finish, bypass Disconnected alert. App exit soon, so unexpected effect may be by dislog existing.//+vaz9I~
 //2023/01/25 vavi close channel expecting to erase groupOwner persistency//~vaviI~
 //2023/01/25 vavh avoid duplicated getView call for groupList      //~vavhI~
 //2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
@@ -1074,6 +1075,7 @@ public class WDA extends AxeDlg                                    //~9720I~
         if (AG.aWDA==null)                                         //~9729I~
         {                                                          //~0117I~
 //  		Alert.showMessage(null/*title*/,Utils.getStr(R.string.InfoDisconnected,PremoteDeviceName));//~0117I~//~0118R~
+          if (AG.status!=AG.STATUS_STOPFINISH)                     //+vaz9I~
     		Alert.showMessage(0/*titleid=app_name*/,Utils.getStr(R.string.InfoDisconnected,PremoteDeviceName));//~0118I~
         	return;                                                //~9729I~
         }                                                          //~0117I~

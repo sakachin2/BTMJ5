@@ -1,5 +1,7 @@
-//*CID://+vaf0R~:                             update#=  260;       //~vaf0R~
+//*CID://+vay3R~:                             update#=  267;       //~vay3R~
 //*****************************************************************//~v101I~
+//2023/02/28 vay3 Fragment:getFragmentManager deprecated in api2,use FragmentActivity.getSupportFragmentmanaget()//~vay3I~
+//2023/02/28 vay2 Fragment:onActivityCreated was deprecated from fragment1.3.0, use onViewCReated//~vay2I~
 //2021/10/21 vaf0 Play console crash report "IllegalStateException" at FragmentManagerImple.1536(checkStateLoss)//~vaf0I~
 //2021/09/19 vae9 1ak2(access external audio file) for BTMJ        //~vae9I~
 //2021/09/15 vae3 UFDlg crashed at onActivityCreated, add try-catch//~vae3I~
@@ -17,6 +19,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;                                          //~v@@@I~
 //import android.app.DialogFragment;                               //~va40R~
 import androidx.fragment.app.DialogFragment;                      //~va40I~
+import androidx.fragment.app.FragmentActivity;                                 //~vay3I~
 import android.app.Dialog;                                         //~v@@@I~
 import android.view.Window;
 import android.widget.Button;                                      //~v@@@I~
@@ -75,7 +78,7 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     public String tagSuffix="";                                    //~v@@@R~
     protected Dialog androidDlg;                                     //~v@@@I~//~9303R~//~v@@@I~
 //  protected boolean swNarrow;                                    //~v@@@R~
-//  protected boolean swDismissPop;                                //+vaf0R~
+//  protected boolean swDismissPop;                                //~vaf0R~
 	//**********************************                           //~v@@@I~
 	public UFDlg()                                                 //~v@@@R~
 	{                                                              //~3105R~
@@ -533,20 +536,34 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~
     //******************************************                   //~v@@@M~
-	@Override                                                      //~v@@@M~
-    public void onActivityCreated(Bundle Pbundle)                  //~v@@@M~
-	{                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("UFDlg:onActivityCreated");       //~v@@@I~
-    	super.onActivityCreated(Pbundle);                          //~v@@@M~
-      try                                                          //~vae3I~
-      {                                                            //~vae3I~
-        RestoreInstanceState(Pbundle);                             //~v@@@M~
-      }                                                            //~vae3I~
-      catch(Exception e)                                           //~vae3I~
-      {                                                            //~vae3I~
-          Dump.println(e,"UFDlg:onActivityResult");                //~vae3R~
-      }                                                            //~vae3I~
-     }                                                             //~v@@@M~
+//    @Override                                                      //~v@@@M~//~vay2R~
+//    public void onActivityCreated(Bundle Pbundle)                  //~v@@@M~//~vay2R~
+//    {                                                              //~v@@@M~//~vay2R~
+//        if (Dump.Y) Dump.println("UFDlg:onActivityCreated");       //~v@@@I~//~vay2R~
+//        super.onActivityCreated(Pbundle);                          //~v@@@M~//~vay2R~
+//      try                                                          //~vae3I~//~vay2R~
+//      {                                                            //~vae3I~//~vay2R~
+//        RestoreInstanceState(Pbundle);                             //~v@@@M~//~vay2R~
+//      }                                                            //~vae3I~//~vay2R~
+//      catch(Exception e)                                           //~vae3I~//~vay2R~
+//      {                                                            //~vae3I~//~vay2R~
+//          Dump.println(e,"UFDlg:onActivityResult");                //~vae3R~//~vay2R~
+//      }                                                            //~vae3I~//~vay2R~
+//     }                                                             //~v@@@M~//~vay2R~
+	@Override                                                      //~vay2I~
+    public void onViewCreated(View Pview,Bundle Pbundle)           //~vay2I~
+    {                                                              //~vay2I~
+        if (Dump.Y) Dump.println("UFDlg:onActivityCreated");       //~vay2I~
+        super.onViewCreated(Pview,Pbundle);                        //~vay2I~
+      try                                                          //~vay2I~
+      {                                                            //~vay2I~
+        RestoreInstanceState(Pbundle);                             //~vay2I~
+      }                                                            //~vay2I~
+      catch(Exception e)                                           //~vay2I~
+      {                                                            //~vay2I~
+          Dump.println(e,"UFDlg:onViewCreated");                   //~vay2I~
+      }                                                            //~vay2I~
+     }                                                             //~vay2I~
     //******************************************                   //~v@@@M~
     //*called after onPause                                        //~v@@@M~
     //******************************************                   //~v@@@M~
@@ -583,11 +600,11 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
     @Override                                                      //~v@@@I~
     public void onDismiss(DialogInterface Pdialog)                 //~v@@@I~
  	{                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("UFDlg:onDismiss");               //+vaf0R~
+        if (Dump.Y) Dump.println("UFDlg:onDismiss");               //~vaf0R~
 //        AG.removeFragment(this);                                 //~vaf0R~
       try                                                          //~vaf0I~
       {                                                            //~vaf0I~
-//     if (!swDismissPop)                                          //+vaf0R~
+//     if (!swDismissPop)                                          //~vaf0R~
         remove(this);                                                  //~v@@@I~//~9903R~
         onDismissDialog();                                         //~v@@@I~
 //      remove();                                                  //~v@@@R~
@@ -641,10 +658,12 @@ public class UFDlg extends DialogFragment                          //~v@@@R~
         if (Dump.Y) Dump.println("UFDlg.onClickOther");            //~v@@@I~
     }                                                              //~v@@@I~
 //**********************************                               //~v@@@I~
-    public static void remove(DialogFragment Pdlg)                                           //~v@@@I~//~9903R~
+    public static void remove(DialogFragment Pdlg)                                           //~v@@@I~//~9903R~//+vay3R~
     {                                                              //~v@@@I~
     	if (Dump.Y) Dump.println("UFDlg.remove");                  //~v@@@I~
-        FragmentManager fm=Pdlg.getFragmentManager();                   //~v@@@I~
+//      FragmentManager fm=Pdlg.getFragmentManager();                   //~v@@@I~//~vay3R~
+//      FragmentManager fm=FragmentActivity.getSupportFragmentManager();//~vay3R~
+        FragmentManager fm=((FragmentActivity)(Pdlg.getActivity())).getSupportFragmentManager();//+vay3R~
         if (fm==null)                                              //~v@@@I~
         {                                                          //~9904I~
 	        if (Dump.Y) Dump.println("UFDlg.remove FragmentManager is null");//~9904I~

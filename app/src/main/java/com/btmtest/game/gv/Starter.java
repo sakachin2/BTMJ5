@@ -1,6 +1,8 @@
-//*CID://+DATER~: update#= 594;                                    //+2813R~
+//*CID://+vaybR~: update#= 628;                                    //~vaybR~
 //**********************************************************************//~v101I~
-//**********************************************************************//+2813R~
+//2025/02/05 vayb long device, bird ob\vrrides lamp                //~vaybI~
+//2025/02/02 vaya Adjust ProfileIcon for longDevice                //~vayaI~
+//**********************************************************************//~2813R~
 //v@21  imageview                                                  //~v@21I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~1107I~
@@ -25,11 +27,13 @@ import com.btmtest.game.Players;
 import com.btmtest.game.Status;//~v@@@R~
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
+import com.btmtest.utils.Utils;                                    //~vayaI~
 
 import java.util.Arrays;
 
 public class Starter                                               //~v@@@R~
 {                                                                  //~0914I~
+    private static final String CN="Starter:";                     //~vayaR~
     private static final int TEXT_SIZE=30;                         //~v@@@I~
     private static final int TEXT_COLOR=Color.argb(0xff,0xff,0xff,0xff); //white//~v@@@I~
 	private static final int MARGINSEQX=5;                         //~v@@@I~
@@ -51,6 +55,10 @@ public class Starter                                               //~v@@@R~
     private Canvas canvasTest;                                     //~v@@@M~
     private boolean swTest;                                        //~v@@@M~
     private int marginText,sizeText;                                        //~9809I~
+    private boolean swAdjustedProfile;                             //~vayaI~
+    private boolean swMakeRect=false;                              //~vaybI~
+    int []  posBirdX,posBirdY;                                     //~vaybI~
+                                                                   //~vaybI~
 //*************************                                        //~v@@@I~
 	public Starter(GCanvas Pgcanvas)                               //~v@@@R~
     {                                                              //~0914I~
@@ -59,6 +67,9 @@ public class Starter                                               //~v@@@R~
 //        pieces=table.pieces;                                       //~v@@@I~
 		marginText=MARGINTEXT;                                    //~9809I~
 		sizeText=TEXT_SIZE;                                        //~9809I~
+        posBirdX=table.birdX; //for the case no bird               //~vaybI~
+        posBirdY=table.birdY;                                      //~vaybI~
+	    swMakeRect=true;                                           //~vaybI~
         if (AG.swSmallDevice)                                      //~9809I~
         {                                                          //~9809I~
         	marginText=(int)(marginText*AG.scaleSmallDevice);      //~9809I~
@@ -116,6 +127,11 @@ public class Starter                                               //~v@@@R~
     {                                                              //~v@21I~
     	boolean swBird=AG.aAccounts.isGrillBird();                 //~9501I~
         if (Dump.Y) Dump.println("Starter.drawBird swInit="+PswInit+",swBird="+swBird);//~9501I~
+        if (swMakeRect)                                            //~vaybM~
+        {                                                          //~vaybM~
+        	setupPosBird();    //even when swBird:off, posBird is used to shoe showctrContinuedGain//~vaybI~
+            swMakeRect=false; //doone                              //~vaybM~
+        }                                                          //~vaybM~
         if (!swBird)                                               //~9501I~
         	return;                                                //~9501I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~v@21I~
@@ -142,12 +158,14 @@ public class Starter                                               //~v@@@R~
     //*********************************************************    //~v@21I~
     private void drawBird(boolean PswInit, int Pplayer)                              //~v@21I~//~9501R~
     {                                                              //~v@21I~
-        if (Dump.Y) Dump.println("Starter.drawBird player="+Pplayer);//~v@21R~//~9501R~
+        if (Dump.Y) Dump.println("Starter.drawBird player="+Pplayer+",posBirdX="+Utils.toString(posBirdX)+",posBirdY="+Utils.toString(posBirdY));//~v@21R~//~9501R~//~vaybR~
 //      Bitmap[] bmss=Pieces.bitmapBird;                           //~v@21I~//~0216R~
         Bitmap[] bmss=AG.bitmapBird;                               //~0216I~
         Bitmap bm=bmss[Pplayer];                                   //~v@21M~
-        int xx=table.birdX[Pplayer];                               //~v@21I~
-        int yy=table.birdY[Pplayer];                               //~v@21I~
+//      int xx=table.birdX[Pplayer];                               //~v@21I~//~vaybR~
+//      int yy=table.birdY[Pplayer];                               //~v@21I~//~vaybR~
+        int xx=posBirdX[Pplayer];                                  //~vaybI~
+        int yy=posBirdY[Pplayer];                                  //~vaybI~
     	boolean swBird=AG.aAccounts.isGrillBird(Pplayer);                  //~v@21I~
         if (Dump.Y) Dump.println("Starter.drawBird swBird="+swBird+",xx="+xx+",yy="+yy);//~v@21I~
         if (swBird)                                                //~v@21I~
@@ -166,14 +184,16 @@ public class Starter                                               //~v@@@R~
     //*********************************************************    //~9519I~
     public void showCtrContinuedGain(int[] Pctrs/*position seq*/)  //~9519I~
     {                                                              //~9519I~
-        if (Dump.Y) Dump.println("Starter.showCtrContinuedGain ctrs="+Arrays.toString(Pctrs));//~9519I~
+        if (Dump.Y) Dump.println("Starter.showCtrContinuedGain ctrs="+Arrays.toString(Pctrs)+"posBirdX="+Utils.toString(posBirdX)+",posBirdY="+Utils.toString(posBirdY));//~vaybR~
 //      Bitmap[] bmss=Pieces.bitmapBird;                           //~9519I~//~0216R~
         Bitmap[] bmss=AG.bitmapBird;                               //~0216I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9519I~
         {                                                          //~9519I~
         	Bitmap bm=bmss[ii];                                    //~9519I~
-	        int xx=table.birdX[ii];                                //~9519I~
-        	int yy=table.birdY[ii];                                //~9519I~
+//	        int xx=table.birdX[ii];                                //~9519I~//~vaybR~
+//        	int yy=table.birdY[ii];                                //~9519I~//~vaybR~
+  	        int xx=posBirdX[ii];                                   //~vaybI~
+         	int yy=posBirdY[ii];                                   //~vaybI~
             int idx=AG.aAccounts.playerToMember(ii);                   //~9519I~
             int pos=AG.aAccounts.playerToPosition(ii);                 //~9519I~
     		boolean swBird=AG.aAccounts.isGrillBird(ii);           //~9519R~
@@ -203,6 +223,7 @@ public class Starter                                               //~v@@@R~
 		Graphics.drawBitmap(rect,bm,p.x,p.y);                      //~v@@@I~
         playerStarter=Pplayer;                                     //~v@@@I~
 	    rectStarter=rect;                                          //~v@@@I~
+        if (Dump.Y) Dump.println(CN+"drawStarter player="+Pplayer+",rectStarter="+rect);//~vayaI~
 //      AG.aDiceBox.setWaitingDice(Pplayer,true/*set starterID*/);   //waiting lamp//~v@@@I~//~9514R~
     }                                                              //~v@@@I~
     //*********************************************************    //~9513I~
@@ -241,6 +262,7 @@ public class Starter                                               //~v@@@R~
 			Graphics.drawRectBitmap(rect,COLOR_BG_TABLE,bm,p.x,p.y);//~v@@@I~
             playerStarter=Pplayer;                                //~v@@@I~
 	        rectStarter=rect;                                      //~v@@@I~
+        	if (Dump.Y) Dump.println("Starter.moveStarter player="+Pplayer+",rectStarter="+rectStarter);//~vayaI~
         }                                                          //~v@@@I~
         drawBird(true/*swInit*/);                                                //~v@21I~//~9501R~
     }                                                              //~v@@@I~
@@ -369,6 +391,7 @@ public class Starter                                               //~v@@@R~
 //      String strSeq=GConst.gameSeq[game];                     //~v@21I~//~9513R~
         String strSeq=Status.getStringGameRound();                 //~9513R~
         getRectSeq(posMark,strSeq);                                //~v@@@M~
+        if (Dump.Y) Dump.println(CN+"showGameSeq rectSeq="+rectSeq);//~vayaI~
         Bitmap bm=getBitmapSeq(posMark,strSeq);                    //~v@@@M~
         if (swTest)                                                //~v@@@M~
 	        Graphics.drawBitmap(canvasTest,bm,rectSeq.left,rectSeq.top);//~v@@@M~
@@ -390,11 +413,13 @@ public class Starter                                               //~v@@@R~
 //      drawStarter(AG.aAccounts.getCurrentStarterPos());          //~9514R~
 //  	drawCurrentStarterMark(Players.nextPlayer(AG.aAccounts.getCurrentStarterPos()));//Test//~v@21R~
 //      UView.recycle(bm);                                         //~0217R~
+      if (false) //TEST                                            //~vayaI~
+  	    adjustProfileIcon(posMark,rectStarter,rectSeq);            //~vayaR~
     }                                                              //~v@@@M~
     //*********************************************************    //~v@@@M~
     private void getPointSeq(int Ppos)                             //~v@@@M~
     {                                                              //~v@@@M~
-        if (Dump.Y) Dump.println("Starter.getPointSeq pos="+Ppos); //~9902I~
+        if (Dump.Y) Dump.println("Starter.getPointSeq pos="+Ppos+",rectStarter="+rectStarter); //~9902I~//~vayaR~
     	if (pointSeq!=null)                                        //~v@@@M~
         	return;                                                //~v@@@M~
         Rect r=rectStarter;                                        //~v@@@I~
@@ -441,6 +466,7 @@ public class Starter                                               //~v@@@R~
         int ww=rb.right-rb.left+m*2;                               //~v@@@M~
         if (Dump.Y) Dump.println("Starter.getRectSeq Bound  l="+rb.left+",t="+rb.top+",r="+rb.right+",b="+rb.bottom+",ww="+ww+",hh="+hh);//~v@@@R~
         Point p=pointSeq;                                          //~v@@@M~
+        if (Dump.Y) Dump.println(CN+"getRectSeq pointSeq="+p);     //~vayaI~
         Rect ro;                                                   //~v@@@M~
         switch(Ppos)                                               //~v@@@M~
         {                                                          //~v@@@M~
@@ -529,4 +555,205 @@ public class Starter                                               //~v@@@R~
         Graphics.drawBitmap(Prect,bmr);                            //~9519I~
         UView.recycle(bmr);                                        //~9519I~
     }                                                              //~9519I~
+    //*********************************************************    //~vayaI~
+    private void adjustProfileIcon(int Pplayer,Rect PrectStarter,Rect PrectSeq)//~vayaR~
+    {                                                              //~vayaI~
+    	int dist,hh,ww;                                            //~vayaR~
+    	Point p;                                                   //~vayaR~
+    //************************                                     //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon swAdjustedProfile="+swAdjustedProfile+",player="+Pplayer+",rectStarter="+PrectStarter+",rectSeq="+PrectSeq);//~vayaR~
+	    if (!swAdjustedProfile)                                    //~vayaI~
+        {                                                          //~vayaI~
+            swAdjustedProfile=true;                                //~vayaI~
+	    	Rect[] rs=getRectStarterSeq(Pplayer,PrectStarter,PrectSeq);//~vayaI~
+			AG.aProfileIcon.adjustWithStarterSeq(rs);              //~vayaR~
+        }                                                          //~vayaI~
+    }                                                              //~vayaI~
+    //*********************************************************    //~vayaI~
+    private Rect[] getRectStarterSeq(int Pplayer,Rect PrectStarter,Rect PrectSeq)//~vayaI~
+    {                                                              //~vayaI~
+    	int dist,hh,ww;                                            //~vayaI~
+    	Point p;                                                   //~vayaI~
+    	Rect[] rs=new Rect[PLAYERS];                               //~vayaI~
+    //************************                                     //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon player="+Pplayer+",rectStarter="+PrectStarter+",rectSeq="+PrectSeq);//~vayaI~
+        if (Pplayer==PLAYER_YOU)                                   //~vayaI~
+        {                                                          //~vayaI~
+            dist=PrectSeq.right-PrectStarter.left;                 //~vayaI~
+            hh=PrectStarter.bottom-PrectStarter.top;               //~vayaI~
+            ww=PrectStarter.right-PrectStarter.left;               //~vayaI~
+            if (Dump.Y) Dump.println(CN+"adjustProfileIcon YOU dis="+dist+",hh="+hh+",ww="+ww);//~vayaI~
+        }                                                          //~vayaI~
+        else                                                       //~vayaI~
+        if (Pplayer==PLAYER_RIGHT)                                 //~vayaI~
+        {                                                          //~vayaI~
+            dist=PrectStarter.bottom-PrectSeq.top;                 //~vayaI~
+            hh=PrectStarter.right-PrectStarter.left;               //~vayaI~
+            ww=PrectStarter.bottom-PrectStarter.top;               //~vayaI~
+            if (Dump.Y) Dump.println(CN+"adjustProfileIcon RIGHT dist="+dist+",hh="+hh+",ww="+ww);//~vayaI~
+        }                                                          //~vayaI~
+        else                                                       //~vayaI~
+        if (Pplayer==PLAYER_FACING)                                //~vayaI~
+        {                                                          //~vayaI~
+            dist=PrectStarter.right-PrectSeq.left;                 //~vayaI~
+            hh=PrectStarter.bottom-PrectStarter.top;               //~vayaI~
+            ww=PrectStarter.right-PrectStarter.left;               //~vayaI~
+            if (Dump.Y) Dump.println(CN+"adjustProfileIcon FACING dist="+dist+",hh="+hh+",ww="+ww);//~vayaI~
+        }                                                          //~vayaI~
+        else    //left                                             //~vayaI~
+        {                                                          //~vayaI~
+            dist=PrectSeq.bottom-PrectStarter.top;                 //~vayaI~
+            hh=PrectStarter.right-PrectStarter.left;               //~vayaI~
+            ww=PrectStarter.bottom-PrectStarter.top;               //~vayaI~
+            if (Dump.Y) Dump.println(CN+"adjustProfileIcon LEFT dist="+dist+",hh="+hh+",ww="+ww);//~vayaI~
+        }                                                          //~vayaI~
+        //*you                                                     //~vayaI~
+        p=table.getStarterPos(PLAYER_YOU);                         //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon starterPos YOU="+p);//~vayaI~
+        rs[PLAYER_YOU]=new Rect(p.x, p.y, p.x+dist, p.y+hh);       //~vayaI~
+        //*right                                                   //~vayaI~
+        p=table.getStarterPos(PLAYER_RIGHT);                       //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon starterPos RIGHT="+p);//~vayaI~
+        rs[PLAYER_RIGHT]=new Rect(p.x, p.y+ww-dist, p.x+hh, p.y+ww);//~vayaI~
+        //*face                                                    //~vayaI~
+        p=table.getStarterPos(PLAYER_FACING);                      //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon starterPos FACE="+p);//~vayaI~
+        rs[PLAYER_FACING]=new Rect(p.x+ww-dist, p.y, p.x+ww, p.y+hh);//~vayaI~
+        //*left                                                    //~vayaI~
+        p=table.getStarterPos(PLAYER_LEFT);                        //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon starterPos LEFT="+p);//~vayaI~
+        rs[PLAYER_LEFT]=new Rect(p.x, p.y+ww-dist, p.x+hh, p.y+ww);//~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIcon gameseq rect="+Utils.toString(rs));//~vayaI~
+        return rs;                                                 //~vayaI~
+    }                                                              //~vayaI~
+    //*********************************************************    //~vayaI~
+    public Rect[] adjustProfileIconBeforeMove()                    //~vayaI~
+    {                                                              //~vayaI~
+    	int dist,hh,ww;                                            //~vayaI~
+    	Point p;                                                   //~vayaI~
+    	Rect[] rs;                                                 //~vayaI~
+    //************************                                     //~vayaI~
+        String strSeq=Status.getStringGameRound();                 //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIconBeforeMove playerStarter="+playerStarter+",strSeq="+strSeq+",rectStarter="+rectStarter);//~vayaR~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIconBeforeMove pointSeq="+pointSeq+",rectStarter="+rectStarter);//~vayaR~
+  	    getPointSeq(playerStarter);		//set pointSeq             //~vayaR~
+        Rect rectSave=rectSeq;                                          //~vayaI~
+        getRectSeq(playerStarter,strSeq);   //=>rectSeq            //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIconBeforeMove rectSeqOld="+rectSave+",rectSeqNew="+rectSeq);//~vayaR~
+	    rs=getRectStarterSeq(playerStarter,rectStarter,rectSeq);   //~vayaI~
+        rectSeq=rectSave;                                          //~vayaI~
+        if (Dump.Y) Dump.println(CN+"adjustProfileIconBeforeMove exit rectStarterSeq="+Utils.toString(rs));//~vayaR~
+        return rs;                                                 //~vayaI~
+    }                                                              //~vayaI~
+    //*********************************************************    //~vayaI~
+    public Rect getRectStarterSeq()                                //~vayaR~
+    {                                                              //~vayaI~
+    	int dist,hh,ww;                                            //~vayaI~
+    	Point p;
+        Rect r;//~vayaI~
+    //************************                                     //~vayaI~
+        if (Dump.Y) Dump.println(CN+"getRectStarterSeq");          //~vayaR~
+        Bitmap bm=AG.bitmapStarter[0/*East*/][0/*PLAYER_YOU*/];        //~vayaI~
+        ww=bm.getWidth();                                      //~vayaR~
+        hh=bm.getHeight();                                     //~vayaR~
+        int m=MARGINSEQX;                                          //~vayaM~
+        ww+=m;                                                     //~vayaI~
+        if (Dump.Y) Dump.println(CN+"getRectStarterSeq marginSeq="+m+",ww="+ww+",hh="+hh);//~vayaR~
+                                                                   //~vayaI~
+        String strSeq=Status.getStringGameRound();                 //~vayaI~
+    	Paint paintSeq=setPaintSeq();                              //~vayaI~
+        Rect rb=new Rect();                                        //~vayaI~
+    	paintSeq.getTextBounds(strSeq,0,strSeq.length(),rb);       //~vayaI~
+        m=marginText*2;                                            //~vayaI~
+        ww+=rb.right-rb.left+m*2;                                 //~vayaR~
+        if (Dump.Y) Dump.println(CN+"getRectStarterSeq String="+strSeq+",rb="+rb+",margin="+m+",ww="+ww);//~vayaI~
+        if (AG.portrait)                                           //~vayaI~
+        {                                                          //~vayaI~
+    	    p=table.getStarterPos(PLAYER_YOU);                     //~vayaI~
+	        r=new Rect(p.x, p.y, p.x+ww, p.y+hh);             //~vayaI~
+        }                                                          //~vayaI~
+        else                                                       //~vayaI~
+        {                                                          //~vayaI~
+    	    p=table.getStarterPos(PLAYER_LEFT);                    //~vayaI~
+	        r=new Rect(p.x, p.y, p.x+hh, p.y+ww);             //~vayaI~
+        }                                                          //~vayaI~
+        if (Dump.Y) Dump.println(CN+"getRectStarterSeq portrait="+AG.portrait+",posStarter="+p+",starterSeq rect="+r);//~vayaR~
+        return r;                                                  //~vayaI~
+    }                                                              //~vayaI~
+    //*********************************************************    //~vaybI~
+    public void setupPosBird()                                    //~vaybI~
+    {                                                              //~vaybI~
+    	int[] newX=new int[PLAYERS];                               //~vaybI~
+    	int[] newY=new int[PLAYERS];                               //~vaybI~
+        int margin=2;                                              //~vaybI~
+  		int margin2=DiceBox.EDGE_WIDTH;	//=2;                      //~vaybI~
+    //************************                                     //~vaybI~
+        posBirdX=table.birdX;                                      //~vaybI~
+        posBirdY=table.birdY;                                      //~vaybI~
+        Rect[] rectLight=AG.aDiceBox.boxLight;                     //~vaybI~
+        Rect dice=AG.aDiceBox.rectDiceBox;                         //~vaybI~
+        if (Dump.Y) Dump.println(CN+"setupPosBird boxLight="+Utils.toString(rectLight));//~vaybR~
+        Bitmap[] bms=AG.bitmapBird;                                //~vaybI~
+        for (int ii=0;ii<PLAYERS;ii++)                             //~vaybI~
+        {                                                          //~vaybI~
+	        Bitmap bm=bms[ii];                                     //~vaybI~
+            int hh=bm.getHeight();                                 //~vaybI~
+            int ww=bm.getWidth();                                  //~vaybI~
+            int xx=posBirdX[ii];                                    //~vaybI~
+            int yy=posBirdY[ii];                                   //~vaybI~
+            Rect r=rectLight[ii];                                  //~vaybI~
+	        if (Dump.Y) Dump.println(CN+"setupposBird bitmap player="+ii+",ww="+ww+",hh="+hh+",rectLight="+r+",posX="+xx+",posY="+yy);//~vaybR~
+            int xx2=xx; int yy2=yy;                                //~vaybI~
+            switch(ii)                                             //~vaybI~
+            {                                                      //~vaybI~
+            case PLAYER_YOU:   //under dice box                    //~vaybI~
+                if (yy<r.bottom+margin)                            //~vaybR~
+                {                                                  //~vaybI~
+                	xx2=r.left-(ww+margin);                        //~vaybI~
+                  	yy2=dice.bottom+margin+margin2;                //~vaybR~
+                }                                                  //~vaybI~
+                else                                               //~vaybI~
+                {                                                  //~vaybI~
+                    yy2=r.bottom+margin;                           //~vaybI~
+                }                                                  //~vaybI~
+                break;                                             //~vaybI~
+            case PLAYER_RIGHT:   //right of dice box               //~vaybI~
+                if (xx<r.right+margin)                             //~vaybR~
+                {                                                  //~vaybI~
+                	yy2=r.bottom+(margin);                         //~vaybI~
+                	xx2=dice.right+margin+margin2;                 //~vaybR~
+                }                                                  //~vaybI~
+                else                                               //~vaybI~
+                {                                                  //~vaybI~
+                    xx2=r.right+margin;                            //~vaybI~
+                }                                                  //~vaybI~
+                break;                                             //~vaybI~
+            case PLAYER_FACING:   //above dice box                 //~vaybI~
+                if (yy+hh>r.top-margin)                            //~vaybI~
+                {                                                  //~vaybI~
+                    xx2=r.right + (margin);                        //~vaybR~
+                    yy2=dice.top-hh-margin-margin2;                //~vaybR~
+                }                                                  //~vaybI~
+                else                                               //~vaybI~
+                {                                                  //~vaybI~
+                    yy2=r.top-hh-margin;                           //+vaybR~
+                }                                                  //~vaybI~
+                break;                                             //~vaybI~
+            default: //left                                        //~vaybI~
+                if (xx+ww>r.left-margin)                           //~vaybI~
+                {                                                  //~vaybI~
+                	yy2=r.top-(hh+margin);                         //~vaybR~
+                	xx2=dice.left-ww-margin-margin2;               //~vaybR~
+                }                                                  //~vaybI~
+                else                                               //~vaybI~
+                {                                                  //~vaybI~
+                    xx2=r.left-ww-margin;                          //+vaybR~
+                }                                                  //~vaybI~
+            }                                                      //~vaybI~
+            newX[ii]=xx2; newY[ii]=yy2;                            //~vaybI~
+	        if (Dump.Y) Dump.println(CN+"setupPosBird bitmap new posX="+xx2+",posY="+yy2+",magin="+margin);//~vaybR~
+        }                                                          //~vaybI~
+        posBirdX=newX; posBirdY=newY;                              //~vaybI~
+	    if (Dump.Y) Dump.println(CN+"setupPosBird posBirdX="+Utils.toString(posBirdX)+",posY="+Utils.toString(posBirdY));//~vaybR~
+    }                                                              //~vaybI~
 }//class Starter                                                 //~dataR~//~@@@@R~//~v@@@R~

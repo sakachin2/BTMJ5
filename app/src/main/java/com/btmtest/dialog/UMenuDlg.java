@@ -1,4 +1,4 @@
-//*CID://+vavnR~:                             update#=  238;       //~vavnR~
+//*CID://+vavnR~:                             update#=  240;
 //*****************************************************************//~v101I~
 //2023/01/27 vavn try to use Parcelable for Bundle(for test Parcelable)//~vavnI~
 //2022/01/30 vajg over vajf, as a rule reject cancel on the menu at client//~vajgI~
@@ -177,9 +177,9 @@ public class UMenuDlg   extends DialogFragment                     //~v@@@R~
 //      boolean swMultiChoice=b.getBoolean(PARM_MULTICHOICE,false); //~v@@1I~//~vavnR~
         if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog getParcelable");//~vavnI~
         ParcelUMenuDlg parcel= (ParcelUMenuDlg)UParcel.getParcelable(b,PARM_PARCEL,ParcelUMenuDlg.class);          //~vavnI~
-        String title=parcel.title;                                 //+vavnR~
-        int  itemsid=parcel.itemsID;                               //+vavnR~
-        boolean swMultiChoice=parcel.choiceMode;                   //+vavnR~
+        String title=parcel.title;                                 //~vavnR~
+        int  itemsid=parcel.itemsID;                               //~vavnR~
+        boolean swMultiChoice=parcel.choiceMode;                   //~vavnR~
         if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog title="+title+",itemsid="+itemsid+",chicemode="+swMultiChoice);//~vavnI~
      	AlertDialog.Builder builder;                               //~v@@1I~
         if (Dump.Y) Dump.println("UMenuDlg:onCreateDialog swTheme="+swTheme);//~@003I~//~v@@1R~

@@ -4,8 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-			        android:background="@color/bg_table"
+		        android:background="@color/bg_table"
     >
+<!--
+        	        android:background="#ff0000"
+    android:layout_height="20dp"
+                        android:layout_height="@dimen/gvbtn_bottom"
+-->
              <Button
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/gvbtn_bottom"

@@ -18,6 +18,16 @@ Bluetooth(legacy mode) and Wifi-Direct are supported for wireless connection.
 
 Please send your suggestion or bug reports to mail:sakachin2@yahoo.co.jp
 
+V1.29 : 2025/03/05
+        .Android-15 compatible.
+        .Supports foldable devices
+        .Fixed a bug where the winning process would not proceed unless a profile icon was set.
+        -----
+        .Android-15 대응
+        .폴딩 디바이스 대응
+        .프로필 아이콘이 설정되지 않은 경우 우승 프로세스가 진행되지 않는 버그를 수정했습니다.
+
+*********************************************************************************************
 V1.28 : 2023/02/25
 		.Supports local Yaku.
            3SeqTriples, Big 3 Winds, 3NonHonorWind, 3ColorStraight, Pure TripleChows, Single, 7 Pairs2-8 by Man, 7 Pairs2-8 by Sou, 4 SeqTriples.
@@ -26,7 +36,8 @@ V1.28 : 2023/02/25
           -"All Terminals and Honors" is no4 4 han but 2 han.
           -There were case of miss to evaluate Yaku.
 
-V1.28 : 2023/02/25
+        -----
+
 		.로컬 役를 지원합니다.
            三連刻、三風刻、客風三刻、三色一通、一色三順、裸単騎、大数隣、大竹林、四連刻
 		."Fix Yaku" 규칙 재조정.

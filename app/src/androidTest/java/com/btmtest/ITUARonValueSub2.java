@@ -1,4 +1,4 @@
-//*CID://+vagrR~: update#=1098;                                    //~vagrR~
+//*CID://+vagrR~: update#=1102;                                    //~vagrR~
 //**********************************************************************//~v101I~
 //2021/11/14 vagr (Bug of vafh)determins honchan when pillow:tanyao//~vagrI~
 //2020/11/02 va23 use Junit for UARonValue                         //~va23I~
@@ -4995,14 +4995,98 @@ public class ITUARonValueSub2 extends ITUARonValueSub              //~vagrR~
                                                                    //~vagrI~
                                                                    //~vagrI~
 				rc = ronTestSub(dupCtr, dupCtrAll, 0/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-1  3tonko R+     shabo R+NR,R rc=" + rc);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-10 3tonko R+     shabo R+NR,R rc=" + rc);//+vagrR~
                                                                    //~vagrI~
 				rc = ronTestSub(dupCtr, dupCtrAll, 0/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-2-TAKE  3tonko R+     shabo R+NR  rc=" + rc);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-11-TAKE  3tonko R+     shabo R+NR  rc=" + rc);//+vagrR~
                                                                    //~vagrI~
 				rc = ronTestSub(dupCtr, dupCtrAll, 0/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth,false/*swTaken*/);//~vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-3  3tonko R+     TANKI R+NR  rc=" + rc);//~vagrI~
-				if (!swTestAll) break;                             //~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-12  3tonko R+     TANKI R+NR  rc=" + rc);//+vagrR~
+        //with KAN test 3toko,3renpon,3anko,toitoi                 //+vagrR~
+				dupCtr = new int[][]{                              //~vagrI~
+						{0, 1, 1, 1, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				dupCtrAll = new int[][]{                           //~vagrI~
+						{4, 1, 1, 1, 0, 0, 0, 2, 0},               //~vagrI~
+						{4, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				pairEarth = new Pair[]{                            //~vagrI~
+						new Pair(PT_NUMSAME,0/*type*/, 0/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//+vagrR~
+						new Pair(PT_NUMSAME,1/*type*/, 0/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//+vagrR~
+				};                                                 //~vagrI~
+                                                                   //~vagrI~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-13  3tonko with KAN  shabo rc="+ rc);//+vagrR~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 0/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-14  3tonko with KAN  inhand rc="+ rc);//+vagrR~
+                                                                   //~vagrI~
+				dupCtr = new int[][]{                              //~vagrI~
+						{0, 1, 1, 1, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				dupCtrAll = new int[][]{                           //~vagrI~
+						{0, 1, 1, 1, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 4, 4, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				pairEarth = new Pair[]{                            //~vagrI~
+						new Pair(PT_NUMSAME,2/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME,2/*type*/, 2/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+				};                                                 //~vagrI~
+                                                                   //~vagrI~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-15  3renpon with KAN  shabo rc="+ rc);//+vagrR~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 0/*ronType*/, 1/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-16  3renpon with KAN  inhand rc="+ rc);//+vagrR~
+                                                                   //~vagrI~
+				dupCtr = new int[][]{                              //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 2, 0},               //+vagrR~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				dupCtrAll = new int[][]{                           //~vagrI~
+						{0, 1, 1, 1, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 4, 4, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				pairEarth = new Pair[]{                            //~vagrI~
+						new Pair(PT_NUMSAME,2/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME,2/*type*/, 2/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSEQ,0/*type*/, 1/*number*/, 3/*ctr*/, TDF_CHII),//~vagrI~
+				};                                                 //~vagrI~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-17  3anko   with KAN  shabo rc="+ rc);//+vagrR~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-18-TAKE 3anko   with KAN  shabo rc="+ rc);//+vagrR~
+                                                                   //~vagrI~
+				dupCtr = new int[][]{                              //~vagrI~
+						{0, 3, 0, 0, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				dupCtrAll = new int[][]{                           //~vagrI~
+						{0, 3, 0, 0, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{3, 4, 0, 4, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				pairEarth = new Pair[]{                            //~vagrI~
+						new Pair(PT_NUMSAME,2/*type*/, 1/*number*/, 4/*ctr*/, TDF_KAN_TAKEN),//~vagrI~
+						new Pair(PT_NUMSAME,2/*type*/, 3/*number*/, 4/*ctr*/, TDF_KAN_RIVER),//~vagrI~
+				};                                                 //~vagrI~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-19 toitoi  with KAN  shabo rc="+ rc);//+vagrR~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 0/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902304-20-TAKE toitoi   with KAN  shabo rc="+ rc);//+vagrR~
                                                                    //~vagrI~
 			//	case 22902305:  //3tonko NR+                       //~vagrR~
                                                                    //~vagrI~
@@ -5169,16 +5253,42 @@ public class ITUARonValueSub2 extends ITUARonValueSub              //~vagrR~
 						{0, 0, 0, 3, 0, 0, 0, 0, 0}};                         //7//~vagrI~
 				pairEarth = null;                                  //~vagrI~
                                                                    //~vagrI~
-				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 9/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrR~
 				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-1  1peko ryanmen rc=" + rc);//~vagrI~
                                                                    //~vagrI~
-				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 9/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
 				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-2-TAKE  1peko ryanmen rc=" + rc);//~vagrI~
                                                                    //~vagrI~
-				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
 				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-3  1peko kanchan rc=" + rc);//~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 6/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-4  1peko penchan rc=" + rc);//~vagrR~
+                                                                   //~vagrI~
+				dupCtr = new int[][]{                              //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 1, 3, 3, 2},               //~vagrI~
+						{0, 0, 0, 3, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				dupCtrAll = new int[][]{                           //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 2, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
+						{0, 0, 0, 0, 0, 1, 3, 3, 2},               //~vagrI~
+						{0, 0, 0, 3, 0, 0, 0, 0, 0}};                         //7//~vagrI~
+				pairEarth = null;                                  //~vagrI~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-5  1peko ryanmen rc=" + rc);//~vagrI~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 8/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-6-TAKE  1peko ryanmen rc=" + rc);//~vagrR~
+                                                                   //~vagrI~
 				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 7/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-3  1peko penchan rc=" + rc);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-7  1peko kanchan rc=" + rc);//~vagrR~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 6/*ronNumbe*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrR~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-8  1peko penchan rc=" + rc);//~vagrR~
+                                                                   //~vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 2/*ronType*/, 5/*ronNumber*/, 1/*ctrAnkan*/,true/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902310-9  1peko penchan rc=" + rc);//~vagrR~
                                                                    //~vagrI~
 				if (!swTestAll) break;                             //~vagrI~
 		//case 22902311:  //hadaka tanki                           //~vagrI~
@@ -5203,9 +5313,9 @@ public class ITUARonValueSub2 extends ITUARonValueSub              //~vagrR~
 				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
 				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-1  hadaka tanki with Ankan rc="+rc);//~vagrR~
                                                                    //~vagrI~
-				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//+vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-2  hadaka tanki TAKE with Ankan rc="+rc);//+vagrI~
-                                                                   //+vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-2  hadaka tanki TAKE with Ankan rc="+rc);//~vagrI~
+                                                                   //~vagrI~
 				dupCtr = new int[][]{                              //~vagrI~
 						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
 						{0, 0, 0, 0, 0, 0, 0, 0, 0},               //~vagrI~
@@ -5224,11 +5334,11 @@ public class ITUARonValueSub2 extends ITUARonValueSub              //~vagrR~
 				};                                                 //~vagrI~
                                                                    //~vagrI~
 				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, false/*swTaken*/);//~vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-3  hadaka tanki rc=" + rc);//+vagrR~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-3  hadaka tanki rc=" + rc);//~vagrR~
                                                                    //~vagrI~
-				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//+vagrI~
-				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-4  hadaka tanki rc=" + rc);//+vagrI~
-                                                                   //+vagrI~
+				rc = ronTestSub(dupCtr, dupCtrAll, 3/*ronType*/, 4/*ronNumber*/, 1/*ctrAnkan*/,false/*saAllHand*/, pairEarth, true/*swTaken*/);//~vagrI~
+				if (Dump.Y)	Dump.println("ITUARonValueSub.ronTest-22902311-4  hadaka tanki rc=" + rc);//~vagrI~
+                                                                   //~vagrI~
 				if (!swTestAll) break;                             //~vagrI~
        	}//for  ii=0-4                                             //~vagrR~
         if (ITUARonValue.MaxCase<22902401)     break;              //~vagrI~

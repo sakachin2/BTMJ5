@@ -1,6 +1,7 @@
-//*CID://+vawiR~: update#= 497;                                    //+vawiR~
+//*CID://+vaz5R~: update#= 500;                                    //~vawiR~//~vaz5R~
 //**********************************************************************//~v101I~
-//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//+vawiI~
+//2025/03/03 vaz5 process 3ronDrawn, issue warning                 //~vaz5I~
+//2023/02/14 vawi for future extendability, use valiable for local yaku ID. Rank.rank2//~vawiI~
 //2022/07/24 vap4 Yakuman for discarding OpenReach winning tile; change option for human discard to Yakuman or reject//~vap3I~
 //2022/07/23 vap3 Yakuman for discarding OpenReach winning tile    //~vap3I~
 //2022/03/23 vakS (Bug)dismiss CompleteDialog for DobleRon by Robot//~vakSI~
@@ -43,9 +44,9 @@ public class Complete                            //~v@@@R~
     public  static final int CALC_AMT_HAN      =9; //low           //~va11I~
 //  public  static final int CALC_AMT_MAXCTR   =10;                //~va11R~//~va1cR~
     public  static final int CALC_AMT_NETPOINT =10; //low          //~va1cI~
-//  public  static final int CALC_AMT_MAXCTR   =11;                //~va1cI~//+vawiR~
-    public  static final int CALC_AMT_RANK2    =11;                //+vawiI~
-    public  static final int CALC_AMT_MAXCTR   =12;                //+vawiI~
+//  public  static final int CALC_AMT_MAXCTR   =11;                //~va1cI~//~vawiR~
+    public  static final int CALC_AMT_RANK2    =11;                //~vawiI~
+    public  static final int CALC_AMT_MAXCTR   =12;                //~vawiI~
                                                                    //~v@@@I~
     public  static final int CALC_AMT_POS   =1;      //OK/NG+ammount values//~v@@@I~
                                                                    //~v@@@I~
@@ -113,6 +114,7 @@ public class Complete                            //~v@@@R~
     private boolean swTotalAgreed;                                 //~9612I~
     private boolean swSort;                                        //~9B10I~
     private boolean swDrawn3R;                                     //~9B29I~
+    private boolean swDrawn3RMsg;                                  //~vaz5I~
     public int typeNextGame=-1;	//save for reopen dialog           //~0301R~
     public  int[] paoLooser;                                       //~0302I~
     public boolean swSuspend;                                      //~0304R~
@@ -434,6 +436,16 @@ public class Complete                            //~v@@@R~
         if (Dump.Y) Dump.println("Complete.setDrawn3R parm="+PswDrawn3R);//~9B29I~
         swDrawn3R=PswDrawn3R;                                      //~9B29I~
     }                                                              //~9B29I~
+//*******************************************************************************//~vaz5I~
+//*from UARon when 3ronDrawn msg issued on msgbar                  //~vaz5I~
+//*******************************************************************************//~vaz5I~
+    public boolean drawn3RMsg()                                    //+vaz5R~
+    {                                                              //~vaz5I~
+        boolean rc=swDrawn3RMsg;                                   //~vaz5I~
+        swDrawn3RMsg=true;                                         //~vaz5I~
+        if (Dump.Y) Dump.println("Complete.drawn3RMsg previous swDrawn3RMsg="+rc);//~vaz5I~
+        return rc;                                                 //~vaz5I~
+    }                                                              //~vaz5I~
     public boolean getDrawn3R()                                    //~9B29I~
     {                                                              //~9B29I~
         if (Dump.Y) Dump.println("Complete.getDrawn3R parm="+swDrawn3R);//~9B29I~

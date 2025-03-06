@@ -1,7 +1,17 @@
-//*CID://+vavvR~: update#= 893;                                    //~vavvR~
+//*CID://+vayZR~: update#= 935;                                    //~vayUR~//~vayZR~
 //**********************************************************************//~v101I~
 //utility around screen                                            //~v@@@I~
 //**********************************************************************//~va60I~
+//2025/03/01 vayZ should use not statusbar height but cutout       //~vayZI~
+//2025/02/26 vayU try to allow rotation in game                    //~vayUI~
+//2025/02/24 vayM android14 tablet(google pixel emulator), screen is change to LetterBox if start by landscape.//~vayMI~
+//                Web says. from android12(Api31). optionally(by device maker) change to letterBox by orientation//~vayMI~
+//2025/02/23 vayL adjust Top camera area if edge mode portrait     //~vayLI~
+//2025/02/22 vayK api34 landRight spaceRight is too large. use inset not systemGesture but syste.//~vayKI~
+//2025/02/19 vayy bypass set marginRight by rotation(camera button may exist)//~vayyI~
+//2025/02/17 vayv move getframelayout to MainView                  //~vayvI~
+//2025/02/13 vayi foldable open portrate, wide space between bottom button and hand.//~vayiI~
+//                "button height is by layaout and dimension", now adjust by screen size//~vayiI~
 //2023/01/29 vavv xml:android:backgroundTint is not work on N71(api19:android 4.4)//~vavvI~
 //2023/01/10 vav4 set menu button orange when completeDlg was closed//~vavvI~
 //2022/09/24 var8 display profile icon                             //~var8I~
@@ -118,6 +128,8 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
    							,Alert.AlertI                          //~9B25I~
 							,URunnable.URunnableI                  //~v@@@I~
 {                                                                  //~0914I~
+    private static final String CN="GC:";                           //~vayUI~
+    private static final double RATE_BUTTON_SIZE=0.05;             //~vayiI~
     private static final int BUTTONS_RIGHT =R.layout.gvbuttons_right;//~v@@@I~
     private static final int BUTTONS_LEFT  =R.layout.gvbuttons_left ;//~v@@@I~
     private static final int BUTTONS_RIGHT_SMALL =R.layout.gvbuttons_right_small;//~9808I~
@@ -206,7 +218,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private int[] posMember;                                       //~v@@@I~
     private int positionYou;                                       //~v@@@I~
     private View btns1,btns2;                                      //~v@@@I~
-    private int frameLayoutWWL,frameLayoutHHL;                         //~v@@@I~
+//    private int frameLayoutWWL,frameLayoutHHL;                         //~v@@@I~//~vayiR~
     private boolean swReach,swReachOpen;                           //~v@@@I~
 //    private UButton btnReach,btnReachOpen,btnRon;                //~9301I~
 	private Button btnPon,btnKan,btnChii,btnRon;                   //~9B25I~
@@ -243,6 +255,13 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 	private boolean swWinAnywayMore;                               //~vaq8I~
 	private boolean swLeftyPortrait,swLeftyLandscape;              //~vad1I~
 	public int marginLR;                                           //~vaefI~
+	private boolean swAdjustButtonSize=true;                       //~vayiI~
+	private boolean swAdjustedButtonSize;                          //~vayiI~
+	public  int frameHeight;                                       //~vayiI~
+	public  int frameWidth;                                        //~vayiI~
+	public  int spaceLeft=0,spaceRight=0;                          //~vayyI~
+	public  int spaceTop=0;                                        //~vayLR~
+	public  int spaceBottom=0;                                     //~vayZI~
 //*************************                                        //~v@@@I~
 	public GC()                             //for IT override      //~va60I~
     {                                                              //~va60I~
@@ -252,6 +271,11 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~0914I~
         if (Dump.Y) Dump.println("GC Constructor");         //~1506R~//~@@@@R~//~v@@@R~
         frame=(FrameLayout)Pframe;                                              //~v@@@I~
+//      frameWidth=AG.aMainActivity.frameLayoutSizeStartGame.x;    //~vayiR~//~vayvR~
+//      frameHeight=AG.aMainActivity.frameLayoutSizeStartGame.y;   //~vayiR~//~vayvR~
+        frameWidth=AG.aMainView.frameLayoutSize.x;                 //~vayvI~
+        frameHeight=AG.aMainView.frameLayoutSize.y;                //~vayvI~
+        if (Dump.Y) Dump.println("GC.Constructor frameHeight="+frameHeight+",frameWidth="+frameWidth+",frameLayout="+frame);//~vayiR~
         AG.aGC=this;                                               //~v@@@R~
         init();                                                    //~v@@@I~
     }                                                              //~0914I~
@@ -271,6 +295,7 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //          btnRightW=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_right_small:R.dimen.gvbtn_right);//~9808M~//~vad0R~
 //          btnTopH   =(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_top_small   :R.dimen.gvbtn_top);//~9808I~//~vad0R~
 //          btnBottomH=(int)AG.resource.getDimension(AG.swSmallDevice?R.dimen.gvbtn_bottom_small:R.dimen.gvbtn_bottom);//~9808I~//~vad0R~
+//returns by pixel( dip*dp2pix )                                   //~vavvI~
             btnLeftW  =(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_left_smallfont//~vad0I~
 							: (AG.swSmallDevice ? R.dimen.gvbtn_left_small : R.dimen.gvbtn_left));//~vad0I~
             btnRightW =(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_right_smallfont//~vad0I~
@@ -279,11 +304,12 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 							: (AG.swSmallDevice?R.dimen.gvbtn_top_small   :R.dimen.gvbtn_top));//~vad0I~
             btnBottomH=(int)AG.resource.getDimension(AG.swSmallFont ? R.dimen.gvbtn_bottom_smallfont//~vad0I~
 							: (AG.swSmallDevice?R.dimen.gvbtn_bottom_small:R.dimen.gvbtn_bottom));//~vad0I~
-                                                                   //~vad0I~
-        	if(Dump.Y) Dump.println("GC.init dimen Width left="+btnLeftW+",right="+btnRightW);//~9808R~//~vacfR~
-        	if(Dump.Y) Dump.println("GC.init dimen Height top="+btnTopH+",bottom="+btnBottomH);//~vacfI~
+        	if(Dump.Y) Dump.println("GC.init dimen Width btnLeftW="+btnLeftW+",btnRightW="+btnRightW);//~9808R~//~vacfR~//~vavvR~
+        	if(Dump.Y) Dump.println("GC.init dimen Height btnTopH="+btnTopH+",btnBottomH="+btnBottomH);//~vacfI~//~vavvR~
+//TEST          	if (swAdjustButtonSize)                        //~vayiR~
+//TEST            	adjustButtonSize();                            //~vayiR~
 //            chkLayoutSize();                                       //~v@@@R~//~9411R~
-        	if(Dump.Y) Dump.println("GC.init swPortrait="+swPortrait+",ww="+AG.scrWidth+",hh="+AG.scrHeight+",swTrainingMode="+AG.swTrainingMode);//~v@@@I~//~vaa2R~
+        	if(Dump.Y) Dump.println("GC.init swPortrait="+swPortrait+",ww="+AG.scrWidth+",AG.scrHeight="+AG.scrHeight+",frameHeight="+frameHeight+",swTrainingMode="+AG.swTrainingMode);//~v@@@I~//~vaa2R~//~vayiR~
 //          new Accounts();                                        //~v@@@R~
 //          new Status();                                          //~v@@@R~
             new Rule();                                            //~v@@@I~//~9C01R~
@@ -301,6 +327,26 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     		Dump.println(e,"GC startMain exception");              //~v@@@I~
         }                                                          //~v@@@I~
     }                                                              //~v@@@I~
+//*************************                                        //~vayiI~
+    private void adjustButtonSize()                                //~vayiI~
+    {                                                              //~vayiI~
+        int hh=Math.max(AG.scrWidth,frameHeight);                  //~vayiR~
+        int hh2=(int)(hh*RATE_BUTTON_SIZE);                        //~vayiI~
+        if (Dump.Y) Dump.println("GC.adjustButtonSize size long="+hh+",adjusted="+hh2+",RATE="+RATE_BUTTON_SIZE);//~vayiI~
+        if (Dump.Y) Dump.println("GC.adjustButtonSize swSmallFont="+AG.swSmallFont+",AG.swSmallDevice="+AG.swSmallDevice);//~vayiI~
+        boolean swAdjust=!(AG.swSmallFont || AG.swSmallDevice);    //~vayiI~
+        if (swAdjust)                                              //~vayiI~
+        {                                                          //~vayiI~
+            btnLeftW  =hh2;                                        //~vayiI~
+            btnRightW =hh2;                                        //~vayiI~
+            btnTopH   =hh2;                                        //~vayiI~
+            btnBottomH=hh2;                                        //~vayiI~
+			swAdjustedButtonSize=true;                             //~vayiI~
+        }                                                          //~vayiI~
+        if(Dump.Y) Dump.println("GC.adjustButtonSize swAdjustedButtonSize="+swAdjustedButtonSize);//~vayiI~
+        if(Dump.Y) Dump.println("GC.adjustButtonSize btnLeftW="+btnLeftW+",btnRightW="+btnRightW);//~vayiI~
+        if(Dump.Y) Dump.println("GC.adjustButtonSize btnTopH="+btnTopH+",btnBottomH="+btnBottomH);//~vayiI~
+    }                                                              //~vayiI~
 ////*************************                                        //~1109I~//~1111I~//~1122M~//~9411R~
 //    private void chkLayoutSize()                                    //~v@@@I~//~9411R~
 //    {                                                              //~v@@@I~//~9411R~
@@ -341,6 +387,15 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        lp.height=PframeLayoutSize.y;                              //~v@@@R~//~9411R~
 //        frame.setLayoutParams(lp);                           //~v@@@I~//~9411R~
 //    }                                                              //~v@@@I~//~9411R~
+//**********************************************************       //~vayUI~
+    private void setFrameLayoutSize(int Pww,int Phh)               //~vayUI~
+    {                                                              //~vayUI~
+        if (Dump.Y) Dump.println(CN+"setFrameLayoutSize ww="+Pww+",hh="+Phh);//~vayUI~
+        ViewGroup.LayoutParams lp=frame.getLayoutParams();         //~vayUI~
+        lp.width=Pww;                                              //~vayUI~
+        lp.height=Phh;                                             //~vayUI~
+        frame.setLayoutParams(lp);                                 //~vayUI~
+    }                                                              //~vayUI~
 //****************************************************                                        //~v@@@I~//~9503R~
 //*from MainActivity Button or Client received GCM_SETTING_NOTIFY_SYNCOK                                        //~9503I~//~9A23R~
 //****************************************************             //~9503I~
@@ -448,16 +503,39 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     {                                                              //~1120I~//~1122M~
         if (Dump.Y) Dump.println("GC.init2 swTrainingMode="+AG.swTrainingMode);                       //~v@@@I~//~vaa2R~
         marginLR=0;                                                //~vaefI~
-        if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+//      if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~//~vayMR~
+        if (AG.osVersion>=APIVER_EDGEMODE)   //edgeToEdge support version//~vayMR~
         {                                                          //~vaefI~
         	if (!swPortrait)	//landscape                            //~vaefR~
             {                                                      //~vaefI~
-                if (true)   //TODO test                            //~vaefI~
-                    marginLR=AG.scrNavigationbarRightWidthA11;     //~vaefI~
-                else                                               //~vaefI~
-                    marginLR=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;//~vaefI~
+//              if (true)   //TODO test                            //~vaefI~//+vayZR~
+//                  marginLR=AG.scrNavigationbarRightWidthA11;     //~vaefI~//+vayZR~
+                    marginLR=AG.scrCutoutLeft+AG.scrCutoutRight;	//one of twe is !=0//+vayZI~
+//              else                                               //~vaefI~//+vayZR~
+//                  marginLR=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;//~vaefI~//+vayZR~
+		    	if (UView.isEdgeMode())                            //~vayyI~
+            	{                                                  //~vayyI~
+//                    if (AG.scrRotation==ROT_LAND_LEFT)             //~vayyI~//~vayKR~
+//                        spaceLeft=marginLR;                        //~vayyI~//~vayKR~
+//                    else                                           //~vayyI~//~vayKR~
+//                    if (AG.scrRotation==ROT_LAND_RIGHT)            //~vayyI~//~vayKR~
+//                        spaceRight=marginLR;                       //~vayyI~//~vayKR~
+//                  spaceRight=AG.scrNavigationbarRightWidthA11;   //~vayKI~//~vayZR~
+//                  spaceLeft=AG.scrNavigationbarLeftWidthA11;     //~vayKI~//~vayZR~
+                    spaceRight=AG.scrCutoutRight;                  //~vayZI~
+                    spaceLeft=AG.scrCutoutLeft;                    //~vayZI~
+                    marginLR=spaceLeft+spaceRight;                 //~vayKI~
+		            if (Dump.Y) Dump.println("GC.init2 landscape spaceLeft="+spaceLeft+",spaceRight="+spaceRight+",marginLR="+marginLR);//~vayyI~//~vayKR~//~vayLR~//~vayZR~
+                }                                                  //~vayyI~
             }                                                      //~vaefI~
-            if (Dump.Y) Dump.println("GC.init2 portrait="+AG.portrait+",marginLR="+marginLR+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefI~
+            else                                                   //~vayLI~
+            {                                                      //~vayLI~
+//            	spaceTop=AG.scrNavigationbarTopHeightA11;          //~vayLI~//~vayZR~
+              	spaceTop=AG.scrCutoutTop;                          //~vayZI~
+              	spaceBottom=AG.scrCutoutBottom;                    //~vayZI~
+            }                                                      //~vayLI~
+            if (Dump.Y) Dump.println("GC.init2 portrait="+AG.portrait+",marginLR="+marginLR+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11+",AG.scrNavigationbarTopHeightA11="+AG.scrNavigationbarTopHeightA11);//~vayLR~
+            if (Dump.Y) Dump.println("GC.init2 spaceTop="+spaceTop+",spaceBottom="+spaceBottom+",spaceRight="+spaceRight+",spaceLeft="+spaceLeft);//~vayLI~//~vayZR~
         }                                                          //~vaefI~
         try                                                        //~1109I~//~1120M~//~1122M~
         {                                                          //~1109I~//~1120M~//~1122M~
@@ -498,24 +576,54 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~v@@@I~
         if(Dump.Y) Dump.println("GC.init3 end");                   //~v@@@I~
     }                                                              //~v@@@I~
+//*************************                                        //~vayiI~
+	private void addTest()                                         //~vayiI~
+    {                                                              //~vayiI~
+        FrameLayout.LayoutParams lp;                               //~vayiI~
+		int wc=ViewGroup.LayoutParams.WRAP_CONTENT;                //~vayiI~
+		int mp=ViewGroup.LayoutParams.MATCH_PARENT;                //~vayiI~
+        lp=new FrameLayout.LayoutParams(mp,wc);                    //~vayiI~
+        lp.gravity=Gravity.BOTTOM|Gravity.CENTER;    //=layout_gravity//~vayiI~
+        int margin=btnBottomH;                                     //~vayiI~
+        lp.setMargins(0/*left*/,0/*top*/,0/*right*/,margin/*bottom*/);//~vayiR~
+        btns2.setLayoutParams(lp);                                 //~vayiI~
+//      frame.removeView(btns2);                                   //~vayiR~
+        frame.addView(btns2);                                      //~vayiI~
+        if (Dump.Y) Dump.println("GC.addTest margin="+margin+",lp="+lp);//~vayiI~
+    }                                                              //~vayiI~
 //*************************                                        //~v@@@I~
 	public void addButton()                                        //~v@@@I~
     {                                                              //~v@@@I~
-        if(Dump.Y) Dump.println("GC.addButton swPortrait="+swPortrait);//~v@@@I~
+        if(Dump.Y) Dump.println("GC.addButton swPortrait="+swPortrait+",swAdjustedButtonSize="+swAdjustedButtonSize);//~v@@@I~//~vayiR~
+        if(Dump.Y) Dump.println("GC.addButton frame width="+frame.getWidth()+",heigt="+frame.getHeight()+",frame="+frame);//~vayiI~
 		int wc=ViewGroup.LayoutParams.WRAP_CONTENT;                //~v@@@M~
 		int mp=ViewGroup.LayoutParams.MATCH_PARENT;                //~v@@@I~
         FrameLayout.LayoutParams lp;                               //~v@@@I~
                                                                    //~v@@@I~
         if (swPortrait)                                            //~v@@@I~
         {                                                          //~v@@@I~
+		  if (swAdjustedButtonSize)                                //~vayiI~
+            lp=new FrameLayout.LayoutParams(mp,btnTopH);           //~vayiI~
+          else                                                     //~vayiI~
             lp=new FrameLayout.LayoutParams(mp,wc);                //~v@@@I~//~9630R~
 //          btns1=AG.inflater.inflate(BUTTONS_TOP,null);            //~v@@@I~//~9808R~
 //          btns1=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_TOP_SMALL:BUTTONS_TOP,null);//~9808I~//~vad0R~
             btns1=AG.inflater.inflate(AG.swSmallFont ? BUTTONS_TOP_SMALLFONT : (AG.swSmallDevice ? BUTTONS_TOP_SMALL : BUTTONS_TOP),null);//~vad0I~
             lp.gravity=Gravity.TOP|Gravity.LEFT;                   //~v@@@R~
+            if (UView.isEdgeMode())                                //~vayLM~
+            {                                                      //~vayLM~
+            	if (spaceTop!=0)                                   //~vayLM~
+                {                                                  //~vayLM~
+                	lp.setMargins(0/*left*/,spaceTop/*top*/,0/*right*/,0/*bottom*/);//~vayLI~
+                    if (Dump.Y) Dump.println("GC.addButton port layout btn1 set TOP margin by edge mode orientation PORT spaceTop="+spaceTop);//~vayLI~
+                }                                                  //~vayLM~
+            }                                                      //~vayLM~
             btns1.setLayoutParams(lp);                             //~v@@@R~
             frame.addView(btns1);                                  //~v@@@R~
                                                                    //~v@@@I~
+		  if (swAdjustedButtonSize)                                //~vayiI~
+            lp=new FrameLayout.LayoutParams(mp,btnBottomH);        //~vayiI~
+          else                                                     //~vayiI~
             lp=new FrameLayout.LayoutParams(mp,wc);                //~v@@@I~//~9630R~
 //          btns2=AG.inflater.inflate(BUTTONS_BOTTOM,null);        //~v@@@R~//~9808R~
 //          btns2=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_BOTTOM_SMALL:BUTTONS_BOTTOM,null);//~9808I~//~vad0R~
@@ -535,8 +643,20 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //        //TODO test                                              //~vacfR~
 	    	if (Build.VERSION.SDK_INT==29)   //for gesture navigationbar//~vaeeI~
       	  	  if (AG.swNewA10)                                         //~vaeeR~
+               if (false)	//framalayoutsize is excluded navigationbar, botton is simbly bottom(requires no margin)//~vayiI~
         		lp.setMargins(0/*left*/,0/*top*/,0/*right*/,AG.scrNavigationbarBottomHeight);//~vaeeI~
+            if (UView.isEdgeMode())                                //~vayZI~
+            {                                                      //~vayZI~
+            	if (spaceBottom!=0)                                //~vayZI~
+                {                                                  //~vayZI~
+                	lp.setMargins(0/*left*/,0/*top*/,0/*right*/,spaceBottom/*bottom*/);//~vayZI~
+                    if (Dump.Y) Dump.println("GC.addButton port layout btn2 set Bottom margin by edge mode orientation PORT spaceBottom="+spaceBottom);//~vayZI~
+                }                                                  //~vayZI~
+            }                                                      //~vayZI~
             btns2.setLayoutParams(lp);                             //~v@@@R~
+            if (false) //TEST                                      //~vayiR~
+                addTest();                                         //~vayiM~
+            else                                                   //~vayiI~
             frame.addView(btns2);                                  //~v@@@R~
 //          btns2.setBackgroundDrawable(null);                     //~v@@@R~
 			if (Dump.Y) Dump.println("GC.addButton portrait bottom buttons MesuredHeight="+btns2.getMeasuredHeight()+",layoutHeight="+btns2.getHeight());//~vacfI~
@@ -544,10 +664,14 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
         {                                                          //~v@@@I~
+        //*landscape                                               //~vayyI~
 //          lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@M~//~9807R~//~vaefR~
             int hh2=mp;                                            //~vaefI~
 //      	if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
 //          	hh2=AG.scrHeightReal-AG.scrNavigationPillBottomHeightA11;//~vaefI~
+		  if (swAdjustedButtonSize)                                //~vayiI~
+            lp=new FrameLayout.LayoutParams(btnLeftW,hh2);         //~vayiI~
+          else                                                     //~vayiI~
             lp=new FrameLayout.LayoutParams(wc,hh2);               //~vaefI~
 //          btns1=AG.inflater.inflate(BUTTONS_LEFT,null);          //~v@@@I~//~9808R~
 //          btns1=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_LEFT_SMALL:BUTTONS_LEFT,null);//~9808I~//~vad0R~
@@ -564,11 +688,41 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //                lp.setMargins(AG.scrNavigationbarLeftWidthA11/*left*/,0/*top*/,0/*right*/,0/*bottom*/);//~vaefR~
 //                if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin w="+lp.width+",h="+lp.height+"scrnavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~
 //            }                                                    //~vaefR~
+    	  if (UView.isEdgeMode())                                  //~vayyI~
+          {                                                        //~vayyI~
+            if (AG.aRule.swLeftButtons)	//gamebutton to left edge, //~vayyI~
+            {                                                      //~vayKI~
+                if (spaceRight!=0)                                 //~vayyI~
+                {                                                  //~vayyI~
+                    lp.setMargins(0/*left*/,0/*top*/,spaceRight/*right*/,0/*bottom*/);//~vayyI~
+                    if (Dump.Y) Dump.println("GC.addButton landscape layout btn1:swap LR set RIGHT margin by edge mode orientation LANDCSCAPE_LEFT spaceRight="+spaceRight);//~vayyI~
+                }                                                  //~vayyI~
+            }                                                      //~vayKI~
+            else                                                   //~vayyI~
+            {                                                      //~vayKI~
+                if (spaceLeft!=0)                                  //~vayyR~
+                {                                                  //~vayyR~
+                    lp.setMargins(spaceLeft/*left*/,0/*top*/,0/*right*/,0/*bottom*/);//~vayyR~
+                    if (Dump.Y) Dump.println("GC.addButton landscape layout btn1 set LEFT margin by edge mode orientation LANDCSCAPE_LEFT spaceLeft="+spaceLeft);//~vayyR~
+                }                                                  //~vayyR~
+            }                                                      //~vayKI~
+          }                                                        //~vayyI~
+          else                                                     //~vayyI~
+          {                                                        //~vayyI~
+            if (AG.aRule.swLeftButtons)	//btn1 is right edge(Gravity.RIGHT)//~vayyI~
+            {                                                      //~vayyI~
+                lp.setMargins(0/*left*/,0/*top*/,marginLR/*right*/,0/*bottom*/);//~vayyI~
+                if (Dump.Y) Dump.println("GC.addButton not edgemode landscapeSwap layout btn1 setmargin marginLR="+marginLR);//~vayyI~//~vayKR~
+            }                                                      //~vayyI~
+          }                                                        //~vayyI~
             btns1.setLayoutParams(lp);                             //~v@@@I~
-			if (Dump.Y) Dump.println("GC.addButton landscape layout after setMargin btn1 w="+btns1.getWidth()+",h="+btns1.getHeight());//~vaefI~//~vakrR~
+			if (Dump.Y) Dump.println("GC.addButton landscape setLayoutParams lp="+lp);//~vayiR~
             frame.addView(btns1);                                  //~v@@@I~
                                                                    //~v@@@I~
 //          lp=new FrameLayout.LayoutParams(wc,mp);                //~v@@@R~//~vaefR~
+		  if (swAdjustedButtonSize)                                //~vayiI~
+            lp=new FrameLayout.LayoutParams(btnRightW,hh2);        //~vayiI~
+          else                                                     //~vayiI~
             lp=new FrameLayout.LayoutParams(wc,hh2);               //~vaefI~
 //          btns2=AG.inflater.inflate(BUTTONS_RIGHT,null);         //~v@@@R~//~9808R~
 //          btns2=AG.inflater.inflate(AG.swSmallDevice?BUTTONS_RIGHT_SMALL:BUTTONS_RIGHT,null);//~9808I~//~vad0R~
@@ -580,10 +734,41 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
 //      	if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
 //          	lp.gravity|=Gravity.CENTER_VERTICAL;    //=layout_gravity//~vaefI~
 //          	lp.gravity|=Gravity.TOP;                           //~vaefI~
-            if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
+//          if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~//~vayMR~
+            if (AG.osVersion>=APIVER_EDGEMODE)   //for gesture navigationbar//~vayMR~
             {                                                      //~vaefR~
+    		  if (UView.isEdgeMode())                              //~vayvI~//~vayyR~
+              {                                                    //~vayyI~
+            	if (AG.aRule.swLeftButtons)	//gamebutton to left edge,//~vayyI~
+                {                                                  //~vayyI~
+                    if (spaceLeft!=0)                              //~vayyI~
+                    {                                              //~vayyI~
+                        lp.setMargins(spaceLeft/*left*/,0/*top*/,0/*right*/,0/*bottom*/);//~vayyI~
+                        if (Dump.Y) Dump.println("GC.addButton landscape layout swap LR btn2 set left margin by edge mode orientation LANDCSCAPE_RIGHT spaceLeft="+spaceLeft);//~vayyI~
+                    }                                              //~vayyI~
+                    else                                           //~vayyI~
+                    {                                              //~vayyI~
+                        if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 ignore right margin is for spaceLeft="+spaceLeft);//~vayyI~//~vayKR~
+                    }                                              //~vayyI~
+                }                                                  //~vayyI~
+                else                                               //~vayyI~
+                {                                                  //~vayyI~
+                    if (spaceRight!=0)                             //~vayyR~
+                    {                                                    //~vayvI~//~vayyR~
+                        lp.setMargins(0/*left*/,0/*top*/,spaceRight/*right*/,0/*bottom*/);//~vayyR~
+                        if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 set right margin by edge mode orientation LANDCSCAPE_RIGHT spaceRight="+spaceRight);//~vayyR~
+                    }                                                    //~vayvI~//~vayyR~
+                    else                                           //~vayyR~
+                    {                                              //~vayyR~
+                        if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 ignore right spaceRight="+spaceRight);//~vayyR~//~vayKR~//~vayLR~
+                    }                                              //~vayyR~
+                }                                                  //~vayyI~
+              }                                                    //~vayyI~
+              else                                                 //~vayvI~
+              {                                                    //~vayvI~
                 lp.setMargins(0/*left*/,0/*top*/,marginLR/*right*/,0/*bottom*/);//~vaefI~
-                if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 after setMargin w="+lp.width+",h="+lp.height+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~//~vakrR~
+                if (Dump.Y) Dump.println("GC.addButton not edgemode landscape layout btn2 after setMargin w="+lp.width+",h="+lp.height+",scrNavigationbarRightWidthA11="+AG.scrNavigationbarRightWidthA11+",scrNavigationbarLeftWidthA11="+AG.scrNavigationbarLeftWidthA11);//~vaefR~//~vakrR~//~vayKR~
+              }                                                    //~vayvI~
             }                                                      //~vaefR~
             btns2.setLayoutParams(lp);                             //~v@@@R~
 			if (Dump.Y) Dump.println("GC.addButton landscape layout btn2 after setMarginRight marginLR="+marginLR+",btn w="+btns2.getWidth()+",h="+btns2.getHeight());//~vaefR~//~vakrR~
@@ -2478,10 +2663,18 @@ public class GC implements UButton.UButtonI                        //~v@@@R~
     private void activateButton(Button Pbtn)                       //~vavvI~
     {                                                              //~vavvI~
 		if (Dump.Y) Dump.println("GC.activateButton button="+Pbtn+",osVersion="+Build.VERSION.SDK_INT);//~vavvI~
-        if (Build.VERSION.SDK_INT<=21)   //Kitkat:19=4.4, from web confirm 21, 22=5.1=Lollipop5.1 fixed it//+vavvR~
+        if (Build.VERSION.SDK_INT<=21)   //Kitkat:19=4.4, from web confirm 21, 22=5.1=Lollipop5.1 fixed it//~vavvR~
         {                                                          //~vavvI~
     		int color=AG.getColor(R.color.action_cancel);          //~vavvI~
        		Utils.setBtnBG(Pbtn,color);                            //~vavvI~
         }                                                          //~vavvI~
     }                                                              //~vavvI~
+    //*******************************************************************//~vayUI~
+    //*from MainActivity when rotated in Game                      //~vayUI~
+    //*******************************************************************//~vayUI~
+    public void rotatedInGame()                                    //~vayUR~
+    {                                                              //~vayUI~
+		if (Dump.Y) Dump.println(CN+"rotatedInGame");              //~vayUI~
+	    setFrameLayoutSize(frameWidth,frameHeight);                //~vayUI~
+    }                                                              //~vayUI~
 }//class GC                                                 //~dataR~//~@@@@R~//~v@@@R~

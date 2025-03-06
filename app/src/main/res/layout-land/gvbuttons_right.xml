@@ -4,9 +4,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-			        android:background="@color/bg_table"
                         android:layout_gravity="right"
+	       android:background="@color/bg_table"
     >
+<!--
+		       android:background="@color/bg_table"
+				android:background="#ffff0000"
+-->
              <Button
                         android:layout_width="@dimen/gvbtn_right_land"
                         android:layout_height="fill_parent"

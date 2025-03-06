@@ -1,4 +1,4 @@
-//*CID://+vah1R~: update#= 727;                                    //~vah1R~
+//*CID://+vah1R~: update#= 728;                                    //~vah1R~
 //**********************************************************************//~v101I~
 //2021/11/19 vah1 complete vagv(delete from main/java)             //~vah1I~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vagvI~
@@ -37,7 +37,7 @@ public class TilesTest                                 //~v@@@R~   //~va8xR~
     //*********************************************************************//~v@@@I~
     public TilesTest()                                                 //~v@@@R~//~va8xR~
     {                                                              //~0914I~
-        if (Dump.Y) Dump.println("Tiles Constructor");         //~1506R~//~@@@@R~//~v@@@R~
+        if (Dump.Y) Dump.println("TilesTest Constructor");         //~1506R~//~@@@@R~//~v@@@R~//+vah1R~
 //      aTiles=AG.aTiles;                                          //~va8xI~//~vagvR~
 //  	swUseRed5= RuleSetting.isUseRed5Tile();                    //~vaauI~//~vagvR~
     }                                                              //~0914I~//~v@@@R~
@@ -53,9 +53,9 @@ public class TilesTest                                 //~v@@@R~   //~va8xR~
 		UView.showToastLong("shuffleTest is NOP, try ITMainActivity");//~vah1I~
         return false;                                              //~vah1I~
     }                                                              //~vah1I~
-    //*************************                                    //+vah1I~
-    public void testSetDora(TileData[] Pout)                       //+vah1I~
-    {                                                              //+vah1I~
-		UView.showToastLong("testSetDora is NOP, try ITMainActivity");//+vah1I~
-    }                                                              //+vah1I~
+    //*************************                                    //~vah1I~
+    public void testSetDora(TileData[] Pout)                       //~vah1I~
+    {                                                              //~vah1I~
+		UView.showToastLong("testSetDora is NOP, try ITMainActivity");//~vah1I~
+    }                                                              //~vah1I~
 }

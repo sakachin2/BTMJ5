@@ -1,5 +1,7 @@
-//*CID://+vamsR~:                             update#= 1158;       //~vamsR~
+//*CID://+vaz8R~:                             update#= 1160;       //~vaz7R~//+vaz8R~
 //*****************************************************************//~v101I~
+//2025/03/05 vaz8 FinalGameDlg; rspOKNG clear required when re-opened from menu dialog//+vaz8I~
+//2025/03/05 vaz7 FinalGameDlg; when game continued(by parent win), at continued game, treate one replay-OK as all replyed.(clear missing replyOKNG)//~vaz7I~
 //2022/04/20 vams Menu:gameover fail by "During game" when FinalGame canceled//~vamsI~
 //2021/08/15 vac5 phone device(small DPI) support; use small size font//~vac5I~
 //2021/02/01 va66 training mode(1 human and 3 robot)               //~va66I~
@@ -147,6 +149,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
         AG.aFinalGameDlg=this;                                         //~9321I~//~9504R~//~9520R~
         Status.setShownFinalGame();	//server and client            //~vamsI~
 //      swRon=AG.aComplete.isCompletedDealerRon();                       //~9504I~//~9520R~
+		AG.aLastGame.resetRespStat();                              //+vaz8I~
     }                                                              //~v@@@R~
     //******************************************                   //~v@@@R~
     public static FinalGameDlg newInstance(int PtypeClose,int PendgameType)                        //~9504R~//~9520R~//~9522R~
@@ -598,7 +601,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
     @Override                                                      //~9321I~
     public void onClickCancel()                                    //~9321I~
     {                                                              //~9321I~
-        if (Dump.Y) Dump.println("FinalGameDlg.onClickCancel");             //~9321I~//~9523R~//+vamsR~
+        if (Dump.Y) Dump.println("FinalGameDlg.onClickCancel");             //~9321I~//~9523R~//~vamsR~
         sendToAllReply(false);                                          //~9321I~//~9523R~
         dismiss();                                              //~9321I~//~9523R~
     }                                                              //~9321I~
@@ -677,6 +680,7 @@ public class FinalGameDlg  extends OKNGDlg //UFDlg                              
 			doGameNextRound();                                     //~9526I~
         else                                                       //~9526I~
 			doGameContinue();                                   //~9524I~//~9525R~
+		AG.aLastGame.resetRespStat();                              //~vaz7I~
       	dismiss();                                                 //~9524I~
     }                                                              //~9523I~
     //******************************************                   //~9417I~

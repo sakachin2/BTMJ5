@@ -1,5 +1,6 @@
-//*CID://+vaq3R~: update#= 762;                                    //~vaq3R~
+//*CID://+vaz3R~: update#= 767;                                    //~vaz3R~
 //**********************************************************************//~v101I~
+//2025/03/03 vaz5 process 3ronDrawn, issue warning                 //~vaz3I~
 //2022/08/13 vaq3 implements Yakuman 8continued, drop option for child//~vaq3I~
 //2022/07/27 vapc no yakuman for openreach after reach             //~vapcI~
 //2022/07/24 vap5 OpenReach Robot option change; chkbox No(default)//~vap5I~
@@ -64,6 +65,7 @@ import com.btmtest.game.UADelayed2;                                //~9B23I~
 import com.btmtest.utils.Dump;
 import com.btmtest.utils.UView;
 import com.btmtest.utils.Utils;
+import com.btmtest.utils.Alert;                                    //~vaz3I~
 import com.btmtest.utils.sound.Sound;
 
 import java.util.Arrays;
@@ -567,6 +569,9 @@ public class UARon                                                 //~v@@@R~//~v
         if (Pctr==3 && swMultiRon3Next)                            //~v@@6I~
         {                                                          //~v@@6I~
         	sb.append(","+Utils.getStr(R.string.Info_MultiRon3Drawn));//~v@@6R~
+	        boolean swDup=AG.aComplete.drawn3RMsg();               //~vaz3I~
+    	    if (!swDup)    //1st time                              //+vaz3R~
+        		warning3Ron();                                     //~vaz3I~
         }                                                          //~v@@6I~
         else                                                       //~v@@6I~
         if (!swMultiRon)                                           //~v@@6I~
@@ -577,7 +582,6 @@ public class UARon                                                 //~v@@@R~//~v
 //      UserAction.showInfoAllEswn(0/*opt*/,sb.toString());        //~v@@6I~//~9B11R~
 //      UserAction.showInfo(0/*opt*/,sb.toString());               //~9B11R~//~9C02R~
         GMsg.showHL(0/*opt*/,sb.toString());                       //~9C02I~
-                                                           //~v@@6I~
     }                                                              //~v@@6I~
 	//*************************************************************************//~v@@@I~//~v@@6I~
     public  String makeMsgDataToClient(int Pplayer,TileData[] Ptds,int Pctr)//~v@@@I~//~v@@6I~
@@ -874,8 +878,8 @@ public class UARon                                                 //~v@@@R~//~v
         	if (PeswnComplete!=ESWN_E)                             //~vaq3I~
             	break;                                             //~vaq3I~
             ctrMin=Math.min(ctrCont,ctrStick);                  //~vaq3I~
-            if (ctrMin==0)                                         //+vaq3I~
-            	break;                                             //+vaq3I~
+            if (ctrMin==0)                                         //~vaq3I~
+            	break;                                             //~vaq3I~
             if (sw8ContReset)                                      //~vaq3I~
 	        	swYakuman=((ctrMin) % 8)==0;                       //~vaq3R~
             else                                                   //~vaq3I~
@@ -1112,4 +1116,14 @@ public class UARon                                                 //~v@@@R~//~v
         if (Dump.Y) Dump.println("UARon.openReachDiscard rc="+rc); //~vap3I~
         return rc;                                                 //~vap3I~
     }                                                              //~vap3I~
+	//*************************************************************************//~vaz3I~
+	//*under OpenReach and swTake=false                            //~vaz3I~
+	//*************************************************************************//~vaz3I~
+	private void warning3Ron()                                     //~vaz3I~
+    {                                                              //~vaz3I~
+        if (Dump.Y) Dump.println("UARon.warning3Ron");             //~vaz3I~
+        int titleid=R.string.Title_CompReqDlg;                         //~vaz3I~
+        int textid=R.string.Info_3RonDrawn;                            //~vaz3I~
+		Alert.showMessage(titleid,textid);                         //~vaz3I~
+    }                                                              //~vaz3I~
 }//class                                                           //~v@@@R~

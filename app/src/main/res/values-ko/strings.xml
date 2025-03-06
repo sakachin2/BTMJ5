@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="Sample_DoubleQuote">“仮東”</string>
+    <!--string name="Sample_DoubleQuote">"仮東"</string-->
     <string name="Alert_CompleteDlg_NGCompReqDlg">Received \"NG\" for \"Win Claim\",\
 Ask to the winner to \"Send\" \"Win Claim\" again.\
 Or \"Send\" with setting of \"Invalid\" or \"Error\".\
@@ -176,9 +176,9 @@ Server/Client 역할을 변경하려면 모든 연결을 끊고 대화 상자를
 회원이 %1$d명이 부족합니다. \n로봇을 넣고 대전하시겠습니까?
 	</string>
 
-    <string name="Err_RuleIsInitialMsg">Rule is not established yet. Press \"Settings\", \"RuleSettings\", then close the dialog by \"OK\".\n
+    <!--string name="Err_RuleIsInitialMsg">Rule is not established yet. Press \"Settings\", \"RuleSettings\", then close the dialog by \"OK\".\n
 규칙 설정이 완료되지 않았습니다. \"설정\" 버튼에서 \"규칙 설정\"을 열고 \"OK\"를 누릅니다.
-	</string>
+	</string-->
     <string name="Alert_AppVersionUnmatch">Received \"RuleSettings\" and detected App-version unmatch.\n
 											( Received: %1$s, Minimum required: %2$s )\n
 											Re-install latest version.\n
@@ -214,4 +214,12 @@ Server/Client 역할을 변경하려면 모든 연결을 끊고 대화 상자를
     <string name="AE_SameMeld">\"Same-Meld\" 위반입니다. 다른 \"牌\"를 \"Discard\"하십시오.</string>
     <string name="Err_GamingNow">게임중입니다.</string>
     <string name="Err_NoneCompleted">"和了者\"(winner) 없음</string>
+    <string name="RequestPickupDocumentSaveDir">
+1차 설치시 게임 데이터를 저장할 폴더를 지정해 주셔야 합니다.\n
+확인을 누르고 다음에 나타나는 대화 상자에서 %1$s를 선택합니다. \n
+존재하지 않으면 \"CREATE NEW FOLDER\"를 사용하여 폴더를 만듭니다.\n
+이미 존재하는 경우 \"이 폴더 사용\"을 클릭하세요.\n
+안드로이드 버전에 따라 상위 폴더로 돌아가서 선택해야 할 수도 있습니다.\n
+\"Use Int\"는 내부 저장소를 사용함을 의미하며, 이로 인해 백업이 지연될 수 있습니다.
+	</string>
 </resources>

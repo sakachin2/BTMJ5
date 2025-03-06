@@ -1,5 +1,7 @@
-//*CID://+vamgR~: update#= 786;                                    //~vamgR~
+//*CID://+vayYR~: update#= 791;                                    //+vayYR~
 //**********************************************************************//~v101I~
+//2025/02/28 vayY hand overwrap You and right when your call is not 1st(rectHand changes by other call)//+vayYI~
+//2025/02/10 vayg Try nameplate on left of stock for also landscape//~vaygI~
 //2022/04/05 vamg Animation. at Win call                           //~vamgI~
 //2021/09/28 vaeg enlarge nameplate for long device                //~vaegI~
 //2021/05/06 va8C (Bug)open hand image remains for not PLAYER_YOU after drawn last if called kan(TestOption:openHand)//~va8CI~
@@ -228,7 +230,7 @@ public class Hands                                                 //~v@@@R~
     //*******************************************************************//~v@@@I~
     private void drawHands(boolean Pswtakeone,boolean Pswintercept,int Pplayer)//~v@@@R~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Hands.drawHands swTakeone="+Pswtakeone+",Pswintercepts="+Pswintercept+",Pplayer="+Pplayer);//~v@@@I~//~v@@5R~
+        if (Dump.Y) Dump.println("Hands.drawHands swTakeone="+Pswtakeone+",Pswintercepts="+Pswintercept+",Pplayer="+Pplayer+",shiftHands="+shiftHands);//~vaygR~
 //      int player=PLAYER_YOU;		//called when you only         //~v@@@R~
 //      int player=AG.aAccounts.getCurrentESWN();                  //~v@@@R~
         int player=Pplayer;                                        //~v@@@I~
@@ -347,6 +349,7 @@ public class Hands                                                 //~v@@@R~
         else                                                       //~v@@5I~
         	r+=getLengthHands(ctr+1/*for taken*/);                 //~v@@5R~
         shiftHands=l-r;                                            //~v@@5R~
+        if (Dump.Y) Dump.println("Hands.shiftHandsByPair @@@@ shiftHands="+shiftHands+",l="+l+",r="+r+",rectHands.left"+rectHands.left);//~vaygI~
 //      if (shiftHands<0)                                          //~v@@5I~
 //      	rectHands.right-=shiftHands;	//dont clear drawearth //~v@@5I~
 	        if (Dump.Y) Dump.println("Hands.shiftHandsByPair Handsctr="+ctr+",lenofctr="+getLengthHands(ctr)+",pieceW="+pieceW+",l="+l+",r="+r+",len="+len+",rightHandsYou="+rightHandsYou+",shift="+shiftHands);//~v@@5R~
@@ -382,7 +385,7 @@ public class Hands                                                 //~v@@@R~
 //  		Graphics.drawRectFrame(Prect,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@@I~
 //	    	Graphics.drawRectFrameBitmap(Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,COMPLETE_STROKE_WIDTH,COMPLETE_COLOR);//~v@@@I~//~0401R~
 	    	Graphics.drawRectFrameBitmap(Prect,bgColor,Pbitmap,Ppoint.x,Ppoint.y,complete_stroke_width_hand,COMPLETE_COLOR);//~0401I~
-            AG.aAnim.showWin(Prect,tdComplete,playerComplete,0);   //+vamgR~
+            AG.aAnim.showWin(Prect,tdComplete,playerComplete,0);   //~vamgR~
         	if (Dump.Y) Dump.println("Hands.drawPiece swComplete=true stroke_width_hand="+complete_stroke_width_hand);//~0401I~
         }                                                          //~v@@@I~
         else                                                       //~v@@@I~
@@ -463,6 +466,14 @@ public class Hands                                                 //~v@@@R~
         if (Dump.Y) Dump.println("Hands.getLengthHands pieceW="+pieceW+",ctr="+Pctr+",len="+len);//~v@@@I~//~vaegR~
     	return len;                                                //~v@@@I~
     }                                                              //~v@@@I~
+	//*********************************************************    //+vayYR~
+	public  int getLengthHandsAfter1stCall()                       //+vayYR~
+    {                                                              //+vayYR~
+        int len=getLengthHands(HANDCTR-3);                          //+vayYR~
+        len+=PIECE_SPACING_TAKEN+pieceW;                           //+vayYR~
+        if (Dump.Y) Dump.println("Hands.getLengthHandsAfter1stCall pieceW="+pieceW+",len="+len);//+vayYR~
+    	return len;                                                //+vayYR~
+    }                                                              //+vayYR~
 //    //*********************************************************  //~v@@@R~
 //    public TileData[] getCurrentPair(int Pplayer)                //~v@@@R~
 //    {                                                            //~v@@@R~
@@ -761,7 +772,8 @@ public class Hands                                                 //~v@@@R~
         int len=getOpenWidthOther(Pplayer);                        //~0328I~
 //      int shift;                                             //~0328R~//~0329R~
         int pos=0;                                                   //~0329I~
-        int ww=table.riverPieceW;                                  //~0328I~
+//      int ww=table.riverPieceW;                                  //~0328I~//~vaygR~
+        int ww=table.riverPieceH/2;                                //~vaygI~
 //      if (Dump.Y) Dump.println("Hands.getOpenShift openRect="+ropen.toString());//~0328I~//~0329R~
         Rect rnew=null;                                            //~0329I~
         switch(Pplayer)                                            //~0328M~
@@ -862,7 +874,7 @@ public class Hands                                                 //~v@@@R~
                       {                                            //~0401I~
 //      				Graphics.drawRect(r,COMPLETE_COLOR,COMPLETE_STROKE_WIDTH);//~v@@5I~//~0401R~
         				Graphics.drawRect(r,COMPLETE_COLOR,AG.aRiver.stroke_width_river);//~0401R~
-			            AG.aAnim.showWin(r,td,Pplayer,0);          //+vamgR~
+			            AG.aAnim.showWin(r,td,Pplayer,0);          //~vamgR~
 			        	if (Dump.Y) Dump.println("Hands.drawOpenSub td.isRon()=true stroke_width_river="+AG.aRiver.stroke_width_river);//~0401R~
                       }                                            //~0401I~
         			  else                                         //~v@@5I~

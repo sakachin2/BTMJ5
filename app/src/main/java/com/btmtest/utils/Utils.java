@@ -1,5 +1,6 @@
-//*CID://+vat2R~: update#= 328;                                    //~vat2R~
+//*CID://+vaz4R~: update#= 329;                                    //+vaz4R~
 //**********************************************************************//~1107I~
+//2025/03/03 vaz4 add toString(boolean array)                      //+vaz4I~
 //2022/10/16 vat2 deprecated api33; PackageManager.getAplicationInfo//~vat2I~
 //2022/10/09 vas0 print history                                    //~vas0I~
 //2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
@@ -984,6 +985,13 @@ public class Utils                                            //~1309R~//~@@@@R~
     {                                                              //~va60I~
 		return toString(Psa2,-1,PctrMax);                          //~va60I~
     }                                                              //~va60I~
+    //*************************************************            //+vaz4I~
+    public static String toString(boolean[] Psa2)                  //+vaz4I~
+    {                                                              //+vaz4I~
+        if (Psa2==null)                                            //+vaz4I~
+        	return "null";                                         //+vaz4I~
+        return Arrays.toString(Psa2);                              //+vaz4I~
+    }                                                              //+vaz4I~
     //*************************************************            //~va60I~
     public static String toString(boolean[] Psa2,int PctrSplit,int PctrMax)//~va60I~
     {                                                              //~va60I~
@@ -1437,8 +1445,8 @@ public class Utils                                            //~1309R~//~@@@@R~
         Pbtn.getBackground().setColorFilter(new PorterDuffColorFilter(Pcolor, PorterDuff.Mode.SRC_ATOP));//~vaafR~
     }                                                              //~vaafR~
 //*************************************************************    //~vat2I~
-//*returns invalid addr                                            //+vat2I~
-//*************************************************************    //+vat2I~
+//*returns invalid addr                                            //~vat2I~
+//*************************************************************    //~vat2I~
 public static String getMacAddress(){                              //~vat2R~
       	if (Dump.Y) Dump.println("Utils.getMacAddress");           //~vat2I~
         try{                                                       //~vat2I~

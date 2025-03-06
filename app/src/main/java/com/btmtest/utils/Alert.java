@@ -1,6 +1,6 @@
-//*CID://+vai8R~: update#= 163;                                    //~vae1R~//+vai8R~
+//*CID://+vai8R~: update#= 165;                                    //~vae1R~//~vai8R~
 //**********************************************************************//~1107I~
-//2021/12/23 vai8 try-catch required for Alert.onClick(app stop at DrawnHW)//+vai8I~
+//2021/12/23 vai8 try-catch required for Alert.onClick(app stop at DrawnHW)//~vai8I~
 //2021/09/13 vae1 (Bug)When 3 button,show only 2 button            //~vae1I~
 //2020/11/04 va40 Android10(api29) upgrade                         //~va40I~
 //@003:20181103 dismiss alert dialog when interrupted bt other appl//~@003R~
@@ -63,6 +63,7 @@ public class Alert extends DialogFragment                          //~v@@@R~
         b.putInt("flag",Pflag);                                    //~v@@@I~
         b.putString("title",Ptitle);                               //~v@@@I~
         if (Dump.Y) Dump.println("Alert:createAlert bundle="+b.toString());//~@003I~
+        if (Dump.Y) Dump.println("Alert:dlg="+dlg);                //+vai8I~
         dlg.setArguments(b);                                       //~v@@@R~
 //      if (Pcallback!=null)                                       //~v@@@I~//~@003R~
 //          dlg.setTargetFragment((Fragment)Pcallback,0);          //~v@@@R~//~@003R~
@@ -222,7 +223,7 @@ public class Alert extends DialogFragment                          //~v@@@R~
 	@Override                                                      //~v@@@I~
     public void onDestroy()                                        //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("Alert onDestroy dlg this="+this.toString());           //~v@@@I~//~@003R~
+        if (Dump.Y) Dump.println("Alert onDestroy dlg title="+title+",this="+this.toString());           //~v@@@I~//~@003R~//~vai8R~
         super.onDestroy();                                         //~v@@@I~
     }                                                              //~v@@@I~
 ////**********************************                             //~@003R~
@@ -249,8 +250,8 @@ public class Alert extends DialogFragment                          //~v@@@R~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~
                                             {                      //~1212I~
-                                              try                  //+vai8I~
-                                              {                    //+vai8I~
+                                              try                  //~vai8I~
+                                              {                    //~vai8I~
 //                                          	AlertI callback=(AlertI)getTargetFragment();//~v@@@I~//~@003R~
                                             	AlertI callback=svCallback;//~@003R~
                                                 Pdlg.dismiss();    //~1212I~
@@ -259,11 +260,11 @@ public class Alert extends DialogFragment                          //~v@@@R~
 	                                            	callback.alertButtonAction(BUTTON_POSITIVE,0);//~1212R~//~v@@@R~
                                                 if ((flag & EXIT)!=0)//~1212I~
                                                 	Utils.stopFinish();//~@@@2I~
-                                              }                    //+vai8I~
-                    						  catch(Exception e)   //+vai8I~
-                    						  {                    //+vai8I~
-                        					  	Dump.println(e,"Alert.setButton.onClick OK");//+vai8I~
-                    						  }                    //+vai8I~
+                                              }                    //~vai8I~
+                    						  catch(Exception e)   //~vai8I~
+                    						  {                    //~vai8I~
+                        					  	Dump.println(e,"Alert.setButton.onClick OK");//~vai8I~
+                    						  }                    //~vai8I~
                                             }                      //~1212I~
                                         }                          //~1212I~
                                      );                            //~1212I~
@@ -281,19 +282,19 @@ public class Alert extends DialogFragment                          //~v@@@R~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~
                                             {                      //~1212I~
-                                              try                  //+vai8I~
-                                              {                    //+vai8I~
+                                              try                  //~vai8I~
+                                              {                    //~vai8I~
 //                                          	AlertI callback=(AlertI)getTargetFragment();//~v@@@I~//~@003R~
                                             	AlertI callback=svCallback;//~@003R~
                                                 Pdlg.dismiss();    //~1212I~
                                                 if (Dump.Y) Dump.println("Alert.setPositiveButton.Close.onClick callback="+Utils.toString(callback));//~@003R~
                                                 if (callback!=null)//~1212I~
 		                                            callback.alertButtonAction(BUTTON_CLOSE,0);//~1212R~//~v@@@R~
-                                              }                    //+vai8I~
-                    						  catch(Exception e)   //+vai8I~
-                    						  {                    //+vai8I~
-                        					  	Dump.println(e,"Alert.setButton.onClick CLOSE");//+vai8I~
-                    						  }                    //+vai8I~
+                                              }                    //~vai8I~
+                    						  catch(Exception e)   //~vai8I~
+                    						  {                    //~vai8I~
+                        					  	Dump.println(e,"Alert.setButton.onClick CLOSE");//~vai8I~
+                    						  }                    //~vai8I~
                                             }                      //~1212I~
                                         }                          //~1212I~
                                      );                            //~1212I~
@@ -310,19 +311,19 @@ public class Alert extends DialogFragment                          //~v@@@R~
                                                                    //~1212I~
                                             public void onClick(DialogInterface Pdlg,int buttonID)//~1212I~
                                             {                      //~1212I~
-                                              try                  //+vai8I~
-                                              {                    //+vai8I~
+                                              try                  //~vai8I~
+                                              {                    //~vai8I~
                                                 Pdlg.dismiss();    //~1212I~
 //                                          	AlertI callback=(AlertI)getTargetFragment();//~v@@@I~//~@003R~
                                             	AlertI callback=svCallback;//~@003R~
                                                 if (Dump.Y) Dump.println("Alert.setNegativeButton.Cancel.onClick callback="+Utils.toString(callback));//~@003R~
                                                 if (callback!=null)//~1212I~
 		                                            callback.alertButtonAction(BUTTON_NEGATIVE,0);//~1212R~//~v@@@R~
-                                              }                    //+vai8I~
-                    						  catch(Exception e)   //+vai8I~
-                    						  {                    //+vai8I~
-                        					  	Dump.println(e,"Alert.setButton.onClick NEGATIVE");//+vai8I~
-                    						  }                    //+vai8I~
+                                              }                    //~vai8I~
+                    						  catch(Exception e)   //~vai8I~
+                    						  {                    //~vai8I~
+                        					  	Dump.println(e,"Alert.setButton.onClick NEGATIVE");//~vai8I~
+                    						  }                    //~vai8I~
                                             }                      //~1212I~
                                         }                          //~1212I~
                                      );                            //~1212I~

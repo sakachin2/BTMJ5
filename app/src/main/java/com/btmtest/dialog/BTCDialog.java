@@ -1,7 +1,8 @@
-//*CID://+vavhR~:                             update#=  522;       //~vavhR~
+//*CID://+vaz9R~:                             update#=  524;       //+vaz9R~
 //*****************************************************************//~v101I~
 //*BlietoothConnectionDialog                                       //~v@@@I~
 //*****************************************************************//~v101I~
+//2025/03/05 vaz9 at App Finish, bypass Disconnected alert. App exit soon, so unexpected effect may be by dislog existing.//~vazhI~
 //2023/01/25 vavh avoid duplicated getView call for groupList      //~vavhI~
 //2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
 //2022/03/29 vam9 dismiss BTCDialog when enable bluetooth failed to avoid loop enabling//~vam9I~
@@ -1444,6 +1445,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         if (Dump.Y) Dump.println("BTCDialog.onReceiveDisconnected name="+Pname);//~9731I~
 	    if (!isShowing())                                          //~9731I~
         {                                                          //~0117I~
+          if (AG.status!=AG.STATUS_STOPFINISH)                     //+vaz9R~
 			Alert.showMessage(null/*title*/,Utils.getStr(R.string.InfoDisconnected,Pname));//~0117I~
         	return;                                                //~9731I~
         }                                                          //~0117I~
@@ -1847,7 +1849,7 @@ public class BTCDialog extends UFDlg                               //~v@@@R~
         if (Dump.Y) Dump.println("BTCDialog.onShow vieGL height="+hh);//~vavhI~
         int ww= LinearLayout.LayoutParams.MATCH_PARENT;            //~vavhI~
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ww,hh);//~vavhI~
-        viewGL.setLayoutParams(lp); //TODO test                    //+vavhR~
+        viewGL.setLayoutParams(lp); //TODO test                    //~vavhR~
         if (Dump.Y) Dump.println("BTCDialog.onShow setLayoutparams lp="+lp);//~vavhI~
     }                                                              //~vavhI~
 }//class                                                           //~v@@@R~

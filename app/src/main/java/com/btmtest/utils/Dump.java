@@ -1,5 +1,6 @@
-//*CID://+vai3R~:                                   update#=   62; //~vai3R~
+//*CID://+vaz2R~:                                   update#=   63; //+vaz2R~
 //***********************************************                  //~@@@1I~
+//2025/03/02 vaz2 TestOption DUMP=SDCARD-->Dump to File(if off write to logcat). currently requires restart//+vaz2I~
 //2021/12/23 vai7 Even not debug mode, write exception to terminal //~vai3I~
 //2021/10/22 vaf3 Dump to logcat unconditionally before open       //~vaf3I~
 //2021/09/21 vaeb try not cache but file, cache miss line?         //~vaebI~
@@ -94,8 +95,8 @@ public class Dump
 			Y = true; //call Dump                                  //~1Ad8I~
         	return;                                                //~1Ad8I~
         }                                                          //~1Ad8I~
-    	if (Out!=null)                                             //~1329I~
-        	return;                                                //~1329I~
+//  	if (Out!=null)                                             //~1329I~//+vaz2R~
+//      	return;                                                //~1329I~//+vaz2R~
         if (file.equals(""))                                       //~1Ad8I~
         {                                                          //~1Ad8I~
             Terminal=true;                                         //~1Ad8I~
@@ -103,6 +104,8 @@ public class Dump
         }   		                                               //~1Ad8I~
         else                                                       //~1Ad8I~
         {                                                          //~1Ad8I~
+    		if (Out!=null)                                         //+vaz2I~
+        		return;                                            //+vaz2I~
 			try                                                        //~1329I~//~1Ad8I~
 			{                                                          //~1227R~//~1Ad8I~
                 FileOutputStream out;
@@ -156,15 +159,15 @@ public class Dump
 	    String tidts=null,tid;                                     //~v@@@I~
   		if (Out!=null)                                             //~1425R~
         {                                                          //~1425I~
-//    try           //TODO test                                    //+vai3R~
-//    {                                                            //+vai3R~
+//    try           //TODO test                                    //~vai3R~
+//    {                                                            //~vai3R~
 	    	tidts=Utils.getThreadTimeStamp();          //~1425I~   //~v@@@R~
 			Out.println(tidts+":"+s);                              //~1425I~
-//    }                                                            //+vai3R~
-//    catch(Exception e)                                           //+vai3R~
-//    {                                                            //+vai3R~
-//        printlnLog("Dump.println e="+e);                         //+vai3R~
-//    }                                                            //+vai3R~
+//    }                                                            //~vai3R~
+//    catch(Exception e)                                           //~vai3R~
+//    {                                                            //~vai3R~
+//        printlnLog("Dump.println e="+e);                         //~vai3R~
+//    }                                                            //~vai3R~
         }                                                          //~1425I~
   		if (Terminal)                                              //~1511R~
         {                                                          //~1425I~

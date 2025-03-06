@@ -5,8 +5,11 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
 			        android:background="@color/bg_table"
-                        android:layout_gravity="right"
     >
+<!--
+			android:background="#ffff0000"
+			        android:background="@color/bg_table"
+TEST -->
              <Button
                         android:layout_width="@dimen/gvbtn_right"
                         android:layout_height="fill_parent"
@@ -17,6 +20,9 @@
                  android:backgroundTint="@color/btn_normal_bg"
                  android:textColor="@color/btn_normal_fg"
              />
+<!--
+                 android:backgroundTint="#ff00ff00"
+TEST -->
          <!--    android:rotation="-90" ;rotate not only text but butoon itself-->
              <Button
                         android:layout_width="@dimen/gvbtn_right"

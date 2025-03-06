@@ -1,6 +1,10 @@
-//*CID://+vavwR~:                             update#=  598;       //+vavwR~
+//*CID://+vaz6R~:                             update#=  609;       //~vaz6R~
 //*****************************************************************//~v101I~
-//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//+vavwI~
+//2025/03/03 vaz6 PrefSetting:set Show-Profile changable while connected.//~vaz6I~
+//2025/02/19 vayC closed foldable device; PrefDlgg width is small  //~vayCI~
+//2025/02/09 vayf rotate option: drop opption "depend to orientation". It is onle option to foladable, else set sensor-portrait at start.//~vayfI~
+//2025/01/28 vay1 allow rotation of top view before startGame, then lock and view game panel//~vay1I~//~vayfR~
+//2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
 //2022/10/18 vatb show dummy if profile is not set                 //~vatbI~
 //2022/10/16 vat0 protect change of profile during connection exist.//~vat0I~
 //2022/09/24 var8 display profile icon                             //~var8I~
@@ -71,12 +75,17 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private SettingDlg settingDlg;                                 //~v@@@I~
                                                                    //~v@@@I~
     private URadioGroup rgOrientation;                             //~v@@@I~
-    private static final int[] rbIDOrientation=new int[]{R.id.rbOriSelectMenu,R.id.rbOriPortrait,R.id.rbOriPortraitReverse,R.id.rbOriLandscape,R.id.rbOriLandscapeReverse};//~v@@@R~
+//  private static final int[] rbIDOrientation=new int[]{R.id.rbOriSelectMenu,R.id.rbOriPortrait,R.id.rbOriPortraitReverse,R.id.rbOriLandscape,R.id.rbOriLandscapeReverse};//~v@@@R~//~vay1R~
+//  private static final int[] rbIDOrientation=new int[]{R.id.rbOriSelectMenu,R.id.rbOriPortrait,R.id.rbOriPortraitReverse,R.id.rbOriLandscape,R.id.rbOriLandscapeReverse,R.id.rbOriDevice};//~vay1I~//~vayfR~
+    private static final int[] rbIDOrientation=new int[]{R.id.rbOriSelectMenu,R.id.rbOriPortrait,R.id.rbOriPortraitReverse,R.id.rbOriLandscape,R.id.rbOriLandscapeReverse};//~vayfI~
 	public  static final int    PS_ORIENTATION_SELECTMENU=0;       //~v@@@I~
 	public  static final int    PS_ORIENTATION_PORTRAIT=1;  //=ActivityInfo//~v@@@R~
 	public  static final int    PS_ORIENTATION_PORTRAIT_REVERSE=2; //~v@@@I~
 	public  static final int    PS_ORIENTATION_LANDSCAPE=3;        //~v@@@R~
-	public  static final int    PS_ORIENTATION_LANDSCAPE_REVERSE=4;//~v@@@I~
+  	public  static final int    PS_ORIENTATION_LANDSCAPE_REVERSE=4;//~v@@@I~
+//  public  static final int    PS_ORIENTATION_DEVICE=5;           //~vay1R~//~vayfR~
+//  public  static final int    PS_ORIENTATION_DEFAULT=PS_ORIENTATION_DEVICE;//~vay1I~//~vayfR~
+    public  static final int    PS_ORIENTATION_DEFAULT=PS_ORIENTATION_SELECTMENU;//~vayfI~
                                                                    //~v@@@I~
 //  private URadioGroup rgBGM;                                     //~va06I~//~vac6R~
     private UButtonRG   bgBGM;                                     //~vac6I~
@@ -124,7 +133,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private UCheckBox cbNoAnywayButton;                            //~va18I~
     private UCheckBox cbDisplayProfile,cbUseProfile;               //~var8I~
     private Button  btnSelectProfile;                              //~var8I~
-    private Button  btnSelectPicker;                               //+vavwI~
+    private Button  btnSelectPicker;                               //~vavwI~
     private Button  btnDeleteProfile;                              //~var8I~
     private ImageView ivMyProfile;                                 //~var8I~
     private TextView  tvProfileName;                               //~var8I~
@@ -139,6 +148,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     private int changedBGM;                                        //~va06I~
     private int changedBtn;                                        //~v@@@I~
     private int changedProfile;                                    //~var8I~
+    private int changedOrientation;                                //~vay1I~
     private UCheckBox cbUserBGMNoRound;                            //~vae9I~
     private UCheckBox cbUseUPicker;                                //~vae9I~
     private EditText etUserBGMSelection;                           //~vae9I~
@@ -229,7 +239,7 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         cbDisplayProfile=new UCheckBox(PView,R.id.cbDisplayProfile);//~var8I~
         cbDisplayProfile.setListener(this,UCBP_PROFILE_SHOW);      //~vat0R~
 	    btnSelectProfile=UButton.bind(PView,R.id.btnSelectProfile,this);//~var8I~
-	    btnSelectPicker=UButton.bind(PView,R.id.btnSelectPicker,this);//+vavwI~
+	    btnSelectPicker=UButton.bind(PView,R.id.btnSelectPicker,this);//~vavwI~
 	    btnDeleteProfile=UButton.bind(PView,R.id.btnDeleteProfile,this);//~var8I~
         ivMyProfile=(ImageView)UView.findViewById(PView,R.id.ivMyProfile);//~var8I~
         tvProfileName=(TextView)UView.findViewById(PView,R.id.tvProfileDisplayName);//~var8I~
@@ -307,7 +317,11 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     protected int getDialogWidth()                                 //~v@@@I~
     {                                                              //~v@@@I~
     	int ww=(int)(getDialogWidthSmallDevicePortrait()*RATE_SMALLDEVICE_WIDTH);//~v@@@I~
-        if (Dump.Y) Dump.println("PrefSetting.getDialogWidth ww="+ww);//~v@@@I~
+        //*returns ww for smalldevice & portrait                   //~vayCI~
+        if (ww==0)   //land or not small                            //~vayCI~
+            if (!AG.portrait)                                      //~vayCI~
+            	ww=(int)(AG.scrWidth*RATE_SMALLDEVICE_WIDTH_LANDSCAPE);//*0.7//~vayCI~
+        if (Dump.Y) Dump.println("PrefSetting.getDialogWidth ww="+ww+",portrait="+AG.portrait+",smallDevice="+AG.swSmallDevice);//~v@@@I~//~vayCR~
         return ww;                                                 //~v@@@I~
     }                                                              //~v@@@I~
     //**************************************                       //~v@@@I~
@@ -331,11 +345,11 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
                 break;                                             //~vat0I~
             selectProfile();                                       //~var8I~
             break;                                                 //~var8I~
-        case R.id.btnSelectPicker:                                 //+vavwI~
-            if (chkConnected())                                    //+vavwI~
-                break;                                             //+vavwI~
-            selectPicker();                                        //+vavwI~
-            break;                                                 //+vavwI~
+        case R.id.btnSelectPicker:                                 //~vavwI~
+            if (chkConnected())                                    //~vavwI~
+                break;                                             //~vavwI~
+            selectPicker();                                        //~vavwI~
+            break;                                                 //~vavwI~
         case R.id.btnDeleteProfile:                                //~var8I~
             if (chkConnected())                                    //~vat0I~
                 break;                                             //~vat0I~
@@ -377,12 +391,12 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     	if (Dump.Y) Dump.println("RuleSetting.selectProfile");     //~var8I~
 		UMediaStore.selectImage(this);	//callback ImageSelected   //~var8I~
     }                                                              //~var8I~
-    //**************************************                       //+vavwI~
-    private void selectPicker()                                    //+vavwI~
-    {                                                              //+vavwI~
-    	if (Dump.Y) Dump.println("RuleSetting.selectPicker");      //+vavwI~
-		UMediaStore.selectImagePicker(this);	//callback ImageSelected//+vavwI~
-    }                                                              //+vavwI~
+    //**************************************                       //~vavwI~
+    private void selectPicker()                                    //~vavwI~
+    {                                                              //~vavwI~
+    	if (Dump.Y) Dump.println("RuleSetting.selectPicker");      //~vavwI~
+		UMediaStore.selectImagePicker(this);	//callback ImageSelected//~vavwI~
+    }                                                              //~vavwI~
     //**************************************                       //~var8I~
     @Override //UMediastoreI                                       //~var8I~
     public void ImageSelected(Uri Puri,String Pid,String PdisplayName,String PtimestampAdded,String Psize)//~var8R~
@@ -504,7 +518,9 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
 	    changedBtn=0;                                              //~v@@@I~
 	    changedProfile=0;                                          //~var8I~
         if (Dump.Y) Dump.println("PrefSetting.dialog2Properties"); //~v@@@R~
-        changed+=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~v@@@I~
+//        changed+=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~v@@@I~//~vay1R~
+        changedOrientation=updateProp(getKeyPS(PSID_ORIENTATION),rgOrientation.getCheckedID());//~vay1I~
+        changed+=changedOrientation;                               //~vay1I~
 //      changed+=updateProp(getKeyPS(PSID_ORIENTATION_PORT_REV),cbPortraitReverse.getStateInt());//~va9fR~
         changed+=updateProp(getKeyPS(PSID_DEL_TILE_TAKEN),cbDelRiverTileTaken.getStateInt());//~v@@@I~
         changed+=updateProp(getKeyPS(PSID_NO_RELATED_RULE),cbNoRelatedRule.getStateInt());//~v@@@I~
@@ -656,6 +672,10 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
             int soundID=getSoundID();                              //~vae9I~
 			Sound.playBGM(soundID);  //play UserBGM                //~vae9I~
         }                                                          //~va06I~
+        if (changedOrientation!=0)                                    //~vay1I~
+        {                                                          //~vay1I~
+        	AG.aMainActivity.optionChangedOrientation(rgOrientation.getCheckedID());//~vay1I~
+        }                                                          //~vay1I~
         if (changedProfile!=0)                                     //~var8I~
         	AG.aProfileIcon.propUpdated();                         //~var8I~
 	    if (Dump.Y) Dump.println("PrefSetting.onClickOK dismiss"); //~1ak2I~
@@ -774,7 +794,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
     //*******************************************************************************//~v@@@I~
     public static int getOrientation()                         //~v@@@R~
     {                                                              //~v@@@I~
-        int rc=AG.prefProp.getParameter(getKeyPS(PSID_ORIENTATION),0);//~v@@@I~
+//      int rc=AG.prefProp.getParameter(getKeyPS(PSID_ORIENTATION),0);//~v@@@I~//~vay1R~
+        int rc=AG.prefProp.getParameter(getKeyPS(PSID_ORIENTATION),PS_ORIENTATION_DEFAULT);//PS_ORIENTATION_DEVICE;//~vay1I~
     	if (Dump.Y) Dump.println("PrefSetting.getOrientation rc="+rc);//~v@@@R~
         return rc;                                                 //~v@@@R~
     }                                                              //~v@@@I~
@@ -1181,7 +1202,8 @@ public class PrefSetting extends SettingDlg                        //~v@@@R~
         case UCBP_PROFILE_SHOWME:                                  //~vat0I~
 	    	if (swInitialSet)                                      //~vat0I~
             	break;                                             //~vat0I~
-		    if (chkConnected())                                    //~vat0I~
+//		    if (chkConnected())                                    //~vat0I~//~vaz6R~
+  		    if (Pparm==UCBP_PROFILE_SHOWME && chkConnected())      //+vaz6R~
             {                                                      //~vat0I~
             	boolean old=!PisChecked;                           //~vat0I~
             	if (Pparm==UCBP_PROFILE_SHOW)                      //~vat0I~

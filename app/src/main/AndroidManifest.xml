@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+//**********************************************************************************************
+//2025/02/06 vayc back to manifest:sensorport. on Adroid10(api29) and also on emulator with android10, display no button at startup when start from landscape. 
+//               DragonTouch(A10) is missing option of gesture navigation, but when tryed it on emulator, half of button array was overrided by narrow navigation bar.
+//               Nevertheless on foldable device emulator cause destroy when left-right open(naturally landscape).
+//               As a result, select NOT SENSOR_PORT
+//2023/02/22 vay0 v1.29 api14(Android34) is required.
+//**********************************************************************************************
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.btmtest"
-      android:versionCode="128"
-      android:versionName="1.28">
+      android:versionCode="129"
+      android:versionName="1.29">     <!--vay0-->
+ <!--   package="com.btmtest" 2-24/01/15 moved to module build.gradle -->
  <!--   xmlns:tools="http://schemas.android.com/tools" --> <!-- Warning:never used -->
 
     <!--uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /-->
@@ -53,12 +62,22 @@
         android:requestLegacyExternalStorage="true"
         android:preserveLegacyExternalStorage="true"
         android:theme="@style/AppTheme.NoActionBar">
+  <!--  											android:resizeableActivity="false"-->
+  <!--  android:configChanges="screenLayout|smallestScreenSize|screenSize|orientation"
+		android:resizeableActivity="false"
+   --><!-- @@@@test -->
         <activity android:name=".MainActivity"
-                  android:configChanges="orientation|screenSize"
 	    		        android:theme="@style/AppTheme.NoActionBar"
-        											android:exported="true"
-        											android:resizeableActivity="false"
-        			android:screenOrientation="sensorPortrait">
+        			android:exported="true"
+                  android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+		          android:resizeableActivity="true"
+        >
+        <!--
+        		  android:screenOrientation="sensorPortrait"  initially free to avoid google waring, it may be in the feature
+        		  android:resizeableActivity="false"
+                  android:configChanges="orientation|screenSize"
+        -->    <!--vay0-->
+        <!--										android:resizeableActivity="true" --><!-- vay0-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,6 +96,7 @@
     <meta-data    android:name="firebase_analytics_adid_collection_deactivated" android:value="true"/>
     <meta-data    android:name="google_analytics_adid_collection_enabled" android:value="false"/>
  -->
+    <!--meta-data   android:name="android.supports_size_changes" android:value="true" /-->   <!-- @@@@test -->
     </application>
 
 

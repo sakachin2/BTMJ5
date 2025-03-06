@@ -1,6 +1,7 @@
-//*CID://+vaw0R~: update#= 633;                                    //+vaw0R~
+//*CID://+vayaR~: update#= 637;                                    //+vayaR~
 //**********************************************************************//~v101I~
-//2023/01/31 vaw0 ProfileIcon overwrap by positioning tile when not long device landscape//+vaw0I~
+//2025/02/02 vaya Adjust ProfileIcon for longDevice                //+vayaI~
+//2023/01/31 vaw0 ProfileIcon overwrap by positioning tile when not long device landscape//~vaw0I~
 //2023/01/28 vavq overwrap chk for Left/Right river and Face/You profile when landscape//~vavqI~
 //2022/07/28 vapd change color of openreach tile                   //~vapdI~
 //2022/04/12 vamp Animation. for Riichi                            //~vampR~
@@ -852,8 +853,18 @@ public class River                                                 //~v@@@R~
         default: //left                                            //~v@@@I~
         	r=new Rect(xx,yy+adjust,xx+hh,yy+adjust+len);          //~v@@@R~
         }                                                          //~v@@@I~
+        if (Dump.Y) Dump.println("River.getRectSetup rect="+r);    //~vaw0R~
         return r;                                                  //~v@@@I~
     }                                                              //~v@@@I~
+    //******************************************************       //+vayaI~
+    public Rect[] getRectSetupAll()                                //+vayaI~
+    {                                                              //+vayaI~
+    	Rect[] rs=new Rect[PLAYERS];                               //+vayaI~
+        for (int ii=0;ii<PLAYERS;ii++)                             //+vayaI~
+        	rs[ii]=getRectSetup(ii);                               //+vayaI~
+        if (Dump.Y) Dump.println("River.getRectSetupAll rects="+Utils.toString(rs));//+vayaI~
+        return rs;                                                 //+vayaI~
+    }                                                              //+vayaI~
     //******************************************************       //~v@@@I~
     private TileData[] getTilesSetup(int Pplayer)                          //~v@@@I~
     {                                                              //~v@@@I~
@@ -1112,8 +1123,8 @@ public class River                                                 //~v@@@R~
         return ctrSelected==PLAYERS;                               //~v@@@R~
     }                                                              //~v@@@I~
     //******************************************************       //~v@@@I~
-//  private Rect getRectSetupAccept(int Pplayer)                   //~v@@@I~//+vaw0R~
-    public Rect getRectSetupAccept(int Pplayer)                    //+vaw0I~
+//  private Rect getRectSetupAccept(int Pplayer)                   //~v@@@I~//~vaw0R~
+    public Rect getRectSetupAccept(int Pplayer)                    //~vaw0I~
     {                                                              //~v@@@I~
     	Rect r=AG.aStock.rectsBG[Pplayer];                                   //~v@@@R~
     	Rect ro;                                                   //~v@@@I~
@@ -1132,7 +1143,7 @@ public class River                                                 //~v@@@R~
         default: //left                                            //~v@@@I~
         	ro=new Rect(r.right-hh,r.bottom, r.right,        r.bottom+ww);//~v@@@R~
         }                                                          //~v@@@I~
-        if (Dump.Y) Dump.println("River.getRectSetupAccept player="+Pplayer+",rect="+ro);//~vavqR~
+        if (Dump.Y) Dump.println("River.getRectSetupAccept player="+Pplayer+",out rect="+ro+",aStock.rectBG["+Pplayer+"]="+r);//~vaw0R~
         return ro;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~

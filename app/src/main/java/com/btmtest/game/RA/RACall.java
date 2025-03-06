@@ -1,5 +1,7 @@
-//*CID://+vapeR~: update#= 583;                                    //~vapeR~
+//*CID://+vayER~: update#= 585;                                    //~vayER~
 //**********************************************************************//~v101I~
+//2025/02/21 vayF call pon for 7pair if yakuhai is dora            //+vayEI~
+//2025/02/21 vayE robot did not call even when TestMode TO2_CALL1ST)//~vayEI~
 //2022/07/28 vape Robot avoids issueKan for OpenReach              //~vapeI~
 //2022/03/19 vakN (Bug)MakeChii Dump.e;chii for straight,missing color check//~vaKNI~
 //2022/01/23 vajc (bug)Add kan was not notified when at just taken(should chk all in hand)-->bothersome notify only at take//~vajcI~
@@ -177,7 +179,7 @@ public class RACall                                               //~v@@@R~//~va
         else                                                       //~1117I~
 		    posKan=callKanTaken(PeswnPlayer,PmyShanten,PitsHand,PctrHand,PtdTaken);	//consider to call kan      //~1117R~//~1119R~//~1124R~//~1219R~
         if (posKan>=0 && chkOpenReachForKan(KAN_TAKEN,posKan,PeswnPlayer))//~vapeI~
-        	posKan=-1;                                             //+vapeR~
+        	posKan=-1;                                             //~vapeR~
         if (posKan>=0)                                     //~1117R~//~1124R~
         {                                                          //~1124I~
         	issueKan(KAN_TAKEN,Pplayer,PeswnPlayer,tdsPairKan);	                   //~1117R~//~1118R~//~1124R~
@@ -194,7 +196,7 @@ public class RACall                                               //~v@@@R~//~va
           {                                                        //~vag4I~
     		posKan=callKanAdd(Pplayer,PeswnPlayer,PmyShanten,PitsHand,PctrHand);//~1124R~
             if (posKan>=0 && chkOpenReachForKan(KAN_ADD,posKan,PeswnPlayer))//~vapeI~
-        		posKan=-1;                                         //+vapeR~
+        		posKan=-1;                                         //~vapeR~
         	if (posKan>=0)                                             //~1117I~//~1124I~
         		issueKan(KAN_ADD,Pplayer,PeswnPlayer,tdsPairKan);                     //~1117I~//~1118R~//~1119R~//~1124R~
           }                                                        //~vag4I~
@@ -929,12 +931,14 @@ public class RACall                                               //~v@@@R~//~va
     }                                                              //~va75I~
     //*********************************************************    //~1128I~
     //*Paction:avalable timeing ID:Pon Avalable or Chii Available  //~vaf9I~
+    //*for robot(for human, use isCallablePlayAlone or isCalablePlayMatchNotify)//~vayEI~
     //*********************************************************    //~vaf9I~
     private boolean isCallable(int Paction,int PplayerOther,int PeswnOther,int PeswnDiscarded,TileData PtdDiscarded)//~1128I~
     {                                                              //~1128I~
     	boolean rc=true;                                           //~1128I~
         int myShanten=RS.getCurrentShanten(PeswnOther);            //~1222I~
 	    if (Dump.Y) Dump.println("RACall.isCallable eswnPther="+PeswnOther+",eswnDiscard="+PeswnDiscarded+",action="+Paction+",myShanten="+myShanten);//~vaaeI~//~vairR~
+	    if (Dump.Y) Dump.println("RACall.isCallable PtdDiscarded="+PtdDiscarded);//~vayEI~
       	if (Status.isIssuedRon())                                  //~va70I~
         {                                                          //~va70I~
 	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False issuedRon");//~va70I~
@@ -963,6 +967,7 @@ public class RACall                                               //~v@@@R~//~va
 	        if (Dump.Y) Dump.println("RACall.isCallable @@@@ False by intent 13orphan Intent="+Integer.toHexString(RS.RSP[PeswnOther].intent));//~1215I~//~1221R~//~vairR~
             return false;                                          //~1224I~
         }                                                          //~1215I~
+      if (false)                                                   //~vayEI~
         if ((intent & (INTENT_7PAIR))!=0)                          //~vairI~
         {                                                          //~vairI~
           if (!isTimeToCallPonFor7Pair(Paction,PeswnOther,myShanten,intent,PtdDiscarded))//~vairI~
@@ -995,8 +1000,24 @@ public class RACall                                               //~v@@@R~//~va
             	rc=false;                                          //~1128I~
         }                                                          //~1128I~
         if (rc)                                                   //~1206I~//~1216R~
+        {                                                          //~vayEI~
+            if ((intent & (INTENT_7PAIR))!=0)                      //~vayEI~
+            {                                                      //~vayEI~
+                if ((TestOption.option2 & TO2_CALL1ST)!=0)         //~vayEI~
+                {                                                  //~vayEI~
+                    if (Dump.Y) Dump.println("RACall.isCallable INTENT_7PAIR but call PON/CHII by TO2_CALL1ST option @@@@");//~vayEI~
+                }                                                  //~vayEI~
+                else                                               //~vayEI~
+                if (!isTimeToCallPonFor7Pair(Paction,PeswnOther,myShanten,intent,PtdDiscarded))//~vayEI~
+                {                                                  //~vayEI~
+                    if (Dump.Y) Dump.println("RACall.isCallable @@@@ False by isTimeToCallPonFor7Pair:False");//~vayEI~
+                    rc=false;                                      //~vayEI~
+                }                                                  //~vayEI~
+            }                                                      //~vayEI~
+            else                                                   //~vayEI~
 	        if (!isTimeToCall(PplayerOther,PeswnOther,Paction,PtdDiscarded,myShanten,intent))                 //~1206I~//~1219R~//~1222R~//~1305R~//~1306R~
     	    	rc=false;                                          //~1206I~
+        }                                                          //~vayEI~
         if (Dump.Y) Dump.println("RACall.isCallable rc="+rc+",action="+Paction+",eswn="+PeswnOther+",eswnDiscard="+PeswnDiscarded+",td="+PtdDiscarded.toString());//~1128I~
         return rc;                                                 //~1128I~
     }                                                              //~1128I~
@@ -1024,6 +1045,9 @@ public class RACall                                               //~v@@@R~//~va
 					int han=RAUtils.chkValueWordTile(pos,PeswnOther)/2;//~vairI~
                     if (han==2) //wind and round                   //~vairI~
                     	rc=true;                                   //~vairI~
+                    else                                           //+vayEI~
+		        	if (han>0 && RADS.isDoraOpen(PtdDiscarded))      //+vayEI~
+                    	rc=true;                                   //+vayEI~
                 }                                                  //~vairI~
             }                                                      //~vairI~
         }                                                          //~vairI~

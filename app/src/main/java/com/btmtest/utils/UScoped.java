@@ -1,5 +1,7 @@
-//*CID://+vavAR~:                             update#=  286;       //~vavAR~
+//*CID://+vayTR~:                             update#=  326;       //+vayTR~
 //************************************************************************
+//2025/02/26 vayT for letterbox destry/restart                     //+vayTI~
+//2023/02/28 vay4 API30 deprecated startActivityForResult; use registerForActivityResult//~vay4I~
 //2023/01/30 vavA ACTION_OPEN_DOCUMENT permission request but while Alert open, execute ContentResolver.query. it cause Dump//~vavAI~
 //2023/01/24 vave reject Download in selection at Install. (Download is not allowd for scopred storage for ACTION_OPEN_DOCUMENT_TREE from android11(API30)(Scoped is from android10))//~vaveI~
 //2023/01/23 vava (Bug)Download is not allowd for scopred storage for ACTION_OPEN_DOCUMENT_TREEa from android11(API30)(Scoped is from android10)//~vavaI~
@@ -41,7 +43,8 @@ import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
-import androidx.documentfile.provider.DocumentFile;
+import androidx.documentfile.provider.DocumentFile;                //~vay4M~
+import androidx.activity.result.ActivityResultLauncher;            //~vay4I~
 
 //~1110I~
 @TargetApi(30)
@@ -71,6 +74,8 @@ public class UScoped
     private boolean swUseInternal;                                 //~vae0I~
     private boolean swNoOverride;                                  //~vae0I~
     public  boolean swCouldNotOverride;                            //~vaidI~
+	private ActivityResultLauncher<Intent> activityResultLauncher; //~vay4I~
+//  private boolean swActivityNew=true; //TEST                     //~vay4R~
 //********************************************************
     public UScoped()
     {
@@ -96,6 +101,8 @@ public class UScoped
 	    CR=AG.context.getContentResolver();
         swUseInternal=Utils.getPreference(PREFKEY_SAVE_DIR_INTERNAL,0)!=0;//~vae0I~
     	if (Dump.Y) Dump.println(CN+"init swUseInternal="+swUseInternal);//~vae0I~
+//    if (swActivityNew) //TEST                                    //~vay4R~
+		activityResultLauncher=AG.aMainActivity.startActivityForResult_30_register(AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE);//~vay4R~
 //TODO test start
     	File fd;
     	fd=AG.context.getCacheDir();
@@ -292,6 +299,7 @@ public class UScoped
           	UView.showToastLong(R.string.RequestPickupDocumentSaveDirCanceled);
 	        chkReadPermission();                                   //~vae0I~
         }                                                          //~vae0I~
+        AG.aMainActivity.notifyInstallStatus(AG.aMainActivity.INSTALL_STATUS_ALERT_REPLY);//+vayTI~
     	return 1;
     }
 //********************************************************
@@ -304,11 +312,16 @@ public class UScoped
 				| Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;	//persistent thru device restart
         intent.addFlags(flags);
 //      AG.aMain.startActivityForResult(intent,AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE);//~1ak0R~
-        AG.aMainActivity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE);//~1ak0I~
+//      AG.aMainActivity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE);//~1ak0I~//~vay4R~
+//    if (swActivityNew) //TEST                                    //~vay4R~
+        AG.aMainActivity.startActivityForResult_30_launch(activityResultLauncher,intent);//~vay4R~
+//    else                                                         //~vay4R~
+//      AG.aMainActivity.startActivityForResult(intent,AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE);//~vay4R~
     }
 //********************************************************
 	public void onActivityResult(int Prequest, int Presult, Intent Pdata)
     {
+	    if (Dump.Y) Dump.println(CN+"onActivityResult req="+Prequest+",result="+Presult+",intent="+Pdata);//~vay4I~
         try
         {
 			activityResult(Prequest,Presult,Pdata);
@@ -824,9 +837,11 @@ public class UScoped
         if (strUri.compareTo("")==0)	//1st time
         {
 			requestDocumentTree(true/*swInstall*/);
+            AG.aMainActivity.notifyInstallStatus(AG.aMainActivity.INSTALL_STATUS_ALERT_ISSUED);//+vayTI~
         }
         else
         {
+	        AG.aMainActivity.notifyInstallStatus(AG.aMainActivity.INSTALL_STATUS_ALREADY_DONE);//+vayTI~
           boolean swAlert=                                         //~vavAI~
         	initComp(strUri);
 		    if (Dump.Y) Dump.println(CN+"chkDocumentSaveDir uriSaveDir="+uriSaveDir+",swAlert="+swAlert);//~vavAR~
@@ -837,7 +852,7 @@ public class UScoped
           }                                                        //~vavAI~
           else                                                     //~vavAI~
           {                                                        //~vavAI~
-//          getTreeMember(uriSaveDir,FILTER_HISTORY);	//using query, drop because no use result//+vavAR~
+//          getTreeMember(uriSaveDir,FILTER_HISTORY);	//using query, drop because no use result//~vavAR~
 			treeOpened(uriSaveDir);
             rc=true;
           }                                                        //~vavAI~

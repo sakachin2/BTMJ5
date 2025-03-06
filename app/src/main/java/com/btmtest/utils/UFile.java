@@ -1,5 +1,6 @@
-//*CID://+van1R~:                             update#=  125;       //~van1R~
+//*CID://+vayWR~:                             update#=  127;       //+vayWR~
 //************************************************************************//~v102I~
+//2025/02/28 vayW drop redundant toast                             //+vayWI~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaie Scoped device->sdcard device;History rule send fails.//~vaieI~
 //2021/09/19 vae8 keep sharedPreference to external storage with PrefSetting item.//~vae8I~
@@ -1271,7 +1272,7 @@ public class UFile                                                 //~v@@@R~
 //**********************************************************************//~vae0I~
     public static boolean chkExternalStoragePermissionOnScoped()      //~vae0I~//~vae7R~
     {                                                              //~vae0I~
-        if (Dump.Y) Dump.println("UFile.chkExternalStoragePermissionOnScoped swScoped="+AG.swScoped);//~vae0I~//+van1R~
+        if (Dump.Y) Dump.println("UFile.chkExternalStoragePermissionOnScoped swScoped="+AG.swScoped);//~vae0I~//~van1R~
         boolean rc=UView.isPermissionGrantedExternalStorageRead(); //~vae0I~
         AG.swGrantedExternalStorageRead=rc;                        //~vae0I~
         if (!rc)                                                   //~vae0I~
@@ -1379,11 +1380,11 @@ public class UFile                                                 //~v@@@R~
         if (!PswGranted)                                           //~1ak2I~
         {                                                          //~1ak2I~
 //        	UView.showToastLong(R.string.ExternalStorageForSDRequiresGranted);//~1ak2I~//~vae0R~
-          	UView.showToastLong(R.string.ExternalStorageReadRequiresGranted);//~vae0I~
+//         	UView.showToastLong(R.string.ExternalStorageReadRequiresGranted);//~vae0I~//+vayWR~
             return;                                                //~1ak2I~
         }                                                          //~1ak2I~
 //  	UView.showToast(R.string.ExternalStorageForSDGranted);     //~1ak2I~//~vae0R~
-    	UView.showToast(R.string.ExternalStorageReadGranted);      //~vae0I~
+//    	UView.showToast(R.string.ExternalStorageReadGranted);      //~vae0I~//+vayWR~
 //  	chkWritableSD();                                           //~1ak2I~//~vae0R~
         AG.swGrantedExternalStorageRead=true;                      //~vae0I~
     }                                                              //~1ak2I~

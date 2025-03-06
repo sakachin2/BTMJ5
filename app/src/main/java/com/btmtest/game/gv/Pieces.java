@@ -1,5 +1,6 @@
-//*CID://+vamdR~: update#= 397;                                    //~vamdR~
+//*CID://+vay7R~: update#= 400;                                    //~vay7R~
 //**********************************************************************//~v101I~
+//2025/01/31 vay7 when portrate, stock height is too small.        //~vay7I~
 //2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
 //**********************************************************************//~vaedI~
@@ -25,6 +26,7 @@ import android.graphics.Point;
 
 public class Pieces                                                //~v@@@R~
 {                                                                  //~0914I~
+    private static final String CN="Pieces:";                      //~vay7R~
     public static final double PIECE_RATE_RIVER=0.8;               //~v@@@R~
 //    public static int    PIECE_SPACING=1;   //pieces between holding//~v@@@R~
 //    public static int    PIECE_SPACING_TAKEN=5;  //piece now gotten//~v@@@R~
@@ -357,13 +359,13 @@ public class Pieces                                                //~v@@@R~
         pieceWW=ww;                                                //~v@@@I~
         pieceHH=hh;                                                //~v@@@I~
         int pww=table.getEarthPieceWidth(ww,hh); //HandPieceWidth  //~v@@@R~
-        if (Dump.Y) Dump.println("Pieces.getEarthScale scr w="+WW+",h="+HH+",bmp stand w="+ww+",h="+hh);//~v@@@R~//+vamdR~
+        if (Dump.Y) Dump.println("Pieces.getEarthScale scr w="+WW+",h="+HH+",bmp stand w="+ww+",h="+hh);//~v@@@R~//~vamdR~
         double rate=(double)pww/ww;                                //~v@@@R~
         if (Dump.Y) Dump.println("Pieces.getEarthScale rate="+rate);//~v@@@R~
         earthPieceScale=rate;                                      //~v@@@R~
         earthPieceW=pww;                                           //~v@@@I~
         earthPieceH=(int)(hh*earthPieceScale);                            //~v@@@I~
-        if (Dump.Y) Dump.println("Pieces.getEarthScale earthPiece scaled w="+earthPieceW+",h="+earthPieceH);//~v@@@I~//+vamdR~
+        if (Dump.Y) Dump.println("Pieces.getEarthScale earthPiece scaled w="+earthPieceW+",h="+earthPieceH);//~v@@@I~//~vamdR~
 		loadPiecesStarter();                                       //~v@@@I~
 		loadPiecesCoin();                                          //~v@@@I~
 		loadPiecesDice();                                          //~v@@@I~
@@ -377,7 +379,7 @@ public class Pieces                                                //~v@@@R~
     	Point p=table.getRiverPieceWidth(ww,hh);    //on earthPiece scaled//~v@@@R~
         int pww=p.x;                                               //~v@@@I~
     	double rate=(double)pww/ww;                                //~v@@@R~
-        if (Dump.Y) Dump.println("Pieces.loadPieceImage.getRiverScale rate="+rate+",ww="+ww+",hh="+hh);//~v@@@R~//+vamdR~
+        if (Dump.Y) Dump.println("Pieces.loadPieceImage.getRiverScale rate="+rate+",ww="+ww+",hh="+hh);//~v@@@R~//~vamdR~
     	riverPieceScale=rate;                                      //~v@@@I~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~
@@ -387,7 +389,7 @@ public class Pieces                                                //~v@@@R~
         int hh=(int)((double)ww*earthPieceH/earthPieceW);                 //~v@@@R~
         StockPieceW=ww;                                            //~v@@@R~
         StockPieceH=hh;                                            //~v@@@R~
-        if (Dump.Y) Dump.println("Pieces.loadPieceImage.getStockScale ww="+ww+",hh="+hh);//~v@@@R~//+vamdR~
+        if (Dump.Y) Dump.println("Pieces.loadPieceImage.getStockScale StockPieceW="+ww+",SstockPieceH="+hh);//~v@@@R~//~vamdR~//+vay7R~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~
     public static void recycleAll()                                //~v@@@R~
@@ -598,6 +600,7 @@ public class Pieces                                                //~v@@@R~
 	//***************************************************************//~v@@@I~
 	private void loadPiecesStock()                                 //~v@@@I~
     {                                                              //~v@@@I~
+        if (Dump.Y) Dump.println(CN+"loadPiecesStock StockPieceW="+StockPieceW+",StockPieceH="+StockPieceH);//+vay7R~
         recyclePiecesStock();                                      //~v@@@I~
         int sz=resStock.length;                 //2                //~v@@@R~
         Bitmap[][] bmouts=new Bitmap[sz][];                        //~v@@@I~
@@ -644,7 +647,7 @@ public class Pieces                                                //~v@@@R~
         stockPieceH=AG.bitmapStock[PIECE_STOCK_STOCK][0].getHeight();//~v@@@I~
         stockEarthPieceW=AG.bitmapStock[PIECE_STOCK_EARTH][0].getWidth();//~v@@@I~
         stockEarthPieceH=AG.bitmapStock[PIECE_STOCK_EARTH][0].getHeight();//~v@@@I~
-        if (Dump.Y) Dump.println("Pieces.loadPiecesStock stock w="+stockPieceW+",h="+stockPieceH+",earth stock w="+stockEarthPieceW+",h="+stockEarthPieceH);//~v@@@I~
+        if (Dump.Y) Dump.println("Pieces.loadPiecesStock stockPieceW="+stockPieceW+",stockPieceH="+stockPieceH+",earth stock w="+stockEarthPieceW+",h="+stockEarthPieceH);//~v@@@I~//+vay7R~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~
 	private static void recyclePiecesStock()                       //~v@@@R~
@@ -982,6 +985,7 @@ public class Pieces                                                //~v@@@R~
     public static Bitmap loadPieceImage(int Presid,int Pww,int Phh)//~v@@@R~
     {                                                              //~v@@@I~
         Bitmap bm=loadPieceImage(Presid);                          //~v@@@I~
+        if (Dump.Y) Dump.println(CN+"loadPieceImage resid="+Integer.toHexString(Presid)+",Pww="+Pww+",Phh="+Phh);//~vay7I~
         int ww=bm.getWidth();                                      //~v@@@I~
         int hh=bm.getHeight();                                     //~v@@@I~
         int phh=Phh;                                               //~v@@@I~
@@ -1012,20 +1016,20 @@ public class Pieces                                                //~v@@@R~
 	//***************************************************************//~v@@@I~
     public static Bitmap scaleImage(Bitmap Pbitmap,int Pw,int Ph)  //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scale req w="+Pw+",h="+Ph);//~v@@@I~//+vamdR~
+        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scale req w="+Pw+",h="+Ph);//~v@@@I~//~vamdR~
         Bitmap bm=Bitmap.createScaledBitmap(Pbitmap,Pw,Ph,true/*filter*/);//~v@@@I~
-        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scaled w="+bm.getWidth()+",h="+bm.getHeight()+",bm="+bm.toString());//~v@@@R~//+vamdR~
+        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scaled w="+bm.getWidth()+",h="+bm.getHeight()+",bm="+bm.toString());//~v@@@R~//~vamdR~
         return bm;                                                        //~v@@@I~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~
     public static Bitmap scaleImage(Bitmap Pbitmap,double Pscale)  //~v@@@I~
     {                                                              //~v@@@I~
-        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scaled by scale="+Pscale+",old w="+Pbitmap.getWidth()+",h="+Pbitmap.getHeight());//~v@@@R~//+vamdR~
+        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scaled by scale="+Pscale+",old w="+Pbitmap.getWidth()+",h="+Pbitmap.getHeight());//~v@@@R~//~vamdR~
         int ww=(int)(Pbitmap.getWidth()*Pscale);                       //~v@@@I~
         int hh=(int)(Pbitmap.getHeight()*Pscale);                      //~v@@@I~
         if (Dump.Y) Dump.println("loadPieceImage scaled ww="+ww+",hh="+hh);//~v@@@I~
         Bitmap bm=Bitmap.createScaledBitmap(Pbitmap,ww,hh,true/*filter*/);//~v@@@I~
-        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scaled by scale="+Pscale+",w="+bm.getWidth()+",h="+bm.getHeight());//~v@@@R~//+vamdR~
+        if (Dump.Y) Dump.println("loadPieceImage.scaleImage scaled by scale="+Pscale+",w="+bm.getWidth()+",h="+bm.getHeight());//~v@@@R~//~vamdR~
         return bm;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//***************************************************************//~v@@@I~

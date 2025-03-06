@@ -1,6 +1,12 @@
-//*CID://+vam6R~: update#= 362;                                    //+vam6R~
+//*CID://+vayMR~: update#= 374;                                    //+vayMR~
 //**********************************************************************
-//2022/03/28 vam6 android12(api31) Display.getRealSize, getRealMetrics//+vam6I~
+//2025/02/24 vayM android14 tablet(google pixel emulator), screen is change to LetterBox if start by landscape.//+vayMI~
+//                Web says. from android12(Api31). optionally(by device maker) change to letterBox by orientation//+vayMI~
+//2025/02/15 vayn there is more bit difference over vaym. use real framlayout size(getHeight())//~vaynI~
+//2025/02/15 vaym DecorView excludes status/title/navigation. Use this as scrHeight.(at g10:api30, there is difference with realHeight-bottom of inset:systemGesture)//~vaymI~
+//2025/02/13 vayi foldable open portrate, wide space between bottom button and hand.//~vayiI~
+//                "button height is by layaout and dimension", now adjust by screen size//~vayiI~
+//2022/03/28 vam6 android12(api31) Display.getRealSize, getRealMetrics//~vam6I~
 //2021/09/27 vaef gesture navigation mode from android11           //~vaefI~
 //**********************************************************************//~vaefI~
 //v@21  imageview                                                  //~v@21I~
@@ -76,11 +82,16 @@ public class GameView extends AppCompatImageView                   //~v@21R~
 //          setZOrderOnTop(true);                                  //~v@@@R~
 //          UView.getScreenSize();                                 //~v@@@R~
             WW = AG.scrWidthReal;                                  //~v@@@R~
-   			if (Dump.Y) Dump.println("GameView.init osVersion="+ Build.VERSION.SDK_INT+",swPortrait="+AG.aGC.swPortrait+",scrWidthReal="+AG.scrWidthReal+",scrNavigationbarRightWidth="+AG.scrNavigationbarRightWidth+",scrWidth="+AG.scrWidth);//~v@21I~//~vaefR~
+   			if (Dump.Y) Dump.println("GameView.init osVersion="+ Build.VERSION.SDK_INT+",swPortrait="+AG.aGC.swPortrait+",scrWidthReal="+AG.scrWidthReal+",scrNavigationbarRightWidth="+AG.scrNavigationbarRightWidth);//~vayiR~
+   			if (Dump.Y) Dump.println("GameView.init gesturemode="+AG.swNavigationbarGestureMode+",AG.scrWidth="+AG.scrWidth+",AG.scrHeight="+AG.scrHeight+",frameHeight="+AG.aGC.frameHeight);//~vayiI~
             if (!AG.aGC.swPortrait)	//landscape                    //~v@@@I~
             {                                                      //~v@@@I~
-	            HH = AG.scrHeightReal;                             //~v@@@R~
-	    	  if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~
+//            if (!AG.swNavigationbarGestureMode)	//when gesture mode navigation bar//~vayiR~//~vaymR~
+//	            HH = AG.aGC.frameHeight;  //for land,excluding navigation bar//~vayiR~//~vaymR~
+//            else                                                 //~vayiI~//~vaymR~
+                HH = AG.scrHeightReal;                             //~v@@@R~//~vayiR~
+//	    	  if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefR~//+vayMR~
+  	    	  if (AG.osVersion>=AG.APIVER_EDGEMODE)   //for gesture navigationbar//+vayMR~
               {                                                    //~vaefR~
 //              	HH-=AG.scrNavigationbarBottomHeightA11;        //~vaefR~
 //	                WW-=AG.scrNavigationbarRightWidthA11+AG.scrNavigationbarLeftWidthA11;	//some device,navigationbar is on the right when landscape and could not hide//~vaefR~
@@ -90,19 +101,28 @@ public class GameView extends AppCompatImageView                   //~v@21R~
   	                WW-=AG.aGC.marginLR;                           //~vaefI~
 		   			if (Dump.Y) Dump.println("GameView.init landscape A11 WW="+WW+",HH="+HH+",scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeightA11+",leftWidthA11="+AG.scrNavigationbarLeftWidthA11+",rightWidthA11="+AG.scrNavigationbarRightWidthA11);//~vaefR~
               }                                                    //~vaefR~
-              else                                                 //~vaefI~
+              else //api<30                                           //~vaefI~
                 WW-=AG.scrNavigationbarRightWidth;	//some device,navigationbar is on the right when landscape and could not hide//~v@21R~
 //              swHideNavigationbar=true;                          //~v@@@I~//~v@21R~
             }                                                      //~v@@@I~
             else                                                   //~v@@@I~
             {                                                      //~v@@@I~
-	            HH = AG.scrHeight;                                 //~v@@@I~
-	    		if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~
+//            if (AG.swNavigationbarGestureMode)	//when gesture mode navigation bar//~vayiI~//~vaymR~
+//              HH = AG.scrHeightReal;                             //~vayiI~//~vaymR~
+//            else                                                 //~vayiI~//~vaymR~
+              {                                                    //~vayiI~
+// 	            HH = AG.scrHeight;                                 //~v@@@I~//~vayiR~//~vaynR~
+	            HH = AG.aGC.frameHeight;  //by frameLayout.getHeight()//~vaynI~
+               if (false)                                          //~vayiI~
+//      		if (Build.VERSION.SDK_INT>=30)   //for gesture navigationbar//~vaefI~//+vayMR~
+        		if (AG.osVersion>=AG.APIVER_EDGEMODE)   //for gesture navigationbar//+vayMR~
             	{                                                  //~vaefI~
                 	HH-=AG.scrNavigationbarBottomHeightA11;       //~vaefI~
-		   			if (Dump.Y) Dump.println("GameView.init portrait HH="+HH+",scrNavigationbarBottomHeight="+AG.scrNavigationbarBottomHeightA11);//~vaefR~
+		   			if (Dump.Y) Dump.println("GameView.init portrait HH="+HH+",scrNavigationbarBottomHeightA11="+AG.scrNavigationbarBottomHeightA11);//~vaefR~//~vam6R~
             	}                                                  //~vaefI~
+              }                                                    //~vayiI~
             }                                                      //~v@@@I~
+		   	if (Dump.Y) Dump.println("GameView.init WW="+WW+",HH="+HH);//~vayiI~
 //          UView.fixOrientation(true);
             table=new MJTable(WW,HH);                                //~v@@@R~
 //            holder=getHolder();                                  //~v@21R~
@@ -238,14 +258,14 @@ public class GameView extends AppCompatImageView                   //~v@21R~
     public void onDraw(Canvas Pcanvas/*android.graphics.Canvas*/)                           //~v@@@R~//~v@21R~
     {                                                            //~v@@@R~//~v@21R~
         if (Dump.Y) Dump.println("GameView.onDraw HWaccelerate="+Pcanvas.isHardwareAccelerated());             //~v@@@R~//~v@21R~
-      try                                                          //+vam6I~
-      {                                                            //+vam6I~
+      try                                                          //~vam6I~
+      {                                                            //~vam6I~
         Graphics.onDraw(Pcanvas);                                  //~v@21I~
-      }                                                            //+vam6I~
-      catch(Exception e)                                           //+vam6I~
-      {                                                            //+vam6I~
-    	Dump.println(e,"GameView.onDraw");                         //+vam6I~
-      }                                                            //+vam6I~
+      }                                                            //~vam6I~
+      catch(Exception e)                                           //~vam6I~
+      {                                                            //~vam6I~
+    	Dump.println(e,"GameView.onDraw");                         //~vam6I~
+      }                                                            //~vam6I~
     }                                                            //~v@@@R~//~v@21R~
     //*************************                                    //~v@@@I~
     @Override                                                      //~v@@@I~

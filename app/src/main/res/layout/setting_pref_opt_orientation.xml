@@ -4,6 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 >
+<!-- ***************************************************************** -->
+<!--//2025/02/09 vayf rotate option: drop opption "depend to orientation". It is onle option to foladable, else set sensor-portrait at start.-->
+<!-- ***************************************************************** -->
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_height="wrap_content"
@@ -14,6 +18,17 @@
             android:layout_width="fill_parent"
             android:text="@string/Label_Orientation"
                         android:textSize="@dimen/textview_middle"
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+    > <!--orientation-->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/Desc_Orientation"
         />
     </LinearLayout>
     <LinearLayout
@@ -57,6 +72,13 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
             />
+         <!--vayf
+            <RadioButton
+                android:id="@+id/rbOriDevice"
+                android:text="@string/Label_OrientationDevice"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+            />      vayf-->                             <!--vay1-->
         </RadioGroup>
     </LinearLayout>
   <!--

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MainLockButtons"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+		            android:background="#00000000"
+>
+	<LinearLayout 
+                 		android:layout_gravity="top"
+				    android:layout_width="fill_parent"
+    				android:layout_height="wrap_content"
+                        android:gravity="right"
+                 		android:layout_marginTop="60dp"
+                 		android:layout_marginRight="10dp"
+    >
+            <Button
+                        android:id="@+id/OrientationLock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                 		android:textAllCaps="false"
+                 		android:text="@string/Label_rotation_lock"
+                    android:background="@drawable/btn_orientation_lock"
+	                    android:textSize="20sp"
+            />
+            <Button
+                        android:id="@+id/OrientationUnLock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                 		android:textAllCaps="false"
+                 		android:text="@string/Label_rotation_unlock"
+                    android:background="@drawable/btn_orientation_unlock"
+	                    android:textSize="20sp"
+            />
+	</LinearLayout> 
+</LinearLayout>

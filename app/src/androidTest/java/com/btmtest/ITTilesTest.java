@@ -1,4 +1,4 @@
-//*CID://+vah0R~: update#= 899;                                    //~vah0R~
+//*CID://+vah0R~: update#= 904;                                    //~vah0R~
 //**********************************************************************//~v101I~
 //2021/11/19 vah1 complete vagv(delete from main/java)             //~vah0I~
 //2021/11/15 vagv move TilesTest to debug dir                      //~vaauI~
@@ -1278,7 +1278,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
         	itsDealTake=new int[]{ 1,13,28,30};                    //~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
-        	itsDealTake=new int[]{ 1,12,27,26};  //allinhand toitoi//+vah0R~
+        	itsDealTake=new int[]{ 1,12,27,26};  //allinhand toitoi//~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
         	itsDealTake=new int[]{17, 9,27,26};                    //~vah0I~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
@@ -1912,7 +1912,7 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
         else                                                       //~vaauI~
         if (Pcase==1007) //multiron                                //~vah0I~
         {                                                          //~vah0I~
-          if (false)                                               //~vah0I~
+          if (true)                                                //+vah0R~
           {          //3ron                                        //~vah0I~
         	itsDeal=new int[][]{                                   //~vah0I~
             						{ 0, 1, 2,  3, 4, 5,  6, 7, 8,  9,10, 11},//~vah0I~
@@ -2617,17 +2617,17 @@ public class ITTilesTest extends TilesTest                         //~vaauR~
           {                                                        //~vah0I~
             //7pair under other select non value word              //~vah0I~
         	itsDeal=new int[][]{                                   //~vah0I~
-            						{ 1, 1, 3, 11,11,17, 17,20,23, 28,28, 30},//~vah0I~
-            						{10,10, 6,  6, 8, 8, 15,15,32, 28,27, 27},//~vah0I~
+            						{ 1, 1, 3, 11,11,17, 17,20,23, 28,27, 27},//~vah0R~
+            						{10,10, 5,  6, 8, 8, 15,15,32, 28,27, 28},//@@@@//~vah0R~
             						{ 9,12,15, 16,19,21,  0, 4,22,  3,23,24 },//~vah0I~
-            						{10,13,16,  2, 2, 3, 20,23,30,  6, 6, 27},//~vah0I~
+            						{10,13,16,  2, 2, 3, 20,23,30,  6, 6, 29},//~vah0R~
             					};                                 //~vah0I~
 		    outctr=setTestDeal12(out,outctr,al,itsDeal);           //~vah0I~
         	itsDealTake=new int[]{ 4,33,24,25};                    //~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
         	itsDealTake=new int[]{ 9,31,12,13};                    //~vah0I~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
-        	itsDealTake=new int[]{ 7,28,16,10};                    //~vah0I~
+        	itsDealTake=new int[]{ 8,28,16,10};             //@@@@ //~vah0R~
     		outctr=setTestTake(out,outctr,al,itsDealTake);         //~vah0I~
           }                                                        //~vah0I~
         }                                                          //~vaauI~

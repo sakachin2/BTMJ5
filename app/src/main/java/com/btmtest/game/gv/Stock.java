@@ -1,6 +1,6 @@
-//*CID://+vamtR~: update#= 581;                                    //+vamtR~
+//*CID://+vamtR~: update#= 582;                                    //~vamtR~
 //**********************************************************************//~v101I~
-//2022/04/20 vamt hidden dora was cut at clearRiver when EndOfHand is fixed at Final Round//+vamtI~
+//2022/04/20 vamt hidden dora was cut at clearRiver when EndOfHand is fixed at Final Round//~vamtI~
 //2022/04/02 vamd Animation. at first show Dora                    //~vamdI~
 //2022/03/24 vam0 show Wareme sign                                 //~vam0I~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
@@ -111,6 +111,7 @@ public class Stock                                                 //~v@@@R~
             SHIFT_BACK=SHIFT_BACK_STD;                             //~vaedI~
             MARGIN_BG=MARGIN_BG_STD;                               //~vaedI~
         }                                                          //~vaedI~
+        if (Dump.Y) Dump.println("Stock.constructor SHIFT_BACK="+SHIFT_BACK+",MARGIN_BG="+MARGIN_BG);//+vamtI~
     }
 	//*********************************************************    //~v@@@I~
 	//*from GCanvas at init                                        //~v@@@I~
@@ -145,29 +146,29 @@ public class Stock                                                 //~v@@@R~
     {                                                              //~9503I~
         if (Dump.Y) Dump.println("Stock.newGame ctrDoraComplete="+ctrDoraComplete);//~9503I~
         drawInitialStock();                                        //~9529I~
-//        for (int ii=0;ii<ctrDoraComplete;ii++)                         //~9503I~//+vamtR~
-//        {                                                          //~9503I~//+vamtR~
-//            Rect r=rectCompleteDora[ii];                           //~9503I~//+vamtR~
-//            Graphics.drawRect(r,COLOR_BG_TABLE);                   //~9503I~//+vamtR~
-//        }                                                          //~9503I~//+vamtR~
-//        ctrDoraComplete=0;                                         //~9503I~//+vamtR~
-//        ctrKanDrawn=0;                                             //~0409I~//+vamtR~
-		clearHiddenDora();                                         //+vamtI~
+//        for (int ii=0;ii<ctrDoraComplete;ii++)                         //~9503I~//~vamtR~
+//        {                                                          //~9503I~//~vamtR~
+//            Rect r=rectCompleteDora[ii];                           //~9503I~//~vamtR~
+//            Graphics.drawRect(r,COLOR_BG_TABLE);                   //~9503I~//~vamtR~
+//        }                                                          //~9503I~//~vamtR~
+//        ctrDoraComplete=0;                                         //~9503I~//~vamtR~
+//        ctrKanDrawn=0;                                             //~0409I~//~vamtR~
+		clearHiddenDora();                                         //~vamtI~
     }                                                              //~9503I~
-	//*********************************************************    //+vamtI~
-	//*from NamePlate.showScoreClearRiver                          //+vamtI~
-	//*********************************************************    //+vamtI~
-	public void clearHiddenDora()                                  //+vamtI~
-    {                                                              //+vamtI~
-        if (Dump.Y) Dump.println("Stock.clearHiddenDora ctrDoraComplete="+ctrDoraComplete);//+vamtI~
-    	for (int ii=0;ii<ctrDoraComplete;ii++)                     //+vamtI~
-        {                                                          //+vamtI~
-	    	Rect r=rectCompleteDora[ii];                           //+vamtI~
-        	Graphics.drawRect(r,COLOR_BG_TABLE);                   //+vamtI~
-        }                                                          //+vamtI~
-	    ctrDoraComplete=0;                                         //+vamtI~
-    	ctrKanDrawn=0;                                             //+vamtI~
-    }                                                              //+vamtI~
+	//*********************************************************    //~vamtI~
+	//*from NamePlate.showScoreClearRiver                          //~vamtI~
+	//*********************************************************    //~vamtI~
+	public void clearHiddenDora()                                  //~vamtI~
+    {                                                              //~vamtI~
+        if (Dump.Y) Dump.println("Stock.clearHiddenDora ctrDoraComplete="+ctrDoraComplete);//~vamtI~
+    	for (int ii=0;ii<ctrDoraComplete;ii++)                     //~vamtI~
+        {                                                          //~vamtI~
+	    	Rect r=rectCompleteDora[ii];                           //~vamtI~
+        	Graphics.drawRect(r,COLOR_BG_TABLE);                   //~vamtI~
+        }                                                          //~vamtI~
+	    ctrDoraComplete=0;                                         //~vamtI~
+    	ctrKanDrawn=0;                                             //~vamtI~
+    }                                                              //~vamtI~
 	//*********************************************************    //~v@@@M~
 	//*set background rect shifted                                 //~v@@@R~
 	//*********************************************************    //~v@@@M~

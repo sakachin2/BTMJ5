@@ -1,6 +1,34 @@
-//*CID://+vavzR~:                             update#= 452;        //+vavzR~
+//*CID://+vayZR~:                             update#= 695;        //~vayXR~//+vayZR~
 //**********************************************************************//~@@@@I~
-//2023/01/30 vavz initApp failed at re-install by parmission       //+vavzI~
+//2025/03/01 vayZ should use not statusbar height but cutout       //+vayZI~
+//2025/02/28 vayX cient with allowTopLandscape                     //~vayXI~
+//2025/02/27 vayV add rotation lock/unlock button on top panel     //~vayVR~
+//2025/02/26 vayU try to allow rotation in game. abandon because pixcell address should be chanfed.(not resized automatically)//~vayUI~
+//2025/02/26 vayT for letterbox destry/restart                     //~vayTI~
+//2025/02/26 vayS api30;3 button navigationbar disappear when port game returned//~vaySI~
+//2025/02/25 vayQ hide navigationbar inGame also for api29         //~vayQR~
+//2025/02/25 vayP LetterBox mode is from android12(api31), it depends device type.//~vayPI~
+//                The condition is orientation fixed or fixed aspect or not resizable(resizeableActivity=false)//~vayPI~
+//2025/02/25 vayN try edgemode from api30, and set base to scrWidth/scrHeight=real//~vayNI~
+//2025/02/24 vayM android14 tablet(google pixel emulator), screen is change to LetterBox if start by landscape.//~vayMI~
+//                Web says. from android12(Api31). optionally(by device maker) change to letterBox by orientation//~vayMI~
+//2025/02/22 vayK api34 landRight spaceRight is too large. use inset not systemGesture but syste.//~vayKI~
+//2025/02/21 vayJ Foldable device; Top 3button Nabigationbar is hidden by navigationbar at returned by endgame//~vayJI~
+//2025/02/21 vayH api34 is also edgeToEdgeMode by sdk35            //~vayHI~
+//2025/02/17 vayu ww and hh is not swappable for port and land     //~vayuI~
+//2025/02/16 vayr (Bug)foldable device; repeated rotation shrinks top image//~vayrI~
+//2025/02/16 vayq open foldable+3button hide button of top         //~vayqI~
+//2025/02/15 vayn there is more bit difference over vaym. use real framlayout size(getHeight())//~vaynI~
+//2025/02/10 vayh when retured from landscape, top latout did not back to portrait.//~vayhI~
+//2025/02/06 vayc back to manifest:sensorport. on Adroid10(api29) and also on emulator with android10, display no button at startup when start from landscape.//~vaycI~
+//               DragonTouch(A10) is missing option of gesture navigation, but when tryed it on emulator, half of button array was overrided by narrow navigation bar.//~vaycI~
+//               Nevertheless on foldable device emulator cause destroy when left-right open(naturally landscape).//~vaycI~
+//               As a result, select NOT SENSOR_PORT               //~vaycI~
+//2023/02/31 vay6 foldable device,  open left-right is landscape. So compatibility mode(narrow portrait) if orientation is set to portrait.//~vay6I~
+//2023/02/29 vay5 API33 deprecated onBackPressed, use getOnBackPressedDispatcher//~vay5I~
+//2023/02/28 vay4 API30 deprecated startActivityForResult; use registerForActivityResult//~vay4I~
+//2023/02/28 vay1 allow rotation of top view before startGame, then lock and view game panel//~vay1I~
+//2023/01/30 vavz initApp failed at re-install by parmission       //~vavzI~
 //2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
 //2023/01/23 vava at onPause aCSI is null if Scoped folder selectionfailed by permission err of ACTION_OPEN_DOCUMENT for Download folder.//~vavaI~
 //2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
@@ -54,17 +82,23 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.graphics.Rect;                                      //~vay1I~
 import android.os.Build;
+
+import androidx.activity.OnBackPressedCallback;                    //~vay5R~
+import androidx.activity.OnBackPressedDispatcher;                  //~vay5R~
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowInsets;                                  //~1ak4R~
 import android.view.WindowInsetsController;                        //~1ak4R~
 import android.view.WindowManager;
 import android.view.WindowMetrics;
+import android.view.ViewGroup;                                     //~vay6I~
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -108,8 +142,16 @@ import com.btmtest.utils.sound.Sound;
 import com.btmtest.wifi.IPMulti;                                   //~9723I~
 import com.btmtest.wifi.CSI;                                       //~9B05I~
 import com.btmtest.wifi.WDI;
+import androidx.core.util.Consumer;                                //~vay1I~
+import androidx.window.layout.DisplayFeature;                      //~vay1R~
+import androidx.window.layout.FoldingFeature;                      //~vay1R~
+import androidx.window.layout.WindowInfoTracker;                   //~vay1R~
+import androidx.window.layout.WindowLayoutInfo;                    //~vay1R~
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;//~vay1M~
 
 import java.util.Arrays;
+import java.util.List;                                             //~vay1I~
+import java.util.concurrent.Executor;                              //~vay1I~
 
 import static android.view.WindowInsetsController.*;
 import static com.btmtest.AG.*;
@@ -118,12 +160,26 @@ import static com.btmtest.game.GConst.*;                          //~8B22I~
 import static com.btmtest.StaticVars.AG;                           //~@@@@M~
 import static com.btmtest.dialog.PrefSetting.*;
 import static com.btmtest.utils.Alert.*;
+//@@@@  test                                                       //~vay1R~
+import androidx.activity.result.ActivityResultLauncher;            //~vay1I~
+import androidx.activity.result.ActivityResult;                    //~vay1I~
+import androidx.activity.result.ActivityResultCallback;            //~vay1I~
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;//~vay1I~
+import android.app.Activity;                                       //~vay1I~
+import android.widget.LinearLayout;
 
+import androidx.activity.result.contract.ActivityResultContract;   //~vay1I~
+                                                                   //~vay1I~
 public class MainActivity extends AppCompatActivity
 		implements URunnable.URunnableI, UButton.UButtonI//~v@@@R~ //~@@@@I~
                ,Alert.AlertI                                        //~9611I~//~0119I~
 {                                                                  //~8B05I~
 	private static final String CN="MainActivity.";                //~vaf0I~
+//  private static final String PREFKEY_ALLOWTOPLAND="AllowTopLand";//~vayMI~//~vayTR~
+    private static final String PREFKEY_NOLETTERBOX="NoLetterBox"; //~vayTR~
+    private static final int    VALUE_NOLETTERBOX_CHECKING=0;      //~vayTR~
+    private static final int    VALUE_NOLETTERBOX_FIXORIENTATION_YES=1;//~vayTI~
+    private static final int    VALUE_NOLETTERBOX_FIXORIENTATION_NO=2;//~vayTI~
 //    private static final String BUNDLE_AG="AG";                  //~vaf0R~
     private static final int HELP_TITLEID=R.string.Title_Help_Main;//~8C29I~
     private static final String HELPFILE="Main";              //~8C29R~//~9C13R~
@@ -140,19 +196,22 @@ public class MainActivity extends AppCompatActivity
     public static final int PERMISSION_BLUETOOTH=4; //SCAN and CONNECT//~vam8I~
                                                                    //~8C29I~
     public static final int TOP_ORIENTATION=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;//~va9fR~
+    private static final int TOP_ORIENTATION_FOLDING_LAND=ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;//~vay6I~
     private static String PLAYLIST_ID;                       //~vaikR~
                                                                    //~va9fI~
 //  private Button btnSettings,btnConnect,btnHelp,btnStartGame;    //~8C29R~//~0119R~
     private Button btnHistory;                                     //~9613I~
     private View  btnsMain,titleMain;                              //~8C29R~
     private FrameLayout frameLayout;                                      //~8C29I~
+    public LinearLayout frameLayoutParent;                         //~vayhI~
 //  private static Bitmap bmpTop;                                  //~8C30I~//~9105R~
     private int chngOrientation;                           //~9101I~
     private boolean swEndGame;                                     //~9102I~
     private	ImageView imageView;                                   //~9103I~
     private	MainView mainView;               //~9103I~             //~9620R~
-    public  Point frameLayoutSizePortrait=null;                            //~9104I~//~9411R~
-    public  Point frameLayoutSizeLandscape=null;                   //~9411R~
+//  public  Point frameLayoutSizePortrait=null;                            //~9104I~//~9411R~//~vayuR~
+//  public  Point frameLayoutSizeLandscape=null;                   //~9411R~//~vayuR~
+//  public  Point frameLayoutSizeStartGame=null;                   //~vay1I~//~vayuR~
 //  private MsgIOReceiver msgReceiver;                             //~@@@@I~//~9A23R~
 //  private int reverseOrientation=-1;                             //~9610R~
     private boolean swPaused,swIOErr,swStopped;                    //~9A22R~
@@ -160,7 +219,22 @@ public class MainActivity extends AppCompatActivity
 //    private OrientationEventListener listenerOrientationChanged; //TODO test//~va9fR~
 //  private int orientationBeforeGame;	//0/1:land/port, 8/9:reverse, 6/7:sensor//~va9fR~
     private boolean swServerStartGame=true;                        //~vajhI~
-    private boolean swCreated;                                     //+vavzI~
+    private boolean swCreated;                                     //~vavzI~
+    private final LayoutStateChangeCallback layoutStateChangeCallback=new LayoutStateChangeCallback();//~vay1I~
+    private WindowInfoTrackerCallbackAdapter windowInfoTracker;    //~vay1I~
+    public boolean swAllowTopLandscape=false; //tru if folding feature                      //~vay1R~
+//  private boolean swManifestPort=false;	    //manifest specified sensor_portrait//~vay5I~//~vaycR~
+    private boolean swManifestPort=false;//manifest specified sensor_portrait//~vaycR~
+    private ViewTreeObserver.OnGlobalLayoutListener listenerGL;    //~vayrI~
+    private boolean	swHideInGame=false;                             //~vayNI~//~vayQR~
+    private boolean swChkLetterbox=false;                          //~vayTI~
+    private boolean swNoChkLetterbox=false;  //allow rotate ingame                      //~vayUR~//~vayVR~
+    private int statInstall=0;                                     //~vayTI~
+    public static final int INSTALL_STATUS_ALERT_ISSUED=1;         //~vayTI~
+    public static final int INSTALL_STATUS_ALERT_REPLY =2;         //~vayTI~
+	public static final int INSTALL_STATUS_ALREADY_DONE=3 ;        //~vayTI~
+	public static final int INSTALL_STATUS_CHK_DONE=4 ;            //~vayTI~
+    public boolean swOrientationLocked=false;                      //~vayVR~
     //***********************************************************  //~8B05I~
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -194,15 +268,20 @@ public class MainActivity extends AppCompatActivity
         if (Dump.Y) Dump.println("MainActivity.onCreate bundle="+Utils.toString(savedInstanceState));//~vaf0I~
      try                                                           //~vae0I~
      {                                                             //~vae0I~
+        UView.enableEdgeToEdge();       //before setContentView    //~vayHR~
         setFullscreen(true/*onCreate*/);                                           //~8B06I~//~8C29R~//~9103R~//~1ak4R~
 //      Dump.open("");	//write all to log , move to AG                         //~8B05I~//~0124R~
         if (Dump.Y) Dump.println("MainActivity.onCreate");                 //~9102I~//~1ak4R~//~vaf0R~
         View mainView=AG.inflater.inflate(MAIN_LAYOUT,null);//~8B05I~//~8C29R~
 //      AG.mainView=mainView;                                      //~8B07I~//~9620R~
-        frameLayout=(FrameLayout)UView.findViewById(mainView,R.id.FrameLayout);//~8B06I~//~8C29R~
+        frameLayoutParent=(LinearLayout)UView.findViewById(mainView,R.id.MainActivity);//~8B06I~//~8C29R~//~vayhR~
+        frameLayout=(FrameLayout)UView.findViewById(mainView,R.id.FrameLayout);//~vayhI~
 //        resetStatic();                                             //~9101I~//~9106R~
 //      new GC(frameLayout);    //game controler                       //~8B05I~//~8B06M~//~8B26R~//~9101R~
         UView.getScreenSize();                                     //~9101I~
+//      swAllowTopLandscape=AG.foldingFeature;  //sensor orientation for folding device//~vayrI~//~vayMR~
+        swAllowTopLandscape=isShouldAllowTopLandscape();  //avoid letterbox may forced//~vayMI~
+	 	windowInfoTracker=new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));//~vay1I~//~vay6M~
         initMainView(mainView);                                    //~8B05I~//~8C29M~//~9103M~
         setContentView(mainView);                    //~8B05I~
         AG.swMainView=true;                                        //~9815I~
@@ -220,9 +299,12 @@ public class MainActivity extends AppCompatActivity
 //                if (Dump.Y) Dump.println("MainActivity.onOrientationChanged Pori="+Pori+",config="+AG.resource.getConfiguration().orientation);//~va9fR~
 //            }                                                    //~va9fR~
 //        };                                                       //~va9fR~
+        setOptionAllowTopLandscape();          //~vay1I~           //~vay5R~
+		setCallback_BackPress();                                    //~vay5I~
+	    listenerGL=addGlobalLayoutListener(frameLayout);           //~vayrR~
     	initApp();                                                 //~9106I~
         new Anim(mainView,frameLayout);                            //~vamdR~
-        swCreated=true;                                            //+vavzI~
+        swCreated=true;                                            //~vavzI~
       }                                                            //~vae0I~
       catch(Exception e)                                           //~vae0I~
       {                                                            //~vae0I~
@@ -266,6 +348,12 @@ public class MainActivity extends AppCompatActivity
     {                                                              //~vaeeI~
 		if (Dump.Y) Dump.println("MainActivity.setFullScreen16_29");//~vaeeI~
     	View decorView=getWindow().getDecorView();                 //~vaeeI~
+      if (false)//TEST                                             //~vaycR~
+//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);//~vaycR~
+//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);//~vaycI~
+//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);//~vaycI~
+          decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);//~vaycI~
+      else                                                         //~vaycI~
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);//~vaeeI~
     }                                                              //~vaeeI~
 	//*************************                                    //~1ak4R~
@@ -316,6 +404,30 @@ public class MainActivity extends AppCompatActivity
             }                                                      //~1ak4I~
         }                                                          //~1ak4I~
     }                                                              //~1ak4R~
+	//******************************************************************//~vaySI~
+	//*for api=30                                                  //~vaySR~
+    //******************************************************************//~vaySI~
+	@TargetApi(30)                                                 //~vaySI~
+    private void showNavigationbar()                               //~vaySI~
+    {                                                              //~vaySI~
+		if (Dump.Y) Dump.println(CN+"showNavigatiobar osVesrion="+AG.osVersion);//~vaySR~
+        if (AG.osVersion<30)                                       //~vaySI~
+        {                                                          //~vaySI~
+			if (Dump.Y) Dump.println(CN+"showNavigatiobar NOP by osVersion");//~vaySI~
+        	return;                                                //~vaySI~
+        }                                                          //~vaySI~
+        Window w=getWindow();                                      //~vaySI~
+        if (w!=null)                                               //~vaySI~
+        {                                                          //~vaySI~
+			if (Dump.Y) Dump.println(CN+"showNavi gationbar");      //~vaySI~
+        	WindowInsetsController ic=w.getInsetsController();     //~vaySI~
+        	if (ic!=null)                                          //~vaySI~
+            {                                                      //~vaySI~
+            	ic.show(WindowInsets.Type.navigationBars());       //~vaySI~
+				if (Dump.Y) Dump.println(CN+"showNavigationbar requested show");//~vaySI~
+            }                                                      //~vaySI~
+        }                                                          //~vaySI~
+    }                                                              //~vaySI~
 	//*************************                                    //~vam5I~
     @TargetApi(31)                                                 //~vam5I~
     private void setFullScreen_from31(WindowInsetsController Pic)  //~vam5I~
@@ -412,7 +524,10 @@ public class MainActivity extends AppCompatActivity
     {                                                              //~8B05I~
         if(Dump.Y) Dump.println("MainActivity.onStart");           //~8B05I~//~vaf0R~
         super.onStart();                                           //~8B05I~
+        if(Dump.Y) Dump.println("MainActivity.onStart frameLayout ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~vayrR~
+        if (Dump.Y) Dump.println(CN+"onStart frameLayout MeasuredSize="+UView.getMeasuredSize(frameLayout));//~vayrI~
         swStopped=false;                                           //~9A22I~
+	    setWindowTracker(true/*set*/);                             //~vay1I~
 //		registerEventBus(true);                                    //~va30R~
     }                                                              //~8B05I~
 	//*************************                                    //~9A22I~
@@ -425,15 +540,18 @@ public class MainActivity extends AppCompatActivity
 //  	registerEventBus(false);                                   //~9A22R~
         swStopped=true; //keep registered and ignore except IOErr  //~9A22I~
         super.onStop();                                            //~9A22I~
+	    setWindowTracker(false/*remove*/);                         //~vay1I~
     }                                                              //~9A22I~
 	//*************************                                    //~8B05I~
     @Override                                                      //~8B05I~
     protected void onResume() {                                    //~8B05I~
-        if(Dump.Y) Dump.println("MainActivity.onResume swCreated="+swCreated);          //~8B05I~//~vaf0R~//+vavzR~
+        if(Dump.Y) Dump.println("MainActivity.onResume swCreated="+swCreated);          //~8B05I~//~vaf0R~//~vavzR~
         super.onResume();                                          //~8B05I~
+        if(Dump.Y) Dump.println("MainActivity.onResume frameLayout ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~vayrI~
+        if (Dump.Y) Dump.println(CN+"onResume frameLayout MeasuredSize="+UView.getMeasuredSize(frameLayout));//~vayrI~
         swPaused=false;                                            //~9A22I~
-        if (!swCreated)                                            //+vavzI~
-        	return;                                                //+vavzI~
+        if (!swCreated)                                            //~vavzI~
+        	return;                                                //~vavzI~
       try                                                          //~9719I~
       {                                                            //~9719I~
 //    	listenerOrientationChanged.enable(); //TODO test           //~va9fR~
@@ -498,12 +616,16 @@ public class MainActivity extends AppCompatActivity
 	//*************************                                    //~8B05I~
     @Override                                                      //~8B05I~
     protected void onDestroy() {                                   //~8B05I~
+      try                                                          //~vay6I~
+      {                                                            //~vay6I~
         if(Dump.Y) Dump.println("MainActivity.onDestroy AG.status="+AG.status);         //~8B05I~//~vaf0R~
         if (AG.status!=AG.STATUS_STOPFINISH)                       //~vaf0I~
         {                                                          //~vaf0I~
 //  		UView.showToastLongDirect(R.string.Err_AppDestroyedUnexpectedly);//~vaf0R~
     		issueDestroyedWarning();                               //~vaf0I~
+		    saveShouldAllowTopLandscape(true);                     //~vayMI~
         }                                                          //~vaf0I~
+	    removeGlobalLayoutListener(frameLayout,listenerGL);        //~vayrR~
 //        AG.popFragment();                                        //~vaf0R~
 	    AG.aCSI.onDestroy();                                       //~9B05I~
 //        registerEventBus(false);                                 //~va30R~
@@ -514,8 +636,7 @@ public class MainActivity extends AppCompatActivity
 		if (AG.aSound!=null)                                       //~va06I~
 	        AG.aSound.stopAll();                                   //~va06I~
         UMediaStore.onDestroy();                                   //~vae2I~
-        if(Dump.Y) Dump.println("MainActivity.onDestroy call super.onDestroy");//~vaf0R~
-        super.onDestroy();                                         //~8B05I~
+//      super.onDestroy();                                         //~8B05I~//~vay6R~
 //        if (true)                                                  //~9103I~//~9105R~
 //        {                                                          //~9103I~//~9105R~
         	if (mainView!=null)                         //~9103I~  //~9620R~
@@ -527,21 +648,36 @@ public class MainActivity extends AppCompatActivity
 //            UView.recycle(bmpTop);                                 //~9102R~//~9105R~
 //            bmpTop=null;                                           //~8C30I~//~9105R~
 //        }                                                          //~8C30I~//~9105R~
-		StaticVars.onDestroy();                                    //~0216I~
+//		StaticVars.onDestroy();                                    //~0216I~//~vay6R~
+      if (AG.status==AG.STATUS_STOPFINISH)                         //~vay5I~
 		Dump.close();                                              //~vaebR~
         TestOption.swActivityDestroyed=true;	//notify to ITMainActivity//~vaf0I~
+  		StaticVars.onDestroy(); //will gurbage AG                  //~vay6I~
+      }  //try                                                     //~vay6I~
+      catch(Exception e)                                           //~vay6M~
+      {                                                            //~vay6M~
+        Dump.println(e,CN+"onDestroy");                            //~vay6I~
+      }                                                            //~vay6M~
+        super.onDestroy();                                         //~vay6I~
     }                                                              //~8B05I~
 	//*************************                                    //~8B26I~
     @Override                                                      //~8B26I~
     public void onWindowFocusChanged(boolean PhasFocus)         //~8B26I~
     {                                                              //~8B26I~
         super.onWindowFocusChanged(PhasFocus);                     //~8B26I~
+        if(Dump.Y) Dump.println("MainActivity.onWindowForcusChanged frameLayout ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~vayrI~
+        if (Dump.Y) Dump.println(CN+"onWindowFocusChanged frameLayout MeasuredSize="+UView.getMeasuredSize(frameLayout));//~vayrI~
       try                                                          //~vakvI~
       {                                                            //~vakvI~
         if(Dump.Y) Dump.println("MainActivity.onWindowFocusChanged focus="+PhasFocus+",ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~8B26I~//~vaeeR~//~vaf0R~
 //        hideNavigationBar(true);    //done if portrait             //~8B26I~//~8C29R~
         if (PhasFocus)  //navigationbar reappear when dialog opend //~9511R~
+        {                                                          //~vayQI~
+          if (AG.swMainView)                                       //~vayQR~
         	hideNavigationBar(true);                               //~9511I~
+          else                                                     //~vayQI~
+    		hideNavigationBarInGame(true);                         //~vayQI~
+        }                                                          //~vayQI~
       }                                                            //~vakvI~
       catch(Exception e)                                           //~vakvI~
       {                                                            //~vakvI~
@@ -552,21 +688,44 @@ public class MainActivity extends AppCompatActivity
 //*deprecated but androidx.activity.ComponentActivity supports this.//~vau2I~
 //*OnBackPressedDispatcher is called before onBackPressed.         //~vau2I~
 //*****************************************************************/~8C03I~//~vau2I~
-    @Override                                                      //~8C03I~
-    public void onBackPressed()                                    //~8C03I~
-	{                                                              //~8C03I~
-        onExit();                                                  //~8C03I~
-    }                                                              //~8C03I~
+//    @Override                                                      //~8C03I~//~vay5R~
+//    public void onBackPressed()                                    //~8C03I~//~vay5R~
+//    {                                                              //~8C03I~//~vay5R~
+//        onExit();                                                  //~8C03I~//~vay5R~
+//    }                                                              //~8C03I~//~vay5R~
+	private void setCallback_BackPress()                           //~vay5I~
+    {                                                              //~vay5I~
+        if (Dump.Y) Dump.println(CN+"setCallback_BackPress");      //~vay5I~
+    	OnBackPressedCallback cb=new OnBackPressedCallback(true/*false:disable*/)//~vay5R~
+        {                                                          //~vay5I~
+        	@Override                                              //~vay5I~
+            public void handleOnBackPressed()                      //~vay5I~
+            {                                                      //~vay5I~
+		        if (Dump.Y) Dump.println(CN+"setCallback_BackPress.handleOnBackPressed");//~vay5I~
+            	onBackPressed_33();                                //~vay5I~
+            }                                                      //~vay5I~
+        };                                                          //~vay5I~
+        getOnBackPressedDispatcher().addCallback(this,cb);        //~vay5R~
+    }                                                              //~vay5I~
+    private void onBackPressed_33()                                //~vay5I~
+    {                                                              //~vay5I~
+		if (Dump.Y) Dump.println(CN+"onBackPressed_33");           //~vay5I~
+    	onExit();                                                  //~vay5I~
+    }                                                              //~vay5I~
 	//***************************************************************                                    //~8B05I~//~8C29R~
 	//*Manifest:screenOrienntation="portrait"                      //~8C29I~
 	//***************************************************************//~8C29I~
     private void initMainView(View Pview)                               //~8B05I~//~8C29R~
     {                                                              //~8B05I~
-        if (Dump.Y) Dump.println("MainActivity.initMainView frameLayout="+frameLayout.toString());//~9103I~
+        if (Dump.Y) Dump.println(CN+"initMainView frameLayout="+frameLayout.toString());//~9103I~//~vayhR~
 //      if (true)                                                    //~9103I~//~9104R~
 //      {                                                            //~9103I~//~9104R~
       	mainView=new MainView(this,frameLayout);//~9103I~//~9104R~ //~9620R~
-        mainView.init();                                //~9103I~  //~9620R~
+//  	getFrameLayoutSize();                                      //~vayhI~//~vayuR~
+//      mainView.init();                                //~9103I~  //~9620R~//~vayuR~
+//      Point frameLayoutsz=getFrameLayoutSize();                  //~vayuR~
+//      mainView.init(frameLayoutsz);                              //~vayuR~
+        mainView.init();                                           //~vayuI~
 //      }                                                            //~9103I~//~9104R~
 //      else                                                         //~9103I~//~9104R~
 //      {                                                            //~9103I~//~9104R~
@@ -734,53 +893,15 @@ public class MainActivity extends AppCompatActivity
             {                                                      //~9520I~
         	    TestLayout.newInstance().show();                //~9520I~//~0316R~
             }                                                      //~9520I~
-//            else                                                   //~9520I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_SCORE_LAYOUT)!=0) //TODO TEST//~@@@@I~//~0316R~
-//            {                                                      //~@@@@I~//~0316R~
-//                ScoreDlg.newInstance(EGDR_NORMAL,new int[PLAYERS],new int[PLAYERS]).show();     //~@@@@I~//~0316R~
-//            }                                                      //~@@@@I~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_DRAWNLAST_LAYOUT)!=0) //TODO TEST//~@@@@I~//~0316R~
-//            {                                                      //~@@@@I~//~0316R~
-//                new UAEndGame();                                   //~@@@@I~//~0316R~
-//                DrawnDlgLast.newInstance(0,0,new int[PLAYERS],new int[PLAYERS],new int[PARMPOS_DRAWN_DIALOGDATA_CTR]).show();                 //~@@@@I~//~0316R~
-//            }                                                      //~@@@@I~//~0316R~
-//            else                                                   //~9425I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_DRAWNDLGHW_LAYOUT)!=0) //TODO TEST//~9425I~//~0316R~
-//            {                                                      //~9425I~//~0316R~
-//                new UAEndGame();                                   //~9425I~//~0316R~
-//                DrawnDlgHW.newInstance(EGDR_99TILE,NGTP_NEXT,new int[]{1,1,1,1},0).show();//~9425R~//~9705R~//~0316R~
-//            }                                                      //~9425I~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_DRAWNREQDLGHW_LAYOUT)!=0) //TODO TEST//~@@@@I~//~0316R~
-//            {                                                      //~@@@@I~//~0316R~
-//                new UAEndGame();                                   //~@@@@I~//~0316R~
-//                DrawnReqDlgHW.newInstance().show();                //~@@@@R~//~9426R~//~0316R~
-////              DrawnDlgHW.newInstance().show();                   //~@@@@I~//~9426R~//~0316R~
-//            }                                                      //~@@@@I~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_COMPREQDLG_LAYOUT_SHOW)!=0) //TODO TEST//~@@@@I~//~0316R~
-//            {                                                      //~@@@@I~//~0316R~
-//                CompReqDlg.newInstance(new Complete().new Status(0,0,0,null,null)).show();//~@@@@R~//~0316R~
-//            }                                                      //~@@@@I~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_DRAWNREQDLG_LAYOUT)!=0) //TODO TEST//~@@@@R~//~0316R~
-//            {                                                      //~9413I~//~0316R~
-//                if (AG.aUAEndGame==null)                           //~9413I~//~0316R~
-//                    new UAEndGame();                               //~9413I~//~0316R~
-//                DrawnReqDlgLast.newInstance().show();                  //~@@@@R~//~0316R~
-//            }                                                      //~9413I~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_DRAWNDLG_LAYOUT)!=0) //TODO TEST//~@@@@I~//~0316R~
-//                CompleteDlg.newInstance().show();                  //~@@@@I~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_COMPDLG_LAYOUT)!=0) //TODO TEST//~@@@@R~//~0316R~
-//                CompleteDlg.newInstance().show();                  //~@@@@M~//~0316R~
-//            else                                                   //~@@@@I~//~0316R~
-//            if ((TestOption.option & TestOption.TO_COMPREQDLG_LAYOUT)!=0) //TODO TEST//~@@@@I~//~0316R~
-//                CompReqDlg.newInstance(AG.aComplete.new Status(0,0,0,null,null)).show();//~@@@@I~//~0316R~
-////          CompNotenDlg.newInstance().show();                     //~@@@@R~//~0316R~
             break;                                                 //~@@@@I~
+        case R.id.OrientationLock:                                 //~vayVI~
+			if (Dump.Y) Dump.println(CN+"onClickButton orientationLock");//~vayVI~
+	    	onClickLock(true);                                     //~vayVR~
+            break;                                                 //~vayVI~
+        case R.id.OrientationUnLock:                               //~vayVI~
+			if (Dump.Y) Dump.println(CN+"onClickButton orientationLock");//~vayVI~
+	    	onClickLock(false);                                    //~vayVI~
+            break;                                                 //~vayVI~
         }                                                          //~8B05I~
     }                                                              //~8B05I~
 //**********************************************************       //~8B05I~
@@ -967,13 +1088,31 @@ public class MainActivity extends AppCompatActivity
 //**********************************************************       //~9901I~
 	private void startGame(boolean PswChkSetting,boolean PswResume)//~9901I~
     {                                                              //~9901I~
-        if (Dump.Y) Dump.println("MainActivity.startGame swchksetting="+PswChkSetting+",swResume="+PswResume);       //~8C30I~//~9101R~//~9901R~
+        if (Dump.Y) Dump.println(CN+"startGame swAllowTopLandscape="+swAllowTopLandscape+",swchksetting="+PswChkSetting+",swResume="+PswResume);       //~8C30I~//~9101R~//~9901R~//~vay1I~//~vay5R~
+    	if (swAllowTopLandscape)                                   //~vay1I~
+        {                                                          //~vay1I~
+        //*api31                                                   //~vayQI~
+			startGameAllowTopLandscape(PswChkSetting,PswResume);   //~vay1R~
+            return;                                                //~vay1I~
+        }                                                          //~vay1I~
         chngOrientation=0;                                         //~9101I~
+//        if (AG.portrait)                                         //~vayhR~
+//        {                                                        //~vayhR~
+//            if (frameLayoutSizePortrait==null)                   //~vayhR~
+//            {                                                    //~vayhR~
+//                frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout); //initially portrait//~vayhR~
+//                if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~vayhR~
+//            }                                                    //~vayhR~
+//        }                                                        //~vayhR~
+//      Point framelayoutsz=(AG.portrait ? frameLayoutSizePortrait : frameLayoutSizeLandscape);//~vayhR~
+//      Point framelayoutsz=getFrameLayoutSize();                  //~vayhI~//~vayuR~
         if (PswChkSetting)                                         //~9101I~
         {                                                          //~9101I~
-        	if (frameLayoutSizePortrait==null)                     //~9411I~
-        		frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout);	//initially portrait//~9411I~
-	        if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~9411I~
+//            if (frameLayoutSizePortrait==null)                     //~9411I~//~vayhR~
+//            {                                                    //~vayhR~
+//                frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout); //initially portrait//~9411I~//~vayhR~
+//                if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~9411I~//~vayhR~
+//            }                                                    //~vayhR~
 //          if (!chkMember())                                      //~@@@@I~//~9621R~
 //      	if (RuleSetting.chkChangedRule())                          //~@@@@I~//~9406R~//~9620R~
          if (!AG.swTrainingMode)                                      //~va66I~
@@ -991,36 +1130,131 @@ public class MainActivity extends AppCompatActivity
         	if (chngOrientation!=0)                                //~9101I~
             	return;                                            //~9101I~
         }                                                          //~9101I~
-        if (!AG.portrait)                                          //~9411I~
-        {                                                          //~9411I~
-        	if (frameLayoutSizeLandscape==null)                                 //~9104I~//~9411I~
-            {                                                      //~9411I~
-        	//  frameLayoutSizeLandscape=UView.getMeasuredSize(frameLayout); //not yet updated//~9411R~
-        	    frameLayoutSizeLandscape=new Point(AG.scrWidth,frameLayoutSizePortrait.x);//display hight such as (1280,800)//~9411I~
-            }                                                      //~9411I~
-	        if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizeLandscape="+frameLayoutSizeLandscape.toString());//~9411I~
-        }                                                          //~9411I~
+//        if (!AG.portrait)                                          //~9411I~//~vayhR~
+//        {                                                          //~9411I~//~vayhR~
+//            if (frameLayoutSizeLandscape==null)                                 //~9104I~//~9411I~//~vayhR~
+//            {                                                      //~9411I~//~vayhR~
+//            //  frameLayoutSizeLandscape=UView.getMeasuredSize(frameLayout); //not yet updated//~9411R~//~vayhR~
+////              frameLayoutSizeLandscape=new Point(AG.scrWidth,frameLayoutSizePortrait.x);//display hight such as (1280,800)//~9411I~//~vayhR~
+//                frameLayoutSizeLandscape=new Point(AG.scrWidth,AG.scrHeight);//display hight such as (1280,800)//~vayhR~
+//            }                                                      //~9411I~//~vayhR~
+//            if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizeLandscape="+frameLayoutSizeLandscape.toString());//~9411I~//~vayhR~
+//        }                                                          //~9411I~//~vayhR~
 //    	mainView.hide(frameLayoutSizePortrait);                                //~9103I~//~9104R~//~9411R~//~9620R~
-      	mainView.hideTopView(AG.portrait ? frameLayoutSizePortrait : frameLayoutSizeLandscape);//~9411R~//~9620R~
+//    	mainView.hideTopView(AG.portrait ? frameLayoutSizePortrait : frameLayoutSizeLandscape);//~9411R~//~9620R~//~vayuR~
+      	mainView.hideTopView();                                    //~vayuI~
 //      orientationBeforeGame=AG.resource.getConfiguration().orientation;//~va9fR~
+//      frameLayoutSizeStartGame=framelayoutsz;  //for endGame     //~vayhI~//~vayuR~
+        hideNavigationBarInGame(true);                             //~vayNI~
 	    new GC(frameLayout);    //game controler               //~9101I~//~@@@@R~
         AG.aGC.startGame();                                        //~8C30R~
     }                                                              //~8C30I~
+//**********************************************************       //~vay1I~
+//*for FoldableDevice(not for preference orientation option)       //~vay6I~
+//**********************************************************       //~vay6I~
+	private void startGameAllowTopLandscape(boolean PswChkSetting,boolean PswResume)//~vay1R~
+    {                                                              //~vay1I~
+        if (Dump.Y) Dump.println(CN+"startGameAllowTopLandscape swchksetting="+PswChkSetting+",swResume="+PswResume+",portrate="+AG.portrait+",trainingmode="+AG.swTrainingMode);//~vay1R~
+//      Point framelayoutsz=getFrameLayoutSize();                  //~vayhI~//~vayuR~
+//      chngOrientation=0;                                         //~vay1I~
+        if (PswChkSetting)                                         //~vay1I~
+        {                                                          //~vay1I~
+//        	if (frameLayoutSizePortrait==null)                     //~vay1I~
+//        		frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout);	//initially portrait//~vay1I~
+         	if (!AG.swTrainingMode)                                //~vay1I~
+         	{                                                      //~vay1I~
+          		if (!PswResume)                                    //~vay1I~
+        			if (!chkRuleSync(true/*swMsg*/))               //~vay1I~
+            			return;   //rule not synched               //~vay1I~
+         	}                                                      //~vay1I~
+            if (!chkMember())                                      //~vay1I~
+            	return;                                            //~vay1I~
+//        	changeOrientation(PrefSetting.getOrientation());       //~vay1R~
+//        	if (chngOrientation!=0)                                //~vay1R~
+//            	return;                                            //~vay1R~
+        }                                                          //~vay1I~
+//	    if (AG.portrait)                                           //~vay1I~//~vayhR~
+//      {                                                          //~vay1I~//~vayhR~
+//            if (frameLayoutSizePortrait==null)  //1st time         //~vay1I~//~vayhR~
+//                frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout); //initially portrait//~vay1I~//~vayhR~
+//          framelayoutsz=frameLayoutSizePortrait;                  //~vay1I~//~vayhR~
+//	        if (Dump.Y) Dump.println(CN+"startGameAllowTopLandscape frameLayoutSizePortrait="+framelayoutsz.toString());//~vay1R~//~vayhR~
+//      }                                                          //~vay1I~//~vayhR~
+//	    else                                                       //~vay1I~//~vayhR~
+//      {                                                          //~vay1I~//~vayhR~
+//            if (frameLayoutSizeLandscape==null) //1st time         //~vay1I~//~vayhR~
+//                frameLayoutSizeLandscape=new Point(AG.scrWidth,AG.scrHeight);//~vay1R~//~vayhR~
+//            framelayoutsz=frameLayoutSizeLandscape;                //~vay1I~//~vayhR~
+//	        if (Dump.Y) Dump.println(CN+"startGameAllowTopLandscape frameLayoutSizeLandscape="+framelayoutsz.toString());//~vay1R~//~vayhR~
+//      }                                                          //~vay1I~//~vayhR~
+//        if (!AG.portrait)                                        //~vay1I~
+//        {                                                        //~vay1I~
+//            if (frameLayoutSizeLandscape==null)                  //~vay1I~
+//            {                                                    //~vay1I~
+//                frameLayoutSizeLandscape=new Point(AG.scrWidth,frameLayoutSizePortrait.x);//display hight such as (1280,800)//~vay1I~
+//            }                                                    //~vay1I~
+//            if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizeLandscape="+frameLayoutSizeLandscape.toString());//~vay1I~
+//        }                                                        //~vay1I~
+//        mainView.hideTopView(AG.portrait ? frameLayoutSizePortrait : frameLayoutSizeLandscape);//~vay1I~
+      if (!swNoChkLetterbox)                                       //~vayUI~
+		lockOrientation(true);                                     //~vay1I~
+//      frameLayoutSizeStartGame=framelayoutsz;  //for endGame     //~vay1I~//~vayuR~
+//      mainView.hideTopView(framelayoutsz);                       //~vay1I~//~vayuR~
+        mainView.hideTopView();                                    //~vayuI~
+        hideNavigationBarInGame(true);                             //~vayNI~
+	    new GC(frameLayout);    //game controler                   //~vay1I~
+        AG.aGC.startGame();                                        //~vay1I~
+    }                                                              //~vay1I~
+//**********************************************************       //~vayXI~
+//*for FoldableDevice(not for preference orientation option)       //~vayXI~
+//**********************************************************       //~vayXI~
+	private void startGameAllowTopLandscapeClient()                //~vayXR~
+    {                                                              //~vayXI~
+        if (Dump.Y) Dump.println(CN+"startGameAllowTopLandscapeClient");//~vayXI~
+		lockOrientation(true);                                     //~vayXI~
+        mainView.hideTopView();                                    //~vayXI~
+        hideNavigationBarInGame(true);                             //~vayXI~
+	    new GC(frameLayout);    //game controler                   //~vayXI~
+        AG.aGC.startGame();                                        //~vayXI~
+    }                                                              //~vayXI~
 //**********************************************************       //~9621I~
 	private void startGameClient()                                 //~9621I~
     {                                                              //~9621I~
         if (Dump.Y) Dump.println("MainActivity.startGameClient");//~9621I~
         chngOrientation=0;                                         //~9621I~
+//        if (AG.portrait)                                         //~vayhR~
+//        {                                                        //~vayhR~
+//            if (frameLayoutSizePortrait==null)                   //~vayhR~
+//            {                                                    //~vayhR~
+//                frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout); //initially portrait//~vayhR~
+//                if (Dump.Y) Dump.println("MainActivity.startGameClient frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~vayhR~
+//            }                                                    //~vayhR~
+//        }                                                        //~vayhR~
+//        else                                                     //~vayhR~
+//        {                                                        //~vayhR~
+//            if (frameLayoutSizeLandscape==null)                  //~vayhR~
+//            {                                                    //~vayhR~
+//                frameLayoutSizeLandscape=new Point(AG.scrWidth,AG.scrHeight);//display hight such as (1280,800)//~vayhR~
+//            }                                                    //~vayhR~
+//        }                                                        //~vayhR~
+//		getFrameLayoutSize();                                      //~vayhR~//~vayuR~
 //      if (PswChkSetting)                                         //~9621I~
 //      {                                                          //~9621I~
-        	if (frameLayoutSizePortrait==null)                     //~9621I~
-        		frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout);	//initially portrait//~9621I~
-	        if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~9621I~
+//            if (frameLayoutSizePortrait==null)                     //~9621I~//~vayhR~
+//            {                                                    //~vayhR~
+//                frameLayoutSizePortrait=UView.getMeasuredSize(frameLayout); //initially portrait//~9621I~//~vayhR~
+//                if (Dump.Y) Dump.println("MainActivity.startGame frameLayoutSizePortrait="+frameLayoutSizePortrait.toString());//~9621I~//~vayhR~
+//            }                                                    //~vayhR~
 //      	if (!chkRuleSync(true/*swMsg*/))                       //~9621I~
 //          	return;   //rule not synched                       //~9621I~
 //          if (!chkMember())                                      //~9621I~
 //          	return;                                            //~9621I~
 //          Accounts.createInstance();   //move to ProfileIcon, it need aACAction//~var8R~
+    		if (swAllowTopLandscape)                               //~vayXI~
+        	{                                                      //~vayXI~
+				startGameAllowTopLandscapeClient();                //~vayXI~
+            	return;                                            //~vayXI~
+        	}                                                      //~vayXI~
         	changeOrientation(PrefSetting.getOrientation());       //~9621I~
         	if (chngOrientation!=0)                                //~9621I~
             	return;                                            //~9621I~
@@ -1118,11 +1352,12 @@ public class MainActivity extends AppCompatActivity
     @Override                                                      //~1120I~//~9101I~
     public void onConfigurationChanged(Configuration Pcfg)         //~1120I~//~9101I~
 	{                                                              //~1120I~//~9101I~
-        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged swEndGame="+swEndGame+",curOri="+AG.resource.getConfiguration().orientation);//~9610R~//~va66R~
+        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged swEndGame="+swEndGame+",swMainView="+AG.swMainView+",config.orientation="+AG.resource.getConfiguration().orientation);//~9610R~//~va66R~//~vay1R~
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged getConfig="+AG.resource.getConfiguration().toString());//~9610I~
         if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged Pcfg="+Pcfg.toString());//~9610I~
-        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged chngOrientation="+chngOrientation);//~vamcR~
+        if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged chngOrientation="+chngOrientation+",swAllowTopLandscape="+swAllowTopLandscape+",swMainWindow="+AG.swMainView);//~vayUR~
         super.onConfigurationChanged(Pcfg);                        //~1120I~//~1413R~//~9101I~
+//  	setFullscreen(true);	//TEST                             //~vaycR~
 //      if (Dump.Y) Dump.println("MainActivity.onConfigurationChanged reverseOrientation="+reverseOrientation);        //~1120I~//~1513R~//~9101R~//~9610R~
 //      if (reverseOrientation!=-1)                                //~9610R~
 //      {                                                          //~9610R~
@@ -1132,7 +1367,31 @@ public class MainActivity extends AppCompatActivity
 //      else                                                       //~9610R~
     	try                                                        //~1513I~//~9101I~
         {                                                          //~1513I~//~9101I~
+//      	boolean sw_old_portrait=AG.portrait;                   //~vay1I~//~vayrR~
             UView.getScreenSize();                             //~1513R~//~v107R~//~@@@@R~//~9101I~
+    		chkLetterbox(true/*config change*/);                    //~vayTI~
+         if (swAllowTopLandscape)                                  //~vay1R~
+         {//*folding device                                        //~vay6R~
+            if (AG.swMainView)	//rotation at top view             //~vay1R~
+            {                                                      //~vay1I~
+		        if (Dump.Y) Dump.println(CN+"onConfigurationChanged MainView(TOP) for Folding Device");//~vay6I~
+//          	if (configurationChangedTop(Pcfg,sw_old_portrait)) //~vay1I~//~vayrR~
+            	if (configurationChangedTop(Pcfg))                 //~vayrI~
+                {                                                  //~vay1I~
+        			if (Dump.Y) Dump.println("MainActivity.onConfigulationChanged return by top view rotation");//~vay1I~
+                	return;                                        //~vay1I~
+                }                                                  //~vay1I~
+            }                                                      //~vay1I~
+            else                                                   //~vayUI~
+		    if (swNoChkLetterbox)	//allow rotation in game       //~vayUI~
+            {                                                      //~vayUI~
+            	if (!swEndGame)                                    //~vayUI~
+            	{                                                  //~vayUI~
+                	AG.aGC.rotatedInGame();                        //~vayUI~
+            	}                                                  //~vayUI~
+            }                                                      //~vayUI~
+            return; //when not on top, scrren is locked. no configuration chage will be occur//~vay6R~
+         }                                                         //~vay6I~
 	        if (chngOrientation!=0)                                //~9101I~
             {                                                      //~9101I~
             	if (swEndGame)                                     //~9102I~
@@ -1151,6 +1410,12 @@ public class MainActivity extends AppCompatActivity
 					startGame(false);                                  //~9101I~//~9102R~
                 }                                                  //~9102I~
             }                                                      //~9101I~
+            else    //sensor option by manifest, request port at init for non foldable device, config change occurs by request senor_port//~vay6I~
+            {                                                      //~vay6I~
+        		if (Dump.Y) Dump.println("MainActivity.onConfigulationChanged at topView");//~vay6I~
+//          	configurationChangedTop(Pcfg,sw_old_portrait);     //~vay6R~//~vayrR~
+            	configurationChangedTop(Pcfg);                     //~vayrI~
+            }                                                      //~vay6I~
         }                                                          //~1513I~//~9101I~
         catch(Exception e)                                         //~1513I~//~9101I~
         {                                                          //~1513I~//~9101I~
@@ -1177,7 +1442,13 @@ public class MainActivity extends AppCompatActivity
 //**********************************************************       //~8C30I~
 	private void endGame(boolean PswConfigChanged)                                         //~8C30I~//~9102R~
     {                                                              //~8C30I~
-        if (Dump.Y) Dump.println("MainActivity.endGame configchanged="+PswConfigChanged+",AG.portrait="+AG.portrait);          //~8C30I~//~9102R~//~9610R~//~va9fR~
+        if (Dump.Y) Dump.println(CN+"endGame swAllowTopLandscape="+swAllowTopLandscape+",configchanged="+PswConfigChanged+",AG.portrait="+AG.portrait);          //~8C30I~//~9102R~//~9610R~//~va9fR~//~vay5I~
+    	if (swAllowTopLandscape)                                   //~vay1M~
+        {                                                          //~vay1M~
+			endGameAllowTopLandscape(PswConfigChanged);            //~vay1M~
+            return;                                                //~vay1M~
+        }                                                          //~vay1M~
+        //* for api<31(=Letterbox)                                 //~vaySI~
         if (Dump.Y) Dump.println("MainActivity.endGame AG.savePropForResume="+AG.savePropForResume);//~van1I~
         if (AG.savePropForResume!=null)                            //~vae5R~
         {                                                          //~vae5I~
@@ -1203,6 +1474,13 @@ public class MainActivity extends AppCompatActivity
 		        chngOrientation=1;                                 //~va9fI~
                 return;                                            //~9102I~
             }                                                      //~9102I~
+            else	//portrait                                     //~vaySI~
+            {                                                      //~vaySI~
+            	if (Dump.Y) Dump.println(CN+"endGame not config changed Portrait, call setfullscreen");//~vaySI~
+//          	swEndGame=true; //!!Dont Set True                  //~vaySR~
+			    setFullscreen(false/*avoid requestFeature*/);      //~vaySI~
+			    showNavigationbar();                               //~vaySI~
+            }                                                      //~vaySI~
         }                                                          //~9102I~
         else                                                       //~9102I~
         {                                                          //~9103I~
@@ -1215,6 +1493,7 @@ public class MainActivity extends AppCompatActivity
 //            }                                                    //~9105R~
         }                                                          //~9103I~
     	restoreMainView();                                          //~9103I~
+        hideNavigationBar(false);	//for api29,show navigationbar //~vayQI~
 //      Sound.playBGM(SOUNDID_BGM_TOP);                            //~va06R~//~vae9R~
         Sound.playBGMTop();                                        //~vae9I~
 //        if (PswConfigChanged)                                    //~9103R~
@@ -1224,6 +1503,41 @@ public class MainActivity extends AppCompatActivity
 //        }                                                        //~9103R~
 //      UView.setWillNotDraw(frameLayout,false);                   //~9102I~//~9103R~
     }                                                              //~8C30I~
+//**********************************************************       //~vay1I~
+//*at endGame for FoldingDevice                                    //~vay6I~
+//*api31(May use LetterBox)                                        //~vaySI~
+//**********************************************************       //~vay6I~
+	private void endGameAllowTopLandscape(boolean PswConfigChanged)//~vay1I~
+    {                                                              //~vay1I~
+        if (Dump.Y) Dump.println(CN+"endGameAllowTopLandscape configchanged="+PswConfigChanged+",AG.portrait="+AG.portrait);//~vay1I~//~vay5R~
+        if (Dump.Y) Dump.println(CN+"endGameAllowTopLandscape AG.savePropForResume="+AG.savePropForResume);//~vay1I~//~vay5R~
+        if (AG.savePropForResume!=null)                            //~vay1I~
+        {                                                          //~vay1I~
+        	AG.ruleProp=AG.savePropForResume;                      //~vay1I~
+        	AG.savePropForResume=null;                             //~vay1I~
+        }                                                          //~vay1I~
+//        if (!PswConfigChanged)                                   //~vay1R~
+//        {                                                        //~vay1R~
+//            if (!AG.portrait)                                    //~vay1R~
+//            {                                                    //~vay1R~
+//                swEndGame=true;                                  //~vay1R~
+//                requestChangeOrientation(TOP_ORIENTATION);       //~vay1R~
+//                chngOrientation=1;                               //~vay1R~
+//                return;                                          //~vay1R~
+//            }                                                    //~vay1R~
+//        }                                                        //~vay1R~
+//        else                                                     //~vay1R~
+//        {                                                        //~vay1R~
+//            setFullscreen(false/*avoid requestFeature*/);        //~vay1R~
+//        }                                                        //~vay1R~
+//     	swEndGame=true;   //swEndGame is for configuration change at endgame                                         //~vay1I~//~vaySR~
+        setFullscreen(false/*avoid requestFeature*/);              //~vay1I~
+//  	restoreMainView();                                         //~vay1I~
+    	restoreMainViewAllowTopLandscape();                        //~vay1I~
+//      showNavigationbarFoldable();                               //~vayJI~//~vaySR~
+    	showNavigationbar();                                       //~vaySI~
+        Sound.playBGMTop();                                        //~vay1I~
+    }                                                              //~vay1I~
 //**********************************************************       //~9103I~
     private void restoreMainView()                                 //~9103I~
     {                                                              //~9103I~
@@ -1231,7 +1545,8 @@ public class MainActivity extends AppCompatActivity
         AG.swMainView=true;                                        //~9815I~
 //      if (true)                                                    //~9103I~//~9104R~
 //    	mainView.restore();                             //~9103R~//~9411R~//~9620R~
-      	mainView.restore(frameLayoutSizePortrait);      //~9411I~  //~9620R~
+//      	mainView.restore(frameLayoutSizePortrait);      //~9411I~  //~9620R~//~vayuR~
+      	mainView.restore();                                        //~vayuI~
 //      else                                                         //~9103I~//~9104R~
 //      {                                                            //~9103I~//~9104R~
 //        hideImage(false);                            //~8C30R~     //~9103R~//~9104R~
@@ -1243,6 +1558,25 @@ public class MainActivity extends AppCompatActivity
 //        AG.mainView.invalidate();                                  //~9103I~//~9104R~
 //      }                                                            //~9103I~//~9104R~
     }                                                              //~9103I~
+//**********************************************************       //~vay1I~
+//*backed to top agter endgame                                     //~vay6I~
+//**********************************************************       //~vay6I~
+    private void restoreMainViewAllowTopLandscape()                //~vay1I~
+    {                                                              //~vay1I~
+        if (Dump.Y) Dump.println("MainActivity.restoreMainView swMainView="+AG.swMainView);//~vay1I~
+        AG.swMainView=true;                                        //~vay1I~
+//     	mainView.restore(frameLayoutSizePortrait);                 //~vay1I~
+//        Point p;                                                   //~vay1I~//~vay6R~
+//        if (AG.portrait)                                           //~vay1I~//~vay6R~
+//            p=frameLayoutSizePortrait;                             //~vay1I~//~vay6R~
+//        else                                                       //~vay1I~//~vay6R~
+//            p=frameLayoutSizeLandscape;                            //~vay1I~//~vay6R~
+//    	Point p=new Point(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);//~vay6I~//~vayuR~
+//    	mainView.restoreAllowTopLandscape(p);                      //~vay1I~//~vayuR~
+      	mainView.restoreAllowTopLandscape();                       //~vayuI~
+//		lockOrientation(false);	//unlock, rotation avail           //~vay1M~//~vayVR~
+  		lockOrientation(swOrientationLocked);	//unlock, rotation avail//~vayVI~
+    }                                                              //~vay1I~
 //**********************************************************       //~9101I~
 //* staric valiable remains after Destry,need to reset at createActivity//~9101I~
 //**********************************************************       //~9101I~
@@ -1251,12 +1585,12 @@ public class MainActivity extends AppCompatActivity
 //        if (Dump.Y) Dump.println("MainActivity.resetStatic");      //~9101I~//~9106R~
 //        Pieces.resetStatic();                                      //~9101I~//~9106R~
 //    }                                                              //~9101I~//~9106R~
-	//*************************                                    //~va9fI~
 	@TargetApi(30)                                                 //~1ak4R~
-    private static void hideNavigationBar30(boolean PswHide)       //~1ak4R~
+//  private static void                                            //~vayQR~
+    private void hideNavigationBar30(boolean PswHide)              //~vayNI~
     {                                                              //~1ak4R~
-        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 swHide="+PswHide);//~1ak4R~
-        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 swNavigationbarGestureMode="+AG.swNavigationbarGestureMode+",portrait="+AG.portrait);//~vaefI~
+        if (Dump.Y) Dump.println(CN+"hideNavigationBar30 swHide="+PswHide+",swHideInGame="+swHideInGame);//~1ak4R~//~vayNR~
+        if (Dump.Y) Dump.println(CN+"hideNavigationBar30 swNavigationbarGestureMode="+AG.swNavigationbarGestureMode+",portrait="+AG.portrait);//~vaefI~//~vayNR~
 //      if (true) //follow system setting gesture or 3 button      //~1ak4R~//~vaefR~
 //      	return; //if hide navigation,statusbar pull down override framelayout and dose not up never(Top panel title disappear)//~1ak4R~//~vaefR~
 //      if (AG.portrait || !AG.swNavigationbarGestureMode)         //~vaefR~
@@ -1270,7 +1604,8 @@ public class MainActivity extends AppCompatActivity
         {                                                          //~1ak4R~
 	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 getSystembarBehavior="+ic.getSystemBarsBehavior());//~vamcI~
 	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 getSystembarAppearance="+ic.getSystemBarsAppearance());//~vamcI~
-		  if (AG.portrait)                                         //~vaefI~
+//  	  if (AG.portrait)                                         //~vaefI~//~vayNR~
+    	  if (AG.portrait && !swHideInGame)                        //~vayNI~
           {                                                        //~vaefI~
 	        ic.show(WindowInsets.Type.navigationBars());           //~vaefI~
 	        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar30 portraite show navigationbars swEndGame="+AG.aMainActivity.swEndGame);//~vaefI~//~vamcR~
@@ -1301,21 +1636,54 @@ public class MainActivity extends AppCompatActivity
     }                                                              //~1ak4R~
 	//*************************                                    //~8B26I~//~9102I~
 //  public static void hideNavigationBar(boolean PswHide)                 //~8B26R~//~9102I~//~1ak4R~
-    private static void hideNavigationBar(boolean PswHide)         //~1ak4R~
+//  private static void hideNavigationBar(boolean PswHide)         //~1ak4R~//~vayNR~
+    private void hideNavigationBar(boolean PswHide)                //~vayNI~
     {                                                              //~1ak4R~
-        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar swHide="+PswHide);//~1ak4I~
+        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar swHide="+PswHide+",edgeMode="+UView.isEdgeMode()+",gesturMode="+AG.swNavigationbarGestureMode);//~vayNR~
 //      if (true)   //TODO test                                    //~vae0R~//~1ak4R~
 //      	return;                                                //~vae0R~//~1ak4R~
+        if (UView.isEdgeMode())                                    //~vayNR~
+        //*API30                                                   //~vayQI~
+        {                                                          //~vayNI~
+//          if (AG.swNavigationbarGestureMode)//gesturemode        //~vayNR~
+//          {                                                      //~vayNR~
+	        	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar NOP by edgemode");//~vayNR~//~vayQR~
+	        	return;                                            //~vayNI~
+//          }                                                      //~vayNR~
+        }                                                          //~vayNI~
+        if (AG.osVersion==APIVER_GESTUREMODE) //api29              //~vayQI~
+        {                                                          //~vayQI~
+        	if (PswHide)                                           //~vayQI~
+            {                                                      //~vayQI~
+		        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar hideOn NOP by api29");//~vayQI~
+	        	return;                                            //~vayQR~
+            }                                                      //~vayQI~
+        }                                                          //~vayQI~
         if (Build.VERSION.SDK_INT>=30) //kitkat 4.4                //~1ak4R~
 		    hideNavigationBar30(PswHide);                          //~1ak4R~
         else                                                       //~1ak4R~
 		    hideNavigationBar29(PswHide);                          //~1ak4R~
     }                                                              //~1ak4R~
-	//*************************                                    //~1ak4R~
+	//*************************                                    //~vayNI~
+    private void hideNavigationBarInGame(boolean PswHide)          //~vayNR~
+    {                                                              //~vayNI~
+        if (Dump.Y) Dump.println("MainActivity.hideNavigationBarInGame swHide="+PswHide+",edgeMode="+UView.isEdgeMode()+",gesturMode="+AG.swNavigationbarGestureMode);//~vayNI~
+//      if (UView.isEdgeMode())                                     //~vayNI~//~vayQR~
+//      {                                                          //~vayNI~//~vayQR~
+    		swHideInGame=true;                                     //~vayNI~
+        	if (Build.VERSION.SDK_INT>=30) //kitkat 4.4            //~vayNI~
+		    	hideNavigationBar30(PswHide);                      //~vayNR~
+        	else                                                   //~vayNI~
+		    	hideNavigationBar29(PswHide);                //~vayNR~
+	    	swHideInGame=false;                                    //~vayNI~
+//      }                                                          //~vayNI~//~vayQR~
+    }                                                              //~vayNI~
+	//*************************                                    //~vayNI~
     @SuppressWarnings("deprecation")                               //~1ak4R~
-    private static void hideNavigationBar29(boolean PswHide)       //~1ak4R~
+//  private static void hideNavigationBar29(boolean PswHide)       //~1ak4R~//~vayNR~
+    private void hideNavigationBar29(boolean PswHide)              //~vayNI~
     {                                                              //~8B26I~//~9102I~
-        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 swHide="+PswHide);//~8B26I~//~9102I~//~9807R~//~1ak4R~
+        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29 swHide="+PswHide+",swHideInGame="+swHideInGame);//~8B26I~//~9102I~//~9807R~//~1ak4R~//~vayNR~
 //      if (Build.VERSION.SDK_INT==29) //Android10(Q)              //~vaeeR~
 //      	chkInsets29();                                         //~vaeeR~
       	if (AG==null)                                              //~vakvI~
@@ -1391,7 +1759,8 @@ public class MainActivity extends AppCompatActivity
             else    //Portrait                                     //~vaeeI~
             {                                                      //~vaeeI~
         		if (Dump.Y) Dump.println("MainActivity.hideNavigationBar portrait version="+Build.VERSION.SDK_INT);//~vaeeI~
-				if (Build.VERSION.SDK_INT==29) //Android10(Q)      //~vaeeI~
+//  			if (Build.VERSION.SDK_INT==29) //Android10(Q)      //~vaeeI~//~vayQR~
+    			if (AG.osVersion==APIVER_GESTUREMODE) //api29 Android10(Q)//~vayQI~
                 {                                                  //~vaeeI~
     				hideNavigationBar29Portrait(PswHide);          //~vaeeI~
                     flag=0;                                        //~vaeeI~
@@ -1406,11 +1775,17 @@ public class MainActivity extends AppCompatActivity
     }                                                              //~8B26I~//~9102I~
 	//*************************                                    //~vaeeI~
     @SuppressWarnings("deprecation")                               //~vaeeI~
-    private static void hideNavigationBar29Portrait(boolean PswHide)//~vaeeI~
+//  private static void hideNavigationBar29Portrait(boolean PswHide)//~vaeeI~//~vayQR~
+    private void hideNavigationBar29Portrait(boolean PswHide)      //~vayQI~
     {                                                              //~vaeeI~
-    	if (!AG.swNewA10)                                          //~vaeeR~
-        	return;                //old version                   //~vaeeR~
-        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29Portrait swHide="+PswHide);//~vaeeI~
+        if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29Portrait swHide="+PswHide+",swHideInGame="+swHideInGame+",swNewA10="+AG.swNewA10);//~vayQI~
+//    	if (!AG.swNewA10)                                          //~vaeeR~//~vayQR~
+//        	return;                //old version                   //~vaeeR~//~vayQR~
+    	if (PswHide && !swHideInGame)	//top hide                 //~vayQI~
+        {                                                          //~vayQI~
+	        if (Dump.Y) Dump.println(CN+"hideNavigationBar29Portrait NOP by hide on in Not inGame");//~vayQI~
+			return;                //old version                   //~vayQI~
+	    }                                                          //~vayQI~
     	View decor=AG.activity.getWindow().getDecorView();         //~vaeeI~
     	int flag=0;                                                //~vaeeI~
         if (!PswHide)                                              //~vaeeI~
@@ -1439,9 +1814,15 @@ public class MainActivity extends AppCompatActivity
                          |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN    //~vaeeI~
                          |View.SYSTEM_UI_FLAG_LAYOUT_STABLE        //~vaeeI~
                          ;                                         //~vaeeI~
+    	  	if (swHideInGame)                                      //~vayQI~
+            {                                                      //~vayQI~
+	        	if (Dump.Y) Dump.println(CN+"hideNavigationBar29Portrait additional flag by InGame flag before="+Integer.toHexString(flag));//~vayQI~
+            	flag|=View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;         //~vayQI~
+            }                                                      //~vayQI~
         	if (Dump.Y) Dump.println("MainActivity.hideNavigationBar29Portrait version="+Build.VERSION.SDK_INT+",flag="+Integer.toHexString(flag));//~vaeeI~
             decor.setSystemUiVisibility(flag);                     //~vaeeI~
         }                                                          //~vaeeI~
+        if (Dump.Y) Dump.println(CN+"hideNavigationBar29Portrait exit");//~vayQI~
     }                                                              //~vaeeI~
 //    //*************************                                  //~vaeeR~
 //    @SuppressWarnings("deprecation")                             //~vaeeR~
@@ -1668,6 +2049,7 @@ public class MainActivity extends AppCompatActivity
 	@Override                                                      //~9930I~
     public void onRequestPermissionsResult(int PrequestID,String[] Ptypes,int[] Presults)//~9930I~
     {                                                              //~9930I~
+        super.onRequestPermissionsResult(PrequestID, Ptypes, Presults);//studio request call super//~vay1R~
         if (Dump.Y) Dump.println("MainActivity.onRequestPermissionResult reqid="+PrequestID+",type="+ Arrays.toString(Ptypes)+",result="+Arrays.toString(Presults));//~9930I~
         UPermission.onRequestPermissionResult(PrequestID,Ptypes,Presults);         //~1amsI~//~vau2R~
         if (Presults.length==0)  //once crashed //TODO              //~1ak4R~
@@ -1799,4 +2181,413 @@ public class MainActivity extends AppCompatActivity
 		String msg=((Context)this).getText(msgid).toString();      //~vaf0I~
         AlertDlg.showMessageMainThread(appName,msg);               //~vaf0R~
 	}                                                              //~vaf0I~
+//*****************************************************************//~vay1I~
+//*rc:layout changed. for both folding device and not folding devoce                                              //~vay1I~//~vay6R~
+//*****************************************************************//~vay1I~
+//  private boolean configurationChangedTop(Configuration Pcfg,boolean PswOldPortrait)//~vay1I~//~vayrR~
+    private boolean configurationChangedTop(Configuration Pcfg)    //~vayrI~
+    {                                                              //~vay1I~
+        if (Dump.Y) Dump.println(CN+"configurationChangedTop AG.portrait="+AG.portrait+",foldingFeature="+AG.foldingFeature+",opened="+AG.foldingFeatureOpened+",config.orientation="+Pcfg.orientation);//~vay1R~//~vay5R~
+//        if (AG.portrait==PswOldPortrait)                           //~vay1I~//~vayrR~
+//        {                                                          //~vay1I~//~vayrR~
+//            if (Dump.Y) Dump.println(CN+"configurationChangedTop No orientation changed");//~vay1I~//~vay5R~//~vayrR~
+//            return false;                                          //~vay1I~//~vayrR~
+//        }                                                          //~vay1I~//~vayrR~
+//		getFrameLayoutSize();                                      //~vayqI~//~vayuR~
+//    	mainView.resetImage();                                     //~vay1I~//~vayuR~
+//      Point frameLayoutsz=getFrameLayoutSize();                  //~vayuR~
+//      mainView.resetImage(frameLayoutsz);                        //~vayuR~
+        mainView.resetImage(false/*NOT restore*/);                 //~vayuR~
+        return true;                                               //~vay1I~
+    }//configurationChangedTop                                     //~vay1I~
+//*****************************************************************//~vay1I~
+//*****************************************************************//~vay1I~
+//*****************************************************************//~vay1I~
+	class LayoutStateChangeCallback implements Consumer<WindowLayoutInfo>//~vay1I~
+    {                                                              //~vay1I~
+       @Override                                                   //~vay1I~
+       public void accept(WindowLayoutInfo PlayoutInfo)            //~vay1I~
+       {                                                           //~vay1I~
+           	MainActivity.this.runOnUiThread( () ->                 //~vay1I~
+   			{                                                      //~vay1I~
+		        if (Dump.Y) Dump.println(CN+"LayoutStateChangeCallback accept START isFoldableDevice="+AG.foldingFeature);//~vay1R~
+        	  if (AG.foldingFeature)                               //~vayMI~
+              {                                                    //+vayZI~
+  				AG.foldingFeatureOpened=layoutChanged(PlayoutInfo);//~vay1I~
+        		UView.getScreenSize();	//open/close determind     //+vayZI~
+              }                                                    //+vayZI~
+		        if (Dump.Y) Dump.println(CN+"LayoutStateChangeCallback accept framelayout ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~vayrR~
+		        if (Dump.Y) Dump.println(CN+"LayoutStateChangedCallback accept frameLayout MeasuredSize="+UView.getMeasuredSize(frameLayout));//~vayrI~
+		        if (Dump.Y) Dump.println(CN+"LayoutStateChangeCallback accept END");//~vayrI~
+           	});                                                    //~vay1I~
+       	}//accept                                                  //~vay1I~
+        //*******************************************************  //~vay1I~
+//      public boolean layoutChanged(WindowLayoutInfo PlayoutInfo) //~vay1I~//~vayKR~
+        public int layoutChanged(WindowLayoutInfo PlayoutInfo)     //~vayKI~
+        {                                                          //~vay1I~
+            if (Dump.Y) Dump.println(CN+"layoutChanged foldingFeature="+AG.foldingFeature+",layoutinfo="+PlayoutInfo.toString());//~vay1R~
+        	List<DisplayFeature> list=PlayoutInfo.getDisplayFeatures();//~vay1I~
+        	int sz=list.size();                                    //~vay1I~
+//            boolean open=false;                                    //~vay1I~//~vayKR~
+            int open=FOLDING_STATE_CLOSE;                          //~vayKI~
+            if (sz!=0)                                             //~vay1I~
+            {                                                      //~vay1I~
+        		DisplayFeature df=(DisplayFeature)list.get(0);     //~vay1I~
+            	Rect r=df.getBounds();                             //~vay1I~
+                FoldingFeature ff=(FoldingFeature)df;              //~vay1I~
+                FoldingFeature.OcclusionType tp=ff.getOcclusionType();//~vay1I~
+                FoldingFeature.State  st=ff.getState();            //~vay1I~
+                if (st==FoldingFeature.State.HALF_OPENED           //~vay1I~
+                ||  st==FoldingFeature.State.FLAT)                 //~vay1I~
+//                	open=true;                                     //~vay1I~//~vayKR~
+            		open=FOLDING_STATE_OPEN;                       //~vayKI~
+            }                                                      //~vay1I~
+		    if (Dump.Y) Dump.println(CN+"LayoutChanged framelayout ww="+frameLayout.getWidth()+",hh="+frameLayout.getHeight());//~vayrI~
+		    if (Dump.Y) Dump.println(CN+"LayoutChanged frameLayout MeasuredSize="+UView.getMeasuredSize(frameLayout));//~vayrI~
+            if (Dump.Y) Dump.println(CN+"layoutChanged rc open="+open);//~vay1I~
+            return open;                                           //~vay1I~
+        }                                                          //~vay1I~
+   	}//class                                                       //~vay1I~
+    private void setWindowTracker(boolean Pset)                    //~vay1R~
+    {                                                              //~vay1I~
+    	if (Dump.Y) Dump.println(CN+"setWindowTracker Pset="+Pset);//~vay1R~
+       	if (Pset)                                                  //~vay1I~
+       	{                                                          //~vay1I~
+       		windowInfoTracker.addWindowLayoutInfoListener(AG.activity,(Executor) Runnable::run,layoutStateChangeCallback);//~vay1I~
+        }                                                          //~vay1I~
+        else                                                       //~vay1I~
+        {                                                          //~vay1I~
+	    	windowInfoTracker.removeWindowLayoutInfoListener(layoutStateChangeCallback);//~vay1I~
+        }                                                          //~vay1I~
+   }                                                               //~5122I~//~vay1I~
+//*****************************************************************************************//~vay4I~
+//*registerForActivityResult should be here(in class of Activity) to avoid compile error//~vay4I~
+//*****************************************************************************************//~vay4I~
+@TargetApi(30)                                                     //~vay4I~
+@SuppressWarnings("unchecked")                                     //~vay4I~
+	public ActivityResultLauncher<Intent> startActivityForResult_30_register(int PreqCode )//~vay4R~
+    {                                                              //~vay1I~
+//      AG.aMainActivity.startActivityForResult(Pintent,AG.ACTIVITY_REQUEST_SCOPED_OPEN_TREE); //deprecated//~vay1I~//~vay4R~
+        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_register reqCode="+PreqCode);//~vay1I~//~vay4R~
+        ActivityResultContract contract=new StartActivityForResult();//~vay1I~
+		ActivityResultCallback<ActivityResult> cb=new ActivityResultCallback<ActivityResult>()//~vay1I~
+				{                                                  //~vay1I~
+                	int reqCode=PreqCode;                          //~vay4I~
+                    @Override                                      //~vay1I~
+                    public void onActivityResult(ActivityResult Presult)//~vay1I~
+                    {                                              //~vay1I~
+				        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_register onActivityResult reqCode="+reqCode);//~vay4I~
+                        try                                        //~vay1I~
+                        {                                          //~vay1I~
+                            int resultcode=Presult.getResultCode();        //~vay1I~//~vay4R~
+                            Intent intent=Presult.getData();       //~vay1I~
+                            if (Dump.Y) Dump.println(CN+"startActivityForResult_30 onActivityResultCallback result="+resultcode+",reqcode="+reqCode+",intent="+intent);//~vay4R~
+							AG.aMainActivity.onActivityResult(reqCode,resultcode,intent);//~vay4R~
+                        }                                          //~vay1I~
+                        catch(Exception e)                         //~vay1I~
+                        {                                          //~vay1I~
+                            Dump.println(e,CN+"startActivityForResult_30 onActivityResultCallback");//~vay4I~
+                        }                                          //~vay1I~
+                    }                                              //~vay1I~
+                } ;                                                //~vay1I~
+    	ActivityResultLauncher<Intent> launcher=registerForActivityResult(contract,cb);//~vay1I~
+        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_register return launcher="+launcher);//~vay4I~
+        return launcher;                                           //~vay4I~
+    }                                                              //~vay1I~
+//*****************************************************************************************//~vay4I~
+@TargetApi(30)                                                     //~vay4I~
+	public void startActivityForResult_30_launch(ActivityResultLauncher<Intent> Plauncher,Intent Pintent)//~vay4R~
+    {                                                              //~vay4I~
+        if (Dump.Y) Dump.println(CN+"startActivityForResult_30_launch intent="+Pintent+",launcher="+Plauncher);//~vay4R~
+        Plauncher.launch(Pintent);                                 //~vay4I~
+    }                                                              //~vay4I~
+//*****************************************************************************************//~vay1M~
+	private void lockOrientation(boolean Plock)                    //~vay1M~
+    {                                                              //~vay1M~
+        if (Dump.Y) Dump.println(CN+"lockOrientation portrait="+AG.portrait+",Plock="+Plock);//~vay1M~
+        int req;                                                   //~vay1M~
+        if (Plock)                                                 //~vay1M~
+            req=ActivityInfo.SCREEN_ORIENTATION_LOCKED;            //~vay1M~
+        else                                                       //~vay1M~
+		    req=ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;           //~5127I~//~vay1M~//~vay5R~
+        UView.requestOrientation(AG.activity,req);                 //~vay1M~
+        if (Dump.Y) Dump.println(CN+"lockOrientation swOrientationLocked="+swOrientationLocked);//~vayVR~
+    }                                                              //~vay1M~
+//*****************************************************************************************//~vay1I~
+	private void setOptionAllowTopLandscape()                   //~vay1I~//~vay5R~
+    {                                                              //~vay1I~
+        boolean rc;                                                //~vay1I~
+//        int ori=PrefSetting.getOrientation();                     //~vay1I~//~vay6R~
+//        rc=(ori==PS_ORIENTATION_DEVICE);                           //~vay1I~//~vay6R~
+//        swAllowTopLandscape=rc;                                    //~vay5I~//~vay6R~
+//      swAllowTopLandscape=AG.foldingFeature;  //sensor orientation for folding device//~vay6I~//~vayMR~
+        if (Dump.Y) Dump.println(CN+"setOptionAllowTopLandscape swAllowTopLandscape="+swAllowTopLandscape+",swAminifestPort="+swManifestPort+",AG.foldingFeature="+AG.foldingFeature+",AG.portrait="+AG.portrait);//~vay1I~//~vay5R~//~vay6R~
+    	if (swManifestPort)	    //manifest specified sensor_portrait <=old logic for compare test//~vay5I~//~vay6R~
+        {                                                          //~vay5I~
+        	if (swAllowTopLandscape)                               //~vay5I~
+				lockOrientation(false);	//unlock manifest:sensor_portrait//~vay5I~
+        }                                                          //~vay5I~
+        else  //no orientation on manifest:initially sensor <==New logic //~vay5I~//~vay6R~
+        {                                                          //~vay5I~
+//*For folding device, accept Android method                       //~vay6R~
+//when closed,rotation will be kept                                //~vay6I~
+//when opened, landscape when left-right, portrait when up-down.   //~vay6I~
+//        if (false)//TEST                                         //~vayKR~
+//        	if (!AG.foldingFeature) //For folding device, Android keeps orientation,accept it//~vay6I~//~vayMR~
+          	if (!swAllowTopLandscape) //For folding device, Android keeps orientation,accept it//~vayMI~
+            {                                                      //~vay6I~
+	     		requestChangeOrientation(TOP_ORIENTATION);     //always portrait//~vay6R~
+            }                                                      //~vay6I~
+//            else                                                 //~vayTR~
+//	     		chkLetterboxMode(TOP_ORIENTATION);     //always portrait//~vayTR~
+        }                                                          //~vay5I~
+    }                                                              //~vay1I~
+//*****************************************************************************************//~vay5I~
+//*from PrefSetting                                                //~vay6I~
+//*****************************************************************************************//~vay6I~
+	public void optionChangedOrientation(int Pori)                 //~vay5I~
+    {                                                              //~vay5I~
+        if (Dump.Y) Dump.println(CN+"optionChangedOrientation Pori="+Pori);//~vay5I~
+//do nothing; orientation if for not top but game panel            //~vay6I~
+//        boolean rc=(Pori==PS_ORIENTATION_DEVICE); //selected Device         //~vay5I~//~vay6R~
+//        if (rc)                                                    //~vay5I~//~vay6R~
+//            setOptionAllowTopLandscape();                           //~vay5I~//~vay6R~
+//        else                                                       //~vay5I~//~vay6R~
+//            requestChangeOrientation(TOP_ORIENTATION);             //~vay5I~//~vay6R~
+    }                                                              //~vay5I~
+//*****************************************************************************************//~vayhI~
+    private void setFrameLayoutSize(Point Psize)                   //~vayhI~
+    {                                                              //~vayhI~
+        if (Dump.Y) Dump.println(CN+"setFrameLayoutSize entry frameLayout="+frameLayout);//~vayhI~
+        if (Dump.Y) Dump.println(CN+"setFrameLayoutSize Psize="+Psize);//~vayhI~
+  		ViewGroup.LayoutParams lp=new LinearLayout.LayoutParams(Psize.x,Psize.y);//~vayhI~
+	    frameLayout.setLayoutParams(lp);                           //~vayhI~
+        if (Dump.Y) Dump.println(CN+"setFrameLayoutSize exit frameLayout="+frameLayout);//~vayhI~
+    }                                                              //~vayhI~
+    //******************************************                   //~vayrI~
+    private void removeGlobalLayoutListener(View Pview,ViewTreeObserver.OnGlobalLayoutListener Plistener)//~vayrI~
+    {                                                              //~vayrI~
+        if (Dump.Y) Dump.println(CN+"removeGlobalListerner Pview="+Pview+",listener="+Plistener);//~vayrI~
+		ViewTreeObserver observer=Pview.getViewTreeObserver();     //~vayrI~
+//      if (observer!=null && observer.isAlive())                  //~vayrI~
+        if (observer!=null)                                        //~vayrI~
+        {                                                          //~vayrI~
+        	observer.removeOnGlobalLayoutListener(Plistener);      //~vayrI~
+        	if (Dump.Y) Dump.println(CN+"removeGlobalLayoutListener removed old listener observer="+observer);//~vayrI~
+        }                                                          //~vayrI~
+    }                                                              //~vayrI~
+    //******************************************                   //~vayrI~
+    private ViewTreeObserver.OnGlobalLayoutListener addGlobalLayoutListener(View Pview)//~vayrI~
+    {                                                              //~vayrI~
+        if (Dump.Y) Dump.println(CN+"addGlobalLayoutListener Pview="+Pview);//~vayrI~
+        View view=Pview;                                           //~vayrI~
+		ViewTreeObserver observer=Pview.getViewTreeObserver();     //~vayrI~
+    	ViewTreeObserver.OnGlobalLayoutListener listener=          //~vayrI~
+			new ViewTreeObserver.OnGlobalLayoutListener()          //~vayrI~
+			{                                                      //~vayrI~
+    			@Override                                          //~vayrI~
+    			public void onGlobalLayout()                       //~vayrI~
+				{                                                  //~vayrI~
+                    onGlobalLayoutMA(view);                    //~vayrI~
+    			}                                                  //~vayrI~
+			};                                                     //~vayrI~
+		observer.addOnGlobalLayoutListener(listener);              //~vayrI~
+        return listener;                                           //~vayrI~
+    }                                                              //~vayrI~
+    //******************************************                   //~vayrI~
+    //*not used                                                    //~vayuI~
+    //******************************************                   //~vayuI~
+    private void onGlobalLayoutMA(View Pview)                        //~vayrI~
+    {                                                              //~vayrI~
+        int ww=Pview.getWidth();                                   //~vayrI~
+		int hh=Pview.getHeight();                                  //~vayrI~
+        if (Dump.Y) Dump.println(CN+"onGlobalLayout ww="+ww+",hh="+hh+",AG.foldingFeature="+AG.foldingFeature+",AG.portrait="+AG.portrait);//~vayrI~
+//        if (swAllowTopLandscape)  //folding feature                //~vayrI~//~vayuR~
+//        {                                                          //~vayrI~//~vayuR~
+//            if (AG.portrait)                                       //~vayrI~//~vayuR~
+//            {                                                      //~vayrI~//~vayuR~
+//                Point p=frameLayoutSizePortrait;                   //~vayrI~//~vayuR~
+//                if (p!=null)                                       //~vayrI~//~vayuR~
+//                {                                                  //~vayrI~//~vayuR~
+//                    if (Dump.Y) Dump.println(CN+"onGlobalLayout old frameLayoutPortrait="+p);//~vayrI~//~vayuR~
+//                    if (p.y!=hh)                                   //~vayrI~//~vayuR~
+//                    {                                              //~vayrI~//~vayuR~
+////                      p.y=hh;                                    //~vayrR~//~vayuR~
+////                      if (Dump.Y) Dump.println(CN+"onGlobalLayout updated frameLayout="+p+",AG.scrHeight="+AG.scrHeight);//~vayrR~//~vayuR~
+////                      if (AG.swMainView)  //rotation at top view //~vayrI~//~vayuR~
+////                      mainView.resetImage();                     //~vayrI~//~vayuR~
+//                    }                                              //~vayrI~//~vayuR~
+//                }                                                  //~vayrI~//~vayuR~
+//            }                                                      //~vayrI~//~vayuR~
+//        }                                                          //~vayrI~//~vayuR~
+    }                                                              //~vayrI~
+    //******************************************                   //~vayJI~
+    private void showNavigationbarFoldable()                      //~vayJI~
+    {                                                              //~vayJI~
+		if (Dump.Y) Dump.println(CN+"showNavigationbarFoldable portrait="+AG.portrait+",swMainView="+AG.swMainView+",swEndGame="+swEndGame+",gestureMode="+AG.swNavigationbarGestureMode);//~vayJR~
+        if (!AG.swNavigationbarGestureMode)	//3button              //~vayJR~
+		  	if (!AG.portrait)                                      //~vayJI~
+           		hideNavigationBar(true);   	//show by swipe up     //~vayJR~
+    }                                                              //~vayJI~
+    //******************************************                   //~vayMI~
+    //*>=api31; avoid letter box                                   //~vaySI~
+    //******************************************                   //~vaySI~
+    private boolean isShouldAllowTopLandscape()                    //~vayMR~
+    {                                                              //~vayMI~
+		if (Dump.Y) Dump.println(CN+"isShouldAllowTopLandscape osVersion="+AG.osVersion);//~vayTI~
+    	boolean rc=false;                                          //~vayMI~
+//      if (true)     //TODO TEST Letterbox                      //~vayQR~//~vaySR~//~vayTR~
+//        	return rc;                                             //~vayQR~//~vaySR~//~vayTR~
+//		if (AG.foldingFeature)                                     //~vayMI~//~vayTR~
+//        	rc=true;                                               //~vayMI~//~vayTR~
+//      else                                                       //~vayMI~//~vayTR~
+//      if (true)   //TEST                                         //~vayMI~//~vayPR~
+//		if (AG.osVersion>=APIVER_EDGEMODE)	                       //~vayMR~//~vayPI~
+      if (true)                                                    //~vayTR~
+        rc=chkLetterbox(false/*configChange*/);                    //~vayTR~
+      else                                                         //~vayTR~
+      {                                                            //~vayTR~
+  		if (AG.osVersion>=APIVER_MAY_LETTERBOX)                    //~vayPI~
+        //*api31                                                   //~vayQI~
+            rc=true;                                               //~vayMI~
+        else                                                       //~vayMI~
+        {                                                          //~vayMI~
+        	rc=Utils.getPreference(PREFKEY_NOLETTERBOX,false/*default*/);   //~@@01I~//~vayMI~
+			if (Dump.Y) Dump.println(CN+"isShouldAllowTopLandscape rc by getPreference="+rc);//~vayMI~
+        }                                                          //~vayMI~
+      }                                                            //~vayTR~
+		if (Dump.Y) Dump.println(CN+"isShouldAllowTopLandscape rc="+rc+",AG.foldingFeature="+AG.foldingFeature+",Build.VERSION.SDK_INT="+Build.VERSION.SDK_INT);//~vayMI~
+        return rc;                                                 //~vayMI~
+    }                                                              //~vayMI~
+    //******************************************                   //~vayTI~
+    //*rc:true:allow rotation                                      //~vayTR~
+    //******************************************                   //~vayTI~
+    private boolean chkLetterbox(boolean PswConfigChange)         //~vayTR~
+    {                                                              //~vayTI~
+		if (Dump.Y) Dump.println(CN+"chkLeterbox osVersion="+AG.osVersion+",swConfigChange="+PswConfigChange+",statInstall="+statInstall+",swNoChkLetterbox="+swNoChkLetterbox);//~vayTR~//~vayVR~
+  		if (AG.osVersion<APIVER_MAY_LETTERBOX)  //api31            //~vayTI~
+        {                                                          //~vayTI~
+			if (Dump.Y) Dump.println(CN+"chkLeterbox NOP by osVersion<"+APIVER_MAY_LETTERBOX+",swAllowTopLandscape="+swAllowTopLandscape);//~vayTI~
+        	return false;                                          //~vayTI~
+        }                                                          //~vayTI~
+    	boolean swAllow=true;  //do not fix rotation               //~vayTR~
+        if (true)                                                  //~vayVI~
+        {                                                          //~vayVI~
+			if (Dump.Y) Dump.println(CN+"chkLeterbox always allow by osVersion "+AG.osVersion+">="+APIVER_MAY_LETTERBOX);//~vayVI~
+            return swAllow;                                        //~vayVI~
+        }                                                          //~vayVI~
+        if (swNoChkLetterbox)                                      //~vayUI~
+        {                                                          //~vayUI~
+			if (Dump.Y) Dump.println(CN+"chkLeterbox swNoChkLetterbox=true, always allow by osVersion "+AG.osVersion+">="+APIVER_MAY_LETTERBOX);//~vayUI~
+            return swAllow;                                        //~vayUI~
+        }                                                          //~vayUI~
+	        int optNoLB=Utils.getPreference(PREFKEY_NOLETTERBOX,-1); //;//~vayTI~
+			if (Dump.Y) Dump.println(CN+"chkLetterbox getPreference "+PREFKEY_NOLETTERBOX+"="+optNoLB+",swChkLetterbox="+swChkLetterbox);//~vayTR~
+            switch(optNoLB)                                        //~vayTI~
+            {                                                      //~vayTI~
+            case -1:	//not yet chked                            //~vayTI~
+				if (statInstall==INSTALL_STATUS_ALERT_REPLY)       //~vayTI~
+                {                                                  //~vayTI~
+	        		Utils.putPreference(PREFKEY_NOLETTERBOX,VALUE_NOLETTERBOX_CHECKING); //;//~vayTR~
+                	swChkLetterbox=true;                           //~vayTR~
+                	chkLetterboxChangeOrientation();               //~vayTR~
+//			    	alertLetterbox();                              //~vayTR~
+					if (Dump.Y) Dump.println(CN+"chkLetterbox not yet chked issue requestrotation");//~vayTI~
+                }                                                  //~vayTI~
+            	break;                                             //~vayTI~
+            case VALUE_NOLETTERBOX_CHECKING:	//0                //~vayTI~
+            	if (PswConfigChange)                                 //~vayTI~
+                    if (swChkLetterbox) //no destroy/Restart occued//~vayTR~
+                    {                                              //~vayTR~
+                        Utils.putPreference(PREFKEY_NOLETTERBOX,VALUE_NOLETTERBOX_FIXORIENTATION_YES); //=1;//~vayTR~
+                        if (Dump.Y) Dump.println(CN+"chkLetterbox No restart occued allow fix");//~vayTR~
+                        swChkLetterbox=false;   //no destroy/Restart occued//~vayTR~
+                        swAllow=false;                             //~vayTR~
+                    }                                              //~vayTR~
+                break;                                             //~vayTI~
+		    case VALUE_NOLETTERBOX_FIXORIENTATION_NO: //=2; destroy occured//~vayTR~
+				lockOrientation(false/*unlock*/);   //FULL SENSOR  //~vayTI~
+				if (Dump.Y) Dump.println(CN+"chkLetterbox destroy occured request rotation free");//~vayTI~
+                break;                                             //~vayTI~
+  		    default: // VALUE_NOLETTERBOX_FIXORIENTATION_YES: rc=false //=1;//~vayTR~
+            	swAllow=false;                                     //~vayTI~
+            }                                                      //~vayTI~
+	        swAllowTopLandscape=swAllow;                           //~vayTR~
+		if (Dump.Y) Dump.println(CN+"chkLetterbox swAllowTopLandscape="+swAllowTopLandscape);//~vayTR~
+        return swAllow;                                            //~vayTR~
+    }                                                              //~vayTI~
+    //******************************************                   //~vayTM~
+    private void chkLetterboxChangeOrientation()                   //~vayTI~
+    {                                                              //~vayTM~
+		if (Dump.Y) Dump.println(CN+"chkLetterboxChangeOrientation AG.portrait="+AG.portrait+",AG.scrRotation="+AG.scrRotation);//~vayTR~
+        int id;                                                    //~vayTM~
+//        if (AG.scrRotation==ROT_LAND_LEFT||AG.scrRotation==ROT_LAND_RIGHT)//~vayTR~
+//            id=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;  //~vayTR~
+//        else                                                     //~vayTR~
+//            id=ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE; //~vayTR~
+//rotation is different for opened folding device                  //~vayTI~
+        if (AG.portrait)                                           //~vayTI~
+            id=ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;   //~vayTI~
+        else                                                       //~vayTI~
+            id=ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;    //~vayTI~
+        UView.requestOrientation(AG.activity,id);                  //~vayTM~
+		if (Dump.Y) Dump.println(CN+"chkLetterboxChangeOrientation requested orientation="+id);//~vayTI~
+    }                                                              //~vayTM~
+    //******************************************                   //~vayMI~
+    private boolean saveShouldAllowTopLandscape(boolean PswAllow)  //~vayMI~
+    {                                                              //~vayMI~
+		if (Dump.Y) Dump.println(CN+"saveShouldAllowTopLandscape PswAllow="+PswAllow+",Build.VERSION.SDK_INT="+Build.VERSION.SDK_INT);//~vayMI~
+//  	if (Build.VERSION.SDK_INT>=31)	//Android12                //~vayMI~//~vayTR~
+//  	if (AG.osVersion>=APIVER_MAY_LETTERBOX)	//Android12        //~vayTR~
+        if (swChkLetterbox)	//no destroy/Restart occued            //~vayTI~
+        {                                                          //~vayMI~
+//      	Utils.putPreference(PREFKEY_NOLETTERBOX,PswAllow);    //~vayMI~//~vayTR~
+        	Utils.putPreference(PREFKEY_NOLETTERBOX,VALUE_NOLETTERBOX_FIXORIENTATION_NO);//=2;//~vayTI~
+			if (Dump.Y) Dump.println(CN+"saveShouldAllowTopLandscape putPreference requested");//~vayMI~
+        }                                                          //~vayMI~
+        return PswAllow;                                           //~vayMI~
+    }                                                              //~vayMI~
+    //******************************************                   //~vayTI~
+    //*from USCOPED                                                //~vayTI~
+    //******************************************                   //~vayTI~
+    public void notifyInstallStatus(int Pstat)                     //~vayTI~
+    {                                                              //~vayTI~
+		if (Dump.Y) Dump.println(CN+"notifyInstallStatus Pstat="+Pstat+",osVersion="+AG.osVersion);//~vayTR~
+	    statInstall=Pstat;                                         //~vayTI~
+  		if (AG.osVersion<APIVER_MAY_LETTERBOX)  //api31            //~vayTI~
+        {                                                          //~vayTI~
+			if (Dump.Y) Dump.println(CN+"notifyInstallStatus NOP by osVersion");//~vayTI~
+            return;                                                //~vayTI~
+        }                                                          //~vayTI~
+        switch(Pstat)                                              //~vayTI~
+        {                                                          //~vayTI~
+        case INSTALL_STATUS_ALERT_ISSUED: 	//=1;                  //~vayTI~
+        	break;                                                 //~vayTI~
+    	case INSTALL_STATUS_ALERT_REPLY:	// =2;                 //~vayTI~
+    		chkLetterbox(false/*configChange*/); //issue alert     //~vayTI~
+        	break;                                                 //~vayTI~
+		case INSTALL_STATUS_ALREADY_DONE:	//=3 ;                 //~vayTI~
+//  		chkLetterbox(false/*configChange*/); //chk only at 1st //~vayTR~
+        	break;                                                 //~vayTI~
+        }                                                          //~vayTI~
+    }                                                              //~vayTI~
+    //******************************************                   //~vayTI~
+    public void alertLetterbox()                                   //~vayTI~
+    {                                                              //~vayTI~
+		if (Dump.Y) Dump.println(CN+"alertLetterbox");             //~vayTI~
+        int msgid=R.string.Info_checkingLetterbox;                 //~vayTI~
+        String appName=((Context)this).getText(R.string.app_name).toString();//~vayTI~
+        String msg=((Context)this).getText(msgid).toString();      //~vayTI~
+        AlertDlg.showMessageMainThread(appName,msg);               //~vayTI~
+    }                                                              //~vayTI~
+    //******************************************                   //~vayVI~
+    public void onClickLock(boolean PswLock)                       //~vayVR~
+    {                                                              //~vayVI~
+		if (Dump.Y) Dump.println(CN+"onClickLock entry PswLock="+PswLock+",swOrientationLocked="+swOrientationLocked);//~vayVR~
+		lockOrientation(PswLock);   //unlock                       //~vayVR~
+		if (Dump.Y) Dump.println(CN+"onClickLock exit swOrientationLocked="+swOrientationLocked);//~vayVI~
+        swOrientationLocked=PswLock;                               //~vayVI~
+        if (mainView!=null)                                        //~vayVM~
+	        mainView.setLockButton(PswLock);                       //~vayVI~
+    }                                                              //~vayVI~
 }

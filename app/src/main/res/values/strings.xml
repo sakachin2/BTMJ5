@@ -2,9 +2,9 @@
     <!--string name="app_name">ｅ雀(Jong)β</string-->
     <string name="app_name">ｅ雀</string>
     <string name="app_nameE">eMahjong</string>
-    <string name="app_version">v1.28</string>
-    <string name="app_versionMinConnect">v1.28</string>
-    <string name="app_MinVersion">v1.28</string>         <!--rule send/recive and resume from history-->
+    <string name="app_version">v1.29</string>
+    <string name="app_versionMinConnect">v1.29</string>
+    <string name="app_MinVersion">v1.29</string>         <!--rule send/recive and resume from history-->
     <string name="Settings">Settings</string>
     <string name="SettingsRelated">Related</string>
     <string name="Connect">Connect</string>
@@ -306,23 +306,25 @@
                                                   If you are winner, close this dialog and push "Score" button.
 											</string>
     <string name="Alert_CompleteDlgForceOK">Received \"NG\" for \"End-of-Hand\" call.
-											To proceed game,\
+											To proceed game,\n\
 											1. \"Cancel\" this and the dialog behind, 
-											then ask to the winner to \"Send\" again \"Win Claim\".\
-                                            OR,\
+											then ask to the winner to \"Send\" again \"Win Claim\".\n\
+                                            OR,\n\
 											2. Press \"Cancel\", then \"Send\" \"End-of-Hand\" again to get \"OK\" by the new dialog popup. 
-											Dealer can set the Win as \"Invalid\" or \"Chombo\" and can cotinue the hand with the player\'s Dead hand.\
-                                            OR,\
-											3. Press \"OK\", then Press \"Fix\" to force End-of-Hand.
+											Dealer can set the Win as \"Invalid\" or \"Chombo\" and can cotinue the hand with the player\'s Dead hand.\n\
+                                            OR,\n\
+											3. Press \"OK\", then Press \"Fix\" to force End-of-Hand.\n\
+                                            OR,\n\
+											4. Press \"OK\" for the case Draw by triple Ron.
 											</string>
     <string name="Info_CompleteDlgForceOK">Forced End-of-Hand by the dealer</string>
     <string name="Alert_DrawnLastNGForceOK">Received \"NG\" for the \"ExhaustiveDraw Claim\".
-											To proceed the game,\
+											To proceed the game,\n\
 											1. Press \"Cancel" on this and the dialog behind, 
-											ask to the claimer to \"Send\" again \"ExhaustiveDraw Claim\".\
-                                            OR,\
-											2. Press \"Cancel\", then \"Send\" again to get \"OK\" on the new dialog popup.\
-                                            OR,\
+											ask to the claimer to \"Send\" again \"ExhaustiveDraw Claim\".\n\
+                                            OR,\n\
+											2. Press \"Cancel\", then \"Send\" again to get \"OK\" on the new dialog popup.\n\
+                                            OR,\n\
 											3. Press \"OK\", then press \"Fix\" to force proceed ExhaustiveDraw.
 											</string>
     <string name="Err_ResumeDlgNG">Received \"NG\" for \"ResumeSuspended Confirmation\",\
@@ -596,7 +598,14 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_OrientationLandscape2">Land.</string>
     <string name="Label_OrientationPortraitReverse">Port-Rev</string>
     <string name="Label_OrientationLandscapeReverse">Reverse Land.</string>
-    <string name="Label_OrientationLandscapeReverse2">Rev-Land.</string>
+    <string name="Label_OrientationLandscapeReverse2">Rev-Land</string>
+<!--vayf
+    <string name="Label_OrientationDevice">Device</string> vayf-->   <!--vay1-->
+<!--vayM 
+    <string name="Desc_Orientation">=== Note. This is ignored for foldable device.</string> <!==vayf-->
+<!--vayV 
+    <string name="Desc_Orientation">=== Note. This might be ignored from Android12.</string> <!==vayM-->
+    <string name="Desc_Orientation">=== Note. This is ignored from Android12, so push \"Game\" after set preferring rotation.</string> <!--vayV-->
     <string name="Label_OrientationSelectMenu">Sel.EachTime</string>
     <string name="Label_OrientationSelectMenu2">EachTime</string>
     <!--string name="Label_OrientationAtEndOfLandscape">Top panel</string-->
@@ -726,7 +735,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_Debt">Returns %1$d</string>
     <string name="Label_PendingPoint">Noten:3000</string>
     <string name="Label_AccountsSettingSamePointSpritCut">Divide(cut100)</string>
-    <string name="Label_MultiRon3Drawn">Draw for TripleRon</string>
+    <string name="Label_MultiRon3Drawn">Draw by TripleRon</string>
     <string name="Info_MultiRon3Drawn">TripleRonDraw</string>
     <string name="Label_MultiRonDupStickByEswn">Yes</string>
     <string name="Label_MultiRonDupStickAll">Yes also for CounterStick</string>
@@ -1017,7 +1026,8 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Info_GameEndMinusStop">Gameover by Tobi</string>
     <string name="Info_GameEnded">Gameover. Exit by Menu:Gameover.</string>
     <string name="Info_GameEndSuspendGameover">Gameover of SuspendedGame</string>
-    <string name="Info_GameEndSuspend">Save+Suspended. proceed to menu:\"Gameover\".</string>
+    <!--string name="Info_GameEndSuspend">Save+Suspended. proceed to menu:\"Gameover\".</string-->
+    <string name="Info_GameEndSuspend">Save+Suspended. proceed to menu:\"Gameover\".(Resume from \"Records\")</string>
 <!--setting-->
     <string name="Err_TrySendFromServer">Ask to server to send</string>
     <string name="Err_TryEndgameFromServer">Connection exists, proceed to menu:\"Gameover\" on server.</string>
@@ -1143,7 +1153,7 @@ When missed to call Ron after Riichi, you can not get win even by Draw. Allow Ri
     <string name="Label_PlayMatchNotify">Notify availability of Ron,Pon,Kan,Chii.</string>
     <string name="Desc_PlayAloneNotify">(Quick Robot Action)</string>
     <string name="Desc_PlayMatchNotify">(See \"Help\")</string>
-    <string name="Desc_PlayAloneMoved">(!! Option of PlayAloneMode was moved to \"Preferecnce\" settings.)</string>
+    <string name="Desc_PlayAloneMoved">(!! Option of PlayAloneMode was moved to \"Preferecnce\" settings. And, the above settings are ignored when playing alone with notification mode.)</string> <!--vayG-->
 
     <string name="Label_GameSet">Rounds</string>
     <string name="Label_GameSetInterrupted">Comp. Next is</string>
@@ -1646,9 +1656,9 @@ At 1st re-instalation only, data(history data and rule file) will be migrated to
 	</string-->
     <string name="RequestPickupDocumentSaveDir">
 At 1st instlation, it is required to specify a folder to save game data.\n
-Select \"%1$s\" on the dialog shown next by \"OK".\n
-If not exists, make the folder using \"CREATE NEW FOLDER\".\n
-If already exists, push \"CREATE NEW FOLDER\".\n
+Select \"%1$s\" on the dialog shown next by \"OK" button.\n
+If it dose not exists, make the folder using \"CREATE NEW FOLDER\".\n
+If already exists, push \"USE THIS FOLDER\".\n
 Depending android version, you may need to back to the parent folder then select it.\n
 \"Use Int\" means to use internal storage which may have time lag for backup.
 	</string>
@@ -1755,9 +1765,14 @@ Reinstall this APP to try to set again.
     <string name="Info_ImageExchanging">Exchanging profile Icon.</string>
     <string name="Err_AppVersionConnect">App version of %1$s is old, version %2$s is required.</string>
 
-    <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4(Kitkat) or above.</string>
     <string name="Print">Print</string>
     <string name="Err_ConnectionExist">You can not chage it during connection exists.</string>
     <string name="Msg_selectImagePicker">Select APP to pickup Image</string>
     <string name="btnSelectPicker">Select APP</string>
+    <string name="Err_PrintSupportApi19">Printing is supported on Android 4.4(Kitkat) or above.</string>
+    <string name="Info_checkingLetterbox">At 1st after installation, checking Letterbox effect.\nTry to rotate your device after close this dialog.\nApp may restart, but continue to use.</string> <!--vayT-->
+    <string name="Label_rotation_lock">O-Lock"</string> <!--vayV-->
+    <string name="Label_rotation_unlock">O-Free"</string> <!--vayV-->
+    <string name="Info_3RonDrawn">Case of Drawn by 3 Winner, continue noraml winning procedure by \"Score\" button to confirm winning pattern.\
+When all agreed, Drawn dialog will be shown.</string>
 </resources>

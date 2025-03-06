@@ -1,6 +1,7 @@
-//*CID://+vamqR~: update#=    159;                                 //+vamqR~
+//*CID://+vaz1R~: update#=    181;                                 //~vaz1R~
 //**********************************************************************//~vamdI~
-//2022/04/15 vamq recycle from animationEnd callback. may not called always CB but aboid crash by used recycle BMP//+vamqI~
+//2025/03/02 vaz1 nameplate/profile animation at win called        //~vaz1I~
+//2022/04/15 vamq recycle from animationEnd callback. may not called always CB but aboid crash by used recycle BMP//~vamqI~
 //2022/04/12 vamp Animation. for Riichi                            //~vampR~
 //2022/04/11 vamm multi anim dora                                  //~vammI~
 //2022/04/11 vamk change animation to bounce type at the place     //~vamkI~
@@ -18,6 +19,7 @@ import com.btmtest.game.TileData;
 import com.btmtest.utils.Dump;                                     //~vamdI~
 import com.btmtest.utils.URunnable;
 import com.btmtest.utils.UView;
+import com.btmtest.utils.Utils;
 
 import static com.btmtest.StaticVars.AG;                           //~vamdI~
 import static com.btmtest.game.Complete.*;
@@ -48,17 +50,22 @@ public class Anim                                                  //~vamgR~
     private static final int ANIM_FUNC_DORA=1;                     //~vamdI~
     private static final int ANIM_FUNC_WIN=2;                      //~vamgI~
     private static final int ANIM_FUNC_CALL=3;                     //~vamhI~
+    private static final int ANIM_FUNC_WIN_NAMEPLATE=4;            //~vaz1I~
                                                                    //~vamhI~
     private static final int ANIM_DURATION_DORA=2000;	//milisec  //~vamdR~//~vamgR~
     private static final int ANIM_DURATION_ON_THE_PLACE=2000;	//milisec//~vamkR~//~vammR~//~vampR~
     private static final int ANIM_DURATION_CALL=1000;	//milisec  //TODO test//~vamhR~//~vammR~//~vampR~
-//  private static final int ANIM_DELAY_RECYCLE=ANIM_DURATION_DORA+3000;	//milisec//~vamgI~//+vamqR~
-    private static final int ANIM_DELAY_RECYCLE=3000;	//milisec  //+vamqI~
+//  private static final int ANIM_DELAY_RECYCLE=ANIM_DURATION_DORA+3000;	//milisec//~vamgI~//~vamqR~
+    private static final int ANIM_DELAY_RECYCLE=3000;	//milisec  //~vamqI~
     private static final float ANIM_ACCEL_RATE=4.0f;                    //~vamdI~//~vamgR~//~vamhM~
     private static final float ANIM_SCALE_ON_THE_PLACE=3.0f;       //~vamkR~
     private static final float ANIM_BOUNCE_RATE=2.0f;              //~vamhM~
     private static final float ANIM_BOUNCE_TAKE=1.5f;              //~vamhI~
     private static final float ANIM_SCALE_KAN_TAKEN=2.0f;          //~vamhI~
+                                                                   //~vaz1I~
+    private static final float ANIM_SCALE_ON_THE_PLACE_NAMEPLATE=0.4f;//~vaz1R~
+    private static final float ANIM_ACCEL_RATE_NAMEPLATE=4.0f;     //~vaz1R~
+    private static final int   ANIM_DURATION_ON_THE_PLACE_NAMEPLATE=2000;//2 sec//~vaz1R~
                                                                    //~vamhI~
     private static final int STROKE_WIDTH_WINNING_TILE=4;          //~vamgI~
     private static final int LAYOUTID_ANIMATION=R.layout.gvimage_animation;//~vamdI~
@@ -70,6 +77,7 @@ public class Anim                                                  //~vamgR~
     private static final int VIEWID_DORA3=R.id.Image_Dora3;        //~vammI~
     private static final int VIEWID_DORA4=R.id.Image_Dora4;        //~vammI~
     private static final int VIEWID_REACH=R.id.Image_Reach;        //~vampI~
+    private static final int VIEWID_WINNER=R.id.Image_Winner;      //~vaz1I~
 	private static final int RUNID_START_ANIM=1;                   //~vamgR~
 	private static final int RUNID_RECYCLE=2;                      //~vamgR~
 //*********************************************************        //~vamdI~
@@ -78,9 +86,12 @@ public class Anim                                                  //~vamgR~
     private View llAnimation;                                      //~vamdR~
     private ImageView imageViewAnimation;                          //~vamdI~
     private ImageView viewReach;                                   //~vampI~
+    private ImageView viewWinner;                                  //~vaz1I~
     private ImageView[] viewSDora;                                   //~vamkR~//~vammR~
     private View mainView;                                         //~vamgI~
     private int delayUnit;                                         //~vamhI~
+    private int playerWin;                                         //~vaz1I~
+    private boolean[] completePlayers=new boolean[PLAYERS];        //~vaz1I~
 //*********************************************************        //~vamdI~
 //*!! Pieces  android.graphics.matrix.setRotate: counterClockwise  //~vamhI~
 //*!! animation rotation is also same                              //~vamhI~
@@ -103,6 +114,7 @@ public class Anim                                                  //~vamgR~
         llAnimation=(LinearLayout)UView.findViewById(v,LLID_ANIMATION);//~vamdR~//~vamgR~
         imageViewAnimation=(ImageView)UView.findViewById(llAnimation,VIEWID_ANIMATION);//~vamgI~
         viewReach=(ImageView)UView.findViewById(llAnimation,VIEWID_REACH);//~vampI~
+        viewWinner=(ImageView)UView.findViewById(llAnimation,VIEWID_WINNER);//~vaz1I~
         viewSDora=new ImageView[1+MAXCTR_KAN];                     //~vammR~
         viewSDora[0]=(ImageView)UView.findViewById(llAnimation,VIEWID_DORA0);//~vamkR~//~vammR~
         viewSDora[1]=(ImageView)UView.findViewById(llAnimation,VIEWID_DORA1);//~vammI~
@@ -178,6 +190,81 @@ public class Anim                                                  //~vamgR~
         if (Dump.Y) Dump.println("Anim.showWin player="+player+",tgtRect="+tgtRect);//~vamgI~
 		showAnim(ANIM_FUNC_WIN,tgtRect,startBitmap,player);        //~vamgR~
     }                                                              //~vamgI~
+//*********************************************************        //~vaz1I~
+    public void completeNamePlate(int Pplayer)                     //~vaz1R~
+    {                                                              //~vaz1I~
+        if (Pplayer!=PLAYER_YOU)                                   //~vaz1I~
+    		completePlayers[Pplayer]=true;	//start animation      //~vaz1R~
+        if (Dump.Y) Dump.println("Anim.completeNamePlate Pplayer="+Pplayer+",completePlayers="+ Utils.toString(completePlayers));//+vaz1R~
+    }                                                              //~vaz1I~
+//*********************************************************        //~vaz1I~
+    private void showWinNamePlate()                                //~vaz1I~
+    {                                                              //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showNamePlate completePlayers="+Utils.toString(completePlayers));//+vaz1R~
+    	for (int ii=0;ii<PLAYERS;ii++)                             //~vaz1I~
+        {                                                          //~vaz1I~
+        	if (completePlayers[ii])                               //~vaz1I~
+            {                                                      //~vaz1I~
+            	completePlayers[ii]=false;                         //~vaz1I~
+			    showWinNamePlate(ii);                              //~vaz1I~
+                break;                                             //+vaz1I~
+            }                                                      //~vaz1I~
+        }                                                          //~vaz1I~
+    }                                                              //~vaz1I~
+//*********************************************************        //~vaz1I~
+    private void showWinNamePlate(int Pplayer)                     //~vaz1I~
+    {                                                              //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showWinNamePlate player="+Pplayer);//~vaz1I~
+        Rect startRect=new Rect();                                 //~vaz1R~
+        Bitmap[] aBitmap=new Bitmap[1];                            //~vaz1I~
+        int rc=AG.aNamePlate.getWinner(Pplayer,startRect,aBitmap);//1:nameplate,2:profile//~vaz1R~
+        Bitmap startBitmap=aBitmap[0];                             //~vaz1I~
+        Rect tgtRect=new Rect(startRect);                          //~vaz1I~
+        int ww=tgtRect.right-tgtRect.left;                         //~vaz1R~
+        int hh=tgtRect.bottom-tgtRect.top;                         //~vaz1R~
+        int www=Math.max(ww,hh);                                   //~vaz1I~
+        int hhh=Math.min(ww,hh);                                   //~vaz1I~
+        int maxww=(int)(Math.min(AG.scrWidth,AG.scrHeight)*ANIM_SCALE_ON_THE_PLACE_NAMEPLATE);//~vaz1I~
+        int maxhh=maxww/www*hhh;                                   //~vaz1R~
+        float scale=(float)maxww/www;                               //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showWinNamePlate ww="+ww+",hh="+hh+",www="+www+",hhh="+hhh+",maxww="+maxww+",maxhh="+maxhh);//~vaz1I~
+//        switch(Pplayer)                                          //~vaz1R~
+//        {                                                        //~vaz1R~
+//        case PLAYER_YOU:                                         //~vaz1R~
+//            tgtRect.right=tgtRect.left+maxww;                    //~vaz1R~
+//            tgtRect.top=tgtRect.bottom-maxhh;                    //~vaz1R~
+//            break;                                               //~vaz1R~
+//        case PLAYER_RIGHT:                                       //~vaz1R~
+//            tgtRect.left=tgtRect.right-maxhh;                    //~vaz1R~
+//            tgtRect.top=tgtRect.bottom-maxww;                    //~vaz1R~
+//            break;                                               //~vaz1R~
+//        case PLAYER_FACING:                                      //~vaz1R~
+//            tgtRect.left=tgtRect.right-maxww;                    //~vaz1R~
+//            tgtRect.bottom=tgtRect.top+maxhh;                    //~vaz1R~
+//            break;                                               //~vaz1R~
+//        default:    //left                                       //~vaz1R~
+//            tgtRect.right=tgtRect.left+maxhh;                    //~vaz1R~
+//            tgtRect.bottom=tgtRect.top+maxww;                    //~vaz1R~
+//            break;                                               //~vaz1R~
+//        }                                                        //~vaz1R~
+		Point p=AG.aDiceBox.posLightStarter[Pplayer];//ring starter//~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showWinNamePlate RingStarterMark point="+p);//~vaz1I~
+        maxww/=2; maxhh/=2;                                         //~vaz1I~
+        switch(Pplayer)                                            //~vaz1I~
+        {                                                          //~vaz1I~
+        case PLAYER_YOU:                                           //~vaz1I~
+        case PLAYER_FACING:                                        //~vaz1I~
+            tgtRect.left=p.x-maxww;  tgtRect.right =p.x+maxww;     //~vaz1I~
+            tgtRect.top =p.y-maxhh;  tgtRect.bottom=p.y+maxhh;     //~vaz1I~
+            break;                                                 //~vaz1I~
+        default:                                                   //~vaz1I~
+            tgtRect.top =p.y-maxww;  tgtRect.bottom=p.y+maxww;     //~vaz1I~
+            tgtRect.left=p.x-maxhh;  tgtRect.right =p.x+maxhh;     //~vaz1I~
+            break;                                                 //~vaz1I~
+        }                                                          //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showWinNamePlate player="+Pplayer+",startRect="+startRect+",tgtRect="+tgtRect);//~vaz1R~
+        showAnimOnThePlaceNamePlate(scale,startRect,tgtRect,startBitmap,Pplayer);//~vaz1R~
+    }                                                              //~vaz1I~
 //*********************************************************        //~vamgI~
 //*for win                                                         //~vampI~
 //*********************************************************        //~vampI~
@@ -334,6 +421,41 @@ public class Anim                                                  //~vamgR~
         set.setInterpolator(bi);                                   //~vamkI~
         startAnimationUI(PfuncID,PimageView,set,PstartBitmap);     //~vamkR~
     }                                                              //~vamkI~
+//*********************************************************        //~vaz1I~
+	private void showAnimOnThePlaceNamePlate(float Pscale,Rect PstartRect,Rect PtgtRect,Bitmap PstartBitmap,int Pplayer)//~vaz1R~
+    {                                                              //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showAnimOnThePlacenamePlate rect="+PtgtRect+",player="+Pplayer+",startBitmap="+PstartBitmap);//~vaz1R~
+        Rect tgtRect=PtgtRect;                                     //~vaz1I~
+        AnimationSet set=new AnimationSet(true/*all member shareInterpolator*/);//~vaz1I~
+        float scaleRate=Pscale;//ANIM_SCALE_ON_THE_PLACE_NAMEPLATE;//~vaz1R~
+        float rateXstart=scaleRate;                                //~vaz1I~
+        float rateYstart=scaleRate;                                //~vaz1I~
+        float rateXend=1.0f;                                       //~vaz1I~
+        float rateYend=1.0f;                                       //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.showAnimOnThePlace scaleAnimation rateXstart="+rateXstart+",rateYstart="+rateYstart+",rateXend="+rateXend+",rateYend="+rateYend);//~vaz1I~
+        ScaleAnimation scale=new ScaleAnimation(rateXstart/*fromX*/,rateXend/*toX*/,rateYstart/*fromY*/,rateXend/*toY*/,0.5f/*pivotX*/,0.5f/*pibotY*/);//~vaz1I~
+        set.addAnimation(scale);                                   //~vaz1I~
+                                                                   //~vaz1I~
+        float startX=(float)(PtgtRect.left);                       //~vaz1R~
+        float startY=(float)(PtgtRect.top);                        //~vaz1R~
+        float endX=(float)(PstartRect.left);                       //~vaz1R~
+        float endY=(float)(PstartRect.top);                        //~vaz1R~
+        if (Dump.Y) Dump.println("Anim.showAnimOnThePlace transAnimation startX="+startX+",startY="+startY+",endX="+endX+",endY="+endY);//~vaz1I~
+        TranslateAnimation trans=new TranslateAnimation(           //~vaz1I~
+						Animation.ABSOLUTE/*fromXType*/,startX/*fromX*/,//~vaz1I~
+						Animation.ABSOLUTE/*toXType*/,endX/*toX*/, //~vaz1I~
+						Animation.ABSOLUTE/*fromYType*/,startY/*fromY*/,//~vaz1I~
+						Animation.ABSOLUTE/*toYType*/,endY/*toY*/);//~vaz1I~
+        set.addAnimation(trans);                                   //~vaz1I~
+                                                                   //~vaz1I~
+        AccelerateInterpolator ai=new AccelerateInterpolator(ANIM_ACCEL_RATE_NAMEPLATE);//~vaz1I~
+        set.setInterpolator(ai);                                   //~vaz1I~
+        set.setDuration(ANIM_DURATION_ON_THE_PLACE_NAMEPLATE/delayUnit);//~vaz1I~
+        BounceInterpolator bi=new BounceInterpolator();            //~vaz1I~
+        set.setInterpolator(bi);                                   //~vaz1I~
+		ImageView imageView=viewWinner;                            //~vaz1R~
+        startAnimationUI(ANIM_FUNC_WIN_NAMEPLATE,imageView,set,PstartBitmap);//~vaz1I~
+    }                                                              //~vaz1I~
 //*********************************************************        //~vampI~
 //*from River                                                      //~vampI~
 //*********************************************************        //~vampI~
@@ -556,8 +678,8 @@ public class Anim                                                  //~vamgR~
         v.setImageBitmap(Pbitmap);	//piece in drawable            //~vamgR~
 //  	setVisibility(true);                                       //~vamgR~
         v.startAnimation(Pset);                                    //~vamgR~
-//    if (PfuncID==ANIM_FUNC_WIN)   //copyed bitmap                //~vamhI~//+vamqR~
-//      recycle(Pbitmap);                                          //~vamgM~//+vamqR~
+//    if (PfuncID==ANIM_FUNC_WIN)   //copyed bitmap                //~vamhI~//~vamqR~
+//      recycle(Pbitmap);                                          //~vamgM~//~vamqR~
 //      lastAnimation=Pset;                                        //~vamgR~
         if (Dump.Y) Dump.println("Anim.startAnimationUIrun exit"); //~vamgI~
 	}                                                              //~vamgI~
@@ -607,8 +729,11 @@ public class Anim                                                  //~vamgR~
             onAnimationEndShowDora();                              //~vamdI~
             break;                                                 //~vamdI~
         case ANIM_FUNC_WIN:                                        //~vamgI~
-            onAnimationEndShowWin(Pbitmap);                               //~vamgI~//+vamqR~
+            onAnimationEndShowWin(Pbitmap);                               //~vamgI~//~vamqR~
             break;                                                 //~vamgI~
+        case ANIM_FUNC_WIN_NAMEPLATE:                              //~vaz1I~
+            onAnimationEndShowWinNamePlate(Pbitmap);               //~vaz1I~
+            break;                                                 //~vaz1I~
         }                                                          //~vamdI~
 //      if (Panimation==lastAnimation)                             //~vamgR~
 //          removeView();                                          //~vamgR~
@@ -682,12 +807,19 @@ public class Anim                                                  //~vamgR~
         if (Dump.Y) Dump.println("Anim.onAnimationEndShowDora");   //~vamdI~
     }                                                              //~vamdI~
 //*********************************************************        //~vamgI~
-//  private void onAnimationEndShowWin()                           //~vamgI~//+vamqR~
-    private void onAnimationEndShowWin(Bitmap Pbitmap)             //+vamqI~
+//  private void onAnimationEndShowWin()                           //~vamgI~//~vamqR~
+    private void onAnimationEndShowWin(Bitmap Pbitmap)             //~vamqI~
     {                                                              //~vamgI~
         if (Dump.Y) Dump.println("Anim.onAnimationEndShowWin");    //~vamgI~
-        recycle(Pbitmap);                                          //+vamqI~
+        recycle(Pbitmap);                                          //~vamqI~
+        showWinNamePlate();//anim nameplate after tile animation   //~vaz1R~
     }                                                              //~vamgI~
+//*********************************************************        //~vaz1I~
+    private void onAnimationEndShowWinNamePlate(Bitmap Pbitmap)    //~vaz1I~
+    {                                                              //~vaz1I~
+        if (Dump.Y) Dump.println("Anim.onAnimationEndShowWinNamePlate bmp="+Pbitmap);//~vaz1I~
+        showWinNamePlate();//for multiple winner                   //~vaz1I~
+    }                                                              //~vaz1I~
 //*********************************************************          //~vamgI~
     private MyListener getAnimationListener(int PfuncID,Bitmap Pbitmap)//~vamgI~
     {                                                              //~vamgI~

@@ -47,4 +47,10 @@
             android:id="@+id/Image_Reach"
             android:visibility="invisible"
     />
+	<ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+            android:id="@+id/Image_Winner"
+            android:visibility="invisible"
+    />   <!--vaz1-->
 </LinearLayout>

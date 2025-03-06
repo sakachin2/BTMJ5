@@ -1,5 +1,6 @@
-//*CID://+var7R~: update#= 661;                                    //~var7R~
+//*CID://+vayyR~: update#= 663;                                    //+vayyR~
 //**********************************************************************//~v101I~
+//2025/02/19 vayy bypass set marginRight by rotation(camera button may exist)//+vayyI~
 //2022/09/20 var7 vertical Top2Bottom,doublequatation u201c/201d   //~var7I~
 //2022/09/20 var6 vertical Top2Bottom,(") distance is too large    //~var6I~
 //2022/09/20 var5 vertical Top2Bottom,change () to u-fe35/fe36(vertical kakko)//~var5I~
@@ -129,7 +130,10 @@ public class GMsg                                                  //~v@@@R~
 	        if (AG.aRule.swLeftButtons)                            //~v@@@I~
 	        	rectMsgbar=new Rect(scrW-table.rightButtonW, table.topButtonH, scrW-table.rightButtonW+msgbarSize, table.topButtonH+msgbarLen);//~v@@@R~
             else                                                   //~v@@@I~
+            {                                                      //+vayyR~
     	    	rectMsgbar=new Rect(table.leftButtonW-msgbarSize, table.topButtonH, table.leftButtonW, table.topButtonH+msgbarLen);//~v@@@R~
+    	    	rectMsgbar.left+=AG.aGC.spaceLeft; rectMsgbar.right+=AG.aGC.spaceLeft;//+vayyR~
+            }                                                      //+vayyR~
 //      pxToSp=AG.resource.getDisplayMetrics().scaledDensity;      //~v@@@R~
 		swVerticalB2T=!AG.isLangJP && !swPortrait;	//landscape english//~0215I~
         if (swVerticalB2T)                                         //~0215I~
@@ -647,10 +651,10 @@ public class GMsg                                                  //~v@@@R~
             if (wwch<charW)                                        //~var4I~
             {                                                      //~var4I~
                 shift=new Point((charW-wwch)/2,0);                 //~var4I~
-//              int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);         //+var7R~
-//            if (shiftDQ!=0)                                      //+var7R~
-//              shift.y=-shiftDQ;                                  //+var7R~
-//            else                                                 //+var7R~
+//              int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);         //~var7R~
+//            if (shiftDQ!=0)                                      //~var7R~
+//              shift.y=-shiftDQ;                                  //~var7R~
+//            else                                                 //~var7R~
 	            shift.y=-chkCharShiftSbcs(Pmsg,ii,charH);          //~var4I~
             }                                                      //~var4I~
             totalShiftY+=shift.y;                                  //~var4I~
@@ -670,20 +674,20 @@ public class GMsg                                                  //~v@@@R~
 //              	shift=new Point((charW-wwch)/3,0);             //~0216I~
 //              else                                               //~0216I~
                 	shift=new Point((charW-wwch)/2,0);                 //~0215I~//~0216R~
-//              int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);         //+var7R~
-//            if (shiftDQ!=0)                                      //+var7R~
-//              shift.y=-shiftDQ;                                  //+var7R~
-//            else                                                 //+var7R~
+//              int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);         //~var7R~
+//            if (shiftDQ!=0)                                      //~var7R~
+//              shift.y=-shiftDQ;                                  //~var7R~
+//            else                                                 //~var7R~
 	            shift.y=-chkCharShiftSbcs(Pmsg,ii,charH);          //~0216R~
             }                                                      //~0216I~
 //          else                                                   //~0215I~//~0218R~
 //              shift=chkCharShift(Pmsg,ii,charW,charH);           //~0215R~//~0218R~
         	fpos[ii*2]=xx+shift.x;                                         //~v@@@I~//~0215R~
 //          fpos[ii*2+1]=yy+charH*ii-shift.y;                              //~v@@@I~//~0215R~//~var6R~
-          int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);               //+var7I~
-          if (shiftDQ!=0)                                          //+var7I~
-            fpos[ii*2+1]=yy+charH*ii+shiftDQ;                      //+var7I~
-          else                                                     //+var7I~
+          int shiftDQ=chkCharShiftDQ(Pmsg,ii,charH);               //~var7I~
+          if (shiftDQ!=0)                                          //~var7I~
+            fpos[ii*2+1]=yy+charH*ii+shiftDQ;                      //~var7I~
+          else                                                     //~var7I~
     	  if (swCharShiftSbcsType2) //quotation                               //~var6I~
             fpos[ii*2+1]=yy+charH*ii;                              //~var6M~
           else                                                     //~var6I~
@@ -714,23 +718,23 @@ public class GMsg                                                  //~v@@@R~
         return new Point(rcW,rcH);                                 //~0215R~
     }                                                              //~0215I~
     //********************************************                 //~var7I~
-    //*adjust char for DBCS double quote                           //+var7R~
+    //*adjust char for DBCS double quote                           //~var7R~
     //********************************************                 //~var7I~
     private int  chkCharShiftDQ(String Pmsg,int Ppos,int PcharH)   //~var7I~
     {                                                              //~var7I~
-    	int shiftH=0;                                              //+var7R~
+    	int shiftH=0;                                              //~var7R~
     	char ch=Pmsg.charAt(Ppos);                                 //~var7I~
         if (ch==SHIFTCHAR_DQL)    //left dquote                    //~var7I~
         {                                                          //~var7I~
-        	shiftH=PcharH/2;      //shift down                       //+var7R~
+        	shiftH=PcharH/2;      //shift down                       //~var7R~
         }                                                          //~var7I~
-//        else                                                     //+var7R~
-//        if (ch==SHIFTCHAR_DQR)   //right dquote                  //+var7R~
-//        {                                                        //+var7R~
-//            rcH=PcharH/2;                                        //+var7R~
-//            swCharShiftSbcsType2=true;                           //+var7R~
-//        }                                                        //+var7R~
-        if (Dump.Y) Dump.println("GMsg.chkCharShiftDQ pos="+Ppos+",ch="+ch+",shiftH="+shiftH+",PcharH="+PcharH);//+var7R~
+//        else                                                     //~var7R~
+//        if (ch==SHIFTCHAR_DQR)   //right dquote                  //~var7R~
+//        {                                                        //~var7R~
+//            rcH=PcharH/2;                                        //~var7R~
+//            swCharShiftSbcsType2=true;                           //~var7R~
+//        }                                                        //~var7R~
+        if (Dump.Y) Dump.println("GMsg.chkCharShiftDQ pos="+Ppos+",ch="+ch+",shiftH="+shiftH+",PcharH="+PcharH);//~var7R~
         return shiftH;                                                //~var7I~
     }                                                              //~var7I~
     //***********************************************************                 //~0216I~//~var6R~

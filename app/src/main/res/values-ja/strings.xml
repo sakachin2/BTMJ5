@@ -301,19 +301,20 @@
                                                 自分が和了者ならこのダイアログを閉じて、"得点"ボタンを押します
 											</string>
     <string name="Alert_CompleteDlgForceOK">\"局の終了 確認\"に\"NG\"応答がありました。
-											ゲームを進行する方法は次の３通りです。\
+											ゲームを進行する方法は次の３通りです。\n\
 											この画面で\"キャンセル\"、下の画面を\"キャンセル\"で閉じ、\
-											和了者に\"得点\"ボタンで\"和了 申告\"を再送してもらってやり直す。\
-											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"局の終了 確認\"を再送して\"OK\"をもらう。\
-											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"局の終了\"とする。
-											\"あがり\"を\"無効\"にするか、チョンボを設定すると局を\"続行\"（対象者は上がり放棄）することもできます。
+											和了者に\"得点\"ボタンで\"和了 申告\"を再送してもらってやり直す。\n\
+											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"局の終了 確認\"を再送して\"OK\"をもらう。\n\
+											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"局の終了\"とする。\n\
+											\"あがり\"を\"無効\"にするか、チョンボを設定すると局を\"続行\"（対象者は上がり放棄）することもできます。\n\
+                                            三家和の場合は\"OK\"を押すと流局できます。
 											</string>
     <string name="Info_CompleteDlgForceOK">親の権限で\"局の終了\"になりました</string>
     <string name="Alert_DrawnLastNGForceOK">\"流局承認 要求\"に\"NG\"応答がありました。
-											ゲームを進行する方法は次の３通りです。\
+											ゲームを進行する方法は次の３通りです。\n\
 											この画面で\"キャンセル\"、下の画面を\"キャンセル\"で閉じ、\
-											申告者に\"流局 申告\"を再送してもらってやり直す。\
-											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"流局承認 要求\"を再送して\"OK\"をもらう。\
+											申告者に\"流局 申告\"を再送してもらってやり直す。\n\
+											\"キャンセル\"を押し、下の画面の\"送信\"ボタンで\"流局承認 要求\"を再送して\"OK\"をもらう。\n\
 											\"OK\"を押し、下の画面の\"確定\"ボタンで強制的に\"流局\"とする。
 											</string>
     <string name="Err_ResumeDlgNG">\"中断再開 要求\"に\"NG\"応答がありました。\
@@ -584,6 +585,13 @@
     <string name="Label_OrientationLandscapeReverse2">横-逆向</string>
     <string name="Label_OrientationSelectMenu">毎回選択</string>
     <string name="Label_OrientationSelectMenu2">毎回選択</string>
+<!--vayf 
+    <string name="Label_OrientationDevice">端末</string> vayf--><!--vay1-->
+<!--vayM 
+    <string name="Desc_Orientation">===折りたたみスマホでは無視されます。</string> <!==vayf-->
+<!--vayV 
+    <string name="Desc_Orientation">=== Androi12以降では無視さることがあります。</string> <!==vayM-->
+    <string name="Desc_Orientation">=== Androi12以降では無視されます。向きを決めてから\"対局\"を押してください。</string> <!--vayV-->
     <!--string name="Label_OrientationAtEndOfLandscape">トップ画面</string-->
 	<string-array name="OrientationMenuDlg_Items"> 
 		<item>@string/Label_OrientationPortrait</item>
@@ -1001,7 +1009,8 @@
     <string name="Info_GameEndMinusStop">トビで終局</string>
     <string name="Info_GameEnded">終局です。メニューから\"対局終了\"してください</string>
     <string name="Info_GameEndSuspendGameover">中断-精算で終局</string>
-    <string name="Info_GameEndSuspend">保存+中断されました。\"対局終了\"してください。</string>
+    <!--string name="Info_GameEndSuspend">保存+中断されました。\"対局終了\"してください。</string-->
+    <string name="Info_GameEndSuspend">保存+中断されました。\"対局終了\"してください。(再開は\"履歴"から)</string>
 <!--setting-->
     <!--string name="Err_TrySendFromServer">サーバーから送ってください</string-->
     <string name="Err_TryEndgameFromServer">接続しています、サーバーから\"対局終了\"してください</string>
@@ -1149,7 +1158,7 @@
     <string name="Label_PlayMatchNotify">ロン、ポン、カン、チーの可能性を通知</string>
     <string name="Desc_PlayAloneNotify">（ロボットの動きが早くなる）</string>
     <string name="Desc_PlayMatchNotify">（ヘルプ参照）</string>
-    <string name="Desc_PlayAloneMoved">(!! 一人遊びのオプションは\"個人設定\"に移動しました)</string>
+    <string name="Desc_PlayAloneMoved">(!! 一人遊びのオプションは\"個人設定\"に移動しました。また一人遊びで通知モードのときは上記の設定は無視されます。)</string> <!--vayG-->
 
     <string name="Label_GameSet">試合</string>
     <string name="Label_GameSetInterrupted">迄 終了、次は</string>
@@ -1640,7 +1649,7 @@ Android-11以降、初回インストール時には、ゲームデータの保�
 	</string-->
     <string name="RequestPickupDocumentSaveDir">
 初回インストールです。ゲームデータの保存先を設定してください。\n
-\"OK\"で表示されるダイアログで \"%1$s\" を選択します。\n
+\"OK\"を押して次に表示されるダイアログで \"%1$s\" を選択します。\n
 初めての場合は、 \"新規フォルダーを作成\" してください。\n
 作成済みの場合は、\"このフォルダーを使用\"を押します。\n
 androidのバージョンによっては、一旦親フォルダーに戻って操作する必要があります。\n
@@ -1716,7 +1725,7 @@ androidのバージョンによっては、一旦親フォルダーに戻って�
 &lt;BR&gt;&lt;BR&gt;</string>
     <string name="Info_IgnoreRobotDiscardToOpenReach">オープン立直へのロボットの放銃は無視されました。</string>
     <string name="Info_YakumanByHumanDiscardToOpenReach">オープン立直への放銃は役満払い。</string>
-    <string name="Info_ChomboByHumanDiscardToOpenReach">オープン立直への放銃はできません。</string>
+    <!--string name="Info_ChomboByHumanDiscardToOpenReach">オープン立直への放銃はできません。</string-->
     <string name="Warning_HumanDiscardToOpenReach_SelectOther">オープン立直の放銃、他を打牌してください</string>
     <string name="Warning_HumanDiscardToOpenReach_SelectOther_Kan">オープン立直の槍槓です</string>
 
@@ -1752,8 +1761,13 @@ androidのバージョンによっては、一旦親フォルダーに戻って�
 
     <string name="Err_PrintSupportApi19">印刷サポートはアンドロイド4.4(Kitkat)からです。</string>
     <string name="Print">印刷</string>
-    <string name="Err_ConnectionExist">接続中は変更できません</string>
+    <string name="Err_ConnectionExist">この項目は接続中は変更できません</string>
     <string name="Msg_selectImagePicker">イメージを選択するアプリを選んでください</string>
     <string name="btnSelectPicker">選択アプリ</string>
+    <string name="Info_checkingLetterbox">最初にレターボックス表示の効果を確認します。\nこのダイアログを閉じてデバイスを回転してみてください。\nアプリが再起動するかもしれませんが続けてけて下さい\n.</string> <!--vayT-->
+    <string name="Label_rotation_lock">向き固定"</string> <!--vayV-->
+    <string name="Label_rotation_unlock">回転自由"</string> <!--vayV-->
+    <string name="Info_3RonDrawn">三家和で流局になりますが、和了の確認のため\"得点\"ボタンから通常の処理をしてください。\
+合意が得られた段階で流局のダイアログにつながります。</string>
 
 </resources>

@@ -1,5 +1,9 @@
-//*CID://+vavpR~: update#= 716;                                    //~vavpR~
+//*CID://+vayYR~: update#= 759;                                    //~vayYR~
 //**********************************************************************//~v101I~
+//2025/02/28 vayY hand overwrap You and right when your call is not 1st(rectHand changes by other call)//~vayYI~
+//2025/02/19 vayB long device land, earth of YOU ovriwrap right open hand//~vayBI~
+//2025/02/15 vayp 1st earth overwrap to hands after adjusted earth of YOU.(Portrate but flat by large margin top)//~vaypI~
+//2025/02/10 vayg Try nameplate on left of stock for also landscape//~vaygI~
 //2023/01/28 vavp size of piece on earth for landscape. It can be enlarge more.//~vavpI~
 //2022/04/07 vamh Animation. for Pon/Chii/Kan                      //~vamhI~
 //2021/11/08 vag9 Ankan on Earth;display Red5 if option active(it may be disappear by facedown tile)//~vag9I~
@@ -32,13 +36,14 @@ import static com.btmtest.StaticVars.AG;                           //~v@@@I~
 public class Earth                                                 //~v@@@R~
 {                                                                  //~0914I~
 	public  static final int PAIR_SPACING=5;                       //~v@@@R~
-    private static final int MARGIN_PAIR_START=10;                                                               //~v@@@I~
+    private static final int MARGIN_NAMEPLATE=15;                  //~vaygR~
+//  private static final int MARGIN_PAIR_START=10;                                                               //~v@@@I~//~vaygR~
     public  static final double RATE_ADD_KAN=0.5;                  //~v@@@R~
 //  private static final int COLOR_KAN_ADD_UNDER=Color.argb(0x80,0x80,0x80,0x80);//~v@@@R~
     private static final int COMPLETE_COLOR_KAN_ADD=Color.argb(0xff,0xff,0x00,0x00);//~v@@@I~
     private static final int COMPLETE_COLOR_KAN_TAKEN=Color.argb(0xff,0xff,0x00,0x00);//~v@@@I~
 //  private static final int COMPLETE_STROKE_WIDTH_ADD_KAN=4;      //~v@@@R~
-    private static final double MAX_EARCH_RATE=0.75;    // 3/4     //+vavpI~
+    private static final double MAX_EARCH_RATE=0.75;    // 3/4     //~vavpI~
 	private GCanvas gcanvas;                                       //~v@@@I~
     private MJTable table;                                         //~v@@@I~
     private Pieces pieces;//~v@@@I~
@@ -64,9 +69,13 @@ public class Earth                                                 //~v@@@R~
     public int playerDrawEarth;                                    //~vamhI~
     public TileData tdOnEarth;                                     //~vamhR~
     public Bitmap bmOnEarth;                                       //~vamhI~
+    private boolean swNPLeft;                                      //~vaygR~
+    private int space_Hand_Earth;                              //~vaygI~
+    private boolean swAdjusted;                                    //~vaygI~
 //*************************                                        //~v@@@I~
     public Earth(GCanvas Pgcanvas,Hands Phands)                    //~v@@@R~
     {                                                              //~0914I~//~v@@@R~
+        swAdjusted=false;                                          //~vaygI~
         AG.aEarth=this;                                            //~v@@@R~
         hands=Phands;                                              //~v@@@I~
         gcanvas = Pgcanvas;                                        //~v@@@R~
@@ -80,9 +89,20 @@ public class Earth                                                 //~v@@@R~
         WW=r[PLAYER_YOU].left; HH=r[PLAYER_YOU].top;               //~v@@@R~
         Point p=table.getPairPieceSize();                          //~v@@@R~
         piecePairW=p.x; piecePairH=p.y;                            //~v@@@R~
+        swNPLeft=AG.swNamePlateLeft || AG.swLongDevice || AG.portrait;//~vaygR~
+        space_Hand_Earth=getSpaceHandEarth();                     //~vaygR~
         if (Dump.Y) Dump.println("Earth.constructor pair,WW="+WW+",HH="+HH+",piecePairW="+piecePairW+",piecePairH="+piecePairH);//~v@@@I~
+        if (Dump.Y) Dump.println("Earth.constructor earthRect="+Utils.toString(earthRect));//~vaygI~
     }                                                              //~v@@@R~
     //*******************************************************************//~v@@@R~
+    //*static routin calles this                                   //~vaygI~
+    //*******************************************************************//~vaygI~
+    private static int getSpaceHandEarth()                         //~vaygI~
+    {                                                              //~vaygI~
+        int rc=AG.aMJTable.handPieceW/2;                           //~vaygI~
+        if (Dump.Y) Dump.println("Earth.getSpaceHandEarth rc="+rc);//~vaygI~
+        return rc;                                                 //~vaygI~
+    }                                                              //~vaygI~
     private int getRiverTilePos(TileData[] Ptds)                   //~v@@@R~
     {                                                              //~v@@@R~
         int rc=-1;                                                 //~v@@@R~
@@ -571,33 +591,159 @@ public class Earth                                                 //~v@@@R~
         rectStock=PrectStock;                                      //~v@@@R~
         if (Dump.Y) Dump.println("Earth.adjustRectPair from Stock");//~v@@@R~
     }                                                              //~v@@@R~
+    //*********************************************************    //~vaygI~
+    //*if score override earth, shift earth to above score         //~vaygI~
+    //*********************************************************    //~vaygI~
+    private void adjustRectPairWithNamePlate(Rect[] PrectStock)        //~vaygR~
+    {                                                              //~vaygI~
+        Rect rnp,rectPair,rectStock;                               //~vaygR~
+        Rect[] rectScore;                                          //~vaygR~
+        int WW,HH;                                                 //~vaygI~
+    //*******************************                              //~vaygI~
+		if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate entry earthRect="+Utils.toString(earthRect));//~vaygI~
+      	rectScore=AG.aNamePlate.rectScore;                         //~vaygR~
+      	if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate rectNamePlate="+Utils.toString(rectScore));//~vaygI~
+      	if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate rectStock="+Utils.toString(PrectStock));//~vaygI~
+//    //*You                                                       //~vaygI~
+//        rectPair=earthRect[PLAYER_YOU];      //right:rightButtonW//~vaygI~
+//        rnp=rectNamePlate[PLAYER_RIGHT];                         //~vaygI~
+//        posLimit=rnp.left-MARGIN_NAMEPLATE;  //left of RIGHT nameplate//~vaygI~
+//        distLimit=posLimit-rectPair.right;   //right:space to right edge from YOU 1st earth pair//~vaygI~
+//        if (distLimit<0)    //nameplate overwrap to 1st earth of YOU//~vaygI~
+//        {                                                        //~vaygI~
+//            rectPair.right+=distLimit;   //shift earth right to left//~vaygI~
+//            if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate YOU adjust by nameplate posLimit="+posLimit+",distLimit="+distLimit+",rectPair="+rectPair);//~vaygI~
+//        }                                                        //~vaygI~
+//    //*Right                                                     //~vaygI~
+//        rectPair=earthRect[PLAYER_RIGHT];     //bottom:topspace  //~vaygI~
+//        rnp=rectNamePlate[PLAYER_FACING];                        //~vaygI~
+//        posLimit=rnp.bottom+MARGIN_NAMEPLATE;  //bottom of FACE nameplate//~vaygI~
+//        distLimit=rectPair.bottom-posLimit;    //bottom:space to top edge from RIGHT 1st earth pair//~vaygI~
+//        if (distLimit<0)    //nameplate overwrap to 1st earth of RIGHT//~vaygI~
+//        {                                                        //~vaygI~
+//            rectPair.bottom-=distLimit; //shift down earth top   //~vaygI~
+//            if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate RIGHT adjust by nameplate posLimit="+posLimit+",distLimit="+distLimit+",rectPair="+rectPair);//~vaygI~
+//        }                                                        //~vaygI~
+//    //*Facing                                                    //~vaygI~
+//        rectPair=earthRect[PLAYER_FACING]; //right:leftspace     //~vaygI~
+//        rnp=rectNamePlate[PLAYER_LEFT];                          //~vaygI~
+//        posLimit=rnp.right+MARGIN_NAMEPLATE;    //right of LEFT nameplate//~vaygI~
+//        distLimit=rectPair.right-posLimit;      //right:space to left edge from FACE 1st earth pair//~vaygI~
+//        if (distLimit<0)    //nameplate overwrap to 1st earth of RIGHT//~vaygI~
+//        {                                                        //~vaygI~
+//            rectPair.right-=distLimit; //inclease distance from top edge//~vaygI~
+//            if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate FACE adjust by nameplate posLimit="+posLimit+",distLimit="+distLimit+",rectPair="+rectPair);//~vaygI~
+//        }                                                        //~vaygI~
+//    //*Left                                                      //~vaygI~
+//        rectPair=earthRect[PLAYER_LEFT];           //bottom:HH-handY//~vaygI~
+//        if (swNPLeft)   //nameplate on the left of stock         //~vaygI~
+//        {                                                        //~vaygI~
+//            rnp=rectNamePlate[PLAYER_YOU];                       //~vaygI~
+//            posLimit=rnp.top-MARGIN_NAMEPLATE;    //top of YOU nameplate//~vaygI~
+//            distLimit=posLimit-rectPair.bottom;      //bottom:space to bottom edge from LEFT 1st earth pair//~vaygI~
+//            if (distLimit<0)    //nameplate overwrap to 1st earth of RIGHT//~vaygI~
+//            {                                                    //~vaygI~
+//                rectPair.bottom=distLimit; //shift up left earth //~vaygI~
+//                if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate FACE adjust by nameplate posLimit="+posLimit+",distLimit="+distLimit+",rectPair="+rectPair);//~vaygI~
+//            }                                                    //~vaygI~
+//        }                                                        //~vaygI~
+                                                                   //~vaygI~
+    //*You                                                         //~vaygI~
+        rectPair=earthRect[PLAYER_YOU];      //right:rightButtonW  //~vaygI~
+    	WW=rectPair.left; HH=rectPair.top;                         //~vaygI~
+        rnp=rectScore[PLAYER_RIGHT];                               //~vaygR~
+        rectStock=PrectStock[PLAYER_YOU];                          //~vaygI~
+	    if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate Earth:YOU and Score:RIGHT dist nameplate bottom ="+rnp.bottom+",stock.bottom="+rectStock.bottom+",handY="+table.handY);//~vaygR~//~vaypR~
+//      if (rnp.bottom>rectStock.bottom) //right nametable beyond you stock//~vaygR~//~vaypR~
+        if (rnp.bottom>table.handY) //right nametable reach to Hands(more space diff of handY & earth top)//~vaypI~
+        {                                                          //~vaygI~
+        	rectPair.right=WW-(rnp.left-MARGIN_NAMEPLATE);  //left of RIGHT nameplate//~vaygR~
+	        if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate @@@@@ RIGHT nameplate reach to YOU stock bottom rectPair.right="+rectPair.right+",WW="+WW+",rnp.left="+rnp.left);//~vaygI~
+        }                                                          //~vaygI~
+        else                                                       //~vayBI~
+        if (!AG.portrait && AG.swLongDevice)	//long device landscape, right open hand may expand down//~vayBI~
+        {                                                          //~vayBI~
+        	rectPair.right=WW-(rnp.right/*-MARGIN_NAMEPLATE*/);  //left of RIGHT nameplate//~vayBI~
+	        if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate @@@@@ limit to RIGHT nameplate to avoid overwrap open hand of right for long device land");//~vayBI~
+        }                                                          //~vayBI~
+    //*Right                                                       //~vaygI~
+        rectPair=earthRect[PLAYER_RIGHT];     //bottom:topspace    //~vaygR~
+        rnp=rectScore[PLAYER_FACING];                              //~vaygR~
+        rectStock=PrectStock[PLAYER_RIGHT];                        //~vaygR~
+	    if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate Earth:RIGHT stock:RIGHT NamePlate;Face np.right="+rnp.right+",stock.right="+rectStock.right);//~vaygR~
+        if (rnp.right<rectStock.right) //face nametable is left of right stock//~vaygI~
+        {                                                          //~vaygI~
+	        if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate @@@@ FACE nameplate NOT reach to RIGHT stock right");//~vaygR~
+//        	rectPair.bottom=PrectStock[PLAYER_FACING].top;  //up earth up to top of right stock//~vaygR~//~vayYR~
+			;	//upto top end                                     //~vayYI~
+        }                                                          //~vaygI~
+        else                                                       //~vaygI~
+        rectPair.bottom=rnp.bottom+MARGIN_NAMEPLATE;  //under of FACE nameplate//~vaygR~
+    //*Facing                                                      //~vaygI~
+        rectPair=earthRect[PLAYER_FACING]; //right:leftspace       //~vaygI~
+        rnp=rectScore[PLAYER_LEFT];                                //~vaygR~
+        rectStock=PrectStock[PLAYER_FACING];                       //~vaygI~
+	    if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate Earth:FACE score:LEFT top ="+rnp.top+",stock.top="+rectStock.top);//~vaygR~
+        if (rnp.top<rectStock.top) //left nametable beyond face stock//~vaygR~
+        {                                                          //~vaygI~
+	        if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate @@@@ LEFT nameplate reach to FACE stock top");//~vaygR~
+        	rectPair.right=(rnp.right+MARGIN_NAMEPLATE);  //FACE earth is right of RIGHT nameplate//~vaygR~
+        }                                                          //~vaygI~
+    //*Left                                                        //~vaygI~
+        rectPair=earthRect[PLAYER_LEFT];           //bottom:HH-handY//~vaygI~
+        rnp=rectScore[PLAYER_YOU];                                 //~vaygR~
+        rectStock=PrectStock[PLAYER_LEFT];                         //~vaygR~
+	    if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate Earth:LEFT stock:YOU np.left="+rnp.left+",stock.left="+rectStock.left);//~vaygI~
+        if (rnp.left>rectStock.left) //face nametable is left of right stock//~vaygI~
+        {                                                          //~vaygI~
+	        if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate @@@@ YOU nameplate NOT reach to LEFT stock left handX="+table.handX+",handPieceW="+table.handPieceW+",PAIR_SPACING="+PAIR_SPACING);//~vaygR~//~vayYR~
+//        if (table.handX-table.handPieceW>rectStock.left)	//left of hand at taken is right of leftStock left//+vayYR~
+          if (table.handX>rectStock.left)	//left of hand at taken is right of leftStock left//+vayYI~
+        	rectPair.bottom=Math.max(HH-(table.handY+table.handPieceH),PAIR_SPACING); //don earth pair to bottom line//~vayYI~
+          else                                                     //~vayYI~
+        	rectPair.bottom=HH-PrectStock[PLAYER_YOU].bottom;  //down up to you stock bottom//~vaygR~
+        }                                                          //~vaygI~
+        else                                                       //~vaygI~
+        rectPair.bottom=HH-(rnp.top-MARGIN_NAMEPLATE);  //above of YOU nameplate//~vaygR~
+		if (Dump.Y) Dump.println("Earth.adjustRectPairWithNamePlate exit earthRect="+Utils.toString(earthRect));//~vaygI~
+    }                                                              //~vaygI~
     //*********************************************************    //~v@@@R~
     //*adjust rect box by stock position                           //~v@@@R~
+    //*shift to stock end if space available                       //~vaygI~
     //*********************************************************    //~v@@@R~
-    public void adjustRectPair(Rect[] PrectStock)                  //~v@@@R~
+//  public void adjustRectPair(Rect[] PrectStock)                  //~v@@@R~//~vaygR~
+    private void adjustRectPair(Rect[] PrectStock)                 //~vaygI~
     {                                                              //~v@@@R~
         int ww,hh,ww4,dist,stockEnd,pairStart,stockBottom;         //~v@@@R~
         Rect rectPair;                                             //~v@@@R~
     //*******************************                              //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair earthRect="+Utils.toString(earthRect));//~vaygI~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair swNPLeft="+swNPLeft);//~vaygR~//~vaypR~
+        if (swNPLeft)   //nameplate on the left of stock           //~vaygI~
+    		adjustRectPairWithNamePlate(PrectStock);               //~vaygR~
         ww=piecePairW; hh=piecePairH;                              //~v@@@R~
 //        if (PpairLen!=0)                                         //~v@@@R~
 //            ww4=PpairLen;                                        //~v@@@R~
 //        else                                                     //~v@@@R~
             ww4=ww*PAIRCTR+hh;                                     //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair ww4="+ww4); //~vaygI~
     //*You                                                         //~v@@@R~
         rectPair=earthRect[PLAYER_YOU];    //distans from wall right and bottom//~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair YOU old rectPair="+rectPair);//~vaygI~
         stockEnd=PrectStock[PLAYER_YOU].right;                     //~v@@@R~
         int stockRight=stockEnd;                                   //~v@@@R~
         stockBottom=PrectStock[PLAYER_YOU].bottom;                 //~v@@@R~
-        int endHands=hands.rectHands.right;                              //~v@@@R~
+//      int endHands=hands.rectHands.right;                              //~v@@@R~//~vayYR~
+        int endHands=table.handX+AG.aHands.getLengthHandsAfter1stCall()+PAIR_SPACING;	//13-3+taken tile length//~vayYR~
         stockEnd=Math.max(stockEnd,endHands);                      //~v@@@R~
         pairStart=WW-(ww4+rectPair.right);                         //~v@@@R~
         if (Dump.Y) Dump.println("Earth.adjustRectPair you endHands="+endHands+",ww4="+ww4+",stockRight="+stockRight+",stockEnd="+stockEnd+",pairStart="+pairStart+",stockBottom="+stockBottom);//~v@@@R~
         if (Dump.Y) Dump.println("Earth.adjustRectPair rectHands="+hands.rectHands.toString());//~v@@@I~
         dist=pairStart-stockEnd;                                   //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair rectPair:YOU dist="+dist+",pairStart="+pairStart+",stockEnd="+stockEnd+",ww4="+ww4);//~vaygI~
         if (hands.swPortrait && swVerticalEarths[PLAYER_YOU]             //~v@@@R~
         &&  stockRight<pairStart)                                  //~v@@@R~
-        {                                                          //~v@@@R~
+        {
             if (endHands>pairStart)                                //~v@@@R~
                 rectPair.bottom=HH-stockBottom;                    //~v@@@R~
         }                                                          //~v@@@R~
@@ -605,48 +751,67 @@ public class Earth                                                 //~v@@@R~
         {                                                          //~v@@@R~
             if (dist>0)                                            //~v@@@R~
             {                                                      //~v@@@R~
-                rectPair.right+=Math.max(dist-MARGIN_PAIR_START,0);//~v@@@R~
+//              rectPair.right+=Math.max(dist-MARGIN_PAIR_START,0);//~v@@@R~//~vaygR~
+                rectPair.right+=Math.max(dist-space_Hand_Earth,0); //~vaygI~
 //              rectPair.bottom=stockBottom;                       //~v@@@R~
                 rectPair.bottom=HH-hands.rectHands.bottom;         //~v@@@I~
+		        if (Dump.Y) Dump.println("Earth.adjustRectPair @@@@ YOU dist>0 rectPair="+rectPair);//~vaygR~
             }                                                      //~v@@@R~
     //      else                                                   //~v@@@R~
     //          rectPair.right=0;     //2 tile was deleted         //~v@@@R~
         }                                                          //~v@@@R~
-        if (Dump.Y) Dump.println("Earth.adjustRectPair you stockEnd="+stockEnd+",dist="+dist+",right="+rectPair.right+",bottom="+rectPair.bottom);//~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair YOU stockEnd="+stockEnd+",pairSTart="+pairStart+",dist="+dist+",rectPair="+rectPair);//~vaygR~
     //*Right                                                       //~v@@@R~
         rectPair=earthRect[PLAYER_RIGHT];                          //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair RIGHT old rectPair="+rectPair);//~vaygI~
         stockEnd=PrectStock[PLAYER_RIGHT].top;                     //~v@@@R~
         pairStart=(ww4+rectPair.bottom);                           //~v@@@R~
         dist=stockEnd-pairStart;                                   //~v@@@R~
         if (dist>0)                                                //~v@@@R~
-            rectPair.bottom+=Math.max(dist-MARGIN_PAIR_START,0);   //~v@@@R~
+        {                                                          //~vaygI~
+//          rectPair.bottom+=Math.max(dist-MARGIN_PAIR_START,0);   //~v@@@R~//~vaygR~
+            rectPair.bottom+=Math.max(dist-space_Hand_Earth,0);    //~vaygI~
+        	if (Dump.Y) Dump.println("Earth.adjustRectPair @@@@ RIGHT dist="+dist+",new rectPair="+rectPair);//~vaygI~
+        }                                                          //~vaygI~
         else                                                       //~v@@@R~
         if (swVerticalEarths[PLAYER_RIGHT])                        //~v@@@R~
             rectPair.bottom=0;                                     //~v@@@R~
-        if (Dump.Y) Dump.println("Earth.adjustRectPair right stockEnd="+stockEnd+",dist="+dist+",rectPair right="+rectPair.right+",bottom="+rectPair.bottom);//~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair RIGHT stockEnd="+stockEnd+",pairSTart="+pairStart+",dist="+dist+",rectPair="+rectPair);//~vaygI~
     //*Facing                                                      //~v@@@R~
         rectPair=earthRect[PLAYER_FACING];                         //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair FACING old rectPair="+rectPair);//~vaygI~
         stockEnd=PrectStock[PLAYER_FACING].left;                   //~v@@@R~
         pairStart=ww4+rectPair.right;                              //~v@@@R~
         dist=stockEnd-pairStart;                                   //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair FACE paristart to stockEnd dist="+dist);//~vaygI~
         if (dist>0)                                                //~v@@@R~
-            rectPair.right+=Math.max(dist-MARGIN_PAIR_START,0);    //~v@@@R~
+        {                                                          //~vaygI~
+//          rectPair.right+=Math.max(dist-MARGIN_PAIR_START,0);    //~v@@@R~//~vaygR~
+            rectPair.right+=Math.max(dist-space_Hand_Earth,0);     //~vaygI~
+        	if (Dump.Y) Dump.println("Earth.adjustRectPair @@@@ FACE dist="+dist+",new rectPair="+rectPair);//~vaygR~
+        }                                                          //~vaygI~
         else                                                       //~v@@@R~
         if (swVerticalEarths[PLAYER_FACING])                       //~v@@@I~
             rectPair.right=0;                                      //~v@@@R~
-        if (Dump.Y) Dump.println("Earth.adjustRectPair facing stockEnd="+stockEnd+",dist="+dist+",right="+rectPair.right);//~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair FACE stockEnd="+stockEnd+",pairSTart="+pairStart+",dist="+dist+",rectPair="+rectPair);//~vaygI~
     //*Left                                                        //~v@@@R~
         rectPair=earthRect[PLAYER_LEFT];                           //~v@@@R~
-        if (Dump.Y) Dump.println("Earth.adjustRectPair ww4="+ww4+",rectPair right="+rectPair.right+",bottom="+rectPair.bottom);//~v@@@I~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair LEFT old rectPair="+rectPair);//~vaygI~
         stockEnd=PrectStock[PLAYER_LEFT].bottom;                   //~v@@@R~
 //      pairStart=table.handY-ww4; //erathY contains bottomButtonH //~v@@@R~
         pairStart=HH-(rectPair.bottom+ww4); //erathY contains bottomButtonH//~v@@@I~
         dist=pairStart-stockEnd;                                   //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair rectPair:LEFT dist="+dist+",pairStart="+pairStart+",stockEnd="+stockEnd+",ww4="+ww4);//~vaygI~
         if (dist>0)                                                //~v@@@R~
-            rectPair.bottom+=Math.max(dist-MARGIN_PAIR_START,0);   //~v@@@R~
-        else                                                       //~v@@@R~
-            rectPair.bottom=HH-table.handY;                        //~v@@@R~
-        if (Dump.Y) Dump.println("Earth.adjustRectPair left stockEnd="+stockEnd+",dist="+dist+",rectPair right="+rectPair.right+",bottom="+rectPair.bottom);//~v@@@R~
+        {                                                          //~vaygI~
+//          rectPair.bottom+=Math.max(dist-MARGIN_PAIR_START,0);   //~v@@@R~//~vaygR~
+            rectPair.bottom+=Math.max(dist-space_Hand_Earth,0);    //~vaygI~
+		    if (Dump.Y) Dump.println("Earth.adjustRectPair @@@@ rectHand:LEFT dist>0 rectPair="+rectPair);//~vaygR~
+        }                                                          //~vaygI~
+//      else                                                       //~v@@@R~//~vaygR~
+//          rectPair.bottom=HH-table.handY;                        //~v@@@R~//~vaygR~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair LEFT stockEnd="+stockEnd+",pairSTart="+pairStart+",dist="+dist+",rectPair="+rectPair);//~vaygI~
+        if (Dump.Y) Dump.println("Earth.adjustRectPair earthRect="+Utils.toString(earthRect));//~vaygR~
     }                                                              //~v@@@R~
     //*********************************************************    //~v@@@R~
     //*return pickup kan(minkan:taken from river)                  //~v@@@R~
@@ -676,16 +841,20 @@ public class Earth                                                 //~v@@@R~
         return len;//~v@@@I~
     }                                                              //~v@@@I~
     //*********************************************************    //~v@@@R~
-    public Rect getRectPair(int Pplayer,TileData[] Ptds)//~v@@@R~
+//  public Rect getRectPair(int Pplayer,TileData[] Ptds)//~v@@@R~  //~vaygR~
+    private Rect getRectPair(int Pplayer,TileData[] Ptds)          //~vaygI~
     {                                                              //~v@@@R~
         int xx1,xx2,yy1,yy2,ww,hh,addKan=0;                    //~v@@@R~
     //*****************************                                //~v@@@R~
+        if (Dump.Y) Dump.println("Earth.getRectPair entry earthRect="+Utils.toString(earthRect));//~vaygR~
         ww=piecePairW; hh=piecePairH;                              //~v@@@R~
         if (Ptds.length==PAIRCTR_KAN)                              //~v@@@R~
 			addKan=(isPickupKan(Ptds) ? ww : ww-(hh-ww))+PIECE_SPACING;//~v@@@R~
         Point p=AG.aPlayers.getPointPair(Pplayer);//previously saved right-bottom of pairBox//~v@@@R~
-        if (p==null)    //TODO test                                //~v@@@R~
+//      if (p==null)    //TODO test                                //~v@@@R~//~vaygR~
+        if (!swAdjusted)                                           //~vaygI~
         {                                                          //~v@@@R~
+        	swAdjusted=true;                                       //~vaygI~
             int len=getPairLen(Ptds);                              //~v@@@R~
             adjustRectPair(rectStock);                         //~v@@@R~
         }                                                          //~v@@@R~
@@ -799,6 +968,7 @@ public class Earth                                                 //~v@@@R~
             break;                                                 //~v@@@I~
         }                                                          //~v@@@I~
         if (Dump.Y) Dump.println("Earth.getRectPair player="+Pplayer+",x1="+xx1+",y1="+yy1+",x2="+xx2+",y2="+yy2);//~v@@@R~
+        if (Dump.Y) Dump.println("Earth.getRectPair exit earthRect="+Utils.toString(earthRect));//~vaygI~
         return new Rect(xx1,yy1,xx2,yy2);                          //~v@@@R~
     }                                                              //~v@@@R~
 	//*********************************************************    //~v@@@I~
@@ -872,7 +1042,8 @@ public class Earth                                                 //~v@@@R~
         	space=rs[0].left-rs[0].right;                          //~v@@@I~
         else                                                       //~v@@@I~
         	space=rs[1].left-rs[1].bottom;                         //~v@@@I~
-        int req1=MARGIN_PAIR_START+PAIR_SPACING*3 /*4pair*/ + (PIECE_SPACING*3 /*4tiles*/)*4 /*4pair*/;//~v@@@I~
+//      int req1=MARGIN_PAIR_START+PAIR_SPACING*3 /*4pair*/ + (PIECE_SPACING*3 /*4tiles*/)*4 /*4pair*/;//~v@@@I~//~vaygR~
+        int req1=getSpaceHandEarth()+PAIR_SPACING*3 /*4pair*/ + (PIECE_SPACING*3 /*4tiles*/)*4 /*4pair*/;//~vaygR~
         int req3=PpieceW*2+PIECE_SPACING_TAKEN*2;                   //~v@@@I~
         double req2=(3 /*tilesStand*/ + PrateHeightWidth /*1tiles lying*/) *4 /*4pair*/;//~v@@@I~
       	if (!PswPortRait)                                          //~vavpI~
@@ -883,11 +1054,11 @@ public class Earth                                                 //~v@@@R~
         	if (Dump.Y) Dump.println("Earth.chkEarthSpace portrait space="+space+",req3="+req3+",req2="+req2);//~vavpI~
       	}                                                          //~vavpI~
         ww=(int)((space-req1-req3)/req2);                          //~v@@@R~
-        int wwMax=(int)(PpieceW*MAX_EARCH_RATE);                     //+vavpI~
-        if (Dump.Y) Dump.println("Earth.chkEarthSpace handW="+PpieceW+",space="+space+",req1="+req1+",req2="+req2+",req3="+req3+",ww="+ww+",wwMax="+wwMax);//+vavpI~
-        if (ww>wwMax)                                              //+vavpI~
-        	ww=wwMax;                                              //+vavpI~
-        if (Dump.Y) Dump.println("Earth.chkEarthSpace ww="+ww+",wwMax="+wwMax);//+vavpR~
+        int wwMax=(int)(PpieceW*MAX_EARCH_RATE);                     //~vavpI~
+        if (Dump.Y) Dump.println("Earth.chkEarthSpace handW="+PpieceW+",space="+space+",req1="+req1+",req2="+req2+",req3="+req3+",ww="+ww+",wwMax="+wwMax);//~vavpI~
+        if (ww>wwMax)                                              //~vavpI~
+        	ww=wwMax;                                              //~vavpI~
+        if (Dump.Y) Dump.println("Earth.chkEarthSpace ww="+ww+",wwMax="+wwMax);//~vavpR~
         return ww;                                                 //~v@@@I~
     }                                                              //~v@@@I~
 	//*********************************************************    //~v@@@I~

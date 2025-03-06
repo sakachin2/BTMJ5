@@ -1,6 +1,12 @@
-//*CID://+vavtR~: update#= 677;                                    //+vavtR~
+//*CID://+vaz1R~: update#= 706;                                    //~vaz1R~
 //**********************************************************************//~v101I~
-//2023/01/29 vavt avoid overwrap nameplate and waiting circle when landscape(case of N7)//+vavtI~
+//2025/03/02 vaz1 nameplate/profile animation at win called        //~vaz1I~
+//2025/02/19 vayA small nameplate when landscape(previously nameplate was near the starter andlimited by distannce from starter)//~vayAI~
+//2025/02/15 vayp 1st earth overwrap to hands after adjusted earth of YOU.(Portrate but flat by large margin top)//~vaypI~
+//2025/02/10 vayg Try nameplate on left of stock for also landscape//~vaygI~
+//2025/02/02 vay9 nameplate score half of linewidth disappear      //~vay9I~
+//2025/01/31 vay8 profile may overwrap                             //~vay8I~
+//2023/01/29 vavt avoid overwrap nameplate and waiting circle when landscape(case of N7)//~vavtI~
 //2023/01/29 vavs avoid overwrap name plate and river when landscape(case of N7)//~vavsI~
 //2022/10/12 vas5 robot name oveflow in nameplate                  //~vas5I~
 //2022/10/11 vas3 tecLast(Android12) portrait icon before move overrup on stock//~vas3I~
@@ -41,6 +47,7 @@ import java.util.Arrays;
 
 public class NamePlate                                             //~v@@@R~
 {                                                                  //~0914I~
+    private static final String CN="NamePlate:";                   //~vaygI~
     private static final int TEXT_SIZE=30;                         //~v@@@R~//~9317R~
     private static final int TEXT_COLOR=Color.argb(0xff,0xff,0xff,0xff); //white//~v@@@R~
     private static final int TEXT_COLOR_BG=Color.argb(0xff,0x1d,0x20,0x88); //dark blue//~v@@@I~
@@ -54,7 +61,8 @@ public class NamePlate                                             //~v@@@R~
 //  private static final int COMPLETE_COLOR_SCORE=Color.argb(0xc0,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//~vap7R~
 //COMPLETE_COLOR=Color.argb(0xff,0xff,0x33,0x66); //Complete.java  //~vap7I~
     private static final int COMPLETE_COLOR_SCORE=Color.argb(0x60,Color.red(COMPLETE_COLOR),Color.green(COMPLETE_COLOR),Color.blue(COMPLETE_COLOR));//~vap7I~
-    private static final int PLATE_EDGE_WIDTH=2;                  //~v@@@R~//~9317R~//~0407R~
+//  private static final int PLATE_EDGE_WIDTH=2;                  //~v@@@R~//~9317R~//~0407R~//~vay8R~
+    public  static final int PLATE_EDGE_WIDTH=2;                   //~vay8I~
 //  private static final int PLATE_EDGE_WIDTH=4; //TODO            //~0407R~
     private static final int TEXT_MARGIN_SIDE=10;                  //~v@@@I~
     private static final int TEXTBOX_MARGINH=2;                    //~v@@@R~//~v@21R~
@@ -91,9 +99,11 @@ public class NamePlate                                             //~v@@@R~
 //*************************                                        //~v@@@I~
 	public NamePlate()            //for IT Mock                    //~va60R~
     {                                                              //~0914I~
-    	if (Dump.Y) Dump.println("NamePlate.defaultConstructor swLongDevice="+AG.swLongDevice); //~va60I~//~vaegR~
+    	if (Dump.Y) Dump.println("NamePlate.defaultConstructor swLongDevice="+AG.swLongDevice+",swNamePlateLeft="+AG.swNamePlateLeft); //~va60I~//~vaegR~//~vaygR~
         if (AG.swLongDevice)                                       //~vaegI~
         	swNPL=false;	//nameplate is not near by dicebox     //~vaegI~
+        if (AG.swNamePlateLeft)                                    //~vaygI~
+        	swNPL=false;	//nameplate is not near by dicebox     //~vaygI~
     }                                                              //~va60I~
 //*************************                                        //~va60I~
 	public NamePlate(GCanvas Pgcanvas)                             //~va60I~
@@ -101,13 +111,18 @@ public class NamePlate                                             //~v@@@R~
     	if (Dump.Y) Dump.println("NamePlate.constructor swLongDevice="+AG.swLongDevice);         //~0217I~//~vaegR~
         if (AG.swLongDevice)                                       //~vaegI~
         	swNPL=false;	//nameplate is not near by dicebox     //~vaegI~
+        if (AG.swNamePlateLeft)                                    //~vaygI~
+        	swNPL=false;	//nameplate is not near by dicebox     //~vaygI~
 	    recycle(AG.aNamePlate);                                    //~0217I~
     	AG.aNamePlate=this;                                        //~v@@@R~
         GCanvas gcanvas = Pgcanvas;                                          //~v@@@I~
         table = gcanvas.table;                                     //~v@@@I~
-      if (AG.portrait || !swNPL)                                   //~9611R~
+      if (AG.portrait || !swNPL)   //port or long(namePlate on the left of stock)  //~9611R~
+      {                                                            //~vaygI~
         rectPlate=table.rectNamePlate;                             //~v@@@I~
-      else                                                         //~vaegI~
+	    adjustNamePlateWithHands(rectPlate);                       //~vaygR~
+      }                                                            //~vaygI~
+      else                         //nameplate on the stock                                //~vaegI~
         rectPlate=getRectPlateLandscape();                         //~9611I~
     	if (Dump.Y) Dump.println("NamePlate.constructor rectPlate="+Utils.toString(rectPlate));//~vas5I~
 //      memberName=AG.aGC.memberName;                              //~v@@@I~//~0305R~
@@ -152,21 +167,51 @@ public class NamePlate                                             //~v@@@R~
         maxNPLhh=rsS[0].top-rsL[0].top; 	//max score height     //~9611R~
         ww=(rsS[0].right-rsS[0].left)*NPLAND_RATE_W;               //~9611I~
         int ww2=(rsS[0].right-rsS[0].left)/2;                      //~vavsR~
-        int wwL=(rsL[0].right-rsL[0].left); //lamp width           //+vavtI~
-//      rsO[0]=new Rect(rsS[0].right  , rsS[0].top-hh    , rsS[0].right+ww , rsS[0].top      );//~9611I~//+vavtR~
-        rsO[0]=new Rect(rsS[0].right+wwL, rsS[0].top-hh    , rsS[0].right+ww+wwL, rsS[0].top      );//+vavtI~
+        int wwL=(rsL[0].right-rsL[0].left); //lamp width           //~vavtI~
+//      rsO[0]=new Rect(rsS[0].right  , rsS[0].top-hh    , rsS[0].right+ww , rsS[0].top      );//~9611I~//~vavtR~
+        rsO[0]=new Rect(rsS[0].right+wwL, rsS[0].top-hh    , rsS[0].right+ww+wwL, rsS[0].top      );//~vavtI~
 //      rsO[1]=new Rect(rsS[1].left-hh, rsS[1].top-ww    , rsS[1].left     , rsS[1].top      );//~9611I~//~vavsR~
         rsO[1]=new Rect(rsS[1].left-hh, rsS[1].top-ww+ww2, rsS[1].left     , rsS[1].top+ww2  );//~vavsR~
-//      rsO[2]=new Rect(rsS[2].left-ww, rsS[2].bottom    , rsS[2].left     , rsS[2].bottom+hh);//~9611I~//+vavtR~
-        rsO[2]=new Rect(rsS[2].left-ww-wwL, rsS[2].bottom    , rsS[2].left-wwL, rsS[2].bottom+hh);//+vavtI~
+//      rsO[2]=new Rect(rsS[2].left-ww, rsS[2].bottom    , rsS[2].left     , rsS[2].bottom+hh);//~9611I~//~vavtR~
+        rsO[2]=new Rect(rsS[2].left-ww-wwL, rsS[2].bottom    , rsS[2].left-wwL, rsS[2].bottom+hh);//~vavtI~
 //      rsO[3]=new Rect(rsS[3].right  , rsS[3].bottom    , rsS[3].right+hh , rsS[3].bottom+ww);//~9611I~//~vavsR~
         rsO[3]=new Rect(rsS[3].right  , rsS[3].bottom-ww2, rsS[3].right+hh , rsS[3].bottom+ww-ww2);//~vavsR~
-    	if (Dump.Y) Dump.println("NamePlate.getRectPlateLandscape ww="+ww+",hh="+hh+",maxNPLhh="+maxNPLhh+",ww2="+ww2+",wwL="+wwL);//~9611R~//+vavtR~
+    	if (Dump.Y) Dump.println("NamePlate.getRectPlateLandscape ww="+ww+",hh="+hh+",maxNPLhh="+maxNPLhh+",ww2="+ww2+",wwL="+wwL);//~9611R~//~vavtR~
     	if (Dump.Y) Dump.println("NamePlate.getRectPlateLandscape starterRect=rcS="+Utils.toString(rsS));//~vas5R~
     	if (Dump.Y) Dump.println("NamePlate.getRectPlateLandscape Dicebox.getLightRect=rcL="+Utils.toString(rsL));//~vas5I~
     	if (Dump.Y) Dump.println("NamePlate.getRectPlateLandscape out=rsO="+Utils.toString(rsO));//~vas5I~
         return rsO;
     }                                                              //~9611I~
+    //***************************************************************//~vaygM~
+    //*adjust with Hands for the case nameplate is left of stock   //~vaygM~
+    //*(port or long device or option of nameplate on the left)    //~vaygM~
+    //***************************************************************//~vaygM~
+    private void adjustNamePlateWithHands(Rect[] PrectNamePlate)   //~vaygR~
+    {                                                              //~vaygM~
+    	int hh,ww,minW;                                            //~vaygM~
+//      int margin=2;                                              //~vaygM~//~vaypR~
+        int margin=table.marginBottom/2;                           //~vaypI~
+        int wwRight=PrectNamePlate[PLAYER_RIGHT].bottom-PrectNamePlate[PLAYER_RIGHT].top;//~vaygR~
+    	if (Dump.Y) Dump.println(CN+"adjustNamePlateWithHands PrectNamePlate="+Utils.toString(PrectNamePlate));//~vaygR~
+        minW=wwRight;                                              //~vaygM~
+        minW=Math.min(minW,PrectNamePlate[0].right-PrectNamePlate[0].left);//~vaygR~
+        minW=Math.min(minW,PrectNamePlate[2].right-PrectNamePlate[2].left);//~vaygR~
+        minW=Math.min(minW,PrectNamePlate[3].bottom-PrectNamePlate[3].top);//~vaygR~
+        int distHands=(AG.aMJTable.handY-margin)-PrectNamePlate[PLAYER_RIGHT].bottom;//~vaygR~
+    	if (Dump.Y) Dump.println(CN+"adjustNamePlateWidthHand minW="+minW+",handY="+AG.aMJTable.handY+",distHands="+distHands+",wwRight="+wwRight+",margin="+margin);//~vaypR~
+        if (distHands<0)        //Right nameplate override Hands   //~vaygM~
+        {                                                          //~vaygM~
+        	if ((minW+distHands)>0) 	//remains after cut overflow//~vaygM~
+            {                                                      //~vaygM~
+	    		if (Dump.Y) Dump.println(CN+"adjustNamePlateWithHands @@@@ update PrectNamePlate to width="+(minW+distHands));//~vaygR~
+		        PrectNamePlate[0].left+=-distHands;                //~vaygR~
+		        PrectNamePlate[1].bottom+=distHands;               //~vaygR~
+		        PrectNamePlate[2].right+=distHands;                //~vaygR~
+		        PrectNamePlate[3].top-=distHands;                  //~vaygR~
+        	}                                                      //~vaygM~
+        }                                                          //~vaygM~
+    	if (Dump.Y) Dump.println(CN+"adjustNamePlateWithHands exit PrectNamePlate="+Utils.toString(PrectNamePlate));//~vaygI~
+    }                                                              //~vaygM~
     //******************************************                   //~9415I~
     private void getRuleSetting()                                  //~9415I~
     {                                                              //~9415I~
@@ -297,6 +342,7 @@ public class NamePlate                                             //~v@@@R~
         int ww=bmScore.getWidth();                                      //~9317I~
         int hh=bmScore.getHeight();                                     //~9317I~
         Rect r=new Rect(0,0,ww,hh);                                //~9317I~
+        if (Dump.Y) Dump.println("NamePlate.showScore ww="+ww+",hh="+hh);//~vay8I~
         for (int ii=0;ii<PLAYERS;ii++)                             //~9317I~
         {                                                          //~9317I~
 //      	String num=Integer.toString(score[ii]);	//account index seq               //~9317I~//~9318R~
@@ -318,9 +364,12 @@ public class NamePlate                                             //~v@@@R~
             int xx=pos;                                            //~9317R~
             Rect br=new Rect();                                    //~9317I~
     		paintScore.getTextBounds(num,0,num.length(),br);       //~9317I~
+        	if (Dump.Y) Dump.println("NamePlate.drawLinesText getTextBounds rect="+br);//~vay9I~
 //          int yy=-br.top+(scoreH+br.top)/2+PLATE_EDGE_WIDTH+TEXTBOX_MARGINH;       //~9317I~//~9318R~//~9806R~
-            int yy=scoreH-br.bottom-TEXTBOX_MARGINH;               //~9806R~
-        	if (Dump.Y) Dump.println("NamePlate.showScore ii="+ii+",num="+num+",paintScore.getTextBounds="+br.toString()+",scoreH="+scoreH+",nameH="+nameH+",yy="+yy);//~9806I~//~9904R~
+            int yy;                                                //~vay9R~
+//          yy=scoreH-br.bottom-TEXTBOX_MARGINH;                   //~vay9R~
+            yy=scoreH-br.bottom;                                   //~vay9R~
+        	if (Dump.Y) Dump.println("NamePlate.showScore drawText ii="+ii+",num="+num+",paintScore.getTextBounds="+br.toString()+",scoreH="+scoreH+",nameH="+nameH+",xx="+xx+",yy="+yy);//~9806I~//~9904R~//~vay8R~
             Graphics.drawText(cc,num,xx,yy,paintScore);            //~9317I~
 //          Graphics.drawRect(cc,r,TEXT_COLOR_EDGE,PLATE_EDGE_WIDTH);//~9317I~//~0407R~
             drawLinesText(cc,r,TEXT_COLOR_EDGE,PLATE_EDGE_WIDTH);  //~0407R~
@@ -336,13 +385,20 @@ public class NamePlate                                             //~v@@@R~
     private void drawLinesText(Canvas Pcanvas,Rect Prect,int Pcolor,int Pwidth)//~0407I~
     {                                                              //~0407I~
         if (Dump.Y) Dump.println("NamePlate.drawLinesText color="+Integer.toHexString(Pcolor)+",width="+Pwidth+",rect="+Prect.toString());//~0407I~
+        int adjust=Pwidth/2;                                       //~vay9I~
     	float[] pts=new float[12];                                 //~0407R~
-        pts[0]=Prect.left; pts[1]=Prect.bottom;                    //~0407I~
-        pts[2]=Prect.left; pts[3]=Prect.top;                       //~0407I~
-        pts[4]=Prect.left; pts[5]=Prect.top;                       //~0407I~
-        pts[6]=Prect.right; pts[7]=Prect.top;                      //~0407R~
-        pts[8]=Prect.right; pts[9]=Prect.top;                      //~0407I~
-        pts[10]=Prect.right; pts[11]=Prect.bottom;                 //~0407R~
+//      pts[0]=Prect.left; pts[1]=Prect.bottom;                    //~0407I~//~vay9R~
+//      pts[2]=Prect.left; pts[3]=Prect.top;                       //~0407I~//~vay9R~
+        pts[0]=Prect.left+adjust; pts[1]=Prect.bottom;             //~vay9I~
+        pts[2]=Prect.left+adjust; pts[3]=Prect.top;                //~vay9I~
+//      pts[4]=Prect.left; pts[5]=Prect.top;                       //~0407I~//~vay9R~
+//      pts[6]=Prect.right; pts[7]=Prect.top;                      //~0407R~//~vay9R~
+        pts[4]=Prect.left; pts[5]=Prect.top+adjust;                //~vay9I~
+        pts[6]=Prect.right; pts[7]=Prect.top+adjust;               //~vay9I~
+//      pts[8]=Prect.right; pts[9]=Prect.top;                      //~0407I~//~vay9R~
+//      pts[10]=Prect.right; pts[11]=Prect.bottom;                 //~0407R~//~vay9R~
+        pts[8]=Prect.right-adjust; pts[9]=Prect.top;               //~vay9I~
+        pts[10]=Prect.right-adjust; pts[11]=Prect.bottom;          //~vay9I~
     	Graphics.drawLines(Pcanvas,pts,Pcolor,Pwidth);            //~0407I~
     }                                                              //~0407I~
     //*********************************************************    //~9823I~
@@ -484,11 +540,14 @@ public class NamePlate                                             //~v@@@R~
       else                                                         //~v@21I~
      {                                                             //~v@21I~
 	    if (Dump.Y) Dump.println("NamePlate.adjustRectHeight maxNPLhh="+maxNPLhh+",old minH="+minH);//~vaegI~
+      if (false)                                                    //~vayAI~
 	    if (!AG.portrait && swNPL)                                 //~9806I~
         {                                                          //~9806I~
+        //*Land and short                                          //~vaygR~
 	        if (Dump.Y) Dump.println("NamePlate.adjustRectHeight Land and swNPL old minH="+minH);//~9806I~
 	        if (minH<(maxNPLhh-NPLAND_MARGIN_H*2)/2)               //~9806I~
             {                                                      //~9806I~
+		        if (Dump.Y) Dump.println("NamePlate.adjustRectHeight Land and swNPL old minH="+minH+"<limit="+((maxNPLhh-NPLAND_MARGIN_H*2)/2));//~vaygI~
             	minH=(maxNPLhh-NPLAND_MARGIN_H*2)/2;               //~9806I~
 			    swNPLLand=true;                                    //~9806I~
             }                                                      //~9806I~
@@ -617,17 +676,35 @@ public class NamePlate                                             //~v@@@R~
         Bitmap bm;                                                 //~9317I~
         Canvas cc;
         String s;//~9317I~
+        int scoreSZ;                                               //~vayAI~
     //******************************                               //~v@@@I~
         s="123456";        //6 DBCS                         //~9317I~
         if (Dump.Y) Dump.println("NamePlate.createBitmap swNPLLand="+swNPLLand+",swNPL="+swNPL+",textBoxH="+textBoxH+",scoreH="+scoreH+",nameH="+nameH+",plateW="+nameplateW+",plateH="+nameplateH);//~vaegI~
+        int maxTextW=textBoxW-TEXTBOX_MARGINH*2;                   //~vay9I~
 //      adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW-TEXTBOX_MARGINH*2,textBoxH-TEXTBOX_MARGINH*2);//~9317I~//~9806R~
 	  if (swNPLLand)                                               //~9806I~
-        adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~9806I~
+      {	                                                           //~vaygI~
+        if (Dump.Y) Dump.println("NamePlate.createBitmap shortLand and small height w=maxTextW="+maxTextW+",h=textBoxH="+textBoxH);//~vaygR~
+//      adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~9806I~//~vay9R~
+       scoreSZ=                                                    //~vayAI~
+        adjustTextSize(paintScore,s,TEXT_SIZE,maxTextW,textBoxH);  //~vay9I~
+      }                                                            //~vaygI~
       else                                                         //~9806I~
       if (AG.portrait && AG.swLongDevice)                          //~vaegR~
-        adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~vaegI~
+      {                                                            //~vaygI~
+        if (Dump.Y) Dump.println("NamePlate.createBitmap longPort w=maxTextW="+maxTextW+",h=textBoxH="+textBoxH);//~vaygR~
+//      adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH);  //~vaegI~//~vay9R~
+       scoreSZ=                                                    //~vayAI~
+        adjustTextSize(paintScore,s,TEXT_SIZE,maxTextW,textBoxH);  //~vay9I~
+      }                                                            //~vaygI~
       else                                                         //~vaegI~
-        adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH-TEXTBOX_MARGINH*2);//~9806I~
+      {                                                            //~vaygI~
+        if (Dump.Y) Dump.println("NamePlate.createBitmap longLand or small shortLand or shortPort w=maxTextW="+maxTextW+",h=textBoxH="+textBoxH);//~vaygR~
+//      adjustTextSize(paintScore,s,TEXT_SIZE,textBoxW,textBoxH-TEXTBOX_MARGINH*2);//~9806I~//~vay9R~
+       scoreSZ=                                                    //~vayAI~
+        adjustTextSize(paintScore,s,TEXT_SIZE,maxTextW,textBoxH-TEXTBOX_MARGINH*2);//~vay9I~
+      }                                                            //~vaygI~
+        if (Dump.Y) Dump.println("NamePlate.createBitmap scoreSZ="+scoreSZ);//~vayAI~
 //      s="あいうえお";        //5 DBCS                            //~9317R~//~vas5R~
         s="あいうえおか";        //6 DBCS                          //~vas5I~
 //      nameH=adjustTextSize(paint,s,TEXT_SIZE,textBoxW-TEXTBOX_MARGINH*2,textBoxH-TEXTBOX_MARGINH*2);//~9317M~//~9319R~
@@ -639,8 +716,11 @@ public class NamePlate                                             //~v@@@R~
 	        scoreH=nameH*3/2;                                            //~9317M~//~9319R~//~9410R~
         else                                                       //~9410I~
       	if (!swNPL)                                                //~9611I~
+        {                                                          //~vayAI~
 //          scoreH=nameH*5/2;                                      //~9410R~//~vaegR~
-            scoreH=nameH;                                          //~vaegI~
+//          scoreH=nameH;                                          //~vaegI~//~vayAR~
+            scoreH=scoreSZ;                                        //~vayAI~
+        }                                                          //~vayAI~
         else                                                       //~9611I~
 //          scoreH=maxNPLhh-nameplateH-NPLAND_MARGIN_H*2;          //~9611R~//~9922R~
             scoreH=Math.min(maxNPLhh-nameplateH-NPLAND_MARGIN_H*2,nameH*3/2);//~9922I~
@@ -841,6 +921,30 @@ public class NamePlate                                             //~v@@@R~
         	Rect rect=rectScore[Pplayer];                          //~0408I~
         	int color=COMPLETE_COLOR_SCORE;                        //~0408I~
 	        Graphics.drawRect(rect,color);                         //~0408I~
+            AG.aAnim.completeNamePlate(Pplayer);                   //~vaz1I~
         }                                                          //~0408I~
     }                                                              //~0303I~
+    //*********************************************************    //~vaz1I~
+    //*rc=1:nameplate,2:profileicon                                //~vaz1I~
+    //*********************************************************    //~vaz1I~
+    public int getWinner(int Pplayer,Rect Prect,Bitmap[] Pbitmaps)   //~vaz1R~
+    {                                                              //~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner Pplayer="+Pplayer); //~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner rectScore="+Utils.toString(rectScore));//~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner rectScoreName="+Utils.toString(rectScoreName));//~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner rectPlate="+Utils.toString(rectPlate));//~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner rectBitmap="+Utils.toString(rectBitmap));//~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner bitmapPlate="+Utils.toString(bitmapPlate));//~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner textBoxH="+textBoxH+",textBoxW="+textBoxW+",nameplateh="+nameplateH+",namplatew="+nameplateW);//~vaz1I~
+    	if (AG.aProfileIcon.getWinner(Pplayer,Prect,Pbitmaps))     //+vaz1I~
+        {                                                          //+vaz1I~
+	        if (Dump.Y) Dump.println(CN+"getWinner return rc=2(ProfileIcon)");//+vaz1I~
+        	return 2;                                              //+vaz1I~
+        }                                                          //+vaz1I~
+        Prect.set(rectPlate[Pplayer]);                         //~vaz1I~
+        Bitmap bmp=bitmapPlate[Pplayer];                           //~vaz1I~
+        Pbitmaps[0]=bmp;                                           //~vaz1I~
+        if (Dump.Y) Dump.println(CN+"getWinner bitmap="+bmp+",ww="+bmp.getWidth()+",hh="+bmp.getHeight());//~vaz1R~
+        return 1;//nameplate                                       //+vaz1R~
+    }                                                              //~vaz1I~
 }//class NamePlate                                                 //~dataR~//~@@@@R~//~v@@@R~

@@ -1,6 +1,8 @@
-//*CID://+vav3R~:                             update#=  588;       //+vav3R~
+//*CID://+vaz2R~:                             update#=  591;       //+vaz2R~
 //*****************************************************************//~v101I~
-//2023/01/10 vav3 optionally toast intent                          //+vav3I~
+//2025/03/02 vaz2 TestOption DUMP=SDCARD-->Dump to File(if off write to logcat). currently requires restart//+vaz2I~
+//2025/02/10 vayg Try nameplate on left of stock for also landscape//~vaygI~
+//2023/01/10 vav3 optionally toast intent                          //~vav3I~
 //2022/10/18 vatf default dump to sdcard change to ON              //~vatfI~
 //2022/07/04 van1 hungle suuprt for Help                           //~van1I~
 //2021/12/24 vaih TestOption Dump.Y=false for debugmode performance//~vaihI~
@@ -48,6 +50,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String DUMP_SDCARD="DumpSDCard";          //~0A08I~
     private static final String DUMP_NO="NoDump";                  //~vaihI~
     private static final String RONVALUE_TEST="RonValue_Test";     //~0A02I~
+    private static final String LEFTNAMEPLATE_TEST="LeftNamePlate_Test";//~vaygI~
     private static final String RONVALUE_NODORA="NoDora";          //~0A08I~
     private static final String CHKRANK="ChkRank";                 //~0A16I~
     private static final String RONVALUE_CASE="RonValue_Case";     //~0A07I~
@@ -177,7 +180,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private static final String LANG_KO                ="LangKO"              ;//~van1I~
     private static final String DEAL_NAGASHIMANGAN     ="DealNagashiMangan"   ;//~van1I~
     private static final String DEAL_OPENREACHRON      ="DealOpenReachRon"   ;//~van1I~
-    private static final String ROBOT_TOAST            ="RobotToast"   ;//+vav3I~
+    private static final String ROBOT_TOAST            ="RobotToast"   ;//~vav3I~
                                                                    //~v@@@I~
     private static final int[] rbIDFirstDealer=new int[]{R.id.rbFirstDealer0,R.id.rbFirstDealer1,R.id.rbFirstDealer2,R.id.rbFirstDealer3,R.id.rbFirstDealer4};//~v@@@I~
     private static final int[] rbIDFinalGameCtrSet=new int[]{R.id.rbFinalSet1,R.id.rbFinalSet2,R.id.rbFinalSet3,R.id.rbFinalSet4};//~v@@@I~
@@ -187,6 +190,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbDrawnReqDlg_LastDialog;                    //~van1I~
     private UCheckBox cbRon_Test;                                  //~v@@@I~
     private UCheckBox cbRonValue_Test,cbRonValue_NoDora;                             //~0A02I~//~0A08R~
+    private UCheckBox cbLeftNamePlate_Test;                        //~vaygI~
     private UCheckBox cbSetDora;                                   //~0A14I~
     private UCheckBox cbSetDiscard;                                //~vaihI~
     private UCheckBox cbChkRank;                                   //~0A16I~
@@ -240,7 +244,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     private UCheckBox cbDealAvoidFuriten;                          //~vaihI~
     private UCheckBox cbNagashiMangan;                             //~van1I~
     private UCheckBox cbOpenReachRon;                              //~van1I~
-    private UCheckBox cbToastRobotIntent;                          //+vav3I~
+    private UCheckBox cbToastRobotIntent;                          //~vav3I~
     private Prop prop;                                             //~v@@@I~
     private boolean swChanged;                                     //~v@@@I~
     private URadioGroup rgFirstDealer;                             //~v@@@I~
@@ -274,6 +278,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDumpNo=new UCheckBox(PView,R.id.cbDumpNo);               //~vaihI~
     	cbLangKO=new UCheckBox(PView,R.id.cbLangKO);               //~van1I~
     	cbRonValue_Test=new UCheckBox(PView,R.id.cbRonValue_Test); //~0A02I~
+    	cbLeftNamePlate_Test=new UCheckBox(PView,R.id.cbLeftNamePlate_Test);//~vaygI~
     	cbRonValue_NoDora=new UCheckBox(PView,R.id.cbRonValue_NoDora);//~0A08I~
     	cbChkRank=new UCheckBox(PView,R.id.cbChkRank);             //~0A16I~
     	cbSetDora=new UCheckBox(PView,R.id.cbSetDora);             //~0A14I~
@@ -362,7 +367,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealAvoidFuriten=new UCheckBox(PView,R.id.cbAvoidFuriten);//~vaihI~
     	cbNagashiMangan=new UCheckBox(PView,R.id.cbNagashiMangan); //~van1I~
     	cbOpenReachRon=new UCheckBox(PView,R.id.cbOpenReachRon);   //~van1I~
-    	cbToastRobotIntent=new UCheckBox(PView,R.id.cbToastRobotIntent);//+vav3I~
+    	cbToastRobotIntent=new UCheckBox(PView,R.id.cbToastRobotIntent);//~vav3I~
     	cbDealChanta =new UCheckBox(PView,R.id.cbDealChantaChii);      //~vad5I~
     	cbDealStraightChii =new UCheckBox(PView,R.id.cbDealStraightChii);//~vad5I~
     	cbDealAtodukeTakeYakuhai    =new UCheckBox(PView,R.id.cbDealAtodukeTakeYakuhai  );//~va66I~
@@ -442,6 +447,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDumpNo.setStateInt(Pprop.getParameter(DUMP_NO,0));       //~vaihI~
     	cbLangKO.setStateInt(Pprop.getParameter(LANG_KO,0));       //~van1I~
     	cbRonValue_Test.setStateInt(Pprop.getParameter(RONVALUE_TEST,0));//~0A02I~
+    	cbLeftNamePlate_Test.setStateInt(Pprop.getParameter(LEFTNAMEPLATE_TEST,0));//~vaygI~
     	cbRonValue_NoDora.setStateInt(Pprop.getParameter(RONVALUE_NODORA,0));//~0A08I~
     	cbChkRank.setStateInt(Pprop.getParameter(CHKRANK,0));      //~0A16I~
     	cbSetDora.setStateInt(Pprop.getParameter(SET_DORA,0));     //~0A14I~
@@ -536,7 +542,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
     	cbDealAvoidFuriten.setStateInt(Pprop.getParameter(DEAL_AVOID_FURITEN,0));//~vaihI~
     	cbNagashiMangan.setStateInt(Pprop.getParameter(DEAL_NAGASHIMANGAN,0));//~van1R~
     	cbOpenReachRon.setStateInt(Pprop.getParameter(DEAL_OPENREACHRON,0));//~van1I~
-    	cbToastRobotIntent.setStateInt(Pprop.getParameter(ROBOT_TOAST,0));//+vav3I~
+    	cbToastRobotIntent.setStateInt(Pprop.getParameter(ROBOT_TOAST,0));//~vav3I~
     	cbDealChanta.setStateInt(Pprop.getParameter(DEAL_CHANTA,0));//~vad5I~
     	cbDealStraightChii.setStateInt(Pprop.getParameter(DEAL_STRAIGHT_CHII,0));//~vad5I~
     	cbDealAtodukeTakeYakuhai.setStateInt(Pprop.getParameter(DEALATODUKETAKEYAKUHAI,0));//~va66I~
@@ -645,7 +651,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
             Dump.open("Dump.txt",false/*sdcard*/);                 //~vad5I~
         }                                                          //~0A08I~
         else                                                       //~0A08I~
+        {                                                          //+vaz2I~
 			TestOption.option2&=~TO2_DUMP_SDCARD;                   //~0A08I~//~va65R~
+            Dump.open("");   //Terminal:true                       //+vaz2I~
+        }                                                          //+vaz2I~
         if (Pprop.getParameter(DUMP_NO,0)!=0)                      //~vaihI~
         {                                                          //~vaihI~
 			TestOption.option5|=TO5_NODUMP;                        //~vaihI~
@@ -660,6 +669,8 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option2|=TO2_RONVALUE_TEST;                  //~0A02I~
         else                                                       //~0A02I~
 			TestOption.option2&=~TO2_RONVALUE_TEST;                 //~0A02I~//~va65R~
+        if (Pprop.getParameter(LEFTNAMEPLATE_TEST,0)!=0)           //~vaygI~
+			AG.swNamePlateLeft=false;                              //~vaygR~
         if (Pprop.getParameter(RONVALUE_NODORA,0)!=0)              //~0A08I~
 			TestOption.option2|=TO2_RONVALUE_NODORA;               //~0A08I~
         else                                                       //~0A08I~
@@ -1080,10 +1091,10 @@ public class TODlg extends UFDlg                           //~v@@@R~
 			TestOption.option5|=TO5_OPENREACHRON;                  //~van1I~
         else                                                       //~van1I~
 			TestOption.option5&=~TO5_OPENREACHRON;                 //~van1I~
-        if (Pprop.getParameter(ROBOT_TOAST,0)!=0)                  //+vav3I~
-			TestOption.option2|=TO2_ROBOT_TOAST;                   //+vav3I~
-        else                                                       //+vav3I~
-			TestOption.option2&=~TO2_ROBOT_TOAST;                  //+vav3I~
+        if (Pprop.getParameter(ROBOT_TOAST,0)!=0)                  //~vav3I~
+			TestOption.option2|=TO2_ROBOT_TOAST;                   //~vav3I~
+        else                                                       //~vav3I~
+			TestOption.option2&=~TO2_ROBOT_TOAST;                  //~vav3I~
         if (Pprop.getParameter(DEAL_CHANTA,0)!=0)                  //~vad5I~
 			TestOption.option5|=TO5_DEAL_CHANTA;                   //~vad5I~
         else                                                       //~vad5I~
@@ -1179,6 +1190,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DUMP_NO,cbDumpNo.getStateInt());       //~vaihI~
         changed+=updateProp(LANG_KO,cbLangKO.getStateInt());       //~van1I~
         changed+=updateProp(RONVALUE_TEST,cbRonValue_Test.getStateInt());//~0A02R~
+        changed+=updateProp(LEFTNAMEPLATE_TEST,cbLeftNamePlate_Test.getStateInt());//~vaygI~
         changed+=updateProp(RONVALUE_NODORA,cbRonValue_NoDora.getStateInt());//~0A08I~
         changed+=updateProp(CHKRANK,cbChkRank.getStateInt());      //~0A16I~
         changed+=updateProp(SET_DORA,cbSetDora.getStateInt());     //~0A14I~
@@ -1268,7 +1280,7 @@ public class TODlg extends UFDlg                           //~v@@@R~
         changed+=updateProp(DEAL_AVOID_FURITEN,cbDealAvoidFuriten.getStateInt());//~vaihI~
         changed+=updateProp(DEAL_NAGASHIMANGAN,cbNagashiMangan.getStateInt());//~van1R~
         changed+=updateProp(DEAL_OPENREACHRON,cbOpenReachRon.getStateInt());//~van1R~
-        changed+=updateProp(ROBOT_TOAST,cbToastRobotIntent.getStateInt());//+vav3I~
+        changed+=updateProp(ROBOT_TOAST,cbToastRobotIntent.getStateInt());//~vav3I~
         changed+=updateProp(DEAL_CHANTA,cbDealChanta.getStateInt());//~vad5I~
         changed+=updateProp(DEAL_STRAIGHT_CHII,cbDealStraightChii.getStateInt());//~vad5I~
         changed+=updateProp(DEALATODUKETAKEYAKUHAI,cbDealAtodukeTakeYakuhai.getStateInt());//~va66I~

@@ -1,5 +1,7 @@
-//*CID://+vat1R~: update#= 615;
+//*CID://+vaz1R~: update#= 620;                                    //+vaz1R~
 //**********************************************************************//~v101I~
+//2025/03/02 vaz1 nameplate/profile animation at win called        //+vaz1I~
+//2025/02/05 vayb long device, bird ob\vrrides lamp                //~vaybI~
 //2022/10/16 vat1 deprecated; Java9 new Integer-->valueOf          //~vat1I~
 //2022/03/24 vam0 show Wareme sign                                 //~vam0I~
 //2021/09/24 vaed more adjust for small device(dip=width/dip2px<=320)//~vaedI~
@@ -92,7 +94,8 @@ public class DiceBox extends Thread                                //~v@@@R~
     private static final int MAX_SPOTS=6;                          //~v@@@I~
 	private static final int DBACTION_CASTING=0;                   //~v@@@I~
 	private static final int DBACTION_ENABLE=1;                    //~v@@@I~
-	private static final int EDGE_WIDTH=2;                         //~v@@@I~
+//	private static final int EDGE_WIDTH=2;                         //~v@@@I~//~vaybR~
+  	public  static final int EDGE_WIDTH=2;                         //~vaybI~
     private static final int LIGHT_RADIUS=20;                      //~v@@@R~
 //  private static final int LIGHT_EDGE=4;                         //~v@@@R~//~vaedR~
     private static final int LIGHT_EDGE_STD=4;                     //~vaedR~
@@ -137,14 +140,17 @@ public class DiceBox extends Thread                                //~v@@@R~
     private int[] startAngleLight={  0,270,180, 90};               //~v@@@R~
 //  private Point[] posLight;                                      //~v@@@I~//~v@11R~
     private Point[] posLightWaiting;                               //~v@11I~
-    private Point[] posLightStarter;                               //~v@11R~
-    private Rect[]  boxLight;                                      //~v@@@I~//~vaedR~
+//  private Point[] posLightStarter;                               //~v@11R~//+vaz1R~
+    public  Point[] posLightStarter;                               //+vaz1I~
+//  private Rect[]  boxLight;                                      //~v@@@I~//~vaedR~//~vaybR~
 //  public  Rect[]  boxLight;  //TODO test                         //~vaedR~
+    public  Rect[]  boxLight;                                      //~vaybI~
     private RectF[]  boxLightArc;                                  //~v@@@I~
     private RectF[]  boxLightArcInner;                             //~v@@@I~
     private Canvas canvas;                                                 //~v@@@I~
     private Point[] possDice;                                              //~v@@@I~
-    private Rect rectDiceBox;                                      //~v@@@R~
+//  private Rect rectDiceBox;                                      //~v@@@R~//~vaybR~
+    public  Rect rectDiceBox;                                      //~vaybI~
     private int bgColor;                                               //~v@@@I~
     private int action=DBACTION_CASTING;                           //~v@@@I~
     private int bgTable=COLOR_BG_TABLE;                            //~v@@@R~
@@ -296,6 +302,7 @@ public class DiceBox extends Thread                                //~v@@@R~
 //      posLightStarter[1]=new Point(boxLight[1].left+d,boxLight[1].bottom+d);//~v@11R~
 //      posLightStarter[2]=new Point(boxLight[2].right+d,boxLight[2].bottom-d);//~v@11R~
 //      posLightStarter[3]=new Point(boxLight[3].right-d,boxLight[3].top-d);//~v@11R~
+		if (Dump.Y) Dump.println("DiceBox.setLightBox boxLight="+Utils.toString(boxLight));//~vaybI~
         setPosLightStarter();                                      //~v@11I~
     }                                                              //~v@@@I~
     //*********************************************************    //~v@11I~

@@ -1,5 +1,17 @@
-//*CID://+vawwR~:                             update#=  524;       //+vawwR~
+//*CID://+vayQR~:                             update#=  544;       //~vayQR~
 //******************************************************************************************************************//~v101R~
+//2025/02/25 vayQ hide navigationbar ingame also for api29         //~vayQI~
+//2025/02/25 vayP LetterBox mode is from android12(api31), it depends device type.//~vayPI~
+//                The condition is orientation fixed or fixed aspect or not resizable(resizeableActivity=false)//~vayPI~
+//2025/02/24 vayM android14 tablet(google pixel emulator), screen is change to LetterBox if start by landscape.//~vayMI~
+//                Web says. from android12(Api31). optionally(by device maker) change to letterBox by orientation//~vayMI~
+//2025/02/23 vayL adjust Top camera area if edge mode portrait     //~vayLI~
+//2025/02/22 vayK api34 landRight spaceRight is too large. use inset not systemGesture but syste.//~vayKI~
+//2025/02/21 vayH api34 is also edgeToEdgeMode by sdk35            //~vayHI~
+//2025/02/19 vayy bypass set marginRight by rotation(camera button may exist)//~vayyI~
+//2025/02/10 vayg Try nameplate on left of stock for also landscape//~vaygI~
+//2023/02/28 vay1 allow rotation of top view before startGame, then lock and view game panel//~vay1I~
+//2023/02/22 vay0 v1.29 api14(Android34) is required.              //~vay0I~
 //2023/01/30 vavw (BUG)prefDialog:selectProfile popups searchPrinter.//~vavwI~
 //2023/01/22 vav9 display not devicename but username on connection dialog//~vav9I~
 //2022/11/01 vau2 Ahsv-1ams 2022/11/01 control request permission to avoid 1amh:"null permission result".(W Activity: Can request only one set of permissions at a time)//~vau2I~
@@ -152,10 +164,15 @@ import static com.btmtest.StaticVars.AG;                           //~v@21I~//~@
 import static com.btmtest.dialog.PrefSettingEnum.*;
 import static com.btmtest.dialog.RuleSettingEnum.*;
 import static com.btmtest.game.GConst.*;
+import android.content.pm.PackageManager;                          //~v107R~//~5127I~//~vay1I~
 
 //**************************                                       //~1120I~
 public class AG                                                    //~1107R~
 {                                                                  //~1109R~
+    public static final int APIVER_GESTUREMODE=29;	//gesture navigation atarted//~vayQR~
+    public static final int APIVER_EDGEMODE=30;	//for xe, android support it from 29(Android10:Q)//~vayQI~
+    public static final int APIVER_MAY_LETTERBOX=31;	//android 12//~vayPI~
+    public static final int APIVER_EDGEMODE_DEFAULT=35;	//api35 default is edgemode//~vayMI~
     public static final String PROP_EXT_RULE=".rulefile";          //~v@@@R~
 //  public static final String PROP_EXT_OPERATION=".operationfile";//~v@@@R~//~@@01R~
     public static final String PROP_EXT_PREFERENCE=".preferencefile";//~@@01R~
@@ -257,7 +274,7 @@ public class AG                                                    //~1107R~
     public  String RemoteDeviceName;                         //~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~
     public  String LocalDeviceName;                          //~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~
     public  float dip2pix;                                   //~1428I~//~1Ad7R~//~v@@@R~//~@@01R~
-    public  float sp2pix;                                    //~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~
+//  public  float sp2pix;                                    //~@@@@I~//~1Ad7R~//~v@@@R~//~@@01R~//~vay0R~
     public  boolean   portrait;                              //~1428R~//~1Ad7R~//~v@@@R~//~@@01R~
     public  boolean   swMainView;                                  //~@@01I~
     public  String    appName;                               //~1428R~//~1Ad7R~//~@@01R~
@@ -266,17 +283,27 @@ public class AG                                                    //~1107R~
 //    public static String    appVersion;                            //~1506I~//~1Ad7R~
     public  String    appVersion,appVersionMinConnect;             //~varaI~
     public  int       scrWidth,scrHeight;                    //~1428R~//~1Ad7R~//~v@@@R~//~@@01R~
+    public  int       scrRotation;                                 //~vayyI~
+    public  static final int ROT_PORT=0;                           //~vayyI~
+    public  static final int ROT_REVERSE=2;                        //~vayHI~
+    public  static final int ROT_LAND_LEFT=1;  //degree 270,top is left//~vayyR~
+    public  static final int ROT_LAND_RIGHT=3; //degree 90,top is right//~vayyR~
     public  int       scrWidthReal,scrHeightReal;                  //~@@01R~
     public  int       scrStatusBarHeight;	//API30, by insets     //~vaj0I~
     public  int       scrNavigationbarRightWidth;                  //~@@01I~
     public  int       scrNavigationbarBottomHeight;                //~vaeeI~
+    public  int       scrNavigationbarTopHeightA11;                //~vayLI~
     public  int       scrNavigationbarBottomHeightA11;             //~vaefR~
     public  int       scrNavigationbarLeftWidthA11;                //~vaefI~
     public  int       scrNavigationbarRightWidthA11;               //~vaefI~
+    public  int       scrCutoutLeft,scrCutoutRight,scrCutoutTop,scrCutoutBottom;//+vayQI~
     public  boolean   swNavigationbarGestureMode;                  //~vaefR~
     public  int       scrPortraitWW;	//width of top panel(portrait)//~@@01I~
+    public  boolean   swSetEdgeToEdge;  //api35 or requested enableEdgeToEdge//~vayHI~
     public  boolean   swSmallDevice;      //portrait screen width<800pixel//~@@01R~
-    public  boolean   swLongDevice;       //height>width*2         //~vaegI~
+    public  boolean   swLongDevice;  //height>width*2         //~vaegI~//~vaygR~
+    public  boolean   swNamePlateLeft=true; //TEST   //NamePlate and profile is on the left of stock for also when Landscape//~vaygR~
+//  public  boolean   swNamePlateLeft=false;    //NamePlate and profile is on the left of stock for also when Landscape//~vaygR~
 //  public  double    scaleSmallDevice;   //portrait screen width/800pixel//~@@01I~//~vac4R~
     public  double    scaleSmallDevice=1.0;   //portrait screen width/800pixel//~vaa4I~
     public  boolean   swSmallFont;        //portrait screen width<800pixel//~vac5M~
@@ -506,6 +533,12 @@ public class AG                                                    //~1107R~
     public ProfileIcon aProfileIcon;                               //~var8I~
     public PrtDoc aPrtDoc;                                         //~vas0I~
     public UPermission aUPermission;                               //~vau2I~
+    public boolean foldingFeature;                                 //~vay1I~
+//  public boolean foldingFeatureOpened;                           //~vay1I~//~vayKR~
+    public static final int FOLDING_STATE_OPEN=1;                  //~vayKI~
+    public static final int FOLDING_STATE_CLOSE=0;                 //~vayKI~
+    public static final int FOLDING_STATE_UNKNOWN=-1;              //~vayKI~
+    public int     foldingFeatureOpened=FOLDING_STATE_UNKNOWN;     //~vayKR~
 //    private ArrayList<UFDlg> listUFDlg=new ArrayList<UFDlg>();   //~vaf0R~
 //************************************                             //~@@01I~
 //*static Bitmaps                                                  //~@@01I~
@@ -608,6 +641,7 @@ public class AG                                                    //~1107R~
 //        else                                                       //~1023I~//~1Ad7R~
 //            SshogiV=SshogiVE; //letter rank                        //~1023I~//~1Ad7R~
 //        screenDencityMdpi=resource.getDisplayMetrics().density==1.0;//~1A50I~//~1Ad7R~
+        foldingFeature=isFoldableDevice();                         //~vay1I~
 		Properties p=System.getProperties();                       //~v@@@I~
 		dirSep=p.getProperty("file.separator");                    //~v@@@I~
         createSettings();                                          //~@@01R~
@@ -767,4 +801,13 @@ public class AG                                                    //~1107R~
 //        if (Dump.Y) Dump.println("AG.popFragment rc="+rc);       //~vaf0R~
 //        return rc;                                               //~vaf0R~
 //    }                                                            //~vaf0R~
+    //*******************************************************      //~5127I~//~vay1I~
+    public static boolean isFoldableDevice()                       //~5127R~//~vay1I~
+    {                                                              //~5127I~//~vay1I~
+    	if (Dump.Y) Dump.println("isFoldableDevice");            //~vat2I~//~5127I~//~vay1I~
+        PackageManager pm=AG.context.getPackageManager();          //~v107R~//~5127R~//~vay1I~
+        boolean rc=pm.hasSystemFeature(PackageManager.FEATURE_SENSOR_HINGE_ANGLE);//~5127R~//~vay1I~
+    	if (Dump.Y) Dump.println("isFoldableDevice rc="+rc);       //~5127I~//~vay1I~
+        return rc;                                                 //~5127I~//~vay1I~
+    }                                                              //~v107R~//~5127I~//~vay1I~
 }//class AG                                                        //~1107R~
